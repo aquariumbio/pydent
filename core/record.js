@@ -10,6 +10,15 @@ AQ.Record = function(model,data) {
   var record = this;
   this.model = model;
 
+  model.record_getters.data_associations = function() { // all records should have this getter,
+                                                        // so its defined here
+    var record = this;
+    delete record.data_associations;
+    record.get_data_associations();
+    return undefined;
+
+  }
+
   for ( var method_name in model.record_methods ) {
     record[method_name] = (function(mname) {
       return function() {
@@ -17,25 +26,6 @@ AQ.Record = function(model,data) {
         return model.record_methods[mname].apply(record,args);
       }
     })(method_name);
-  }
-
-  model.record_getters.data_associations = function() { // all records should have this getter,
-                                                        // so its defined here
-
-    var record = this;
-    delete record.data_associations;
-
-    AQ.DataAssociation.where({parent_id: record.id, parent_class: record.model.model}).then((das) => {
-      record.data_associations = das;
-      aq.each(record.data_associations,(da) => {
-        da.value = JSON.parse(da.object)[da.key];
-        da.upload = AQ.Upload.record(da.upload)
-      });
-      AQ.update();
-    });
-
-    return null;
-
   }
 
   for ( var method_name in model.record_getters ) {
@@ -149,3 +139,24 @@ AQ.Record.prototype.new_data_association = function() {
   return da;
 
 }
+
+AQ.Record.prototype.get_data_associations = function() {
+
+  var record = this;
+
+  delete record.data_associations;
+
+  return new Promise(function(resolve, reject) {
+
+    AQ.DataAssociation.where({parent_id: record.id, parent_class: record.model.model}).then((das) => {
+      record.data_associations = das;
+      aq.each(record.data_associations,(da) => {
+        da.value = JSON.parse(da.object)[da.key];
+        da.upload = AQ.Upload.record(da.upload)
+      });
+      resolve(record.data_associations);
+    }).catch(reject);
+
+  });
+
+};

@@ -24,7 +24,7 @@ AQ.get = function(path) {
 
   return new Promise(function(resolve,reject) {
     request.get({
-        url: 'http://localhost:3000' + path,
+        url: AQ.config.aquarium_url + path,
         headers: headers },
       function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -55,7 +55,7 @@ AQ.post = function(path,data) {
   return new Promise(function(resolve,reject) {
     request({
         method: 'post',
-        url: 'http://localhost:3000' + path,
+        url: AQ.config.aquarium_url + path,
         headers: headers,
         form: extend(data, { authentication_key: AQ.authkey }) },
       function (error, response, body) {

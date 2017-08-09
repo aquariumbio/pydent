@@ -29,7 +29,7 @@ AQ.Base.prototype.find = function(id) {
       (response) => {
         resolve(base.record(response.data));
       },(response) => {
-        reject(response.data.errors);
+        reject(response);
       }
     );
   });
@@ -55,6 +55,7 @@ AQ.Base.prototype.array_query = function(method,args,rest,opts={}) {
   var query = { model: base.model, method: method, arguments: args, options: options };
 
   return new Promise(function(resolve,reject) {
+
     AQ.post('/json',extend(query,rest)).then(
       (response) => {
         var records = [];
@@ -76,7 +77,7 @@ AQ.Base.prototype.all = function(rest={},limit=-1,opts={}) {
 }
 
 AQ.Base.prototype.where = function(criteria,methods={},opts={}) {
-  var options = $.extend({offset: -1, limit: -1, reverse: false},opts);
+  var options = extend({offset: -1, limit: -1, reverse: false},opts);
   return this.array_query('where',criteria,methods,options);
 }
 

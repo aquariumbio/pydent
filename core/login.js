@@ -4,14 +4,13 @@ var request = require('request')
 AQ.login = function(username, password) {
 
   return new Promise(function(resolve,reject) {
-    request.post(AQ.config.aquarium_url, { json: { session: { login: username, password: password } } },
+    request.post(AQ.config.aquarium_url+"/sessions.json", { json: { session: { login: username, password: password } } },
       function (error, response, body) {
         if (!error && response.statusCode == 200) {
           AQ.login_headers = response.headers;
           console.log("LOGIN OK")
           resolve(body);
         } else {
-          console.log("LOGIN FAILED")
           reject({error: error, statusCode: response.statusCode, body: body});
         }
       })
