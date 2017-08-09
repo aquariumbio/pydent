@@ -7,4 +7,4 @@ AQ.login_interactive().then(response => {
     item.get_history().then(console.log)
   });
 
-}).catch(console.log)
+})
