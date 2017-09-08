@@ -1,7 +1,9 @@
 import aq
 
 class SampleTypeRecord(aq.Record):
-    pass
+    def __init__(self,model,data):
+        super(SampleTypeRecord,self).__init__(model,data)
+        self.has_many("samples", aq.Sample)
 
 class SampleTypeModel(aq.Base):
 

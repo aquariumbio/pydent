@@ -16,3 +16,11 @@ print([i.location for i in s.items])
 
 s = aq.Sample.where({"name": "pGFP"}, { "include": "items"}, {})
 print([i.location for i in s[0].items])
+
+# Tests
+
+print("")
+print([s.name for s in aq.User.find(1).samples])
+
+print("")
+print([ s.name for s in aq.SampleType.find_by_name("Enzyme").samples])

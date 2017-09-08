@@ -54,4 +54,4 @@ class Record:
         elif name in self.__has_many:
             return __get_many_wrapper(name)
         else:
-            raise Exception("Method " + name + " not found.")
+            raise Exception("Association " + name + " not found.")
