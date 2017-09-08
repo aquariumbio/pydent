@@ -4,7 +4,8 @@ var request = require('request')
 AQ.login = function(username, password) {
 
   return new Promise(function(resolve,reject) {
-    request.post(AQ.config.aquarium_url+"/sessions.json", { json: { session: { login: username, password: password } } },
+    var data = { json: { session: { login: username, password: password } } };
+    request.post(AQ.config.aquarium_url+"/sessions.json", data,
       function (error, response, body) {
         if (!error && response.statusCode == 200) {
           AQ.login_headers = response.headers;

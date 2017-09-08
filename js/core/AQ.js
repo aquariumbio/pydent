@@ -52,6 +52,8 @@ AQ.post = function(path,data) {
     headers = {};
   }
 
+  console.log(headers)
+
   return new Promise(function(resolve,reject) {
     request({
         method: 'post',
@@ -107,7 +109,6 @@ AQ.id_from = function(sid) {
 }
 
 AQ.sid_from = function(id) {
-
 }
 
 AQ.items_for = function(sample_id,object_type_id) {
