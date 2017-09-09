@@ -39,9 +39,17 @@ class Record:
             setattr(self,name,records)
 
     def get_many(self,name):
-        reference = self.snake(self.model.name) + "_id"
-        results = self.__has_many[name]["model"].where({reference: self.id})
-        return results
+        if "through" in self.__has_many[name]:
+            self_ref = self.snake(self.model.name) + "_id"
+            assoc_ref = self.snake(self.__has_many[name]["model"].name) + "_id"
+            assoc = self.__has_many[name]["through"]
+            assoc_field = self.__has_many[name]["association"]
+            joins = assoc.where({self_ref: self.id}, {"include": assoc_field})
+            return [ j.operation for j in joins ]
+        else:
+            reference = self.snake(self.model.name) + "_id"
+            results = self.__has_many[name]["model"].where({reference: self.id})
+            return results
 
     def has_many_generic(self,name,model):
         self.__has_many_generic[name] = { "model": model }
@@ -52,8 +60,7 @@ class Record:
     def get_many_generic(self,name):
         results = self.__has_many_generic[name]["model"].where({
             "parent_class": self.model.name,
-            "parent_id": self.id
-        })
+            "parent_id": self.id})
         return results
 
     def __getattr__(self, name):
