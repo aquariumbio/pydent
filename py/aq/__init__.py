@@ -10,6 +10,7 @@ from aq.models.code                     import Code, CodeRecord
 from aq.models.collection               import Collection, CollectionRecord
 from aq.models.data_association         import DataAssociation, DataAssociationRecord
 from aq.models.field_type               import FieldType, FieldTypeRecord
+from aq.models.field_value              import FieldValue, FieldValueRecord
 from aq.models.group                    import Group, GroupRecord
 from aq.models.invoice                  import Invoice, InvoiceRecord
 from aq.models.item                     import Item, ItemRecord

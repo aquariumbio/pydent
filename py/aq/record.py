@@ -19,7 +19,10 @@ class Record:
             setattr(self,name,model.record(self.__data[name]))
 
     def get_one(self,name):
-        reference = name + "_id"
+        if "reference" in self.__has_one[name]:
+            reference = self.__has_one[name]["reference"]
+        else:
+            reference = name + "_id"
         fid = getattr(self,reference)
         if fid:
             result = self.__has_one[name]["model"].find(fid)

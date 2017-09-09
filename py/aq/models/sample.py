@@ -6,6 +6,7 @@ class SampleRecord(aq.Record):
         super(SampleRecord,self).__init__(model,data)
         self.has_one("sample_type", aq.SampleType)
         self.has_many("items", aq.Item)
+        self.has_many_generic("field_values", aq.FieldValue)
 
 class SampleModel(aq.Base):
 
