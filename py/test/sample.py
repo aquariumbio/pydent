@@ -15,7 +15,6 @@ for fv in s.field_values:
     else:
         print("    - " + fv.name + ": " + str(fv.value))
 
-
 print("\n Inventory")
 for item in s.items:
     print("    - " + str(item.id) + ": " + item.location)

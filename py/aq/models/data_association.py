@@ -2,6 +2,7 @@ import aq
 import json
 
 class DataAssociationRecord(aq.Record):
+    
     def __init__(self,model,data):
         super(DataAssociationRecord,self).__init__(model,data)
         self.has_one("upload", aq.Upload)
