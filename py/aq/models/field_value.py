@@ -8,6 +8,8 @@ class FieldValueRecord(aq.Record):
         self.has_one("allowable_field_type", aq.AllowableFieldType)
         self.has_one("item",   aq.Item, opts={"reference": "child_item_id"})
         self.has_one("sample", aq.Sample, opts={"reference": "child_sample_id"})
+        self.has_one("operation", aq.Operation, opts={"reference": "parent_id"})
+        self.has_one("sample", aq.Sample, opts={"reference": "parent_id"})
 
 class FieldValueModel(aq.Base):
 

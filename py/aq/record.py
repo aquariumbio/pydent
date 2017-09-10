@@ -39,7 +39,9 @@ class Record:
             setattr(self,name,records)
 
     def get_many(self,name):
-        if "through" in self.__has_many[name]:
+        if "no_getter" in self.__has_many[name]:
+            return []
+        elif "through" in self.__has_many[name]:
             self_ref = self.snake(self.model.name) + "_id"
             assoc_ref = self.snake(self.__has_many[name]["model"].name) + "_id"
             assoc = self.__has_many[name]["through"]
@@ -83,7 +85,7 @@ class Record:
         elif name in self.__has_many_generic:
             return __get_many_generic_wrapper(name)
         else:
-            raise Exception("Association " + name + " not found.")
+            raise Exception("Association '" + name + "' of " + self.model.name + " not found.")
 
     def snake(self,name):
         s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
