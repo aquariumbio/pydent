@@ -90,3 +90,20 @@ class Record:
     def snake(self,name):
         s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
         return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
+    def is_record(self,object):
+        bases = object.__class__.__bases__
+        return len(bases) == 1 and bases[0].__name__ == 'Record'
+
+    def to_json(self):
+        j = {}
+        for property, value in vars(self).items():
+
+            if property in self.__has_one or self.is_record(value):
+                j[property] = value.to_json()
+            elif property in self.__has_many or property in self.__has_many_generic:
+                j[property] = [v.to_json() for v in value]
+            elif not re.match(r'\_',property) and not property == 'model':
+                j[property] = value
+
+        return j

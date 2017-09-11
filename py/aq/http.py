@@ -5,10 +5,12 @@ sys.path.append('.')
 from config import config
 
 headers = {}
+logged_in = False
 
 def login():
 
     global headers
+    global logged_in
 
     params = {
         "session": {
@@ -28,18 +30,26 @@ def login():
 
     headers = { "cookie": __fix_remember_token(r.headers["set-cookie"]) }
     print(r.status_code)
+    logged_in = True
     return r.status_code
 
 def get(path):
 
     global headers
-    r = requests.get(config['aquarium_url'] + path, headers=headers)
+    if logged_in:
+        r = requests.get(config['aquarium_url'] + path, headers=headers)
+    else:
+        raise Exception("Not logged into an Aquarium instance. Run aq.login().")
     return r.json()
 
 def post(path,data):
 
     global headers
-    r = requests.post(config['aquarium_url'] + path,json=data,headers=headers)
+    if logged_in:
+        r = requests.post(config['aquarium_url'] + path,json=data,headers=headers)
+    else:
+        raise Exception("Not logged into an Aquarium instance. Run aq.login().")
+
     return r.json()
 
 def __fix_remember_token(h):
