@@ -2,6 +2,7 @@ from aq.http import login
 
 from aq.base   import Base
 from aq.record import Record
+from aq.utils  import utils
 
 from aq.models.account                  import Account, AccountRecord
 from aq.models.allowable_field_type     import AllowableFieldType, AllowableFieldTypeRecord

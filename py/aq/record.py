@@ -42,14 +42,14 @@ class Record:
         if "no_getter" in self.__has_many[name]:
             return []
         elif "through" in self.__has_many[name]:
-            self_ref = self.snake(self.model.name) + "_id"
-            assoc_ref = self.snake(self.__has_many[name]["model"].name) + "_id"
+            self_ref = aq.utils.snake(self.model.name) + "_id"
+            assoc_ref = aq.utils.snake(self.__has_many[name]["model"].name) + "_id"
             assoc = self.__has_many[name]["through"]
             assoc_field = self.__has_many[name]["association"]
             joins = assoc.where({self_ref: self.id}, {"include": assoc_field})
             return [ j.operation for j in joins ]
         else:
-            reference = self.snake(self.model.name) + "_id"
+            reference = aq.utils.snake(self.model.name) + "_id"
             results = self.__has_many[name]["model"].where({reference: self.id})
             return results
 
@@ -85,21 +85,15 @@ class Record:
         elif name in self.__has_many_generic:
             return __get_many_generic_wrapper(name)
         else:
-            raise Exception("Association '" + name + "' of " + self.model.name + " not found.")
-
-    def snake(self,name):
-        s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
-
-    def is_record(self,object):
-        bases = object.__class__.__bases__
-        return len(bases) == 1 and bases[0].__name__ == 'Record'
+            raise Exception("Association '" + name +
+                            "' of " + self.model.name +
+                            " not found.")
 
     def to_json(self):
         j = {}
         for property, value in vars(self).items():
 
-            if property in self.__has_one or self.is_record(value):
+            if property in self.__has_one or aq.utils.is_record(value):
                 j[property] = value.to_json()
             elif property in self.__has_many or property in self.__has_many_generic:
                 j[property] = [v.to_json() for v in value]
