@@ -17,6 +17,7 @@ from aq.models.invoice                  import Invoice, InvoiceRecord
 from aq.models.item                     import Item, ItemRecord
 from aq.models.job                      import Job, JobRecord
 from aq.models.job_association          import JobAssociation, JobAssociationRecord
+from aq.models.library                  import Library, LibraryRecord
 from aq.models.membership               import Membership, MembershipRecord
 from aq.models.object_type              import ObjectType, ObjectTypeRecord
 from aq.models.operation_type           import OperationType, OperationTypeRecord

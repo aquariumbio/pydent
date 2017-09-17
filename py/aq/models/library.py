@@ -1,9 +1,9 @@
 import aq
 
-class OperationTypeRecord(aq.Record):
+class LibraryRecord(aq.Record):
 
     def __init__(self,model,data):
-        super(OperationTypeRecord,self).__init__(model,data)
+        super(LibraryRecord,self).__init__(model,data)
         self.has_many("operations", aq.Operation)
         self.has_many_generic("field_types", aq.FieldType)
         self.has_many_generic("codes", aq.Code)
@@ -15,9 +15,9 @@ class OperationTypeRecord(aq.Record):
         else:
             return None
 
-class OperationTypeModel(aq.Base):
+class LibraryModel(aq.Base):
 
     def __init__(self):
-        super(OperationTypeModel,self).__init__("OperationType")
+        super(LibraryModel,self).__init__("Library")
 
-OperationType = OperationTypeModel()
+Library = LibraryModel()
