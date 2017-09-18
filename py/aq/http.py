@@ -1,4 +1,5 @@
 import requests
+import re
 
 import sys
 sys.path.append('.')
@@ -40,7 +41,12 @@ def get(path):
         r = requests.get(config['aquarium_url'] + path, headers=headers)
     else:
         raise Exception("Not logged into an Aquarium instance. Run aq.login().")
-    return r.json()
+        
+    try:
+        return r.json()
+    except Exception as e:
+        raise Exception("Could not parse http.post result, most likely because of a server side error or incorrect url.")
+
 
 def post(path,data):
 
@@ -50,14 +56,16 @@ def post(path,data):
     else:
         raise Exception("Not logged into an Aquarium instance. Run aq.login().")
 
-    return r.json()
+    try:
+        return r.json()
+    except Exception as e:
+        raise Exception("Could not parse http.post result, most likely because of a server side error or incorrect url.")
 
 def __fix_remember_token(h):
     parts = h.split(';')
     rtok = ""
     for c in parts:
         cparts = c.split('=')
-        if ( cparts[0] == "remember_token_development" or
-             cparts[0] == "remember_token_production" ):
+        if re.match('remember_token', cparts[0]):
             rtok = cparts[1]
     return "remember_token=" + rtok + "; " + h
