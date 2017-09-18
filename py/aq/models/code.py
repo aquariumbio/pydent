@@ -22,6 +22,8 @@ class CodeRecord(aq.Record):
         })
         if "id" in result:
             self.id = result["id"]
+            self.parent_id = result["parent_id"]
+            self.updated_at = result["updated_at"]
         else:
             raise Exception("Unable to update code object.")
 
