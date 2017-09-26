@@ -21,7 +21,7 @@ print(code.content)
 
 # Get and change a library's code
 lib = aq.Library.find_by_name("MyLib")
-code = lib .code("source")
+code = lib.code("source")
 print(code.content)
 
 code.content = "# Kilroy was here " +\

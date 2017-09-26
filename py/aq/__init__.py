@@ -4,6 +4,8 @@ from aq.base   import Base
 from aq.record import Record
 from aq.utils  import utils
 
+import aq.algorithms.validate
+
 from aq.models.account                  import Account, AccountRecord
 from aq.models.allowable_field_type     import AllowableFieldType, AllowableFieldTypeRecord
 from aq.models.budget                   import Budget, BudgetRecord

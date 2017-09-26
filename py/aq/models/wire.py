@@ -9,6 +9,17 @@ class WireRecord(aq.Record):
         self.has_one("source", aq.FieldValue, opts={"reference": "from_id"})
         self.has_one("destination", aq.FieldValue, opts={"reference": "to_id"})
 
+    def show(self,pre=""):
+        print(pre     + self.source.operation.operation_type.name +
+              ":"     + self.source.name +
+              " --> " + self.destination.operation.operation_type.name +
+              ":"     + self.destination.name)
+
+    def to_json(self):
+        return { "from": self.source.to_json(),
+                 "to": self.destination.to_json(),
+                 "rid": self.rid }
+
 class WireModel(aq.Base):
 
     def __init__(self):

@@ -2,10 +2,11 @@ import sys
 sys.path.append('.')
 
 import aq
+import time
 
 aq.login()
 
-n = 5 # increment every time you test to get a unique sample name
+n = int(time.time())%1000 # chosen so you get a different name each time
 
 # Make a simple sample with no nested samples
 p = aq.Sample.record({

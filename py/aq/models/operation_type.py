@@ -9,11 +9,20 @@ class OperationTypeRecord(aq.Record):
         self.has_many_generic("codes", aq.Code)
 
     def code(self,name):
-        latest = [ code for code in self.codes if not code.child_id and code.name == name ]
+        latest = [ code for code in self.codes 
+                        if not code.child_id and code.name == name ]
         if len(latest) == 1:
             return latest[0]
         else:
             return None
+
+    def instance(self):
+        operation = aq.Operation.record({
+            "operation_type_id": self.id,
+            "status": "planning"
+        })
+        operation.operation_type = self
+        return operation
 
 class OperationTypeModel(aq.Base):
 

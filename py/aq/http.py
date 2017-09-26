@@ -41,12 +41,24 @@ def get(path):
         r = requests.get(config['aquarium_url'] + path, headers=headers)
     else:
         raise Exception("Not logged into an Aquarium instance. Run aq.login().")
-        
+
     try:
         return r.json()
     except Exception as e:
         raise Exception("Could not parse http.post result, most likely because of a server side error or incorrect url.")
 
+def put(path):
+
+    global headers
+    if logged_in:
+        r = requests.put(config['aquarium_url'] + path, headers=headers)
+    else:
+        raise Exception("Not logged into an Aquarium instance. Run aq.login().")
+
+    try:
+        return r.json()
+    except Exception as e:
+        raise Exception("Could not parse http.post result, most likely because of a server side error or incorrect url.")
 
 def post(path,data):
 

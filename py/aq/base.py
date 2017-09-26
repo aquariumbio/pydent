@@ -37,8 +37,8 @@ class Base:
         query.update(rest)
         r = aq.http.post('/json', query)
         if "errors" in r:
-            raise Exception(self.name + ": " + r["errors"])        
-        return [ self.record(data) for data in r]
+            raise Exception(self.name + ": " + r["errors"])
+        return [ self.record(data) for data in r ]
 
     def all(self, rest={}, opts={}):
         options = { "offset": -1, "limit": -1, "reverse": False}

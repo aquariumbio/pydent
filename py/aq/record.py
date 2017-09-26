@@ -1,16 +1,31 @@
 import aq
 import re
 
+_next_rid = 0;
+
+def new_rid():
+    global _next_rid
+    _next_rid += 1
+    return _next_rid
+
 class Record:
 
     def __init__(self,model,data):
         self.model = model
+        self.id = None
         self.__data = data
         self.__has_one = {}
         self.__has_many = {}
         self.__has_many_generic = {}
+        self._rid = None
         for key in data:
             setattr(self,key,data[key])
+
+    @property
+    def rid(self):
+        if not self._rid:
+            self._rid = new_rid()
+        return self._rid
 
     def has_one(self,name,model,opts={}):
         self.__has_one[name] = { "model": model }
@@ -47,7 +62,7 @@ class Record:
             assoc = self.__has_many[name]["through"]
             assoc_field = self.__has_many[name]["association"]
             joins = assoc.where({self_ref: self.id}, {"include": assoc_field})
-            return [ j.operation for j in joins ]
+            return [ getattr(j,assoc_field) for j in joins ]
         else:
             reference = aq.utils.snake(self.model.name) + "_id"
             results = self.__has_many[name]["model"].where({reference: self.id})
@@ -78,14 +93,20 @@ class Record:
         def __get_many_generic_wrapper(name):
             return self.get_many_generic(name)
 
-        if name in self.__has_one:
+        if self.id == None and name in self.__has_one:
+            return None
+        elif self.id == None and \
+             ( name in self.__has_many or \
+               name in self.__has_many_generic ):
+            return []
+        elif name in self.__has_one:
             return __get_one_wrapper(name)
         elif name in self.__has_many:
             return __get_many_wrapper(name)
         elif name in self.__has_many_generic:
             return __get_many_generic_wrapper(name)
         else:
-            raise Exception("Association '" + name +
+            raise Exception("Attribute '" + name +
                             "' of " + self.model.name +
                             " not found.")
 
@@ -95,9 +116,20 @@ class Record:
 
             if property in self.__has_one or aq.utils.is_record(value):
                 j[property] = value.to_json()
-            elif property in self.__has_many or property in self.__has_many_generic:
+            elif property in self.__has_many or \
+                property in self.__has_many_generic:
                 j[property] = [v.to_json() for v in value]
             elif not re.match(r'\_',property) and not property == 'model':
                 j[property] = value
 
         return j
+
+    def append_association(self,name,value):
+        newval = getattr(self,name)
+        newval.append(value)
+        setattr(self,name, newval)
+        return self
+
+    def set_association(self,name,value):
+        setattr(self,name, value)
+        return self
