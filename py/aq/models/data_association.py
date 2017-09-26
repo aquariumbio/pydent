@@ -2,7 +2,7 @@ import aq
 import json
 
 class DataAssociationRecord(aq.Record):
-    
+
     def __init__(self,model,data):
         super(DataAssociationRecord,self).__init__(model,data)
         self.has_one("upload", aq.Upload)
@@ -14,6 +14,11 @@ class DataAssociationRecord(aq.Record):
             return obj[self.key]
         else:
             return None
+
+    def to_json(self):
+        j = super(DataAssociationRecord,self).to_json()
+        j["object"] = { self.key: self.value }
+        return j
 
 class DataAssociationModel(aq.Base):
 

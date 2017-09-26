@@ -2,6 +2,7 @@ import sys
 sys.path.append('.')
 
 import aq
+import json
 
 aq.login()
 
@@ -28,5 +29,8 @@ i = aq.Item.where(
 )[0]
 
 print(i.object_type.name)
-das = i.data_associations
-print([[da.key,da.value] for da in das])
+
+for da in i.data_associations:
+    print([da.key,da.value])
+    print(da.to_json())
+    json.dumps(da.to_json())
