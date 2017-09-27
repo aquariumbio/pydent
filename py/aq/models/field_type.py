@@ -6,7 +6,7 @@ class FieldTypeRecord(aq.Record):
         super(FieldTypeRecord,self).__init__(model,data)
         self.has_many("allowable_field_types", aq.AllowableFieldType)
         self.has_one("operation_type", aq.OperationType, opts={"reference": "parent_id"})
-        self.has_one("sampe_type", aq.SampleType, opts={"reference": "parent_id"})
+        self.has_one("sample_type", aq.SampleType, opts={"reference": "parent_id"})
 
     @property
     def is_parameter(self):
