@@ -1,4 +1,4 @@
-import aq
+import aq, json
 
 class OperationTypeRecord(aq.Record):
 
@@ -9,7 +9,7 @@ class OperationTypeRecord(aq.Record):
         self.has_many_generic("codes", aq.Code)
 
     def code(self,name):
-        latest = [ code for code in self.codes 
+        latest = [ code for code in self.codes
                         if not code.child_id and code.name == name ]
         if len(latest) == 1:
             return latest[0]
@@ -23,6 +23,9 @@ class OperationTypeRecord(aq.Record):
         })
         operation.operation_type = self
         return operation
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
 
 class OperationTypeModel(aq.Base):
 
