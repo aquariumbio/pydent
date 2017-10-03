@@ -1,4 +1,4 @@
-import aq
+import aq, json
 
 class OperationTypeRecord(aq.Record):
 
@@ -26,6 +26,9 @@ class OperationTypeRecord(aq.Record):
         operation.operation_type = self
         operation.init_field_values()
         return operation
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
 
 class OperationTypeModel(aq.Base):
 
