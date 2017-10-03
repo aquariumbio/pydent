@@ -21,11 +21,12 @@ primer_aliquot = aq.ObjectType.find_by_name("Primer Aliquot")
 primer_stock = aq.ObjectType.find_by_name("Primer Stock")
 
 # Make some operations
-print("Make operations assign i/o")
+print("Make operations")
 order_primer = aq.OperationType.find_by_name("Order Primer").instance()
 rehydrate_primer = aq.OperationType.find_by_name("Rehydrate Primer").instance()
 
 # Set the I/O of the operations
+print("Assign IO")
 rehydrate_primer.set_input("Primer", sample=primer, container=ly_primer) \
                 .set_output("Primer Aliquot", sample=primer, container=primer_aliquot) \
                 .set_output("Primer Stock", sample=primer, container=primer_stock)

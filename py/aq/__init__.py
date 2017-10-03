@@ -5,7 +5,7 @@ from aq.record import Record
 from aq.utils  import utils
 
 import aq.algorithms.validate
-import aq.algorithms.equivalence
+from aq.algorithms.plan_equivalence import PlanEquivalence
 
 from aq.models.account                  import Account, AccountRecord
 from aq.models.allowable_field_type     import AllowableFieldType, AllowableFieldTypeRecord

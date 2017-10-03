@@ -82,6 +82,26 @@ class FieldValueRecord(aq.Record):
 
         return self
 
+    def choose_item(self):
+        items = self.compatible_items()
+        if len(items) > 0:
+            self.child_item_id = items[0].id
+            self.item = items[0]
+            return items[0]
+        return None
+
+    def compatible_items(self):
+        result = aq.http.post("/json/items", {
+            "sid": self.sample.id,
+            "oid": self.allowable_field_type.object_type_id })
+        items = []
+        for element in result:
+            if "collection" in element:
+                items.append(aq.Collection.record(element["collection"]))
+            else:
+                items.append(aq.Item.record(element))
+        return items
+
     def to_json(self):
         j = {
             "name": self.name,

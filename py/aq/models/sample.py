@@ -12,6 +12,12 @@ class SampleRecord(aq.Record):
     def identifier(self):
         return str(self.id) + ": " + self.name
 
+    def field_value(self,name):
+        for fv in self.field_values:
+            if fv.name == name:
+                return fv
+        return None
+
 class SampleModel(aq.Base):
 
     def __init__(self):
