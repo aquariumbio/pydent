@@ -1,11 +1,12 @@
 import aq
 
-class PlanRecord(aq.Record):
+class PlanRecord(aq.PlanEquivalence,aq.Record):
 
     def __init__(self,model,data):
         self.name = "Untitled Plan"
         self.id = None
         self.status = "planning"
+        self.equivalences = None
         super(PlanRecord,self).__init__(model,data)
         self.has_many_generic("data_associations", aq.DataAssociation)
         self.has_many(
@@ -17,12 +18,21 @@ class PlanRecord(aq.Record):
         self.append_association("operations", operation)
         return self
 
+    def add_operations(self,operations):
+        for operation in operations:
+            self.append_association("operations", operation)
+        return self
+
     def wire(self,source, destination):
         wire = aq.Wire.record({})
         wire.set_association("source", source) \
             .set_association("destination", destination)
         self.append_association("wires", wire)
         return self
+
+    def add_wires(self,pairs):
+        for pair in pairs:
+            self.wire(pair[0],pair[1])
 
     def submit(self, user, budget):
         user_query = "&user_id=" + str(user.id)
@@ -68,6 +78,12 @@ class PlanRecord(aq.Record):
             "layout": {"id": 0, "parent_id": -1, "wires": [], "name": "no name"},
             "status": self.status
         }
+
+    def field_values(self):
+        field_value_list = []
+        for operation in self.operations:
+            field_value_list = field_value_list + operation.field_values
+        return field_value_list
 
 class PlanModel(aq.Base):
 

@@ -60,7 +60,6 @@ def check_fields(plan):
 
 def mark_leaves(plan):
     """mark all inputs as either a leaf or not"""
-    valid = True
     for operation in plan.operations:
         for field_value in operation.outputs:
             field_value.leaf = False
@@ -69,11 +68,6 @@ def mark_leaves(plan):
 
     for wire in plan.wires:
         wire.destination.leaf = False
-        log("Input '" + wire.destination.name +
-            "' of '" + wire.destination.operation.operation_type.name +
-            "' is a leaf" )
-
-    return valid
 
 def check_io(plan):
     """check all field values for samples, items, and values"""
@@ -93,7 +87,8 @@ def check_io(plan):
                         "' has not been assigned an item")
                     valid = False
             else:
-                if not field_value.child_sample_id:
+                if not field_value.child_sample_id and \
+                   field_value.allowable_field_type.sample_type:
                     warning(field_value.role +
                         " '" + field_value.name +
                         "' of '" + field_value.operation.operation_type.name +

@@ -24,19 +24,33 @@ class OperationRecord(aq.Record):
             aq.Job,
             { "through": aq.JobAssociation, "association": "job"})
 
-    def set_field_value(self, name, role,
+    def init_field_values(self):
+        for field_type in self.operation_type.field_types:
+            self.set_field_value(field_type.name,field_type)
+        self.show()
+
+    def set_field_value(self, name, field_type,
                sample=None, item=None, value=None, container=None):
 
-        field_value = aq.FieldValue.record({
-            "name": name,
-            "role": role,
-            "parent_class": "Operation"
-        })
-        field_value.operation = self
+        field_value = self.field_value(name,field_type.role)
 
-        self.set_field_type(field_value)
+        if not field_value:
+            field_value = aq.FieldValue.record({
+                "name": name,
+                "role": field_type.role,
+                "field_type_id": field_type.id,
+                "parent_class": "Operation",
+                "parent_id": self.id,
+
+            })
+            field_value.operation = self
+            field_value.field_type = field_type
+            field_value.allowable_field_type_id = field_type.allowable_field_types[0].id
+            field_value.allowable_field_type = field_type.allowable_field_types[0]
+            self.set_field_type(field_value)
+            self.append_association("field_values", field_value)
+
         field_value.set_value(value,sample,container,item)
-        self.append_association("field_values", field_value)
 
         return self
 
@@ -93,8 +107,8 @@ class OperationRecord(aq.Record):
             "status": self.status,
             "routing": {},
             "parent": 0,
-            "x": p[0],
-            "y": p[1],
+            "x": self.x if self.x else p[0],
+            "y": self.y if self.y else p[1],
             "rid": self.rid
         }
 

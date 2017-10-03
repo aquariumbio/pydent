@@ -16,12 +16,15 @@ class OperationTypeRecord(aq.Record):
         else:
             return None
 
-    def instance(self):
+    def instance(self,x=None,y=None):
         operation = aq.Operation.record({
             "operation_type_id": self.id,
-            "status": "planning"
+            "status": "planning",
+            "x": x,
+            "y": y
         })
         operation.operation_type = self
+        operation.init_field_values()
         return operation
 
     def to_json(self):
