@@ -1,12 +1,13 @@
 import sys
-sys.path.append('.')
+sys.path.append('.') # Todo: Figure out how to add python search path to the shell 
+sys.path.append('./plans')
 
 import aq
 import pcr
 
 aq.login()
 
-pcr = pcr.Plan("My PCR Plan");
+pcr = pcr.Plan("My PCR Plan")
 fragment = aq.Sample.find_by_name("optimization-test-fragment")
 fragment_stock = aq.ObjectType.find_by_name("Fragment Stock")
 

@@ -27,6 +27,14 @@ class OperationTypeRecord(aq.Record):
         operation.init_field_values()
         return operation
 
+    def field_type(self,name,role):
+        fts = [ ft for ft in self.field_types \
+                if ft.name == name and ft.role == role]
+        if len(fts) == 0:
+            return None
+        else:
+            return fts[0]
+
 class OperationTypeModel(aq.Base):
 
     def __init__(self):

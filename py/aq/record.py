@@ -32,6 +32,7 @@ class Record:
         self.__has_one[name].update(opts)
         if name in self.__data:
             setattr(self,name,model.record(self.__data[name]))
+            # also delete attr name = "_id" if it exists
 
     def get_one(self,name):
         if "reference" in self.__has_one[name]:

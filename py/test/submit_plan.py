@@ -1,3 +1,9 @@
+#
+# Note that this is not good example of how to construct and submit a plan.
+# This code is here to show the basic methods for constructing a plan.
+# Look at test/submit_pcr.py and plans/pcr.py for a much better example.
+#
+
 import sys
 sys.path.append('.')
 

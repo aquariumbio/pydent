@@ -26,27 +26,28 @@ class OperationRecord(aq.Record):
 
     def init_field_values(self):
         for field_type in self.operation_type.field_types:
-            self.set_field_value(field_type.name,field_type)
+            self.set_field_value(field_type.name,field_type.role)
         self.show()
 
-    def set_field_value(self, name, field_type,
+    def set_field_value(self, name, role,
                sample=None, item=None, value=None, container=None):
 
-        field_value = self.field_value(name,field_type.role)
+        field_value = self.field_value(name,role)
+        field_type = self.operation_type.field_type(name,role)
 
         if not field_value:
             field_value = aq.FieldValue.record({
                 "name": name,
-                "role": field_type.role,
+                "role": role,
                 "field_type_id": field_type.id,
                 "parent_class": "Operation",
                 "parent_id": self.id,
-
             })
             field_value.operation = self
             field_value.field_type = field_type
-            field_value.allowable_field_type_id = field_type.allowable_field_types[0].id
-            field_value.allowable_field_type = field_type.allowable_field_types[0]
+            if len(field_type.allowable_field_types) > 0:
+                field_value.allowable_field_type_id = field_type.allowable_field_types[0].id
+                field_value.allowable_field_type = field_type.allowable_field_types[0]
             self.set_field_type(field_value)
             self.append_association("field_values", field_value)
 
