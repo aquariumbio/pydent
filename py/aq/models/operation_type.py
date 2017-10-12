@@ -1,4 +1,4 @@
-import aq, json
+import aq
 
 class OperationTypeRecord(aq.Record):
 
@@ -34,9 +34,6 @@ class OperationTypeRecord(aq.Record):
             return None
         else:
             return fts[0]
-
-    def to_json(self):
-        return json.dumps(self.__dict__)
 
 class OperationTypeModel(aq.Base):
 
