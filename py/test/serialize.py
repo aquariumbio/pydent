@@ -1,4 +1,5 @@
 import json
+import time
 import aq
 
 aq.login()
@@ -20,7 +21,9 @@ print(json.dumps(p.to_json(include=[
 
 # temporarily override the to_json method of field types
 def my_to_json(self,include=[],exclude=[]):
-    return { "i": len(include), "e": len(exclude) }
+    j = super(aq.FieldTypeRecord,self).to_json(include=include,exclude=exclude)
+    j["timestamp"] = time.time()
+    return j
 
 aq.FieldTypeRecord.to_json = my_to_json
 
