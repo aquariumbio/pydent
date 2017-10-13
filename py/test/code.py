@@ -4,7 +4,7 @@ from time import gmtime, strftime
 sys.path.append('.')
 import aq
 
-aq.flogin()
+aq.login()
 
 # Get and change an operation type's cost model
 pcr = aq.OperationType.find_by_name("Make PCR Fragment")
