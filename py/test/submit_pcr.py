@@ -1,6 +1,6 @@
 import sys
 sys.path.append('.') # Todo: Figure out how to add python search path to the shell
-sys.path.append('./plans')
+sys.path.append('./cloning')
 
 import aq
 import pcr
