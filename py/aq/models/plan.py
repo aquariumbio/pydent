@@ -86,6 +86,15 @@ class PlanRecord(aq.PlanEquivalence,aq.Record):
         del j["equivalences"]
         return j
 
+    def all_data_associations(self):
+        das = self.data_associations
+        for op in self.operations:
+            das = das + op.data_associations
+            for fv in op.field_values:
+                if fv.item:
+                    das = das + fv.item.data_associations
+        return das
+
 class PlanModel(aq.Base):
 
     def __init__(self):
