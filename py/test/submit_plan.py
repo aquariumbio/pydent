@@ -47,6 +47,12 @@ plan.add_operation(order_primer) \
     .add_operation(rehydrate_primer) \
     .wire(order_primer.output("Primer"),rehydrate_primer.input("Primer"))
 
+for w in plan.wires:
+    print(w.to_json(include=["source", "destination"]))
+    print("--")
+
+# exit(0)
+
 print("Validate the plan")
 # Validate the plan
 if not aq.algorithms.validate.plan(plan):
