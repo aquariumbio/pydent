@@ -4,9 +4,6 @@
 # Look at test/submit_pcr.py and plans/pcr.py for a much better example.
 #
 
-import sys
-sys.path.append('.')
-
 import aq
 
 print("Choose a budget")
@@ -46,6 +43,12 @@ plan = aq.Plan.record({"name": "My new plan"})
 plan.add_operation(order_primer) \
     .add_operation(rehydrate_primer) \
     .wire(order_primer.output("Primer"),rehydrate_primer.input("Primer"))
+
+for w in plan.wires:
+    print(w.to_json(include=["source", "destination"]))
+    print("--")
+
+# exit(0)
 
 print("Validate the plan")
 # Validate the plan

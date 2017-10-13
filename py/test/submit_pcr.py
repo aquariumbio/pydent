@@ -1,9 +1,9 @@
-import sys
-sys.path.append('.') # Todo: Figure out how to add python search path to the shell 
-sys.path.append('./plans')
-
+# import sys
+# sys.path.append('.') # Todo: Figure out how to add python search path to the shell
+# sys.path.append('./cloning')
+#
 import aq
-import pcr
+from cloning import pcr
 
 aq.login()
 
@@ -21,6 +21,5 @@ if not aq.algorithms.validate.plan(pcr):
     exit(1)
 
 pcr.save()
-
 budget = aq.User.current.budgets[0]
 pcr.submit(aq.User.current, budget)

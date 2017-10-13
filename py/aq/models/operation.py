@@ -100,18 +100,14 @@ class OperationRecord(aq.Record):
         for field_value in self.field_values:
             field_value.show(pre=pre+"  ")
 
-    def to_json(self):
+    def to_json(self,include=[], exclude=[]):
+        j = super(OperationRecord,self).to_json(include=include,exclude=exclude)
         p = next_position()
-        return {
-            "operation_type_id": self.operation_type_id,
-            "field_values": [ fv.to_json() for fv in self.field_values ],
-            "status": self.status,
-            "routing": {},
-            "parent": 0,
-            "x": self.x if self.x else p[0],
-            "y": self.y if self.y else p[1],
-            "rid": self.rid
-        }
+        j["routing"] = j["routing"] if "routing" in j else {}
+        j["parent"] = j["parent"] if "parent" in j else 0
+        j["x"] = j["x"] if "x" in j else p[0]
+        j["y"] = j["y"] if "y" in j else p[1]
+        return j
 
 class OperationModel(aq.Base):
 

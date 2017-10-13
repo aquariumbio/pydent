@@ -7,6 +7,7 @@ class PlanRecord(aq.PlanEquivalence,aq.Record):
         self.id = None
         self.status = "planning"
         self.equivalences = None
+        self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no name"}
         super(PlanRecord,self).__init__(model,data)
         self.has_many_generic("data_associations", aq.DataAssociation)
         self.has_many(
@@ -38,7 +39,6 @@ class PlanRecord(aq.PlanEquivalence,aq.Record):
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
         r = aq.http.get('/plans/start/'+str(self.id)+budget_query+user_query)
-        print(r)
 
     def show(self):
         print(self.name + " id: " + str(self.id))
@@ -47,10 +47,16 @@ class PlanRecord(aq.PlanEquivalence,aq.Record):
         for wire in self.wires:
             wire.show(pre="  ")
 
+    def _to_save_json(self):
+        return self.to_json(include=[{
+            "wires": ["source", "destination"],
+            "operations": ["field_values"]
+        }])
+
     def save(self):
         if not self.id:
             user_query = "?user_id=" + str(aq.User.current.id)
-            r = aq.http.post('/plans.json'+user_query,self.to_json())
+            r = aq.http.post('/plans.json'+user_query,self._to_save_json())
             if "errors" in r:
                 raise Exception("Could not save plan: " + str(r["errors"]))
             new_plan = aq.Plan.record(r)
@@ -69,21 +75,16 @@ class PlanRecord(aq.PlanEquivalence,aq.Record):
                 if c["id"] == op.id:
                     op.cost = c
 
-    def to_json(self):
-        return {
-            "name": self.name,
-            "operations": [ op.to_json() for op in self.operations ],
-            "wires": [ wire.to_json() for wire in self.wires ],
-            "rid": self.rid,
-            "layout": {"id": 0, "parent_id": -1, "wires": [], "name": "no name"},
-            "status": self.status
-        }
-
     def field_values(self):
         field_value_list = []
         for operation in self.operations:
             field_value_list = field_value_list + operation.field_values
         return field_value_list
+
+    def to_json(self,include=[],exclude=[]):
+        j = super(PlanRecord,self).to_json(include=include,exclude=exclude)
+        del j["equivalences"]
+        return j
 
 class PlanModel(aq.Base):
 

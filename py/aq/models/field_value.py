@@ -102,23 +102,6 @@ class FieldValueRecord(aq.Record):
                 items.append(aq.Item.record(element))
         return items
 
-    def to_json(self):
-        j = {
-            "name": self.name,
-            "rid": self.rid,
-            "child_sample_id": self.child_sample_id,
-            "child_item_id": self.child_item_id,
-            "value": self.value,
-            "row": self.row,
-            "column": self.column,
-            "allowable_field_type_id": self.allowable_field_type_id
-        }
-        if self.role:
-            j["role"] = self.role
-        if self.field_type:
-            j["field_type__id"] = self.field_type.id
-        return j
-
 class FieldValueModel(aq.Base):
 
     def __init__(self):

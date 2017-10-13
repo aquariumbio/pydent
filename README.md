@@ -5,7 +5,11 @@ The API to Aquarium
 Python
 ---
 
-To get started, change to the py directory. Then copy config_template.py to config.py and edit the contents of the new file to suit your situation.
+To get started, first change to the py directory. Next copy config_template.py to config.py and edit the contents of the new file to suit your situation. Finally, make sure that Python can find the directory by doing
+
+```bash
+export PYTHONPATH=$PYTHONPATH:/path/to/trident/py
+```
 
 Next, run the tests in the test directory as follows:
 

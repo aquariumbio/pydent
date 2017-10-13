@@ -1,7 +1,4 @@
-import sys
 from time import gmtime, strftime
-
-sys.path.append('.')
 import aq
 
 aq.login()

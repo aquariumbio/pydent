@@ -111,17 +111,34 @@ class Record:
                             "' of " + self.model.name +
                             " not found.")
 
-    def to_json(self):
-        j = {}
-        for property, value in vars(self).items():
+    def to_json(self,include=[],exclude=[]):
 
-            if property in self.__has_one or aq.utils.is_record(value):
-                j[property] = value.to_json()
-            elif property in self.__has_many or \
-                property in self.__has_many_generic:
-                j[property] = [v.to_json() for v in value]
-            elif not re.match(r'\_',property) and not property == 'model':
-                j[property] = value
+        j = { "rid": self.rid }
+
+        for property, value in vars(self).items():
+            if property not in exclude and \
+               not aq.utils.is_record(value) and \
+               not re.match(r'\_',property) and \
+               not property == 'model' and \
+               not property in self.__has_many and \
+               not property in self.__has_many_generic and \
+               not property in self.__has_one:
+                  j[property] = value
+
+        for property in include:
+            if type(property) is str:
+                value = getattr(self,property)
+                if value and property in self.__has_one:
+                    j[property] = getattr(self,property).to_json()
+                elif value and property in self.__has_many or property in self.__has_many_generic:
+                    j[property] = [v.to_json() for v in getattr(self,property)]
+            elif type(property) is dict:
+                for name, val in property.items():
+                    value = getattr(self,name)
+                    if value and name in self.__has_one:
+                        j[name] = value.to_json(include=val)
+                    elif value and name in self.__has_many or name in self.__has_many_generic:
+                        j[name] = [v.to_json(include=val) for v in value]
 
         return j
 

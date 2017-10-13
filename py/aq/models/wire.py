@@ -15,10 +15,15 @@ class WireRecord(aq.Record):
               " --> " + self.destination.operation.operation_type.name +
               ":"     + self.destination.name)
 
-    def to_json(self):
-        return { "from": self.source.to_json(),
-                 "to": self.destination.to_json(),
-                 "rid": self.rid }
+    def to_json(self,include=[],exclude=[]):
+        j = super(WireRecord,self).to_json(include=include,exclude=exclude)
+        if "source" in j:
+            j["from"] = j["source"]
+            del j["source"]
+        if "destination" in j:
+            j["to"] = j["destination"]
+            del j["destination"]
+        return j
 
 class WireModel(aq.Base):
 
