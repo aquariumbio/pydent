@@ -29,7 +29,6 @@ class PlanRecord(aq.PlanEquivalence,aq.Record):
         wire.set_association("source", source) \
             .set_association("destination", destination)
         self.append_association("wires", wire)
-        print("wires",self.wires)
         return self
 
     def add_wires(self,pairs):
@@ -40,7 +39,6 @@ class PlanRecord(aq.PlanEquivalence,aq.Record):
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
         r = aq.http.get('/plans/start/'+str(self.id)+budget_query+user_query)
-        print(r)
 
     def show(self):
         print(self.name + " id: " + str(self.id))
@@ -86,8 +84,6 @@ class PlanRecord(aq.PlanEquivalence,aq.Record):
     def to_json(self,include=[],exclude=[]):
         j = super(PlanRecord,self).to_json(include=include,exclude=exclude)
         del j["equivalences"]
-        # print(j)
-        # print("-==--")
         return j
 
 class PlanModel(aq.Base):
