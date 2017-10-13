@@ -1,9 +1,9 @@
-import sys
-sys.path.append('.') # Todo: Figure out how to add python search path to the shell
-sys.path.append('./cloning')
-
+# import sys
+# sys.path.append('.') # Todo: Figure out how to add python search path to the shell
+# sys.path.append('./cloning')
+#
 import aq
-import pcr
+from cloning import pcr
 
 aq.login()
 

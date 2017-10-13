@@ -4,9 +4,6 @@
 # Look at test/submit_pcr.py and plans/pcr.py for a much better example.
 #
 
-import sys
-sys.path.append('.')
-
 import aq
 
 print("Choose a budget")
