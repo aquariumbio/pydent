@@ -20,21 +20,6 @@ if not aq.algorithms.validate.plan(pcr):
         print("  " + msg)
     exit(1)
 
-# for fv in pcr.operations[0].field_values:
-#     print(fv.to_json())
-#     print("--")
-#
-# for w in pcr.wires:
-#     print(w.to_json(include=["source", "destination"]))
-#     print("--")
-#
-# for o in pcr.operations:
-#     print(o.to_json(include=["field_values"]))
-#     print("--")
-#
-# print(pcr._to_save_json())
-
 pcr.save()
-
 budget = aq.User.current.budgets[0]
 pcr.submit(aq.User.current, budget)
