@@ -2,7 +2,6 @@ import os
 import requests
 import re
 
-
 class AqHTTP(object):
 
     def __init__(self, login, password, home):
@@ -39,14 +38,16 @@ class AqHTTP(object):
         return "remember_token="+rtok+"; "+h
 
 
-    def post(self, path, json=None, **kwargs):
-        return self.session.post(os.path.join(self.home, path), json=json, **kwargs)
+    def post(self, path, data=None, **kwargs):
+        p = os.path.join(self.home, path)
+        h = self.home
+        return requests.post(p, json=data, **kwargs)
 
-    def put(self, path, json=None, **kwargs):
-        return self.session.post(os.path.join(self.home, path), json=json, **kwargs)
+    def put(self, path, data=None, **kwargs):
+        return requests.post(os.path.join(self.home, path), json=data, **kwargs)
 
-    def get(self, path, json=None, **kwargs):
-        return self.session.post(os.path.join(self.home, path), json=json, **kwargs)
+    def get(self, path, data=None, **kwargs):
+        return requests.post(os.path.join(self.home, path), json=data, **kwargs)
 
-    def put(self, path, json=None, **kwargs):
-        return self.session.post(os.path.join(self.home, path), json=json, **kwargs)
+    def put(self, path, data=None, **kwargs):
+        return requests.post(os.path.join(self.home, path), json=data, **kwargs)

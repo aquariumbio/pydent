@@ -1,5 +1,3 @@
-from py.aq.aqhttp import AqHTTP
-import json
 
 class SessionManagerHook(type):
     """ Hook for confinient calling of different sessions. E.g. Session.Nursery is equivalent to Session.set(
@@ -11,12 +9,14 @@ class SessionManagerHook(type):
         super(SessionManagerHook, cls).__init__(name, bases, clsdict)
 
     def __getattr__(cls, item):
-        sessions = cls.sessions
+        sessions = object.__getattribute__(cls, "sessions")
         if item in sessions:
             cls.set(item)
         else:
-            return getattr(cls, item)
-
+            try:
+                return object.__getattribute__(cls, item)
+            except AttributeError:
+                raise AttributeError("Session {0} not found. Select from {1}".format(item, sessions.keys()))
 
 class SessionManager(object, metaclass=SessionManagerHook):
     """ Manages api interface sessions """
@@ -25,13 +25,15 @@ class SessionManager(object, metaclass=SessionManagerHook):
     sessions = {}
 
     @classmethod
-    def create(cls, api_connector, *args, name=None, **kwargs):
+    def create_session(cls, api_connector, *args, name=None, **kwargs):
         cls.session = api_connector(*args, **kwargs)
         cls._add_session(cls.session, name)
+        return cls
 
     @classmethod
     def _add_session(cls, api_connector, name):
         cls.sessions[name] = api_connector
+        print(cls.sessions)
 
     @classmethod
     def set(cls, name):
@@ -47,16 +49,3 @@ class SessionManager(object, metaclass=SessionManagerHook):
     @classmethod
     def close(cls):
         cls.session = None
-
-
-class Session(SessionManager):
-    """ Class for creating sessions """
-
-    @classmethod
-    def create(cls, login, password, home, name=None):
-        return SessionManager.create(AqHTTP, login, password, home, name=name)
-
-    @classmethod
-    def create_from_config(cls, path_to_config, name=None):
-        config = json.load(path_to_config)
-        cls.create(config["login"], config["password"], config["aquarium_url"], name=name)
