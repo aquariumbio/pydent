@@ -21,7 +21,7 @@ class Base:
           "method": "find_by_name",
           "arguments": [ name ]
          })
-        if result == None:
+        if result is None:
             raise Exception(self.name + " '" + name + "' not found")
         if "errors" in result:
             raise Exception(self.name + ": " + result["errors"])
@@ -35,17 +35,17 @@ class Base:
                   "arguments": args,
                   "options": options }
         query.update(rest)
-        r = aq.http.post('/json', query)
+        r = Session.session.post('/json', query)
         if "errors" in r:
             raise Exception(self.name + ": " + r["errors"])
         return [ self.record(data) for data in r ]
 
     def all(self, rest={}, opts={}):
-        options = { "offset": -1, "limit": -1, "reverse": False}
+        options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
         return self.array_query("all", [], rest, options)
 
     def where(self,criteria, methods={}, opts={}):
-        options = { "offset": -1, "limit": -1, "reverse": False}
+        options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
         return self.array_query("where", criteria, methods, options)
