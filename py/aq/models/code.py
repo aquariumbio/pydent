@@ -1,4 +1,4 @@
-import aq
+import py.aq as aq
 
 class CodeRecord(aq.Record):
 

@@ -1,4 +1,4 @@
-import aq
+import py.aq as aq
 
 _x = 16
 _y = 32

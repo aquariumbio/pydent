@@ -1,4 +1,4 @@
-import aq
+import py.aq as aq
 
 class CollectionRecord(aq.Record):
     def __init__(self,model,data):

@@ -1,4 +1,4 @@
-import aq
+import py.aq as aq
 
 class PlanRecord(aq.PlanEquivalence,aq.Record):
 

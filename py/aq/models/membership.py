@@ -1,4 +1,4 @@
-import aq
+import py.aq as aq
 
 class MembershipRecord(aq.Record):
     def __init__(self,model,data):

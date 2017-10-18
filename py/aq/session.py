@@ -1,7 +1,10 @@
 from py.aq.aqhttp import AqHTTP
+import json
 
 class SessionManagerHook(type):
-    #
+    """ Hook for confinient calling of different sessions. E.g. Session.Nursery is equivalent to Session.set(
+    "Nursery") """
+
     def __init__(cls, name, bases, clsdict):
         cls.session = None
         cls.sessions = {}
@@ -16,7 +19,7 @@ class SessionManagerHook(type):
 
 
 class SessionManager(object, metaclass=SessionManagerHook):
-    """ Session manager """
+    """ Manages api interface sessions """
 
     session = None
     sessions = {}
@@ -47,7 +50,13 @@ class SessionManager(object, metaclass=SessionManagerHook):
 
 
 class Session(SessionManager):
+    """ Class for creating sessions """
 
     @classmethod
     def create(cls, login, password, home, name=None):
         return SessionManager.create(AqHTTP, login, password, home, name=name)
+
+    @classmethod
+    def create_from_config(cls, path_to_config, name=None):
+        config = json.load(path_to_config)
+        cls.create(config["login"], config["password"], config["aquarium_url"], name=name)

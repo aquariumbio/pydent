@@ -1,4 +1,5 @@
-import aq
+import py.aq as aq
+
 
 class FieldTypeRecord(aq.Record):
 
