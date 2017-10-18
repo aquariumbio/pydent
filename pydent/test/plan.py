@@ -1,8 +1,8 @@
-import aq
+from pydent import *
 
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 
-plan = aq.Plan.find(976)
+plan = aq.Plan.find(47100)
 print("Plan " + str(plan.id) + ": " + plan.name)
 
 for op in plan.operations:

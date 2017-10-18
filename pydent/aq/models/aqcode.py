@@ -15,7 +15,7 @@ class CodeRecord(aq.Record):
             controller = "libraries"
         else:
             raise Exception("No code update controller available.")
-        result = aq.http.post("/" + controller + "/code", {
+        result = aq.Session.session.post(controller + "/code", {
             "id": self.parent_id,
             "name": self.name,
             "content": self.content

@@ -7,8 +7,6 @@ class Base:
         self.name = name
 
     def record(self,data):
-        rh = RecordHook.records
-        print(RecordHook.records)
         record_class = RecordHook.records[self.name + "Record"]
         return record_class(self,data)
 

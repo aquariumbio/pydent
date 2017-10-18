@@ -1,6 +1,6 @@
-import aq
+from pydent import *
 
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 
 ot = aq.OperationType.find_by_name("Make PCR Fragment")
 

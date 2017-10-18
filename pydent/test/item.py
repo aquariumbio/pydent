@@ -1,7 +1,7 @@
-import aq
+from pydent import *
 import json
 
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 
 # Test getting an item and showing all of its associations
 

@@ -4,10 +4,10 @@
 # Look at test/submit_pcr.pydent and plans/pcr.pydent for a much better example.
 #
 
-import aq
+from pydent import *
 
 print("Choose a budget")
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 budgets = aq.User.current.budgets
 if len(budgets) > 0:
     budget = budgets[0]

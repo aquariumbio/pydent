@@ -19,8 +19,3 @@ def test_session_close(config):
     # Set session to last session in secrets/config.json
     Session.set(list(config.keys())[-1])
     assert Session.session is not None
-
-def test_sample_type_all(load_session):
-    g = globals()
-    s = SampleType
-    SampleType.all()

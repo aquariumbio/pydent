@@ -3,13 +3,10 @@ import requests
 import re
 
 def to_json(fxn):
-
     def wrapper(*args, **kwargs):
         r = fxn(*args, **kwargs)
         return r.json()
     return wrapper
-
-
 
 class AqHTTP(object):
 
@@ -50,11 +47,14 @@ class AqHTTP(object):
     def post(self, path, data=None, **kwargs):
         return self.session.post(os.path.join(self.home, path), json=data, **kwargs)
 
+    @to_json
     def put(self, path, data=None, **kwargs):
         return self.session.put(os.path.join(self.home, path), json=data, **kwargs)
 
-    def get(self, path, data=None, **kwargs):
-        return self.session.get(os.path.join(self.home, path), json=data, **kwargs)
+    @to_json
+    def get(self, path, **kwargs):
+        return self.session.get(os.path.join(self.home, path), **kwargs)
 
+    @to_json
     def put(self, path, data=None, **kwargs):
         return self.session.put(os.path.join(self.home, path), json=data, **kwargs)

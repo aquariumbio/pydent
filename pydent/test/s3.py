@@ -1,8 +1,8 @@
-import aq
+from pydent import *
 
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 
-u = aq.Upload.find(15641)
+u = aq.Upload.find(1000)
 print(u.temp_url)
 
 file = open("testfile.jpg", 'bw+')

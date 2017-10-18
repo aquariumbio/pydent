@@ -18,7 +18,6 @@ class RecordHook(type):
 
     @staticmethod
     def add_record(record_class):
-        t = RecordHook.records
         RecordHook.records[record_class.__name__] = record_class
 
             # def __getattr__(cls, item):
