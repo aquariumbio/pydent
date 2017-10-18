@@ -1,4 +1,5 @@
 from .session import Session
+from .record import Record, RecordHook
 
 class Base:
 
@@ -6,7 +7,7 @@ class Base:
         self.name = name
 
     def record(self,data):
-        record_class = eval("aq." + self.name + "Record")
+        record_class = RecordHook.records[self.name + "Record"]
         return record_class(self,data)
 
     def find(self,id):

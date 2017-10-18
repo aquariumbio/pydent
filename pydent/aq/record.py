@@ -8,7 +8,26 @@ def new_rid():
     _next_rid += 1
     return _next_rid
 
-class Record:
+class RecordHook(type):
+
+    records = {}
+
+    def __init__(cls, name, bases, clsdict):
+        RecordHook.add_record(cls)
+        super(RecordHook, cls).__init__(name, bases, clsdict)
+
+    @staticmethod
+    def add_record(record_class):
+        RecordHook.records[record_class.__name__] = record_class
+
+            # def __getattr__(cls, item):
+    #     sessions = cls.sessions
+    #     if item in sessions:
+    #         cls.set(item)
+    #     else:
+    #         return getattr(cls, item)
+
+class Record(object, metaclass=RecordHook):
 
     def __init__(self,model,data):
         self.model = model
@@ -20,6 +39,7 @@ class Record:
         self._rid = None
         for key in data:
             setattr(self,key,data[key])
+        RecordHook.add_record(self)
 
     @property
     def rid(self):
@@ -65,7 +85,7 @@ class Record:
             joins = assoc.where({self_ref: self.id}, {"include": assoc_field})
             return [ getattr(j,assoc_field) for j in joins ]
         else:
-            reference = aq.utils.snake(self.model.name) + "_id"
+            reference = utils.snake(self.model.name) + "_id"
             results = self.__has_many[name]["model"].where({reference: self.id})
             return results
 

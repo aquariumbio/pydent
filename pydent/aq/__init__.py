@@ -1,5 +1,5 @@
 from .base     import Base
-from .record   import Record
+from .record   import Record, RecordHook
 from .utils import utils
 from .session import Session
 

@@ -21,4 +21,6 @@ def test_session_close(config):
     assert Session.session is not None
 
 def test_sample_type_all():
+    g = globals()
+    s = SampleType
     SampleType.all()
