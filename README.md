@@ -17,19 +17,21 @@ Next, run the tests in the test directory as follows:
 > python test/basics.py
 ```
 
-#### Importing
+### Importing trident in python
 ```python
 from pydent import *
 ```
 
-#### Starting pydent sessions and logging in
+### Logging in
+
+##### Standard login
 ```python
 Session.create(login="JMellencamp",
                    password="Hurt5S0G0OD",
                    aquarium_url="http://521.124.511")
 ```
 
-You can name you sessions
+##### Logging in with named sessions
 ```python
 Session.create(login="JMellencamp",
                    password="Hurt5S0G0OD",
@@ -42,21 +44,40 @@ Session.create(login="JMellencamp",
                    name="Production")
 ```
 
-Switching sessions
+##### Switching and closing sessions
+
+You can set sessions by name
 ```python
-# Set sessions by name
 Session.set("Production")
 # do production stuff here
+
 Session.set("Nursery")
 # do nursery stuff here
+```
 
-# hook for setting sessions
+You can also use a hook for switching sessions
+```python
 Session.Nursery
 # do production stuff here
+
 Session.Production
 # do nursery stuff here
 ```
 
+You can get the name of the current session
+```python
+Session.session_name()
+>>> "Nursery"
+```
+
+You can close the current session
+```python
+Session.close()
+Session.session_name()
+>>> None
+```
+
+##### Creating sessions from a json file
 You can create sessions from a json file. Say you have a json file name "config.json"
 ```json
 {
@@ -72,6 +93,7 @@ You can create sessions from a json file. Say you have a json file name "config.
   }
 }
 ```
+
 You can import sessions using:
 ```python
 Session.create_from_config_file("config.json")
