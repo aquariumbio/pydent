@@ -1,5 +1,7 @@
 import os
 import requests
+import re
+
 
 class AqHTTP(object):
 
