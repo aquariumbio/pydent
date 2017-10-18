@@ -1,7 +1,9 @@
 import json
 import os
+
 from .aqhttp import AqHTTP
 from .sessionmanager import SessionManager
+
 
 class Session(SessionManager):
     """ Class for creating sessions """

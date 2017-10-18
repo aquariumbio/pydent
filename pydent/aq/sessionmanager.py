@@ -1,4 +1,3 @@
-
 class SessionManagerHook(type):
     """ Hook for confinient calling of different sessions. E.g. Session.Nursery is equivalent to Session.set(
     "Nursery") """
@@ -17,6 +16,7 @@ class SessionManagerHook(type):
                 return object.__getattribute__(cls, item)
             except AttributeError:
                 raise AttributeError("Session {0} not found. Select from {1}".format(item, sessions.keys()))
+
 
 class SessionManager(object, metaclass=SessionManagerHook):
     """ Manages api interface sessions """

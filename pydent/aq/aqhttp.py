@@ -1,15 +1,18 @@
 import os
-import requests
 import re
+
+import requests
+
 
 def to_json(fxn):
     def wrapper(*args, **kwargs):
         r = fxn(*args, **kwargs)
         return r.json()
+
     return wrapper
 
-class AqHTTP(object):
 
+class AqHTTP(object):
     def __init__(self, login, password, home):
         self.login = login
         self.password = password
@@ -20,7 +23,7 @@ class AqHTTP(object):
     def _create_session(self):
         return {
             "session": {
-                "login": self.login,
+                "login"   : self.login,
                 "password": self.password
             }
         }
@@ -29,7 +32,7 @@ class AqHTTP(object):
         """ """
         session_data = self._create_session()
         r = requests.post(os.path.join(self.home, "sessions.json"), json=session_data)
-        headers = { "cookie": AqHTTP.__fix_remember_token(r.headers["set-cookie"]) }
+        headers = {"cookie": AqHTTP.__fix_remember_token(r.headers["set-cookie"])}
         self.session = requests.Session()
         self.session.headers.update(headers)
 
