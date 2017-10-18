@@ -1,5 +1,7 @@
 import os
 import requests
+import re
+
 
 class AqHTTP(object):
 
@@ -35,7 +37,6 @@ class AqHTTP(object):
             if re.match('remember_token', cparts[0]):
                 rtok = cparts[1]
         return "remember_token="+rtok+"; "+h
-
 
     def post(self, path, json=None, **kwargs):
         return self.session.post(os.path.join(self.home, path), json=json, **kwargs)
