@@ -1,10 +1,6 @@
 import requests
 import re
 
-import sys
-sys.path.append('.')
-from config import config
-
 headers = {}
 logged_in = False
 

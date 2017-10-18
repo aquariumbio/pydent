@@ -1,4 +1,4 @@
-import aq
+from py.aq.session import Session
 
 class Base:
 
@@ -10,13 +10,13 @@ class Base:
         return record_class(self,data)
 
     def find(self,id):
-        result = aq.http.post('/json', { "model": self.name, "id": id })
+        result = Session.session.post('/json', { "model": self.name, "id": id })
         if "errors" in result:
             raise Exception(self.name + ": " + result["errors"])
         return self.record(result)
 
     def find_by_name(self,name):
-        result = aq.http.post('/json', {
+        result = Session.session.post('/json', {
           "model": self.name,
           "method": "find_by_name",
           "arguments": [ name ]
