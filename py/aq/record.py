@@ -1,4 +1,5 @@
 import re
+from py.aq.utils import utils
 
 _next_rid = 0;
 
@@ -57,8 +58,8 @@ class Record:
         if "no_getter" in self.__has_many[name]:
             return []
         elif "through" in self.__has_many[name]:
-            self_ref = aq.utils.snake(self.model.name) + "_id"
-            assoc_ref = aq.utils.snake(self.__has_many[name]["model"].name) + "_id"
+            self_ref = utils.snake(self.model.name) + "_id"
+            assoc_ref = utils.snake(self.__has_many[name]["model"].name) + "_id"
             assoc = self.__has_many[name]["through"]
             assoc_field = self.__has_many[name]["association"]
             joins = assoc.where({self_ref: self.id}, {"include": assoc_field})
@@ -122,7 +123,7 @@ class Record:
 
         for property, value in vars(self).items():
             if property not in exclude and \
-               not aq.utils.is_record(value) and \
+               not utils.is_record(value) and \
                not re.match(r'\_',property) and \
                not property == 'model' and \
                not property in self.__has_many and \
