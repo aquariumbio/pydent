@@ -18,6 +18,7 @@ class RecordHook(type):
 
     @staticmethod
     def add_record(record_class):
+        t = RecordHook.records
         RecordHook.records[record_class.__name__] = record_class
 
             # def __getattr__(cls, item):
@@ -39,7 +40,6 @@ class Record(object, metaclass=RecordHook):
         self._rid = None
         for key in data:
             setattr(self,key,data[key])
-        RecordHook.add_record(self)
 
     @property
     def rid(self):

@@ -2,6 +2,15 @@ import os
 import requests
 import re
 
+def to_json(fxn):
+
+    def wrapper(*args, **kwargs):
+        r = fxn(*args, **kwargs)
+        return r.json()
+    return wrapper
+
+
+
 class AqHTTP(object):
 
     def __init__(self, login, password, home):
@@ -37,17 +46,15 @@ class AqHTTP(object):
                 rtok = cparts[1]
         return "remember_token="+rtok+"; "+h
 
-
+    @to_json
     def post(self, path, data=None, **kwargs):
-        p = os.path.join(self.home, path)
-        h = self.home
-        return requests.post(p, json=data, **kwargs)
+        return self.session.post(os.path.join(self.home, path), json=data, **kwargs)
 
     def put(self, path, data=None, **kwargs):
-        return requests.post(os.path.join(self.home, path), json=data, **kwargs)
+        return self.session.put(os.path.join(self.home, path), json=data, **kwargs)
 
     def get(self, path, data=None, **kwargs):
-        return requests.post(os.path.join(self.home, path), json=data, **kwargs)
+        return self.session.get(os.path.join(self.home, path), json=data, **kwargs)
 
     def put(self, path, data=None, **kwargs):
-        return requests.post(os.path.join(self.home, path), json=data, **kwargs)
+        return self.session.put(os.path.join(self.home, path), json=data, **kwargs)
