@@ -1,7 +1,7 @@
 import re
 from py.aq.utils import utils
 
-_next_rid = 0
+_next_rid = 0;
 
 def new_rid():
     global _next_rid

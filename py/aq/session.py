@@ -1,7 +1,6 @@
 from py.aq.aqhttp import AqHTTP
 import json
 
-
 class SessionManagerHook(type):
     """ Hook for confinient calling of different sessions. E.g. Session.Nursery is equivalent to Session.set(
     "Nursery") """
