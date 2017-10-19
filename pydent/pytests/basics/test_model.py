@@ -1,17 +1,19 @@
 import pytest
 from pydent import *
 
-def assert_eq(m1, m2):
-    assert m1.__dict__ == m2.__dict__
-
-def test_model(load_session):
+# TODO: find models from BaseHook.bases.values() and add fixture as argument
+def test_models(load_session):
     model = SampleType
     all = model.all()
     for i in [0, -1]:
+        # pick first or last
         m = all[i]
-        print(m.__dict__)
-        m2 = model.find_by_name(m.name)
-        assert m == m2
-        # assert model.find(m.id) == m
-        # assert model.where({"id": m.id}) == [m]
-        # attributes accessible?
+
+        # find_by_name
+        assert m == model.find_by_name(m.name)
+
+        # find (by id)
+        assert model.find(m.id) == m
+
+        # where
+        assert model.where({"id": m.id}) == [m]
