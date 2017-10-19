@@ -1,7 +1,7 @@
 import pytest
 from pydent import *
 
-# pytest.fixture(scope="module", params=BaseHook)
+# TODO: find models from BaseHook.bases.values() and add fixture as argument
 def test_models(load_session):
     model = SampleType
     all = model.all()
