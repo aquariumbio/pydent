@@ -6,7 +6,9 @@ from pydent import Session
 
 @pytest.fixture(scope="module")
 def config_path():
-    return "secrets/config.json"
+    folder = "pydent/pytests"
+    rel_loc = "secrets/config.json"
+    return os.path.join(folder, rel_loc)
 
 @pytest.fixture(scope="module")
 def config():
@@ -17,3 +19,4 @@ def config():
 def load_session():
     Session.create_from_config_file(config_path())
     return 5
+

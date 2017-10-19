@@ -177,3 +177,6 @@ class Record(object, metaclass=RecordHook):
     def set_association(self,name,value):
         setattr(self,name, value)
         return self
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__

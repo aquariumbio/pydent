@@ -2,7 +2,7 @@ from .record import RecordHook
 from .session import Session
 
 
-class Base:
+class Base(object):
     def __init__(self, name):
         self.name = name
 
@@ -50,3 +50,6 @@ class Base:
         options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
         return self.array_query("where", criteria, methods, options)
+
+    def __eq__(self, other):
+        other.__dict__ == self.__dict__
