@@ -1,5 +1,5 @@
-from .record import RecordHook
-from .session import Session
+from pydent.aq.archived.record import RecordHook
+from pydent.aq.session import Session
 
 
 class Base(object):

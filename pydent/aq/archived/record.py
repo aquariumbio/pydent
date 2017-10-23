@@ -1,6 +1,6 @@
 import re
 
-from .utils import utils
+from pydent.aq.utils import utils
 
 _next_rid = 0;
 

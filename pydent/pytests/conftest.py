@@ -1,12 +1,12 @@
 import pytest
 import os
 import json
-from pydent import Session
+from pydent.aq import AqHTTP
 
 
 @pytest.fixture(scope="module")
 def config_path():
-    folder = "pydent/pytests"
+    folder = ""
     rel_loc = "secrets/config.json"
     return os.path.join(folder, rel_loc)
 
@@ -17,6 +17,6 @@ def config():
 
 @pytest.fixture(scope="module")
 def load_session():
-    Session.create_from_config_file(config_path())
+    AqHTTP.create_from_config_file(config_path())
     return 5
 

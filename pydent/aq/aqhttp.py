@@ -1,8 +1,8 @@
 import os
 import re
-
+from pillowtalk import SessionManager
 import requests
-
+import json
 
 def to_json(fxn):
     def wrapper(*args, **kwargs):
@@ -12,11 +12,11 @@ def to_json(fxn):
     return wrapper
 
 
-class AqHTTP(object):
-    def __init__(self, login, password, home):
+class AqHTTP(SessionManager):
+    def __init__(self, login, password, aquarium_url):
         self.login = login
         self.password = password
-        self.home = home
+        self.home = aquarium_url
         self.session = None
         self._login()
 
@@ -36,6 +36,22 @@ class AqHTTP(object):
         self.session = requests.Session()
         self.session.headers.update(headers)
 
+    @classmethod
+    def create_from_json(cls, json_config):
+        if "login" in json_config:
+            cls.create(**json_config)
+        else:
+            for session_name, session_config in json_config.items():
+                cls.create(**session_config, session_name=session_name)
+
+    @classmethod
+    def create_from_config_file(cls, path_to_config):
+        print(os.path.abspath(path_to_config))
+        with open(os.path.abspath(path_to_config)) as f:
+            config = json.load(f)
+            cls.create_from_json(config)
+
+
     @staticmethod
     def __fix_remember_token(h):
         parts = h.split(';')
@@ -47,17 +63,17 @@ class AqHTTP(object):
         return "remember_token="+rtok+"; "+h
 
     @to_json
-    def post(self, path, data=None, **kwargs):
-        return self.session.post(os.path.join(self.home, path), json=data, **kwargs)
+    def post(self, path, json=None, **kwargs):
+        return self.session.post(os.path.join(self.home, path), json=json, **kwargs)
 
     @to_json
-    def put(self, path, data=None, **kwargs):
-        return self.session.put(os.path.join(self.home, path), json=data, **kwargs)
+    def put(self, path, json=None, **kwargs):
+        return self.session.put(os.path.join(self.home, path), json=json, **kwargs)
 
     @to_json
     def get(self, path, **kwargs):
         return self.session.get(os.path.join(self.home, path), **kwargs)
 
     @to_json
-    def put(self, path, data=None, **kwargs):
-        return self.session.put(os.path.join(self.home, path), json=data, **kwargs)
+    def put(self, path, json=None, **kwargs):
+        return self.session.put(os.path.join(self.home, path), json=json, **kwargs)

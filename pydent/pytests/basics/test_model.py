@@ -1,5 +1,5 @@
 import pytest
-from pydent import *
+from pydent.aq import *
 
 # TODO: find models from BaseHook.bases.values() and add fixture as argument
 def test_models(load_session):
