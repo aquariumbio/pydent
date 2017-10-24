@@ -11,4 +11,4 @@ class TridentUtilities:
         return len(bases) == 1 and bases[0].__name__ == 'Record'
 
 
-utils = TridentUtilities();
+utils = TridentUtilities()

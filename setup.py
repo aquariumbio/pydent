@@ -16,7 +16,9 @@ tests_require = [
 ]
 
 install_requires = [
-    # package requirements
+    "pillowtalk",
+    "requests",
+    "inflection"
 ]
 
 classifiers = [],

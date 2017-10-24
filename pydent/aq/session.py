@@ -12,12 +12,12 @@ def to_json(fxn):
     return wrapper
 
 
-class AqHTTP(SessionManager):
+class Session(SessionManager):
     def __init__(self, login, password, aquarium_url):
         self.login = login
         self.password = password
         self.home = aquarium_url
-        self.session = None
+        self._session = None
         self._login()
 
     def _create_session(self):
@@ -32,9 +32,9 @@ class AqHTTP(SessionManager):
         """ """
         session_data = self._create_session()
         r = requests.post(os.path.join(self.home, "sessions.json"), json=session_data)
-        headers = {"cookie": AqHTTP.__fix_remember_token(r.headers["set-cookie"])}
-        self.session = requests.Session()
-        self.session.headers.update(headers)
+        headers = {"cookie": Session.__fix_remember_token(r.headers["set-cookie"])}
+        self._session = requests.Session()
+        self._session.headers.update(headers)
 
     @classmethod
     def create_from_json(cls, json_config):
@@ -64,16 +64,16 @@ class AqHTTP(SessionManager):
 
     @to_json
     def post(self, path, json=None, **kwargs):
-        return self.session.post(os.path.join(self.home, path), json=json, **kwargs)
+        return self._session.post(os.path.join(self.home, path), json=json, **kwargs)
 
     @to_json
     def put(self, path, json=None, **kwargs):
-        return self.session.put(os.path.join(self.home, path), json=json, **kwargs)
+        return self._session.put(os.path.join(self.home, path), json=json, **kwargs)
 
     @to_json
     def get(self, path, **kwargs):
-        return self.session.get(os.path.join(self.home, path), **kwargs)
+        return self._session.get(os.path.join(self.home, path), **kwargs)
 
     @to_json
     def put(self, path, json=None, **kwargs):
-        return self.session.put(os.path.join(self.home, path), json=json, **kwargs)
+        return self._session.put(os.path.join(self.home, path), json=json, **kwargs)

@@ -1,5 +1,5 @@
 from .aqbase import *
-from .aqhttp import *
+from .session import *
 from .utils import utils
 from .pillow_models import *
 # from pydent.aq.models.account                  import Account, AccountRecord

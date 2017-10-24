@@ -1,5 +1,5 @@
 from pillowtalk import *
-from .aqhttp import AqHTTP
+from .session import Session
 
 class AqBase(PillowtalkBase):
     """ Basic model for api items """
@@ -8,7 +8,7 @@ class AqBase(PillowtalkBase):
     def post_json(cls, data):
         d = {'model': cls.__name__}
         d.update(data)
-        r = AqHTTP.session.post('json', json=d)
+        r = Session.session.post('json', json=d)
         m = cls.load(r)
         if type(m) is list:
             for result, model in zip(r, m):
