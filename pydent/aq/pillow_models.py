@@ -1,17 +1,16 @@
 from pillowtalk import *
+
 from .aqbase import AqBase
 from .session import Session
 
 
 @add_schema
 class User(AqBase):
-
     FIELDS = ["login", "name"]
 
 
 @add_schema
 class Sample(AqBase):
-
     FIELDS = ["name"]
     RELATIONSHIPS = [
         One("sample_type", "find Sample.sample_type_id <> SampleType.id")
@@ -20,7 +19,6 @@ class Sample(AqBase):
 
 @add_schema
 class SampleType(AqBase):
-
     FIELDS = ["name"]
     RELATIONSHIPS = [
         Many("samples", "where SampleType.id <> Sample.sample_type_id")
@@ -29,7 +27,6 @@ class SampleType(AqBase):
 
 @add_schema
 class Item(AqBase):
-
     FIELDS = []
     RELATIONSHIPS = [
         One("sample", "find Item.sample_id <> Sample.id"),
@@ -39,7 +36,6 @@ class Item(AqBase):
 
 @add_schema
 class ObjectType(AqBase):
-
     FIELDS = ["name"]
     RELATIONSHIPS = [
         Many("items", "where ObjectType.id <> Item.object_type_id")
@@ -56,7 +52,6 @@ class Collection(AqBase):
 
 @add_schema
 class FieldValue(AqBase):
-
     FIELDS = []
     RELATIONSHIPS = [
         One("field_type", "find FieldValue.field_type_id <> FieldType.id"),
@@ -71,16 +66,26 @@ class FieldValue(AqBase):
 
 @add_schema
 class OperationType(AqBase):
-
     FIELDS = []
     RELATIONSHIPS = [
         Many("codes", "where OperationType.id <> Code.parent_id")
     ]
 
+    @property
+    def protocol(self):
+        return self.code("protocol")
+
+    def code(self, name):
+        latest = [code for code in self.codes
+                  if not code.child_id and code.name == name]
+        if len(latest) == 1:
+            return latest[0]
+        else:
+            return None
+
 
 @add_schema
 class Code(AqBase):
-
     FIELDS = []
     RELATIONSHIP = [
         One("operation_type", "find Code.parent_id <> OperationType.id")
@@ -109,3 +114,32 @@ class Code(AqBase):
             self.updated_at = result["updated_at"]
         else:
             raise Exception("Unable to update code object.")
+
+@add_schema
+class Operation(AqBase):
+
+    FIELDS = []
+    RELATIONSHIPS = [
+        One("operation_type", "find Operation.operation_type_id <> OperationType.id")
+    ]
+
+@add_schema
+class Library(AqBase):
+
+    FIELDS = []
+    RELATIONSHIPS = [
+        Many("operations", "where Library.operation_id <> Operation.id"),
+        Many("codes", "where Library.id <> Code.parent_id")
+    ]
+
+    def code(self, name):
+        latest = [code for code in self.codes
+                  if not code.child_id and code.name == name]
+        if len(latest) == 1:
+            return latest[0]
+        else:
+            return None
+
+    @property
+    def source(self):
+        return self.code("source")

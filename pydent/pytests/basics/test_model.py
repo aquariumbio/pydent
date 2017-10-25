@@ -17,3 +17,10 @@ def test_models(load_session):
 
         # where
         assert model.where({"id": m.id}) == [m]
+
+def test_library(load_session):
+
+    l = Library.find_by_name("DNA")
+    codes = l.codes
+    for c in l.codes():
+        print(c)
