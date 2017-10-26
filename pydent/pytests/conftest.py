@@ -6,7 +6,7 @@ from pydent.aq import Session
 
 @pytest.fixture(scope="module")
 def config_path():
-    folder = ""
+    folder = os.path.dirname(os.path.abspath(__file__))
     rel_loc = "secrets/config.json"
     return os.path.join(folder, rel_loc)
 

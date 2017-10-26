@@ -22,5 +22,5 @@ def test_library(load_session):
 
     l = Library.find_by_name("DNA")
     codes = l.codes
-    for c in l.codes():
+    for c in l.codes:
         print(c)
