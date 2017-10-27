@@ -84,12 +84,7 @@ class OperationType(AqBase):
             return None
 
 
-@add_schema
-class Code(AqBase):
-    FIELDS = []
-    RELATIONSHIP = [
-        One("operation_type", "find Code.parent_id <> OperationType.id")
-    ]
+class CodeInterface(object):
 
     def update(self):
         # Todo: make server side controller for code objects
@@ -116,15 +111,7 @@ class Code(AqBase):
             raise Exception("Unable to update code object.")
 
 @add_schema
-class Operation(AqBase):
-
-    FIELDS = []
-    RELATIONSHIPS = [
-        One("operation_type", "find Operation.operation_type_id <> OperationType.id")
-    ]
-
-@add_schema
-class Library(AqBase):
+class Library(CodeInterface, AqBase):
 
     FIELDS = []
     RELATIONSHIPS = [
@@ -143,3 +130,19 @@ class Library(AqBase):
     @property
     def source(self):
         return self.code("source")
+
+
+@add_schema
+class Code(CodeInterface, AqBase):
+    FIELDS = []
+    RELATIONSHIP = [
+        One("operation_type", "find Code.parent_id <> OperationType.id")
+    ]
+
+@add_schema
+class Operation(AqBase):
+
+    FIELDS = []
+    RELATIONSHIPS = [
+        One("operation_type", "find Operation.operation_type_id <> OperationType.id")
+    ]
