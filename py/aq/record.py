@@ -115,6 +115,12 @@ class Record:
 
         j = { "rid": self.rid }
 
+        if not type(include) is list:
+            raise Exception("include argument must be a list in " + str(type(self)) + ".to_json")
+
+        if not type(exclude) is list:
+            raise Exception("exclude argument must be a list in " + str(type(self)) + ".to_json")            
+
         for property, value in vars(self).items():
             if property not in exclude and \
                not aq.utils.is_record(value) and \

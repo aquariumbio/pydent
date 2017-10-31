@@ -18,6 +18,8 @@ class DataAssociationRecord(aq.Record):
     def to_json(self):
         j = super(DataAssociationRecord,self).to_json()
         j["object"] = { self.key: self.value }
+        if "url" in j:
+            del j["url"]
         return j
 
 class DataAssociationModel(aq.Base):

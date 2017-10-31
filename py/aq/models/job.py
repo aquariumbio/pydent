@@ -1,4 +1,5 @@
 import aq
+import json
 
 class JobRecord(aq.Record):
 
@@ -7,6 +8,12 @@ class JobRecord(aq.Record):
         self.has_many("operations",
             aq.Operation,
             opts={"through": aq.JobAssociation, "association": "operation"})
+
+    def to_json(self,include=[],exclude=[]):
+        j = super(JobRecord,self).to_json(include=include,exclude=exclude)
+        if "state" in j:
+            j["state"] = json.loads(self.state)
+        return j
 
 class JobModel(aq.Base):
 
