@@ -24,3 +24,7 @@ def test_library(load_session):
     codes = l.codes
     for c in l.codes:
         print(c)
+
+def test_get_by_category(load_session):
+    libraries = Library.where({"category": "ParrotFishTest"})
+    assert len(libraries) >= 1

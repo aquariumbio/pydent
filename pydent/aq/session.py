@@ -5,7 +5,6 @@ import re
 import requests
 from pillowtalk import SessionManager
 
-
 def to_json(fxn):
     def wrapper(*args, **kwargs):
         r = fxn(*args, **kwargs)
@@ -77,6 +76,7 @@ class AqHTTP(object):
             }
         }
 
+
 class Session(SessionManager):
 
     @staticmethod
@@ -97,4 +97,3 @@ class Session(SessionManager):
         with open(os.path.abspath(path_to_config)) as f:
             config = json.load(f)
             Session.create_from_json(config)
-
