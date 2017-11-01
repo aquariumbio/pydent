@@ -1,6 +1,6 @@
 from pydent import *
 
-Session.create_from_config_file("secrets/config.json")
+AqSession.create_from_config_file("secrets/config.json")
 
 u = aq.Upload.find(1000)
 print(u.temp_url)

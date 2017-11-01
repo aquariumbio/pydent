@@ -1,6 +1,6 @@
 from pydent import *
 
-Session.create_from_config_file("secrets/config.json")
+AqSession.create_from_config_file("secrets/config.json")
 
 s = aq.Sample.find(1111)
 print("\nSample " + str(s.id) + ": " + s.name)

@@ -7,7 +7,7 @@
 from pydent import *
 
 print("Choose a budget")
-Session.create_from_config_file("secrets/config.json")
+AqSession.create_from_config_file("secrets/config.json")
 budgets = aq.User.current.budgets
 if len(budgets) > 0:
     budget = budgets[0]

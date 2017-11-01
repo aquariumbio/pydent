@@ -1,7 +1,7 @@
 from pillowtalk import *
 
 from .aqbase import AqBase
-from .session import Session
+from .aqsession import AqSession
 
 
 @add_schema
@@ -96,9 +96,9 @@ class CodeInterface(object):
             controller = "libraries"
         else:
             raise Exception("No code update controller available.")
-        s = Session().session
+        s = AqSession().session
         print(s)
-        result = Session().session.post(controller+"/code", {
+        result = AqSession().session.post(controller+"/code", {
             "id"     : self.parent_id,
             "name"   : self.name,
             "content": self.content

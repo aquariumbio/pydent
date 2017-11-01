@@ -1,5 +1,5 @@
 from pydent.aq.archived.record import RecordHook
-from pydent.aq.session import Session
+from pydent.aq.aqsession import AqSession
 
 
 class Base(object):
@@ -11,13 +11,13 @@ class Base(object):
         return record_class(self, data)
 
     def find(self, id):
-        result = Session.session.post('json', {"model": self.name, "id": id})
+        result = AqSession.session.post('json', {"model": self.name, "id": id})
         if "errors" in result:
             raise Exception(self.name+": "+result["errors"])
         return self.record(result)
 
     def find_by_name(self, name):
-        result = Session.session.post('json', {
+        result = AqSession.session.post('json', {
             "model"    : self.name,
             "method"   : "find_by_name",
             "arguments": [name]
@@ -36,7 +36,7 @@ class Base(object):
                  "arguments": args,
                  "options"  : options}
         query.update(rest)
-        r = Session.session.post('json', query)
+        r = AqSession.session.post('json', query)
         if "errors" in r:
             raise Exception(self.name+": "+r["errors"])
         return [self.record(data) for data in r]

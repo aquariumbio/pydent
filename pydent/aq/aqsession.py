@@ -77,7 +77,7 @@ class AqHTTP(object):
         }
 
 
-class Session(SessionManager):
+class AqSession(SessionManager):
     """ A Borg session """
 
     def create(self, login, password, aquarium_url, session_name=None):

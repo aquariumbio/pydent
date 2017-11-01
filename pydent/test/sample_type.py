@@ -1,6 +1,6 @@
 from pydent import *
 
-Session.create_from_config_file("secrets/config.json")
+AqSession.create_from_config_file("secrets/config.json")
 
 
 st = aq.SampleType.find_by_name("Plasmid")

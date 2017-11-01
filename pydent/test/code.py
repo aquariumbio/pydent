@@ -1,7 +1,7 @@
 from time import gmtime, strftime
 from pydent import *
 
-Session.create_from_config_file("secrets/config.json")
+AqSession.create_from_config_file("secrets/config.json")
 
 # Get and change an operation type's cost model
 pcr = aq.OperationType.find_by_name("Make PCR Fragment")

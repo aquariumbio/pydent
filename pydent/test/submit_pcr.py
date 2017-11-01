@@ -5,7 +5,7 @@
 from pydent.cloning import pcr
 from pydent import *
 
-Session.create_from_config_file("secrets/config.json")
+AqSession.create_from_config_file("secrets/config.json")
 
 pcr = pcr.Plan("My PCR Plan")
 fragment = aq.Sample.find_by_name("optimization-test-fragment")

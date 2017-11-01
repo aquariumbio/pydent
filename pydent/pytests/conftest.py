@@ -1,7 +1,7 @@
 import pytest
 import os
 import json
-from pydent.aq import Session
+from pydent.aq import AqSession
 
 
 @pytest.fixture(scope="module")
@@ -17,6 +17,6 @@ def config():
 
 @pytest.fixture(scope="module")
 def load_session():
-    Session().create_from_config_file(config_path())
+    AqSession().create_from_config_file(config_path())
     return 5
 

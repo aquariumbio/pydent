@@ -18,7 +18,7 @@ class UserModel(aq.Base):
 
     @property
     def current(self):
-        r = aq.Session.session.get('json/current')
+        r = aq.AqSession.session.get('json/current')
         return self.record(r)
 
 User = UserModel()
