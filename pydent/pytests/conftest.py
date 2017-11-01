@@ -17,6 +17,6 @@ def config():
 
 @pytest.fixture(scope="module")
 def load_session():
-    Session.create_from_config_file(config_path())
+    Session().create_from_config_file(config_path())
     return 5
 

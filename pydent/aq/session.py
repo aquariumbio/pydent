@@ -78,22 +78,20 @@ class AqHTTP(object):
 
 
 class Session(SessionManager):
+    """ A Borg session """
 
-    @staticmethod
-    def create(login, password, aquarium_url, session_name=None):
+    def create(self, login, password, aquarium_url, session_name=None):
         aqhttp = AqHTTP(login, password, aquarium_url, name=session_name)
-        Session.register_connector(aqhttp, session_name=session_name)
+        self.register_connector(aqhttp, session_name=session_name)
 
-    @staticmethod
-    def create_from_json(json_config):
+    def create_from_json(self, json_config):
         if "login" in json_config:
-            Session.create(**json_config)
+            self.create(**json_config)
         else:
             for session_name, session_config in json_config.items():
-                Session.create(**session_config, session_name=session_name)
+                self.create(**session_config, session_name=session_name)
 
-    @staticmethod
-    def create_from_config_file(path_to_config):
+    def create_from_config_file(self, path_to_config):
         with open(os.path.abspath(path_to_config)) as f:
             config = json.load(f)
-            Session.create_from_json(config)
+            self.create_from_json(config)

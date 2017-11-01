@@ -96,9 +96,9 @@ class CodeInterface(object):
             controller = "libraries"
         else:
             raise Exception("No code update controller available.")
-        s = Session.session
+        s = Session().session
         print(s)
-        result = Session.session.post(controller+"/code", {
+        result = Session().session.post(controller+"/code", {
             "id"     : self.parent_id,
             "name"   : self.name,
             "content": self.content
