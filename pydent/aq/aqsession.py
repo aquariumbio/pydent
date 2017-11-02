@@ -76,9 +76,14 @@ class AqHTTP(object):
             }
         }
 
+    def __repr__(self):
+        return "<{}({}, {})>".format(self.__class__.__name__, self.login, self.aquarium_url)
+
+    def __str__(self):
+        return self.__repr__()
 
 class AqSession(SessionManager):
-    """ A Borg session """
+    """ An aquarium session. Inherits SessionManager, which is a class based on the Borg-idiom """
 
     def create(self, login, password, aquarium_url, session_name=None):
         aqhttp = AqHTTP(login, password, aquarium_url, name=session_name)
@@ -95,3 +100,9 @@ class AqSession(SessionManager):
         with open(os.path.abspath(path_to_config)) as f:
             config = json.load(f)
             self.create_from_json(config)
+
+    def __repr__(self):
+        return "<{}({}: {})>".format(self.__class__.__name__, self.session_name, self.session)
+
+    def __str__(self):
+        return self.__repr__()
