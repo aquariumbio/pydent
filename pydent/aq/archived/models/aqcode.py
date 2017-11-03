@@ -1,9 +1,10 @@
 from pydent import aq
 
+
 class CodeRecord(aq.Record):
 
-    def __init__(self,model,data):
-        super(CodeRecord,self).__init__(model,data)
+    def __init__(self, model, data):
+        super(CodeRecord, self).__init__(model, data)
 
     def update(self):
         # Todo: make server side controller for code objects
@@ -15,7 +16,7 @@ class CodeRecord(aq.Record):
             controller = "libraries"
         else:
             raise Exception("No code update controller available.")
-        result = aq.AqSession.session.post(controller+"/code", {
+        result = aq.AqSession.session.post(controller + "/code", {
             "id": self.parent_id,
             "name": self.name,
             "content": self.content
@@ -27,9 +28,11 @@ class CodeRecord(aq.Record):
         else:
             raise Exception("Unable to update code object.")
 
+
 class CodeModel(aq.Base):
 
     def __init__(self):
-        super(CodeModel,self).__init__("Code")
+        super(CodeModel, self).__init__("Code")
+
 
 Code = CodeModel()

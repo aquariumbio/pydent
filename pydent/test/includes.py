@@ -8,9 +8,9 @@ st = aq.SampleType.find_by_name("Enzyme")
 # data into a SampleTypeRecord
 
 samples = aq.Sample.where(
-  { "sample_type_id": st.id },
-  { "include": "sample_type" },
-  { "limit": 3 }
+    {"sample_type_id": st.id},
+    {"include": "sample_type"},
+    {"limit": 3}
 )
 
 print(samples[0].sample_type)
@@ -20,9 +20,9 @@ print(samples[0].sample_type)
 # this second version is slower.
 
 samples = aq.Sample.where(
-  { "sample_type_id": st.id },
-  { },
-  { "limit": 3 }
+    {"sample_type_id": st.id},
+    {},
+    {"limit": 3}
 )
 
 print(samples[0].sample_type)

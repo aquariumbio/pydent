@@ -7,38 +7,38 @@ class Base(object):
         self.name = name
 
     def record(self, data):
-        record_class = RecordHook.records[self.name+"Record"]
+        record_class = RecordHook.records[self.name + "Record"]
         return record_class(self, data)
 
     def find(self, id):
         result = AqSession.session.post('json', {"model": self.name, "id": id})
         if "errors" in result:
-            raise Exception(self.name+": "+result["errors"])
+            raise Exception(self.name + ": " + result["errors"])
         return self.record(result)
 
     def find_by_name(self, name):
         result = AqSession.session.post('json', {
-            "model"    : self.name,
-            "method"   : "find_by_name",
+            "model": self.name,
+            "method": "find_by_name",
             "arguments": [name]
         })
         if result is None:
-            raise Exception(self.name+" '"+name+"' not found")
+            raise Exception(self.name + " '" + name + "' not found")
         if "errors" in result:
-            raise Exception(self.name+": "+result["errors"])
+            raise Exception(self.name + ": " + result["errors"])
         return self.record(result)
 
     def array_query(self, method, args, rest, opts={}):
         options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
-        query = {"model"    : self.name,
-                 "method"   : method,
+        query = {"model": self.name,
+                 "method": method,
                  "arguments": args,
-                 "options"  : options}
+                 "options": options}
         query.update(rest)
         r = AqSession.session.post('json', query)
         if "errors" in r:
-            raise Exception(self.name+": "+r["errors"])
+            raise Exception(self.name + ": " + r["errors"])
         return [self.record(data) for data in r]
 
     def all(self, rest={}, opts={}):

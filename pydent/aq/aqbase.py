@@ -1,6 +1,7 @@
 from pillowtalk import *
 from .aqsession import AqSession
 
+
 class AqBase(PillowtalkBase):
     """ Basic model for api items """
 
@@ -29,14 +30,14 @@ class AqBase(PillowtalkBase):
     def array_query(cls, method, args, rest, opts={}):
         options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
-        query = {"model"    : cls.__name__,
-                 "method"   : method,
+        query = {"model": cls.__name__,
+                 "method": method,
                  "arguments": args,
-                 "options"  : options}
+                 "options": options}
         query.update(rest)
         r = cls.post_json(query)
         if "errors" in r:
-            raise Exception(cls.__name__+": "+r["errors"])
+            raise Exception(cls.__name__ + ": " + r["errors"])
         return r
 
     @classmethod

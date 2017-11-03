@@ -19,27 +19,28 @@ if not os.path.exists(directory):
 serialized_plan = json.dumps(plan.to_json(include=[
     "wires",
     "data_associations",
-    { "operations": [
+    {"operations": [
         "operation_type",
-        { "field_values": [
-                "field_type",
-                "allowable_field_type",
-                { "sample": [ "sample_type" ] },
-                { "item": [ "object_type", "data_associations" ] }
-            ]
+        {"field_values": [
+            "field_type",
+            "allowable_field_type",
+            {"sample": ["sample_type"]},
+            {"item": ["object_type", "data_associations"]}
+        ]
         },
         "data_associations",
         "jobs"
     ]}
 ]), indent=4, sort_keys=True)
 
-file = open(directory + "/plan.json" , 'w+')
+file = open(directory + "/plan.json", 'w+')
 file.write(serialized_plan)
 file.close
 
 for da in plan.all_data_associations():
     if da.upload:
-        file = open(directory + "/upload_" + str(da.upload.id) + "_" + da.upload.upload_file_name, 'bw+')
+        file = open(directory + "/upload_" + str(da.upload.id) +
+                    "_" + da.upload.upload_file_name, 'bw+')
         file.write(da.upload.data)
         file.close
 

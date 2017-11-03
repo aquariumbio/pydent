@@ -42,7 +42,7 @@ print("Make a plan")
 plan = aq.Plan.record({"name": "My new plan"})
 plan.add_operation(order_primer) \
     .add_operation(rehydrate_primer) \
-    .wire(order_primer.output("Primer"),rehydrate_primer.input("Primer"))
+    .wire(order_primer.output("Primer"), rehydrate_primer.input("Primer"))
 
 for w in plan.wires:
     print(w.to_json(include=["source", "destination"]))
@@ -68,4 +68,4 @@ print("Show the plan")
 plan.show()
 
 print("Submit the plan")
-plan.submit(aq.User.current,budget)
+plan.submit(aq.User.current, budget)

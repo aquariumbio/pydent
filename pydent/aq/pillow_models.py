@@ -55,7 +55,8 @@ class FieldValue(AqBase):
     FIELDS = []
     RELATIONSHIPS = [
         One("field_type", "find FieldValue.field_type_id <> FieldType.id"),
-        One("allowable_field_type", "find FieldValue.allowable_field_type_id <> AllowableFieldType.id"),
+        One("allowable_field_type",
+            "find FieldValue.allowable_field_type_id <> AllowableFieldType.id"),
         One("item", "find FieldValue.child_item_id <> Item.id"),
         One("sample", "find FieldValue.child_sample_id <> Sample.id"),
         One("operation", "find FieldValue.parent_id <> Operation.id"),
@@ -98,9 +99,9 @@ class CodeInterface(object):
             raise Exception("No code update controller available.")
         s = AqSession().session
         print(s)
-        result = AqSession().session.post(controller+"/code", {
-            "id"     : self.parent_id,
-            "name"   : self.name,
+        result = AqSession().session.post(controller + "/code", {
+            "id": self.parent_id,
+            "name": self.name,
             "content": self.content
         })
         if "id" in result:
@@ -109,6 +110,7 @@ class CodeInterface(object):
             self.updated_at = result["updated_at"]
         else:
             raise Exception("Unable to update code object.")
+
 
 @add_schema
 class Library(CodeInterface, AqBase):
@@ -138,6 +140,7 @@ class Code(CodeInterface, AqBase):
     RELATIONSHIP = [
         One("operation_type", "find Code.parent_id <> OperationType.id")
     ]
+
 
 @add_schema
 class Operation(AqBase):

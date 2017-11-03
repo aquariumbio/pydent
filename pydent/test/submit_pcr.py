@@ -11,7 +11,7 @@ pcr = pcr.Plan("My PCR Plan")
 fragment = aq.Sample.find_by_name("optimization-test-fragment")
 fragment_stock = aq.ObjectType.find_by_name("Fragment Stock")
 
-pcr.set_output(fragment,fragment_stock)
+pcr.set_output(fragment, fragment_stock)
 pcr.show()
 
 if not algorithms.validate.plan(pcr):

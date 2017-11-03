@@ -4,7 +4,7 @@
 #
 
 config = {
-  "aquarium_url": "http://localhost:3000",
-  "login": "yourlogin",
-  "password": "yourpassword"
+    "aquarium_url": "http://localhost:3000",
+    "login": "yourlogin",
+    "password": "yourpassword"
 }

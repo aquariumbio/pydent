@@ -13,13 +13,13 @@ print("Item " + str(i.id) +
 
 sts = aq.SampleType.all()
 print("All Sample Types:")
-[ print("    " + st.name) for st in sts ]
+[print("    " + st.name) for st in sts]
 
 s = aq.Sample.find_by_name("pGFP")
 print("Sample named " + s.name + " has id " + str(s.id))
 
-samples = aq.Sample.where({"id": [1231,2341,3451]})
-[ print("Sample " + str(sample.id) +
-        " is a " + sample.sample_type.name +
-        " named " + sample.name)
-  for sample in samples ]
+samples = aq.Sample.where({"id": [1231, 2341, 3451]})
+[print("Sample " + str(sample.id) +
+       " is a " + sample.sample_type.name +
+       " named " + sample.name)
+ for sample in samples]

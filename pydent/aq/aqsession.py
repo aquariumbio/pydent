@@ -5,6 +5,7 @@ import re
 import requests
 from pillowtalk import SessionManager
 
+
 def to_json(fxn):
     def wrapper(*args, **kwargs):
         r = fxn(*args, **kwargs)
@@ -26,7 +27,7 @@ class AqHTTP(object):
     def _create_session(self):
         return {
             "session": {
-                "login"   : self.login,
+                "login": self.login,
                 "password": self.password
             }
         }
@@ -34,8 +35,10 @@ class AqHTTP(object):
     def _login(self):
         """ """
         session_data = self._create_session()
-        r = requests.post(os.path.join(self.aquarium_url, "sessions.json"), json=session_data)
-        headers = {"cookie": self.__class__.__fix_remember_token(r.headers["set-cookie"])}
+        r = requests.post(os.path.join(self.aquarium_url,
+                                       "sessions.json"), json=session_data)
+        headers = {"cookie": self.__class__.__fix_remember_token(
+            r.headers["set-cookie"])}
         self._session = requests.Session()
         self._session.headers.update(headers)
 
@@ -47,7 +50,7 @@ class AqHTTP(object):
             cparts = c.split('=')
             if re.match('remember_token', cparts[0]):
                 rtok = cparts[1]
-        return "remember_token="+rtok+"; "+h
+        return "remember_token=" + rtok + "; " + h
 
     @to_json
     def post(self, path, json=None, **kwargs):
@@ -66,12 +69,12 @@ class AqHTTP(object):
         return self._session.put(os.path.join(self.aquarium_url, path), json=json, **kwargs)
 
     def dump(self):
-        session = self.__class__.session
+        session = self.__class__._session
         session_name = self.__class__.session_name()
         return {
             session_name: {
-                "login"       : session.login,
-                "password"    : session.password,
+                "login": session.login,
+                "password": session.password,
                 "aquarium_url": session.aquarium_url
             }
         }
@@ -81,6 +84,7 @@ class AqHTTP(object):
 
     def __str__(self):
         return self.__repr__()
+
 
 class AqSession(SessionManager):
     """ An aquarium session. Inherits SessionManager, which is a class based on the Borg-idiom """

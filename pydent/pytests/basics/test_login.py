@@ -1,5 +1,6 @@
 import pytest
-from pydent.aq import *
+from pydent.aq import AqSession
+
 
 def test_login(load_session, config):
     s = AqSession()
@@ -10,6 +11,7 @@ def test_login(load_session, config):
     # Make sure AqHTTP is equal to the name in the config file
     AqHTTP_names = list(config.keys())
     assert AqSession().session_name == AqHTTP_names[-1]
+
 
 def test_AqHTTP_close(config):
     # Close AqHTTP
