@@ -2,7 +2,7 @@ import aq
 
 aq.login()
 
-plan = aq.Plan.find(976)
+plan = aq.Plan.find(5117)
 print("Plan " + str(plan.id) + ": " + plan.name)
 
 for op in plan.operations:
