@@ -2,7 +2,11 @@ from pydent import *
 
 Session.create_from_config_file("secrets/config.json")
 
+<<<<<<< HEAD:pydent/test/plan.py
 plan = aq.Plan.find(47100)
+=======
+plan = aq.Plan.find(5117)
+>>>>>>> master:py/test/plan.py
 print("Plan " + str(plan.id) + ": " + plan.name)
 
 for op in plan.operations:
