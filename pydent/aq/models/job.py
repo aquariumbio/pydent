@@ -1,4 +1,4 @@
-import aq
+from pydent import aq
 import json
 
 class JobRecord(aq.Record):

@@ -1,4 +1,4 @@
-import aq
+from pydent import aq
 import requests
 
 class UploadRecord(aq.Record):

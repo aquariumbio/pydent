@@ -1,4 +1,5 @@
-import aq
+from pydent import aq
+
 
 class UserBudgetAssociationRecord(aq.Record):
     def __init__(self,model,data):

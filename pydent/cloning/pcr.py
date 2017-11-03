@@ -1,6 +1,6 @@
-import aq
+from pydent import *
 
-class Plan(aq.PlanRecord):
+class Plan(PlanRecord):
 
     def __init__(self,name):
 

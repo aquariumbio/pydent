@@ -1,6 +1,6 @@
-import aq
+from pydent import *
 
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 
 fvs = aq.FieldValue.where("name = 'Overhang Sequence' and value regexp '^aaaaa'")
 

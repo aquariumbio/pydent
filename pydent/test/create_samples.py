@@ -1,7 +1,7 @@
-import aq
 import time
+from pydent import *
 
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 
 n = int(time.time())%1000 # chosen so you get a different name each time
 

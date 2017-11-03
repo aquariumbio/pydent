@@ -1,4 +1,5 @@
-import aq
+from pydent import aq
+
 
 class PlanRecord(aq.PlanEquivalence,aq.Record):
 
@@ -100,8 +101,8 @@ class PlanModel(aq.Base):
     def __init__(self):
         super(PlanModel,self).__init__("Plan")
 
-    def find(self,id):
-        """Override find for plans, because the generic method is too minimal"""
-        return aq.Plan.record(aq.http.get("/plans/" + str(id) + ".json"))
+    # def find(self,id):
+    #     """Override find for plans, because the generic method is too minimal"""
+    #     return aq.Plan.record(aq.Session.session.get("/plans/" + str(id) + ".json"))
 
 Plan = PlanModel()

@@ -1,4 +1,5 @@
-import aq
+from pydent import aq
+
 
 class SampleTypeRecord(aq.Record):
     def __init__(self,model,data):

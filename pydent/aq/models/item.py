@@ -1,4 +1,6 @@
-import aq
+from pydent import aq
+
+
 
 class ItemRecord(aq.Record):
     def __init__(self,model,data):

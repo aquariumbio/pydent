@@ -1,4 +1,4 @@
-import aq
+from pydent import aq
 
 class UserRecord(aq.Record):
 
@@ -18,7 +18,7 @@ class UserModel(aq.Base):
 
     @property
     def current(self):
-        r = aq.http.get('/json/current')
+        r = aq.Session.session.get('json/current')
         return self.record(r)
 
 User = UserModel()

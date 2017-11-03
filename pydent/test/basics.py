@@ -1,6 +1,6 @@
-import aq
+from pydent import *
 
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 
 u = aq.User.find(1)
 print("User " + str(u.id) + " is named " + u.name)

@@ -1,8 +1,8 @@
 import json
 import time
-import aq
+from pydent import *
 
-aq.login()
+Session.create_from_config_file("secrets/config.json")
 
 p = aq.SampleType.find_by_name("Plasmid")
 

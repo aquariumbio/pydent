@@ -1,4 +1,4 @@
-import aq
+from pydent import aq
 
 class AccountRecord(aq.Record):
     def __init__(self,model,data):

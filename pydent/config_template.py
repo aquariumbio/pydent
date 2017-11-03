@@ -1,5 +1,5 @@
 #
-# Copy this file to config.py and change it to suit your
+# Copy this file to config.pydent and change it to suit your
 # situation.
 #
 
