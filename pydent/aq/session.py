@@ -1,8 +1,8 @@
 import json
 import os
 
-from .aqhttp import AqHTTP
-from .sessionmanager import SessionManager
+from pydent.aq.aqhttp import AqHTTP
+from pydent.aq.sessionmanager import SessionManager
 
 
 class Session(SessionManager):

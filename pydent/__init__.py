@@ -1,1 +1,1 @@
-from .aq import *
+from pydent.aq import *

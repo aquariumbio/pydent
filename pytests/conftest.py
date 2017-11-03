@@ -1,7 +1,7 @@
-import pytest
 import os
 import json
-from pydent import Session
+import pytest
+from aq import Session
 
 
 @pytest.fixture(scope="module")
