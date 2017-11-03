@@ -1,4 +1,4 @@
-from pillowtalk import *
+from pillowtalk import add_schema, One, Many
 
 from .aqbase import AqBase
 from .aqsession import AqSession

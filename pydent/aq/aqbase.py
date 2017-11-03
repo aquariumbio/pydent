@@ -1,4 +1,4 @@
-from pillowtalk import *
+from pillowtalk import PillowtalkBase
 from .aqsession import AqSession
 
 
@@ -7,15 +7,15 @@ class AqBase(PillowtalkBase):
 
     @classmethod
     def post_json(cls, data):
-        d = {'model': cls.__name__}
-        d.update(data)
-        r = AqSession().session.post('json', json=d)
-        m = cls.load(r)
+        dictionary = {'model': cls.__name__}
+        dictionary.update(data)
+        post_response = AqSession().session.post('json', json=dictionary)
+        m = cls.load(post_response)
         if type(m) is list:
-            for result, model in zip(r, m):
+            for result, model in zip(post_response, m):
                 model.raw = result
         else:
-            m.raw = r
+            m.raw = post_response
         return m
 
     @classmethod
