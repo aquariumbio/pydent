@@ -4,6 +4,7 @@ class CodeRecord(aq.Record):
 
     def __init__(self,model,data):
         super(CodeRecord,self).__init__(model,data)
+        self.has_one("user", aq.User)
 
     def update(self):
         # Todo: make server side controller for code objects
