@@ -1,10 +1,12 @@
+"""Validate Plans"""
+
 import aq
 
 _verbose = False
 _messages = []
 
-
 def log(msg):
+    """Log a message"""
     global _verbose
     if _verbose:
         print(msg)
@@ -12,21 +14,21 @@ def log(msg):
 
 
 def warning(msg):
+    """Log a warning"""
     log("WARNING: " + msg)
 
-
 def messages():
+    """Return all messages"""
     global _messages
     return _messages
 
-
 def clear_messages():
+    """Clear messages"""
     global _messages
     _messages = []
 
-
 def plan(plan, verbose=False):
-
+    """Check if the plan is valid"""
     global _verbose
     _verbose = verbose
     clear_messages()
@@ -43,7 +45,6 @@ def plan(plan, verbose=False):
         ("valid" if valid else "not valid."))
 
     return valid
-
 
 def check_fields(plan):
     """Check that all fields are defined"""

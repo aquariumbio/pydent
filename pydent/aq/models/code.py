@@ -1,13 +1,20 @@
-import aq
+"""Code"""
 
+import aq
 
 class CodeRecord(aq.Record):
 
+    """CodeRecord used to store versions of code for protocols, preconditions,
+     etc.
+     """
+
     def __init__(self, model, data):
+        """Make a new CodeRecord"""
         super(CodeRecord, self).__init__(model, data)
         self.has_one("user", aq.User)
 
     def update(self):
+        """Update a code object by sending new content to Aquarium"""
         # Todo: make server side controller for code objects
         # since they may not always be tied to specific parent
         # controllers
@@ -32,7 +39,10 @@ class CodeRecord(aq.Record):
 
 class CodeModel(aq.Base):
 
+    """CodeModel class, generates CodeRecords"""
+
     def __init__(self):
+        """Make a new CodeModel"""
         super(CodeModel, self).__init__("Code")
 
 

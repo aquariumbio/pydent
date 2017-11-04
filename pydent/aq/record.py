@@ -1,18 +1,22 @@
+"""Define the record class"""
+
 import aq
 import re
 
 _next_rid = 0
 
-
 def new_rid():
+    """Make a new record id"""
     global _next_rid
     _next_rid += 1
     return _next_rid
 
-
 class Record:
 
+    """Record class from which all specific records are derived"""
+
     def __init__(self, model, data):
+        """Initialize a new record"""
         self.model = model
         self.id = None
         self.__data = data
@@ -25,11 +29,13 @@ class Record:
 
     @property
     def rid(self):
+        """Make or get the record id"""
         if not self._rid:
             self._rid = new_rid()
         return self._rid
 
     def has_one(self, name, model, opts={}):
+        """Declare that this record 'has one' association for the given model, named by 'name'"""
         self.__has_one[name] = {"model": model}
         self.__has_one[name].update(opts)
         if name in self.__data:
@@ -37,6 +43,7 @@ class Record:
             # also delete attr name = "_id" if it exists
 
     def get_one(self, name):
+        """Get the one associated record, named by name, assuming 'has_one' has been called"""
         if "reference" in self.__has_one[name]:
             reference = self.__has_one[name]["reference"]
         else:
@@ -50,6 +57,7 @@ class Record:
         return result
 
     def has_many(self, name, model, opts={}):
+        """Declare that this record 'has many' associations for the given model, named by 'name'"""
         self.__has_many[name] = {"model": model}
         self.__has_many[name].update(opts)
         if name in self.__data:
@@ -57,6 +65,7 @@ class Record:
             setattr(self, name, records)
 
     def get_many(self, name):
+        """Get the many associated records, named by name, assuming 'has_many' has been called"""
         if "no_getter" in self.__has_many[name]:
             return []
         elif "through" in self.__has_many[name]:
@@ -74,19 +83,24 @@ class Record:
             return results
 
     def has_many_generic(self, name, model):
+        """Declare that this record 'has many' associations for the given model, named by 'name'.
+        This version of has_many assumes that there is a 'parent_class' and 'parent_id', which
+        are used when setting up generic associations (such as code or data_association) in rails.
+        """
         self.__has_many_generic[name] = {"model": model}
         if name in self.__data:
             records = [model.record(r) for r in self.__data[name]]
             setattr(self, name, records)
 
     def get_many_generic(self, name):
+        """Get the many associated records, named by name, assuming 'has_many_generic' has been called"""
         results = self.__has_many_generic[name]["model"].where({
             "parent_class": self.model.name,
             "parent_id": self.id})
         return results
 
     def __getattr__(self, name):
-
+        """Get an association by name automagically (assumes has_* method has been called at some point)"""
         # print("method missing for " + name)
 
         def __get_one_wrapper(name):
@@ -116,6 +130,7 @@ class Record:
                             " not found.")
 
     def to_json(self, include=[], exclude=[]):
+        """Convert the record to json"""
 
         j = {"rid": self.rid}
 
@@ -156,11 +171,13 @@ class Record:
         return j
 
     def append_association(self, name, value):
+        """Append the association named 'name' with value 'value'"""
         newval = getattr(self, name)
         newval.append(value)
         setattr(self, name, newval)
         return self
 
     def set_association(self, name, value):
+        """Set an association directly"""
         setattr(self, name, value)
         return self

@@ -1,10 +1,12 @@
+"""Operation"""
+
 import aq
 
 _x = 16
 _y = 32
 
-
 def next_position():
+    """Return the next position of an operation for use in Aquarium's Planner GUI"""
     global _x
     global _y
     _x += 176
@@ -16,7 +18,10 @@ def next_position():
 
 class OperationRecord(aq.Record):
 
+    """OperationRecord is an instantiation of an Operation Type"""
+
     def __init__(self, model, data):
+        """Make a new OperationRecord"""
         self.cost = None
         super(OperationRecord, self).__init__(model, data)
         self.has_many_generic("field_values", aq.FieldValue)
@@ -27,13 +32,14 @@ class OperationRecord(aq.Record):
                       {"through": aq.JobAssociation, "association": "job"})
 
     def init_field_values(self):
+        """Initialize the field values from the field types of the parent operation type"""
         for field_type in self.operation_type.field_types:
             self.set_field_value(field_type.name, field_type.role)
         self.show()
 
     def set_field_value(self, name, role,
                         sample=None, item=None, value=None, container=None):
-
+        """Set the value of a field value"""
         field_value = self.field_value(name, role)
         field_type = self.operation_type.field_type(name, role)
 
@@ -58,6 +64,7 @@ class OperationRecord(aq.Record):
         return self
 
     def set_field_type(self, field_value):
+        """Set the field type associated with a given field value"""
         for field_type in self.operation_type.field_types:
             if field_type.name == field_value.name and \
                field_type.role == field_value.role:
@@ -68,12 +75,15 @@ class OperationRecord(aq.Record):
                         " in operation of type " + self.operation_type.name)
 
     def set_input(self, name, **kwargs):
+        """Set the input named 'name' to a given value"""
         return self.set_field_value(name, 'input', **kwargs)
 
     def set_output(self, name, **kwargs):
+        """Set the output named 'name' to a given value"""
         return self.set_field_value(name, 'output', **kwargs)
 
     def field_value(self, name, role):
+        """Get the field value named 'name' with role 'role'"""
         fvs = [fv for fv in self.field_values
                if fv.name == name and fv.role == role]
         if len(fvs) == 0:
@@ -84,25 +94,33 @@ class OperationRecord(aq.Record):
             return fvs[0]
 
     def input(self, name):
+        """Get the input named 'name'"""
         return self.field_value(name, 'input')
 
     def output(self, name):
+        """Get the output named 'name'"""
         return self.field_value(name, 'output')
 
     @property
     def inputs(self):
+        """Return all input field values"""
         return [fv for fv in self.field_values if fv.role == 'input']
 
     @property
     def outputs(self):
+        """Return all output field values"""
         return [fv for fv in self.field_values if fv.role == 'output']
 
     def show(self, pre=""):
+        """Print the operation nicely"""
         print(pre + self.operation_type.name + " " + str(self.cost))
         for field_value in self.field_values:
             field_value.show(pre=pre + "  ")
 
     def to_json(self, include=[], exclude=[]):
+        """Override the wilde type to_json so that it has field expected by
+        the Planner.
+        """
         j = super(OperationRecord, self).to_json(
             include=include, exclude=exclude)
         p = next_position()
@@ -115,7 +133,10 @@ class OperationRecord(aq.Record):
 
 class OperationModel(aq.Base):
 
+    """OperationModel class, generates OperationRecords"""
+
     def __init__(self):
+        """Make a new OperationModel"""
         super(OperationModel, self).__init__("Operation")
 
 

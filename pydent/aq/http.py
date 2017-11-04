@@ -1,3 +1,5 @@
+"""Define the http methods: login, get, put, post"""
+
 import requests
 import re
 
@@ -10,7 +12,7 @@ logged_in = False
 
 
 def login():
-
+    """Log in to Aquarium using login info in config.py"""
     global headers
     global logged_in
 
@@ -37,7 +39,7 @@ def login():
 
 
 def get(path):
-
+    """Perform an http.get"""
     global headers
     if logged_in:
         r = requests.get(config['aquarium_url'] + path, headers=headers)
@@ -53,7 +55,7 @@ def get(path):
 
 
 def put(path):
-
+    """Perform an http.put"""
     global headers
     if logged_in:
         r = requests.put(config['aquarium_url'] + path, headers=headers)
@@ -69,7 +71,7 @@ def put(path):
 
 
 def post(path, data):
-
+    """Perform an http.post"""
     global headers
     if logged_in:
         r = requests.post(config['aquarium_url'] +
@@ -86,6 +88,7 @@ def post(path, data):
 
 
 def __fix_remember_token(h):
+    """Reformat the remember token from rails, which may have extra characters in its name"""
     parts = h.split(';')
     rtok = ""
     for c in parts:

@@ -1,9 +1,14 @@
-import aq
+"""Field Value"""
 
+import aq
 
 class FieldValueRecord(aq.Record):
 
+    """FieldValueRecord used to associate samples and parameters with inputs,
+    outputs, and samples
+    """
     def __init__(self, model, data):
+        """Make a new FieldTypeRecord"""
         self.value = None
         self.child_item_id = None
         self.child_sample_id = None
@@ -15,15 +20,13 @@ class FieldValueRecord(aq.Record):
         super(FieldValueRecord, self).__init__(model, data)
         self.has_one("field_type", aq.FieldType)
         self.has_one("allowable_field_type", aq.AllowableFieldType)
-        self.has_one("item",   aq.Item, opts={"reference": "child_item_id"})
-        self.has_one("sample", aq.Sample, opts={
-                     "reference": "child_sample_id"})
-        self.has_one("operation", aq.Operation,
-                     opts={"reference": "parent_id"})
-        self.has_one("parent_sample", aq.Sample,
-                     opts={"reference": "parent_id"})
+        self.has_one("item", aq.Item, opts={"reference": "child_item_id"})
+        self.has_one("sample", aq.Sample, opts={"reference": "child_sample_id"})
+        self.has_one("operation", aq.Operation, opts={"reference": "parent_id"})
+        self.has_one("parent_sample", aq.Sample, opts={"reference": "parent_id"})
 
     def show(self, pre=""):
+        """Print the field value"""
         if self.sample:
             if self.child_item_id:
                 item = " item: " + str(self.child_item_id) + \
@@ -39,7 +42,7 @@ class FieldValueRecord(aq.Record):
                   ": " + self.value)
 
     def set_value(self, value, sample, container, item):
-
+        """Set the value of a field value"""
         object_type = None
 
         if value:
@@ -87,6 +90,7 @@ class FieldValueRecord(aq.Record):
         return self
 
     def choose_item(self):
+        """Set the item associated with the field value"""
         items = self.compatible_items()
         if len(items) > 0:
             self.child_item_id = items[0].id
@@ -95,6 +99,7 @@ class FieldValueRecord(aq.Record):
         return None
 
     def compatible_items(self):
+        """Find items compatible with the field value"""
         result = aq.http.post("/json/items", {
             "sid": self.sample.id,
             "oid": self.allowable_field_type.object_type_id})
@@ -109,7 +114,10 @@ class FieldValueRecord(aq.Record):
 
 class FieldValueModel(aq.Base):
 
+    """FieldValueModel class, generates FieldTypeRecords"""
+
     def __init__(self):
+        """Make a new field value"""
         super(FieldValueModel, self).__init__("FieldValue")
 
 

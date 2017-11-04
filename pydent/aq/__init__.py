@@ -1,3 +1,5 @@
+"""Main pydent module containing all other pydent modules"""
+
 from aq.http import login
 
 from aq.base import Base

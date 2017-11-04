@@ -1,9 +1,14 @@
+"""User"""
+
 import aq
 
 
 class UserRecord(aq.Record):
 
+    """UserRecord defines a user"""
+
     def __init__(self, model, data):
+        """Make a new User"""
         super(UserRecord, self).__init__(model, data)
         self.has_many("samples", aq.Sample)
         self.has_many("user_budget_associations", aq.UserBudgetAssociation)
@@ -15,11 +20,15 @@ class UserRecord(aq.Record):
 
 class UserModel(aq.Base):
 
+    """UserModel class, generates UserRecords"""
+
     def __init__(self):
+        """Make a new UserModel"""
         super(UserModel, self).__init__("User")
 
     @property
     def current(self):
+        """Get the currently logged in user"""
         r = aq.http.get('/json/current')
         return self.record(r)
 
