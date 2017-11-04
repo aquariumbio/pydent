@@ -1,9 +1,10 @@
 import aq
 
+
 class CodeRecord(aq.Record):
 
-    def __init__(self,model,data):
-        super(CodeRecord,self).__init__(model,data)
+    def __init__(self, model, data):
+        super(CodeRecord, self).__init__(model, data)
         self.has_one("user", aq.User)
 
     def update(self):
@@ -28,9 +29,11 @@ class CodeRecord(aq.Record):
         else:
             raise Exception("Unable to update code object.")
 
+
 class CodeModel(aq.Base):
 
     def __init__(self):
-        super(CodeModel,self).__init__("Code")
+        super(CodeModel, self).__init__("Code")
+
 
 Code = CodeModel()

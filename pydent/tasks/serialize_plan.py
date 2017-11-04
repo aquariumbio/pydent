@@ -7,8 +7,6 @@ import aq
 
 aq.login()
 
-# TODO: Error checking
-
 id = int(sys.argv[1])
 directory = "plan_" + sys.argv[1]
 plan = aq.Plan.find(id)
