@@ -1,15 +1,15 @@
 """Define the record class"""
 
-import aq
 import re
+import aq
 
-_next_rid = 0
+NEXT_RID = 0
 
 def new_rid():
     """Make a new record id"""
-    global _next_rid
-    _next_rid += 1
-    return _next_rid
+    global NEXT_RID
+    NEXT_RID += 1
+    return NEXT_RID
 
 class Record:
 
@@ -35,7 +35,9 @@ class Record:
         return self._rid
 
     def has_one(self, name, model, opts={}):
-        """Declare that this record 'has one' association for the given model, named by 'name'"""
+        """Declare that this record 'has one' association for the given model,
+        named by 'name'
+        """
         self.__has_one[name] = {"model": model}
         self.__has_one[name].update(opts)
         if name in self.__data:
@@ -43,7 +45,9 @@ class Record:
             # also delete attr name = "_id" if it exists
 
     def get_one(self, name):
-        """Get the one associated record, named by name, assuming 'has_one' has been called"""
+        """Get the one associated record, named by name, assuming 'has_one' has
+        been called
+        """
         if "reference" in self.__has_one[name]:
             reference = self.__has_one[name]["reference"]
         else:
@@ -57,7 +61,9 @@ class Record:
         return result
 
     def has_many(self, name, model, opts={}):
-        """Declare that this record 'has many' associations for the given model, named by 'name'"""
+        """Declare that this record 'has many' associations for the given model,
+        named by 'name'
+        """
         self.__has_many[name] = {"model": model}
         self.__has_many[name].update(opts)
         if name in self.__data:
@@ -65,13 +71,13 @@ class Record:
             setattr(self, name, records)
 
     def get_many(self, name):
-        """Get the many associated records, named by name, assuming 'has_many' has been called"""
+        """Get the many associated records, named by name, assuming 'has_many'
+        has been called
+        """
         if "no_getter" in self.__has_many[name]:
             return []
         elif "through" in self.__has_many[name]:
             self_ref = aq.utils.snake(self.model.name) + "_id"
-            assoc_ref = aq.utils.snake(
-                self.__has_many[name]["model"].name) + "_id"
             assoc = self.__has_many[name]["through"]
             assoc_field = self.__has_many[name]["association"]
             joins = assoc.where({self_ref: self.id}, {"include": assoc_field})
@@ -83,9 +89,10 @@ class Record:
             return results
 
     def has_many_generic(self, name, model):
-        """Declare that this record 'has many' associations for the given model, named by 'name'.
-        This version of has_many assumes that there is a 'parent_class' and 'parent_id', which
-        are used when setting up generic associations (such as code or data_association) in rails.
+        """Declare that this record 'has many' associations for the given model,
+        named by 'name'. This version of has_many assumes that there is a
+        'parent_class' and 'parent_id', which are used when setting up generic
+        associations (such as code or data_association) in rails.
         """
         self.__has_many_generic[name] = {"model": model}
         if name in self.__data:
@@ -93,14 +100,18 @@ class Record:
             setattr(self, name, records)
 
     def get_many_generic(self, name):
-        """Get the many associated records, named by name, assuming 'has_many_generic' has been called"""
+        """Get the many associated records, named by name, assuming
+        'has_many_generic' has been called
+        """
         results = self.__has_many_generic[name]["model"].where({
             "parent_class": self.model.name,
             "parent_id": self.id})
         return results
 
     def __getattr__(self, name):
-        """Get an association by name automagically (assumes has_* method has been called at some point)"""
+        """Get an association by name automagically (assumes has_* method has
+        been called at some point)
+        """
         # print("method missing for " + name)
 
         def __get_one_wrapper(name):
@@ -112,9 +123,9 @@ class Record:
         def __get_many_generic_wrapper(name):
             return self.get_many_generic(name)
 
-        if self.id == None and name in self.__has_one:
+        if self.id is None and name in self.__has_one:
             return None
-        elif self.id == None and \
+        elif self.id is None and \
             (name in self.__has_many or
              name in self.__has_many_generic):
             return []
@@ -129,39 +140,42 @@ class Record:
                             "' of " + self.model.name +
                             " not found.")
 
+    def is_association(self, prop):
+        """Returns true if prop is the name of an association"""
+        return prop in self.__has_many or \
+               prop in self.__has_many_generic or \
+               prop in self.__has_one
+
     def to_json(self, include=[], exclude=[]):
         """Convert the record to json"""
 
         j = {"rid": self.rid}
 
-        if not type(include) is list:
+        if not isinstance(include, list):
             raise Exception(
                 "include argument must be a list in " + str(type(self)) + ".to_json")
 
-        if not type(exclude) is list:
+        if not isinstance(exclude, list):
             raise Exception(
                 "exclude argument must be a list in " + str(type(self)) + ".to_json")
 
-        for property, value in vars(self).items():
-            if property not in exclude and \
+        for prop, value in vars(self).items():
+            if prop not in exclude and \
                not aq.utils.is_record(value) and \
-               not re.match(r'\_', property) and \
-               not property == 'model' and \
-               not property in self.__has_many and \
-               not property in self.__has_many_generic and \
-               not property in self.__has_one:
-                j[property] = value
+               not re.match(r'\_', prop) and \
+               not prop == 'model' and \
+               not self.is_association(prop):
+                j[prop] = value
 
-        for property in include:
-            if type(property) is str:
-                value = getattr(self, property)
-                if value and property in self.__has_one:
-                    j[property] = getattr(self, property).to_json()
-                elif value and property in self.__has_many or property in self.__has_many_generic:
-                    j[property] = [v.to_json()
-                                   for v in getattr(self, property)]
-            elif type(property) is dict:
-                for name, val in property.items():
+        for prop in include:
+            if isinstance(prop, str):
+                value = getattr(self, prop)
+                if value and prop in self.__has_one:
+                    j[prop] = getattr(self, prop).to_json()
+                elif value and prop in self.__has_many or prop in self.__has_many_generic:
+                    j[prop] = [v.to_json() for v in getattr(self, prop)]
+            elif isinstance(prop, dict):
+                for name, val in prop.items():
                     value = getattr(self, name)
                     if value and name in self.__has_one:
                         j[name] = value.to_json(include=val)

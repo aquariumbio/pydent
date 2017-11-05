@@ -10,6 +10,8 @@ class CodeRecord(aq.Record):
 
     def __init__(self, model, data):
         """Make a new CodeRecord"""
+        self.parent_id = None
+        self.updated_at = None
         super(CodeRecord, self).__init__(model, data)
         self.has_one("user", aq.User)
 

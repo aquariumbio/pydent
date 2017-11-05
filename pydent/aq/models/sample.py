@@ -21,9 +21,9 @@ class SampleRecord(aq.Record):
 
     def field_value(self, name):
         """Return the field value names 'name'"""
-        for fv in self.field_values:
-            if fv.name == name:
-                return fv
+        for field_value in self.field_values:
+            if field_value.name == name:
+                return field_value
         return None
 
 
@@ -36,14 +36,13 @@ class SampleModel(aq.Base):
         super(SampleModel, self).__init__("Sample")
 
     def create(self, samples):
-        """Create new samples in the Aquariu database"""
+        """Create new samples in the Aquarium database"""
         json = [s.to_json() for s in samples]
-        print(json)
-        r = aq.http.post('/browser/create_samples', {"samples": json})
-        if "errors" in r:
-            raise Exception(", ".join(r["errors"]))
+        result = aq.http.post('/browser/create_samples', {"samples": json})
+        if "errors" in result:
+            raise Exception(", ".join(result["errors"]))
         else:
-            return [aq.Sample.record(s) for s in r["samples"]]
+            return [aq.Sample.record(s) for s in result["samples"]]
 
 
 Sample = SampleModel()

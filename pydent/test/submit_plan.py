@@ -18,7 +18,7 @@ else:
 
 # Get a sample
 print("Setting up sample")
-primer = aq.Sample.find_by_name("test1")
+primer = aq.Sample.find_by_name("optimization-test-fragment-forward primer")
 ly_primer = aq.ObjectType.find_by_name("Lyophilized Primer")
 primer_aliquot = aq.ObjectType.find_by_name("Primer Aliquot")
 primer_stock = aq.ObjectType.find_by_name("Primer Stock")
@@ -52,7 +52,7 @@ for w in plan.wires:
 
 print("Validate the plan")
 # Validate the plan
-if not aq.algorithms.validate.plan(plan):
+if not plan.validate():
     print("The plan is not valid. Please address the errors and try again.")
     for msg in aq.algorithms.validate.messages():
         print("  " + msg)

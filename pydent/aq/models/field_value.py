@@ -17,6 +17,7 @@ class FieldValueRecord(aq.Record):
         self.role = None
         self.field_type = None
         self.allowable_field_type_id = None
+        self.allowable_field_type = None
         super(FieldValueRecord, self).__init__(model, data)
         self.has_one("field_type", aq.FieldType)
         self.has_one("allowable_field_type", aq.AllowableFieldType)
@@ -61,7 +62,7 @@ class FieldValueRecord(aq.Record):
             object_type = container
 
         if item and container and item.object_type_id != container.id:
-            raise Exception("Item " + str(item.id) +
+            raise Exception("Item " + str(item.id) + \
                             "is not in container " + container.name)
 
         for aft in self.field_type.allowable_field_types:

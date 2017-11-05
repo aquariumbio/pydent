@@ -29,8 +29,8 @@ class UserModel(aq.Base):
     @property
     def current(self):
         """Get the currently logged in user"""
-        r = aq.http.get('/json/current')
-        return self.record(r)
+        result = aq.http.get('/json/current')
+        return self.record(result)
 
 
 User = UserModel()

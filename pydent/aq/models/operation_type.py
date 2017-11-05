@@ -19,18 +19,18 @@ class OperationTypeRecord(aq.Record):
     def code(self, name):
         """Return the code named 'name' associated with the operation type"""
         codes = [code for code in self.codes if code.name == name]
-        if len(self.codes) > 0:
-            return self.codes[len(self.codes) - 1]
+        if len(codes) > 0:
+            return codes[len(codes) - 1]
         else:
             return None
 
-    def instance(self, x=None, y=None):
+    def instance(self, x_pos=None, y_pos=None):
         """Get a new operation whose type is this operation type"""
         operation = aq.Operation.record({
             "operation_type_id": self.id,
             "status": "planning",
-            "x": x,
-            "y": y
+            "x": x_pos,
+            "y": y_pos
         })
         operation.operation_type = self
         operation.init_field_values()

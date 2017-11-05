@@ -3,18 +3,16 @@
 import aq
 
 
-class PlanRecord(aq.PlanEquivalence, aq.Record):
+class PlanRecord(aq.PlanEquivalence, aq.PlanValidator, aq.Record):
 
     """Plan: Contains operations and wires"""
 
     def __init__(self, model, data):
         """Make a new PlanRecord"""
-        self.name = "Untitled Plan"
         self.id = None
+        self.name = "Untitled Plan"
         self.status = "planning"
-        self.equivalences = None
-        self.layout = {"id": 0, "parent_id": -
-                       1, "wires": [], "name": "no name"}
+        self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no name"}
         super(PlanRecord, self).__init__(model, data)
         self.has_many_generic("data_associations", aq.DataAssociation)
         self.has_many(
@@ -50,8 +48,7 @@ class PlanRecord(aq.PlanEquivalence, aq.Record):
         """Try to run the plan"""
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
-        r = aq.http.get('/plans/start/' + str(self.id) +
-                        budget_query + user_query)
+        aq.http.get('/plans/start/' + str(self.id) + budget_query + user_query)
 
     def show(self):
         """Print the plan nicely"""
@@ -74,10 +71,10 @@ class PlanRecord(aq.PlanEquivalence, aq.Record):
         """Save the plan"""
         if not self.id:
             user_query = "?user_id=" + str(aq.User.current.id)
-            r = aq.http.post('/plans.json' + user_query, self._to_save_json())
-            if "errors" in r:
-                raise Exception("Could not save plan: " + str(r["errors"]))
-            new_plan = aq.Plan.record(r)
+            result = aq.http.post('/plans.json' + user_query, self._to_save_json())
+            if "errors" in result:
+                raise Exception("Could not save plan: " + str(result["errors"]))
+            new_plan = aq.Plan.record(result)
             self.id = new_plan.id
             self.operations = new_plan.operations
             self.wires = new_plan.wires
@@ -88,11 +85,11 @@ class PlanRecord(aq.PlanEquivalence, aq.Record):
 
     def estimate_cost(self):
         """Estimate the cost of the plan"""
-        r = aq.http.post('/launcher/estimate', {"id": self.id})
-        for op in self.operations:
-            for c in r["costs"]:
-                if c["id"] == op.id:
-                    op.cost = c
+        result = aq.http.post('/launcher/estimate', {"id": self.id})
+        for operation in self.operations:
+            for cost in result["costs"]:
+                if cost["id"] == operation.id:
+                    operation.cost = cost
 
     def field_values(self):
         """Return all field values of all operations in the plan"""
@@ -110,11 +107,11 @@ class PlanRecord(aq.PlanEquivalence, aq.Record):
     def all_data_associations(self):
         """Return all ata associations of all operations and items associated with the plan"""
         das = self.data_associations
-        for op in self.operations:
-            das = das + op.data_associations
-            for fv in op.field_values:
-                if fv.item:
-                    das = das + fv.item.data_associations
+        for operation in self.operations:
+            das = das + operation.data_associations
+            for field_value in operation.field_values:
+                if field_value.item:
+                    das = das + field_value.item.data_associations
         return das
 
 

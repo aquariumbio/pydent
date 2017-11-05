@@ -2,18 +2,18 @@
 
 import aq
 
-_x = 16
-_y = 32
+X = 16
+Y = 32
 
 def next_position():
     """Return the next position of an operation for use in Aquarium's Planner GUI"""
-    global _x
-    global _y
-    _x += 176
-    if _x > 800:
-        _x = 0
-        _y += 46
-    return [_x, _y]
+    global X
+    global Y
+    X += 176
+    if X > 800:
+        X = 0
+        Y += 46
+    return [X, Y]
 
 
 class OperationRecord(aq.Record):
@@ -123,11 +123,11 @@ class OperationRecord(aq.Record):
         """
         j = super(OperationRecord, self).to_json(
             include=include, exclude=exclude)
-        p = next_position()
+        pos = next_position()
         j["routing"] = j["routing"] if "routing" in j else {}
         j["parent"] = j["parent"] if "parent" in j else 0
-        j["x"] = j["x"] if "x" in j else p[0]
-        j["y"] = j["y"] if "y" in j else p[1]
+        j["x"] = j["x"] if "x" in j else pos[0]
+        j["y"] = j["y"] if "y" in j else pos[1]
         return j
 
 

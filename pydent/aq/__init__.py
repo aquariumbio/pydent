@@ -4,9 +4,9 @@ from aq.http import login
 
 from aq.base import Base
 from aq.record import Record
-from aq.utils import utils
+import aq.utils
 
-import aq.algorithms.validate
+from aq.algorithms.validate import PlanValidator
 from aq.algorithms.plan_equivalence import PlanEquivalence
 
 from aq.models.account import Account, AccountRecord

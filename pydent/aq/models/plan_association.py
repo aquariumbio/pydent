@@ -4,7 +4,6 @@ import aq
 
 
 class PlanAssociationRecord(aq.Record):
-
     """PlanAssociationRecord is a join table that associations plans with
     operations
     """
@@ -17,6 +16,8 @@ class PlanAssociationRecord(aq.Record):
 
 
 class PlanAssociationModel(aq.Base):
+
+    """PlanAssociationModel class, generates PlanAssociationRecords"""
 
     def __init__(self):
         """Make a new PlanAssociationModel"""

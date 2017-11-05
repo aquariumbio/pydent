@@ -1,7 +1,7 @@
 """Job"""
 
-import aq
 import json
+import aq
 
 class JobRecord(aq.Record):
 

@@ -16,7 +16,7 @@ class LibraryRecord(aq.Record):
         self.has_many_generic("field_types", aq.FieldType)
         self.has_many_generic("codes", aq.Code)
 
-    def code(self, name):
+    def code(self):
         """Get the code named 'name' associated with the library"""
         if len(self.codes) > 0:
             return self.codes[len(self.codes) - 1]

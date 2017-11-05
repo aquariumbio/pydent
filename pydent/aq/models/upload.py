@@ -22,8 +22,8 @@ class UploadRecord(aq.Record):
     @property
     def data(self):
         """Fetch content from S3"""
-        r = requests.get(self.temp_url)
-        return r.content
+        result = requests.get(self.temp_url)
+        return result.content
 
 
 class UploadModel(aq.Base):

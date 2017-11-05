@@ -1,7 +1,7 @@
 """Data Associations"""
 
-import aq
 import json
+import aq
 
 class DataAssociationRecord(aq.Record):
 
@@ -23,11 +23,11 @@ class DataAssociationRecord(aq.Record):
         else:
             return None
 
-    def to_json(self):
+    def to_json(self, include=[], exclude=[]):
         """Overide the wild type to_json method so that the 'object' attribute is
         converted from a string into a hash.
         """
-        j = super(DataAssociationRecord, self).to_json()
+        j = super(DataAssociationRecord, self).to_json(include, exclude)
         j["object"] = {self.key: self.value}
         if "url" in j:
             del j["url"]

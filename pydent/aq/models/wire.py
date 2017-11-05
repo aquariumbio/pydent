@@ -38,6 +38,8 @@ class WireRecord(aq.Record):
 
 class WireModel(aq.Base):
 
+    """WireModel class, generates WireRecord"""
+
     def __init__(self):
         """Make a new WireModel"""
         super(WireModel, self).__init__("Wire")

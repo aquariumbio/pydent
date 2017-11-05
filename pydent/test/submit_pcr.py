@@ -14,7 +14,7 @@ fragment_stock = aq.ObjectType.find_by_name("Fragment Stock")
 pcr.set_output(fragment,fragment_stock)
 pcr.show()
 
-if not aq.algorithms.validate.plan(pcr):
+if not pcr.validate():
     print("The plan is not valid. Please address the errors and try again.")
     for msg in aq.algorithms.validate.messages():
         print("  " + msg)
