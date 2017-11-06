@@ -1,7 +1,9 @@
-import pytest
-import os
 import json
-from pydent.aq import AqSession
+import os
+
+import pytest
+
+from pydent import AqSession
 
 
 @pytest.fixture(scope="module")
@@ -24,9 +26,8 @@ def config():
 
 
 @pytest.fixture(scope="module")
-def load_session():
+def session():
     """
     Creates a session from the configuration.
     """
-    AqSession().create_from_config_file(config_path())
-    return 5
+    return AqSession(**config())

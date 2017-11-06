@@ -1,9 +1,9 @@
-import pytest
-from pydent.aq import *
 import uuid
 
+from pydent import *
 
-def test_code_retrieval(load_session):
+
+def test_code_retrieval(session):
 
     ot = OperationType.find_by_name("Test Code API")
     codes = ot.codes

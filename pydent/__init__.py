@@ -1,3 +1,2 @@
-__version__ = "0.0.2"
-
-from .aq import *
+from .aqsession import AqSession
+from .utils import utils

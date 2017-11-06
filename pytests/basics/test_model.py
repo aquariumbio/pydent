@@ -1,5 +1,4 @@
-import pytest
-from pydent.aq import SampleType, Library
+from pydent.models import SampleType, Library
 
 # TODO: find models from BaseHook.bases.values() and add fixture as argument
 
