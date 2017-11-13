@@ -51,7 +51,7 @@ import json
 from marshmallow import fields
 
 from pydent.modelbase import ModelBase
-from pydent.relationships import One, Many, HasOne, HasMany
+from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough
 from pydent.marshaller import add_schema
 
 
@@ -216,18 +216,22 @@ class SampleType(ModelBase):
 @add_schema
 class Plan(ModelBase):
     class Fields:
-        data_associations = Many("DataAssociation", params={
-            "parent_id": lambda self: self.id})
+        data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
+        plan_associations = HasMany("PlanAssociation", "Plan")
+        operations = Many("Operation", params=lambda self: {"id": x.operation_id for x in self.plan_associations})
 
     def __init__(self, data=None):
+        # self.id = None
+        # self.name = None
+        # self.status = "planning"
+        # self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no_name"}
+        # self.operations = []
+        # self.source = None
+        # self.destination = None
         super().__init__(data=data)
-        self.id = None
-        self.name = None
-        self.status = "planning"
-        self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no_name"}
-        self.operations = []
-        self.source = None
-        self.destination = None
+
+    def callback(self):
+        pass
 
     def add_operations(self, ops):
         self.operations = ops
@@ -242,3 +246,21 @@ class Plan(ModelBase):
 
     def submit(self, user, budget):
         self.session.create.plan(self, user, budget)
+
+
+@add_schema
+class Operation(ModelBase):
+
+    class Fields:
+        field_values = Many("FieldValue", params=lambda self: {"parend_id": self.id})
+        data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
+        operation_type = One("OperationType")
+        job_associations = HasMany("JobAssociation", "Operation")
+        jobs = HasManyThrough("Job", "JobAssociation")
+
+@add_schema
+class PlanAssociation(ModelBase):
+
+    class Fields:
+        plan = HasOne("Plan")
+        operation = HasOne("Operation")

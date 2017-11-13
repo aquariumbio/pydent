@@ -16,7 +16,7 @@ class ModelRegistry(type):
     def get_model(model_name):
         """Gets model by model_name"""
         if model_name not in ModelRegistry.models:
-            raise ModelNotFoundError
+            raise ModelNotFoundError("Model \"{}\" not found.".format(model_name))
         else:
             return ModelRegistry.models[model_name]
 
@@ -56,6 +56,10 @@ class MarshallerBase(metaclass=ModelRegistry):
         """Dumps the model instance to JSON"""
         schema = self.__class__.get_schema(*schema_args, **schema_kwargs)
         return schema.dump(self).data
+
+    def dumps(self, *schema_args, **schema_kwargs):
+        json_data = self.dump(*schema_args, **schema_kwargs)
+        return str(json_data)
 
     def _fullfill(self, field):
         """

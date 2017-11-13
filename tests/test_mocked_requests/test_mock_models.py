@@ -21,7 +21,7 @@ def data():
 
 
 @pytest.fixture(scope="function")
-def test_something(monkeypatch, mock_post):
+def test(monkeypatch, mock_post):
 
     # Create a mock session
     monkeypatch.setattr(requests, "post", mock_post)

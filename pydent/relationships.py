@@ -19,7 +19,7 @@ class One(Relation):
         :type kwargs: ...
         """
         super().__init__(model, *args, callback="find",
-                         params=(lambda self: getattr(self, attr),), **kwargs)
+                         params=(lambda slf: getattr(slf, attr),), **kwargs)
 
 
 class Many(Relation):
@@ -57,12 +57,26 @@ class HasOne(One):
         """
         underscore = inflection.underscore(model)
         iden = "{}_{}".format(underscore, attr)
-        super().__init__(model, param=(lambda self: getattr(self, iden)))
+        super().__init__(model, param=(lambda slf: getattr(slf, iden)))
 
+
+class HasManyThrough(Many):
+
+    def __init__(self, model, through, attr="id"):
+
+        # e.g. Operation >> operation_id
+        iden = "{}_{}".format(inflection.underscore(model), attr)
+
+        # e.g. PlanAssociation >> plan_associations
+        through_model_attr = inflection.pluralize(inflection.underscore(through))
+
+        # e.g. {"id": x.operation_id for x in self.plan_associations
+        params = lambda slf: {attr: [getattr(x, iden) for x in getattr(slf, through_model_attr)]}
+        super().__init__(model, params=params)
 
 class HasMany(Many):
 
-    def __init__(self, model, ref_model, attr="id"):
+    def __init__(self, model, ref_model, attr="id", through=None):
         """
         HasOne initializer. Uses the "get_one_generic" callback and automatically
         assigns attribute as in the following:
@@ -79,6 +93,11 @@ class HasMany(Many):
         underscore = inflection.underscore(ref_model)
         iden = "{}_{}".format(underscore, attr)
 
-        # {"id": self.id}
-        params = lambda self: {iden: getattr(self, attr)}
+        params = ()
+        if through:
+            # e.g.
+            through_model_attr = inflection.pluralize(inflection.underscore(through))
+            params = lambda slf: {attr: [getattr(x, iden) for x in getattr(slf, through_model_attr)]}
+        else:
+            params = lambda slf: {iden: getattr(slf, attr)}
         super().__init__(model, params=params)

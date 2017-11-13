@@ -33,11 +33,11 @@ def test_model():
     data = dict(zip(keys, values))
     m = MyModel.load(data)
 
-    return m, ignored, loadonly, data
+    return m, ignored, loadonly, data, MyModel
 
 
 def test_fields_ignored(test_model):
-    m, ignored, loadonly, data = test_model
+    m, ignored, loadonly, data, MyModel = test_model
     keys = list(data.keys())
 
     # Check model for attributes
@@ -49,7 +49,7 @@ def test_fields_ignored(test_model):
 
 
 def test_fields_dumped(test_model):
-    m, ignored, loadonly, data = test_model
+    m, ignored, loadonly, data, MyModel = test_model
     keys = list(data.keys())
 
     # Check dumped JSON
@@ -61,3 +61,13 @@ def test_fields_dumped(test_model):
         assert not field in d
 
 
+def test_load_dump_repeat(test_model):
+    m, ignored, loadonly, data, MyModel = test_model
+    keys = list(data.keys())
+
+    # Check dumped JSON
+    fields_expected_in_dump = set(keys) - set(ignored) - set(loadonly)
+    d = m.dump()
+    m = MyModel.load(data)
+    m.dump()
+    m = MyModel.load(data)

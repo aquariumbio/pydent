@@ -4,5 +4,5 @@ Core modules for pydent/Trident
 
 """
 
-from pydent.session import AqSession
-from pydent.models import *
+from .session import AqSession
+from .models import *

@@ -18,7 +18,8 @@ Interfaces are accessed by:
 from pydent.session.aqhttp import AqHTTP
 from pydent.marshaller import ModelRegistry
 from pydent.session.interfaces import ModelInterface, CreateInterface, UpdateInterface
-
+from prompt_toolkit.shortcuts import confirm
+from prompt_toolkit import prompt
 # TODO: We want to prevent the user from accessing aqhttp
 # TODO: Could store encrypted key in class that user doesn't have access to. Key would need to be passed to AqHTTP object in order to work...
 # TODO: Or, aqhttp would only work with the session interface that created it somehow
@@ -38,12 +39,37 @@ class AqSession(object):
         self.__aqhttp = AqHTTP(login, password, aquarium_url)
         self.__current_user = None
 
+    @classmethod
+    def interactive(cls):
+        confirm_register = False
+        while not confirm_register:
+            password = None
+            confirm_password = None
+            username = prompt('enter username: ')
+            url = prompt('enter url: ')
+            msg = ''
+            while confirm_password is None or password != confirm_password:
+                if msg:
+                    print(msg)
+                password = prompt('enter password: ', is_password=True)
+                confirm_password = prompt('confirm password: ', is_password=True)
+                msg = "passwords did not match!"
+            confirm_register = confirm('Confirm registration for {}@{}? (y/n): '.format(username, url))
+            print()
+        print("username {} registered".format(username))
+        login = dict(login=username, password=password, aquarium_url=url)
+        return cls(**login)
+
     @property
     def current_user(self):
         if self.__current_user is None:
             self.__current_user = self.User.where(
                 {"login": self.__aqhttp.login})[0]
         return self.__current_user
+
+    @property
+    def models(self):
+        return list(ModelRegistry.models.keys())
 
     def __getattr__(self, item):
         if item == "create":
