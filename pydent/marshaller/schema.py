@@ -36,14 +36,19 @@ class DynamicSchema(Schema):
         model_class = getattr(self.__class__, MODEL_CLASS)
         model_inst = model_class(data=data)
         setattr(model_inst, EXTRA_FIELDS, self.fields)
+        model_inst.raw = data
         return model_inst
 
     @pre_dump
     def add_extra_fields_to_dump(self, obj):
         # add extra fields if this object was loaded with extra data (aka if "load_all"=True in model meta)
         if hasattr(obj, EXTRA_FIELDS):
-            extra_fields = list(obj._loaded_fields.keys())
-            self.opts.additional = set(list(self.opts.additional) + extra_fields)
+            # copy the declared fields
+            declared_fields = dict(self.declared_fields)
+            self.declared_fields = declared_fields
+
+            # update the declared fields
+            self.declared_fields.update(obj._loaded_fields)
         return obj
 
     def load_missing(self, data):
