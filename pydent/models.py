@@ -53,7 +53,7 @@ from marshmallow import fields
 from pydent.modelbase import ModelBase
 from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough
 from pydent.marshaller import add_schema
-
+from pydent.utils import magiclist
 
 @add_schema
 class Account(ModelBase):
@@ -152,6 +152,7 @@ class FieldValue(ModelBase):
             return self.item
 
     # TODO: add compatible items
+    @magiclist
     def compatible_items(self):
         pass
 
@@ -202,6 +203,15 @@ class Sample(ModelBase):
         """Return the identifier used by Aquarium in autocompletes"""
         return "{}: {}".format(self.id, self.name)
 
+    def field_value(self, name):
+        for field_value in self.field_values:
+            if field_value.name == name:
+                return field_value
+        return None
+
+    @property
+    def field_names(self):
+        return [fv.name for fv in self.field_value]
 
 @add_schema
 class SampleType(ModelBase):
@@ -265,16 +275,14 @@ class Operation(ModelBase):
         return self.plans[0]
 
     @property
+    @magiclist
     def inputs(self):
         return [fv for fv in self.field_values if fv.role == 'input']
 
     @property
+    @magiclist
     def outputs(self):
         return [fv for fv in self.field_values if fv.role == 'output']
-
-    @property
-    def sister_operations(self):
-        plan_associations = self.session.PlanAssociation.where
 
 
 @add_schema
@@ -290,3 +298,20 @@ class PlanAssociation(ModelBase):
     class Fields:
         plan = HasOne("Plan")
         operation = HasOne("Operation")
+
+
+@add_schema
+class Wire(ModelBase):
+
+    class Fields:
+        # load_only=False, will force dumping of FieldValues here...
+        source = One("FieldValue", dump_to="from", load_only=False, params=lambda self: self.from_id)
+        destination = One("FieldValue", dump_to="to", load_only=False, params=lambda self: self.to_id)
+
+    def show(self, pre=""):
+        """Show the wire nicely"""
+        print(pre + self.source.operation.operation_type.name +
+              ":" + self.source.name +
+              " --> " + self.destination.operation.operation_type.name +
+              ":" + self.destination.name)
+

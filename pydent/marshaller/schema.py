@@ -1,4 +1,4 @@
-from marshmallow import SchemaOpts, Schema, post_load, fields, pre_load, pre_dump
+from marshmallow import SchemaOpts, Schema, post_load, fields, pre_load, pre_dump, post_dump
 
 from pydent.marshaller.relation import Relation
 
@@ -52,6 +52,10 @@ class DynamicSchema(Schema):
             # update the declared fields
             self.declared_fields.update(obj._loaded_fields)
         return obj
+
+    @post_dump
+    def foo(self, data):
+        return data
 
     def load_missing(self, data):
         """Includes missing fields not explicitly defined in the schema"""

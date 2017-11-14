@@ -37,9 +37,6 @@ class ModelBase(MarshallerBase):
     """Base class for Aquarium models. Can create an instance from JSON using "load."
     May contain reference to the session object that created it."""
 
-    Schema = None
-    relationships = {}
-
     def __init__(self, data=None):
         if data is None:
             data = {}

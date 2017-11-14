@@ -1,6 +1,6 @@
 from pydent.marshaller.schema import MODEL_SCHEMA
 from pydent.marshaller.exceptions import ModelNotFoundError, CallbackNotFoundError
-
+from pydent.utils import magiclist
 
 class ModelRegistry(type):
     """Stores a list of models that can be accessed by name."""
@@ -47,6 +47,7 @@ class MarshallerBase(metaclass=ModelRegistry):
         return cls.schema().relationships
 
     @classmethod
+    @magiclist
     def load(cls, *schema_args, **schema_kwargs):
         """Loads an instance from JSON"""
         schema = cls.get_schema(*schema_args, **schema_kwargs)

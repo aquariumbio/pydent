@@ -24,7 +24,9 @@ class Relation(Nested):
         :param kwargs: rest of the parameters
         :type kwargs:
         """
-        super().__init__(model, *args, load_only=True, **kwargs) #note that "load_only" is important
+        if kwargs.get("load_only", None) is None:
+            kwargs["load_only"] = True # note that "load_only" is important and prevents dumping of all relationships
+        super().__init__(model, *args, **kwargs)
         self.callback = callback
 
         # force params to be an iterable
@@ -32,5 +34,10 @@ class Relation(Nested):
             params = (params,)
         self.params = params
 
+    def _serialize(self, nested_obj, attr, obj):
+        return nested_obj.dump()
+
     def __repr__(self):
         return "<Relation (model={}, callback={}, params={})>".format(self.nested, self.callback, self.params)
+
+

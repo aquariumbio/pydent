@@ -42,3 +42,7 @@ def test_plan(session):
     pa = session.PlanAssociation.find(7116)
     print(pa)
     pa.dump()
+
+def test_wire(session):
+    w = session.Wire.find(10)
+    print(w.dump())

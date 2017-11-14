@@ -45,7 +45,7 @@ class Many(Relation):
 
 class HasOne(One):
 
-    def __init__(self, model, attr="id"):
+    def __init__(self, model, attr="id", **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and automatically
         assigns attribute as in the following:
@@ -59,14 +59,14 @@ class HasOne(One):
         """
         underscore = inflection.underscore(model)
         self.iden = "{}_{}".format(underscore, attr)
-        super().__init__(model, params=(lambda slf: getattr(slf, self.iden)))
+        super().__init__(model, params=(lambda slf: getattr(slf, self.iden)), **kwargs)
 
     def __repr__(self):
         return "<HasOne (model={}, params=lambda self: self.{})>".format(self.nested, self.iden)
 
 class HasManyThrough(Many):
 
-    def __init__(self, model, through, attr="id"):
+    def __init__(self, model, through, attr="id", **kwargs):
 
         # e.g. Operation >> operation_id
         iden = "{}_{}".format(inflection.underscore(model), attr)
@@ -76,11 +76,11 @@ class HasManyThrough(Many):
 
         # e.g. {"id": x.operation_id for x in self.plan_associations
         params = lambda slf: {attr: [getattr(x, iden) for x in getattr(slf, through_model_attr)]}
-        super().__init__(model, params=params)
+        super().__init__(model, params=params, **kwargs)
 
 class HasMany(Many):
 
-    def __init__(self, model, ref_model, attr="id", through=None):
+    def __init__(self, model, ref_model, attr="id", through=None, **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and automatically
         assigns attribute as in the following:
@@ -104,4 +104,4 @@ class HasMany(Many):
             params = lambda slf: {attr: [getattr(x, iden) for x in getattr(slf, through_model_attr)]}
         else:
             params = lambda slf: {iden: getattr(slf, attr)}
-        super().__init__(model, params=params)
+        super().__init__(model, params=params, **kwargs)
