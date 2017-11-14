@@ -95,19 +95,19 @@ class Code(ModelBase):
 class Collection(ModelBase):
     class Fields:
         object_type = HasOne("ObjectType")
-        data_associations = Many("DataAssociation", params={
-            "parent_id": lambda self: self.id})
+        data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
 
 
 @add_schema
 class DataAssociation(ModelBase):
     class Fields:
+        # automatically deserialize string to a json for 'object'
+        object = fields.Function(serialize=lambda x: x.object, deserialize=lambda x: json.loads(x))
         upload = HasOne("Upload")
 
     @property
     def value(self):
-        obj = json.loads(self.object)
-        return obj.get(self.key, None)
+        return self.object.get(self.key, None)
 
 
 @add_schema
@@ -127,13 +127,12 @@ class FieldValue(ModelBase):
     class Fields:
         field_type = HasOne("FieldType")
         allowable_field_type = HasOne("AllowableFieldType")
-        item = One("Item", attr=lambda self: self.child_item_id)
-        sample = One("Sample", attr=lambda self: self.child_sample_id)
-        operation = One("Operation", attr=lambda self: self.parent_id)
-        parent_sample = One("ParentSample", attr=lambda self: self.parent_id)
+        item = One("Item", params=lambda self: self.child_item_id)
+        sample = One("Sample", params=lambda self: self.child_sample_id)
+        operation = One("Operation", params=lambda self: self.parent_id)
+        parent_sample = One("ParentSample", params=lambda self: self.parent_id)
 
     def __init__(self, data=None):
-        super().__init__(data=data)
         self.value = None
         self.child_item_id = None
         self.child_sample_id = None
@@ -143,6 +142,7 @@ class FieldValue(ModelBase):
         self.field_type = None
         self.allowable_field_type_id = None
         self.allowable_field_type = None
+        super().__init__(data=data)
 
     def choose_item(self):
         items = self.compatible_items()
@@ -171,7 +171,7 @@ class Item(ModelBase):
     class Fields:
         sample = HasOne("Sample")
         object_type = HasOne("ObjectType")
-        data_associations = HasMany("DataAssociation", "Item")
+        data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
 
 
 @add_schema
@@ -221,13 +221,13 @@ class Plan(ModelBase):
         operations = Many("Operation", params=lambda self: {"id": x.operation_id for x in self.plan_associations})
 
     def __init__(self, data=None):
-        # self.id = None
-        # self.name = None
-        # self.status = "planning"
-        # self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no_name"}
-        # self.operations = []
-        # self.source = None
-        # self.destination = None
+        self.id = None
+        self.name = None
+        self.status = "planning"
+        self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no_name"}
+        self.operations = []
+        self.source = None
+        self.destination = None
         super().__init__(data=data)
 
     def callback(self):
@@ -252,11 +252,37 @@ class Plan(ModelBase):
 class Operation(ModelBase):
 
     class Fields:
-        field_values = Many("FieldValue", params=lambda self: {"parend_id": self.id})
+        field_values = Many("FieldValue", params=lambda self: {"parent_id": self.id})
         data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
         operation_type = One("OperationType")
         job_associations = HasMany("JobAssociation", "Operation")
         jobs = HasManyThrough("Job", "JobAssociation")
+        plan_associations = HasMany("PlanAssociation", "Operation")
+        plans = HasManyThrough("Plan", "PlanAssociation")
+
+    @property
+    def plan(self):
+        return self.plans[0]
+
+    @property
+    def inputs(self):
+        return [fv for fv in self.field_values if fv.role == 'input']
+
+    @property
+    def outputs(self):
+        return [fv for fv in self.field_values if fv.role == 'output']
+
+    @property
+    def sister_operations(self):
+        plan_associations = self.session.PlanAssociation.where
+
+
+@add_schema
+class OperationType(ModelBase):
+    class Fields:
+        operations = HasMany("Operation", "OperationType")
+        field_types = Many("Operation", params=lambda self: {"parent_id": self.id})
+        codes = Many("Code", params=lambda self: {"parent_id": self.id})
 
 @add_schema
 class PlanAssociation(ModelBase):

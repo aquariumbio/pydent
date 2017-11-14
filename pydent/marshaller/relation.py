@@ -24,10 +24,13 @@ class Relation(Nested):
         :param kwargs: rest of the parameters
         :type kwargs:
         """
-        super().__init__(model, *args, **kwargs)
-        self.using = callback
+        super().__init__(model, *args, load_only=True, **kwargs) #note that "load_only" is important
+        self.callback = callback
 
         # force params to be an iterable
         if not (isinstance(params, list) or isinstance(params, tuple)):
             params = (params,)
         self.params = params
+
+    def __repr__(self):
+        return "<Relation (model={}, callback={}, params={})>".format(self.nested, self.callback, self.params)

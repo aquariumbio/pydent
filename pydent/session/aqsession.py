@@ -39,6 +39,10 @@ class AqSession(object):
         self.__aqhttp = AqHTTP(login, password, aquarium_url)
         self.__current_user = None
 
+    def set_timeout(self, timeout_in_seconds):
+        """Sets the request timeout."""
+        self.__aqhttp.timeout = timeout_in_seconds
+
     @classmethod
     def interactive(cls):
         confirm_register = False

@@ -49,7 +49,7 @@ class AqHTTP(object):
     Instead, a SessionInterface should be the object that makes these requests.
     """
 
-    TIMEOUT = 5
+    TIMEOUT = 10
 
     def __init__(self, login, password, aquarium_url):
         """
@@ -88,7 +88,8 @@ class AqHTTP(object):
                 self.aquarium_url, e.args[0]))
         except requests.exceptions.ConnectTimeout as e:
             raise TridentTimeoutError("Aquarium took too long to respond during login. Make sure the url "
-                                      "{} is correct.".format(self.aquarium_url))
+                                      "{} is correct. Alternatively, use Session.set_timeout to increase"
+                                      "the request timeout.".format(self.aquarium_url))
         headers = res.headers
         if 'set-cookie' not in headers:
             raise TridentLoginError(
@@ -110,21 +111,27 @@ class AqHTTP(object):
         return "remember_token=" + rtok + "; " + header
 
     @to_json
-    def post(self, path, json_data=None, **kwargs):
+    def post(self, path, json_data=None, timeout=None, **kwargs):
         """ Makes a post request to the session """
-        return self._requests_session.post(os.path.join(self.aquarium_url, path), json=json_data, timeout=self.timeout,
+        if timeout is None:
+            timeout = self.timeout
+        return self._requests_session.post(os.path.join(self.aquarium_url, path), json=json_data, timeout=timeout,
                                            **kwargs)
 
     @to_json
-    def put(self, path, json_data=None, **kwargs):
+    def put(self, path, json_data=None, timeout=None, **kwargs):
         """ Makes a put request to the session """
-        return self._requests_session.put(os.path.join(self.aquarium_url, path), json=json_data, timeout=self.timeout,
+        if timeout is None:
+            timeout = self.timeout
+        return self._requests_session.put(os.path.join(self.aquarium_url, path), json=json_data, timeout=timeout,
                                           **kwargs)
 
     @to_json
-    def get(self, path, **kwargs):
+    def get(self, path, timeout=None, **kwargs):
         """ Makes a get request to the session """
-        return self._requests_session.get(os.path.join(self.aquarium_url, path), timeout=self.timeout ** kwargs)
+        if timeout is None:
+            timeout = self.timeout
+        return self._requests_session.get(os.path.join(self.aquarium_url, path), timeout=timeout ** kwargs)
 
     def __repr__(self):
         return "<{}({}, {})>".format(self.__class__.__name__, self.login, self.aquarium_url)

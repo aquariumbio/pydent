@@ -21,6 +21,8 @@ EXTRA_FIELDS = "_loaded_fields"
 RELATIONSHIPS = "relationships"
 
 
+# TODO: ability to dump hierarchical data 
+
 class DynamicSchema(Schema):
     """Schema that automatically loads missing values from data"""
 

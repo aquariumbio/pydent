@@ -72,7 +72,7 @@ class MarshallerBase(metaclass=ModelRegistry):
         """
 
         # get function
-        fxn = field.using
+        fxn = field.callback
         if not callable(fxn):
             try:
                 fxn = getattr(self, fxn)

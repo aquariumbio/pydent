@@ -5,7 +5,7 @@ from pydent.marshaller import Relation
 class One(Relation):
     """Defines a single relationship with another model."""
 
-    def __init__(self, model, *args, attr=None, **kwargs):
+    def __init__(self, model, *args, params=None, **kwargs):
         """
         One initializer. Uses "get_one_generic" callback.
 
@@ -18,8 +18,10 @@ class One(Relation):
         :param kwargs: other kwargs for fields.Nested relationship
         :type kwargs: ...
         """
-        super().__init__(model, *args, callback="find",
-                         params=(lambda slf: getattr(slf, attr),), **kwargs)
+        if params is None:
+            iden = "{}_id".format(inflection.underscore(model))
+            params = lambda slf: getattr(slf, iden)
+        super().__init__(model, *args, callback="find", params=params, **kwargs)
 
 
 class Many(Relation):
@@ -38,7 +40,7 @@ class Many(Relation):
         :param kwargs: other kwargs for fields.Nested relationship
         :type kwargs: ...
         """
-        super().__init__(model, *args, many=True, callback="where", params=params)
+        super().__init__(model, *args, many=True, callback="where", params=params, **kwargs)
 
 
 class HasOne(One):
@@ -56,9 +58,11 @@ class HasOne(One):
         :type attr: basestring
         """
         underscore = inflection.underscore(model)
-        iden = "{}_{}".format(underscore, attr)
-        super().__init__(model, param=(lambda slf: getattr(slf, iden)))
+        self.iden = "{}_{}".format(underscore, attr)
+        super().__init__(model, params=(lambda slf: getattr(slf, self.iden)))
 
+    def __repr__(self):
+        return "<HasOne (model={}, params=lambda self: self.{})>".format(self.nested, self.iden)
 
 class HasManyThrough(Many):
 
