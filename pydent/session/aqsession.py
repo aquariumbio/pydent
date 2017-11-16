@@ -84,6 +84,7 @@ class AqSession(object):
         """Returns model interface by name"""
         return ModelInterface(model_name, self.__aqhttp, self)
 
+    @property
     def utils(self):
         return UtilityInterface(self.__aqhttp, self)
 

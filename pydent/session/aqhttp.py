@@ -20,6 +20,7 @@ def to_json(fxn):
     """ returns formated the request response as a JSON.
     Throws exception if response is not formatted properly."""
 
+    # TODO: Reveal request response
     def wrapper(*args, **kwargs):
         """Function to return result as JSON"""
         result = fxn(*args, **kwargs)
@@ -27,11 +28,17 @@ def to_json(fxn):
             result = result.json()
         except json.JSONDecodeError:
             raise TridentRequestError(
-                "Response is not JSON formatted. Trident is probably not properly "
-                "connected to the server. Verify login credentials.")
+                "<StatusCode: {code} ({reason})> "
+                "Response is not JSON formatted. "
+                "Trident may not be properly connected to the server. "
+                "Verify login credentials.".format(code=result.status_code, reason=result.reason))
         except requests.exceptions.ConnectTimeout:
-            raise TridentTimeoutError("Aquarium took too long to respond. Make sure the url "
-                                      "{} is correct.".format(args[0].aquarium_url))
+            raise TridentTimeoutError("<StatusCode: {code} ({reason})> "
+                                      "Aquarium took too long to respond."
+                                      "Make sure the url {url} is correct.".format(
+                                        code=result.status_code,
+                                        reason=result.reason,
+                                        url=args[0].aquarium_url))
         if "errors" in result:
             raise TridentRequestError(
                 str(result["errors"])

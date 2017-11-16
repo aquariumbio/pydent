@@ -71,3 +71,10 @@ def test_plan(session):
 def test_wire(session):
     w = session.Wire.find(10)
     print(w.dump())
+
+
+def test_code(session):
+    c = session.OperationType.find_by_name("Protocol1")
+    code = c.code
+    code.content = "New content"
+    code.update()

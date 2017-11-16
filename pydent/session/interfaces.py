@@ -35,6 +35,7 @@ import os
 
 import inflection
 from pydent.base import ModelRegistry
+from pydent.exceptions import TridentRequestError
 
 
 # TODO: make aqhttp harder to access from a session interface
@@ -79,16 +80,17 @@ class UtilityInterface(SessionInterface):
         self.aqhttp.get('/plans/start/' + str(plan.id) +
                         budget_query + user_query)
 
-    def update_code(self, code, parent_class):
-        class_name = parent_class.__class__.__name__
-        controller = inflection.underscore(inflection.pluralize(class_name))
+    def update_code(self, code):
+        controller = inflection.underscore(inflection.pluralize(code.parent_class))
 
-        result = self.aqhttp.post(os.path.join(
-            controller, "code"), parent_class.dump(only=("id", "name", "content")))
+        code_data = code.dump(only=("id", "name", "content"))
+        result = self.aqhttp.post(os.path.join(controller, "code"), code_data)
         if "id" in result:
             code.id = result["id"]
             code.parent_id = result["parent_id"]
             code.updated_at = result["updated_at"]
+        else:
+            raise TridentRequestError("Unable to update code object {}".format(code_data))
 
 
 class ModelInterface(SessionInterface):

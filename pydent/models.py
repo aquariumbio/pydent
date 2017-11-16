@@ -60,6 +60,7 @@ from pydent.utils import magiclist
 class HasCode(object):
     """Access to latest code for OperationType, Library, etc."""
 
+    @property
     def code(self):
         if len(self.codes) > 0:
             return self.codes[-1]
