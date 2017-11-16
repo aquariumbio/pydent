@@ -7,7 +7,7 @@ __author__ = 'Justin Vrana, Eric Klavins, Ben Keller'
 __license__ = ''
 __package__ = "pydent"
 __readme__ = "README.md"
-__version__ = "0.1a"
+__version__ = "0.0.2a"
 __email__ = ''
 
 
