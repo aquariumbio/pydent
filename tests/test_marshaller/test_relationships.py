@@ -1,9 +1,9 @@
-from marshmallow import fields
-from pydent.marshaller.schema import MODEL_SCHEMA
-from pydent.marshaller import Relation, add_schema
-from pydent.marshaller import MarshallerBase
 import pytest
+from marshmallow import fields
+from pydent.marshaller import MarshallerBase
+from pydent.marshaller import Relation, add_schema
 from pydent.marshaller.exceptions import CallbackNotFoundError
+from pydent.marshaller.schema import MODEL_SCHEMA
 
 
 def test_relationship_access():
@@ -13,15 +13,16 @@ def test_relationship_access():
 
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            field4 = fields.Field()
-            field5 = Relation(None, None, None)
-            something = 5
-            additional = ("field1", "field2")
-            include = {
+        fields = dict(
+            field4=fields.Field(),
+            field5=Relation(None, None, None),
+            something=5,
+            additional=("field1", "field2"),
+            include={
                 "field3": fields.Field(),
                 "field6": Relation(None, None, None)
             }
+        )
 
         def __init__(self):
             pass
@@ -54,15 +55,15 @@ def test_basic_callback():
 
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            myrelation = Relation(model_name, callback="test_callback", params=())
+        fields = dict(
+            myrelation=Relation(model_name, callback="test_callback", params=())
+        )
 
         def test_callback(self, model_name):
             return model_name
 
     m = MyModel.load({})
     assert m.myrelation == model_name
-
 
 
 def test_callback_with_params():
@@ -72,15 +73,15 @@ def test_callback_with_params():
 
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            myrelation = Relation(model_name, callback="test_callback", params=(1,2,3))
+        fields = dict(
+            myrelation=Relation(model_name, callback="test_callback", params=(1, 2, 3))
+        )
 
         def test_callback(self, model_name, x, y, z):
             return x + y + z
 
     m = MyModel.load({})
     assert m.myrelation == 6
-
 
 
 def test_callback_with_lambda():
@@ -92,8 +93,10 @@ def test_callback_with_lambda():
 
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            myrelation = Relation(model_name, callback="test_callback", params=lambda self: (self.x, self.y))
+        fields = dict(
+            myrelation=Relation(model_name, callback="test_callback",
+                                params=lambda self: (self.x, self.y))
+        )
 
         def test_callback(self, model_name, _xy):
             x, y = _xy
@@ -101,6 +104,7 @@ def test_callback_with_lambda():
 
     m = MyModel.load({"x": 4, "y": 5})
     assert m.myrelation == 20
+
 
 def test_alternative_callback():
     """Callables can be used in lieu of function names. In this case, an alternative callback
@@ -113,12 +117,12 @@ def test_alternative_callback():
 
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            myrelation = Relation(model_name, callback=alternative_callback, params=())
+        fields = dict(
+            myrelation=Relation(model_name, callback=alternative_callback, params=())
+        )
 
     m = MyModel.load({"x": 4, "y": 5})
     assert m.myrelation == model_name
-
 
 
 def test_callback_with_lambda_with_alternative_callback():
@@ -134,8 +138,10 @@ def test_callback_with_lambda_with_alternative_callback():
 
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            myrelation = Relation(model_name, callback=alternative_callback, params=lambda self: (self.x, self.y))
+        fields = dict(
+            myrelation=Relation(model_name, callback=alternative_callback,
+                                params=lambda self: (self.x, self.y))
+        )
 
         def test_callback(self, model_name, _xy):
             x, y = _xy
@@ -147,11 +153,13 @@ def test_callback_with_lambda_with_alternative_callback():
 
 def test_callback_missing():
     """If callback doesn't exist, raises a CallbackNotFoundError"""
+
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            myrelation = Relation("lkjlfj", callback="callback", params=lambda self: (self.x, self.y))
-
+        fields = dict(
+            myrelation=Relation("lkjlfj", callback="callback",
+                                params=lambda self: (self.x, self.y))
+        )
 
     m = MyModel.load({"x": 4, "y": 5})
     with pytest.raises(CallbackNotFoundError):
@@ -160,18 +168,21 @@ def test_callback_missing():
 
 def test_deserialize_relationship():
     """If the nested relationship is available, deserialize the data"""
+
     @add_schema
     class Author(MarshallerBase):
-        class Fields:
-            books = Relation("Book", many=True, callback="get_books", params=())
+        fields = dict(
+            books=Relation("Book", many=True, callback="get_books", params=())
+        )
 
         def get_books(self):
             pass
 
     @add_schema
     class Book(MarshallerBase):
-        class Fields:
-            author = Relation("Author", callback="get_author", params=())
+        fields = dict(
+            author=Relation("Author", callback="get_author", params=())
+        )
 
         def get_author(self):
             pass

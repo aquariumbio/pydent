@@ -7,9 +7,7 @@ def test_dump():
 
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            load_all = True
-
+        fields = dict(load_all=True)
 
     original_data = {"id": 5, "name": "Jill", "field1": 1}
     u = MyModel.load(original_data)
@@ -28,9 +26,10 @@ def test_load_only():
 
     @add_schema
     class MyModel(MarshallerBase):
-        class Fields:
-            load_all = True
-            load_only = ("name",)
+        fields = dict(
+            load_all=True,
+            load_only=("name",)
+        )
 
     original_data = {"id": 5, "name": "Jill", "field1": 1}
     u = MyModel.load(original_data)
@@ -41,4 +40,3 @@ def test_load_only():
 
     d = u.dump()
     assert d == {"id": 5, "field1": 1}
-

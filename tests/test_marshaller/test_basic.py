@@ -9,15 +9,16 @@ from pydent.marshaller.schema import add_schema, MODEL_SCHEMA, META
 def mymodel():
     @add_schema
     class MyModel(object):
-        class Fields:
-            field4 = fields.Field()
-            field5 = fields.Field()
-            something = 5
-            additional = ("field1", "field2")
+        fields = dict(
+            field4 = fields.Field(),
+            field5 = fields.Field(),
+            something = 5,
+            additional = ("field1", "field2"),
             include = {
                 "field3": fields.Field(),
                 "field6": fields.Field()
             }
+        )
 
         def __init__(self):
             pass

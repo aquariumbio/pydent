@@ -1,5 +1,8 @@
 import pytest
 from pydent.models import User
+from pydent.base import ModelBase, ModelRegistry
+from pydent.marshaller import add_schema
+from marshmallow import fields
 
 
 def test_login(session, config):
@@ -8,6 +11,28 @@ def test_login(session, config):
     assert isinstance(current, User)
     assert current.login == config["login"]
     print(current)
+
+
+def test_base_registery():
+    """All models that are subclasses of the Base class get collected into a BaseRegistry."""
+
+    @add_schema
+    class MyModel(ModelBase):
+        class Fields:
+            field4 = fields.Field()
+            field5 = fields.Field()
+            something = 5
+            additional = ("field1", "field2")
+            include = {
+                "field3": fields.Field(),
+                "field6": fields.Field()
+            }
+
+        def __init__(self):
+            pass
+
+    assert MyModel.__name__ in ModelRegistry.models
+    assert MyModel == ModelRegistry.get_model("MyModel")
 
 
 def test_load_dump_repeat(session):

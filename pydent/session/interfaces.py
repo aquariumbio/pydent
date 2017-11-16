@@ -31,24 +31,43 @@ Example:
     # creates samples from a list of samples by calling method "samples" in CreateInterface
 """
 
-import inflection
 import os
-from pydent.marshaller import ModelRegistry
+
+import inflection
+from pydent.base import ModelRegistry
 
 
+# TODO: make aqhttp harder to access from a session interface
 class SessionInterface(object):
+
+    """
+    Generic session interface.
+
+    Trident users should only be able to make requests through a SessionInterface to avoid making arbitrary and
+    potentially damaging http requests.
+    """
     def __init__(self, aqhttp, session):
+        """
+        Initializer for SessionInterface
+
+        :param aqhttp: aqhttp instance for this interface
+        :type aqhttp: AqHTTP
+        :param session: session instance for this interface
+        :type session: AqSession
+        """
         self.aqhttp = aqhttp
         self.session = session
 
 
-class CreateInterface(SessionInterface):
-
-    def samples(self, samples):
+class UtilityInterface(SessionInterface):
+    """
+    Misc. requests for creating, updating, etc.
+    """
+    def create_samples(self, samples):
         json = [s.dump() for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
 
-    def plan(self, plan):
+    def create_plan(self, plan):
         user_query = "?user_id=" + str(self.session.current_user.id)
         result = self.aqhttp.post(
             '/plans.json' + user_query, plan.dump())
@@ -57,40 +76,33 @@ class CreateInterface(SessionInterface):
     def submit_plan(self, plan, user, budget):
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
-        self.aqhttp.get('/plans/start/' + str(self.id) +
+        self.aqhttp.get('/plans/start/' + str(plan.id) +
                         budget_query + user_query)
 
-
-class UpdateInterface(SessionInterface):
-
-    def code(self, parent_class):
+    def update_code(self, code, parent_class):
         class_name = parent_class.__class__.__name__
-        controller = inflection.underscore(class_name)
-        controller = inflection.pluralize(controller)
+        controller = inflection.underscore(inflection.pluralize(class_name))
 
         result = self.aqhttp.post(os.path.join(
             controller, "code"), parent_class.dump(only=("id", "name", "content")))
         if "id" in result:
-            self.id = result["id"]
-            self.parent_id = result["parent_id"]
-            self.updated_at = result["updated_at"]
+            code.id = result["id"]
+            code.parent_id = result["parent_id"]
+            code.updated_at = result["updated_at"]
 
 
 class ModelInterface(SessionInterface):
     """
     Makes requests using AqHTTP that are model specific. Establishes a connection between a session object and an
     Aquarium model.
-
-    Trident users should only be able to make requests through a SessionInterface to avoid making arbitrary and
-    potentially damaging http requests.
     """
 
     def __init__(self, model_name, aqhttp, session):
         super().__init__(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
 
-    # TODO: for self.model.load, require that a session be passed in...
-    def post_json(self, data):
+    # TODO: make this harder to access
+    def _post_json(self, data):
         """
         Posts a json request to this interface's session. Attaches raw json and this session instance
         to the models it retrieves.
@@ -105,7 +117,8 @@ class ModelInterface(SessionInterface):
             post_response, many=many)
 
         if many:
-            for result, model in zip(post_response, models):
+            assert len(post_response) == len(models)
+            for model in models:
                 model.connect_to_session(self.session)
         else:
             models.connect_to_session(self.session)
@@ -113,11 +126,11 @@ class ModelInterface(SessionInterface):
 
     def find(self, model_id):
         """ Finds model by id """
-        return self.post_json({"id": model_id})
+        return self._post_json({"id": model_id})
 
     def find_by_name(self, name):
         """ Finds model by name """
-        return self.post_json({"method": "find_by_name", "arguments": [name]})
+        return self._post_json({"method": "find_by_name", "arguments": [name]})
 
     def array_query(self, method, args, rest, opts=None):
         """ Finds models based on a query """
@@ -130,7 +143,7 @@ class ModelInterface(SessionInterface):
                  "arguments": args,
                  "options": options}
         query.update(rest)
-        res = self.post_json(query)  # type: dict
+        res = self._post_json(query)  # type: dict
         return res
 
     def all(self, rest=None, opts=None):

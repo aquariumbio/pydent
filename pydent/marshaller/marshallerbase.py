@@ -1,35 +1,27 @@
 from pydent.marshaller.schema import MODEL_SCHEMA
-from pydent.marshaller.exceptions import ModelNotFoundError, CallbackNotFoundError
+from pydent.marshaller.exceptions import CallbackNotFoundError
 from pydent.utils import magiclist
 
-class ModelRegistry(type):
-    """Stores a list of models that can be accessed by name."""
-    models = {}
-
-    def __init__(cls, name, bases, selfdict):
-        """Class initializer. Called when a class is 'subclassed.' Saves model to the registry"""
-        super().__init__(name, bases, selfdict)
-        if not name == "Base":
-            ModelRegistry.models[name] = cls
-
-    @staticmethod
-    def get_model(model_name):
-        """Gets model by model_name"""
-        if model_name not in ModelRegistry.models:
-            raise ModelNotFoundError("Model \"{}\" not found.".format(model_name))
-        else:
-            return ModelRegistry.models[model_name]
-
-
-class MarshallerBase(metaclass=ModelRegistry):
+class MarshallerBase(object):
     """Base class for marshalling and unmarshalling"""
 
     save_attr = True
 
-    def __init__(self, data=None):
+    @classmethod
+    def create_from_json(cls, *args, data=None, **kwargs):
+        """
+        Special constructor method for instantiating with JSON data
+
+        :param data: json data to update instance attributes
+        :type data: dict
+        :return: model instance
+        :rtype: MarshallerBase (or subclass)
+        """
+        inst = cls(*args, **kwargs)
         if data is None:
             data = {}
-        vars(self).update(data)
+        vars(inst).update(data)
+        return inst
 
     @classmethod
     def schema(cls):
@@ -46,6 +38,8 @@ class MarshallerBase(metaclass=ModelRegistry):
         """Collect the 'Relation' fields"""
         return cls.schema().relationships
 
+    # TODO: explicitly add schema args and kwargs
+    # TODO: add init_args and init_kwargs
     @classmethod
     @magiclist
     def load(cls, *schema_args, **schema_kwargs):
@@ -103,4 +97,4 @@ class MarshallerBase(metaclass=ModelRegistry):
         return object.__getattribute__(self, item)
 
     def __repr__(self):
-        return "<{}>".format(self.__class__.__name__, self.__dict__)
+        return "<{}>".format(self.__class__.__name__)

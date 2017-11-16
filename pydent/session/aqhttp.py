@@ -1,10 +1,10 @@
 """aqhttp.py
 
-This module contains the AqHTTP class, which can make arbitrary post/put/get/etc. requests to Aquarium and
-returns JSON data.
+This module contains the AqHTTP class, which can make arbitrary post/put/get/etc. requests to
+Aquarium and returns JSON data.
 
-Generally, Trident users should be unable to make arbitrary requests using this class. Users should only
-be able to access these methods second-hand through a Session/SessionInterface instances.
+Generally, Trident users should be unable to make arbitrary requests using this class. Users should
+only be able to access these methods second-hand through a Session/SessionInterface instances.
 """
 
 import json
@@ -21,6 +21,7 @@ def to_json(fxn):
     Throws exception if response is not formatted properly."""
 
     def wrapper(*args, **kwargs):
+        """Function to return result as JSON"""
         result = fxn(*args, **kwargs)
         try:
             result = result.json()
@@ -44,9 +45,10 @@ class AqHTTP(object):
     """Defines a session/connection to Aquarium. Makes HTTP requests to Aquarium and returns JSON.
 
     This class should be generally
-    obscured from Trident user so that users cannot make arbitrary requests to an Aquarium server and get sensitive
-    information (e.g. User json that is returned contains api_key, password_digest, etc.) or make damaging posts.
-    Instead, a SessionInterface should be the object that makes these requests.
+    obscured from Trident user so that users cannot make arbitrary requests to an Aquarium server
+    and get sensitive information (e.g. User json that is returned contains api_key,
+    password_digest, etc.) or make damaging posts. Instead, a SessionInterface should be the object
+    that makes these requests.
     """
 
     TIMEOUT = 10
@@ -67,7 +69,7 @@ class AqHTTP(object):
         self._login(login, password)
 
     @staticmethod
-    def _create_session_json(login, password):
+    def create_session_json(login, password):
         return {
             "session": {
                 "login": login,
@@ -78,18 +80,18 @@ class AqHTTP(object):
     # TODO: encrypt the header, store key in separate file (not accessible after pip install)
     def _login(self, login, password):
         """ Login to aquarium and saves header as a requests.Session() """
-        session_data = self.__class__._create_session_json(login, password)
+        session_data = self.__class__.create_session_json(login, password)
         res = None
         try:
             res = requests.post(os.path.join(self.aquarium_url, "sessions.json"),
                                 json=session_data, timeout=self.timeout)
-        except requests.exceptions.MissingSchema as e:
+        except requests.exceptions.MissingSchema as error:
             raise TridentLoginError("Aquairum URL {0} incorrectly formatted. {1}".format(
-                self.aquarium_url, e.args[0]))
-        except requests.exceptions.ConnectTimeout as e:
-            raise TridentTimeoutError("Aquarium took too long to respond during login. Make sure the url "
-                                      "{} is correct. Alternatively, use Session.set_timeout to increase"
-                                      "the request timeout.".format(self.aquarium_url))
+                self.aquarium_url, error.args[0]))
+        except requests.exceptions.ConnectTimeout as error:
+            raise TridentTimeoutError("Aquarium took too long to respond during login. Make sure "
+                                      "the url {} is correct. Alternatively, use Session.set_timeout"
+                                      " to increase the request timeout.".format(self.aquarium_url))
         headers = res.headers
         if 'set-cookie' not in headers:
             raise TridentLoginError(
@@ -115,7 +117,8 @@ class AqHTTP(object):
         """ Makes a post request to the session """
         if timeout is None:
             timeout = self.timeout
-        return self._requests_session.post(os.path.join(self.aquarium_url, path), json=json_data, timeout=timeout,
+        return self._requests_session.post(os.path.join(self.aquarium_url, path), json=json_data,
+                                           timeout=timeout,
                                            **kwargs)
 
     @to_json
@@ -123,7 +126,8 @@ class AqHTTP(object):
         """ Makes a put request to the session """
         if timeout is None:
             timeout = self.timeout
-        return self._requests_session.put(os.path.join(self.aquarium_url, path), json=json_data, timeout=timeout,
+        return self._requests_session.put(os.path.join(self.aquarium_url, path), json=json_data,
+                                          timeout=timeout,
                                           **kwargs)
 
     @to_json
@@ -131,7 +135,8 @@ class AqHTTP(object):
         """ Makes a get request to the session """
         if timeout is None:
             timeout = self.timeout
-        return self._requests_session.get(os.path.join(self.aquarium_url, path), timeout=timeout ** kwargs)
+        return self._requests_session.get(os.path.join(self.aquarium_url, path), timeout=timeout,
+                                          **kwargs)
 
     def __repr__(self):
         return "<{}({}, {})>".format(self.__class__.__name__, self.login, self.aquarium_url)

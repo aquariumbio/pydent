@@ -30,7 +30,7 @@ class Relation(Nested):
         self.callback = callback
 
         # force params to be an iterable
-        if not (isinstance(params, list) or isinstance(params, tuple)):
+        if not isinstance(params, (list, tuple)):
             params = (params,)
         self.params = params
 

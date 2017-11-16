@@ -2,6 +2,8 @@ import inflection
 from pydent.marshaller import Relation
 
 
+# TODO: Is this ravioli? Too many different types of relationships?
+
 class One(Relation):
     """Defines a single relationship with another model."""
 
@@ -44,7 +46,6 @@ class Many(Relation):
 
 
 class HasOne(One):
-
     def __init__(self, model, attr="id", **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and automatically
@@ -64,10 +65,11 @@ class HasOne(One):
     def __repr__(self):
         return "<HasOne (model={}, params=lambda self: self.{})>".format(self.nested, self.iden)
 
+
 class HasManyThrough(Many):
+    """A relationship using an intermediate association model"""
 
     def __init__(self, model, through, attr="id", **kwargs):
-
         # e.g. Operation >> operation_id
         iden = "{}_{}".format(inflection.underscore(model), attr)
 
@@ -78,8 +80,8 @@ class HasManyThrough(Many):
         params = lambda slf: {attr: [getattr(x, iden) for x in getattr(slf, through_model_attr)]}
         super().__init__(model, params=params, **kwargs)
 
-class HasMany(Many):
 
+class HasMany(Many):
     def __init__(self, model, ref_model, attr="id", through=None, **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and automatically
@@ -105,3 +107,8 @@ class HasMany(Many):
         else:
             params = lambda slf: {iden: getattr(slf, attr)}
         super().__init__(model, params=params, **kwargs)
+
+
+class HasManyGeneric(Many):
+    def __init__(self, model):
+        super().__init__(model, params=lambda slf: {"parent_id": slf.id})

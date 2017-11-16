@@ -1,7 +1,6 @@
-from pydent.models import User
-from pydent.modelbase import ModelBase
-from pydent.marshaller import add_schema
 import pytest
+from pydent.base import ModelBase
+from pydent.marshaller import add_schema
 
 
 @pytest.fixture(scope="function")
@@ -23,9 +22,10 @@ def test_model():
 
     @add_schema
     class MyModel(ModelBase):
-        class Fields:
-            ignore = ignored
-            load_only = loadonly
+        fields = dict(
+            ignore=ignored,
+            load_only=loadonly
+        )
 
     # load the model from dummy data
     values = range(10)

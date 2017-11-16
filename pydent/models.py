@@ -49,61 +49,88 @@ equal to the id of the SampleType:
 import json
 
 from marshmallow import fields
-
-from pydent.modelbase import ModelBase
-from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough
+from pydent.base import ModelBase
 from pydent.marshaller import add_schema
+from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough, HasManyGeneric
 from pydent.utils import magiclist
+
+
+##### Mixins #####
+
+class HasCode(object):
+    """Access to latest code for OperationType, Library, etc."""
+
+    def code(self):
+        if len(self.codes) > 0:
+            return self.codes[-1]
+
+
+##### Models #####
 
 @add_schema
 class Account(ModelBase):
-    pass
+    """An Account model"""
 
 
 @add_schema
 class AllowableFieldType(ModelBase):
-    class Fields:
-        field_type = HasOne("FieldType")
-        object_type = HasOne("ObjectType")
-        sample_type = HasOne("SampleType")
+    """A AllowableFieldType model"""
+    fields = dict(
+        field_type=HasOne("FieldType"),
+        object_type=HasOne("ObjectType"),
+        sample_type=HasOne("SampleType")
+    )
 
 
 @add_schema
 class User(ModelBase):
-    class Fields:
-        groups = fields.Nested("Group", many=True, load_only=True)
-        additional = ("name", "id", "login")
-        ignore = ("password_digest", "remember_token", "key")
+    """A User model"""
+    fields = dict(
+        groups=fields.Nested("Group", many=True, load_only=True),
+        additional=("name", "id", "login"),
+        ignore=("password_digest", "remember_token", "key")
+    )
 
 
 @add_schema
 class Budget(ModelBase):
-    class Fields:
-        user_budget_associations = HasMany("UserBudgetAssociation", "Budget")
+    """A Budget model"""
+    fields = dict(
+        user_budget_associations=HasMany("UserBudgetAssociation", "Budget")
+    )
 
 
 @add_schema
 class Code(ModelBase):
-    class Fields:
-        user = HasOne("User")
+    """A Code model"""
+    fields = dict(
+        user=HasOne("User")
+    )
 
+    # TODO: this is weird?
     def update(self):
-        self.session.update.code(self)
+        # TODO: make server side controller for code objects
+        # since they may not always be tied to specific parent
+        # controllers
+        self.session.utils.update_code(self)
 
 
 @add_schema
-class Collection(ModelBase):
-    class Fields:
-        object_type = HasOne("ObjectType")
-        data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
+class Collection(ModelBase):  # pylint: disable=too-few-public-methods
+    """A Collection model"""
+    fields = dict(
+        object_type=HasOne("ObjectType"),
+        data_associations=HasManyGeneric("DataAssociation")
+    )
 
 
 @add_schema
 class DataAssociation(ModelBase):
-    class Fields:
-        # automatically deserialize string to a json for 'object'
-        object = fields.Function(serialize=lambda x: x.object, deserialize=lambda x: json.loads(x))
-        upload = HasOne("Upload")
+    """A DataAssociation model"""
+    fields = dict(
+        object=fields.Function(serialize=lambda x: x.object, deserialize=lambda x: json.loads(x)),
+        upload=HasOne("Upload")
+    )
 
     @property
     def value(self):
@@ -112,10 +139,12 @@ class DataAssociation(ModelBase):
 
 @add_schema
 class FieldType(ModelBase):
-    class Fields:
-        allowable_field_types = HasMany("AllowableFieldType", "FieldType")
-        operation_type = One("OperationType", param=lambda self: self.parent_id)
-        sample_type = One("SampleType", param=lambda self: self.parent_id)
+    """A FieldType model"""
+    fields = dict(
+        allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
+        operation_type=One("OperationType", param=lambda self: self.parent_id),
+        sample_type=One("SampleType", param=lambda self: self.parent_id)
+    )
 
     @property
     def is_parameter(self):
@@ -124,16 +153,17 @@ class FieldType(ModelBase):
 
 @add_schema
 class FieldValue(ModelBase):
-    class Fields:
-        field_type = HasOne("FieldType")
-        allowable_field_type = HasOne("AllowableFieldType")
-        item = One("Item", params=lambda self: self.child_item_id)
-        sample = One("Sample", params=lambda self: self.child_sample_id)
-        operation = One("Operation", params=lambda self: self.parent_id)
-        parent_sample = One("ParentSample", params=lambda self: self.parent_id)
+    """A FieldValue model"""
+    fields = dict(
+        field_type=HasOne("FieldType"),
+        allowable_field_type=HasOne("AllowableFieldType"),
+        item=One("Item", params=lambda self: self.child_item_id),
+        sample=One("Sample", params=lambda self: self.child_sample_id),
+        operation=One("Operation", params=lambda self: self.parent_id),
+        parent_sample=One("ParentSample", params=lambda self: self.parent_id)
+    )
 
-    def __init__(self, data=None):
-        self.value = None
+    def __init__(self):
         self.child_item_id = None
         self.child_sample_id = None
         self.row = None
@@ -142,61 +172,72 @@ class FieldValue(ModelBase):
         self.field_type = None
         self.allowable_field_type_id = None
         self.allowable_field_type = None
-        super().__init__(data=data)
+        super().__init__()
 
-    def choose_item(self):
-        items = self.compatible_items()
-        if items:
-            self.item = items[0]
-            self.child_item_id = self.item.id
-            return self.item
 
-    # TODO: add compatible items
-    @magiclist
-    def compatible_items(self):
-        pass
+def choose_item(self):
+    items = self.compatible_items()
+    if items:
+        self.item = items[0]
+        self.child_item_id = self.item.id
+        return self.item
+
+
+# TODO: add compatible items
+@magiclist
+def compatible_items(self):
+    pass
 
 
 @add_schema
 class Group(ModelBase):
+    """A Group model"""
     pass
 
 
 @add_schema
 class Invoice(ModelBase):
+    """A Invoice model"""
     pass
 
 
 @add_schema
 class Item(ModelBase):
-    class Fields:
-        sample = HasOne("Sample")
-        object_type = HasOne("ObjectType")
-        data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
+    """A Item model"""
+    fields = dict(
+        sample=HasOne("Sample"),
+        object_type=HasOne("ObjectType"),
+        data_associations=HasManyGeneric("DataAssociation")
+    )
 
 
 @add_schema
 class Job(ModelBase):
-    class Fields:
-        job_associations = HasMany("JobAssociation", "Job")
-        # operations = Many("Operation",
-        #                   params=lambda self: [ja.job_id for ja in self.job_associations])
+    """A Job model"""
+    fields = dict(
+        job_associations=HasMany("JobAssociation", "Job"),
+        operations=HasManyThrough("Operation", "JobAssociation")
+    )
 
 
 @add_schema
 class JobAssociation(ModelBase):
-    class Fields:
-        job = HasOne("Job")
-        operation = HasOne("Operation")
+    """A JobAssociation model"""
+    fields = dict(
+        job=HasOne("Job"),
+        operation=HasOne("Operation")
+    )
 
 
 @add_schema
 class Sample(ModelBase):
-    class Fields:
-        sample_type = One("SampleType", attr="sample_type_id")
-        items = Many("Item", params=lambda self: {"sample_id": self.id})
-        field_values = Many("FieldValue", params=lambda self: {
+    """A Sample model"""
+    fields = dict(
+        sample_type=One("SampleType", attr="sample_type_id"),
+        items=Many("Item", params=lambda self: {"sample_id": self.id}),
+        field_values=Many("FieldValue", params=lambda self: {
             "parent_id": self.id})
+    )
 
     @property
     def identifier(self):
@@ -211,26 +252,30 @@ class Sample(ModelBase):
 
     @property
     def field_names(self):
-        return [fv.name for fv in self.field_value]
+        return [fv.name for fv in self.field_values]
+
 
 @add_schema
 class SampleType(ModelBase):
-    class Fields:
-        samples = HasMany("Sample", "SampleType")
-        # samples = Many("Sample", params=lambda self: {"sample_type_id": self.id})
+    """A SampleType model"""
+    fields = dict(
+        samples=HasMany("Sample", "SampleType")
+    )
 
     def create(self):
-        return self.session.create.samples([self])
+        return self.session.create.create_samples([self])
 
 
 @add_schema
 class Plan(ModelBase):
-    class Fields:
-        data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
-        plan_associations = HasMany("PlanAssociation", "Plan")
-        operations = Many("Operation", params=lambda self: {"id": x.operation_id for x in self.plan_associations})
+    """A Plan model"""
+    fields = dict(
+        data_associations=HasManyGeneric("DataAssociation"),
+        plan_associations=HasMany("PlanAssociation", "Plan"),
+        operations=Many("Operation", params=lambda self: {"id": x.operation_id for x in self.plan_associations})
+    )
 
-    def __init__(self, data=None):
+    def __init(self):
         self.id = None
         self.name = None
         self.status = "planning"
@@ -238,7 +283,7 @@ class Plan(ModelBase):
         self.operations = []
         self.source = None
         self.destination = None
-        super().__init__(data=data)
+        super().__init__()
 
     def callback(self):
         pass
@@ -255,20 +300,21 @@ class Plan(ModelBase):
             self.wire(src, dest)
 
     def submit(self, user, budget):
-        self.session.create.plan(self, user, budget)
+        self.session.create.create_plan(self, user, budget)
 
 
 @add_schema
 class Operation(ModelBase):
-
-    class Fields:
-        field_values = Many("FieldValue", params=lambda self: {"parent_id": self.id})
-        data_associations = Many("DataAssociation", params=lambda self: {"parent_id": self.id})
-        operation_type = One("OperationType")
-        job_associations = HasMany("JobAssociation", "Operation")
-        jobs = HasManyThrough("Job", "JobAssociation")
-        plan_associations = HasMany("PlanAssociation", "Operation")
-        plans = HasManyThrough("Plan", "PlanAssociation")
+    """A Operation model"""
+    fields = dict(
+        field_values=HasManyGeneric("FieldValue"),
+        data_associations=HasManyGeneric("DataAssociation"),
+        operation_type=One("OperationType"),
+        job_associations=HasMany("JobAssociation", "Operation"),
+        jobs=HasManyThrough("Job", "JobAssociation"),
+        plan_associations=HasMany("PlanAssociation", "Operation"),
+        plans=HasManyThrough("Plan", "PlanAssociation")
+    )
 
     @property
     def plan(self):
@@ -286,27 +332,34 @@ class Operation(ModelBase):
 
 
 @add_schema
-class OperationType(ModelBase):
-    class Fields:
-        operations = HasMany("Operation", "OperationType")
-        field_types = Many("Operation", params=lambda self: {"parent_id": self.id})
-        codes = Many("Code", params=lambda self: {"parent_id": self.id})
+class OperationType(ModelBase, HasCode):
+    """A OperationType model"""
+    fields = dict(
+        operations=HasMany("Operation", "OperationType"),
+        field_types=HasManyGeneric("Operation"),
+        codes=HasManyGeneric("Code")
+    )
+
 
 @add_schema
 class PlanAssociation(ModelBase):
-
-    class Fields:
-        plan = HasOne("Plan")
-        operation = HasOne("Operation")
+    """A PlanAssociation model"""
+    fields = dict(
+        plan=HasOne("Plan"),
+        operation=HasOne("Operation")
+    )
 
 
 @add_schema
 class Wire(ModelBase):
-
-    class Fields:
+    """A Wire model"""
+    fields = dict(
         # load_only=False, will force dumping of FieldValues here...
-        source = One("FieldValue", dump_to="from", load_only=False, params=lambda self: self.from_id)
-        destination = One("FieldValue", dump_to="to", load_only=False, params=lambda self: self.to_id)
+        source=One("FieldValue", dump_to="from", load_only=False,
+                   params=lambda self: self.from_id),
+        destination=One("FieldValue", dump_to="to", load_only=False,
+                        params=lambda self: self.to_id)
+    )
 
     def show(self, pre=""):
         """Show the wire nicely"""
@@ -315,3 +368,12 @@ class Wire(ModelBase):
               " --> " + self.destination.operation.operation_type.name +
               ":" + self.destination.name)
 
+
+@add_schema
+class Library(ModelBase, HasCode):
+    """A Library model"""
+    fields = dict(
+        operations=HasMany("Operation", "Library"),
+        field_types=HasManyGeneric("FieldType"),
+        codes=HasManyGeneric("Code")
+    )

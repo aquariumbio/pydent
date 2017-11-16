@@ -1,6 +1,6 @@
 from marshmallow import fields
 import pytest
-from pydent.marshaller import add_schema, MarshallerBase, ModelRegistry
+from pydent.marshaller import add_schema, MarshallerBase
 
 
 @pytest.fixture(scope="module")
@@ -21,10 +21,3 @@ def mymodel():
         def __init__(self):
             pass
     return MyModel
-
-
-def test_base_registery(mymodel):
-    """All models that are subclasses of the Base class get collected into a BaseRegistry."""
-    assert mymodel.__name__ in ModelRegistry.models
-
-    assert mymodel == ModelRegistry.get_model("MyModel")

@@ -16,14 +16,16 @@ Interfaces are accessed by:
 """
 
 from pydent.session.aqhttp import AqHTTP
-from pydent.marshaller import ModelRegistry
-from pydent.session.interfaces import ModelInterface, CreateInterface, UpdateInterface
+from pydent.base import ModelRegistry
+from pydent.session.interfaces import ModelInterface, UtilityInterface
 from prompt_toolkit.shortcuts import confirm
 from prompt_toolkit import prompt
+
 # TODO: We want to prevent the user from accessing aqhttp
 # TODO: Could store encrypted key in class that user doesn't have access to. Key would need to be passed to AqHTTP object in order to work...
 # TODO: Or, aqhttp would only work with the session interface that created it somehow
 # TODO: Should never be allowed to change the current s
+
 class AqSession(object):
     """
     Holds a AqHTTP with login information. Creates SessionInterfaces for models.
@@ -45,6 +47,7 @@ class AqSession(object):
 
     @classmethod
     def interactive(cls):
+        """Login using prompts and a hidden password (********)"""
         confirm_register = False
         while not confirm_register:
             password = None
@@ -66,6 +69,7 @@ class AqSession(object):
 
     @property
     def current_user(self):
+        """Returns the current User associated with this session"""
         if self.__current_user is None:
             self.__current_user = self.User.where(
                 {"login": self.__aqhttp.login})[0]
@@ -73,20 +77,24 @@ class AqSession(object):
 
     @property
     def models(self):
+        """Returns list of all models available"""
         return list(ModelRegistry.models.keys())
 
-    def __getattr__(self, item):
-        if item == "create":
-            return CreateInterface(self.__aqhttp, self)
-        elif item == "update":
-            return UpdateInterface(self.__aqhttp, self)
-        elif item in ModelRegistry.models:
-            return self.model_interface(item)
-        return object.__getattribute__(self, item)
+    def model_interface(self, model_name):
+        """Returns model interface by name"""
+        return ModelInterface(model_name, self.__aqhttp, self)
+
+    def utils(self):
+        return UtilityInterface(self.__aqhttp, self)
 
     # TODO: add other interfaces as well
     def __dir__(self):
-        return super().__dir__() + list(ModelRegistry.models.keys())
+        """Added expected keys for interactive interpreters,"""
+        return super().__dir__() + list(ModelRegistry.models.keys()) + [UtilityInterface.__name__]
 
-    def model_interface(self, model_name):
-        return ModelInterface(model_name, self.__aqhttp, self)
+    def __getattr__(self, item):
+        if item == UtilityInterface.__name__:
+            return UtilityInterface(self.__aqhttp, self)
+        elif item in ModelRegistry.models:
+            return self.model_interface(item)
+        return object.__getattribute__(self, item)

@@ -1,6 +1,6 @@
 import pytest
-from pydent.session import AqHTTP, AqSession, ModelInterface, CreateInterface, UpdateInterface
-from pydent.marshaller import ModelRegistry
+from pydent.session import AqHTTP, AqSession, ModelInterface, UtilityInterface
+from pydent.base import ModelRegistry
 import requests
 
 
@@ -26,7 +26,7 @@ def test_access_interface(monkeypatch, mock_post):
         assert isinstance(interface, ModelInterface)
 
 
-def test_access_create_interface(monkeypatch, mock_post):
+def test_access_utils_interface(monkeypatch, mock_post):
     """Test accesibility of create interface"""
 
     monkeypatch.setattr(requests, "post", mock_post)
@@ -34,16 +34,6 @@ def test_access_create_interface(monkeypatch, mock_post):
     session = AqSession("username", "password", aquarium_url)
 
     # create interface
-    assert isinstance(getattr(session, "create"), CreateInterface)
+    assert isinstance(getattr(session, UtilityInterface.__name__), UtilityInterface)
 
-
-def test_access_update_interface(monkeypatch, mock_post):
-    """Test accessibility of update interface"""
-
-    monkeypatch.setattr(requests, "post", mock_post)
-    aquarium_url = "http://52.52.525.52"
-    session = AqSession("username", "password", aquarium_url)
-
-    # update interface
-    assert isinstance(getattr(session, "update"), UpdateInterface)
 
