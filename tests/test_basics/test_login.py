@@ -75,6 +75,6 @@ def test_wire(session):
 
 def test_code(session):
     c = session.OperationType.find_by_name("Protocol1")
-    code = c.code
+    code = c.code("protocol")
     code.content = "New content"
     code.update()

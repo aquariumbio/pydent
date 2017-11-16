@@ -83,7 +83,11 @@ class UtilityInterface(SessionInterface):
     def update_code(self, code):
         controller = inflection.underscore(inflection.pluralize(code.parent_class))
 
-        code_data = code.dump(only=("id", "name", "content"))
+        code_data = {
+            "id": code.parent_id,
+            "name": code.name,
+            "content": code.content
+        }
         result = self.aqhttp.post(os.path.join(controller, "code"), code_data)
         if "id" in result:
             code.id = result["id"]

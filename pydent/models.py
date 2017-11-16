@@ -60,11 +60,14 @@ from pydent.utils import magiclist
 class HasCode(object):
     """Access to latest code for OperationType, Library, etc."""
 
-    @property
-    def code(self):
-        if len(self.codes) > 0:
-            return self.codes[-1]
-
+    def code(self, name):
+        codes = [c for c in self.codes if c.name == name]
+        codes = [c for c in codes if not hasattr(c, "child_id") or c.child_id is None]
+        return codes[-1]
+        # latest = [code for code in self.codes
+        #           if not hasattr(code, "child_id") and code.name == name]
+        # if len(latest) == 1:
+        #     return latest[0]
 
 ##### Models #####
 
