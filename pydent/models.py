@@ -64,10 +64,7 @@ class HasCode(object):
         codes = [c for c in self.codes if c.name == name]
         codes = [c for c in codes if not hasattr(c, "child_id") or c.child_id is None]
         return codes[-1]
-        # latest = [code for code in self.codes
-        #           if not hasattr(code, "child_id") and code.name == name]
-        # if len(latest) == 1:
-        #     return latest[0]
+
 
 ##### Models #####
 

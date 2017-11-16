@@ -85,6 +85,12 @@ class MarshallerBase(object):
         schema_model_name = field.nested
         return fxn(schema_model_name, *fxn_params)
 
+    def __getstate__(self):
+        return self.dump()
+
+    def __setstate__(self, state):
+        return self.__class__.load(state)
+
     def __getattr__(self, item):
         relationships = object.__getattribute__(self, "get_relationships")()
         save_attr = object.__getattribute__(self, "save_attr")

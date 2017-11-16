@@ -36,6 +36,8 @@ class AqSession(object):
            <User(id=1,...)>
     """
 
+    s = []
+
     def __init__(self, login, password, aquarium_url, name=None):
         self.name = name
         self.__aqhttp = AqHTTP(login, password, aquarium_url)
