@@ -2,7 +2,7 @@
 
 class MagicList(list):
     """List-like class that collects attributes and applies functions
-    but functions like a list in every other regard.
+    but acts like a list in every other regard.
 
         >>> ml = MagicList(["string1   ", "   string2"])
         >>> m1.strip().upper()

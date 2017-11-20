@@ -124,6 +124,10 @@ class Collection(ModelBase):  # pylint: disable=too-few-public-methods
         data_associations=HasManyGeneric("DataAssociation")
     )
 
+@add_schema
+class ObjectType(ModelBase):
+    """A ObjectType model"""
+
 
 @add_schema
 class DataAssociation(ModelBase):
@@ -337,7 +341,7 @@ class OperationType(ModelBase, HasCode):
     """A OperationType model"""
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
-        field_types=HasManyGeneric("Operation"),
+        field_types=HasManyGeneric("FieldType"),
         codes=HasManyGeneric("Code")
     )
 

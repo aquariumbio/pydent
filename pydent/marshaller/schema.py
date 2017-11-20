@@ -24,27 +24,97 @@ RELATIONSHIPS = "relationships"
 # TODO: ability to dump hierarchical data 
 
 class DefaultFieldOptions(SchemaOpts):
-    """Default field options for dynamically generated schemas"""
-    load_all = True  # load missing data attributes not explicitly defined during serialization
-    strict = True  # throw error during marshalling instead of storing error
-    load_only = ()  # fields to ignore during serialization
-    dump_only = ()  # fields to ignore during deserialization
+    """
+        Serialization/Deserialization field options class (:class:`SchemaOpts`). Determines how data is handled.
+        There are lots of available options, how you use them will depend on your particular
+        application.
 
-    # fields to include for serialization/deserialization. Grouped with fields defined in model class
+        **Field options:**
+
+        - ``load_all``: Include all attributes from the loaded data in the deserialized
+                        object
+        - ``ignore``: List or tuple of attributes to ignore in the deserialization
+                        process
+        - ``load_only``: Tuple or list of fields to exclude from serialized results.
+        - ``dump_only``: Tuple or list of fields to exclude from deserialization
+        - ``exclude``: Tuple or list of fields to exclude in the serialized result.
+            Nested fields can be represented with dot delimiters.
+        - ``include``: Dictionary of additional fields to include in the schema. It is
+            usually better to define fields as class variables, but you may need to
+            use this option, e.g., if your fields are Python keywords. May be an
+            `OrderedDict`.
+        - ``additional``: Tuple or list of fields to include *in addition* to the
+            explicitly declared fields. ``additional`` and ``fields`` are
+            mutually-exclusive options.
+        - ``strict``: If `True`, raise errors during marshalling rather than
+            storing them.
+
+        **Additional field options (inherited from :class:`SchemaOpts`)**
+
+        - ``fields``: Tuple or list of fields to include in the serialized result.
+        - ``dateformat``: Date format for all DateTime fields that do not have their
+            date format explicitly specified.
+        - ``render_module``: Module to use for `loads` and `dumps`. Defaults to
+            `json` from the standard library.
+            Defaults to the ``json`` module in the stdlib.
+        - ``ordered``: If `True`, order serialization output according to the
+            order in which fields were declared. Output of `Schema.dump` will be a
+            `collections.OrderedDict`.
+        - ``index_errors``: If `True`, errors dictionaries will include the index
+            of invalid items in a collection.
+    """
+
+    # Default field options
+    load_all = True
+    strict = True
+    load_only = ()
+    dump_only = ()
     include = {}
-
-    # explicitly defined fields for serialization/deserialization.
     additional = ()
-
-    # fields to filter during deserialization. These fields will be filtered from the JSON.
     ignore = ()
 
 
 class DynamicSchema(Schema):
-    """Schema that automatically loads missing values from data"""
+    """Schema that automatically loads missing values from data. For more information about
+    the baseclass Schema, take a look at the `Schema documentation
+    <https://marshmallow.readthedocs.io/en/latest/api_reference.html#schema>`_ for marshmallow.
+     """
 
     # Assign default field options
     Meta = DefaultFieldOptions
+    relationships = {}
+
+    def __init__(self, *args, only=(), exclude=(), include_in_dump=(), prefix='', strict=None,
+                 many=False, context=None, load_only=(), dump_only=(),
+                 partial=False, **kwargs):
+        """
+        Custom Schema for marshalling and demarshalling models
+
+        :param tuple only: A list or tuple of fields to serialize. If `None`, all
+            fields will be serialized. Nested fields can be represented with dot delimiters.
+        :param tuple exclude: A list or tuple of fields to exclude from the
+            serialized result. Nested fields can be represented with dot delimiters.
+        :param tuple include_in_dump: A list or tuple of fields to include during
+            serialization
+        :param str prefix: Optional prefix that will be prepended to all the
+            serialized field names.
+        :param bool strict: If `True`, raise errors if invalid data are passed in
+            instead of failing silently and storing the errors.
+        :param bool many: Should be set to `True` if ``obj`` is a collection
+            so that the object will be serialized to a list.
+        :param dict context: Optional context passed to :class:`fields.Method` and
+            :class:`fields.Function` fields.
+        :param tuple load_only: A list or tuple of fields to skip during serialization
+        :param tuple dump_only: A list or tuple of fields to skip during
+            deserialization, read-only fields
+        :param bool|tuple partial: Whether to ignore missing fields. If its value
+            is an iterable, only missing fields listed in that iterable will be
+            ignored.
+        """
+        super().__init__(*args, only=only, exclude=exclude, prefix=prefix, strict=strict,
+                         many=many, context=context, load_only=load_only, dump_only=dump_only,
+                         partial=partial, **kwargs)
+        self.include_in_dump = include_in_dump
 
     @pre_load
     def add_fields(self, data):
@@ -71,16 +141,22 @@ class DynamicSchema(Schema):
         model_inst.raw = data
         return model_inst
 
+    def add_extra_fields(self, extra_fields):
+        # copy the declared fields
+        declared_fields = dict(self.declared_fields)
+        self.declared_fields = declared_fields
+        self.declared_fields.update(extra_fields)
+
     @pre_dump
     def add_extra_fields_to_dump(self, obj):
         # add extra fields if this object was loaded with extra data
+        extra_fields = {}
         if hasattr(obj, EXTRA_FIELDS):
-            # copy the declared fields
-            declared_fields = dict(self.declared_fields)
-            self.declared_fields = declared_fields
-
-            # update the declared fields
-            self.declared_fields.update(obj.loaded_fields)
+            extra_fields.update(obj.loaded_fields)
+        # for field_name in self.include_in_dump:
+        #     if field_name in self.relationships:
+        #         extra_fields[field_name] = self.relationships[field_name]
+        self.add_extra_fields(extra_fields)
         return obj
 
     def load_missing(self, data):
@@ -110,7 +186,23 @@ class DynamicSchema(Schema):
 
 
 def add_schema(cls):
-    """Decorator that dynamically creates a schema and attaches it to a model."""
+    """Decorator that dynamically creates a :class:`DynamicSchema` and attaches it to a
+    :class:`pydent.marshaller.MarshallerBase` or its subclass.
+
+    Example usage:
+
+    .. code-block:: python
+
+        @add_schema
+        class MyModel(MarshallerBase)
+            fields = dict(
+                ignore=("password",)
+                # additional field options
+            )
+
+            def foo(self):
+                pass
+    """
     default_meta_props = {key: val for key, val in vars(DefaultFieldOptions).items() if not key.startswith("__")}
     model_meta_relationships = {}
 

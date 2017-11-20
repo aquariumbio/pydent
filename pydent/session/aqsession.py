@@ -40,6 +40,8 @@ class AqSession(object):
 
     def __init__(self, login, password, aquarium_url, name=None):
         self.name = name
+        self.login = login
+        self.url = aquarium_url
         self.__aqhttp = AqHTTP(login, password, aquarium_url)
         self.__current_user = None
 
@@ -77,6 +79,13 @@ class AqSession(object):
                 {"login": self.__aqhttp.login})[0]
         return self.__current_user
 
+    # def logged_in(self):
+    #     try:
+    #         self.current_user
+    #         return True
+    #     except:
+    #         return False
+
     @property
     def models(self):
         """Returns list of all models available"""
@@ -101,3 +110,6 @@ class AqSession(object):
         elif item in ModelRegistry.models:
             return self.model_interface(item)
         return object.__getattribute__(self, item)
+
+    def __repr__(self):
+        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self.__aqhttp)

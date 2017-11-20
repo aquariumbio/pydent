@@ -3,7 +3,33 @@ from pydent.marshaller.exceptions import CallbackNotFoundError
 from pydent.utils import magiclist
 
 class MarshallerBase(object):
-    """Base class for marshalling and unmarshalling"""
+    """Base class for marshalling and unmarshalling. Used in conjunction with
+    :func:`pydent.marshaller.schema.add_schema`
+
+    Example Usage:
+
+
+    .. code-block:: python
+
+        from pydent.marshaller import MarshallerBase, add_schema
+
+        @add_schema
+        class UserModel(MarshallerBase):
+            fields = dict(
+                ignore=("password",),
+                budgets=Relation("Budget", callback="find_budgets", params=lambda self: self.id)
+            )
+
+            def find_budgets(user_id):
+                # find budgets with user_id
+                pass
+
+        # load from JSON
+        u = UserModel.load(user_data)
+
+        # dump to JSON
+        u.dump()
+    """
 
     save_attr = True
 
@@ -92,6 +118,7 @@ class MarshallerBase(object):
         return self.__class__.load(state)
 
     def __getattr__(self, item):
+        """Retrieves and fullfills relationships if available"""
         relationships = object.__getattribute__(self, "get_relationships")()
         save_attr = object.__getattribute__(self, "save_attr")
         if item in relationships:

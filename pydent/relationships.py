@@ -5,7 +5,7 @@ from pydent.marshaller import Relation
 # TODO: Is this ravioli? Too many different types of relationships?
 
 class One(Relation):
-    """Defines a single relationship with another model."""
+    """Defines a single relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
 
     def __init__(self, model, *args, params=None, **kwargs):
         """
@@ -27,7 +27,7 @@ class One(Relation):
 
 
 class Many(Relation):
-    """Defines a many relationship with another model."""
+    """Defines a many relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
 
     def __init__(self, model, *args, params=None, **kwargs):
         """

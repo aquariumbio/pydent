@@ -1,7 +1,7 @@
 from marshmallow.fields import Nested
 
 class Relation(Nested):
-    """Defines a nested relationship with another model.
+    """Defines a nested relationship with another model. Is a subclass of :class:`Nested`.
 
     Uses "callback" with "params" to find models. Callback is
     applied to the model that is fullfilling this relation. Params may include lambdas
@@ -25,7 +25,7 @@ class Relation(Nested):
         :type kwargs:
         """
         if kwargs.get("load_only", None) is None:
-            kwargs["load_only"] = True # note that "load_only" is important and prevents dumping of all relationships
+            kwargs["load_only"] = True  # note that "load_only" is important and prevents dumping of all relationships
         super().__init__(model, *args, **kwargs)
         self.callback = callback
 
@@ -39,5 +39,6 @@ class Relation(Nested):
 
     def __repr__(self):
         return "<Relation (model={}, callback={}, params={})>".format(self.nested, self.callback, self.params)
+
 
 
