@@ -1,4 +1,6 @@
-# TODO: better documentation for when and how to use this
+"""
+Utilities
+"""
 
 class MagicList(list):
     """List-like class that collects attributes and applies functions

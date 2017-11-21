@@ -1,3 +1,7 @@
+"""
+Model relationships
+"""
+
 import inflection
 from pydent.marshaller import Relation
 
@@ -51,7 +55,9 @@ class HasOne(One):
         HasOne initializer. Uses the "get_one_generic" callback and automatically
         assigns attribute as in the following:
 
-            model="SampleType", attr="id" >> lambda self: self.sample_type_id.
+        .. code-block:: python
+
+            model="SampleType", attr="id" # equiv. to 'lambda self: self.sample_type_id.'
 
         :param model: model name of the target model
         :type model: basestring
@@ -87,7 +93,9 @@ class HasMany(Many):
         HasOne initializer. Uses the "get_one_generic" callback and automatically
         assigns attribute as in the following:
 
-            model="SampleType", attr="id" >> lambda self: {sample_type_id: self.id}
+        .. code-block:: python
+
+            model="SampleType", attr="id" # equiv. to  'lambda self: {sample_type_id: self.id}'
 
         :param model: model name of the target model
         :type model: basestring
@@ -109,6 +117,7 @@ class HasMany(Many):
         super().__init__(model, params=params, **kwargs)
 
 
+# TODO: document hasmanygeneric
 class HasManyGeneric(Many):
     def __init__(self, model):
         super().__init__(model, params=lambda slf: {"parent_id": slf.id})

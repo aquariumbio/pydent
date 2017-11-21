@@ -1,5 +1,19 @@
+"""
 
-# TODO: remove wildcard import for models
+Submodules
+==========
+
+.. autosummary::
+    :toctree: _autosummary
+
+    session
+    marshaller
+    base
+    exceptions
+    models
+    relationships
+    utils
+"""
 from .session import AqSession
 from .models import *
 

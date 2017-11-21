@@ -1,4 +1,4 @@
-"""models.py
+"""Aquarium models
 
 This module contains a set of classes for various various Aquarium objects. Trident models
 inherit the Base class and have a model schema (handled by '@add_schema`) that handles
@@ -7,13 +7,16 @@ the JSON loading and dumping.
 By default, Trident models capture ALL JSON attribute/values and sets the attributes to the
 resultant object.
 
-    e.g.
-        u = User.load({"id": 1, "login": "John"})
-        u.login    # => "John"
-        u.id       # => 1
+.. code-block:: python
+
+    u = User.load({"id": 1, "login": "John"})
+    u.login    # => "John"
+    u.id       # => 1
 
 Fields and field options are added as class variables in the model class definition.
 Below lists various field options and their default values.
+
+.. code-block:: python
 
         load_all = True     # load missing data attributes not explicitly defined during serialization
         strict = True       # throw error during marshalling instead of storing error
@@ -27,6 +30,8 @@ Trident models can also have nested relationships (for example, a Sample my poss
 a SampleType may possess several Samples). These relationships can be specified in the class definition along
 with the field options above as in:
 
+.. code-block:: python
+
     @add_schema
     class SampleType(Base):
         samples = fields.Nested("Sample", many=True)
@@ -38,6 +43,8 @@ use the session connection with Aquarium to retrieve the given model.
 For example, the following will define that SampleType has many Samples. When .samples is called on a
 SampleType instance, Trident will use the database to retrieve all samples that have a sample_type_id
 equal to the id of the SampleType:
+
+.. code-block:: python
 
     @add_schema
     class SampleType(Base):
