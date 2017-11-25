@@ -203,6 +203,81 @@ class FieldValue(ModelBase):
         self.allowable_field_type = None
         super().__init__()
 
+    def show(self, pre=""):
+        if self.sample:
+            if self.child_item_id:
+                item = " item: {}".format(self.child_item_id) + \
+                       " in {}".format(self.item.object_type.name)
+            else:
+                item = ""
+            print('{}{}.{}:{}{}'.format(pre, self.role, self.name, self.sample.name, item))
+        elif self.value:
+            print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
+
+    def set_value(self, value, sample, container, item):
+        object_type = None
+
+        if value:
+            self.value = value
+
+        if sample:
+            self.sample = sample
+            self.child_sample_id = sample.identifier
+
+        if item:
+            self.item = item
+            self.child_item_id = item.id
+            object_type = item.object_type
+
+        if item and container and item.object_type_id != container.id:
+            raise Exception("Item {} is not in container {}".format(item.id, container.name))
+
+        for aft in self.file_type.allowable_field_types:
+            if object_type and sample:
+                if object_type.id == aft.object_type_id and sample.sample_type_id == aft.sample_type_id:
+                    aft.object_type = object_type
+                    aft.sample_type = sample.sample_type
+                    self.allowable_field_type_id = aft.id
+                    self.allowable_field_type = aft
+                elif object_type:
+                    if object_type.id == aft.object_type_id:
+                        aft.object_type = object_type
+                        self.allowable_field_type_id = aft.id
+                        self.allowable_field_type = aft
+                elif sample:
+                    if sample.sample_type_id == aft.sample_type_id:
+                        aft.sample_type = sample.sample_type
+                        self.allowable_field_type_id = aft.id
+                        self.allowable_field_type = aft
+
+        if (sample or object_type) and not self.allowable_field_type:
+            raise Exception("No allowable field type found for " +
+                            self.role + " " + self.name)
+
+        return self
+
+    def choose_item(self):
+        """Set the item associated with the field value"""
+        items = self.compatible_items()
+        if len(items) > 0:
+            self.child_item_id = items[0].id
+            self.item = items[0]
+            return items[0]
+        return None
+
+    def compatible_items(self):
+        """Find items compatible with the field value"""
+        self.session
+        result = aq.http.post("/json/items", {
+            "sid": self.sample.id,
+            "oid": self.allowable_field_type.object_type_id})
+        items = []
+        for element in result:
+            if "collection" in element:
+                items.append(aq.Collection.record(element["collection"]))
+            else:
+                items.append(aq.Item.record(element))
+        return items
 
 def choose_item(self):
     items = self.compatible_items()
