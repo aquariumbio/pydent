@@ -55,11 +55,42 @@ equal to the id of the SampleType:
 
 import json
 
+import requests
 from marshmallow import fields
+
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough, HasManyGeneric
 from pydent.utils import magiclist
+
+__all__ = [
+    "Account",
+    "AllowableFieldType",
+    "Budget",
+    "Code",
+    "Collection",
+    "DataAssociation",
+    "FieldType",
+    "FieldValue",
+    "Group",
+    "Invoice",
+    "Item",
+    "Job",
+    "JobAssociation",
+    "Library",
+    "Membership",
+    "ObjectType",
+    "Operation",
+    "OperationType",
+    "Plan",
+    "PlanAssociation",
+    "Sample",
+    "SampleType",
+    "Upload",
+    "User",
+    "UserBudgetAssociation",
+    "Wire"
+]
 
 
 ##### Mixins #####
@@ -87,16 +118,6 @@ class AllowableFieldType(ModelBase):
         field_type=HasOne("FieldType"),
         object_type=HasOne("ObjectType"),
         sample_type=HasOne("SampleType")
-    )
-
-
-@add_schema
-class User(ModelBase):
-    """A User model"""
-    fields = dict(
-        groups=fields.Nested("Group", many=True, load_only=True),
-        additional=("name", "id", "login"),
-        ignore=("password_digest", "remember_token", "key")
     )
 
 
@@ -131,10 +152,6 @@ class Collection(ModelBase):  # pylint: disable=too-few-public-methods
         data_associations=HasManyGeneric("DataAssociation")
     )
 
-@add_schema
-class ObjectType(ModelBase):
-    """A ObjectType model"""
-
 
 @add_schema
 class DataAssociation(ModelBase):
@@ -154,8 +171,8 @@ class FieldType(ModelBase):
     """A FieldType model"""
     fields = dict(
         allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
-        operation_type=One("OperationType", param=lambda self: self.parent_id),
-        sample_type=One("SampleType", param=lambda self: self.parent_id)
+        operation_type=One("OperationType", params=lambda self: self.parent_id),
+        sample_type=One("SampleType", params=lambda self: self.parent_id)
     )
 
     @property
@@ -172,7 +189,7 @@ class FieldValue(ModelBase):
         item=One("Item", params=lambda self: self.child_item_id),
         sample=One("Sample", params=lambda self: self.child_sample_id),
         operation=One("Operation", params=lambda self: self.parent_id),
-        parent_sample=One("ParentSample", params=lambda self: self.parent_id)
+        parent_sample=One("Sample", params=lambda self: self.parent_id)
     )
 
     def __init__(self):
@@ -193,12 +210,6 @@ def choose_item(self):
         self.item = items[0]
         self.child_item_id = self.item.id
         return self.item
-
-
-# TODO: add compatible items
-@magiclist
-def compatible_items(self):
-    pass
 
 
 @add_schema
@@ -242,77 +253,24 @@ class JobAssociation(ModelBase):
 
 
 @add_schema
-class Sample(ModelBase):
-    """A Sample model"""
+class Library(ModelBase, HasCode):
+    """A Library model"""
     fields = dict(
-        sample_type=One("SampleType", attr="sample_type_id"),
-        items=Many("Item", params=lambda self: {"sample_id": self.id}),
-        field_values=Many("FieldValue", params=lambda self: {
-            "parent_id": self.id})
+        codes=HasManyGeneric("Code")
     )
-
-    @property
-    def identifier(self):
-        """Return the identifier used by Aquarium in autocompletes"""
-        return "{}: {}".format(self.id, self.name)
-
-    def field_value(self, name):
-        for field_value in self.field_values:
-            if field_value.name == name:
-                return field_value
-        return None
-
-    @property
-    def field_names(self):
-        return [fv.name for fv in self.field_values]
 
 
 @add_schema
-class SampleType(ModelBase):
-    """A SampleType model"""
+class Membership(ModelBase):
     fields = dict(
-        samples=HasMany("Sample", "SampleType")
+        user=HasOne("User"),
+        group=HasOne("Group")
     )
-
-    def create(self):
-        return self.session.create.create_samples([self])
 
 
 @add_schema
-class Plan(ModelBase):
-    """A Plan model"""
-    fields = dict(
-        data_associations=HasManyGeneric("DataAssociation"),
-        plan_associations=HasMany("PlanAssociation", "Plan"),
-        operations=Many("Operation", params=lambda self: {"id": x.operation_id for x in self.plan_associations})
-    )
-
-    def __init(self):
-        self.id = None
-        self.name = None
-        self.status = "planning"
-        self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no_name"}
-        self.operations = []
-        self.source = None
-        self.destination = None
-        super().__init__()
-
-    def callback(self):
-        pass
-
-    def add_operations(self, ops):
-        self.operations = ops
-
-    def wire(self, src, dest):
-        self.source = src
-        self.destination = dest
-
-    def add_wires(self, pairs):
-        for src, dest in pairs:
-            self.wire(src, dest)
-
-    def submit(self, user, budget):
-        self.session.create.create_plan(self, user, budget)
+class ObjectType(ModelBase):
+    """A ObjectType model"""
 
 
 @add_schema
@@ -354,11 +312,118 @@ class OperationType(ModelBase, HasCode):
 
 
 @add_schema
+class Plan(ModelBase):
+    """A Plan model"""
+    fields = dict(
+        data_associations=HasManyGeneric("DataAssociation"),
+        plan_associations=HasMany("PlanAssociation", "Plan"),
+        operations=Many("Operation", params=lambda self: {"id": x.operation_id for x in self.plan_associations})
+    )
+
+    def __init(self):
+        self.id = None
+        self.name = None
+        self.status = "planning"
+        self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no_name"}
+        self.operations = []
+        self.source = None
+        self.destination = None
+        super().__init__()
+
+    def callback(self):
+        pass
+
+    def add_operations(self, ops):
+        self.operations = ops
+
+    def wire(self, src, dest):
+        self.source = src
+        self.destination = dest
+
+    def add_wires(self, pairs):
+        for src, dest in pairs:
+            self.wire(src, dest)
+
+    def submit(self, user, budget):
+        self.session.create.create_plan(self, user, budget)
+
+
+@add_schema
 class PlanAssociation(ModelBase):
     """A PlanAssociation model"""
     fields = dict(
         plan=HasOne("Plan"),
         operation=HasOne("Operation")
+    )
+
+
+@add_schema
+class Sample(ModelBase):
+    """A Sample model"""
+    fields = dict(
+        sample_type=One("SampleType", attr="sample_type_id"),
+        items=Many("Item", params=lambda self: {"sample_id": self.id}),
+        field_values=Many("FieldValue", params=lambda self: {
+            "parent_id": self.id})
+    )
+
+    @property
+    def identifier(self):
+        """Return the identifier used by Aquarium in autocompletes"""
+        return "{}: {}".format(self.id, self.name)
+
+    def field_value(self, name):
+        for field_value in self.field_values:
+            if field_value.name == name:
+                return field_value
+        return None
+
+    @property
+    def field_names(self):
+        return [fv.name for fv in self.field_values]
+
+
+@add_schema
+class SampleType(ModelBase):
+    """A SampleType model"""
+    fields = dict(
+        samples=HasMany("Sample", "SampleType")
+    )
+
+    def create(self):
+        return self.session.create.create_samples([self])
+
+
+@add_schema
+class Upload(ModelBase):
+    """An Upload model"""
+
+    @property
+    def temp_url(self):
+        return self.session.Upload.where({"id", self.id}, {"methods": ["url"]})[0].url
+
+    @property
+    def data(self):
+        result = requests.get(self.temp_url)
+        return result.content
+
+
+@add_schema
+class User(ModelBase):
+    """A User model"""
+    fields = dict(
+        groups=fields.Nested("Group", many=True, load_only=True),
+        additional=("name", "id", "login"),
+        ignore=("password_digest", "remember_token", "key")
+    )
+
+
+@add_schema
+class UserBudgetAssociation(ModelBase):
+    """An association model between a User and a Budget"""
+    fields = dict(
+        budget=HasOne("Budget"),
+        user=HasOne("User")
     )
 
 
@@ -379,13 +444,3 @@ class Wire(ModelBase):
               ":" + self.source.name +
               " --> " + self.destination.operation.operation_type.name +
               ":" + self.destination.name)
-
-
-@add_schema
-class Library(ModelBase, HasCode):
-    """A Library model"""
-    fields = dict(
-        operations=HasMany("Operation", "Library"),
-        field_types=HasManyGeneric("FieldType"),
-        codes=HasManyGeneric("Code")
-    )

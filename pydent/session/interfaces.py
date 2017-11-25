@@ -35,8 +35,9 @@ import os
 
 import inflection
 from pydent.base import ModelRegistry
-from pydent.exceptions import TridentRequestError
+from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
 
+import warnings
 
 # TODO: make aqhttp harder to access from a session interface
 class SessionInterface(object):
@@ -59,7 +60,7 @@ class SessionInterface(object):
         self.aqhttp = aqhttp
         self.session = session
 
-
+# TODO: do we need this interface???
 class UtilityInterface(SessionInterface):
     """
     Misc. requests for creating, updating, etc.
@@ -115,13 +116,19 @@ class ModelInterface(SessionInterface):
         """
         data_dict = {'model': self.model.__name__}
         data_dict.update(data)
-        post_response = self.aqhttp.post('json', json_data=data_dict)
 
+        try:
+            post_response = self.aqhttp.post('json', json_data=data_dict)
+        except TridentRequestError as e:
+            warnings.warn(e.args)
+            return None
+        except TridentJSONDataIncomplete as e:
+            warnings.warn(e.args)
+            return None
         many = isinstance(post_response, list)
 
         models = self.model.load(
             post_response, many=many)
-
         if many:
             assert len(post_response) == len(models)
             for model in models:

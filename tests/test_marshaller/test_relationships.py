@@ -2,7 +2,7 @@ import pytest
 from marshmallow import fields
 from pydent.marshaller import MarshallerBase
 from pydent.marshaller import Relation, add_schema
-from pydent.marshaller.exceptions import CallbackNotFoundError
+from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError, MarshallerRelationshipError
 from pydent.marshaller.schema import MODEL_SCHEMA
 
 
@@ -151,7 +151,7 @@ def test_callback_with_lambda_with_alternative_callback():
     assert m.myrelation == 1
 
 
-def test_callback_missing():
+def test_raises_MarshallerCallbackNotFoundError():
     """If callback doesn't exist, raises a CallbackNotFoundError"""
 
     @add_schema
@@ -162,7 +162,7 @@ def test_callback_missing():
         )
 
     m = MyModel.load({"x": 4, "y": 5})
-    with pytest.raises(CallbackNotFoundError):
+    with pytest.raises(MarshallerCallbackNotFoundError):
         assert m.myrelation == 1
 
 
@@ -199,3 +199,23 @@ def test_deserialize_relationship():
     assert a.name == "Fyodor Dostoevsky"
     assert isinstance(a.books[0], Book)
     assert len(a.books) == 2
+
+def test_raise_MarshallerRelationshipError():
+    """We expect an error to be raised since the MyModel instance will
+    be missing an 'x' attribute, which is needed for the test callback"""
+    model_name = "AnyModelName"
+
+    @add_schema
+    class MyModel(MarshallerBase):
+        fields = dict(
+            myrelation=Relation(model_name, callback="test_callback",
+                                params=lambda self: (self.x, self.y))
+        )
+
+        def test_callback(self, model_name, _xy):
+            x, y = _xy
+            return x * y
+
+    m = MyModel.load({"y": 5})
+    with pytest.raises(MarshallerRelationshipError):
+        m.myrelation

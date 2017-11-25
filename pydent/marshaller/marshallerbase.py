@@ -1,6 +1,9 @@
+import json
+
+from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError, MarshallerRelationshipError
 from pydent.marshaller.schema import MODEL_SCHEMA
-from pydent.marshaller.exceptions import CallbackNotFoundError
 from pydent.utils import magiclist
+
 
 class MarshallerBase(object):
     """Base class for marshalling and unmarshalling. Used in conjunction with
@@ -50,19 +53,19 @@ class MarshallerBase(object):
         return inst
 
     @classmethod
-    def schema(cls):
+    def get_schema_class(cls):
         """Return the Schema class associated with this model"""
         return getattr(cls, MODEL_SCHEMA)
 
     @classmethod
-    def get_schema(cls, *schema_args, **schema_kwargs):
+    def create_schema_instance(cls, *schema_args, **schema_kwargs):
         """Create a Schema instance for loading or dumping"""
-        return cls.schema()(*schema_args, **schema_kwargs)
+        return cls.get_schema_class()(*schema_args, **schema_kwargs)
 
     @classmethod
     def get_relationships(cls):
         """Collect the 'Relation' fields"""
-        return cls.schema().relationships
+        return cls.get_schema_class().relationships
 
     # TODO: explicitly add schema args and kwargs
     # TODO: add init_args and init_kwargs
@@ -70,17 +73,17 @@ class MarshallerBase(object):
     @magiclist
     def load(cls, *schema_args, **schema_kwargs):
         """Loads an instance from JSON"""
-        schema = cls.get_schema(*schema_args, **schema_kwargs)
+        schema = cls.create_schema_instance(*schema_args, **schema_kwargs)
         return schema.load(*schema_args, **schema_kwargs).data
 
     def dump(self, *schema_args, **schema_kwargs):
         """Dumps the model instance to JSON"""
-        schema = self.__class__.get_schema(*schema_args, **schema_kwargs)
+        schema = self.__class__.create_schema_instance(*schema_args, **schema_kwargs)
         return schema.dump(self).data
 
     def dumps(self, *schema_args, **schema_kwargs):
         json_data = self.dump(*schema_args, **schema_kwargs)
-        return str(json_data)
+        return json.dumps(json_data)
 
     def _fullfill(self, field):
         """
@@ -98,7 +101,7 @@ class MarshallerBase(object):
             try:
                 fxn = getattr(self, fxn)
             except AttributeError:
-                raise CallbackNotFoundError("Could not find callback \"{}\" in {} instance"
+                raise MarshallerCallbackNotFoundError("Could not find callback \"{}\" in {} instance"
                                             .format(fxn, self.__class__.__name__))
 
         # get params; pass in self if param is callable
@@ -112,10 +115,12 @@ class MarshallerBase(object):
         return fxn(schema_model_name, *fxn_params)
 
     def __getstate__(self):
+        """Override for pickling objects"""
         return self.dump()
 
     def __setstate__(self, state):
-        return self.__class__.load(state)
+        """Override for unpickling objects"""
+        self.__dict__.update(state)
 
     def __getattr__(self, item):
         """Retrieves and fullfills relationships if available"""
@@ -123,7 +128,16 @@ class MarshallerBase(object):
         save_attr = object.__getattribute__(self, "save_attr")
         if item in relationships:
             field = relationships[item]
-            ret = self._fullfill(field)
+            ret = None
+            try:
+                ret = self._fullfill(field)
+            except AttributeError as e:
+                msg = ""
+                for i, m in enumerate(e.args):
+                    msg += "({}) {}\n".format(i, m)
+                msg += "Could not fullfill relationship for {}(instance).{} as relation {}\n".format(self.__class__.__name__, item, field)
+                msg += "{}".format(self.dump())
+                raise MarshallerRelationshipError(msg)
             if save_attr:
                 setattr(self, item, ret)
             return ret

@@ -6,7 +6,7 @@ from distutils.core import setup
 __author__ = 'Justin Vrana, Eric Klavins, Ben Keller'
 __license__ = ''
 __package__ = "pydent"
-__readme__ = "README.md"
+__readme__ = "README.rst"
 __version__ = "0.0.2a"
 __email__ = ''
 
@@ -20,7 +20,7 @@ tests_require = [
 
 install_requires = [
     'inflection',
-    'marshmallow'
+    'marshmallow', 'requests'
 ]
 
 

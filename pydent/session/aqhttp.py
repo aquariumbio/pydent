@@ -12,40 +12,9 @@ import os
 import re
 
 import requests
+import warnings
 
-from pydent.exceptions import TridentRequestError, TridentLoginError, TridentTimeoutError
-
-
-def to_json(fxn):
-    """ returns formated the request response as a JSON.
-    Throws exception if response is not formatted properly."""
-
-    # TODO: Reveal request response
-    def wrapper(*args, **kwargs):
-        """Function to return result as JSON"""
-        result = fxn(*args, **kwargs)
-        try:
-            result = result.json()
-        except json.JSONDecodeError:
-            raise TridentRequestError(
-                "<StatusCode: {code} ({reason})> "
-                "Response is not JSON formatted. "
-                "Trident may not be properly connected to the server. "
-                "Verify login credentials.".format(code=result.status_code, reason=result.reason))
-        except requests.exceptions.ConnectTimeout:
-            raise TridentTimeoutError("<StatusCode: {code} ({reason})> "
-                                      "Aquarium took too long to respond."
-                                      "Make sure the url {url} is correct.".format(
-                                        code=result.status_code,
-                                        reason=result.reason,
-                                        url=args[0].aquarium_url))
-        if "errors" in result:
-            raise TridentRequestError(
-                str(result["errors"])
-            )
-        return result
-
-    return wrapper
+from pydent.exceptions import TridentRequestError, TridentLoginError, TridentTimeoutError, TridentJSONDataIncomplete
 
 
 class AqHTTP(object):
@@ -84,6 +53,11 @@ class AqHTTP(object):
             }
         }
 
+    @property
+    def url(self):
+        """An alias of aquarium_url"""
+        return self.aquarium_url
+
     # TODO: encrypt the header, store key in separate file (not accessible after pip install)
     def _login(self, login, password):
         """ Login to aquarium and saves header as a requests.Session() """
@@ -119,31 +93,56 @@ class AqHTTP(object):
                 rtok = cparts[1]
         return "remember_token=" + rtok + "; " + header
 
-    @to_json
+    # TODO: return warnings about not finding
+    def request(self, method, path, timeout=None, **kwargs):
+        """Performs a generic request using the the requests session created during login."""
+        if timeout is None:
+            timeout = self.timeout
+        if 'json' in kwargs:
+            self._disallow_null_in_json(kwargs['json'])
+        result = self._requests_session.request(method, os.path.join(self.aquarium_url, path), timeout=timeout,
+                                                    **kwargs)
+        return self._request_to_json(result)
+        # except TridentJSONDataIncomplete as e:
+        #     warnings.warn(str(e.args))
+        #     return None
+        # except TridentRequestError as e:
+        #     warnings.warn(str(e.args))
+        #     return None
+
+
+    def _request_to_json(self, result):
+        try:
+            result_json = result.json()
+        except json.JSONDecodeError:
+            raise TridentRequestError(
+                "<StatusCode: {code} ({reason})> "
+                "Response is not JSON formatted. "
+                "Trident may not be properly connected to the server. "
+                "Verify login credentials.".format(code=result.status_code, reason=result.reason))
+        if "errors" in result_json:
+            raise TridentRequestError(
+                "Request: {}\n{}\n{}".format(result.request.body, result, result_json['errors'])
+            )
+        return result_json
+
+    def _disallow_null_in_json(self, json_data):
+        """Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if json data being sent
+        contains a null value"""
+        if None in json_data.values():
+            raise TridentJSONDataIncomplete("JSON data {} contains a null value.".format(json_data))
+
     def post(self, path, json_data=None, timeout=None, **kwargs):
         """ Makes a post request to the session """
-        if timeout is None:
-            timeout = self.timeout
-        return self._requests_session.post(os.path.join(self.aquarium_url, path), json=json_data,
-                                           timeout=timeout,
-                                           **kwargs)
+        return self.request("post", path, json=json_data, timeout=timeout, **kwargs)
 
-    @to_json
     def put(self, path, json_data=None, timeout=None, **kwargs):
         """ Makes a put request to the session """
-        if timeout is None:
-            timeout = self.timeout
-        return self._requests_session.put(os.path.join(self.aquarium_url, path), json=json_data,
-                                          timeout=timeout,
-                                          **kwargs)
+        return self.request("put", path, json=json_data, timeout=timeout, **kwargs)
 
-    @to_json
     def get(self, path, timeout=None, **kwargs):
         """ Makes a get request to the session """
-        if timeout is None:
-            timeout = self.timeout
-        return self._requests_session.get(os.path.join(self.aquarium_url, path), timeout=timeout,
-                                          **kwargs)
+        return self.request("get", path, timeout=timeout, **kwargs)
 
     def __repr__(self):
         return "<{}({}, {})>".format(self.__class__.__name__, self.login, self.aquarium_url)

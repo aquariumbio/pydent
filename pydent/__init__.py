@@ -1,5 +1,7 @@
 """
 
+.. module:: pydent
+
 Submodules
 ==========
 
@@ -15,6 +17,7 @@ Submodules
     utils
 """
 from .session import AqSession
+from .base import ModelBase, ModelRegistry
 from .models import *
 
 from .__version__ import __description__, __author__, __version__, __url__, __title__

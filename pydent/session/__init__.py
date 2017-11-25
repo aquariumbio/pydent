@@ -1,7 +1,18 @@
-"""pydent.session
+"""Sessions
 
-Classes for managing sessions and login information
+=======
+Session
+=======
 
+Submodules
+==========
+
+.. autosummary::
+    :toctree: _autosummary
+
+    aqhttp
+    aqsession
+    interfaces
 """
 
 from pydent.session.aqhttp import AqHTTP

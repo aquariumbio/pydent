@@ -173,6 +173,7 @@ class DynamicSchema(Schema):
                     more_keys.append(key)
         setattr(meta, "additional", more_keys)
 
+
     def filter_ignored(self, data):
         """Removes ignored fields from the JSON data"""
         meta = self.Meta

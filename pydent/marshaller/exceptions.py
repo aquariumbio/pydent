@@ -2,5 +2,9 @@
 Marsaller exceptions
 """
 
-class CallbackNotFoundError(AttributeError):
+class MarshallerCallbackNotFoundError(Exception):
     """Could not find callback for the model."""
+
+
+class MarshallerRelationshipError(Exception):
+    """Could not fullfill relationship."""

@@ -36,8 +36,6 @@ class AqSession(object):
            <User(id=1,...)>
     """
 
-    s = []
-
     def __init__(self, login, password, aquarium_url, name=None):
         self.name = name
         self.login = login
@@ -79,12 +77,12 @@ class AqSession(object):
                 {"login": self.__aqhttp.login})[0]
         return self.__current_user
 
-    # def logged_in(self):
-    #     try:
-    #         self.current_user
-    #         return True
-    #     except:
-    #         return False
+    def logged_in(self):
+        try:
+            self.current_user
+            return True
+        except:
+            return False
 
     @property
     def models(self):

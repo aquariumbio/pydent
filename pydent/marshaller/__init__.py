@@ -1,6 +1,19 @@
-"""pydent.marshaller
+"""Serialization/deserialization
 
-Classes related to serialization/deserialization
+==========
+marshaller
+==========
+
+Submodules
+==========
+
+.. autosummary::
+    :toctree: _autosummary
+
+    marshallerbase
+    relation
+    schema
+    exceptions
 
 """
 
