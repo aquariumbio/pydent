@@ -189,18 +189,34 @@ class FieldValue(ModelBase):
         item=One("Item", params=lambda self: self.child_item_id),
         sample=One("Sample", params=lambda self: self.child_sample_id),
         operation=One("Operation", params=lambda self: self.parent_id),
-        parent_sample=One("Sample", params=lambda self: self.parent_id)
+        parent_sample=One("Sample", params=lambda self: self.parent_id),
+        ignore=("object_type",)
     )
 
-    def __init__(self):
+    def __init__(self, value=None, sample=None, container=None, item=None):
+        """
+
+        :param value:
+        :type value:
+        :param sample:
+        :type sample:
+        :param container:
+        :type container:
+        :param item:
+        :type item:
+        """
         self.child_item_id = None
         self.child_sample_id = None
+        self.item = None
+        self.sample = None
+        self.value = None
         self.row = None
         self.column = None
         self.role = None
         self.field_type = None
         self.allowable_field_type_id = None
         self.allowable_field_type = None
+        self.set_value(value, sample, container, item)
         super().__init__()
 
     def show(self, pre=""):
@@ -214,47 +230,68 @@ class FieldValue(ModelBase):
         elif self.value:
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
-    def set_value(self, value, sample, container, item):
-        object_type = None
+    def _set_sample(self, sample):
+        self.sample = sample
+        self.child_sample_id = sample.identifier
 
-        if value:
-            self.value = value
+        for aft in self.field_type.allowable_field_types:
+            if sample.sample_type_id == aft.sample_type_id:
+                aft.sample_type = sample.sample_type
+                self.allowable_field_type_id = aft.id
+                self.allowable_field_type = aft
 
-        if sample:
-            self.sample = sample
-            self.child_sample_id = sample.identifier
+    def _set_value(self, value):
+        self.value = value
 
-        if item:
-            self.item = item
-            self.child_item_id = item.id
-            object_type = item.object_type
+    def _set_item(self, item):
+        self.item = item
+        self.child_item_id = item.id
+        self.object_type = item.object_type
+        for aft in self.field_type.allowable_field_types:
+            if item.object_type.id == aft.object_type_id:
+                aft.object_type = item.object_type
+                self.allowable_field_type_id = aft.id
+                self.allowable_field_type = aft
 
+    def _set_container(self, container):
+        self.object_type = container
+        for aft in self.field_type.allowable_field_types:
+            if container.id == aft.object_type_id:
+                aft.object_type = container
+                self.allowable_field_type_id = aft.id
+                self.allowable_field_type = aft
+
+    def _set_afts(self):
+        for aft in self.field_type.allowable_field_types:
+            if self.sample:
+                if self.sample.sample_type_id == aft.sample_type_id:
+                    self.allowable_field_type_id = aft.id
+            elif self.object_type:
+                if self.object_type.id == aft.object_type_id:
+                    self.allowable_field_type_id = aft.id
+
+    def set_value(self, value=None, sample=None, container=None, item=None):
         if item and container and item.object_type_id != container.id:
             raise Exception("Item {} is not in container {}".format(item.id, container.name))
 
-        for aft in self.file_type.allowable_field_types:
-            if object_type and sample:
-                if object_type.id == aft.object_type_id and sample.sample_type_id == aft.sample_type_id:
-                    aft.object_type = object_type
-                    aft.sample_type = sample.sample_type
-                    self.allowable_field_type_id = aft.id
-                    self.allowable_field_type = aft
-                elif object_type:
-                    if object_type.id == aft.object_type_id:
-                        aft.object_type = object_type
-                        self.allowable_field_type_id = aft.id
-                        self.allowable_field_type = aft
-                elif sample:
-                    if sample.sample_type_id == aft.sample_type_id:
-                        aft.sample_type = sample.sample_type
-                        self.allowable_field_type_id = aft.id
-                        self.allowable_field_type = aft
+        if container:
+            self._set_container(container)
 
-        if (sample or object_type) and not self.allowable_field_type:
-            raise Exception("No allowable field type found for " +
-                            self.role + " " + self.name)
+        if item:
+            self._set_item(item)
+
+        if sample:
+            self._set_sample(sample)
+
+        if value:
+            self._set_value(value)
+
+        if not self.allowable_field_type:
+            if sample or item or container:
+                raise Exception("No allowable field type found for {} {}".format(self.role, self.name))
 
         return self
+
 
     def choose_item(self):
         """Set the item associated with the field value"""

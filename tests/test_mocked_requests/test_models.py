@@ -9,3 +9,8 @@ def test_all_models():
 
     if len(missing_models) > 0:
         warnings.warn("Missing models in pydent.models.__all__: {}".format(', '.join(missing_models)))
+
+
+def test_field_value(session):
+    fv = session.FieldValue.find(6904)
+    fv.show()

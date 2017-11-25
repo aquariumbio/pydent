@@ -105,14 +105,18 @@ class MarshallerBase(object):
                                             .format(fxn, self.__class__.__name__))
 
         # get params; pass in self if param is callable
+        fxn_params = self._get_callback_params(field)
+        schema_model_name = field.nested
+        return fxn(schema_model_name, *fxn_params)
+
+    def _get_callback_params(self, field):
         fxn_params = []
         for param in field.params:
             if callable(param):
                 fxn_params.append(param(self))
             else:
                 fxn_params.append(param)
-        schema_model_name = field.nested
-        return fxn(schema_model_name, *fxn_params)
+        return fxn_params
 
     def __getstate__(self):
         """Override for pickling objects"""
