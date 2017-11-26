@@ -1,3 +1,3 @@
 """
-Tests related to serialization and deserialization
+Tests related to serialization and deserialization using pydent.marshaller
 """

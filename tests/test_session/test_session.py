@@ -8,8 +8,8 @@ from pydent.session import AqHTTP, AqSession, ModelInterface, UtilityInterface
 from pydent.models import User
 
 @pytest.fixture(scope="function")
-def aqsession(monkeypatch, mock_post):
-    monkeypatch.setattr(requests, "post", mock_post)
+def aqsession(monkeypatch, mock_login_post):
+    monkeypatch.setattr(requests, "post", mock_login_post)
     aquarium_url = "http://52.52.525.52"
     session = AqSession("username", "password", aquarium_url)
     return session

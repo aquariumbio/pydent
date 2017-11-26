@@ -9,10 +9,10 @@ from pydent.session import AqHTTP
 
 
 @pytest.fixture(scope="function")
-def aqhttp(monkeypatch, mock_post):
+def aqhttp(monkeypatch, mock_login_post):
     """Creates a faked aqhttp"""
 
-    monkeypatch.setattr(requests, "post", mock_post)
+    monkeypatch.setattr(requests, "post", mock_login_post)
     login = "somelogin"
     password = "somepassword"
     aquarium_url = "http://some.aquarium.url.com"
@@ -262,3 +262,36 @@ def test_json_returned_with_errors(monkeypatch, aqhttp):
         aqhttp.post('ljlj', json_data={})
     except TridentRequestError as e:
         assert error_message in e.args[0]
+
+
+def test_request_history(monkeypatch, aqhttp):
+    """Tests retrieval of request history"""
+    # A fake requests sessions object
+    class mock_request(object):
+        @staticmethod
+        def request(method, path, timeout=None, **kwargs):
+            assert timeout == 0.1
+            fake_requests_response = requests.Response()
+            fake_requests_response.json = lambda: {'response': fake_requests_response}
+            return fake_requests_response
+
+    monkeypatch.setattr(aqhttp, '_requests_session', mock_request)
+
+    # ensure history is saved
+    response1 = aqhttp.post("someurl", timeout=0.1, json_data={})
+    assert len(aqhttp.request_history) == 1
+
+    # ensure history doesn't change with equivalent request
+    response2 = aqhttp.post("someurl", timeout=0.1, json_data={})
+    response3 = aqhttp.post("someurl", timeout=0.1, json_data={}, get_from_history_ok=True)
+    assert len(aqhttp.request_history) == 1
+
+    # ensure without get_from_history_ok=False, that responses are different
+    assert response1 != response2
+
+    # ensure with get_from_history_ok that response from history is returned
+    assert response2 == response3
+
+    # ensure history changes with a new request
+    aqhttp.post("someurl", timeout=0.1, json_data={'x': 5})
+    assert len(aqhttp.request_history) == 2

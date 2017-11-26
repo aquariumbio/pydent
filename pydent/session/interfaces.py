@@ -36,8 +36,8 @@ import os
 import inflection
 from pydent.base import ModelRegistry
 from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
-
 import warnings
+from functools import wraps
 
 # TODO: make aqhttp harder to access from a session interface
 class SessionInterface(object):
@@ -109,16 +109,16 @@ class ModelInterface(SessionInterface):
         self.model = ModelRegistry.get_model(model_name)
 
     # TODO: make this harder to access
-    def _post_json(self, data):
+    def _post_json(self, data, get_from_history_ok=False):
         """
         Posts a json request to this interface's session. Attaches raw json and this session instance
         to the models it retrieves.
         """
-        data_dict = {'model': self.model.__name__}
+        data_dict = {'model': self.model_name}
         data_dict.update(data)
 
         try:
-            post_response = self.aqhttp.post('json', json_data=data_dict)
+            post_response = self.aqhttp.post('json', json_data=data_dict, get_from_history_ok=get_from_history_ok)
         except TridentRequestError as e:
             warnings.warn(e.args)
             return None
@@ -137,13 +137,17 @@ class ModelInterface(SessionInterface):
             models.connect_to_session(self.session)
         return models
 
+    @property
+    def model_name(self):
+        return self.model.__name__
+
     def find(self, model_id):
         """ Finds model by id """
-        return self._post_json({"id": model_id})
+        return self._post_json({"id": model_id}, get_from_history_ok=True)
 
     def find_by_name(self, name):
         """ Finds model by name """
-        return self._post_json({"method": "find_by_name", "arguments": [name]})
+        return self._post_json({"method": "find_by_name", "arguments": [name]}, get_from_history_ok=True)
 
     def array_query(self, method, args, rest, opts=None):
         """ Finds models based on a query """

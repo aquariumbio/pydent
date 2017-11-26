@@ -21,7 +21,7 @@ def test_dump():
 
 
 def test_dumps():
-
+    """Test dumping model to a string"""
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(load_all=True)

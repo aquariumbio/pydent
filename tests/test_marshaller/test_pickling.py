@@ -34,6 +34,7 @@ class MyModel(MarshallerBase):
 
 
 def test_pickling_marshallerbase_model(pickle_folder):
+    """We expect to be able to pickle and unpickle a model instance"""
     m = MyModel.load({"x": 4, "y": 5})
     filename = os.path.join(pickle_folder, 'mymodel.pkl')
 

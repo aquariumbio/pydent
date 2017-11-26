@@ -2,6 +2,8 @@ import pytest
 from pydent.marshaller import MarshallerBase, add_schema, Relation
 
 def test_setattr():
+    """This test ensures that relationship attributes automatically update. Attributes retrieved
+    from fullfilling relationships should *not* be saved."""
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(

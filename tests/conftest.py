@@ -21,7 +21,7 @@ def session():
 
 
 @pytest.fixture(scope="session")
-def mock_post():
+def mock_login_post():
     """A fake cookie to fake a logged in account"""
     def post(path, **kwargs):
         routes = {

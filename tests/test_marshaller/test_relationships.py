@@ -167,7 +167,10 @@ def test_raises_MarshallerCallbackNotFoundError():
 
 
 def test_deserialize_relationship():
-    """If the nested relationship is available, deserialize the data"""
+    """If the nested relationship is available, deserialize the data. In this case,
+    since the data for deserializing book instances are available in 'books', the loaded
+    deserialized model instance should also contain an attribute 'books' which is a list
+    of Book models."""
 
     @add_schema
     class Author(MarshallerBase):
