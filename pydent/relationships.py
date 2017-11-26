@@ -13,7 +13,7 @@ class One(Relation):
 
     def __init__(self, model, *args, params=None, **kwargs):
         """
-        One initializer. Uses "get_one_generic" callback.
+        One initializer. Uses "find" callback.
 
         :param model: target model
         :type model: basestring
