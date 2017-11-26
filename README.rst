@@ -25,3 +25,5 @@ making and editing modelsfvs
 how relationships work
 
 how relationships are updated
+
+how request history works

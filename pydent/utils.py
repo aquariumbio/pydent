@@ -2,13 +2,18 @@
 Utilities
 """
 
+from functools import wraps
+
 class MagicList(list):
     """List-like class that collects attributes and applies functions
     but acts like a list in every other regard.
 
-        >>> ml = MagicList(["string1   ", "   string2"])
-        >>> m1.strip().upper()
-        >>> #=> ["STRING1", "STRING2"]
+    .. code-block:: python
+
+        ml = MagicList(["string1   ", "   string2"])
+        m1.strip().upper()
+        #=> ["STRING1", "STRING2"]
+
     """
 
     def apply(self, fxn):
@@ -27,8 +32,9 @@ class MagicList(list):
 
 
 def magiclist(fxn):
-    """Decorator that turns a returned value from a list to a MagicList (if possible)"""
-
+    """Decorator that turns a returned value from a list to a MagicList (if possible). Otherwise
+    returns original value"""
+    @wraps(fxn)
     def magiclist_wrapper(*args, **kwargs):
         ret = fxn(*args, **kwargs)
         try:
