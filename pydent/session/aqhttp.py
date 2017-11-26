@@ -16,7 +16,6 @@ import warnings
 
 from pydent.exceptions import TridentRequestError, TridentLoginError, TridentTimeoutError, TridentJSONDataIncomplete
 
-
 class AqHTTP(object):
     """Defines a session/connection to Aquarium. Makes HTTP requests to Aquarium and returns JSON.
 
@@ -43,6 +42,7 @@ class AqHTTP(object):
         self._requests_session = None
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
+        self.request_history = {}
 
     @staticmethod
     def create_session_json(login, password):
@@ -93,23 +93,37 @@ class AqHTTP(object):
                 rtok = cparts[1]
         return "remember_token=" + rtok + "; " + header
 
+    def _serialize_request(self, url, method, body):
+        return json.dumps({
+            "url": url,
+            "method": method,
+            "body": body
+        }, sort_keys=True)
+
     # TODO: return warnings about not finding
-    def request(self, method, path, timeout=None, **kwargs):
+    def request(self, method, path, timeout=None, get_from_history_ok=False, **kwargs):
         """Performs a generic request using the the requests session created during login."""
         if timeout is None:
             timeout = self.timeout
         if 'json' in kwargs:
             self._disallow_null_in_json(kwargs['json'])
-        result = self._requests_session.request(method, os.path.join(self.aquarium_url, path), timeout=timeout,
-                                                    **kwargs)
-        return self._request_to_json(result)
-        # except TridentJSONDataIncomplete as e:
-        #     warnings.warn(str(e.args))
-        #     return None
-        # except TridentRequestError as e:
-        #     warnings.warn(str(e.args))
-        #     return None
 
+        # serialize request
+        url = os.path.join(self.aquarium_url, path)
+        body = {}
+        if 'json' in kwargs:
+            body = kwargs['json']
+        key = self._serialize_request(url, method, body)
+
+        # get result from history (if ok) otherwise, make a http request; save result to history
+        result = None
+        if get_from_history_ok:
+            result = self.request_history.get(key, None)
+        if result is None:
+            result = self._requests_session.request(method, os.path.join(self.aquarium_url, path), timeout=timeout,
+                                                        **kwargs)
+            self.request_history[key] = result
+        return self._request_to_json(result)
 
     def _request_to_json(self, result):
         try:
@@ -132,17 +146,17 @@ class AqHTTP(object):
         if None in json_data.values():
             raise TridentJSONDataIncomplete("JSON data {} contains a null value.".format(json_data))
 
-    def post(self, path, json_data=None, timeout=None, **kwargs):
+    def post(self, path, json_data=None, timeout=None, get_from_history_ok=False, **kwargs):
         """ Makes a post request to the session """
-        return self.request("post", path, json=json_data, timeout=timeout, **kwargs)
+        return self.request("post", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
 
-    def put(self, path, json_data=None, timeout=None, **kwargs):
+    def put(self, path, json_data=None, timeout=None, get_from_history_ok=False, **kwargs):
         """ Makes a put request to the session """
-        return self.request("put", path, json=json_data, timeout=timeout, **kwargs)
+        return self.request("put", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
 
-    def get(self, path, timeout=None, **kwargs):
+    def get(self, path, timeout=None, get_from_history_ok=False, **kwargs):
         """ Makes a get request to the session """
-        return self.request("get", path, timeout=timeout, **kwargs)
+        return self.request("get", path, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
 
     def __repr__(self):
         return "<{}({}, {})>".format(self.__class__.__name__, self.login, self.aquarium_url)

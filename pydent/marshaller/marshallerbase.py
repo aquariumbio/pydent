@@ -34,7 +34,7 @@ class MarshallerBase(object):
         u.dump()
     """
 
-    save_attr = True
+    save_attr = False
 
     @classmethod
     def create_from_json(cls, *args, data=None, **kwargs):
