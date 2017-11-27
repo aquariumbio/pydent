@@ -27,8 +27,11 @@ class MagicList(list):
     def __getattr__(self, item):
         return MagicList([getattr(x, item) for x in self])
 
-    def __call__(self, *args, **kwargs):
+    def call(self, *args, **kwargs):
         return MagicList([x(*args, **kwargs) for x in self])
+
+    # def __call__(self, *args, **kwargs):
+    #     return MagicList([x(*args, **kwargs) for x in self])
 
 
 def magiclist(fxn):
