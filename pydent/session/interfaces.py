@@ -39,7 +39,7 @@ from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
 import warnings
 from functools import wraps
 
-# TODO: make aqhttp harder to access from a session interface
+
 class SessionInterface(object):
 
     """
@@ -108,7 +108,6 @@ class ModelInterface(SessionInterface):
         super().__init__(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
 
-    # TODO: make this harder to access
     def _post_json(self, data, get_from_history_ok=False):
         """
         Posts a json request to this interface's session. Attaches raw json and this session instance
@@ -182,3 +181,9 @@ class ModelInterface(SessionInterface):
         options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
         return self.array_query("where", criteria, methods, options)
+
+    def __call__(self, *args, **kwargs):
+        """Creates a new model instance"""
+        model = self.model(*args, **kwargs)
+        model.connect_to_session(self.session)
+        return model

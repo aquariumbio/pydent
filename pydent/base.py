@@ -52,7 +52,7 @@ class ModelRegistry(type):
     def get_model(model_name):
         """Gets model by model_name"""
         if model_name not in ModelRegistry.models:
-            raise TridentModelNotFoundError("Model \"{}\" not found.".format(model_name))
+            raise TridentModelNotFoundError("Model \"{}\" not found in ModelRegistry.".format(model_name))
         else:
             return ModelRegistry.models[model_name]
 
@@ -77,12 +77,19 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         if self._session is None:
             self._session = session
 
+    def _check_for_session(self):
+        if self.session is None:
+            raise AttributeError("No AqSession instance found for '{}'. Use 'connect_to_session' "
+                                 "to connect this model to a session".format(self.__class__.__name__))
+
     def find(self, model_name, model_id):
         """Finds a model using the model interface and model_id. Used to find
         models in model relationships."""
+        self._check_for_session()
         return self.session.model_interface(model_name).find(model_id)
 
     def where(self, model_name, params):
         """Finds models using a model interface and a set of parameters. Used to
         find models in model relationships."""
+        self._check_for_session()
         return self.session.model_interface(model_name).where(params)

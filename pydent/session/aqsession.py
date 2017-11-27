@@ -21,11 +21,6 @@ from pydent.session.interfaces import ModelInterface, UtilityInterface
 from prompt_toolkit.shortcuts import confirm
 from prompt_toolkit import prompt
 
-# TODO: We want to prevent the user from accessing aqhttp
-# TODO: Could store encrypted key in class that user doesn't have access to. Key would need to be passed to AqHTTP object in order to work...
-# TODO: Or, aqhttp would only work with the session interface that created it somehow
-# TODO: Should never be allowed to change the current s
-
 class AqSession(object):
     """
     Holds a AqHTTP with login information. Creates SessionInterfaces for models.

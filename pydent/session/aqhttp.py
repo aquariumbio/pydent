@@ -58,7 +58,6 @@ class AqHTTP(object):
         """An alias of aquarium_url"""
         return self.aquarium_url
 
-    # TODO: encrypt the header, store key in separate file (not accessible after pip install)
     def _login(self, login, password):
         """ Login to aquarium and saves header as a requests.Session() """
         session_data = self.__class__.create_session_json(login, password)
@@ -92,6 +91,9 @@ class AqHTTP(object):
             if re.match('remember_token', cparts[0]):
                 rtok = cparts[1]
         return "remember_token=" + rtok + "; " + header
+
+    def clear_history(self):
+        self.request_history = {}
 
     def _serialize_request(self, url, method, body):
         return json.dumps({

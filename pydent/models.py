@@ -51,8 +51,6 @@ equal to the id of the SampleType:
         samples = Many("Sample", params={"sample_type_id": lambda self: self.id})
 """
 
-# TODO: Better errors for incorrect models
-
 import json
 
 import requests
@@ -103,6 +101,16 @@ class HasCode(object):
         codes = [c for c in codes if not hasattr(c, "child_id") or c.child_id is None]
         return codes[-1]
 
+
+class FieldMixin(object):
+    """Mixin for finding FieldType and FieldValue relationships"""
+
+    def find_field_parent(self, model_name, id):
+        """Callback for finding operation_type or sample_type. If parent_class does not match
+        the expected nested model name (OperationType or SampleType), callback will return
+        None"""
+        if model_name == self.parent_class:
+            return self.find(model_name, id)
 
 ##### Models #####
 
@@ -167,12 +175,12 @@ class DataAssociation(ModelBase):
 
 
 @add_schema
-class FieldType(ModelBase):
+class FieldType(ModelBase, FieldMixin):
     """A FieldType model"""
     fields = dict(
         allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
-        operation_type=One("OperationType", params=lambda self: self.parent_id),
-        sample_type=One("SampleType", params=lambda self: self.parent_id)
+        operation_type=One("OperationType", callback="find_field_parent", params=lambda self: self.parent_id),
+        sample_type=One("SampleType", callback="find_field_parent", params=lambda self: self.parent_id)
     )
 
     @property
@@ -181,19 +189,24 @@ class FieldType(ModelBase):
 
 
 @add_schema
-class FieldValue(ModelBase):
+class FieldValue(ModelBase, FieldMixin):
     """A FieldValue model"""
     fields = dict(
+        # FieldValue relationships
         field_type=HasOne("FieldType"),
         allowable_field_type=HasOne("AllowableFieldType"),
         item=One("Item", params=lambda self: self.child_item_id),
         sample=One("Sample", params=lambda self: self.child_sample_id),
-        operation=One("Operation", params=lambda self: self.parent_id),
-        parent_sample=One("Sample", params=lambda self: self.parent_id),
+        operation=One("Operation", callback="find_field_parent", params=lambda self: self.parent_id),
+        parent_sample=One("Sample", callback="find_field_parent", params=lambda self: self.parent_id),
+
+        # ignore object_type
         ignore=("object_type",)
+
+
     )
 
-    def __init__(self, value=None, sample=None, container=None, item=None):
+    def __init__(self, parent_class=None, value=None, sample=None, container=None, item=None):
         """
 
         :param value:
@@ -205,18 +218,19 @@ class FieldValue(ModelBase):
         :param item:
         :type item:
         """
-        self.child_item_id = None
-        self.child_sample_id = None
-        self.item = None
-        self.sample = None
-        self.value = None
-        self.row = None
-        self.column = None
-        self.role = None
-        self.field_type = None
-        self.allowable_field_type_id = None
-        self.allowable_field_type = None
-        self.set_value(value, sample, container, item)
+        # self.parent_class = parent_class
+        # self.child_item_id = None
+        # self.child_sample_id = None
+        # self.item = None
+        # self.sample = None
+        # self.value = None
+        # self.row = None
+        # self.column = None
+        # self.role = None
+        # self.field_type = None
+        # self.allowable_field_type_id = None
+        # self.allowable_field_type = None
+        # self.set_value(value, sample, container, item)
         super().__init__()
 
     def show(self, pre=""):
@@ -266,9 +280,11 @@ class FieldValue(ModelBase):
             if self.sample:
                 if self.sample.sample_type_id == aft.sample_type_id:
                     self.allowable_field_type_id = aft.id
+                    self.allowable_field_type = aft
             elif self.object_type:
                 if self.object_type.id == aft.object_type_id:
                     self.allowable_field_type_id = aft.id
+                    self.allowable_field_type = aft
 
     def set_value(self, value=None, sample=None, container=None, item=None):
         if item and container and item.object_type_id != container.id:
@@ -315,13 +331,6 @@ class FieldValue(ModelBase):
             else:
                 items.append(aq.Item.record(element))
         return items
-
-def choose_item(self):
-    items = self.compatible_items()
-    if items:
-        self.item = items[0]
-        self.child_item_id = self.item.id
-        return self.item
 
 
 @add_schema
@@ -473,11 +482,21 @@ class PlanAssociation(ModelBase):
 class Sample(ModelBase):
     """A Sample model"""
     fields = dict(
+        # sample relationships
         sample_type=One("SampleType", attr="sample_type_id"),
         items=Many("Item", params=lambda self: {"sample_id": self.id}),
         field_values=Many("FieldValue", params=lambda self: {
-            "parent_id": self.id})
+            "parent_id": self.id}),
+
+        # explicitly defined fields for initializing samples
+        name=fields.String(),
+        sample_type_id=fields.Int(),
+        project=fields.String()
     )
+
+    def __init__(self, name=None, project=None, sample_type_id=None):
+        vars(self).update(locals())
+        super().__init__()
 
     @property
     def identifier(self):
@@ -499,7 +518,9 @@ class Sample(ModelBase):
 class SampleType(ModelBase):
     """A SampleType model"""
     fields = dict(
-        samples=HasMany("Sample", "SampleType")
+        samples=HasMany("Sample", "SampleType"),
+        field_types=Many("FieldType",
+                         params=lambda self: {"parent_id": self.id, "parent_class": self.__class__.__name__})
     )
 
     def create(self):
