@@ -1,4 +1,5 @@
 from marshmallow.fields import Nested
+import functools
 
 class Relation(Nested):
     """Defines a nested relationship with another model. Is a subclass of :class:`Nested`.
@@ -36,16 +37,20 @@ class Relation(Nested):
 
     def _serialize(self, nested_obj, attr, obj):
         dumped = None
+
+        def dump(nobj):
+            return nobj.dump(_depth=self.root._depth+1, dump_depth=self.root.dump_depth, dump_all_relations=True)
+
         if nested_obj:
             if isinstance(nested_obj, list):
                 dumped = []
                 for x in nested_obj:
                     xdumped = None
                     if x is not None:
-                        xdumped = x.dump()
+                        xdumped = dump(x)
                     dumped.append(xdumped)
             else:
-                dumped = nested_obj.dump()
+                dumped = dump(nested_obj)
         return dumped
 
     def __repr__(self):

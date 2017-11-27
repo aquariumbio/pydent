@@ -315,3 +315,45 @@ def test_preferentially_reload_relationships_if_none():
 
     mymodel.x = 5
     assert mymodel.myrelation == 25
+
+
+def test_depth_dump():
+
+    @add_schema
+    class Author(MarshallerBase):
+        fields = dict(
+            books=Relation("Book", many=True, callback="get_books", params=()),
+            publisher=Relation("Publisher", None, None, many=False),
+        )
+
+        def get_books(self):
+            pass
+
+    @add_schema
+    class Publisher(MarshallerBase):
+        fields = dict(
+            category=Relation("Category", None, None)
+        )
+
+    @add_schema
+    class Book(MarshallerBase):
+        pass
+
+    @add_schema
+    class Category(MarshallerBase):
+        pass
+
+
+    author_data = {
+        "name": "Fyodor Dostoevsky",
+        "books": [
+            {"title": "Demons", "year": 1871},
+            {"title": "The Idiot", "year": 1868}
+        ],
+        "publisher": {"name": "Penguin", "category": {"name": "Classic"}}
+    }
+    a = Author.load(author_data)
+    adump = a.dump(dump_all_relations=True, dump_depth=2)
+    a2 = Author.load(adump)
+    assert isinstance(a2.publisher, Publisher)
+    assert isinstance(a2.publisher.category, Category)

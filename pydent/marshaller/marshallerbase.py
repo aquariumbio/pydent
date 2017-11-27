@@ -70,7 +70,8 @@ class MarshallerBase(object):
     @classmethod
     @magiclist
     def load(cls, data, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False,
-             prefix='', strict=None, many=False, context=None, load_only=(), dump_only=(), partial=False, **kwargs):
+             prefix='', strict=None, many=False, context=None, load_only=(), dump_only=(),
+             partial=False, _depth=0, dump_depth=1, **kwargs):
         """Loads the model instance from JSON. For parameter options, refer to
         :class:`pydent.marshaller.schema.DynamicSchema`"""
 
@@ -85,7 +86,9 @@ class MarshallerBase(object):
             context=context,
             load_only=load_only,
             dump_only=dump_only,
-            partial=partial
+            partial=partial,
+            _depth=_depth,
+            dump_depth=dump_depth
         )
         schema_kwargs.update(kwargs)
 
@@ -94,7 +97,7 @@ class MarshallerBase(object):
 
     def dump(self, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False, prefix='', strict=None,
                  many=False, context=None, load_only=(), dump_only=(),
-                 partial=False, **kwargs):
+                 partial=False, _depth=0, dump_depth=1, **kwargs):
         """Dumps the model instance to JSON. For parameter options, refer to
         :class:`pydent.marshaller.schema.DynamicSchema`"""
 
@@ -109,7 +112,9 @@ class MarshallerBase(object):
             context=context,
             load_only=load_only,
             dump_only=dump_only,
-            partial=partial
+            partial=partial,
+            _depth=_depth,
+            dump_depth=dump_depth
         )
         schema_kwargs.update(kwargs)
 

@@ -1,7 +1,7 @@
 from pydent.models import __all__ as allmodels
 from pydent.base import ModelRegistry
 import warnings
-
+from pydent.utils import pprint
 
 def test_all_models():
     """Ensure __all__ contains all models registered by the ModelRegistry"""
@@ -20,10 +20,10 @@ def test_field_value(session):
     fv = fvs[0]
     print(fvs.name)
 
-    fv_data = fv.dump(dump_all_relations=True)
+    fv_data = fv.dump(dump_all_relations=True, max_depth=2)
 
     from pydent.models import FieldValue
 
     fv2 = FieldValue.load(fv_data)
-    print(fv2.dump())
+    pprint(fv_data)
 

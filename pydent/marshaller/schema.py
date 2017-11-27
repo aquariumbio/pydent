@@ -84,11 +84,13 @@ class DynamicSchema(Schema):
     relationships = {}
 
     def __init__(self, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False, strict=None, many=False,
-                 context=None, load_only=(), dump_only=(), partial=False, prefix='', **kwargs):
+                 context=None, load_only=(), dump_only=(), partial=False, prefix='', _depth=0, dump_depth=1, **kwargs):
         """
         Custom Schema for marshalling and demarshalling models
 
 
+        :param int _depth: optional nested depth for deserializing or loading nested relationships (default=0)
+        :param int dump_depth: optional maximum nested depth for deserializing or loading nested relationships (default=0)
         :param tuple only: A list or tuple of fields to serialize. If `None`, all
             fields will be serialized. Nested fields can be represented with dot delimiters.
         :param tuple exclude: A list or tuple of fields to exclude from the
@@ -119,6 +121,8 @@ class DynamicSchema(Schema):
                          many=many, context=context, load_only=load_only, dump_only=dump_only,
                          partial=partial, **kwargs)
         self.dump_relations = dump_relations
+        self.dump_depth = dump_depth
+        self._depth = _depth
 
     @pre_load
     def add_fields(self, data):
@@ -160,8 +164,10 @@ class DynamicSchema(Schema):
 
         for field_name, relation in self.relationships.items():
             if field_name in self.dump_relations:
-                extra_fields[field_name] = self.relationships[field_name]
+                if self._depth < self.dump_depth:
+                    extra_fields[field_name] = self.relationships[field_name]
         self.add_extra_fields(extra_fields)
+
         return obj
 
     @post_dump
