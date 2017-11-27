@@ -67,21 +67,57 @@ class MarshallerBase(object):
         """Collect the 'Relation' fields"""
         return cls.get_schema_class().relationships
 
-    # TODO: explicitly add schema args and kwargs
-    # TODO: add init_args and init_kwargs
     @classmethod
     @magiclist
-    def load(cls, *schema_args, **schema_kwargs):
-        """Loads an instance from JSON"""
-        schema = cls.create_schema_instance(*schema_args, **schema_kwargs)
-        return schema.load(*schema_args, **schema_kwargs).data
+    def load(cls, data, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False,
+             prefix='', strict=None, many=False, context=None, load_only=(), dump_only=(), partial=False, **kwargs):
+        """Loads the model instance from JSON. For parameter options, refer to
+        :class:`pydent.marshaller.schema.DynamicSchema`"""
 
-    def dump(self, *schema_args, **schema_kwargs):
-        """Dumps the model instance to JSON"""
-        schema = self.__class__.create_schema_instance(*schema_args, **schema_kwargs)
+        schema_kwargs = dict(
+            only=only,
+            exclude=exclude,
+            dump_relations=dump_relations,
+            dump_all_relations=dump_all_relations,
+            prefix=prefix,
+            strict=strict,
+            many=many,
+            context=context,
+            load_only=load_only,
+            dump_only=dump_only,
+            partial=partial
+        )
+        schema_kwargs.update(kwargs)
+
+        schema = cls.create_schema_instance(*args, **schema_kwargs)
+        return schema.load(data).data
+
+    def dump(self, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False, prefix='', strict=None,
+                 many=False, context=None, load_only=(), dump_only=(),
+                 partial=False, **kwargs):
+        """Dumps the model instance to JSON. For parameter options, refer to
+        :class:`pydent.marshaller.schema.DynamicSchema`"""
+
+        schema_kwargs = dict(
+            only=only,
+            exclude=exclude,
+            dump_relations=dump_relations,
+            dump_all_relations=dump_all_relations,
+            prefix=prefix,
+            strict=strict,
+            many=many,
+            context=context,
+            load_only=load_only,
+            dump_only=dump_only,
+            partial=partial
+        )
+        schema_kwargs.update(kwargs)
+
+        schema = self.__class__.create_schema_instance(*args, **schema_kwargs)
         return schema.dump(self).data
 
     def dumps(self, *schema_args, **schema_kwargs):
+        """Dumps the model instance to a String. For parameter options, refer to :class:`pydent.marshaller.schema.DynamicSchema`"""
         json_data = self.dump(*schema_args, **schema_kwargs)
         return json.dumps(json_data)
 
@@ -90,9 +126,9 @@ class MarshallerBase(object):
         Fullfills a relationship with a callback.
 
         :param field: relationship field
-        :type field: Relation instance
-        :return:
-        :rtype:
+        :type field: Relation
+        :return: model that satisfies the relationship
+        :rtype: MarshallerBase
         """
 
         # get function
@@ -100,9 +136,10 @@ class MarshallerBase(object):
         if not callable(fxn):
             try:
                 fxn = getattr(self, fxn)
-            except AttributeError:
-                raise MarshallerCallbackNotFoundError("Could not find callback \"{}\" in {} instance"
-                                            .format(fxn, self.__class__.__name__))
+            except AttributeError as e:
+                msg = "Could not find callback \"{}\" in {} instance".format(fxn, self.__class__.__name__)
+                e.args = tuple(list(e.args) + [msg])
+                raise MarshallerCallbackNotFoundError(e)
 
         # get params; pass in self if param is callable
         fxn_params = self._get_callback_params(field)
@@ -126,6 +163,14 @@ class MarshallerBase(object):
         """Override for unpickling objects"""
         self.__dict__.update(state)
 
+    def __getattribute__(self, name):
+        res = object.__getattribute__(self, name)
+        if res is None:
+            relationships = object.__getattribute__(self, "get_relationships")()
+            if name in relationships:
+                res = self.__getattr__(name)
+        return res
+
     def __getattr__(self, item):
         """Retrieves and fullfills relationships if available"""
         relationships = object.__getattribute__(self, "get_relationships")()
@@ -136,16 +181,28 @@ class MarshallerBase(object):
             try:
                 ret = self._fullfill(field)
             except AttributeError as e:
-                msg = ""
+                msg = "\n"
+                msg += "Could not fullfill relationship for {}(instance).{} as relation {}\nReasons:\n".format(
+                    self.__class__.__name__, item, field)
                 for i, m in enumerate(e.args):
                     msg += "({}) {}\n".format(i, m)
-                msg += "Could not fullfill relationship for {}(instance).{} as relation {}\n".format(self.__class__.__name__, item, field)
-                msg += "{}".format(self.dump())
-                raise MarshallerRelationshipError(msg)
+                # msg += "{}".format(self.dump())
+                e.args = tuple(list(e.args) + [msg])
+                raise MarshallerRelationshipError(e)
             if save_attr:
                 setattr(self, item, ret)
             return ret
-        return object.__getattribute__(self, item)
+        raise AttributeError(
+            "'{}' model has no attribute '{}'. Attribute was not found in list of relationships: {}".format(
+                self.__class__.__name__, item, ', '.join(relationships.keys())))
+        # return object.__getattribute__(self, item)
+
+    def __str__(self):
+        dumped = self.dump()
+        rel = {k: str(v) for k, v in self.get_relationships().items()}
+        dumped.update(rel)
+        # dumped['model_class'] = str(self.__class__)
+        return "{}: {}".format(self.__class__, json.dumps(dumped, indent=4))
 
     def __repr__(self):
         return "<{}>".format(self.__class__.__name__)

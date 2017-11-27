@@ -1,8 +1,10 @@
-import pytest
-from pydent.session import AqSession
-import os
 import json
+import os
+
+import pytest
 import requests
+
+from pydent.session import AqSession
 
 
 @pytest.fixture(scope="session")
@@ -23,6 +25,7 @@ def session():
 @pytest.fixture(scope="session")
 def mock_login_post():
     """A fake cookie to fake a logged in account"""
+
     def post(path, **kwargs):
         routes = {
             "sessions.json": dict(
@@ -41,11 +44,19 @@ def mock_login_post():
                 response = requests.Response()
                 response.__dict__.update(res)
                 return response
+
     return post
 
 
-# # Uncomment the following code to turn off requests
-# import pytest
-# @pytest.fixture(autouse=True)
-# def no_requests(monkeypatch):
-#     monkeypatch.delattr("requests.sessions.Session.request")
+@pytest.fixture(scope="function")
+def fake_session(monkeypatch, mock_login_post):
+    monkeypatch.setattr(requests, "post", mock_login_post)
+    aquarium_url = "http://52.52.525.52"
+    session = AqSession("username", "password", aquarium_url)
+    return session
+
+    # # Uncomment the following code to turn off requests
+    # import pytest
+    # @pytest.fixture(autouse=True)
+    # def no_requests(monkeypatch):
+    #     monkeypatch.delattr("requests.sessions.Session.request")

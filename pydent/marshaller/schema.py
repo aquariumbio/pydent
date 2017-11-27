@@ -1,4 +1,5 @@
-from marshmallow import SchemaOpts, Schema, post_load, fields, pre_load, pre_dump
+from marshmallow import SchemaOpts, Schema
+from marshmallow import post_load, fields, pre_load, pre_dump, post_dump
 
 from pydent.marshaller.relation import Relation
 
@@ -20,8 +21,6 @@ EXTRA_FIELDS = "loaded_fields"
 # attribute key to store relationships
 RELATIONSHIPS = "relationships"
 
-
-# TODO: ability to dump hierarchical data 
 
 class DefaultFieldOptions(SchemaOpts):
     """
@@ -84,18 +83,19 @@ class DynamicSchema(Schema):
     Meta = DefaultFieldOptions
     relationships = {}
 
-    def __init__(self, *args, only=(), exclude=(), include_in_dump=(), prefix='', strict=None,
-                 many=False, context=None, load_only=(), dump_only=(),
-                 partial=False, **kwargs):
+    def __init__(self, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False, strict=None, many=False,
+                 context=None, load_only=(), dump_only=(), partial=False, prefix='', **kwargs):
         """
         Custom Schema for marshalling and demarshalling models
+
 
         :param tuple only: A list or tuple of fields to serialize. If `None`, all
             fields will be serialized. Nested fields can be represented with dot delimiters.
         :param tuple exclude: A list or tuple of fields to exclude from the
             serialized result. Nested fields can be represented with dot delimiters.
-        :param tuple include_in_dump: A list or tuple of fields to include during
+        :param tuple dump_relations: A list or tuple of fields to include during
             serialization
+        :param boolean dump_all_relations: whether to dump all relationship during deserialization
         :param str prefix: Optional prefix that will be prepended to all the
             serialized field names.
         :param bool strict: If `True`, raise errors if invalid data are passed in
@@ -111,10 +111,14 @@ class DynamicSchema(Schema):
             is an iterable, only missing fields listed in that iterable will be
             ignored.
         """
+        load_only = set(list(load_only) + list(self.relationships.keys()))
+        if dump_all_relations:
+            dump_relations = tuple(self.relationships.keys())
+        load_only = tuple(set(load_only) - set(dump_relations))
         super().__init__(*args, only=only, exclude=exclude, prefix=prefix, strict=strict,
                          many=many, context=context, load_only=load_only, dump_only=dump_only,
                          partial=partial, **kwargs)
-        self.include_in_dump = include_in_dump
+        self.dump_relations = dump_relations
 
     @pre_load
     def add_fields(self, data):
@@ -153,11 +157,16 @@ class DynamicSchema(Schema):
         extra_fields = {}
         if hasattr(obj, EXTRA_FIELDS):
             extra_fields.update(obj.loaded_fields)
-        # for field_name in self.include_in_dump:
-        #     if field_name in self.relationships:
-        #         extra_fields[field_name] = self.relationships[field_name]
+
+        for field_name, relation in self.relationships.items():
+            if field_name in self.dump_relations:
+                extra_fields[field_name] = self.relationships[field_name]
         self.add_extra_fields(extra_fields)
         return obj
+
+    @post_dump
+    def remove_ignored_from_dump(self, data):
+        return self.filter_ignored(data)
 
     def load_missing(self, data):
         """Includes missing fields not explicitly defined in the schema"""

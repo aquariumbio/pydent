@@ -203,6 +203,75 @@ def test_deserialize_relationship():
     assert isinstance(a.books[0], Book)
     assert len(a.books) == 2
 
+
+def test_dump_relations():
+    """Relations can be specified to be included in serialized results. Here, publisher and
+    books relations are specified below in the serialized results."""
+
+    @add_schema
+    class Author(MarshallerBase):
+        fields = dict(
+            books=Relation("Book", many=True, callback="get_books", params=()),
+            publisher=Relation("Publisher", None, None, many=False),
+        )
+
+        def get_books(self):
+            pass
+
+    @add_schema
+    class Publisher(MarshallerBase):
+        pass
+
+    @add_schema
+    class Book(MarshallerBase):
+        fields = dict(
+            author=Relation("Author", callback="get_author", params=())
+        )
+
+        def get_author(self):
+            pass
+
+    author_data = {
+        "name": "Fyodor Dostoevsky",
+        "books": [
+            {"title": "Demons", "year": 1871},
+            {"title": "The Idiot", "year": 1868}
+        ],
+        "publisher": {"name": "Penguin"}
+    }
+
+
+
+    a = Author.load(author_data)
+
+    # no relations in dump
+    d = a.dump()
+    assert 'books' not in d
+    assert 'publisher' not in d
+
+    # include books in dump
+    d = a.dump(dump_relations=('books',))
+    assert d['books'] == author_data['books']
+    assert 'publisher' not in d
+
+    # include publisher in dump
+    d = a.dump(dump_relations=('publisher',))
+    assert 'books' not in d
+    assert d['publisher'] == author_data['publisher']
+
+    # include all in dump
+    d = a.dump(dump_relations=('books', 'publisher'))
+    assert d['books'] == author_data['books']
+    assert d['publisher'] == author_data['publisher']
+
+    # include all in dump, overriding 'dump_relations'
+    d = a.dump(dump_all_relations=True, dump_relations=('publisher',))
+    assert d['books'] == author_data['books']
+    assert d['publisher'] == author_data['publisher']
+
+
+
+
 def test_raise_MarshallerRelationshipError():
     """We expect an error to be raised since the MyModel instance will
     be missing an 'x' attribute, which is needed for the test callback"""
@@ -222,3 +291,27 @@ def test_raise_MarshallerRelationshipError():
     m = MyModel.load({"y": 5})
     with pytest.raises(MarshallerRelationshipError):
         m.myrelation
+
+
+def test_preferentially_reload_relationships_if_none():
+
+    @add_schema
+    class MyModel(MarshallerBase):
+        fields = dict(
+            myrelation=Relation("lkjlj", callback="test_callback",
+                                params=lambda self: (self.x, self.y))
+        )
+
+        def test_callback(self, model_name, _xy):
+            x, y = _xy
+            return x * y
+
+    mymodel = MyModel.load({"x": 4, "y": 5})
+    assert mymodel.myrelation == 20
+
+    mymodel.myrelation = None
+
+    assert mymodel.myrelation == 20
+
+    mymodel.x = 5
+    assert mymodel.myrelation == 25

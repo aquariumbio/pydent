@@ -58,3 +58,4 @@ def test_load_only():
     d = u.dump()
     assert d == {"id": 5, "field1": 1}
 
+

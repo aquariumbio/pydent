@@ -33,7 +33,6 @@ def test_disallow_null(aqhttp):
     """Should raise exception if json contains a null value"""
 
     aqhttp._disallow_null_in_json({"id": 5, "name": "Joe"})
-
     with pytest.raises(TridentJSONDataIncomplete):
         aqhttp._disallow_null_in_json({"id": 5, "name": None})
 
@@ -295,3 +294,19 @@ def test_request_history(monkeypatch, aqhttp):
     # ensure history changes with a new request
     aqhttp.post("someurl", timeout=0.1, json_data={'x': 5})
     assert len(aqhttp.request_history) == 2
+
+
+def test_clear_request_history(monkeypatch, aqhttp):
+    """After clearing history, aqhttp.request_history should be an empty dictionary"""
+    class mock_request(object):
+        @staticmethod
+        def request(method, path, timeout=None, **kwargs):
+            fake_requests_response = requests.Response()
+            fake_requests_response.json = lambda: {'response': fake_requests_response}
+            return fake_requests_response
+
+    monkeypatch.setattr(aqhttp, '_requests_session', mock_request)
+    aqhttp.post('something', json_data={})
+    assert len(aqhttp.request_history) > 0
+    aqhttp.clear_history()
+    assert aqhttp.request_history == {}

@@ -2,6 +2,7 @@ from pydent.models import __all__ as allmodels
 from pydent.base import ModelRegistry
 import warnings
 
+
 def test_all_models():
     """Ensure __all__ contains all models registered by the ModelRegistry"""
     assert allmodels == list(ModelRegistry.models.keys())
@@ -12,7 +13,17 @@ def test_all_models():
 
 
 def test_field_value(session):
-    fv = session.FieldValue.find(6904)
-    fv.show()
+    primer = session.Sample.find(1)
+    primer_type = primer.sample_type
 
-# TODO: Test request history for Aqmodels models
+    fvs = primer.field_values
+    fv = fvs[0]
+    print(fvs.name)
+
+    fv_data = fv.dump(dump_all_relations=True)
+
+    from pydent.models import FieldValue
+
+    fv2 = FieldValue.load(fv_data)
+    print(fv2.dump())
+
