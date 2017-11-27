@@ -11,7 +11,7 @@ from pydent.marshaller import Relation
 class One(Relation):
     """Defines a single relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
 
-    def __init__(self, model, *args, params=None, **kwargs):
+    def __init__(self, model, *args, callback=None, params=None, **kwargs):
         """
         One initializer. Uses "find" callback.
 
@@ -24,16 +24,18 @@ class One(Relation):
         :param kwargs: other kwargs for fields.Nested relationship
         :type kwargs: ...
         """
+        if callback is None:
+            callback = "find"
         if params is None:
             iden = "{}_id".format(inflection.underscore(model))
             params = lambda slf: getattr(slf, iden)
-        super().__init__(model, *args, callback="find", params=params, **kwargs)
+        super().__init__(model, *args, callback=callback, params=params, **kwargs)
 
 
 class Many(Relation):
     """Defines a many relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
 
-    def __init__(self, model, *args, params=None, **kwargs):
+    def __init__(self, model, *args, callback=None, params=None, **kwargs):
         """
         Many initializer. Uses "get_many_generic" callback.
 
@@ -46,7 +48,9 @@ class Many(Relation):
         :param kwargs: other kwargs for fields.Nested relationship
         :type kwargs: ...
         """
-        super().__init__(model, *args, many=True, callback="where", params=params, **kwargs)
+        if callback is None:
+            callback = "where"
+        super().__init__(model, *args, many=True, callback=callback, params=params, **kwargs)
 
 
 class HasOne(One):
@@ -119,5 +123,5 @@ class HasMany(Many):
 
 # TODO: document hasmanygeneric
 class HasManyGeneric(Many):
-    def __init__(self, model):
-        super().__init__(model, params=lambda slf: {"parent_id": slf.id})
+    def __init__(self, model, **kwargs):
+        super().__init__(model, params=lambda slf: {"parent_id": slf.id}, **kwargs)
