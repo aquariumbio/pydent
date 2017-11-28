@@ -34,13 +34,13 @@ here = os.path.abspath(os.path.dirname(__file__))
 # about = {}
 # with open(os.path.join(here, 'requests', '__version__.py'), 'r', 'utf-8') as f:
 #     exec(f.read(), about)
-with open(os.path.join(here, 'pydent', '__version__.py', 'r')) as f:
+with open(os.path.join(here, 'pydent', '__version__.py'), 'r') as f:
     print(f.read())
 
 # setup
 setup(
         name='pydent',
-        version='0.1a',
+        version='0.2a',
         packages=["pydent", "pydent.session", "pydent.marshaller"],
         url='https://github.com/klavinslab/trident',
         license='',
