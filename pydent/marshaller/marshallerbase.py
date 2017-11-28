@@ -34,6 +34,7 @@ class MarshallerBase(object):
         u.dump()
     """
 
+    model_schema = None
     save_attr = False
 
     @classmethod
@@ -60,12 +61,22 @@ class MarshallerBase(object):
     @classmethod
     def create_schema_instance(cls, *schema_args, **schema_kwargs):
         """Create a Schema instance for loading or dumping"""
-        return cls.get_schema_class()(*schema_args, **schema_kwargs)
+        schema_class = cls.get_schema_class()
+        if schema_class:
+            return cls.get_schema_class()(*schema_args, **schema_kwargs)
 
     @classmethod
     def get_relationships(cls):
-        """Collect the 'Relation' fields"""
-        return cls.get_schema_class().relationships
+        """Get the name: relationship (:class:`pydent.marshaller.relation.Relation`) dictionary"""
+        schema_class = cls.get_schema_class()
+        if schema_class:
+            return cls.get_schema_class().relationships
+        return {}
+
+    @property
+    def relationships(self):
+        """Get the name: relationship (:class:`pydent.marshaller.relation.Relation`) dictionary"""
+        return self.__class__.get_relationships()
 
     @classmethod
     @magiclist
@@ -93,7 +104,8 @@ class MarshallerBase(object):
         schema_kwargs.update(kwargs)
 
         schema = cls.create_schema_instance(*args, **schema_kwargs)
-        return schema.load(data).data
+        if schema:
+            return schema.load(data).data
 
     def dump(self, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False, prefix='', strict=None,
                  many=False, context=None, load_only=(), dump_only=(),
@@ -119,7 +131,8 @@ class MarshallerBase(object):
         schema_kwargs.update(kwargs)
 
         schema = self.__class__.create_schema_instance(*args, **schema_kwargs)
-        return schema.dump(self).data
+        if schema:
+            return schema.dump(self).data
 
     def dumps(self, *schema_args, **schema_kwargs):
         """Dumps the model instance to a String. For parameter options, refer to :class:`pydent.marshaller.schema.DynamicSchema`"""
@@ -137,19 +150,19 @@ class MarshallerBase(object):
         """
 
         # get function
-        fxn = field.callback
-        if not callable(fxn):
+        callback = field.callback
+        if not callable(callback):
             try:
-                fxn = getattr(self, fxn)
+                callback = getattr(self, callback)
             except AttributeError as e:
-                msg = "Could not find callback \"{}\" in {} instance".format(fxn, self.__class__.__name__)
+                msg = "Could not find callback \"{}\" in {} instance".format(callback, self.__class__.__name__)
                 e.args = tuple(list(e.args) + [msg])
                 raise MarshallerCallbackNotFoundError(e)
 
         # get params; pass in self if param is callable
         fxn_params = self._get_callback_params(field)
         schema_model_name = field.nested
-        return fxn(schema_model_name, *fxn_params)
+        return callback(schema_model_name, *fxn_params)
 
     def _get_callback_params(self, field):
         fxn_params = []
@@ -204,8 +217,9 @@ class MarshallerBase(object):
 
     def __str__(self):
         dumped = self.dump()
-        rel = {k: str(v) for k, v in self.get_relationships().items()}
-        dumped.update(rel)
+        if dumped:
+            rel = {k: str(v) for k, v in self.get_relationships().items()}
+            dumped.update(rel)
         # dumped['model_class'] = str(self.__class__)
         return "{}: {}".format(self.__class__, json.dumps(dumped, indent=4))
 

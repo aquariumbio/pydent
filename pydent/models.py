@@ -483,7 +483,7 @@ class Sample(ModelBase):
     """A Sample model"""
     fields = dict(
         # sample relationships
-        sample_type=One("SampleType", attr="sample_type_id"),
+        sample_type=HasOne("SampleType"),
         items=Many("Item", params=lambda self: {"sample_id": self.id}),
         field_values=Many("FieldValue", params=lambda self: {
             "parent_id": self.id}),
@@ -545,7 +545,7 @@ class Upload(ModelBase):
 class User(ModelBase):
     """A User model"""
     fields = dict(
-        groups=fields.Nested("Group", many=True, load_only=True),
+        groups=HasMany("Group", "User"),
         additional=("name", "id", "login"),
         ignore=("password_digest", "remember_token", "key")
     )

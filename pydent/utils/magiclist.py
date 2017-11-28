@@ -30,8 +30,8 @@ class MagicList(list):
     def call(self, *args, **kwargs):
         return MagicList([x(*args, **kwargs) for x in self])
 
-    # def __call__(self, *args, **kwargs):
-    #     return MagicList([x(*args, **kwargs) for x in self])
+    def __call__(self, *args, **kwargs):
+        return MagicList([x(*args, **kwargs) for x in self])
 
 
 def magiclist(fxn):

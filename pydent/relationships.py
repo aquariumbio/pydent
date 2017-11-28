@@ -13,7 +13,7 @@ class One(Relation):
 
     def __init__(self, model, *args, callback=None, params=None, **kwargs):
         """
-        One initializer. Uses "find" callback.
+        One initializer. Uses "find" callback by default.
 
         :param model: target model
         :type model: basestring
@@ -26,9 +26,6 @@ class One(Relation):
         """
         if callback is None:
             callback = "find"
-        if params is None:
-            iden = "{}_id".format(inflection.underscore(model))
-            params = lambda slf: getattr(slf, iden)
         super().__init__(model, *args, callback=callback, params=params, **kwargs)
 
 
@@ -37,7 +34,7 @@ class Many(Relation):
 
     def __init__(self, model, *args, callback=None, params=None, **kwargs):
         """
-        Many initializer. Uses "get_many_generic" callback.
+        Many initializer. Uses "where" callback by default.
 
         :param model: target model
         :type model: basestring

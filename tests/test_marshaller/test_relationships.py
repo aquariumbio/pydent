@@ -46,6 +46,21 @@ def test_relationship_access():
     assert "field5" in schema().fields
     assert "field6" in schema().fields
 
+def test_relationships_property():
+    """MarshallerBase should contain a relationships property that should
+    return .get_relationships()"""
+    class MyModel(MarshallerBase):
+        fields = dict(
+            field5=Relation(None, None, None),
+        )
+
+        def __init__(self):
+            pass
+
+    # check for relationships property
+    m = MyModel()
+    assert m.relationships == m.get_relationships()
+
 
 def test_basic_callback():
     """Relations can use a callback from the model that instantiates it. All callbacks expect
