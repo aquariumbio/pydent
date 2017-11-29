@@ -9,6 +9,7 @@ from pydent.session import AqSession
 
 @pytest.fixture(scope="session")
 def config():
+    """Returns the config dictionary for live tests."""
     dir = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(dir, "secrets", "config.json.secret")
     config = None
@@ -19,6 +20,7 @@ def config():
 
 @pytest.fixture(scope="session")
 def session():
+    """Returns a live aquarium connection."""
     return AqSession(**config())
 
 
@@ -50,6 +52,7 @@ def mock_login_post():
 
 @pytest.fixture(scope="function")
 def fake_session(monkeypatch, mock_login_post):
+    """Returns a fake session using a fake cookie"""
     monkeypatch.setattr(requests, "post", mock_login_post)
     aquarium_url = "http://52.52.525.52"
     session = AqSession("username", "password", aquarium_url)

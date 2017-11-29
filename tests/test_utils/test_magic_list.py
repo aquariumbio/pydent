@@ -46,16 +46,13 @@ def test_MagicList_apply():
     assert xmagic.apply(fxn) == [x.strip() for x in xlist]
 
 
-def test_MagicList_callable():
-    """MagicList can contain a list of callables, that can be applied using arguments.
-    In this case, we have a list of lambdas and are applying a single parameter to each
-    lambda."""
+def test_magiclist_callable():
+    """MagicList can contain a list of callables"""
 
     xlist = [lambda x: x ** 2, lambda y: y ** 3]
     xmagic = MagicList(xlist)
 
-    assert xmagic(3) == [3 ** 2, 3 ** 3]
-    assert xmagic(4) == [4 ** 2, 4 ** 3]
+    assert xmagic(3) == [3**2, 3**3]
 
 
 def test_MagicList_getitem():

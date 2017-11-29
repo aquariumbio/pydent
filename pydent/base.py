@@ -36,7 +36,7 @@ relationships - models relationships are stored
 
 from pydent.exceptions import TridentModelNotFoundError
 from pydent.marshaller import MarshallerBase
-
+from pydent.utils import pprint
 
 class ModelRegistry(type):
     """Stores a list of models that can be accessed by name."""
@@ -93,3 +93,13 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         find models in model relationships."""
         self._check_for_session()
         return self.session.model_interface(model_name).where(params)
+
+    def print(self, *args, **kwargs):
+        """
+        Prints the model instance in a nice format. See :func:`pydent.marshaller.marshallerbase.dump`
+
+        :param args: dump arguments
+        :param kwargs: dump arguments
+        :return:
+        """
+        pprint(self.dump(*args, **kwargs))

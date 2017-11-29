@@ -35,6 +35,10 @@ class Relation(Nested):
             params = (params,)
         self.params = params
 
+    @property
+    def model(self):
+        return self.nested
+
     def _serialize(self, nested_obj, attr, obj):
         dumped = None
 
