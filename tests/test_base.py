@@ -67,13 +67,13 @@ def test_no_model_in_registry():
 def test_find_no_session():
     m = ModelBase()
     with pytest.raises(AttributeError):
-        m.find(None, None)
+        m.find_using_session(None, None)
 
 
 def test_where_no_session():
     m = ModelBase()
     with pytest.raises(AttributeError):
-        m.where(None, None)
+        m.where_using_session(None, None)
 
 
 def test_where_and_find(monkeypatch, fake_session):
@@ -96,8 +96,8 @@ def test_where_and_find(monkeypatch, fake_session):
     m = ModelBase()
     ModelRegistry.models["FakeModel"] = ModelBase
     m.connect_to_session(fake_session)
-    assert m.where("FakeModel", 5) == 5
-    assert m.find("FakeModel", 6) == 6
+    assert m.where_using_session("FakeModel", 5) == 5
+    assert m.find_using_session("FakeModel", 6) == 6
 
 
 def test_print():

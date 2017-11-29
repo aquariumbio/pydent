@@ -4,7 +4,7 @@ Model relationships
 
 import inflection
 from pydent.marshaller import Relation
-
+from pydent.base import ModelBase
 
 # TODO: Is this ravioli? Too many different types of relationships?
 
@@ -25,7 +25,7 @@ class One(Relation):
         :type kwargs: ...
         """
         if callback is None:
-            callback = "find"
+            callback = ModelBase.find_using_session.__name__
         super().__init__(model, *args, callback=callback, params=params, **kwargs)
 
 
@@ -46,7 +46,7 @@ class Many(Relation):
         :type kwargs: ...
         """
         if callback is None:
-            callback = "where"
+            callback = ModelBase.where_using_session.__name__
         super().__init__(model, *args, many=True, callback=callback, params=params, **kwargs)
 
 

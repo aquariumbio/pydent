@@ -283,3 +283,18 @@ def test_set_item(fake_session, fv_from_op, item_data):
 
     fv.set_value(item=item)
     # assert fv.item == 1000
+
+
+def test_set_(session):
+    plan = session.Plan.all()[-1]
+    print(plan)
+    # fv = fvs[-1]  # FieldValue
+    item = session.Item.find(141440)
+    print(item)
+    fv = plan.operations[0].field_values[0]
+    print()
+    print(fv)
+    fv.set_value(item=item)
+    print(fv)
+    # FieldValue().set_value(item=session.Item.find(10010))
+    # fv.set_value()

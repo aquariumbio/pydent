@@ -37,7 +37,6 @@ import inflection
 from pydent.base import ModelRegistry
 from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
 import warnings
-from functools import wraps
 
 
 class SessionInterface(object):

@@ -110,7 +110,10 @@ class FieldMixin(object):
         the expected nested model name (OperationType or SampleType), callback will return
         None"""
         if model_name == self.parent_class:
-            return self.find(model_name, id)
+            # weird, but helps with refactoring this mixin
+            fxn_name = ModelBase.find_using_session.__name__
+            fxn = getattr(self, fxn_name)
+            return fxn(model_name, id)
 
 ##### Models #####
 
@@ -318,10 +321,10 @@ class FieldValue(ModelBase, FieldMixin):
             return items[0]
         return None
 
+
     def compatible_items(self):
         """Find items compatible with the field value"""
-        self.session
-        result = aq.http.post("/json/items", {
+        result = self.session.aqhttp.post("/json/items", {
             "sid": self.sample.id,
             "oid": self.allowable_field_type.object_type_id})
         items = []
@@ -533,7 +536,7 @@ class Upload(ModelBase):
 
     @property
     def temp_url(self):
-        return self.session.Upload.where({"id", self.id}, {"methods": ["url"]})[0].url
+        return self.session.Upload.where_using_session({"id", self.id}, {"methods": ["url"]})[0].url
 
     @property
     def data(self):

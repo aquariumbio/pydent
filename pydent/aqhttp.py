@@ -12,7 +12,6 @@ import os
 import re
 
 import requests
-import warnings
 
 from pydent.exceptions import TridentRequestError, TridentLoginError, TridentTimeoutError, TridentJSONDataIncomplete
 
@@ -33,9 +32,9 @@ class AqHTTP(object):
         Initializes an aquarium session with login, password, server combination
 
         :param login: Aquarium login
-        :type login: basestring
+        :type login: str
         :param aquarium_url: aquarium url to the server
-        :type aquarium_url: basestring
+        :type aquarium_url: str
         """
         self.login = login
         self.aquarium_url = aquarium_url
@@ -46,6 +45,7 @@ class AqHTTP(object):
 
     @staticmethod
     def create_session_json(login, password):
+        """Formats login information for aquarium"""
         return {
             "session": {
                 "login": login,
@@ -93,6 +93,7 @@ class AqHTTP(object):
         return "remember_token=" + rtok + "; " + header
 
     def clear_history(self):
+        """Clears the request history."""
         self.request_history = {}
 
     def _serialize_request(self, url, method, body):
@@ -104,7 +105,22 @@ class AqHTTP(object):
 
     # TODO: return warnings about not finding
     def request(self, method, path, timeout=None, get_from_history_ok=False, **kwargs):
-        """Performs a generic request using the the requests session created during login."""
+        """
+        Performs a http request.
+
+        :param method: request method (e.g. 'put', 'post', 'get', etc.)
+        :type method: str
+        :param path: url to perform the request
+        :type path: str
+        :param timeout: time in seconds to process request before raising exception
+        :type timeout: int
+        :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
+        :type get_from_history_ok: boolean
+        :param kwargs: additional arguments to post to request
+        :type kwargs: dict
+        :return: json
+        :rtype: dict
+        """
         if timeout is None:
             timeout = self.timeout
         if 'json' in kwargs:
@@ -128,6 +144,7 @@ class AqHTTP(object):
         return self._request_to_json(result)
 
     def _request_to_json(self, result):
+        """Turns :class:`requests.Request` instance into a json. Raises custom exception if not."""
         try:
             result_json = result.json()
         except json.JSONDecodeError:
@@ -149,15 +166,58 @@ class AqHTTP(object):
             raise TridentJSONDataIncomplete("JSON data {} contains a null value.".format(json_data))
 
     def post(self, path, json_data=None, timeout=None, get_from_history_ok=False, **kwargs):
-        """ Makes a post request to the session """
+        """
+        Make a post request to the session
+
+        :param path: url
+        :type path: str
+        :param json_data: json_data to post
+        :type json_data: dict
+        :param timeout: time in seconds to process request before raising exception
+        :type timeout: int
+        :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
+        :type get_from_history_ok: boolean
+        :param kwargs: additional arguments to post to request
+        :type kwargs: dict
+        :return: json
+        :rtype: dict
+        """
         return self.request("post", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
 
     def put(self, path, json_data=None, timeout=None, get_from_history_ok=False, **kwargs):
-        """ Makes a put request to the session """
+        """
+        Make a put request to the session
+
+        :param path: url
+        :type path: str
+        :param json_data: json_data to post
+        :type json_data: dict
+        :param timeout: time in seconds to process request before raising exception
+        :type timeout: int
+        :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
+        :type get_from_history_ok: boolean
+        :param kwargs: additional arguments to post to request
+        :type kwargs: dict
+        :return: json
+        :rtype: dict
+        """
         return self.request("put", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
 
     def get(self, path, timeout=None, get_from_history_ok=False, **kwargs):
-        """ Makes a get request to the session """
+        """
+        Make a get request to the session
+
+        :param path: url
+        :type path: str
+        :param timeout: time in seconds to process request before raising exception
+        :type timeout: int
+        :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
+        :type get_from_history_ok: boolean
+        :param kwargs: additional arguments to post to request
+        :type kwargs: dict
+        :return: json
+        :rtype: dict
+        """
         return self.request("get", path, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
 
     def __repr__(self):

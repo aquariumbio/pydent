@@ -16,8 +16,8 @@ Submodules
     relationships
     utils
 """
-from .session import AqSession
+
+from .__version__ import __description__, __author__, __version__, __url__, __title__
+from .aqsession import AqSession
 from .base import ModelBase, ModelRegistry
 from .models import *
-from .utils import MagicList, magiclist, pprint
-from .__version__ import __description__, __author__, __version__, __url__, __title__

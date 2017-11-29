@@ -4,7 +4,7 @@ import os
 import pytest
 import requests
 
-from pydent.session import AqSession
+from pydent.aqsession import AqSession
 
 
 @pytest.fixture(scope="session")

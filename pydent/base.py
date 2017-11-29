@@ -34,6 +34,8 @@ relationships - models relationships are stored
 
 """
 
+from functools import wraps
+
 from pydent.exceptions import TridentModelNotFoundError
 from pydent.marshaller import MarshallerBase
 from pydent.utils import pprint
@@ -55,6 +57,21 @@ class ModelRegistry(type):
             raise TridentModelNotFoundError("Model \"{}\" not found in ModelRegistry.".format(model_name))
         else:
             return ModelRegistry.models[model_name]
+
+    def __getattr__(self, item):
+        """Special warning for attribute errors. Its likely that user may have wanted to use
+        a model interface instead of the Base class."""
+        raise AttributeError("'{0}' has no attribute '{1}'. Method may be a ModelInterface method."
+                             " Did you mean '<yoursession>.{0}.{1}'?"
+                             .format(self.__name__, item))
+
+
+def custom_type_error(fxn):
+    @wraps(fxn)
+    def wrapped(*args, **kwargs):
+        return fxn(*args, **kwargs)
+
+    return wrapped
 
 
 class ModelBase(MarshallerBase, metaclass=ModelRegistry):
@@ -82,13 +99,13 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
             raise AttributeError("No AqSession instance found for '{}'. Use 'connect_to_session' "
                                  "to connect this model to a session".format(self.__class__.__name__))
 
-    def find(self, model_name, model_id):
+    def find_using_session(self, model_name, model_id):
         """Finds a model using the model interface and model_id. Used to find
         models in model relationships."""
         self._check_for_session()
         return self.session.model_interface(model_name).find(model_id)
 
-    def where(self, model_name, params):
+    def where_using_session(self, model_name, params):
         """Finds models using a model interface and a set of parameters. Used to
         find models in model relationships."""
         self._check_for_session()
@@ -103,3 +120,4 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         :return:
         """
         pprint(self.dump(*args, **kwargs))
+

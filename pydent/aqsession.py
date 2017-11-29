@@ -15,11 +15,13 @@ Interfaces are accessed by:
 (3) session.update - access the update interface
 """
 
-from pydent.session.aqhttp import AqHTTP
+# TODO: add prompt toolkit to setup requirements
+from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
-from pydent.session.interfaces import ModelInterface, UtilityInterface
+from pydent.interfaces import ModelInterface, UtilityInterface
 from prompt_toolkit.shortcuts import confirm
 from prompt_toolkit import prompt
+
 
 class AqSession(object):
     """
@@ -68,7 +70,7 @@ class AqSession(object):
     def current_user(self):
         """Returns the current User associated with this session"""
         if self.__current_user is None:
-            self.__current_user = self.User.where(
+            self.__current_user = self.User.where_using_session(
                 {"login": self.__aqhttp.login})[0]
         return self.__current_user
 
@@ -84,6 +86,7 @@ class AqSession(object):
         """Returns list of all models available"""
         return list(ModelRegistry.models.keys())
 
+    # TODO: consider changing model_interface to 'model'
     def model_interface(self, model_name):
         """Returns model interface by name"""
         return ModelInterface(model_name, self.__aqhttp, self)
@@ -92,17 +95,26 @@ class AqSession(object):
     def utils(self):
         return UtilityInterface(self.__aqhttp, self)
 
-    # TODO: add other interfaces as well
-    def __dir__(self):
-        """Added expected keys for interactive interpreters,"""
-        return super().__dir__() + list(ModelRegistry.models.keys()) + [UtilityInterface.__name__]
+    @staticmethod
+    def dispatch_list():
+        return list(ModelRegistry.models.keys()) + [UtilityInterface.__name__]
 
-    def __getattr__(self, item):
+    def dispatcher(self, item):
         if item == UtilityInterface.__name__:
             return UtilityInterface(self.__aqhttp, self)
         elif item in ModelRegistry.models:
             return self.model_interface(item)
+        return None
+
+    def __getattr__(self, item):
+        if item in self.__class__.dispatch_list():
+            return self.dispatcher(item)
         return object.__getattribute__(self, item)
 
     def __repr__(self):
         return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self.__aqhttp)
+
+    # TODO: add other interfaces as well
+    def __dir__(self):
+        """Added expected keys for interactive interpreters,"""
+        return super().__dir__() + self.__class__.dispatch_list()

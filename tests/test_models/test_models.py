@@ -13,7 +13,7 @@ def test_all_models():
 
 
 def test_field_value(session):
-    primer = session.Sample.find(1)
+    primer = session.Sample.find_using_session(1)
     primer_type = primer.sample_type
 
     fvs = primer.field_values

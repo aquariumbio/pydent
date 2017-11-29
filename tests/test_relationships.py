@@ -10,7 +10,7 @@ def test_one():
     # default attributes
     one = One("ModelName")
     assert one.nested == "ModelName"
-    assert one.callback == "find"
+    assert one.callback == "find_using_session"
     assert one.many == False
 
     # basic attributes
@@ -33,7 +33,7 @@ def test_many():
 
     # default attributes
     many2 = Many("ModelName")
-    assert many2.callback == "where"
+    assert many2.callback == "where_using_session"
 
 
 def test_has_many():

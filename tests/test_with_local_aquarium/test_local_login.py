@@ -8,7 +8,7 @@ def local_session():
     return AqSession("guest", "password", "http://0.0.0.0:3000")
 
 def test_sample(local_session):
-    sample = local_session.Sample.find(1)
+    sample = local_session.Sample.find_using_session(1)
     fts = sample.sample_type.field_types
     print(fts)
 
