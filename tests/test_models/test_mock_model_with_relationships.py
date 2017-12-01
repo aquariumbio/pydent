@@ -1,7 +1,7 @@
 from pydent.models import User, Group, Sample, SampleType
 import requests
 from pydent import AqSession
-from pydent.session import AqHTTP
+from pydent.aqhttp import AqHTTP
 
 
 def test_load_model_from_json(monkeypatch, mock_login_post):
@@ -32,7 +32,7 @@ def test_load_model_from_json(monkeypatch, mock_login_post):
     monkeypatch.setattr(AqHTTP, "post", find_user)
 
     # find a user
-    u = session.User.find_using_session(1)
+    u = session.User.find(1)
 
     # assert user properties
     assert isinstance(u, User)
@@ -82,7 +82,7 @@ def test_load_model_with_database_connection(monkeypatch, mock_login_post):
 
     monkeypatch.setattr(AqHTTP, "post", find_user)
 
-    sample = session.Sample.find_using_session(3)
+    sample = session.Sample.find(3)
     sample_type = sample.sample_type
 
     # Sample properties
@@ -95,6 +95,7 @@ def test_load_model_with_database_connection(monkeypatch, mock_login_post):
     assert isinstance(sample_type, SampleType)
     assert sample_type.name == "Primer"
     assert sample_type.id == 5
+
 
 def test_load_model_with_many(monkeypatch, mock_login_post):
     """Tests a relationship using a database connection.
@@ -124,7 +125,7 @@ def test_load_model_with_many(monkeypatch, mock_login_post):
 
     monkeypatch.setattr(AqHTTP, "post", mock_post)
 
-    st = session.SampleType.find_using_session(3)
+    st = session.SampleType.find(3)
     samples = st.samples
 
     assert len(samples) == 2

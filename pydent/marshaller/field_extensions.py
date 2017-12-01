@@ -1,7 +1,37 @@
-from marshmallow.fields import Nested
-import functools
+"""
+Module containing custom :class:`marshmallow.fields`.
+"""
 
-class Relation(Nested):
+import json
+
+from marshmallow import fields, ValidationError
+
+
+class JSON(fields.Field):
+    """A custom JSON field"""
+
+    def _serialize(self, value, attr, obj):
+        if value is None:
+            return ''
+        try:
+            return json.dumps(value)
+        except TypeError as e:
+            raise ValidationError(e)
+
+    def _deserialize(self, value, attr, data):
+        if value is None:
+            return ''
+        try:
+            return json.loads(value)
+        except json.decoder.JSONDecodeError as e:
+            raise ValidationError(e)
+
+    default_error_message = {
+        'invalid': 'field was unable to be parsed as a JSON'
+    }
+
+
+class Relation(fields.Nested):
     """Defines a nested relationship with another model. Is a subclass of :class:`Nested`.
 
     Uses "callback" with "params" to find models. Callback is
@@ -43,7 +73,7 @@ class Relation(Nested):
         dumped = None
 
         def dump(nobj):
-            return nobj.dump(_depth=self.root._depth+1, dump_depth=self.root.dump_depth, dump_all_relations=True)
+            return nobj.dump(_depth=self.root._depth + 1, depth=self.root.dump_depth, all_relations=True)
 
         if nested_obj:
             if isinstance(nested_obj, list):
@@ -59,7 +89,8 @@ class Relation(Nested):
 
     def __repr__(self):
         return "<{} (model={}, callback={}, params={})>".format(self.__class__.__name__,
-                                                self.nested, self.callback, self.params)
+                                                                self.nested, self.callback, self.params)
 
 
-
+fields.Relation = Relation
+fields.JSON = JSON

@@ -1,12 +1,12 @@
 import pytest
-from pydent.marshaller import MarshallerBase, add_schema, Relation
+from pydent.marshaller import MarshallerBase, add_schema, fields
 
 def test_marshallerbase_print():
 
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=Relation("Book", many=True, callback="get_books", params=())
+            books=fields.Relation("Book", many=True, callback="get_books", params=())
         )
 
         def __init__(self, x=None):

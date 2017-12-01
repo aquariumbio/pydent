@@ -50,6 +50,7 @@ def model_relationships(session, request):
         print("\tGetting attribute '{}'".format(attr))
         val = getattr(model_instance, attr)
         nested_model = ModelRegistry.get_model(relationship.nested)
+        print('model: {}, attr: {}, val: {}'.format(nested_model, attr, val))
         if relationship.many:
             if len(val) == 0:
                 warnings.warn("Attribute {}.{} was empty list".format(model_class.__name__, attr))
@@ -63,7 +64,7 @@ def model_relationships(session, request):
                 warnings.warn("Attribute {}.{} was null".format(model_class.__name__, attr))
 
 
-def test_model_relationships(model_relationships):
-    """Test all relationship access for all models.
-    This is not a permanent test nor a comprehensive test."""
-    pass
+# def test_model_relationships(model_relationships):
+#     """Test all relationship access for all models.
+#     This is not a permanent test nor a comprehensive test."""
+#     pass

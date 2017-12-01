@@ -6,5 +6,5 @@ class MarshallerCallbackNotFoundError(Exception):
     """Could not find callback for the model."""
 
 
-class MarshallerRelationshipError(Exception):
+class MarshallerRelationshipError(AttributeError):
     """Could not fullfill relationship."""

@@ -10,6 +10,12 @@ def test_MagicList_inheritance():
     assert list(x) == [1, 2, 3]
 
 
+def test_MagicList_callable():
+    xlist = [" the cow", "jumped    ", "over the ", "moon"]
+    xmagic = MagicList(xlist)
+    assert xmagic.strip() == [x.strip() for x in xlist]
+
+
 def test_MagicList_chaining():
     """Tests various chaining of MagicList attributes. Applying an attribute or function
     should be equivalent to a list comperhension (but less code necessary)."""
@@ -52,7 +58,10 @@ def test_magiclist_callable():
     xlist = [lambda x: x ** 2, lambda y: y ** 3]
     xmagic = MagicList(xlist)
 
-    assert xmagic(3) == [3**2, 3**3]
+    with pytest.raises(TypeError):
+        assert xmagic(3) == [3 ** 2, 3 ** 3]
+
+    assert xmagic.call(3) == [3 ** 2, 3 ** 3]
 
 
 def test_MagicList_getitem():
@@ -139,7 +148,7 @@ def test_MagicList_TypeError():
         MagicList(False)
 
 
-def test_magiclist_decorator():
+def test_magiclist_decorator_with_list():
     """Ensures that magiclist decorator forces returned iterable to a MagicList"""
 
     @magiclist
@@ -147,19 +156,39 @@ def test_magiclist_decorator():
         somelist = [1, 2, 3]
         return somelist
 
+    assert isinstance(returns_a_list(), MagicList)
+
+
+def test_magiclist_decorator_with_tuple():
+    """Ensures that magiclist decoraor forces returned iterable to a MagicList"""
+
     @magiclist
     def returns_a_tuple():
         sometuple = (1, 2, 3)
         return sometuple
+
+    assert isinstance(returns_a_tuple(), MagicList)
+
+
+def test_magiclist_decorator_with_dict_keys():
+    """Ensures that magiclist decorator forces returned iterable to a MagicList"""
 
     @magiclist
     def returns_a_dict_keys():
         somedict = {1: 2, 3: 5}
         return somedict.keys()
 
-    assert isinstance(returns_a_list(), MagicList)
-    assert isinstance(returns_a_tuple(), MagicList)
     assert isinstance(returns_a_dict_keys(), MagicList)
+
+
+def test_magiclist_decorator_with_float():
+    """Ensures that magiclist decorator forces returned iterable to a MagicList"""
+
+    @magiclist
+    def returns_a_float():
+        return 5
+
+    assert not isinstance(returns_a_float(), MagicList)
 
 
 def test_magiclist_decorator_TypeError():

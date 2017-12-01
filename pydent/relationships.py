@@ -3,12 +3,12 @@ Model relationships
 """
 
 import inflection
-from pydent.marshaller import Relation
+from pydent.marshaller import fields
 from pydent.base import ModelBase
+from pydent.marshaller.exceptions import MarshallerRelationshipError
 
-# TODO: Is this ravioli? Too many different types of relationships?
 
-class One(Relation):
+class One(fields.Relation):
     """Defines a single relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
 
     def __init__(self, model, *args, callback=None, params=None, **kwargs):
@@ -29,7 +29,7 @@ class One(Relation):
         super().__init__(model, *args, callback=callback, params=params, **kwargs)
 
 
-class Many(Relation):
+class Many(fields.Relation):
     """Defines a many relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
 
     def __init__(self, model, *args, callback=None, params=None, **kwargs):
@@ -50,8 +50,42 @@ class Many(Relation):
         super().__init__(model, *args, many=True, callback=callback, params=params, **kwargs)
 
 
-class HasOne(One):
-    def __init__(self, model, attr="id", **kwargs):
+class HasMixin(object):
+
+    def set_ref(self, model=None, ref=None, attr=None):
+        """Sets the 'ref' and 'attr' attributes. These attributes are used to defined parameters for
+        :class:`pydent.marshaller.fields.Relation` classes.
+
+        For example:
+
+        .. code-block:: python
+
+            relation # HasOne, HasMany, or HasManyGeneric, etc.
+            relation.set_ref(ref="parent_id")
+            relation.ref    # "parent_id"
+            relation.attr   # "id"
+
+            relation.set_ref(model="SampleType")
+            relation.ref   # "sample_type_id"
+            relation.attr  # "id"
+
+            relation.set_ref(attr="name", model="OperationType")
+            relation.ref   # "operation_type_name
+            relation.attr  # "name"
+        """
+        self.ref = ref
+        self.attr = attr
+
+        if ref:
+            self.ref = ref
+        if not self.attr:
+            self.attr = 'id'
+        if not self.ref:
+            self.ref = "{}_{}".format(inflection.underscore(model), self.attr)
+
+
+class HasOne(HasMixin, One):
+    def __init__(self, model, attr=None, ref=None, **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and automatically
         assigns attribute as in the following:
@@ -65,31 +99,30 @@ class HasOne(One):
         :param attr: attribute to append underscored model name
         :type attr: basestring
         """
-        underscore = inflection.underscore(model)
-        self.iden = "{}_{}".format(underscore, attr)
-        super().__init__(model, params=(lambda slf: getattr(slf, self.iden)), **kwargs)
+        self.set_ref(model=model, attr=attr, ref=ref)
+        super().__init__(model, params=(lambda slf: getattr(slf, self.ref)), **kwargs)
 
     def __repr__(self):
-        return "<HasOne (model={}, params=lambda self: self.{})>".format(self.nested, self.iden)
+        return "<HasOne (model={}, params=lambda self: self.{})>".format(self.nested, self.ref)
 
 
-class HasManyThrough(Many):
+class HasManyThrough(HasMixin, Many):
     """A relationship using an intermediate association model"""
 
-    def __init__(self, model, through, attr="id", **kwargs):
-        # e.g. Operation >> operation_id
-        iden = "{}_{}".format(inflection.underscore(model), attr)
+    def __init__(self, model, through, attr="id", ref=None, **kwargs):
+        self.set_ref(model=model, attr=attr, ref=ref)
 
         # e.g. PlanAssociation >> plan_associations
         through_model_attr = inflection.pluralize(inflection.underscore(through))
 
         # e.g. {"id": x.operation_id for x in self.plan_associations
-        params = lambda slf: {attr: [getattr(x, iden) for x in getattr(slf, through_model_attr)]}
+        params = lambda slf: {attr: [getattr(x, self.ref
+                                             ) for x in getattr(slf, through_model_attr)]}
         super().__init__(model, params=params, **kwargs)
 
 
-class HasMany(Many):
-    def __init__(self, model, ref_model, attr="id", through=None, **kwargs):
+class HasMany(HasMixin, Many):
+    def __init__(self, model, ref_model=None, attr=None, ref=None, **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and automatically
         assigns attribute as in the following:
@@ -104,21 +137,12 @@ class HasMany(Many):
         :type attr: basestring
         """
 
-        # "SampleType" >>> "sample_type_id"
-        underscore = inflection.underscore(ref_model)
-        iden = "{}_{}".format(underscore, attr)
-
-        params = ()
-        if through:
-            # e.g.
-            through_model_attr = inflection.pluralize(inflection.underscore(through))
-            params = lambda slf: {attr: [getattr(x, iden) for x in getattr(slf, through_model_attr)]}
-        else:
-            params = lambda slf: {iden: getattr(slf, attr)}
+        self.set_ref(model=ref_model, attr=attr, ref=ref)
+        params = lambda slf: {self.ref: getattr(slf, self.attr)}
         super().__init__(model, params=params, **kwargs)
 
 
 # TODO: document hasmanygeneric
-class HasManyGeneric(Many):
+class HasManyGeneric(HasMany):
     def __init__(self, model, **kwargs):
-        super().__init__(model, params=lambda slf: {"parent_id": slf.id}, **kwargs)
+        super().__init__(model, ref="parent_id", attr="id", **kwargs)

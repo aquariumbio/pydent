@@ -1,13 +1,13 @@
 import pytest
 from marshmallow import fields
 from pydent.marshaller import MarshallerBase
-from pydent.marshaller import Relation, add_schema
-from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError, MarshallerRelationshipError
+from pydent.marshaller import fields, add_schema
+from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError
 from pydent.marshaller.schema import MODEL_SCHEMA
 
 
 def test_relationship_access():
-    """Relationships should behave just like other fields. Relationships inherit fields.Field, and
+    """fields.Relationships should behave just like other fields. fields.Relationships inherit fields.Field, and
     so should behave just like other fields. This test makes sure they are found in the 'relationships'
     in the schema and get included in the fields in the schema."""
 
@@ -15,12 +15,12 @@ def test_relationship_access():
     class MyModel(MarshallerBase):
         fields = dict(
             field4=fields.Field(),
-            field5=Relation(None, None, None),
+            field5=fields.Relation(None, None, None),
             something=5,
             additional=("field1", "field2"),
             include={
                 "field3": fields.Field(),
-                "field6": Relation(None, None, None)
+                "field6": fields.Relation(None, None, None)
             }
         )
 
@@ -46,12 +46,13 @@ def test_relationship_access():
     assert "field5" in schema().fields
     assert "field6" in schema().fields
 
+
 def test_relationships_property():
     """MarshallerBase should contain a relationships property that should
     return .get_relationships()"""
     class MyModel(MarshallerBase):
         fields = dict(
-            field5=Relation(None, None, None),
+            field5=fields.Relation(None, None, None),
         )
 
         def __init__(self):
@@ -63,7 +64,7 @@ def test_relationships_property():
 
 
 def test_basic_callback():
-    """Relations can use a callback from the model that instantiates it. All callbacks expect
+    """fields.Relations can use a callback from the model that instantiates it. All callbacks expect
      a model name as the first parameter.
      This callback returns the model name that was passed into it."""
     model_name = "AnyModelName"
@@ -71,7 +72,7 @@ def test_basic_callback():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation(model_name, callback="test_callback", params=())
+            myrelation=fields.Relation(model_name, callback="test_callback", params=())
         )
 
         def test_callback(self, model_name):
@@ -89,7 +90,7 @@ def test_callback_with_params():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation(model_name, callback="test_callback", params=(1, 2, 3))
+            myrelation=fields.Relation(model_name, callback="test_callback", params=(1, 2, 3))
         )
 
         def test_callback(self, model_name, x, y, z):
@@ -109,7 +110,7 @@ def test_callback_with_lambda():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation(model_name, callback="test_callback",
+            myrelation=fields.Relation(model_name, callback="test_callback",
                                 params=lambda self: (self.x, self.y))
         )
 
@@ -133,7 +134,7 @@ def test_alternative_callback():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation(model_name, callback=alternative_callback, params=())
+            myrelation=fields.Relation(model_name, callback=alternative_callback, params=())
         )
 
     m = MyModel.load({"x": 4, "y": 5})
@@ -154,7 +155,7 @@ def test_callback_with_lambda_with_alternative_callback():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation(model_name, callback=alternative_callback,
+            myrelation=fields.Relation(model_name, callback=alternative_callback,
                                 params=lambda self: (self.x, self.y))
         )
 
@@ -172,7 +173,7 @@ def test_raises_MarshallerCallbackNotFoundError():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation("lkjlfj", callback="callback",
+            myrelation=fields.Relation("lkjlfj", callback="callback",
                                 params=lambda self: (self.x, self.y))
         )
 
@@ -190,7 +191,7 @@ def test_deserialize_relationship():
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=Relation("Book", many=True, callback="get_books", params=())
+            books=fields.Relation("Book", many=True, callback="get_books", params=())
         )
 
         def get_books(self):
@@ -199,7 +200,7 @@ def test_deserialize_relationship():
     @add_schema
     class Book(MarshallerBase):
         fields = dict(
-            author=Relation("Author", callback="get_author", params=())
+            author=fields.Relation("Author", callback="get_author", params=())
         )
 
         def get_author(self):
@@ -220,14 +221,14 @@ def test_deserialize_relationship():
 
 
 def test_dump_relations():
-    """Relations can be specified to be included in serialized results. Here, publisher and
+    """fields.Relations can be specified to be included in serialized results. Here, publisher and
     books relations are specified below in the serialized results."""
 
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=Relation("Book", many=True, callback="get_books", params=()),
-            publisher=Relation("Publisher", None, None, many=False),
+            books=fields.Relation("Book", many=True, callback="get_books", params=()),
+            publisher=fields.Relation("Publisher", None, None, many=False),
         )
 
         def get_books(self):
@@ -240,7 +241,7 @@ def test_dump_relations():
     @add_schema
     class Book(MarshallerBase):
         fields = dict(
-            author=Relation("Author", callback="get_author", params=())
+            author=fields.Relation("Author", callback="get_author", params=())
         )
 
         def get_author(self):
@@ -265,29 +266,100 @@ def test_dump_relations():
     assert 'publisher' not in d
 
     # include books in dump
-    d = a.dump(dump_relations=('books',))
+    d = a.dump(relations=('books',))
     assert d['books'] == author_data['books']
     assert 'publisher' not in d
 
     # include publisher in dump
-    d = a.dump(dump_relations=('publisher',))
+    d = a.dump(relations=('publisher',))
     assert 'books' not in d
     assert d['publisher'] == author_data['publisher']
 
     # include all in dump
-    d = a.dump(dump_relations=('books', 'publisher'))
+    d = a.dump(relations=('books', 'publisher'))
     assert d['books'] == author_data['books']
     assert d['publisher'] == author_data['publisher']
 
     # include all in dump, overriding 'dump_relations'
-    d = a.dump(dump_all_relations=True, dump_relations=('publisher',))
+    d = a.dump(relations=('publisher',), all_relations=True)
     assert d['books'] == author_data['books']
     assert d['publisher'] == author_data['publisher']
 
 
+def test_dump_relations_with_only():
+    """fields.Relations can be specified to be included in serialized results. Here, publisher and
+    books relations are specified below in the serialized results."""
+
+    @add_schema
+    class Author(MarshallerBase):
+        fields = dict(
+            books=fields.Relation("Book", many=True, callback="get_books", params=()),
+            publisher=fields.Relation("Publisher", None, None, many=False),
+        )
+
+        def get_books(self):
+            pass
+
+    @add_schema
+    class Publisher(MarshallerBase):
+        pass
+
+    @add_schema
+    class Book(MarshallerBase):
+        fields = dict(
+            author=fields.Relation("Author", callback="get_author", params=())
+        )
+
+        def get_author(self):
+            pass
+
+    author_data = {
+        "name": "Fyodor Dostoevsky",
+        "books": [
+            {"title": "Demons", "year": 1871},
+            {"title": "The Idiot", "year": 1868}
+        ],
+        "publisher": {"name": "Penguin"}
+    }
 
 
-def test_raise_MarshallerRelationshipError():
+
+    a = Author.load(author_data)
+
+    # no relations in dump
+    d = a.dump()
+    assert 'books' not in d
+    assert 'publisher' not in d
+
+    # include books in dump
+    d = a.dump(only=('name',), relations=('books',))
+    assert d['name'] == author_data['name']
+    assert d['books'] == author_data['books']
+    assert 'publisher' not in d
+
+
+## This was changed, relationships will simply return None they cannot be fullfilled
+# def test_raise_Marshallerfields.RelationshipError():
+#     """We expect an error to be raised since the MyModel instance will
+#     be missing an 'x' attribute, which is needed for the test callback"""
+#     model_name = "AnyModelName"
+#
+#     @add_schema
+#     class MyModel(MarshallerBase):
+#         fields = dict(
+#             myrelation=fields.Relation(model_name, callback="test_callback",
+#                                 params=lambda self: (self.x, self.y))
+#         )
+#
+#         def test_callback(self, model_name, _xy):
+#             x, y = _xy
+#             return x * y
+#
+#     m = MyModel.load({"y": 5})
+#     with pytest.raises(Marshallerfields.RelationshipError):
+#         m.myrelation
+
+def test_raise_return_none():
     """We expect an error to be raised since the MyModel instance will
     be missing an 'x' attribute, which is needed for the test callback"""
     model_name = "AnyModelName"
@@ -295,7 +367,7 @@ def test_raise_MarshallerRelationshipError():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation(model_name, callback="test_callback",
+            myrelation=fields.Relation(model_name, callback="test_callback",
                                 params=lambda self: (self.x, self.y))
         )
 
@@ -304,8 +376,7 @@ def test_raise_MarshallerRelationshipError():
             return x * y
 
     m = MyModel.load({"y": 5})
-    with pytest.raises(MarshallerRelationshipError):
-        m.myrelation
+    assert m.myrelation is None
 
 
 def test_preferentially_reload_relationships_if_none():
@@ -313,7 +384,7 @@ def test_preferentially_reload_relationships_if_none():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation("lkjlj", callback="test_callback",
+            myrelation=fields.Relation("lkjlj", callback="test_callback",
                                 params=lambda self: (self.x, self.y))
         )
 
@@ -337,8 +408,8 @@ def test_depth_dump():
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=Relation("Book", many=True, callback="get_books", params=()),
-            publisher=Relation("Publisher", None, None, many=False),
+            books=fields.Relation("Book", many=True, callback="get_books", params=()),
+            publisher=fields.Relation("Publisher", None, None, many=False),
         )
 
         def get_books(self):
@@ -347,7 +418,7 @@ def test_depth_dump():
     @add_schema
     class Publisher(MarshallerBase):
         fields = dict(
-            category=Relation("Category", None, None)
+            category=fields.Relation("Category", None, None)
         )
 
     @add_schema
@@ -368,7 +439,7 @@ def test_depth_dump():
         "publisher": {"name": "Penguin", "category": {"name": "Classic"}}
     }
     a = Author.load(author_data)
-    adump = a.dump(dump_all_relations=True, dump_depth=2)
+    adump = a.dump(all_relations=True, depth=2)
     a2 = Author.load(adump)
     assert isinstance(a2.publisher, Publisher)
     assert isinstance(a2.publisher.category, Category)

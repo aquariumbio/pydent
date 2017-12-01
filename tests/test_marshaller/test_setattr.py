@@ -1,5 +1,5 @@
 import pytest
-from pydent.marshaller import MarshallerBase, add_schema, Relation
+from pydent.marshaller import MarshallerBase, add_schema, fields
 
 def test_setattr():
     """This test ensures that relationship attributes automatically update. Attributes retrieved
@@ -7,7 +7,7 @@ def test_setattr():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=Relation("SomeModel", callback="test_callback", params=[])
+            myrelation=fields.Relation("SomeModel", callback="test_callback", params=[])
         )
 
         def __init__(self, other_id=None):

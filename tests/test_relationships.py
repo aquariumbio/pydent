@@ -82,6 +82,26 @@ def test_has_one():
     assert hasone.params[0](MyModel) == "myname"
 
 
+def test_has_one_with_ref():
+    """Tests the HasOne relationship. Its expected that with MyModel,
+    that the returned params should be:
+
+    .. code-block:: python
+
+        params = lambda x: x.my_model_id
+
+    """
+    class MyModel:
+        parent_id = 4
+        my_model_name = "myname"
+
+    # tries to return lambda x: x.my_model_id
+    hasone = HasOne("MyModel", ref="parent_id")
+    assert hasone.ref == "parent_id"
+    assert hasone.nested == "MyModel"
+    assert hasone.params[0](MyModel) == 4
+
+
 def test_has_many_generic():
     """Tests the HasManyGeneric relationship. Its expected that with MyModel,
     that the returned params should be:

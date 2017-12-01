@@ -70,7 +70,7 @@ class AqSession(object):
     def current_user(self):
         """Returns the current User associated with this session"""
         if self.__current_user is None:
-            self.__current_user = self.User.where_using_session(
+            self.__current_user = self.User.where(
                 {"login": self.__aqhttp.login})[0]
         return self.__current_user
 

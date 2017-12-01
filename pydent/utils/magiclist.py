@@ -25,13 +25,16 @@ class MagicList(list):
         return super().__getitem__(key)
 
     def __getattr__(self, item):
-        return MagicList([getattr(x, item) for x in self])
+        ml = MagicList([getattr(x, item) for x in self])
+        if all([callable(x) for x in ml]):
+            return MagicList(ml).call
+        return ml
 
     def call(self, *args, **kwargs):
         return MagicList([x(*args, **kwargs) for x in self])
 
-    def __call__(self, *args, **kwargs):
-        return MagicList([x(*args, **kwargs) for x in self])
+    # def __call__(self, *args, **kwargs):
+    #     return MagicList([x(*args, **kwargs) for x in self])
 
 
 def magiclist(fxn):

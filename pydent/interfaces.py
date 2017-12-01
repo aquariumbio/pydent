@@ -96,6 +96,17 @@ class UtilityInterface(SessionInterface):
         else:
             raise TridentRequestError("Unable to update code object {}".format(code_data))
 
+    def compatible_items(self, sample_id, object_type_id):
+        """Find items compatible with the field value"""
+        result = self.aqhttp.post("json/items", {
+            "sid": sample_id,
+            "oid": object_type_id
+        })
+        items = []
+        for element in result:
+            print(element)
+        return items
+
 
 class ModelInterface(SessionInterface):
     """

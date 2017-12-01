@@ -8,7 +8,7 @@ import shutil
 
 import pytest
 
-from pydent.marshaller import MarshallerBase, add_schema, Relation
+from pydent.marshaller import MarshallerBase, add_schema, fields
 
 
 @pytest.fixture(scope='function')
@@ -24,7 +24,7 @@ def pickle_folder():
 @add_schema
 class MyModel(MarshallerBase):
     fields = dict(
-        myrelation=Relation("Anymodelname", callback="test_callback",
+        myrelation=fields.Relation("Anymodelname", callback="test_callback",
                             params=lambda self: (self.x, self.y))
     )
 

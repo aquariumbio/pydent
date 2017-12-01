@@ -1,11 +1,11 @@
 from pydent import AqSession, pprint
 from pydent.models import *
-
+from pydent.aqhttp import AqHTTP
 
 nursery = AqSession("vrana", "Mountain5", "http://52.27.43.242:81/")
 
-plan = nursery.Plan.find_using_session(53544)
-fv = plan.operations[0].field_values[0]
-ft = fv.field_type
-pprint(ft.dump(dump_all_relations=True))
-# pprint(fv.dump(dump_all_relations=True, dump_depth=2))
+# d = nursery.get('operation_types/1077/stats')
+
+ft = nursery.FieldType.find(9070)
+
+ft.print(all_relations=True)

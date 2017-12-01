@@ -51,15 +51,14 @@ equal to the id of the SampleType:
         samples = Many("Sample", params={"sample_type_id": lambda self: self.id})
 """
 
-import json
+import warnings
 
 import requests
-from marshmallow import fields
-
 from pydent.base import ModelBase
-from pydent.marshaller import add_schema
+from pydent.exceptions import AquariumModelError
+from pydent.marshaller import add_schema, fields
 from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough, HasManyGeneric
-from pydent.utils import magiclist
+from pydent.utils import magiclist, filter_list
 
 __all__ = [
     "Account",
@@ -115,6 +114,7 @@ class FieldMixin(object):
             fxn = getattr(self, fxn_name)
             return fxn(model_name, id)
 
+
 ##### Models #####
 
 @add_schema
@@ -168,7 +168,7 @@ class Collection(ModelBase):  # pylint: disable=too-few-public-methods
 class DataAssociation(ModelBase):
     """A DataAssociation model"""
     fields = dict(
-        object=fields.Function(serialize=lambda x: x.object, deserialize=lambda x: json.loads(x)),
+        object=fields.JSON(),
         upload=HasOne("Upload")
     )
 
@@ -182,34 +182,49 @@ class FieldType(ModelBase, FieldMixin):
     """A FieldType model"""
     fields = dict(
         allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
-        operation_type=One("OperationType", callback="find_field_parent", params=lambda self: self.parent_id),
-        sample_type=One("SampleType", callback="find_field_parent", params=lambda self: self.parent_id)
+        operation_type=HasOne("OperationType", callback="find_field_parent", ref="parent_id"),
+        sample_type=HasOne("SampleType", callback="find_field_parent", ref="parent_id")
     )
 
     @property
     def is_parameter(self):
         return self.ftype != "sample"
 
+    def initialize_field_value(self, field_value=None):
+        """
+        Updates or initializes a new :class:`FieldValue` from this FieldType
+
+        :param field_value: optional FieldValue to update with this FieldType
+        :type field_value: FieldValue
+        :return: updated FieldValue
+        :rtype: FieldValue
+        """
+
+        if not field_value:
+            field_value = FieldValue(name=self.name, role=self.role, field_type=self)
+        if self.allowable_field_types:
+            field_value.allowable_field_type_id = self.allowable_field_types[0].id
+            field_value.allowable_field_type = self.allowable_field_types[0]
+        return field_value
+
 
 @add_schema
 class FieldValue(ModelBase, FieldMixin):
-    """A FieldValue model"""
+    """A FieldValue model. One of the more complex models."""
     fields = dict(
         # FieldValue relationships
         field_type=HasOne("FieldType"),
         allowable_field_type=HasOne("AllowableFieldType"),
-        item=One("Item", params=lambda self: self.child_item_id),
-        sample=One("Sample", params=lambda self: self.child_sample_id),
-        operation=One("Operation", callback="find_field_parent", params=lambda self: self.parent_id),
-        parent_sample=One("Sample", callback="find_field_parent", params=lambda self: self.parent_id),
-
-        # ignore object_type
+        item=HasOne("Item", ref="child_item_id"),
+        sample=HasOne("Sample", ref="child_sample_id"),
+        operation=HasOne("Operation", callback="find_field_parent", ref="parent_id"),
+        parent_sample=One("Sample", callback="find_field_parent", ref="parent_id"),
         ignore=("object_type",)
-
-
     )
 
-    def __init__(self, parent_class=None, value=None, sample=None, container=None, item=None):
+    def __init__(self, name=None, role=None, parent_class=None, parent_id=None,
+                 field_type=None,
+                 sample=None, value=None, item=None, container=None):
         """
 
         :param value:
@@ -221,20 +236,41 @@ class FieldValue(ModelBase, FieldMixin):
         :param item:
         :type item:
         """
-        # self.parent_class = parent_class
-        # self.child_item_id = None
-        # self.child_sample_id = None
-        # self.item = None
-        # self.sample = None
-        # self.value = None
-        # self.row = None
-        # self.column = None
-        # self.role = None
-        # self.field_type = None
-        # self.allowable_field_type_id = None
-        # self.allowable_field_type = None
-        # self.set_value(value, sample, container, item)
-        super().__init__()
+        self.column = None
+        self.row = None
+        self.role = role
+        self.id = None
+        self.name = name
+
+        self.parent_class = parent_class
+        self.parent_id = parent_id
+        self.operation = None  # only if parent_class == "Operation"
+        self.parent_sample = None  # only if parent_class == "Sample"
+
+        self.sample = None
+        self.child_sample_id = None
+
+        self.item = None
+        self.child_item_id = None
+
+        self.field_type = None
+        self.field_type_id = None
+
+        self.allowable_field_type = None
+        self.allowable_field_type_id = None
+
+        self.value = None
+        self.sample = None
+        self.item = None
+        self.container = None
+        self.object_type = None  # object_type is not included in the deserialization/serialization
+
+        if field_type:
+            self.set_field_type(field_type)
+
+        if any([value, sample, item, container]):
+            self._set_helper(value=value, sample=sample, item=item, container=container)
+        super().__init__(**vars(self))
 
     def show(self, pre=""):
         if self.sample:
@@ -247,93 +283,66 @@ class FieldValue(ModelBase, FieldMixin):
         elif self.value:
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
-    def _set_sample(self, sample):
-        self.sample = sample
-        self.child_sample_id = sample.identifier
-
-        for aft in self.field_type.allowable_field_types:
-            if sample.sample_type_id == aft.sample_type_id:
-                aft.sample_type = sample.sample_type
-                self.allowable_field_type_id = aft.id
-                self.allowable_field_type = aft
-
-    def _set_value(self, value):
-        self.value = value
-
-    def _set_item(self, item):
-        self.item = item
-        self.child_item_id = item.id
-        self.object_type = item.object_type
-        for aft in self.field_type.allowable_field_types:
-            if item.object_type.id == aft.object_type_id:
-                aft.object_type = item.object_type
-                self.allowable_field_type_id = aft.id
-                self.allowable_field_type = aft
-
-    def _set_container(self, container):
-        self.object_type = container
-        for aft in self.field_type.allowable_field_types:
-            if container.id == aft.object_type_id:
-                aft.object_type = container
-                self.allowable_field_type_id = aft.id
-                self.allowable_field_type = aft
-
-    def _set_afts(self):
-        for aft in self.field_type.allowable_field_types:
-            if self.sample:
-                if self.sample.sample_type_id == aft.sample_type_id:
-                    self.allowable_field_type_id = aft.id
-                    self.allowable_field_type = aft
-            elif self.object_type:
-                if self.object_type.id == aft.object_type_id:
-                    self.allowable_field_type_id = aft.id
-                    self.allowable_field_type = aft
+    def _set_helper(self, value=None, sample=None, container=None, item=None):
+        if item and container and item.object_type_id != container.id:
+            raise AquariumModelError("Item {} is not in container {}".format(item.id, str(container)))
+        if value:
+            self.value = value
+        if item:
+            self.item = item
+            self.child_item_id = item.id
+            self.object_type = item.object_type
+        if sample:
+            self.sample = sample
+            self.child_sample_id = sample.id
+        if container:
+            self.object_type = container
 
     def set_value(self, value=None, sample=None, container=None, item=None):
-        if item and container and item.object_type_id != container.id:
-            raise Exception("Item {} is not in container {}".format(item.id, container.name))
-
-        if container:
-            self._set_container(container)
-
-        if item:
-            self._set_item(item)
-
-        if sample:
-            self._set_sample(sample)
-
-        if value:
-            self._set_value(value)
-
-        if not self.allowable_field_type:
-            if sample or item or container:
-                raise Exception("No allowable field type found for {} {}".format(self.role, self.name))
-
+        self._set_helper(value=value, sample=sample, container=container, item=item)
+        afts = self.field_type.allowable_field_types
+        if self.sample:
+            afts = filter_list(afts, sample_type_id=self.sample.sample_type_id)
+        if self.object_type:
+            afts = filter_list(afts, object_type_id=self.object_type.id)
+        if len(afts) > 1:
+            warnings.warn("More than one AllowableFieldType found that matches {}".format(
+                self.dump(only=('name', 'role', 'id'), partial=True)))
+        elif len(afts) == 1:
+            self.set_allowable_field_type(afts[0])
+        else:
+            raise AquariumModelError("No allowable field type found for {} {}".format(self.role, self.name))
         return self
 
+    def set_operation(self, op):
+        self.parent_class = "Operation"
+        self.parent_id = op.id
+        self.operation = op
 
-    def choose_item(self):
+    def set_field_type(self, ft):
+        """Sets properties from a field_type"""
+        self.field_type = ft
+        self.field_type_id = ft.id
+
+    def set_allowable_field_type(self, allowable_field_type):
+        self.allowable_field_type = allowable_field_type
+        self.allowable_field_type_id = allowable_field_type.id
+
+    def choose_item(self, first=True):
         """Set the item associated with the field value"""
+        index = 0
+        if not first:
+            index = -1
         items = self.compatible_items()
         if len(items) > 0:
-            self.child_item_id = items[0].id
-            self.item = items[0]
-            return items[0]
+            item = items[index]
+            self.set_value(item=item)
+            return item
         return None
-
 
     def compatible_items(self):
         """Find items compatible with the field value"""
-        result = self.session.aqhttp.post("/json/items", {
-            "sid": self.sample.id,
-            "oid": self.allowable_field_type.object_type_id})
-        items = []
-        for element in result:
-            if "collection" in element:
-                items.append(aq.Collection.record(element["collection"]))
-            else:
-                items.append(aq.Item.record(element))
-        return items
+        return self.session.utils.compatible_items(self.sample.id, self.allowable_field_type.object_type_id)
 
 
 @add_schema
@@ -354,7 +363,8 @@ class Item(ModelBase):
     fields = dict(
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
-        data_associations=HasManyGeneric("DataAssociation")
+        data_associations=HasManyGeneric("DataAssociation"),
+        data=fields.JSON(allow_none=True)
     )
 
 
@@ -403,12 +413,72 @@ class Operation(ModelBase):
     fields = dict(
         field_values=HasManyGeneric("FieldValue"),
         data_associations=HasManyGeneric("DataAssociation"),
-        operation_type=One("OperationType"),
+        operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
         jobs=HasManyThrough("Job", "JobAssociation"),
         plan_associations=HasMany("PlanAssociation", "Operation"),
         plans=HasManyThrough("Plan", "PlanAssociation")
     )
+
+    # @staticmethod
+    # def next_position():
+    #     X += 176
+    #     if X > 800:
+    #         X = 0
+    #         Y += 6
+    #     return [X, Y]
+
+    def init_field_values(self):
+        """Inialize the field values form the field types of the parent operation type"""
+        for field_type in self.operation_type.field_types:
+            self.set_field_value(field_type.name, field_type.role)
+            # self.show()
+
+    def field_value(self, name, role):
+        """Returns :class:`FieldValue` with name and role. Return None if not found."""
+        if self.field_values:
+            fvs = filter_list(self.field_values, name=name, role=role)
+            if fvs[0].field_type.array:
+                return fvs
+            elif len(fvs) > 1:
+                raise AquariumModelError(
+                    "More than one FieldValue found for the non-array field value of operation {}(id={}).{}.{}".format(
+                        self.operation_type.name, self.id, role, name))
+            elif len(fvs) == 1:
+                return fvs[0]
+
+    def set_field_value(self, name, role, sample=None, item=None, value=None, container=None):
+        """Sets the value of a :class:`FieldValue`. If the FieldValue does not exist,
+        an 'empty' FieldValue will be created from the field_type"""
+        # get the field value
+        fv = self.field_value(name, role)
+
+        # get the field type
+        ft = self.operation_type.field_type(name, role)
+        if not ft:
+            AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
+                self.operation_type.name, role, name))
+
+        # initialize the field value from the field type
+        if not fv:
+            fv = ft.initialize_field_value(fv)
+
+        # update the field_value with this operation
+        fv.set_operation(self)
+
+        # set the value, finds allowable_field_types, etc.
+        fv.set_value(value=value, sample=sample, item=item, container=container)
+        return self
+
+    def set_field_type(self, field_value):
+        """Sets the :class:`FieldType` associated with a given :class:`FieldValue`"""
+        field_types = filter_list(self.operation_type.field_types, **field_value.dump(only=('name', 'role')))
+        if field_types:
+            return field_types[-1]
+        else:
+            raise AquariumModelError(
+                "Could not find field type of {} named {} in operation_type {}".format(
+                    field_value.role, field_value.name, self.operation_type.name))
 
     @property
     def plan(self):
@@ -434,6 +504,15 @@ class OperationType(ModelBase, HasCode):
         codes=HasManyGeneric("Code")
     )
 
+    def instance(self):
+        pass
+
+    def field_type(self, name, role):
+        if self.field_types:
+            fts = filter_list(self.field_types, role=role, name=name)
+            if fts:
+                return fts[0]
+
 
 @add_schema
 class Plan(ModelBase):
@@ -441,10 +520,10 @@ class Plan(ModelBase):
     fields = dict(
         data_associations=HasManyGeneric("DataAssociation"),
         plan_associations=HasMany("PlanAssociation", "Plan"),
-        operations=Many("Operation", params=lambda self: {"id": x.operation_id for x in self.plan_associations})
+        operations=HasManyThrough("Operation", "PlanAssociation")
     )
 
-    def __init(self):
+    def __init__(self):
         self.id = None
         self.name = None
         self.status = "planning"
@@ -487,19 +566,15 @@ class Sample(ModelBase):
     fields = dict(
         # sample relationships
         sample_type=HasOne("SampleType"),
-        items=Many("Item", params=lambda self: {"sample_id": self.id}),
-        field_values=Many("FieldValue", params=lambda self: {
-            "parent_id": self.id}),
-
-        # explicitly defined fields for initializing samples
-        name=fields.String(),
-        sample_type_id=fields.Int(),
-        project=fields.String()
+        items=HasMany("Item", ref="sample_id"),
+        field_values=HasMany("FieldValue", ref="parent_id"),
     )
 
     def __init__(self, name=None, project=None, sample_type_id=None):
-        vars(self).update(locals())
-        super().__init__()
+        self.name = name
+        self.project = project
+        self.sample_type_id = sample_type_id
+        super().__init__(**vars(self))
 
     @property
     def identifier(self):
@@ -568,10 +643,8 @@ class Wire(ModelBase):
     """A Wire model"""
     fields = dict(
         # load_only=False, will force dumping of FieldValues here...
-        source=One("FieldValue", dump_to="from", load_only=False,
-                   params=lambda self: self.from_id),
-        destination=One("FieldValue", dump_to="to", load_only=False,
-                        params=lambda self: self.to_id)
+        source=HasOne("FieldValue", ref="from_id", dump_to="from", load_only=False),
+        destination=HasOne("FieldValue", ref="to_id", dump_to="to", load_only=False)
     )
 
     def show(self, pre=""):

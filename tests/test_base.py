@@ -1,19 +1,59 @@
 """Tests for pydent.base.py"""
 
-import pytest
-from pydent import ModelBase, ModelRegistry
-from pydent.exceptions import TridentModelNotFoundError
-from pydent import AqSession
 import copy
 
+import pytest
+
+from pydent import AqSession
+from pydent import ModelBase, ModelRegistry
+from pydent.exceptions import TridentModelNotFoundError
+from pydent.marshaller import add_schema
+from pydent.models import fields
+
+
 def test_model_base():
-
-
     m = ModelBase()
     assert m.session is None
 
+
+def test_base_constructor():
+    """Base initializes should absorb kwargs into attributes. Without a schema, """
+    m = ModelBase(name="SomeName", id=2)
+    assert m.name == "SomeName"
+    assert m.id == 2
+    assert m.dump() is None
+
+
+def test_base_constructor_with_marshaller():
+    """MyModel initializes should absorb kwargs into attributes. With a schema, those
+    attributes are also tracked and available for dumping."""
+
+    @add_schema
+    class MyModel(ModelBase):
+        pass
+
+    m = MyModel(name="model", id=5)
+    assert m.name == 'model'
+    assert m.id == 5
+    assert m.dump() == {'name': 'model', 'id': 5}
+
+
+def test_base_constructor_with_invalid_data():
+    """MyModel initializes should absorb kwargs into attributes. With a schema, those
+    attributes are also tracked and available for dumping."""
+
+    @add_schema
+    class MyModel(ModelBase):
+        fields = dict(
+            name=fields.String()
+        )
+
+    with pytest.raises(Exception):
+        m = MyModel(name=5, id=5)
+
+
 def test_connect_to_session(fake_session):
-    """Upon instantiation, modelbases should have no session. Connect to
+    """Upon instantiation, modelbases should have no session Connect to
     session should connect to a new session. Connecting to other sessions
     afterward should not be allowed."""
     m = ModelBase()
@@ -31,7 +71,6 @@ def test_connect_to_session(fake_session):
 
 
 def test_empty_relationships():
-
     m = ModelBase()
     assert m.get_relationships() == {}
     assert m.relationships == {}
@@ -49,6 +88,7 @@ def test_check_for_session(fake_session):
 
 def test_model_registry():
     """We expect get_model to return the value in the models dictionary"""
+
     class MyModel(ModelBase):
         pass
 
@@ -84,13 +124,16 @@ def test_where_and_find(monkeypatch, fake_session):
 
     def fake_model_interface(self, model_name):
         """A fake model interface to test where"""
+
         class FakeInterface:
             def find(id):
                 return id
 
             def where(params):
                 return params
+
         return FakeInterface
+
     monkeypatch.setattr(AqSession, AqSession.model_interface.__name__, fake_model_interface)
 
     m = ModelBase()

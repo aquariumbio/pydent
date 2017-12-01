@@ -5,7 +5,7 @@ import pytest
 import requests
 
 from pydent.exceptions import TridentJSONDataIncomplete, TridentLoginError, TridentTimeoutError, TridentRequestError
-from pydent.session import AqHTTP
+from pydent.aqhttp import AqHTTP
 
 
 @pytest.fixture(scope="function")

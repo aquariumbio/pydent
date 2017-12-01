@@ -58,8 +58,11 @@ def fake_session(monkeypatch, mock_login_post):
     session = AqSession("username", "password", aquarium_url)
     return session
 
-    # # Uncomment the following code to turn off requests
-    # import pytest
-    # @pytest.fixture(autouse=True)
-    # def no_requests(monkeypatch):
-    #     monkeypatch.delattr("requests.sessions.Session.request")
+
+# # Uncomment the following code to turn off requests
+# import pytest
+#
+#
+# @pytest.fixture(autouse=True)
+# def no_requests(monkeypatch):
+#     monkeypatch.delattr("requests.sessions.Session.request")

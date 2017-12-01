@@ -25,3 +25,7 @@ class TridentTimeoutError(ConnectTimeout):
 class TridentModelNotFoundError(AttributeError):
     """Trident could not find model in list of models."""
 
+
+class AquariumModelError(Exception):
+    """An error occured with this Aquarium model"""
+

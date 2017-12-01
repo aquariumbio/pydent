@@ -1,7 +1,7 @@
 from marshmallow import SchemaOpts, Schema
-from marshmallow import post_load, fields, pre_load, pre_dump, post_dump
+from marshmallow import post_load, pre_load, pre_dump, post_dump
 
-from pydent.marshaller.relation import Relation
+from pydent.marshaller.field_extensions import fields
 
 # attribute to reference the model from the schema
 MODEL_CLASS = "model_class"
@@ -113,10 +113,20 @@ class DynamicSchema(Schema):
             is an iterable, only missing fields listed in that iterable will be
             ignored.
         """
+        if only:
+            # include relations in only
+            only = set(list(only) + list(dump_relations))
+            only_relations = only.intersection(self.relationships.keys())
+            dump_relations = set(dump_relations).union(only_relations)
+
+        # by default, relationships are 'load_only', meaning they will not be serialized
         load_only = set(list(load_only) + list(self.relationships.keys()))
+
+        # if there are any dump_relations keys, remove them from 'load_only' so they can be serializes
         if dump_all_relations:
             dump_relations = tuple(self.relationships.keys())
         load_only = tuple(set(load_only) - set(dump_relations))
+
         super().__init__(*args, only=only, exclude=exclude, prefix=prefix, strict=strict,
                          many=many, context=context, load_only=load_only, dump_only=dump_only,
                          partial=partial, **kwargs)
@@ -126,15 +136,38 @@ class DynamicSchema(Schema):
 
     @pre_load
     def add_fields(self, data):
+        """Filter out ignored and load missing values"""
+        # a little bit hacky, but if the data being loaded is already deserialized, just reserialize it...
+        if isinstance(data, getattr(self.__class__, MODEL_CLASS)):
+            data = data.dump()
         self.filter_ignored(data)
-        self.load_missing(data)
+        if isinstance(data, dict):
+            self.load_missing(data.keys())
         return data
+
+    def save_extra_fields(self, model_instance):
+        setattr(model_instance, EXTRA_FIELDS, self.fields)
+
+    def load_missing(self, data_keys):
+        """Includes missing fields not explicitly defined in the schema"""
+        meta = self.__class__.Meta
+        more_keys = []
+        if meta.load_all:
+            for key in data_keys:
+                if key not in self.fields:
+                    dump_only = []
+                    if hasattr(meta, "dump_only"):
+                        dump_only = key in meta.dump_only
+                    self.fields[key] = fields.Raw(allow_none=True, dump_only=dump_only)
+                    more_keys.append(key)
+        setattr(meta, "additional", more_keys)
 
     @post_load
     def load_model(self, data):
         """Loads the model using the class stored in the schema when 'add_schema' decorator was used."""
         model_class = getattr(self.__class__, MODEL_CLASS)
-
+        if model_class == data.__class__:
+            return data
         # additional init parameters
         args = data.get("args", [])
         kwargs = data.get("kwargs", {})
@@ -142,8 +175,7 @@ class DynamicSchema(Schema):
         # instantiate model from class
         model_inst = model_class.create_from_json(*args, data=data, **kwargs)
 
-        # save the extra fields
-        setattr(model_inst, EXTRA_FIELDS, self.fields)
+        self.save_extra_fields(model_inst)
 
         # save raw JSON that created the instance
         model_inst.raw = data
@@ -173,21 +205,6 @@ class DynamicSchema(Schema):
     @post_dump
     def remove_ignored_from_dump(self, data):
         return self.filter_ignored(data)
-
-    def load_missing(self, data):
-        """Includes missing fields not explicitly defined in the schema"""
-        meta = self.__class__.Meta
-        more_keys = []
-        if meta.load_all:
-            for key in data.keys():
-                if key not in self.fields:
-                    dump_only = []
-                    if hasattr(meta, "dump_only"):
-                        dump_only = key in meta.dump_only
-                    self.fields[key] = fields.Raw(allow_none=True, dump_only=dump_only)
-                    more_keys.append(key)
-        setattr(meta, "additional", more_keys)
-
 
     def filter_ignored(self, data):
         """Removes ignored fields from the JSON data"""
@@ -232,7 +249,7 @@ def add_schema(cls):
         model_meta_props["include"] = include
 
         # collect relationships
-        model_meta_relationships = {key: val for key, val in include.items() if isinstance(val, Relation)}
+        model_meta_relationships = {key: val for key, val in include.items() if isinstance(val, fields.Relation)}
 
         # update defaults with field options found in model class definition
         default_meta_props.update(model_meta_props)

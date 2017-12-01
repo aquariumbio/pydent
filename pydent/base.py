@@ -38,7 +38,8 @@ from functools import wraps
 
 from pydent.exceptions import TridentModelNotFoundError
 from pydent.marshaller import MarshallerBase
-from pydent.utils import pprint
+from pydent.utils import pprint, magiclist, MagicList
+
 
 class ModelRegistry(type):
     """Stores a list of models that can be accessed by name."""
@@ -65,15 +66,6 @@ class ModelRegistry(type):
                              " Did you mean '<yoursession>.{0}.{1}'?"
                              .format(self.__name__, item))
 
-
-def custom_type_error(fxn):
-    @wraps(fxn)
-    def wrapped(*args, **kwargs):
-        return fxn(*args, **kwargs)
-
-    return wrapped
-
-
 class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     """Base class for Aquarium models. Subclass of :class:`pydent.marshaller.MarshallerBase`
 
@@ -81,8 +73,22 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     - contains a reference to the :class:`pydent.session.aqsession.AqSession` instance that loaded this model
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         self._session = None
+        self._initialize(kwargs)
+
+    def _initialize(self, data, *args):
+        vars(self).update(data)
+        if self.model_schema:
+            schema = self.model_schema()
+            schema.load_missing(data.keys())
+            schema.save_extra_fields(self)
+            schema.validate(data)
+
+    @classmethod
+    @magiclist
+    def load(cls, *args, **kwargs):
+        return super().load(*args, **kwargs)
 
     @property
     def session(self):
@@ -120,4 +126,12 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         :return:
         """
         pprint(self.dump(*args, **kwargs))
+
+    # def set_relation(self, key, model):
+    #     """e.g. model.sample = <Sample>"""
+    #     if key in self.relationships:
+    #         relation = self.relationships[key]
+    #         if not relation.many:
+    #             setattr(self, relation.ref, getattr(model, relation.attr))
+    #     setattr(self, key, model)
 

@@ -15,6 +15,7 @@ import requests
 
 from pydent.exceptions import TridentRequestError, TridentLoginError, TridentTimeoutError, TridentJSONDataIncomplete
 
+
 class AqHTTP(object):
     """Defines a session/connection to Aquarium. Makes HTTP requests to Aquarium and returns JSON.
 
@@ -131,9 +132,9 @@ class AqHTTP(object):
         body = {}
         if 'json' in kwargs:
             body = kwargs['json']
-        key = self._serialize_request(url, method, body)
 
         # get result from history (if ok) otherwise, make a http request; save result to history
+        key = self._serialize_request(url, method, body)
         result = None
         if get_from_history_ok:
             result = self.request_history.get(key, None)

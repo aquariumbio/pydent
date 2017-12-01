@@ -18,5 +18,5 @@ Submodules
 """
 
 from pydent.marshaller.marshallerbase import MarshallerBase
-from pydent.marshaller.relation import Relation
+from pydent.marshaller.field_extensions import fields, Relation, JSON
 from pydent.marshaller.schema import add_schema
