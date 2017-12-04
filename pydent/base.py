@@ -85,6 +85,16 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
             schema.save_extra_fields(self)
             schema.validate(data)
 
+    def append_association(self, name, model):
+        if name in self.relationships:
+            field = self.relationships[name]
+            if field.many:
+                val = getattr(self, name)
+                if val is None:
+                    val = []
+                val.append(model)
+                setattr(self, name, val)
+
     @classmethod
     @magiclist
     def load(cls, *args, **kwargs):

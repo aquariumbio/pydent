@@ -218,7 +218,7 @@ def test_operation_init_fieldvalues(fake_op):
 
     # remove field_values
     fake_op.field_values = None
-    assert fake_op.field_values == []
+    assert fake_op.field_values == None
 
     # initialize field_values
     fake_op.init_field_values()

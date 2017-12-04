@@ -9,8 +9,9 @@ def test_plan_constructor():
     assert g.source is None
     assert g.destination is None
     assert g.status == 'planning'
-    assert g.operations == []
-    assert g.wires == []
+    print(g.plan_associations)
+    assert g.operations == None
+    assert g.wires == None
 
     g = Plan(name="MyPlan", status='running')
     assert g.name == 'MyPlan'
@@ -23,7 +24,7 @@ def test_add_operation(fake_session):
     p = Plan()
 
     # add first operation
-    assert p.operations == []
+    assert p.operations == None
     p.add_operation(op)
     assert p.operations == [op]
 

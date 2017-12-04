@@ -198,14 +198,6 @@ class MarshallerBase(object):
     #                 pass
     #     return res
 
-    def initialize_relation(self, res, name, relation):
-        """Initialize a relation from its default value"""
-        if res is None and relation.many:
-            res = []
-            setattr(self, name, res)
-        return res
-
-
     # Version that defaults to array
     def __getattribute__(self, name):
         """Override attribute accessor to attempt to fullfill relationships.
@@ -214,23 +206,15 @@ class MarshallerBase(object):
         the list of relationships, Trident will attempt to fullfill that relationship.
         * If AttributeError or TypeError is raise, return the default value"""
         res = object.__getattribute__(self, name)
-
-        def is_empty(x):
-            return x is None or x == []
-
-        if is_empty(res):
+        if res is None:
             relationships = object.__getattribute__(self, "get_relationships")()
             if name in relationships:
                 try:
-                    res2 = self.__getattr__(name)
-                    if isinstance(res, list):
-                        if isinstance(res2, list):
-                            res += res2
+                    res = self.__getattr__(name)
                 except AttributeError as e:
                     pass
                 except TypeError as e:
                     pass
-                res = self.initialize_relation(res, name, relationships[name])
         return res
 
     def __getattr__(self, item):
@@ -254,15 +238,14 @@ class MarshallerBase(object):
                 # msg += "{}".format(self.dump())
                 e.args = tuple(list(e.args) + [msg])
                 warnings.warn(' '.join(e.args))
-
-            ret = self.initialize_relation(ret, item, field)
+            except TypeError as e:
+                pass
             if save_attr:
                 setattr(self, item, ret)
             return ret
         raise MarshallerRelationshipError(
             "'{}' model has no attribute '{}'. Attribute was not found in list of relationships: {}".format(
                 self.__class__.__name__, item, ', '.join(relationships.keys())))
-        # return object.__getattribute__(self, item)
 
     def _relations_to_json(self):
         """Dump relations to a dictionary. If attribute is None, return the Relation instance"""

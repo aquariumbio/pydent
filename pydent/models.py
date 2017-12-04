@@ -583,27 +583,24 @@ class Plan(ModelBase, PlanValidator):
         super().__init__(**vars(self))
 
     def add_operation(self, op):
-        ops = self.operations
-        self.operations.append(op)
-        ops = self.operations
-        ops = self.operations
-        pass
+        self.append_association("operations", op)
 
     def add_operations(self, ops):
         for op in ops:
-            if op not in self.operations:
-                self.operations.append(op)
+            if not self.operations or op not in self.operations:
+                self.add_operation(op)
 
     def wire(self, src, dest):
         wire = Wire(src, dest)
-        self.wires.append(wire)
+        self.append_association("wires", wire)
 
     def add_wires(self, pairs):
         for src, dest in pairs:
             self.wire(src, dest)
 
+    @property
     @magiclist
-    def all_wires(self):
+    def wires(self):
         wires = []
         for op in self.operations:
             for fv in op.field_values:
@@ -632,7 +629,7 @@ class Plan(ModelBase, PlanValidator):
     def to_save_json(self):
         json_ = self.dump(exclude=('layout',))
         json_['operations'] = [op.dump(relations=('field_values',)) for op in self.operations]
-        json_['wires'] = [wire.dump(relations=('source', 'destination')) for wire in self.all_wires()]
+        json_['wires'] = [wire.dump(relations=('source', 'destination')) for wire in self.wires()]
         return json_
 
     def save(self):
