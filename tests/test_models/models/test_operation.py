@@ -171,6 +171,16 @@ def fake_op():
 
     return Operation.load(fake_op_data)
 
+def test_constructor():
+
+    op = Operation()
+    op_dump = op.dump()
+    assert op_dump['routing'] == {}
+    assert op_dump['parent'] == 0
+    assert 'x' in op_dump
+    assert 'y' in op_dump
+
+
 
 def test_outputs():
     op = Operation.load({

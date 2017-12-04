@@ -59,6 +59,7 @@ from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema, fields
 from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough, HasManyGeneric
 from pydent.utils import magiclist, filter_list
+from pydent.utils.plan_validator import PlanValidator
 
 __all__ = [
     "Account",
@@ -450,6 +451,17 @@ class Operation(ModelBase):
     #         Y += 6
     #     return [X, Y]
 
+    def __init__(self, operation_type_id=None, status=None, x=0, y=0):
+        self.operation_type_id = None
+        self.x = x
+        self.y = y
+        self.routing = {}
+        self.parent = 0
+        self.id = None
+        if status is None:
+            self.status = "planning"
+        super().__init__(**vars(self))
+
     def init_field_values(self):
         """Inialize the field values form the field types of the parent operation type"""
         for field_type in self.operation_type.field_types:
@@ -480,20 +492,18 @@ class Operation(ModelBase):
 
         # get the field type
         ft = self.operation_type.field_type(name, role)
-        if not ft:
-            AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
+        if ft is None:
+            raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
                 self.operation_type.name, role, name))
 
         # initialize the field value from the field type
         if not fv:
             fv = ft.initialize_field_value(fv)
-
-        # update the field_value with this operation
-        fv.set_operation(self)
+            fv.set_operation(self)
+            self.field_values.append(fv)
 
         # set the value, finds allowable_field_types, etc.
         fv.set_value(value=value, sample=sample, item=item, container=container)
-        self.field_values.append(fv)
         return self
 
     @property
@@ -511,6 +521,8 @@ class Operation(ModelBase):
 
     def set_output(self, name, sample=None, item=None, value=None, container=None):
         return self.set_field_value(name, 'output', sample=sample, item=item, value=value, container=container)
+
+
 
     @property
     @magiclist
@@ -532,8 +544,11 @@ class OperationType(ModelBase, HasCode):
         codes=HasManyGeneric("Code")
     )
 
-    def instance(self):
-        pass
+    def instance(self, xpos=None, ypos=None):
+        operation = Operation(operation_type_id=self.id, status='planning', x=xpos, y=ypos)
+        operation.operation_type = self
+        operation.init_field_values()
+        return operation
 
     def field_type(self, name, role):
         if self.field_types:
@@ -543,7 +558,7 @@ class OperationType(ModelBase, HasCode):
 
 
 @add_schema
-class Plan(ModelBase):
+class Plan(ModelBase, PlanValidator):
     """A Plan model"""
     fields = dict(
         data_associations=HasManyGeneric("DataAssociation"),
@@ -568,7 +583,11 @@ class Plan(ModelBase):
         super().__init__(**vars(self))
 
     def add_operation(self, op):
+        ops = self.operations
         self.operations.append(op)
+        ops = self.operations
+        ops = self.operations
+        pass
 
     def add_operations(self, ops):
         for op in ops:
@@ -609,6 +628,12 @@ class Plan(ModelBase):
         """Override find for plans, because generic method is too minimal"""
         interface = cls.interface(session)
         return interface.get('plans/{}.json'.format(model_id))
+
+    def to_save_json(self):
+        json_ = self.dump(exclude=('layout',))
+        json_['operations'] = [op.dump(relations=('field_values',)) for op in self.operations]
+        json_['wires'] = [wire.dump(relations=('source', 'destination')) for wire in self.all_wires()]
+        return json_
 
     def save(self):
         self.session.utils.save_plan(self)

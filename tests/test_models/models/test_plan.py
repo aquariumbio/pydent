@@ -17,7 +17,7 @@ def test_plan_constructor():
     assert g.status == 'running'
 
 
-def test_add_operation():
+def test_add_operation(fake_session):
 
     op = Operation.load({"id": 4})
     p = Plan()
@@ -59,6 +59,32 @@ def test_est_costs(session):
     cost = p.estimate_cost()
     print(cost)
 
+
+def test_to_save_json(session):
+
+    p = session.Plan.find(79147)
+    from pydent import pprint
+
+    pprint(p.to_save_json())
+
+
+def test_submit(session):
+    primer = session.Sample.find(17042)
+    # ly_primer = session.ObjectType.find_by_name("Lyophilized Primer")
+    # primer_aliquot = session.ObjectType.find_by_name("Primer Aliquot")
+    # primer_stock = session.ObjectType.find_by_name("Primer Stock")
+    ot = session.OperationType.find_by_name("Order Primer")
+    order_primer = session.OperationType.find_by_name("Order Primer").instance()
+    print(ot.field_types.name)
+    order_primer.set_output("Primer", sample=primer)
+
+    p = session.Plan(name="MyPlan")
+    p.add_operation(order_primer)
+    ops = p.operations
+    print(p)
+    print(p.operations[0].field_values)
+    p.validate()
+    p.save()
 
 def test_save(session):
     from pydent import pprint

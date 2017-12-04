@@ -82,12 +82,8 @@ class UtilityInterface(SessionInterface):
     def save_plan(self, plan):
         if not plan.id:
             user_query = "?user_id=" + str(self.session.current_user.id)
-            plan_json = plan.dump()
-            ops = plan.operations
-            plan_json['operations'] = plan.operations.dump(relations=('field_values',))
-            plan_json['wires'] = plan.all_wires().dump(relations=('source', 'destination'))
             result = self.aqhttp.post(
-                'plans.json?user_id={}'.format(str(self.session.current_user.id)), json_data=plan_json, allow_none=True)
+                'plans.json?user_id={}'.format(str(self.session.current_user.id)), json_data=plan.to_save_json(), allow_none=True)
             plan.load(result)
         else:
             warnings.warn("WARNING: Plan {} already saved. Cannot save again.".format(self.id))

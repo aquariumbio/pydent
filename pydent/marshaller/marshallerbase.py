@@ -200,8 +200,8 @@ class MarshallerBase(object):
 
     def initialize_relation(self, res, name, relation):
         """Initialize a relation from its default value"""
-        if res is None:
-            res = relation.get_default()
+        if res is None and relation.many:
+            res = []
             setattr(self, name, res)
         return res
 
@@ -222,7 +222,10 @@ class MarshallerBase(object):
             relationships = object.__getattribute__(self, "get_relationships")()
             if name in relationships:
                 try:
-                    res = self.__getattr__(name)
+                    res2 = self.__getattr__(name)
+                    if isinstance(res, list):
+                        if isinstance(res2, list):
+                            res += res2
                 except AttributeError as e:
                     pass
                 except TypeError as e:
