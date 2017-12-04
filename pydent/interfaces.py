@@ -38,6 +38,7 @@ from pydent.base import ModelRegistry
 from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
 import warnings
 
+# TODO: replace os.path.join for building urls
 
 class SessionInterface(object):
 
@@ -67,6 +68,29 @@ class UtilityInterface(SessionInterface):
     def create_samples(self, samples):
         json = [s.dump() for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
+
+    def estimate_plan_cost(self, plan):
+        result = self.aqhttp.post('launcher/estimate', {'id': plan.id})
+        total = 0
+        for operation in plan.operations:
+            for cost in result['costs']:
+                if cost['id'] == operation.id:
+                    operation.cost = cost
+                    total += (cost['labor'] * cost['labor_rate'] + cost['materials']) * cost['markup_rate']
+        return total
+
+    def save_plan(self, plan):
+        if not plan.id:
+            user_query = "?user_id=" + str(self.session.current_user.id)
+            plan_json = plan.dump()
+            ops = plan.operations
+            plan_json['operations'] = plan.operations.dump(relations=('field_values',))
+            plan_json['wires'] = plan.all_wires().dump(relations=('source', 'destination'))
+            result = self.aqhttp.post(
+                'plans.json?user_id={}'.format(str(self.session.current_user.id)), json_data=plan_json, allow_none=True)
+            plan.load(result)
+        else:
+            warnings.warn("WARNING: Plan {} already saved. Cannot save again.".format(self.id))
 
     def create_plan(self, plan):
         user_query = "?user_id=" + str(self.session.current_user.id)
@@ -134,8 +158,10 @@ class ModelInterface(SessionInterface):
         except TridentJSONDataIncomplete as e:
             warnings.warn(e.args)
             return None
-        many = isinstance(post_response, list)
+        return self._request_to_models(post_response)
 
+    def _request_to_models(self, post_response):
+        many = isinstance(post_response, list)
         models = self.model.load(
             post_response, many=many)
         if many:
@@ -149,6 +175,10 @@ class ModelInterface(SessionInterface):
     @property
     def model_name(self):
         return self.model.__name__
+
+    def get(self, path):
+        response = self.aqhttp.get(path)
+        return self._request_to_models(response)
 
     def find(self, model_id):
         """ Finds model by id """
@@ -171,6 +201,10 @@ class ModelInterface(SessionInterface):
         query.update(rest)
         res = self._post_json(query)  # type: dict
         return res
+
+
+    def find_plan(self, id):
+        return self.aqhttp.get('plans/{}.json'.format(id))
 
     def all(self, rest=None, opts=None):
         """ Finds all models """

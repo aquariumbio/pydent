@@ -3,6 +3,7 @@ import warnings
 
 from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError, MarshallerRelationshipError
 from pydent.marshaller.schema import MODEL_SCHEMA
+from pydent.utils import pformat
 
 
 class MarshallerBase(object):
@@ -183,29 +184,65 @@ class MarshallerBase(object):
         """Override for unpickling objects"""
         self.__dict__.update(state)
 
-    def __getattribute__(self, name):
-        res = object.__getattribute__(self, name)
+    # # Version that does not default many relations to []
+    # def __getattribute__(self, name):
+    #     res = object.__getattribute__(self, name)
+    #     if res is None:
+    #         relationships = object.__getattribute__(self, "get_relationships")()
+    #         if name in relationships:
+    #             try:
+    #                 res = self.__getattr__(name)
+    #             except AttributeError as e:
+    #                 pass
+    #             except TypeError as e:
+    #                 pass
+    #     return res
+
+    def initialize_relation(self, res, name, relation):
+        """Initialize a relation from its default value"""
         if res is None:
+            res = relation.get_default()
+            setattr(self, name, res)
+        return res
+
+
+    # Version that defaults to array
+    def __getattribute__(self, name):
+        """Override attribute accessor to attempt to fullfill relationships.
+
+        * If the returned attribute is None or [] and the attribute name is in
+        the list of relationships, Trident will attempt to fullfill that relationship.
+        * If AttributeError or TypeError is raise, return the default value"""
+        res = object.__getattribute__(self, name)
+
+        def is_empty(x):
+            return x is None or x == []
+
+        if is_empty(res):
             relationships = object.__getattribute__(self, "get_relationships")()
             if name in relationships:
                 try:
                     res = self.__getattr__(name)
                 except AttributeError as e:
                     pass
+                except TypeError as e:
+                    pass
+                res = self.initialize_relation(res, name, relationships[name])
         return res
 
     def __getattr__(self, item):
         """Retrieves and fullfills relationships if available. This method runs only if
-        the given attribute is not found. """
+        the given attribute is not found."""
         relationships = object.__getattribute__(self, "get_relationships")()
         save_attr = object.__getattribute__(self, "save_attr")
         if item in relationships:
             field = relationships[item]
             ret = None
             try:
+                # try to fullfill the relationships
                 ret = self._fullfill(field)
             except AttributeError as e:
-                """Wrap up AttributeError as a MarshallerRelationshipError"""
+                # display warning
                 msg = "\n"
                 msg += "Could not fullfill relationship for {}(instance).{} as relation {}\nReasons:\n".format(
                     self.__class__.__name__, item, field)
@@ -214,7 +251,8 @@ class MarshallerBase(object):
                 # msg += "{}".format(self.dump())
                 e.args = tuple(list(e.args) + [msg])
                 warnings.warn(' '.join(e.args))
-                # raise MarshallerRelationshipError(e)
+
+            ret = self.initialize_relation(ret, item, field)
             if save_attr:
                 setattr(self, item, ret)
             return ret
@@ -223,12 +261,42 @@ class MarshallerBase(object):
                 self.__class__.__name__, item, ', '.join(relationships.keys())))
         # return object.__getattribute__(self, item)
 
+    def _relations_to_json(self):
+        """Dump relations to a dictionary. If attribute is None, return the Relation instance"""
+        dumped = {}
+        for k, v in self.get_relationships().items():
+            val = None
+            try:
+                val = object.__getattribute__(self, k)
+            except AttributeError:
+                pass
+            if val is None:
+                val = v
+            dumped[k] = val
+        return dumped
+
+
+    def _to_dict(self, *args, **kwargs):
+        """
+        Prints the model instance in a nice format. See :func:`pydent.marshaller.marshallerbase.dump`
+
+        :param args: dump arguments
+        :param kwargs: dump arguments
+        :return:
+        """
+        dumped = self._relations_to_json()
+        _dumped = self.dump(*args, **kwargs)
+        if _dumped:
+            for k, v in _dumped.items():
+                if v is not None or k not in dumped:
+                    dumped[k] = v
+        return dumped
+
+    def print(self, *args, **kwargs):
+        print(pformat(self._to_dict(*args, **kwargs)))
+
     def __str__(self):
-        dumped = self.dump()
-        if dumped:
-            rel = {k: str(v) for k, v in self.get_relationships().items()}
-            dumped.update(rel)
-        return "{}: {}".format(self.__class__, json.dumps(dumped, indent=4))
+        return pformat(self._to_dict())
 
     def __repr__(self):
         return "<{}>".format(self.__class__.__name__)

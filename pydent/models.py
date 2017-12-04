@@ -110,7 +110,7 @@ class FieldMixin(object):
         None"""
         if model_name == self.parent_class:
             # weird, but helps with refactoring this mixin
-            fxn_name = ModelBase.find_using_session.__name__
+            fxn_name = ModelBase.find_callback.__name__
             fxn = getattr(self, fxn_name)
             return fxn(model_name, id)
 
@@ -218,8 +218,10 @@ class FieldValue(ModelBase, FieldMixin):
         item=HasOne("Item", ref="child_item_id"),
         sample=HasOne("Sample", ref="child_sample_id"),
         operation=HasOne("Operation", callback="find_field_parent", ref="parent_id"),
-        parent_sample=One("Sample", callback="find_field_parent", ref="parent_id"),
-        ignore=("object_type",)
+        parent_sample=HasOne("Sample", callback="find_field_parent", ref="parent_id"),
+        wires_as_source=HasMany("Wire", ref="from_id"),
+        wires_as_dest=HasMany("Wire", ref="to_id"),
+        successors=HasManyThrough("Operation", "Wire")
     )
 
     def __init__(self, name=None, role=None, parent_class=None, parent_id=None,
@@ -272,6 +274,24 @@ class FieldValue(ModelBase, FieldMixin):
             self._set_helper(value=value, sample=sample, item=item, container=container)
         super().__init__(**vars(self))
 
+    @property
+    def outgoing_wires(self):
+        """Alias of 'wires_as_source'"""
+        return self.wires_as_source
+
+    @property
+    def incoming_wires(self):
+        """Alias of 'wires_as_dest'"""
+        return self.wires_as_dest
+
+    @property
+    def successors(self):
+        return [x.destination for x in self.wires_as_source]
+
+    @property
+    def predecessors(self):
+        return [x.source for x in self.wires_as_dest]
+
     def show(self, pre=""):
         if self.sample:
             if self.child_item_id:
@@ -305,13 +325,15 @@ class FieldValue(ModelBase, FieldMixin):
             afts = filter_list(afts, sample_type_id=self.sample.sample_type_id)
         if self.object_type:
             afts = filter_list(afts, object_type_id=self.object_type.id)
+        if not afts:
+            raise AquariumModelError("No allowable field types found for {} '{}'".format(self.role, self.name))
         if len(afts) > 1:
             warnings.warn("More than one AllowableFieldType found that matches {}".format(
                 self.dump(only=('name', 'role', 'id'), partial=True)))
         elif len(afts) == 1:
             self.set_allowable_field_type(afts[0])
         else:
-            raise AquariumModelError("No allowable field type found for {} {}".format(self.role, self.name))
+            raise AquariumModelError("No allowable field type found for {} '{}'".format(self.role, self.name))
         return self
 
     def set_operation(self, op):
@@ -438,14 +460,17 @@ class Operation(ModelBase):
         """Returns :class:`FieldValue` with name and role. Return None if not found."""
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
-            if fvs[0].field_type.array:
-                return fvs
-            elif len(fvs) > 1:
-                raise AquariumModelError(
-                    "More than one FieldValue found for the non-array field value of operation {}(id={}).{}.{}".format(
-                        self.operation_type.name, self.id, role, name))
-            elif len(fvs) == 1:
-                return fvs[0]
+            if fvs:
+                if fvs[0].field_type.array:
+                    return fvs
+                elif len(fvs) > 1:
+                    raise AquariumModelError(
+                        "More than one FieldValue found for the non-array field value of operation {}(id={}).{}.{}".format(
+                            self.operation_type.name, self.id, role, name))
+                elif len(fvs) == 1:
+                    return fvs[0]
+        else:
+            self.field_values = []
 
     def set_field_value(self, name, role, sample=None, item=None, value=None, container=None):
         """Sets the value of a :class:`FieldValue`. If the FieldValue does not exist,
@@ -468,21 +493,24 @@ class Operation(ModelBase):
 
         # set the value, finds allowable_field_types, etc.
         fv.set_value(value=value, sample=sample, item=item, container=container)
+        self.field_values.append(fv)
         return self
-
-    def set_field_type(self, field_value):
-        """Sets the :class:`FieldType` associated with a given :class:`FieldValue`"""
-        field_types = filter_list(self.operation_type.field_types, **field_value.dump(only=('name', 'role')))
-        if field_types:
-            return field_types[-1]
-        else:
-            raise AquariumModelError(
-                "Could not find field type of {} named {} in operation_type {}".format(
-                    field_value.role, field_value.name, self.operation_type.name))
 
     @property
     def plan(self):
         return self.plans[0]
+
+    def input(self, name):
+        return self.field_value(name, 'input')
+
+    def output(self, name):
+        return self.field_value(name, 'output')
+
+    def set_input(self, name, sample=None, item=None, value=None, container=None):
+        return self.set_field_value(name, 'input', sample=sample, item=item, value=value, container=container)
+
+    def set_output(self, name, sample=None, item=None, value=None, container=None):
+        return self.set_field_value(name, 'output', sample=sample, item=item, value=value, container=container)
 
     @property
     @magiclist
@@ -520,35 +548,76 @@ class Plan(ModelBase):
     fields = dict(
         data_associations=HasManyGeneric("DataAssociation"),
         plan_associations=HasMany("PlanAssociation", "Plan"),
-        operations=HasManyThrough("Operation", "PlanAssociation")
+        operations=HasManyThrough("Operation", "PlanAssociation"),
+        wires=Many("Wire", callback="no_getter")
     )
 
-    def __init__(self):
+    def __init__(self, name=None, status=None, source=None, destination=None):
+        self.name = name
+        if status is None:
+            status = 'planning'
         self.id = None
-        self.name = None
-        self.status = "planning"
+        self.status = status
         self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no_name"}
-        self.operations = []
-        self.source = None
-        self.destination = None
-        super().__init__()
+        # self.operations = []
+        # self.wires = []
+        self.data_associations = None
+        self.plan_associations = None
+        self.source = source
+        self.destination = destination
+        super().__init__(**vars(self))
 
-    def callback(self):
-        pass
+    def add_operation(self, op):
+        self.operations.append(op)
 
     def add_operations(self, ops):
-        self.operations = ops
+        for op in ops:
+            if op not in self.operations:
+                self.operations.append(op)
 
     def wire(self, src, dest):
-        self.source = src
-        self.destination = dest
+        wire = Wire(src, dest)
+        self.wires.append(wire)
 
     def add_wires(self, pairs):
         for src, dest in pairs:
             self.wire(src, dest)
 
-    def submit(self, user, budget):
-        self.session.create.create_plan(self, user, budget)
+    @magiclist
+    def all_wires(self):
+        wires = []
+        for op in self.operations:
+            for fv in op.field_values:
+                wires += fv.outgoing_wires
+                wires += fv.incoming_wires
+        return wires
+
+    def save(self):
+        self.session.utils.save_plan(self)
+
+    def all_data_associations(self):
+        das = self.data_associations
+        for op in self.operations:
+            das += op.data_associations
+            for field_value in op.field_values:
+                if field_value.item:
+                    das += field_value.item.data_associations
+        return das
+
+    @classmethod
+    def find(cls, session, model_id):
+        """Override find for plans, because generic method is too minimal"""
+        interface = cls.interface(session)
+        return interface.get('plans/{}.json'.format(model_id))
+
+    def save(self):
+        self.session.utils.save_plan(self)
+
+    def estimate_cost(self):
+        return self.session.utils.estimate_plan_cost(self)
+
+    def field_values(self):
+        raise NotImplementedError()
 
 
 @add_schema
@@ -611,7 +680,7 @@ class Upload(ModelBase):
 
     @property
     def temp_url(self):
-        return self.session.Upload.where_using_session({"id", self.id}, {"methods": ["url"]})[0].url
+        return self.session.Upload.where_callback({"id", self.id}, {"methods": ["url"]})[0].url
 
     @property
     def data(self):
@@ -646,6 +715,11 @@ class Wire(ModelBase):
         source=HasOne("FieldValue", ref="from_id", dump_to="from", load_only=False),
         destination=HasOne("FieldValue", ref="to_id", dump_to="to", load_only=False)
     )
+
+    def __init__(self, source=None, destination=None):
+        self.source = source
+        self.destination = destination
+        super().__init__(**vars(self))
 
     def show(self, pre=""):
         """Show the wire nicely"""

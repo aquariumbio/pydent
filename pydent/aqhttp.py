@@ -105,7 +105,7 @@ class AqHTTP(object):
         }, sort_keys=True)
 
     # TODO: return warnings about not finding
-    def request(self, method, path, timeout=None, get_from_history_ok=False, **kwargs):
+    def request(self, method, path, timeout=None, get_from_history_ok=False, allow_none=False, **kwargs):
         """
         Performs a http request.
 
@@ -124,7 +124,7 @@ class AqHTTP(object):
         """
         if timeout is None:
             timeout = self.timeout
-        if 'json' in kwargs:
+        if not allow_none and 'json' in kwargs:
             self._disallow_null_in_json(kwargs['json'])
 
         # serialize request

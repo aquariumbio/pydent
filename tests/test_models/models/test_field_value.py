@@ -248,3 +248,23 @@ def test_show():
         })
     fake_fv.set_value(sample=sample)
     fake_fv.show()
+
+
+def test_wires_as_source(session):
+
+    fv = session.FieldValue.find(520346)
+    wires = fv.wires_as_source
+    print(wires)
+
+def test_wires_as_dest(session):
+    fv = session.FieldValue.find(520346)
+    wires = fv.wires_as_dest
+    print(wires)
+
+def test_successors(session):
+    fv = session.FieldValue.find(520346)
+    print(fv.successors)
+
+def test_predecessors(session):
+    fv = session.FieldValue.find(520346)
+    print(fv.predecessors)

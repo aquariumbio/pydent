@@ -6,7 +6,7 @@ import inflection
 from pydent.marshaller import fields
 from pydent.base import ModelBase
 from pydent.marshaller.exceptions import MarshallerRelationshipError
-
+from pydent.utils import MagicList
 
 class One(fields.Relation):
     """Defines a single relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
@@ -25,7 +25,7 @@ class One(fields.Relation):
         :type kwargs: ...
         """
         if callback is None:
-            callback = ModelBase.find_using_session.__name__
+            callback = ModelBase.find_callback.__name__
         super().__init__(model, *args, callback=callback, params=params, **kwargs)
 
 
@@ -46,15 +46,14 @@ class Many(fields.Relation):
         :type kwargs: ...
         """
         if callback is None:
-            callback = ModelBase.where_using_session.__name__
-        super().__init__(model, *args, many=True, callback=callback, params=params, **kwargs)
-
+            callback = ModelBase.where_callback.__name__
+        super().__init__(model, *args, default=MagicList, many=True, callback=callback, params=params, **kwargs)
 
 class HasMixin(object):
 
     def set_ref(self, model=None, ref=None, attr=None):
         """Sets the 'ref' and 'attr' attributes. These attributes are used to defined parameters for
-        :class:`pydent.marshaller.fields.Relation` classes.
+        :class:`pydent.marshaller.Relation` classes.
 
         For example:
 

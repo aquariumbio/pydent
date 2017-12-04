@@ -40,3 +40,18 @@ def test_field_type_is_parameter():
 
     ft.ftype = "string"
     assert ft.is_parameter
+
+
+def test_initialize_field_value():
+    ft = FieldType.load({'id': 5, 'name': 'Plasmid', 'role': 'input', 'allowable_field_types': [
+        {
+            'id': 1
+        }
+    ]})
+    fv = ft.initialize_field_value()
+    assert fv.field_type == ft
+    assert fv.field_type_id == ft.id
+    assert fv.role == ft.role
+    assert fv.name == ft.name
+    assert fv.allowable_field_type_id == ft.allowable_field_types[0].id
+    assert fv.allowable_field_type == ft.allowable_field_types[0]

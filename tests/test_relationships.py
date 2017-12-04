@@ -2,6 +2,7 @@
 
 import pytest
 from pydent.relationships import One, Many, HasOne, HasMany, HasManyGeneric, HasManyThrough
+from pydent import ModelBase
 
 def test_one():
     """Tests the One relationship. The relationship holds a callback function_name
@@ -10,7 +11,7 @@ def test_one():
     # default attributes
     one = One("ModelName")
     assert one.nested == "ModelName"
-    assert one.callback == "find_using_session"
+    assert one.callback == ModelBase.find_callback.__name__
     assert one.many == False
 
     # basic attributes
@@ -33,7 +34,7 @@ def test_many():
 
     # default attributes
     many2 = Many("ModelName")
-    assert many2.callback == "where_using_session"
+    assert many2.callback == ModelBase.where_callback.__name__
 
 
 def test_has_many():

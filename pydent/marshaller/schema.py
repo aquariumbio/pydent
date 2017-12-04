@@ -84,7 +84,7 @@ class DynamicSchema(Schema):
     relationships = {}
 
     def __init__(self, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False, strict=None, many=False,
-                 context=None, load_only=(), dump_only=(), partial=False, prefix='', _depth=0, dump_depth=1, **kwargs):
+                 context=None, load_only=(), dump_only=(), partial=False, prefix='', _depth=0, dump_depth=None, **kwargs):
         """
         Custom Schema for marshalling and demarshalling models
 
@@ -113,6 +113,7 @@ class DynamicSchema(Schema):
             is an iterable, only missing fields listed in that iterable will be
             ignored.
         """
+        self.original_only = only
         if only:
             # include relations in only
             only = set(list(only) + list(dump_relations))
@@ -123,6 +124,7 @@ class DynamicSchema(Schema):
         load_only = set(list(load_only) + list(self.relationships.keys()))
 
         # if there are any dump_relations keys, remove them from 'load_only' so they can be serializes
+        self.all_relations = dump_all_relations
         if dump_all_relations:
             dump_relations = tuple(self.relationships.keys())
         load_only = tuple(set(load_only) - set(dump_relations))
@@ -130,6 +132,8 @@ class DynamicSchema(Schema):
         super().__init__(*args, only=only, exclude=exclude, prefix=prefix, strict=strict,
                          many=many, context=context, load_only=load_only, dump_only=dump_only,
                          partial=partial, **kwargs)
+        if dump_depth is None:
+            dump_depth = 10
         self.dump_relations = dump_relations
         self.dump_depth = dump_depth
         self._depth = _depth
@@ -168,6 +172,7 @@ class DynamicSchema(Schema):
         model_class = getattr(self.__class__, MODEL_CLASS)
         if model_class == data.__class__:
             return data
+
         # additional init parameters
         args = data.get("args", [])
         kwargs = data.get("kwargs", {})

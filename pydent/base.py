@@ -101,37 +101,42 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
             self._session = session
 
     def _check_for_session(self):
+        """Raises error if model is not connected to a session"""
         if self.session is None:
             raise AttributeError("No AqSession instance found for '{}'. Use 'connect_to_session' "
                                  "to connect this model to a session".format(self.__class__.__name__))
 
-    def find_using_session(self, model_name, model_id):
+    def no_getter(self, model_name, _):
+        """Callback that always returns None"""
+        return None
+
+    @classmethod
+    def interface(cls, session):
+        return session.model_interface(cls.__name__)
+
+    @classmethod
+    def find(cls, session, model_id):
+        """Finds a model instance by its model_id"""
+        interface = cls.interface(session)
+        return interface.find(model_id)
+
+    @classmethod
+    def where(cls, session, params):
+        """Finds a list of models by some parameters"""
+        interface = cls.interface(session)
+        return interface.where(params)
+
+    def find_callback(self, model_name, model_id):
         """Finds a model using the model interface and model_id. Used to find
         models in model relationships."""
         self._check_for_session()
-        return self.session.model_interface(model_name).find(model_id)
+        model = ModelRegistry.get_model(model_name)
+        return model.find(self.session, model_id)
 
-    def where_using_session(self, model_name, params):
+    def where_callback(self, model_name, params):
         """Finds models using a model interface and a set of parameters. Used to
         find models in model relationships."""
         self._check_for_session()
-        return self.session.model_interface(model_name).where(params)
-
-    def print(self, *args, **kwargs):
-        """
-        Prints the model instance in a nice format. See :func:`pydent.marshaller.marshallerbase.dump`
-
-        :param args: dump arguments
-        :param kwargs: dump arguments
-        :return:
-        """
-        pprint(self.dump(*args, **kwargs))
-
-    # def set_relation(self, key, model):
-    #     """e.g. model.sample = <Sample>"""
-    #     if key in self.relationships:
-    #         relation = self.relationships[key]
-    #         if not relation.many:
-    #             setattr(self, relation.ref, getattr(model, relation.attr))
-    #     setattr(self, key, model)
-
+        model = ModelRegistry.get_model(model_name)
+        return model.where(self.session, params)
+        # return self.session.model_interface(model_name).where(params)

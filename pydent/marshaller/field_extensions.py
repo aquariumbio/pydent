@@ -59,11 +59,29 @@ class Relation(fields.Nested):
         #     kwargs["load_only"] = True  # note that "load_only" is important and prevents dumping of all relationships
         super().__init__(model, *args, allow_none=allow_none, **kwargs)
         self.callback = callback
-
+        self.default = None
         # force params to be an iterable
         if not isinstance(params, (list, tuple)):
             params = (params,)
         self.params = params
+
+    def get_default(self):
+        """Get the default value for this relation.
+
+        * If self.default is a type, return a new instance of that type
+        * If self.default is not None, return self.default
+        * If default is None and self.many, return a new list
+        * Else return None
+        """
+        if self.default is not None:
+            if type(self.default) == type:
+                return self.default()
+            else:
+                return self.default
+        elif self.many:
+            return []
+        else:
+            return None
 
     @property
     def model(self):
@@ -72,8 +90,30 @@ class Relation(fields.Nested):
     def _serialize(self, nested_obj, attr, obj):
         dumped = None
 
+        def decompose_opts(attr, opts):
+            if isinstance(opts, dict):
+                if attr in opts:
+                    opts = opts[attr]
+                else:
+                    opts = {}
+            else:
+                opts = {}
+            return opts
+
         def dump(nobj):
-            return nobj.dump(_depth=self.root._depth + 1, depth=self.root.dump_depth, all_relations=True)
+            if hasattr(nobj, 'dump'):
+                # decompose only if its a dictionary
+                only = self.root.original_only
+                relations = self.root.dump_relations
+                only = decompose_opts(attr, only)
+                relations = decompose_opts(attr, relations)
+                # deserialize field
+                nobj = nobj.dump(only=only,
+                                 relations=relations,
+                                 _depth=self.root._depth + 1,
+                                 depth=self.root.dump_depth,
+                                 all_relations=self.root.all_relations)
+            return nobj
 
         if nested_obj:
             if isinstance(nested_obj, list):
@@ -90,7 +130,6 @@ class Relation(fields.Nested):
     def __repr__(self):
         return "<{} (model={}, callback={}, params={})>".format(self.__class__.__name__,
                                                                 self.nested, self.callback, self.params)
-
 
 fields.Relation = Relation
 fields.JSON = JSON

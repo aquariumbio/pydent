@@ -1,7 +1,12 @@
 """Misc. utilities for pydent"""
 
 from pydent.utils.magiclist import MagicList, magiclist
-from marshmallow import pprint
+import pprint
+
+
+printer = pprint.PrettyPrinter(indent=1)
+pprint = printer.pprint
+pformat = printer.pformat
 
 
 def filter_list(objlist, **kwargs):
