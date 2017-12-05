@@ -59,29 +59,10 @@ class Relation(fields.Nested):
         #     kwargs["load_only"] = True  # note that "load_only" is important and prevents dumping of all relationships
         super().__init__(model, *args, allow_none=allow_none, **kwargs)
         self.callback = callback
-        self.default = None
         # force params to be an iterable
         if not isinstance(params, (list, tuple)):
             params = (params,)
         self.params = params
-
-    def get_default(self):
-        """Get the default value for this relation.
-
-        * If self.default is a type, return a new instance of that type
-        * If self.default is not None, return self.default
-        * If default is None and self.many, return a new list
-        * Else return None
-        """
-        if self.default is not None:
-            if type(self.default) == type:
-                return self.default()
-            else:
-                return self.default
-        elif self.many:
-            return []
-        else:
-            return None
 
     @property
     def model(self):

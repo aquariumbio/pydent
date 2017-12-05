@@ -604,8 +604,10 @@ class Plan(ModelBase, PlanValidator):
         wires = []
         for op in self.operations:
             for fv in op.field_values:
-                wires += fv.outgoing_wires
-                wires += fv.incoming_wires
+                if fv.outgoing_wires:
+                    wires += fv.outgoing_wires
+                if fv.incoming_wires:
+                    wires += fv.incoming_wires
         return wires
 
     def save(self):
@@ -629,7 +631,7 @@ class Plan(ModelBase, PlanValidator):
     def to_save_json(self):
         json_ = self.dump(exclude=('layout',))
         json_['operations'] = [op.dump(relations=('field_values',)) for op in self.operations]
-        json_['wires'] = [wire.dump(relations=('source', 'destination')) for wire in self.wires()]
+        json_['wires'] = [wire.dump(relations=('source', 'destination')) for wire in self.wires]
         return json_
 
     def save(self):

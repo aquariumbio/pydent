@@ -84,6 +84,7 @@ def test_submit(session):
     ops = p.operations
     print(p)
     print(p.operations[0].field_values)
+    print(p.to_save_json())
     p.validate()
     p.save()
 
