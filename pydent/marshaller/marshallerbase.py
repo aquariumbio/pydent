@@ -1,10 +1,11 @@
 import json
 import warnings
+from copy import deepcopy
 
 from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError, MarshallerRelationshipError
 from pydent.marshaller.schema import MODEL_SCHEMA
 from pydent.utils import pformat
-from copy import deepcopy
+
 
 class MarshallerBase(object):
     """Base class for marshalling and unmarshalling. Used in conjunction with
@@ -108,34 +109,6 @@ class MarshallerBase(object):
         else:
             warnings.warn("Cannot dump! No schema attached to '{}'".format(cls.__name__))
 
-    # def _dump(self, *args, include=None, **kwargs):
-    #     schema = self.__class__.create_schema_instance(*args, **kwargs)
-    #     import uuid
-    #     schema.context['uuid'] = str(uuid.uuid4())
-    #     if include is None:
-    #         include = {}
-    #     elif isinstance(include, str):
-    #         include = tuple(include)
-    #     if schema:
-    #         data = schema.dump(self).data
-    #         for key in include:
-    #             if key in self.get_relationships() and key in include:
-    #                 val = getattr(self, key)
-    #                 vallist = list(val)
-    #                 for val in vallist:
-    #                     for i, val in enumerate(vallist):
-    #                         if hasattr(val, 'dump'):
-    #                             new_include = tuple(include)
-    #                             if isinstance(include, dict):
-    #                                 new_include = include.get(key, None)
-    #                             vallist[i] = val._dump(*args, include=new_include, **kwargs)
-    #                             val = val._dump(*args, include=new_include, **kwargs)
-    #                             data[key] = val
-    #         return data
-    #     else:
-    #         warnings.warn("Cannot dump! No schema attached to '{}'".format(self.__class__.__name__))
-
-
     def dump(self, only=(), include=(), exclude=(), relations=(),
              all_relations=False, prefix='', strict=None,
              many=False, load_only=(), dump_only=(),
@@ -228,6 +201,7 @@ class MarshallerBase(object):
         dumped = self._dump(**kwargs)
         for key in include:
             if key in self.get_relationships():
+                field = self.get_relationships()[key]
                 val = None
                 model = getattr(self, key)
                 if isinstance(model, list):
@@ -235,6 +209,8 @@ class MarshallerBase(object):
                     val = models
                 else:
                     val = dump_model(model)
+                if field.dump_to:
+                    key = field.dump_to
                 dumped[key] = val
         return dumped
 
@@ -295,21 +271,6 @@ class MarshallerBase(object):
         """Override for unpickling objects"""
         self.__dict__.update(state)
 
-    # # Version that does not default many relations to []
-    # def __getattribute__(self, name):
-    #     res = object.__getattribute__(self, name)
-    #     if res is None:
-    #         relationships = object.__getattribute__(self, "get_relationships")()
-    #         if name in relationships:
-    #             try:
-    #                 res = self.__getattr__(name)
-    #             except AttributeError as e:
-    #                 pass
-    #             except TypeError as e:
-    #                 pass
-    #     return res
-
-    # Version that defaults to array
     def __getattribute__(self, name):
         """Override attribute accessor to attempt to fullfill relationships.
 
@@ -371,7 +332,6 @@ class MarshallerBase(object):
                 val = v
             dumped[k] = val
         return dumped
-
 
     def _to_dict(self, *args, **kwargs):
         """

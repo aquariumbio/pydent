@@ -157,9 +157,7 @@ class Code(ModelBase):
         user=HasOne("User")
     )
 
-    # TODO: this is weird?
     def update(self):
-        # TODO: make server side controller for code objects
         # since they may not always be tied to specific parent
         # controllers
         self.session.utils.update_code(self)
@@ -266,7 +264,7 @@ class FieldType(ModelBase, FieldMixin):
             field_value.allowable_field_type = self.allowable_field_types[0]
         return field_value
 
-# TODO: Somehow, wires_as_source is returning a non-empty string for newly created field values
+
 @add_schema
 class FieldValue(ModelBase, FieldMixin):
     """A FieldValue model. One of the more complex models."""
@@ -658,19 +656,15 @@ class Plan(ModelBase, PlanValidator):
         super().__init__(**vars(self))
 
     def add_operation(self, op):
-        ops = self.operations
-        if self.operations is None:
-            self.operations = []
-        ops.append(op)
-        self.operations = ops
+        self.append_to_many('operations', op)
 
     def add_operations(self, ops):
         for op in ops:
             self.add_operation(op)
 
     def wire(self, src, dest):
-        wire = Wire(src, dest)
-        self.append_association("wires", wire)
+        wire = Wire(source=src, destination=dest)
+        self.append_to_many("wires", wire)
 
     def add_wires(self, pairs):
         for src, dest in pairs:
@@ -724,7 +718,7 @@ class Plan(ModelBase, PlanValidator):
                 'field_values': 'allowable_field_type',
                 'operation_type': {},
             },
-            'wires': {}
+            'wires': {"source", "destination"}
         })
         return json_data
 
@@ -744,6 +738,14 @@ class Plan(ModelBase, PlanValidator):
             operation.show(pre="  ")
         for wire in self.wires:
             wire.show(pre="  ")
+
+    def replan(self):
+        """Copies or replans the plan. Returns a plan copy"""
+        return self.session.utils.replan(self.id)
+
+    def copy(self):
+        """Copies or replans the plan"""
+        return self.replan()
 
 
 @add_schema
@@ -837,14 +839,17 @@ class Wire(ModelBase):
     """A Wire model"""
     fields = dict(
         # load_only=False, will force dumping of FieldValues here...
-        source=HasOne("FieldValue", ref="from_id", dump_to="from", load_only=False),
-        destination=HasOne("FieldValue", ref="to_id", dump_to="to", load_only=False)
+        source=HasOne("FieldValue", ref="from_id", dump_to="from"),
+        destination=HasOne("FieldValue", ref="to_id", dump_to="to")
     )
 
     def __init__(self, source=None, destination=None):
         self.source = source
         self.destination = destination
         super().__init__(**vars(self))
+
+    def to_save_json(self):
+        return self.dump(include={'source', 'destination'})
 
     def show(self, pre=""):
         """Show the wire nicely"""

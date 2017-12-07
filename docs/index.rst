@@ -6,19 +6,20 @@
 Welcome to Trident's documentation!
 ===================================
 
-.. include:: ../README.rst
-.. include:: ../DeveloperNotes.md
-.. include:: ../Examples.md
+.. toctree::
+   :hidden:
 
+   self
 
-Read More
----------
+Table of Contents
+-----------------
 
 .. toctree::
    :maxdepth: 2
 
    api_reference
-   examples
+   Examples
+   DeveloperNotes
 
-
+.. include:: README.rst
 

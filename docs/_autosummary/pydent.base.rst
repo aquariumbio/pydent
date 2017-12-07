@@ -10,6 +10,7 @@ pydent.base
    .. autosummary::
    
       magiclist
+      pluralize
       underscore
       wraps
    

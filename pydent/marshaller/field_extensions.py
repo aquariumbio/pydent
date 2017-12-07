@@ -68,7 +68,6 @@ class Relation(fields.Nested):
     def model(self):
         return self.nested
 
-    # TODO: self.root, self.context, and self.parent are not reliable, remove all methods that use special 'root' to store variables
     def _serialize(self, nested_obj, attr, obj):
         dumped = None
 

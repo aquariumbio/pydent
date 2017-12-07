@@ -4,6 +4,7 @@ from pydent.exceptions import AquariumModelError
 from pydent.models import *
 from pydent.aqhttp import AqHTTP
 
+
 def test_fv_simple_constructor():
     fv = FieldValue(name="something")
     print(fv)

@@ -1,4 +1,4 @@
-"""aqsession.py
+"""Session class for interacting with Trident and Aquarium
 
 This module defines the AqSession class, which is the main entry point for accessing
 Trident's request methods. Multiple session instances can be created using a users
@@ -15,7 +15,6 @@ Interfaces are accessed by:
 (3) session.update - access the update interface
 """
 
-# TODO: add prompt toolkit to setup requirements
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
 from pydent.interfaces import ModelInterface, UtilityInterface
@@ -92,7 +91,6 @@ class AqSession(object):
         """Returns list of all models available"""
         return list(ModelRegistry.models.keys())
 
-    # TODO: consider changing model_interface to 'model'
     def model_interface(self, model_name):
         """Returns model interface by name"""
         return ModelInterface(model_name, self.__aqhttp, self)
@@ -120,7 +118,6 @@ class AqSession(object):
     def __repr__(self):
         return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self.__aqhttp)
 
-    # TODO: add other interfaces as well
     def __dir__(self):
         """Added expected keys for interactive interpreters,"""
         return super().__dir__() + self.__class__.dispatch_list()

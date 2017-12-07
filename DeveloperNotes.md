@@ -1,3 +1,5 @@
+# Developer Notes
+
 ## How do requests happen?
 
 ### AqHTTP
@@ -44,7 +46,7 @@ myplan.save()
 myplane.save()
 ```
 
-# Notes on Models
+## Notes on Models
 
 Most models can be initialized as follows:
 ```python
@@ -96,20 +98,20 @@ If order for Trident to know what fields to serialize/deserialize, 'fields'
 need to be defined for the model. There are a number of ways to define
 fields for a model:
 
-##### Use the `load` class method
+**Use the `load` class method**
 
 ```python
     u = User.load({'name': 'GIJoe'})
 ```
 
-##### Define it in the class definition using the 'fields' attribute'
+**Define it in the class definition using the 'fields' attribute'**
 ```python
 @add_schema
 class Sample(ModelBase):
     fields=dict(name=fields.Str())
 ```
 
-##### Establish in the __init__ using the super().__init__(**kwargs) style
+**Establish in the __init__ using `super().__init__(**kwargs)` style**
 ```python
 class Sample(ModelBase):
     def __init__(name=None):
@@ -118,7 +120,7 @@ class Sample(ModelBase):
         super().__init__(name=name, id=id)  # this creates a field called name
 ```
 
-##### Implicitly track all init attributes using the super().__init__(**vars(self))
+**Implicitly track all init attributes using `super().__init__(**vars(self))`**
 ```python
 class Sample(ModelBase):
     def __init__(name=None):
@@ -190,7 +192,7 @@ s = Sample.load({'sample_type_id': 100000000000})
 assert s.sample_type is None
 ```
 
-#### Relationship fullfillment
+### Relationship fullfillment
 
 The relationship fullfillment occurs through a 'callback' and 'params'
 attributes defined in the relationships `__init__` definition. When
@@ -225,21 +227,21 @@ uses a session instance to find Samples where {'sample_type_id': 4}.
 You can also define custom callbacks for any relations. An example of this
 is the FieldType model with the operation_type and sample_type fields.
 
-# Serialization/Deserialization
+## Serialization/Deserialization
 
-## Serialization
+### Serialization
 
 load
 load only
 
-## Deserialization
+### Deserialization
 
 dump only
 dump relations
 dump all_relations
 dump only dictionary
 
-## Request History
+### Request History
 
 In an attempt to minimize unnecessary requests to Aquarium, Trident
 stores a 'request_history' in pydent.aqhttp.request_history. This means,

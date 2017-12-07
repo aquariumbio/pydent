@@ -64,11 +64,7 @@ def model_relationships(session, request):
                 warnings.warn("Attribute {}.{} was null".format(model_class.__name__, attr))
 
 
-def test_model_relationships(model_relationships):
-    """Test all relationship access for all models.
-    This is not a permanent test nor a comprehensive test."""
-    pass
-
-def test_l(session):
-    sample = session.Sample.find(1)
-    sample.relationships['items']
+# def test_model_relationships(model_relationships):
+#     """Test all relationship access for all models.
+#     This is not a permanent test nor a comprehensive test."""
+#     pass

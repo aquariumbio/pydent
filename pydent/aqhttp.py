@@ -1,4 +1,4 @@
-"""aqhttp.py
+"""Request class for making raw http requests to Aquarium
 
 This module contains the AqHTTP class, which can make arbitrary post/put/get/etc. requests to
 Aquarium and returns JSON data.
@@ -8,12 +8,13 @@ only be able to access these methods second-hand through a Session/SessionInterf
 """
 
 import json
-import os
 import re
 
 import requests
 
 from pydent.exceptions import TridentRequestError, TridentLoginError, TridentTimeoutError, TridentJSONDataIncomplete
+from pydent.utils import url_build
+
 
 # TODO: Replace request history with save_attr in models?
 class AqHTTP(object):
@@ -64,7 +65,7 @@ class AqHTTP(object):
         session_data = self.__class__.create_session_json(login, password)
         res = None
         try:
-            res = requests.post(os.path.join(self.aquarium_url, "sessions.json"),
+            res = requests.post(url_build(self.aquarium_url, "sessions.json"),
                                 json=session_data, timeout=self.timeout)
         except requests.exceptions.MissingSchema as error:
             raise TridentLoginError("Aquairum URL {0} incorrectly formatted. {1}".format(
@@ -104,7 +105,6 @@ class AqHTTP(object):
             "body": body
         }, sort_keys=True)
 
-    # TODO: return warnings about not finding
     def request(self, method, path, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
         """
         Performs a http request.
@@ -130,7 +130,7 @@ class AqHTTP(object):
             self._disallow_null_in_json(kwargs['json'])
 
         # serialize request
-        url = os.path.join(self.aquarium_url, path)
+        url = url_build(self.aquarium_url, path)
         body = {}
         if 'json' in kwargs:
             body = kwargs['json']
@@ -141,7 +141,7 @@ class AqHTTP(object):
         if get_from_history_ok:
             result = self.request_history.get(key, None)
         if result is None:
-            result = self._requests_session.request(method, os.path.join(self.aquarium_url, path), timeout=timeout,
+            result = self._requests_session.request(method, url_build(self.aquarium_url, path), timeout=timeout,
                                                         **kwargs)
             self.request_history[key] = result
         return self._request_to_json(result)

@@ -16,7 +16,7 @@ Submodules
 """
 
 from pydent.utils.magiclist import MagicList, magiclist
-from inflection import underscore
+from inflection import underscore, pluralize
 import pprint
 
 
@@ -39,6 +39,10 @@ def filter_list(objlist, **kwargs):
         if ok:
             intersection.append(o)
     return type(objlist)(intersection)
+
+def url_build(*parts):
+    """Join parts of a url into a string"""
+    return '/'.join(p.strip('/') for p in parts)
 
 # def filter_dictionary(dictionary, filter_function):
 #     new_dict = {}

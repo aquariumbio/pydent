@@ -72,30 +72,7 @@ class DefaultFieldOptions(SchemaOpts):
     additional = ()
     ignore = ()
 
-import collections
-class DictWrapper(collections.Mapping):
 
-    def __init__(self, data):
-        self._data = data
-
-    def __getitem__(self, key):
-        return self._data[key]
-
-    def __len__(self):
-        return len(self._data)
-
-    def __iter__(self):
-        return iter(self._data)
-
-    def __repr__(self):
-        return self._data
-
-    def __str__(self):
-        return str(self._data)
-
-# TODO: rename schema class to "<BaseClass>Schema"
-# TODO: rename dump_relations to "include"
-# TODO: remove dump_depth
 class DynamicSchema(Schema):
     """Schema that automatically loads missing values from data. For more information about
     the baseclass Schema, take a look at the `Schema documentation
@@ -294,5 +271,6 @@ def add_schema(cls):
     # create the new schema
     new_schema = type(cls.__name__, (DynamicSchema,), {META: meta, MODEL_CLASS: cls,
                                                        RELATIONSHIPS: model_meta_relationships})
+    new_schema.__name__ = new_schema.__name__ + "Schema"
     setattr(cls, MODEL_SCHEMA, new_schema)
     return cls

@@ -1,5 +1,4 @@
-"""
-Model relationships
+"""Nested model relationships for Aquarium models.
 """
 
 import inflection
@@ -161,7 +160,6 @@ class HasMany(HasMixin, Many):
         super().__init__(model, params=params, **kwargs)
 
 
-# TODO: document hasmanygeneric
 class HasManyGeneric(HasMany):
     """Establishes a One-to-Many relationship using 'parent_id' as the attribute to find other models."""
 

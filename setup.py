@@ -2,14 +2,6 @@ import os
 import re
 from distutils.core import setup
 
-# about
-__author__ = 'Justin Vrana, Eric Klavins, Ben Keller'
-__license__ = ''
-__package__ = "pydent"
-__readme__ = "README.rst"
-__version__ = "0.0.2a"
-__email__ = ''
-
 
 tests_require = [
     'pytest',
@@ -20,34 +12,34 @@ tests_require = [
 
 install_requires = [
     'inflection',
-    'marshmallow', 'requests'
+    'marshmallow', 'requests', 'prompt_toolkit'
 ]
 
+def parse_version_file():
+    here = os.path.abspath(os.path.dirname(__file__))
+    ver_dict = {}
+    with open(os.path.join(here, 'pydent', '__version__.py'), 'r') as f:
+        for line in f.readlines():
+            m = re.match('__(\w+)__\s*=\s*(.+)', line)
+            if m:
+                ver_dict[m.group(1)] = m.group(2)
+    return ver_dict
 
-# setup functions
 
-
-
-here = os.path.abspath(os.path.dirname(__file__))
-#
-#
-# about = {}
-# with open(os.path.join(here, 'requests', '__version__.py'), 'r', 'utf-8') as f:
-#     exec(f.read(), about)
-with open(os.path.join(here, 'pydent', '__version__.py'), 'r') as f:
-    print(f.read())
+ver = parse_version_file()
 
 # setup
 setup(
+        title=ver['title'],
         name='pydent',
-        version='0.2a',
-        packages=["pydent", "pydent.session", "pydent.marshaller"],
-        url='https://github.com/klavinslab/trident',
+        version=ver['version'],
+        packages=["pydent"],
+        url=ver['url'],
         license='',
-        author='',
+        author=ver['author'],
         author_email='',
         keywords='aquarium api',
-        description='',
+        description=ver['description'],
         install_requires=install_requires,
         python_requires='>=3.4',
         tests_require=tests_require,

@@ -1,16 +1,70 @@
-pydent deserializes nested data
+# Trident Examples
+
+## Basic
+
+
+**logging in**
+```python
+from pydent import AqSession
+
+nursery = AqSession("username", "password", "url")
+production = AqSession("username", "password", "url2")
+```
+
+**interactive login**
+```python
+nursery = AqSession.interactive()
+# enters interactive shell
+```
+
+**getting models**
+```python
+session # your AqSession
+
+# find Sample with id=1
+session.Sample.find(1)
+
+# find SampleTypes with name="Primer"
+session.SampleType.find_by_name("Primer")
+
+# find all SampleTypes
+session.SampleType.all()
+
+# find Operations where name="Transfer to 96 Well Plate"
+session.Operations.where({'name': 'Transfer to 96 Well Plate'})
+
+# list all available models
+session.models
+```
+
+**set timout**
+```python
+# raises timeout exception if request takes too long
+try:
+    session.FieldValue.all()
+except Exception:
+    print("Request took too long!")
+
+session.set_timeout(60)
+session.FieldValue.all()
+print("Great!")
+```
+
+## Deserializing
+
+**deserializing nested data**
+
+pydent knows to automatically deserialize 'sample_type' to a 'SampleType' model
+from pydent.models import Sample, SampleType
 ```python
 # nested deserialization
-# pydent knows to automatically deserialize 'sample_type' to a 'SampleType' model
-from pydent.models import Sample, SampleType
 
 s = Sample.load({'id': 1, 'sample_type': {'id': 3}})
 assert isinstance(s, Sample)
 assert isinstance(s.sample_type, SampleType)
 ```
 
-
-you can also include already processed models
+**deserializing with nested models**
 ```python
 Sample.load({
     'id': 1
@@ -18,8 +72,7 @@ Sample.load({
 }
 ```
 
-
-pydent find relationships using requests
+**find relationships using requests**
 ```python
 from pydent.models import Sample, SampleType
 from pydent import AqSession
@@ -51,7 +104,8 @@ print(s.sample_type)
 """
 ```
 
-pydent serialization
+## Serializing
+
 ```python
 s = session.SampleType.find(1)
 s.dump()
@@ -65,21 +119,20 @@ s.dump()
 """
 ```
 
-serialize with only some fields
+**serialize with *only* some fields**
 ```python
 s.dump(only=('data', 'name', 'description'))
 # {'name': 'IAA1-Nat-F', 'description': None, 'data': None}
 ```
 
-serialize with some relations
+**serialize with some relations**
 ```python
 from pydent import pprint
 
 pprint(s.dump(relations=('items',)))
 ```
 
-
-serialize with all relations
+**serialize with all relations**
 ```python
 from pydent import pprint
 
@@ -102,54 +155,51 @@ pprint(s.dump(all_relations=True))
 
 
 ```
-logging in
-```python
-from pydent import AqSession
 
-nursery = AqSession("username", "password", "url")
-production = AqSession("username", "password", "url2")
+## Planning
+
+### Submitting a Plan
+
+```python
+session = AqSession.interactive()
+
+primer = session.SampleType.find(1).samples[-1]
+
+# get Order Primer operation type
+ot = session.OperationType.find(328)
+
+# create an operation
+order_primer = ot.instance()
+
+# set io
+order_primer.set_output("Primer", sample=primer)
+order_primer.set_input("Urgent?", value="no")
+
+# create a new plan and add operations
+p = session.Plan(name="MyPlan")
+p.add_operation(order_primer)
+
+# save the plan
+p.create()
+
+# estimate the cost
+p.estimate_cost()
+
+# validate the plan
+p.validate()
+
+# show the plan
+p.show()
+
+# submit the plan
+p.submit(session.current_user, session.current_user.budgets[0])
+
+print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
 ```
 
-interactive login
-```python
-nursery = AqSession.interactive()
-# enters interactive shell
-```
+## Misc
 
-getting models
-```python
-session # your AqSession
-
-# find Sample with id=1
-session.Sample.find(1)
-
-# find SampleTypes with name="Primer"
-session.SampleType.find_by_name("Primer")
-
-# find all SampleTypes
-session.SampleType.all()
-
-# find Operations where name="Transfer to 96 Well Plate"
-session.Operations.where({'name': 'Transfer to 96 Well Plate'})
-
-# list all available models
-session.models
-```
-
-set timout
-```python
-# raises timeout exception if request takes too long
-try:
-    session.FieldValue.all()
-except Exception:
-    print("Request took too long!")
-
-session.set_timeout(60)
-session.FieldValue.all()
-print("Great!")
-```
-
-magic chaining
+**magic chaining**
 you can chain together attributes and function calls
 ```python
 [s.name for s in session.SampleType.find(1).samples][:10]
@@ -184,10 +234,4 @@ pprint(pcr.operations[0:5].field_values.item.id)
  [114737, 62943, 22929, 114739],
  [114748, 62943, 22929, 114750],
  [114782, 62943, 22929, 114784]]
-```
-
-
-utils
-```python
-session.utils.
 ```

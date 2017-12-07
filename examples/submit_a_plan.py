@@ -25,6 +25,9 @@ p.create()
 # estimate the cost
 p.estimate_cost()
 
+# validate the plan
+p.validate()
+
 # show the plan
 p.show()
 

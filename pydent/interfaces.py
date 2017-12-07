@@ -1,4 +1,4 @@
-"""interface.py
+"""Session interfaces for interacting with Aquarium.
 
 This module contains session interfaces for interacting with an Aquarium server. Session interfaces
 are created by an AqSession instance and use an AqHTTP instance to make http requests to Aquarium.
@@ -32,22 +32,23 @@ Example:
 """
 
 import os
-
-import inflection
-from pydent.base import ModelRegistry
-from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
 import warnings
 
-# TODO: replace os.path.join for building urls
+import inflection
+
+from pydent.base import ModelRegistry
+from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
+from pydent.utils import underscore, pluralize, url_build
+
 
 class SessionInterface(object):
-
     """
     Generic session interface.
 
     Trident users should only be able to make requests through a SessionInterface to avoid making arbitrary and
     potentially damaging http requests.
     """
+
     def __init__(self, aqhttp, session):
         """
         Initializer for SessionInterface
@@ -60,11 +61,13 @@ class SessionInterface(object):
         self.aqhttp = aqhttp
         self.session = session
 
+
 # TODO: do we need this interface???
 class UtilityInterface(SessionInterface):
     """
     Misc. requests for creating, updating, etc.
     """
+
     def create_samples(self, samples):
         json = [s.dump() for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
@@ -75,7 +78,7 @@ class UtilityInterface(SessionInterface):
     def create_operation_type(self, operation_type):
         op_data = operation_type.dump(relations=('field_types',))
         result = self.aqhttp.post('operation_type.json', json_data=op_data)
-        operation_type.update(result)
+        operation_type.reload(result)
         return operation_type
 
     def estimate_plan_cost(self, plan):
@@ -92,8 +95,13 @@ class UtilityInterface(SessionInterface):
         user_query = "?user_id=" + str(self.session.current_user.id)
         plan_json = plan.to_save_json()
         result = self.aqhttp.post('plans.json' + user_query, json_data=plan_json)
-        plan.update(result)
+        plan.reload(result)
         return plan
+
+    def replan(self, plan_id):
+        result = self.aqhttp.get('plans/replan/{plan_id}'.format(plan_id=plan_id))
+        plan_copy = self.session.Plan.load(result)
+        return plan_copy
 
     def batch_operations(self, operation_ids):
         self.aqhttp.post('operations/batch', json_data=operation_ids)
@@ -114,8 +122,7 @@ class UtilityInterface(SessionInterface):
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
         result = self.aqhttp.get('plans/start/' + str(plan.id) +
-                        budget_query + user_query)
-        # TODO: update plan with result in 'submit_plan'?
+                                 budget_query + user_query)
 
     def update_code(self, code):
         controller = inflection.underscore(inflection.pluralize(code.parent_class))
@@ -125,7 +132,7 @@ class UtilityInterface(SessionInterface):
             "name": code.name,
             "content": code.content
         }
-        result = self.aqhttp.post(os.path.join(controller, "code"), code_data)
+        result = self.aqhttp.post(url_build(controller, "code"), code_data)
         if "id" in result:
             code.id = result["id"]
             code.parent_id = result["parent_id"]
@@ -155,6 +162,10 @@ class ModelInterface(SessionInterface):
         super().__init__(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
 
+    @property
+    def model_name(self):
+        return self.model.__name__
+
     def _post_json(self, data, get_from_history_ok=False):
         """
         Posts a json request to this interface's session. Attaches raw json and this session instance
@@ -171,9 +182,9 @@ class ModelInterface(SessionInterface):
         except TridentJSONDataIncomplete as e:
             warnings.warn(e.args)
             return None
-        return self._request_to_models(post_response)
+        return self.load(post_response)
 
-    def _request_to_models(self, post_response):
+    def load(self, post_response):
         many = isinstance(post_response, list)
         models = self.model.load(
             post_response, many=many)
@@ -185,13 +196,9 @@ class ModelInterface(SessionInterface):
             models.connect_to_session(self.session)
         return models
 
-    @property
-    def model_name(self):
-        return self.model.__name__
-
     def get(self, path):
         response = self.aqhttp.get(path)
-        return self._request_to_models(response)
+        return self.load(response)
 
     def find_by_id_or_name(self, id_name_or_model):
         if isinstance(id_name_or_model, str):
@@ -225,9 +232,6 @@ class ModelInterface(SessionInterface):
         res = self._post_json(query)  # type: dict
         return res
 
-    def find_plan(self, id):
-        return self.aqhttp.get('plans/{}.json'.format(id))
-
     def all(self, rest=None, opts=None):
         """ Finds all models """
         if rest is None:
@@ -248,6 +252,13 @@ class ModelInterface(SessionInterface):
         options.update(opts)
         return self.array_query("where", criteria, methods, options)
 
+    def patch(self, model_id, json_data):
+        """Makes a patch or update from json_data"""
+        models_name = pluralize(underscore(self.model_name))
+        result = self.aqhttp.put('{models}/{model_id}'.format(
+            model_id=model_id, models=models_name), json_data=json_data)
+        return result
+
     def __call__(self, *args, **kwargs):
         """Creates a new model instance"""
         instance = object.__new__(self.model)
@@ -255,4 +266,3 @@ class ModelInterface(SessionInterface):
         instance.connect_to_session(self.session)
         instance.__init__(*args, **kwargs)
         return instance
-

@@ -1,4 +1,4 @@
-"""Base Aquarium model
+"""Aquarium model baseclass
 
 This module contains the base classes for Trident models. Trident models intelligently load
 from JSON and dump to JSON. This is accomplished by adding the '@add_schema' decorator to
@@ -33,8 +33,6 @@ relationships - models relationships are stored
     primer_type = s.sample_type
 
 """
-
-from functools import wraps
 
 from pydent.exceptions import TridentModelNotFoundError, AquariumModelError
 from pydent.marshaller import MarshallerBase
@@ -77,7 +75,7 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
 
     def __init__(self, **kwargs):
         self._session = None
-        self.rid = ModelBase.new_record_id()
+        self._rid = ModelBase.new_record_id()
         kwargs['rid'] = self.rid
         vars(self).update(kwargs)
         data = {k: v for k, v in kwargs.items() if not k == '_session'}
@@ -88,6 +86,10 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         oid = ModelBase._global_record_id
         ModelBase._global_record_id += 1
         return oid
+
+    @property
+    def rid(self):
+        return self._rid
 
     # def track_all(self):
     #     """Track all current attributes in the schema"""
@@ -104,15 +106,28 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
             schema.save_extra_fields(self)
             schema.validate(data)
 
-    def append_association(self, name, model):
+    def append_to_many(self, name, model):
+        """
+        Appends a model to the many relationship
+
+        :param name: name of the relationship or attribute
+        :type name: str
+        :param model: model to append
+        :type model: ModelBase
+        :return: None
+        :rtype: None
+        """
         if name in self.relationships:
             field = self.relationships[name]
+            if not model.__class__.__name__ == field.model:
+                raise AquariumModelError("Cannot 'append_to_many.' Model must be a '{}' but found a '{}'".format(
+                    field.model, model.__class__.__name__))
             if field.many:
                 val = getattr(self, name)
                 if val is None:
                     val = []
-                val.append(model)
                 setattr(self, name, val)
+                val.append(model)
 
     def set_model_attribute(self, model, attr="id"):
         model_name = underscore(model.__class__.__name__)
@@ -123,9 +138,18 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     @classmethod
     @magiclist
     def load(cls, *args, **kwargs):
+        """Create a new model instance from loaded attributes"""
         return super().load(*args, **kwargs)
 
-    def update(self, data):
+    def reload(self, data):
+        """
+        Reload model attributes from new data
+
+        :param data: data to update model instance
+        :type data: dict
+        :return: model instance
+        :rtype: ModelBase
+        """
         temp_model = self.__class__.load(data)
         temp_model.connect_to_session(self.session)
         vars(self).update(vars(temp_model))
@@ -151,8 +175,12 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         """Callback that always returns None"""
         return None
 
+    def create_interface(self):
+        return self.interface(self.session)
+
     @classmethod
     def interface(cls, session):
+        """Creates a model interface from this class and a session"""
         return session.model_interface(cls.__name__)
 
     @classmethod
@@ -171,6 +199,8 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         """Finds a model using the model interface and model_id. Used to find
         models in model relationships."""
         self._check_for_session()
+        if model_id is None:
+            return None
         model = ModelRegistry.get_model(model_name)
         return model.find(self.session, model_id)
 
@@ -178,9 +208,23 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         """Finds models using a model interface and a set of parameters. Used to
         find models in model relationships."""
         self._check_for_session()
+        if isinstance(params, dict):
+            if len(params) == 1 and list(params.values())[0] is None:
+                return None
         model = ModelRegistry.get_model(model_name)
         return model.where(self.session, params)
         # return self.session.model_interface(model_name).where(params)
+
+    def patch(self, json_data):
+        """Make a patch request to self using json_data. Reload model instance with new data"""
+        result = self.create_interface().patch(self.id, json_data=json_data)
+        self.reload(data=result)
+        return self
+
+    def patch_with_self(self, **kwargs):
+        """Update changes to this model instance to Aquarium."""
+        json_data = self.dump(**kwargs)
+        return self.patch(json_data=json_data)
 
     def __getattribute__(self, name):
         """Override getattribute to automatically connect sessions"""
