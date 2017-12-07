@@ -4,7 +4,7 @@ import warnings
 from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError, MarshallerRelationshipError
 from pydent.marshaller.schema import MODEL_SCHEMA
 from pydent.utils import pformat
-
+from copy import deepcopy
 
 class MarshallerBase(object):
     """Base class for marshalling and unmarshalling. Used in conjunction with
@@ -64,7 +64,9 @@ class MarshallerBase(object):
         """Create a Schema instance for loading or dumping"""
         schema_class = cls.get_schema_class()
         if schema_class:
-            return cls.get_schema_class()(*schema_args, **schema_kwargs)
+            schema = cls.get_schema_class()(*schema_args, **schema_kwargs)
+            schema.context = schema_kwargs
+            return schema
 
     @classmethod
     def get_relationships(cls):
@@ -80,57 +82,166 @@ class MarshallerBase(object):
         return self.__class__.get_relationships()
 
     @classmethod
-    def load(cls, data, *args, only=(), exclude=(), dump_relations=(), all_relations=False,
-             prefix='', strict=None, many=False, relations=None, load_only=(), dump_only=(),
-             partial=False, _depth=0, depth=1, **kwargs):
+    def load(cls, data, *args, only=(), exclude=(), all_relations=False,
+             prefix='', strict=None, many=False, relations=(), load_only=(), dump_only=(),
+             partial=False, **kwargs):
         """Loads the model instance from JSON. For parameter options, refer to
         :class:`pydent.marshaller.schema.DynamicSchema`"""
 
         schema_kwargs = dict(
             only=only,
             exclude=exclude,
-            dump_relations=dump_relations,
-            dump_all_relations=all_relations,
+            relations=relations,
+            all_relations=all_relations,
             prefix=prefix,
             strict=strict,
             many=many,
-            context=relations,
             load_only=load_only,
             dump_only=dump_only,
             partial=partial,
-            _depth=_depth,
-            dump_depth=depth
         )
         schema_kwargs.update(kwargs)
 
         schema = cls.create_schema_instance(*args, **schema_kwargs)
         if schema:
             return schema.load(data).data
+        else:
+            warnings.warn("Cannot dump! No schema attached to '{}'".format(cls.__name__))
 
-    def dump(self, *args, only=(), exclude=(), relations=(), all_relations=False, prefix='', strict=None,
-             many=False, context=None, load_only=(), dump_only=(),
-             partial=False, _depth=0, depth=1, **kwargs):
-        """Dumps the model instance to JSON. For parameter options, refer to
-        :class:`pydent.marshaller.schema.DynamicSchema`"""
+    # def _dump(self, *args, include=None, **kwargs):
+    #     schema = self.__class__.create_schema_instance(*args, **kwargs)
+    #     import uuid
+    #     schema.context['uuid'] = str(uuid.uuid4())
+    #     if include is None:
+    #         include = {}
+    #     elif isinstance(include, str):
+    #         include = tuple(include)
+    #     if schema:
+    #         data = schema.dump(self).data
+    #         for key in include:
+    #             if key in self.get_relationships() and key in include:
+    #                 val = getattr(self, key)
+    #                 vallist = list(val)
+    #                 for val in vallist:
+    #                     for i, val in enumerate(vallist):
+    #                         if hasattr(val, 'dump'):
+    #                             new_include = tuple(include)
+    #                             if isinstance(include, dict):
+    #                                 new_include = include.get(key, None)
+    #                             vallist[i] = val._dump(*args, include=new_include, **kwargs)
+    #                             val = val._dump(*args, include=new_include, **kwargs)
+    #                             data[key] = val
+    #         return data
+    #     else:
+    #         warnings.warn("Cannot dump! No schema attached to '{}'".format(self.__class__.__name__))
 
+
+    def dump(self, only=(), include=(), exclude=(), relations=(),
+             all_relations=False, prefix='', strict=None,
+             many=False, load_only=(), dump_only=(),
+             partial=False, **kwargs):
+        """Dumps the model instance to a String. For parameter options, refer
+        to :class:`pydent.marshaller.schema.DynamicSchema`
+
+        :param tuple only: A list or tuple of fields to serialize. If `None`, all non relationship
+            fields will be serialized.
+        :param str|list|tuple|set|dict include: Nested relationships to include in the serialization. This accepts a string (for one
+        nested relationship), a tuple (for multiple relationships) or a dict (for recursively applied serialization).
+        A dictionary of dump options 'opts' can be recursively applied to each serialization.
+
+        For example:
+
+        .. code-block:: python
+
+            mymodel.dump(include={'sample_type': { 'samples': {}, 'opts': {'only': ['name']} } })
+
+        :param tuple exclude: A list or tuple of fields to exclude from the
+            serialized result. Nested fields can be represented with dot delimiters.
+        :param tuple relations: A list or tuple of fields to include during
+            serialization. Unlike 'include', this will not be applied recursively
+        :param boolean all_relations: whether to dump all relationship during deserialization
+        :param str prefix: Optional prefix that will be prepended to all the
+            serialized field names.
+        :param bool strict: If `True`, raise errors if invalid data are passed in
+            instead of failing silently and storing the errors.
+        :param bool many: Should be set to `True` if ``obj`` is a collection
+            so that the object will be serialized to a list.
+        :param dict context: Optional context passed to :class:`fields.Method` and
+            :class:`fields.Function` fields.
+        :param tuple load_only: A list or tuple of fields to skip during serialization
+        :param tuple dump_only: A list or tuple of fields to skip during
+            deserialization, read-only fields
+        :param bool|tuple partial: Whether to ignore missing fields. If its value
+            is an iterable, only missing fields listed in that iterable will be
+            ignored.
+
+        Example Usage using 'only' to dump only particular relationships
+
+        .. code-block:: python
+
+            # dump 'name' and nested relationship 'sample_type'
+            mydump = mymodel.dump(only=('name', 'sample_type'))
+
+        Example Usage using 'include' to dump nested relationships:
+
+        .. code-block:: python
+
+            # dump nested relationships 'sample_type' and 'samples' in 'sample_type'
+            # for 'sample_type' dump only 'name' in addition to 'samples'
+            mydump = mymodel.dump(include={'sample_type': { 'samples': {}, 'opts': {'only': ['name']} } })
+
+        """
         schema_kwargs = dict(
             only=only,
             exclude=exclude,
-            dump_relations=relations,
-            dump_all_relations=all_relations,
+            relations=relations,
+            all_relations=all_relations,
             prefix=prefix,
             strict=strict,
             many=many,
-            context=context,
             load_only=load_only,
             dump_only=dump_only,
             partial=partial,
-            _depth=_depth,
-            dump_depth=depth
         )
-        schema_kwargs.update(kwargs)
+        kwargs = deepcopy(kwargs)
+        kwargs.update(deepcopy(schema_kwargs))
 
-        schema = self.__class__.create_schema_instance(*args, **schema_kwargs)
+        # str to set
+        if isinstance(include, str):
+            include = {include}
+
+        # update kwargs from opts
+        kwargs = deepcopy(kwargs)
+        if isinstance(include, dict):
+            opts = include.get('opts', {})
+            kwargs.update(opts)
+
+        def dump_model(m):
+            """Tries to dump model using dumping parameters"""
+            if isinstance(m, MarshallerBase):
+                _include = {}
+                if isinstance(include, dict):
+                    _include = include.get(key, {})
+                m = m.dump(include=_include)
+            return m
+
+        dumped = self._dump(**kwargs)
+        for key in include:
+            if key in self.get_relationships():
+                val = None
+                model = getattr(self, key)
+                if isinstance(model, list):
+                    models = [dump_model(m) for m in model]
+                    val = models
+                else:
+                    val = dump_model(model)
+                dumped[key] = val
+        return dumped
+
+    def _dump(self, *args, **kwargs):
+        """Dump helper"""
+
+        schema = self.__class__.create_schema_instance(*args, **kwargs)
         if schema:
             return schema.dump(self).data
         else:

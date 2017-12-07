@@ -36,9 +36,9 @@ relationships - models relationships are stored
 
 from functools import wraps
 
-from pydent.exceptions import TridentModelNotFoundError
+from pydent.exceptions import TridentModelNotFoundError, AquariumModelError
 from pydent.marshaller import MarshallerBase
-from pydent.utils import pprint, magiclist, MagicList
+from pydent.utils import magiclist, underscore
 
 
 class ModelRegistry(type):
@@ -73,12 +73,31 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     - contains a reference to the :class:`pydent.session.aqsession.AqSession` instance that loaded this model
     """
 
+    _global_record_id = 0
+
     def __init__(self, **kwargs):
         self._session = None
-        self._initialize(kwargs)
+        self.rid = ModelBase.new_record_id()
+        kwargs['rid'] = self.rid
+        vars(self).update(kwargs)
+        data = {k: v for k, v in kwargs.items() if not k == '_session'}
+        self._track_data(data)
 
-    def _initialize(self, data, *args):
-        vars(self).update(data)
+    @staticmethod
+    def new_record_id():
+        oid = ModelBase._global_record_id
+        ModelBase._global_record_id += 1
+        return oid
+
+    # def track_all(self):
+    #     """Track all current attributes in the schema"""
+    #     self._initialize(vars(self))
+    #
+    # def track(self, **kwargs):
+    #     """Track some attributes in the schema"""
+    #     self._initialize(kwargs)
+
+    def _track_data(self, data):
         if self.model_schema:
             schema = self.model_schema()
             schema.load_missing(data.keys())
@@ -95,10 +114,22 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
                 val.append(model)
                 setattr(self, name, val)
 
+    def set_model_attribute(self, model, attr="id"):
+        model_name = underscore(model.__class__.__name__)
+        if hasattr(model, attr):
+            setattr(self, model_name + "_" + attr, getattr(model, attr))
+        return model
+
     @classmethod
     @magiclist
     def load(cls, *args, **kwargs):
         return super().load(*args, **kwargs)
+
+    def update(self, data):
+        temp_model = self.__class__.load(data)
+        temp_model.connect_to_session(self.session)
+        vars(self).update(vars(temp_model))
+        return self
 
     @property
     def session(self):
@@ -150,3 +181,16 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         model = ModelRegistry.get_model(model_name)
         return model.where(self.session, params)
         # return self.session.model_interface(model_name).where(params)
+
+    def __getattribute__(self, name):
+        """Override getattribute to automatically connect sessions"""
+        res = super().__getattribute__(name)
+        if isinstance(res, list) or isinstance(res, MarshallerBase):
+            relationships = object.__getattribute__(self, "get_relationships")()
+            if name in relationships:
+                session = object.__getattribute__(self, 'session')
+                if isinstance(res, list):
+                    [m.connect_to_session(session) for m in res]
+                else:
+                    res.connect_to_session(session)
+        return res

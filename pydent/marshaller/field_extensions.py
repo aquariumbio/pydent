@@ -3,7 +3,7 @@ Module containing custom :class:`marshmallow.fields`.
 """
 
 import json
-
+from copy import deepcopy
 from marshmallow import fields, ValidationError
 
 
@@ -68,32 +68,13 @@ class Relation(fields.Nested):
     def model(self):
         return self.nested
 
+    # TODO: self.root, self.context, and self.parent are not reliable, remove all methods that use special 'root' to store variables
     def _serialize(self, nested_obj, attr, obj):
         dumped = None
 
-        def decompose_opts(attr, opts):
-            if isinstance(opts, dict):
-                if attr in opts:
-                    opts = opts[attr]
-                else:
-                    opts = {}
-            else:
-                opts = {}
-            return opts
-
         def dump(nobj):
             if hasattr(nobj, 'dump'):
-                # decompose only if its a dictionary
-                only = self.root.original_only
-                relations = self.root.dump_relations
-                only = decompose_opts(attr, only)
-                relations = decompose_opts(attr, relations)
-                # deserialize field
-                nobj = nobj.dump(only=only,
-                                 relations=relations,
-                                 _depth=self.root._depth + 1,
-                                 depth=self.root.dump_depth,
-                                 all_relations=self.root.all_relations)
+                nobj = nobj.dump()
             return nobj
 
         if nested_obj:

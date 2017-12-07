@@ -3,10 +3,12 @@ Model relationships
 """
 
 import inflection
-from pydent.marshaller import fields
+
 from pydent.base import ModelBase
+from pydent.marshaller import fields
 from pydent.marshaller.exceptions import MarshallerRelationshipError
 from pydent.utils import MagicList
+
 
 class One(fields.Relation):
     """Defines a single relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
@@ -49,7 +51,9 @@ class Many(fields.Relation):
             callback = ModelBase.where_callback.__name__
         super().__init__(model, *args, default=MagicList, many=True, callback=callback, params=params, **kwargs)
 
+
 class HasMixin(object):
+    """Mixin for adding the 'set_ref' method. 'set_ref' builds a 'ref' and 'attr' attributes"""
 
     def set_ref(self, model=None, ref=None, attr=None):
         """Sets the 'ref' and 'attr' attributes. These attributes are used to defined parameters for
@@ -75,11 +79,17 @@ class HasMixin(object):
         self.ref = ref
         self.attr = attr
 
-        if ref:
-            self.ref = ref
         if not self.attr:
             self.attr = 'id'
-        if not self.ref:
+        if ref:
+            self.ref = ref
+        else:
+            if not self.attr:
+                raise MarshallerRelationshipError(
+                    "'attr' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(self.__class__))
+            if not model:
+                raise MarshallerRelationshipError(
+                    "'model' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(self.__class__))
             self.ref = "{}_{}".format(inflection.underscore(model), self.attr)
 
 
@@ -106,7 +116,7 @@ class HasOne(HasMixin, One):
 
 
 class HasManyThrough(HasMixin, Many):
-    """A relationship using an intermediate association model"""
+    """A relationship using an intermediate association model. Establishes a Many-to-Many relationship with another model"""
 
     def __init__(self, model, through, attr="id", ref=None, **kwargs):
         self.set_ref(model=model, attr=attr, ref=ref)
@@ -121,21 +131,31 @@ class HasManyThrough(HasMixin, Many):
 
 
 class HasMany(HasMixin, Many):
+    """A relationship that establishes a One-to-Many relationship with another model"""
+
     def __init__(self, model, ref_model=None, attr=None, ref=None, **kwargs):
         """
-        HasOne initializer. Uses the "get_one_generic" callback and automatically
-        assigns attribute as in the following:
+        HasMany relationship initializer
+
+        :param model: Model class name for this relationship
+        :type model: str
+        :param ref_model: Reference model name of the model owning this relationships.
 
         .. code-block:: python
 
-            model="SampleType", attr="id" # equiv. to  'lambda self: {sample_type_id: self.id}'
+            @add_schema
+            class Author(ModelBase):
+                fields=dict(books=HasMany("Book", "Author"))  # will search for books using 'author_id'
 
-        :param model: model name of the target model
-        :type model: basestring
-        :param attr: attribute to append underscored model name
-        :type attr: basestring
+        :type ref_model: str
+        :param attr: Attribute name to use with reference model (default='id'). For example "Author" => 'author_id'
+        :type attr: str
+        :param ref: The reference to use to find models. If none, a reference is built from the 'ref_model' and 'attr' parameters
+        :type ref: str
         """
-
+        if ref_model is None and ref is None:
+            raise MarshallerRelationshipError("'{}' needs a 'ref_model' or 'ref' parameters to initialize".format(
+                self.__class__.__name__))
         self.set_ref(model=ref_model, attr=attr, ref=ref)
         params = lambda slf: {self.ref: getattr(slf, self.attr)}
         super().__init__(model, params=params, **kwargs)
@@ -143,5 +163,7 @@ class HasMany(HasMixin, Many):
 
 # TODO: document hasmanygeneric
 class HasManyGeneric(HasMany):
+    """Establishes a One-to-Many relationship using 'parent_id' as the attribute to find other models."""
+
     def __init__(self, model, **kwargs):
         super().__init__(model, ref="parent_id", attr="id", **kwargs)

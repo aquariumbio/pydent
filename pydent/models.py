@@ -132,6 +132,15 @@ class AllowableFieldType(ModelBase):
         sample_type=HasOne("SampleType")
     )
 
+    def __init__(self, field_type=None, object_type=None, sample_type=None):
+        self.field_type_id = None
+        self.sample_type_id = None
+        self.object_type_id = None
+        self.field_type = self.set_model_attribute(field_type)
+        self.object_type = self.set_model_attribute(object_type)
+        self.sample_type = self.set_model_attribute(sample_type)
+        super().__init__(**vars(self))
+
 
 @add_schema
 class Budget(ModelBase):
@@ -187,9 +196,58 @@ class FieldType(ModelBase, FieldMixin):
         sample_type=HasOne("SampleType", callback="find_field_parent", ref="parent_id")
     )
 
+    def __init__(self, name=None, ftype=None, array=None, choices=None, operation_type=None,
+                preferred_field_type_id=None, preferred_operation_type_id=None,
+                 required=None, routing=None, role=None, parent_class=None, parent_id=None, sample_type=None,
+                 aft_stype_and_objtype=(), allowable_field_types=None):
+        if operation_type and sample_type:
+            raise Exception()
+        if operation_type:
+            parent_id = operation_type.id
+            parent_class = "OperationType"
+        if sample_type:
+            parent_id = sample_type.id
+            parent_class = "SampleType"
+        self.name = name
+        self.ftype = ftype
+        self.parent_id = parent_id
+        self.parent_class = parent_class
+        self.preferred_operation_type_id = preferred_operation_type_id
+        self.preferred_field_type_id = preferred_field_type_id
+        self.required = required
+        self.routing = routing
+        self.array = array
+        self.choices = choices
+        self.role = role
+        self.allowable_field_types = allowable_field_types
+        super().__init__(**vars(self))
+
+        if self.allowable_field_types is None:
+            if aft_stype_and_objtype:
+                for sample_type, object_type in aft_stype_and_objtype:
+                    self.create_allowable_field_type(sample_type, object_type)
+
     @property
     def is_parameter(self):
         return self.ftype != "sample"
+
+    def get_allowable_field_types(self):
+        afts = self.allowable_field_types
+        if afts is None or afts == []:
+            self.allowable_field_types = None
+            afts = self.allowable_field_types
+        return afts
+
+    def create_allowable_field_type(self, sample_type=None, object_type=None):
+        afts = []
+        if self.allowable_field_types:
+            afts = self.allowable_field_types
+        sample_type = self.session.SampleType.find_by_id_or_name(sample_type)
+        object_type = self.session.ObjectType.find_by_id_or_name(object_type)
+        ft = AllowableFieldType(field_type=self, sample_type=sample_type, object_type=object_type)
+        afts.append(ft)
+        self.allowable_field_types = afts
+        return ft
 
     def initialize_field_value(self, field_value=None):
         """
@@ -222,7 +280,8 @@ class FieldValue(ModelBase, FieldMixin):
         parent_sample=HasOne("Sample", callback="find_field_parent", ref="parent_id"),
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
-        successors=HasManyThrough("Operation", "Wire")
+        successors=HasManyThrough("Operation", "Wire"),
+        ignore=('object_type',)
     )
 
     def __init__(self, name=None, role=None, parent_class=None, parent_id=None,
@@ -287,11 +346,15 @@ class FieldValue(ModelBase, FieldMixin):
 
     @property
     def successors(self):
-        return [x.destination for x in self.wires_as_source]
+        if self.wires_as_source:
+            return [x.destination for x in self.wires_as_source]
+        return []
 
     @property
     def predecessors(self):
-        return [x.source for x in self.wires_as_dest]
+        if self.wires_as_dest:
+            return [x.source for x in self.wires_as_dest]
+        return []
 
     def show(self, pre=""):
         if self.sample:
@@ -313,6 +376,8 @@ class FieldValue(ModelBase, FieldMixin):
             self.item = item
             self.child_item_id = item.id
             self.object_type = item.object_type
+            if not sample:
+                sample = item.sample
         if sample:
             self.sample = sample
             self.child_sample_id = sample.id
@@ -321,20 +386,24 @@ class FieldValue(ModelBase, FieldMixin):
 
     def set_value(self, value=None, sample=None, container=None, item=None):
         self._set_helper(value=value, sample=sample, container=container, item=item)
-        afts = self.field_type.allowable_field_types
-        if self.sample:
-            afts = filter_list(afts, sample_type_id=self.sample.sample_type_id)
-        if self.object_type:
-            afts = filter_list(afts, object_type_id=self.object_type.id)
-        if not afts:
-            raise AquariumModelError("No allowable field types found for {} '{}'".format(self.role, self.name))
-        if len(afts) > 1:
-            warnings.warn("More than one AllowableFieldType found that matches {}".format(
-                self.dump(only=('name', 'role', 'id'), partial=True)))
-        elif len(afts) == 1:
-            self.set_allowable_field_type(afts[0])
-        else:
-            raise AquariumModelError("No allowable field type found for {} '{}'".format(self.role, self.name))
+
+
+        if any([sample, container, item]):
+            afts = self.field_type.allowable_field_types
+            if self.sample:
+                afts = filter_list(afts, sample_type_id=self.sample.sample_type_id)
+            if self.object_type:
+                afts = filter_list(afts, object_type_id=self.object_type.id)
+            if not afts:
+                available_afts = self.field_type.allowable_field_types
+                raise AquariumModelError("No allowable field types found for {} '{}'. Available afts: {}".format(self.role, self.name, available_afts))
+            if len(afts) > 1:
+                warnings.warn("More than one AllowableFieldType found that matches {}".format(
+                    self.dump(only=('name', 'role', 'id'), partial=True)))
+            elif len(afts) == 1:
+                self.set_allowable_field_type(afts[0])
+            else:
+                raise AquariumModelError("No allowable field type found for {} '{}'".format(self.role, self.name))
         return self
 
     def set_operation(self, op):
@@ -452,7 +521,7 @@ class Operation(ModelBase):
     #     return [X, Y]
 
     def __init__(self, operation_type_id=None, status=None, x=0, y=0):
-        self.operation_type_id = None
+        self.operation_type_id = operation_type_id
         self.x = x
         self.y = y
         self.routing = {}
@@ -522,7 +591,11 @@ class Operation(ModelBase):
     def set_output(self, name, sample=None, item=None, value=None, container=None):
         return self.set_field_value(name, 'output', sample=sample, item=item, value=value, container=container)
 
-
+    def show(self, pre=""):
+        """Print the operation nicely"""
+        print(pre + self.operation_type.name + " " + str(self.cost))
+        for field_value in self.field_values:
+            field_value.show(pre=pre + "  ")
 
     @property
     @magiclist
@@ -564,10 +637,12 @@ class Plan(ModelBase, PlanValidator):
         data_associations=HasManyGeneric("DataAssociation"),
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
-        wires=Many("Wire", callback="no_getter")
+        wires=Many("Wire", callback="get_wires", params=None)
     )
 
     def __init__(self, name=None, status=None, source=None, destination=None):
+        if name is None:
+            name = "MyPlan"
         self.name = name
         if status is None:
             status = 'planning'
@@ -583,12 +658,15 @@ class Plan(ModelBase, PlanValidator):
         super().__init__(**vars(self))
 
     def add_operation(self, op):
-        self.append_association("operations", op)
+        ops = self.operations
+        if self.operations is None:
+            self.operations = []
+        ops.append(op)
+        self.operations = ops
 
     def add_operations(self, ops):
         for op in ops:
-            if not self.operations or op not in self.operations:
-                self.add_operation(op)
+            self.add_operation(op)
 
     def wire(self, src, dest):
         wire = Wire(src, dest)
@@ -598,20 +676,31 @@ class Plan(ModelBase, PlanValidator):
         for src, dest in pairs:
             self.wire(src, dest)
 
+    def get_wires(self, *args):
+        return self.all_wires
+
     @property
     @magiclist
-    def wires(self):
+    def all_wires(self):
         wires = []
-        for op in self.operations:
-            for fv in op.field_values:
-                if fv.outgoing_wires:
-                    wires += fv.outgoing_wires
-                if fv.incoming_wires:
-                    wires += fv.incoming_wires
+        if self.operations:
+            for op in self.operations:
+                for fv in op.field_values:
+                    if fv.outgoing_wires:
+                        wires += fv.outgoing_wires
+                    if fv.incoming_wires:
+                        wires += fv.incoming_wires
         return wires
 
+    def create(self):
+        result = self.session.utils.create_plan(self)
+
     def save(self):
-        self.session.utils.save_plan(self)
+        result = self.session.utils.save_plan(self)
+
+    def submit(self, user, budget):
+        result = self.session.utils.submit_plan(self, user, budget)
+        print(result)
 
     def all_data_associations(self):
         das = self.data_associations
@@ -629,10 +718,14 @@ class Plan(ModelBase, PlanValidator):
         return interface.get('plans/{}.json'.format(model_id))
 
     def to_save_json(self):
-        json_ = self.dump(exclude=('layout',))
-        json_['operations'] = [op.dump(relations=('field_values',)) for op in self.operations]
-        json_['wires'] = [wire.dump(relations=('source', 'destination')) for wire in self.wires]
-        return json_
+        json_data = self.dump(include={
+            'operations': {
+                'field_values': 'allowable_field_type',
+                'operation_type': {},
+            },
+            'wires': {}
+        })
+        return json_data
 
     def save(self):
         self.session.utils.save_plan(self)
@@ -642,6 +735,14 @@ class Plan(ModelBase, PlanValidator):
 
     def field_values(self):
         raise NotImplementedError()
+
+    def show(self):
+        """Print the plan nicely"""
+        print(self.name + " id: " + str(self.id))
+        for operation in self.operations:
+            operation.show(pre="  ")
+        for wire in self.wires:
+            wire.show(pre="  ")
 
 
 @add_schema
@@ -694,9 +795,6 @@ class SampleType(ModelBase):
                          params=lambda self: {"parent_id": self.id, "parent_class": self.__class__.__name__})
     )
 
-    def create(self):
-        return self.session.create.create_samples([self])
-
 
 @add_schema
 class Upload(ModelBase):
@@ -717,6 +815,8 @@ class User(ModelBase):
     """A User model"""
     fields = dict(
         groups=HasMany("Group", "User"),
+        user_budget_associations=HasMany("UserBudgetAssociation", "User"),
+        budgets=HasManyThrough("Budget", "UserBudgetAssociation"),
         additional=("name", "id", "login"),
         ignore=("password_digest", "remember_token", "key")
     )

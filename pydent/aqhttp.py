@@ -15,7 +15,7 @@ import requests
 
 from pydent.exceptions import TridentRequestError, TridentLoginError, TridentTimeoutError, TridentJSONDataIncomplete
 
-
+# TODO: Replace request history with save_attr in models?
 class AqHTTP(object):
     """Defines a session/connection to Aquarium. Makes HTTP requests to Aquarium and returns JSON.
 
@@ -105,7 +105,7 @@ class AqHTTP(object):
         }, sort_keys=True)
 
     # TODO: return warnings about not finding
-    def request(self, method, path, timeout=None, get_from_history_ok=False, allow_none=False, **kwargs):
+    def request(self, method, path, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
         """
         Performs a http request.
 
@@ -117,6 +117,8 @@ class AqHTTP(object):
         :type timeout: int
         :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
         :type get_from_history_ok: boolean
+        :param allow_none: if False (default), will raise error if json_data contains a None or null value
+        :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
         :return: json
@@ -149,11 +151,13 @@ class AqHTTP(object):
         try:
             result_json = result.json()
         except json.JSONDecodeError:
+            from bs4 import BeautifulSoup
+            # print(BeautifulSoup(result.content, 'html.parser').prettify())
             raise TridentRequestError(
                 "<StatusCode: {code} ({reason})> "
                 "Response is not JSON formatted. "
                 "Trident may not be properly connected to the server. "
-                "Verify login credentials.".format(code=result.status_code, reason=result.reason))
+                "Verify login credentials.\nContent:\n{content}".format(code=result.status_code, reason=result.reason, content=result.content))
         if "errors" in result_json:
             raise TridentRequestError(
                 "Request: {}\n{}\n{}".format(result.request.body, result, result_json['errors'])
@@ -166,7 +170,7 @@ class AqHTTP(object):
         if None in json_data.values():
             raise TridentJSONDataIncomplete("JSON data {} contains a null value.".format(json_data))
 
-    def post(self, path, json_data=None, timeout=None, get_from_history_ok=False, **kwargs):
+    def post(self, path, json_data=None, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
         """
         Make a post request to the session
 
@@ -183,9 +187,9 @@ class AqHTTP(object):
         :return: json
         :rtype: dict
         """
-        return self.request("post", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
+        return self.request("post", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, allow_none=True, **kwargs)
 
-    def put(self, path, json_data=None, timeout=None, get_from_history_ok=False, **kwargs):
+    def put(self, path, json_data=None, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
         """
         Make a put request to the session
 
@@ -204,7 +208,7 @@ class AqHTTP(object):
         """
         return self.request("put", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
 
-    def get(self, path, timeout=None, get_from_history_ok=False, **kwargs):
+    def get(self, path, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
         """
         Make a get request to the session
 

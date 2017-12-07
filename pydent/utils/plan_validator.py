@@ -70,7 +70,7 @@ class PlanValidator(object):
             for field_value in operation.inputs:
                 field_value.leaf = True
 
-        for wire in self.wires:
+        for wire in self.all_wires:
             wire.destination.leaf = False
 
 
@@ -105,7 +105,7 @@ class PlanValidator(object):
     def check_wires(self):
         """make sure all wires have have consistent endpoints"""
         valid = True
-        for wire in self.wires:
+        for wire in self.all_wires:
             stid1 = wire.source.allowable_field_type.sample_type_id
             stid2 = wire.destination.allowable_field_type.sample_type_id
             otid1 = wire.source.allowable_field_type.object_type_id

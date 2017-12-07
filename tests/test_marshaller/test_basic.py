@@ -1,5 +1,6 @@
-from marshmallow import fields
 import pytest
+from marshmallow import fields
+
 from pydent.marshaller.schema import add_schema, MODEL_SCHEMA, META
 
 
@@ -10,11 +11,11 @@ def mymodel():
     @add_schema
     class MyModel(object):
         fields = dict(
-            field4 = fields.Field(),
-            field5 = fields.Field(),
-            something = 5,
-            additional = ("field1", "field2"),
-            include = {
+            field4=fields.Field(),
+            field5=fields.Field(),
+            something=5,
+            additional=("field1", "field2"),
+            include={
                 "field3": fields.Field(),
                 "field6": fields.Field()
             }
@@ -22,7 +23,9 @@ def mymodel():
 
         def __init__(self):
             pass
+
     return MyModel
+
 
 def test_basic_field_access(mymodel):
     """Fields in the model definition should be accumulated in the 'include' attribute of its schema."""

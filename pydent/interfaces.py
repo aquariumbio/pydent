@@ -69,6 +69,15 @@ class UtilityInterface(SessionInterface):
         json = [s.dump() for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
 
+    # def create_sample_type(self, sample_type):
+    #     return self.aqhttp.post("sample_types.json", sample_type.dump(relations=('field_types',)))
+
+    def create_operation_type(self, operation_type):
+        op_data = operation_type.dump(relations=('field_types',))
+        result = self.aqhttp.post('operation_type.json', json_data=op_data)
+        operation_type.update(result)
+        return operation_type
+
     def estimate_plan_cost(self, plan):
         result = self.aqhttp.post('launcher/estimate', {'id': plan.id})
         total = 0
@@ -79,26 +88,34 @@ class UtilityInterface(SessionInterface):
                     total += (cost['labor'] * cost['labor_rate'] + cost['materials']) * cost['markup_rate']
         return total
 
-    def save_plan(self, plan):
-        if not plan.id:
-            user_query = "?user_id=" + str(self.session.current_user.id)
-            result = self.aqhttp.post(
-                'plans.json?user_id={}'.format(str(self.session.current_user.id)), json_data=plan.to_save_json(), allow_none=True)
-            plan.load(result)
-        else:
-            warnings.warn("WARNING: Plan {} already saved. Cannot save again.".format(self.id))
-
     def create_plan(self, plan):
         user_query = "?user_id=" + str(self.session.current_user.id)
-        result = self.aqhttp.post(
-            '/plans.json' + user_query, plan.dump())
-        return result
+        plan_json = plan.to_save_json()
+        result = self.aqhttp.post('plans.json' + user_query, json_data=plan_json)
+        plan.update(result)
+        return plan
+
+    def batch_operations(self, operation_ids):
+        self.aqhttp.post('operations/batch', json_data=operation_ids)
+
+    def unbatch_operations(self, operation_ids):
+        self.aqhttp.post('operations/batch', json_data=operation_ids)
+
+    def step_operations(self):
+        self.aqhttp.get('operations/step')
+
+    def set_operation_status(self, operation_id, status):
+        self.aqhttp.get('operations/{oid}/status/{status}'.format(oid=operation_id, status=status))
+
+    def job_debug(self, job_id):
+        self.aqhttp.get('krill/debug/{jid}'.format(jid=job_id))
 
     def submit_plan(self, plan, user, budget):
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
-        self.aqhttp.get('/plans/start/' + str(plan.id) +
+        result = self.aqhttp.get('plans/start/' + str(plan.id) +
                         budget_query + user_query)
+        # TODO: update plan with result in 'submit_plan'?
 
     def update_code(self, code):
         controller = inflection.underscore(inflection.pluralize(code.parent_class))
@@ -176,6 +193,16 @@ class ModelInterface(SessionInterface):
         response = self.aqhttp.get(path)
         return self._request_to_models(response)
 
+    def find_by_id_or_name(self, id_name_or_model):
+        if isinstance(id_name_or_model, str):
+            return self.find_by_name(id_name_or_model)
+        elif isinstance(id_name_or_model, int):
+            return self.find(id_name_or_model)
+        elif isinstance(id_name_or_model, self.model):
+            return id_name_or_model
+        raise TypeError("'id_or_name' must be a string or id or '{}'. Found '{}' type: {}".format(
+            id_name_or_model, self.model, type(id_name_or_model)))
+
     def find(self, model_id):
         """ Finds model by id """
         return self._post_json({"id": model_id}, get_from_history_ok=True)
@@ -197,7 +224,6 @@ class ModelInterface(SessionInterface):
         query.update(rest)
         res = self._post_json(query)  # type: dict
         return res
-
 
     def find_plan(self, id):
         return self.aqhttp.get('plans/{}.json'.format(id))
@@ -224,6 +250,9 @@ class ModelInterface(SessionInterface):
 
     def __call__(self, *args, **kwargs):
         """Creates a new model instance"""
-        model = self.model(*args, **kwargs)
-        model.connect_to_session(self.session)
-        return model
+        instance = object.__new__(self.model)
+        instance._session = None
+        instance.connect_to_session(self.session)
+        instance.__init__(*args, **kwargs)
+        return instance
+

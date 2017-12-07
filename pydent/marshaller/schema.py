@@ -1,6 +1,6 @@
 from marshmallow import SchemaOpts, Schema
 from marshmallow import post_load, pre_load, pre_dump, post_dump
-
+from copy import deepcopy
 from pydent.marshaller.field_extensions import fields
 
 # attribute to reference the model from the schema
@@ -72,7 +72,30 @@ class DefaultFieldOptions(SchemaOpts):
     additional = ()
     ignore = ()
 
+import collections
+class DictWrapper(collections.Mapping):
 
+    def __init__(self, data):
+        self._data = data
+
+    def __getitem__(self, key):
+        return self._data[key]
+
+    def __len__(self):
+        return len(self._data)
+
+    def __iter__(self):
+        return iter(self._data)
+
+    def __repr__(self):
+        return self._data
+
+    def __str__(self):
+        return str(self._data)
+
+# TODO: rename schema class to "<BaseClass>Schema"
+# TODO: rename dump_relations to "include"
+# TODO: remove dump_depth
 class DynamicSchema(Schema):
     """Schema that automatically loads missing values from data. For more information about
     the baseclass Schema, take a look at the `Schema documentation
@@ -83,21 +106,20 @@ class DynamicSchema(Schema):
     Meta = DefaultFieldOptions
     relationships = {}
 
-    def __init__(self, *args, only=(), exclude=(), dump_relations=(), dump_all_relations=False, strict=None, many=False,
-                 context=None, load_only=(), dump_only=(), partial=False, prefix='', _depth=0, dump_depth=None, **kwargs):
+    def __init__(self, *args, only=(), exclude=(), relations=(), all_relations=False, strict=None, many=False,
+                 context=None, load_only=(), dump_only=(), partial=False, prefix='',
+                 **kwargs):
         """
         Custom Schema for marshalling and demarshalling models
 
 
-        :param int _depth: optional nested depth for deserializing or loading nested relationships (default=0)
-        :param int dump_depth: optional maximum nested depth for deserializing or loading nested relationships (default=0)
         :param tuple only: A list or tuple of fields to serialize. If `None`, all
             fields will be serialized. Nested fields can be represented with dot delimiters.
         :param tuple exclude: A list or tuple of fields to exclude from the
             serialized result. Nested fields can be represented with dot delimiters.
-        :param tuple dump_relations: A list or tuple of fields to include during
+        :param tuple relations: A list or tuple of fields to include during
             serialization
-        :param boolean dump_all_relations: whether to dump all relationship during deserialization
+        :param boolean all_relations: whether to dump all relationship during deserialization
         :param str prefix: Optional prefix that will be prepended to all the
             serialized field names.
         :param bool strict: If `True`, raise errors if invalid data are passed in
@@ -113,9 +135,24 @@ class DynamicSchema(Schema):
             is an iterable, only missing fields listed in that iterable will be
             ignored.
         """
-        self.original_only = only
+
+        relations, load_only, only = self.fix_schema_parameters(
+            all_relations, relations, load_only, only)
+        super().__init__(*args, only=only, exclude=exclude, prefix=prefix, strict=strict,
+                         many=many, context=context, load_only=load_only, dump_only=dump_only,
+                         partial=partial, **kwargs)
+        self.dump_relations = relations
+
+    def fix_schema_parameters(self, dump_all_relations, dump_relations, load_only, only):
+        if isinstance(only, str):
+            only = {only}
+        if isinstance(dump_relations, str):
+            dump_relations = {dump_relations}
+        if isinstance(load_only, str):
+            load_only = {load_only}
+
+        # include relations in only
         if only:
-            # include relations in only
             only = set(list(only) + list(dump_relations))
             only_relations = only.intersection(self.relationships.keys())
             dump_relations = set(dump_relations).union(only_relations)
@@ -123,20 +160,12 @@ class DynamicSchema(Schema):
         # by default, relationships are 'load_only', meaning they will not be serialized
         load_only = set(list(load_only) + list(self.relationships.keys()))
 
-        # if there are any dump_relations keys, remove them from 'load_only' so they can be serializes
+        # if there are any dump_relations keys, remove them from 'load_only' so they can be serialized
         self.all_relations = dump_all_relations
         if dump_all_relations:
             dump_relations = tuple(self.relationships.keys())
         load_only = tuple(set(load_only) - set(dump_relations))
-
-        super().__init__(*args, only=only, exclude=exclude, prefix=prefix, strict=strict,
-                         many=many, context=context, load_only=load_only, dump_only=dump_only,
-                         partial=partial, **kwargs)
-        if dump_depth is None:
-            dump_depth = 10
-        self.dump_relations = dump_relations
-        self.dump_depth = dump_depth
-        self._depth = _depth
+        return dump_relations, load_only, only
 
     @pre_load
     def add_fields(self, data):
@@ -201,10 +230,10 @@ class DynamicSchema(Schema):
 
         for field_name, relation in self.relationships.items():
             if field_name in self.dump_relations:
-                if self._depth < self.dump_depth:
-                    extra_fields[field_name] = self.relationships[field_name]
+                # if self._depth < self.dump_depth:
+                #     extra_fields[field_name] = self.relationships[field_name]
+                extra_fields[field_name] = self.relationships[field_name]
         self.add_extra_fields(extra_fields)
-
         return obj
 
     @post_dump

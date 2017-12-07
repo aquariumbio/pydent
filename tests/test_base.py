@@ -7,13 +7,30 @@ import pytest
 from pydent import AqSession
 from pydent import ModelBase, ModelRegistry
 from pydent.exceptions import TridentModelNotFoundError
-from pydent.marshaller import add_schema
-from pydent.models import fields
+from pydent.marshaller import add_schema, fields
 
 
 def test_model_base():
     m = ModelBase()
     assert m.session is None
+
+
+def test_record_id():
+
+    @add_schema
+    class MyModel(ModelBase):
+        pass
+
+    @add_schema
+    class MyOtherModel(ModelBase):
+        pass
+
+    m = MyModel()
+    m2 = MyOtherModel()
+    m3 = MyModel()
+    assert m.rid != m2.rid
+    assert m2.rid != m3.rid
+    assert m.rid != m3.rid
 
 
 def test_base_constructor():
@@ -35,7 +52,9 @@ def test_base_constructor_with_marshaller():
     m = MyModel(name="model", id=5)
     assert m.name == 'model'
     assert m.id == 5
-    assert m.dump() == {'name': 'model', 'id': 5}
+    mdump = m.dump()
+    del mdump['rid']
+    assert mdump == {'name': 'model', 'id': 5}
 
 
 def test_base_constructor_with_invalid_data():
@@ -147,3 +166,4 @@ def test_print():
     m = ModelBase()
     print(m)
     m.print()
+
