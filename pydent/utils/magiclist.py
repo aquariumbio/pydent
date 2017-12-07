@@ -4,6 +4,7 @@ Utilities
 
 from functools import wraps
 
+
 class MagicList(list):
     """List-like class that collects attributes and applies functions
     but acts like a list in every other regard.

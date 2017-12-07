@@ -53,6 +53,9 @@ class AqSession(object):
     def interactive(cls):
         """Login using prompts and a hidden password (********)"""
         confirm_register = False
+        password = None
+        username = None
+        url = None
         while not confirm_register:
             password = None
             confirm_password = None
@@ -63,9 +66,11 @@ class AqSession(object):
                 if msg:
                     print(msg)
                 password = prompt('enter password: ', is_password=True)
-                confirm_password = prompt('confirm password: ', is_password=True)
+                confirm_password = prompt(
+                    'confirm password: ', is_password=True)
                 msg = "passwords did not match!"
-            confirm_register = confirm('Confirm registration for {}@{}? (y/n): '.format(username, url))
+            confirm_register = confirm(
+                'Confirm registration for {}@{}? (y/n): '.format(username, url))
             print()
         print("username {} registered".format(username))
         login = dict(login=username, password=password, aquarium_url=url)

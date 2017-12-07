@@ -107,7 +107,8 @@ class MarshallerBase(object):
         if schema:
             return schema.load(data).data
         else:
-            warnings.warn("Cannot dump! No schema attached to '{}'".format(cls.__name__))
+            warnings.warn(
+                "Cannot dump! No schema attached to '{}'".format(cls.__name__))
 
     def dump(self, only=(), include=(), exclude=(), relations=(),
              all_relations=False, prefix='', strict=None,
@@ -221,7 +222,8 @@ class MarshallerBase(object):
         if schema:
             return schema.dump(self).data
         else:
-            warnings.warn("Cannot dump! No schema attached to '{}'".format(self.__class__.__name__))
+            warnings.warn("Cannot dump! No schema attached to '{}'".format(
+                self.__class__.__name__))
 
     def dumps(self, *schema_args, **schema_kwargs):
         """Dumps the model instance to a String. For parameter options, refer
@@ -245,7 +247,8 @@ class MarshallerBase(object):
             try:
                 callback = getattr(self, callback)
             except AttributeError as e:
-                msg = "Could not find callback \"{}\" in {} instance".format(callback, self.__class__.__name__)
+                msg = "Could not find callback \"{}\" in {} instance".format(
+                    callback, self.__class__.__name__)
                 e.args = tuple(list(e.args) + [msg])
                 raise MarshallerCallbackNotFoundError(e)
 
@@ -279,7 +282,8 @@ class MarshallerBase(object):
         * If AttributeError or TypeError is raise, return the default value"""
         res = object.__getattribute__(self, name)
         if res is None:
-            relationships = object.__getattribute__(self, "get_relationships")()
+            relationships = object.__getattribute__(
+                self, "get_relationships")()
             if name in relationships:
                 try:
                     res = self.__getattr__(name)
@@ -322,15 +326,15 @@ class MarshallerBase(object):
     def _relations_to_json(self):
         """Dump relations to a dictionary. If attribute is None, return the Relation instance"""
         dumped = {}
-        for k, v in self.get_relationships().items():
+        for field_name, field in self.get_relationships().items():
             val = None
             try:
-                val = object.__getattribute__(self, k)
+                val = object.__getattribute__(self, field_name)
             except AttributeError:
                 pass
             if val is None:
-                val = v
-            dumped[k] = val
+                val = field
+            dumped[field_name] = val
         return dumped
 
     def _to_dict(self, *args, **kwargs):
@@ -344,9 +348,9 @@ class MarshallerBase(object):
         dumped = self._relations_to_json()
         _dumped = self.dump(*args, **kwargs)
         if _dumped:
-            for k, v in _dumped.items():
-                if v is not None or k not in dumped:
-                    dumped[k] = v
+            for key, val in _dumped.items():
+                if val is not None or key not in dumped:
+                    dumped[key] = val
         return dumped
 
     def print(self, *args, **kwargs):

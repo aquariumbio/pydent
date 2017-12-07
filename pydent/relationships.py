@@ -48,7 +48,8 @@ class Many(fields.Relation):
         """
         if callback is None:
             callback = ModelBase.where_callback.__name__
-        super().__init__(model, *args, default=MagicList, many=True, callback=callback, params=params, **kwargs)
+        super().__init__(model, *args, default=MagicList,
+                         many=True, callback=callback, params=params, **kwargs)
 
 
 class HasMixin(object):
@@ -121,11 +122,12 @@ class HasManyThrough(HasMixin, Many):
         self.set_ref(model=model, attr=attr, ref=ref)
 
         # e.g. PlanAssociation >> plan_associations
-        through_model_attr = inflection.pluralize(inflection.underscore(through))
+        through_model_attr = inflection.pluralize(
+            inflection.underscore(through))
 
         # e.g. {"id": x.operation_id for x in self.plan_associations
-        params = lambda slf: {attr: [getattr(x, self.ref
-                                             ) for x in getattr(slf, through_model_attr)]}
+        def params(slf): return {attr: [getattr(x, self.ref
+                                                ) for x in getattr(slf, through_model_attr)]}
         super().__init__(model, params=params, **kwargs)
 
 
@@ -156,7 +158,8 @@ class HasMany(HasMixin, Many):
             raise MarshallerRelationshipError("'{}' needs a 'ref_model' or 'ref' parameters to initialize".format(
                 self.__class__.__name__))
         self.set_ref(model=ref_model, attr=attr, ref=ref)
-        params = lambda slf: {self.ref: getattr(slf, self.attr)}
+
+        def params(slf): return {self.ref: getattr(slf, self.attr)}
         super().__init__(model, params=params, **kwargs)
 
 

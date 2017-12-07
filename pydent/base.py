@@ -36,7 +36,8 @@ relationships - models relationships are stored
 
 from pydent.exceptions import TridentModelNotFoundError, AquariumModelError
 from pydent.marshaller import MarshallerBase
-from pydent.utils import magiclist, underscore
+from pydent.utils import magiclist
+from inflection import underscore
 
 
 class ModelRegistry(type):
@@ -53,7 +54,8 @@ class ModelRegistry(type):
     def get_model(model_name):
         """Gets model by model_name"""
         if model_name not in ModelRegistry.models:
-            raise TridentModelNotFoundError("Model \"{}\" not found in ModelRegistry.".format(model_name))
+            raise TridentModelNotFoundError(
+                "Model \"{}\" not found in ModelRegistry.".format(model_name))
         else:
             return ModelRegistry.models[model_name]
 
@@ -63,6 +65,7 @@ class ModelRegistry(type):
         raise AttributeError("'{0}' has no attribute '{1}'. Method may be a ModelInterface method."
                              " Did you mean '<yoursession>.{0}.{1}'?"
                              .format(self.__name__, item))
+
 
 class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     """Base class for Aquarium models. Subclass of :class:`pydent.marshaller.MarshallerBase`
@@ -171,7 +174,7 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
             raise AttributeError("No AqSession instance found for '{}'. Use 'connect_to_session' "
                                  "to connect this model to a session".format(self.__class__.__name__))
 
-    def no_getter(self, model_name, _):
+    def no_getter(self, *_):
         """Callback that always returns None"""
         return None
 
@@ -230,7 +233,8 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         """Override getattribute to automatically connect sessions"""
         res = super().__getattribute__(name)
         if isinstance(res, list) or isinstance(res, MarshallerBase):
-            relationships = object.__getattribute__(self, "get_relationships")()
+            relationships = object.__getattribute__(
+                self, "get_relationships")()
             if name in relationships:
                 session = object.__getattribute__(self, 'session')
                 if isinstance(res, list):

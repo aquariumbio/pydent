@@ -1,6 +1,5 @@
 from marshmallow import SchemaOpts, Schema
 from marshmallow import post_load, pre_load, pre_dump, post_dump
-from copy import deepcopy
 from pydent.marshaller.field_extensions import fields
 
 # attribute to reference the model from the schema
@@ -24,7 +23,8 @@ RELATIONSHIPS = "relationships"
 
 class DefaultFieldOptions(SchemaOpts):
     """
-        Serialization/Deserialization field options class (:class:`SchemaOpts`). Determines how data is handled.
+        Serialization/Deserialization field options class (:class:`SchemaOpts`). Determines
+        how data is handled.
         There are lots of available options, how you use them will depend on your particular
         application.
 
@@ -83,7 +83,8 @@ class DynamicSchema(Schema):
     Meta = DefaultFieldOptions
     relationships = {}
 
-    def __init__(self, *args, only=(), exclude=(), relations=(), all_relations=False, strict=None, many=False,
+    def __init__(self, *args, only=(), exclude=(), relations=(), all_relations=False,
+                 strict=None, many=False,
                  context=None, load_only=(), dump_only=(), partial=False, prefix='',
                  **kwargs):
         """
@@ -168,7 +169,8 @@ class DynamicSchema(Schema):
                     dump_only = []
                     if hasattr(meta, "dump_only"):
                         dump_only = key in meta.dump_only
-                    self.fields[key] = fields.Raw(allow_none=True, dump_only=dump_only)
+                    self.fields[key] = fields.Raw(
+                        allow_none=True, dump_only=dump_only)
                     more_keys.append(key)
         setattr(meta, "additional", more_keys)
 
@@ -205,7 +207,7 @@ class DynamicSchema(Schema):
         if hasattr(obj, EXTRA_FIELDS):
             extra_fields.update(obj.loaded_fields)
 
-        for field_name, relation in self.relationships.items():
+        for field_name in self.relationships.keys():
             if field_name in self.dump_relations:
                 # if self._depth < self.dump_depth:
                 #     extra_fields[field_name] = self.relationships[field_name]
@@ -247,12 +249,14 @@ def add_schema(cls):
             def foo(self):
                 pass
     """
-    default_meta_props = {key: val for key, val in vars(DefaultFieldOptions).items() if not key.startswith("__")}
+    default_meta_props = {key: val for key, val in vars(
+        DefaultFieldOptions).items() if not key.startswith("__")}
     model_meta_relationships = {}
 
     if hasattr(cls, MODEL_META):
         model_meta_props = getattr(cls, MODEL_META)
-        model_meta_fields = {key: val for key, val in model_meta_props.items() if isinstance(val, fields.Field)}
+        model_meta_fields = {key: val for key, val in model_meta_props.items(
+        ) if isinstance(val, fields.Field)}
 
         # combine found fields with "include"
         include = model_meta_props.get("include", {})
@@ -260,7 +264,8 @@ def add_schema(cls):
         model_meta_props["include"] = include
 
         # collect relationships
-        model_meta_relationships = {key: val for key, val in include.items() if isinstance(val, fields.Relation)}
+        model_meta_relationships = {
+            key: val for key, val in include.items() if isinstance(val, fields.Relation)}
 
         # update defaults with field options found in model class definition
         default_meta_props.update(model_meta_props)

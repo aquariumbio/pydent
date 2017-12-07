@@ -15,30 +15,31 @@ Submodules
 
 """
 
+import pprint as pprint_module
+
 from pydent.utils.magiclist import MagicList, magiclist
-from inflection import underscore, pluralize
-import pprint
 
-
-printer = pprint.PrettyPrinter(indent=1)
+printer = pprint_module.PrettyPrinter(indent=1)
 pprint = printer.pprint
 pformat = printer.pformat
 
 
 def filter_list(objlist, **kwargs):
+    """Filters a list of objects based on attributes in kwargs"""
     intersection = []
-    for o in objlist:
-        ok = True
+    for obj in objlist:
+        is_ok = True
         for k in kwargs:
-            if not hasattr(o, k):
-                ok = False
+            if not hasattr(obj, k):
+                is_ok = False
                 break
-            if not getattr(o, k) == kwargs[k]:
-                ok = False
+            if not getattr(obj, k) == kwargs[k]:
+                is_ok = False
                 break
-        if ok:
-            intersection.append(o)
+        if is_ok:
+            intersection.append(obj)
     return type(objlist)(intersection)
+
 
 def url_build(*parts):
     """Join parts of a url into a string"""

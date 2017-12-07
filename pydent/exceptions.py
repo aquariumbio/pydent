@@ -28,4 +28,3 @@ class TridentModelNotFoundError(AttributeError):
 
 class AquariumModelError(Exception):
     """An error occured with this Aquarium model"""
-

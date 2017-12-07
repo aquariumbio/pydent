@@ -1,5 +1,6 @@
 """Validate Plans"""
 
+
 class PlanValidator(object):
     """Will be inherited by Plan. Used to validate whether a plan is ready to
     submit
@@ -38,7 +39,8 @@ class PlanValidator(object):
             self.check_io() and \
             self.check_wires()
 
-        self.log("Plan '" + self.name + "' is " + ("valid" if valid else "not valid."))
+        self.log("Plan '" + self.name + "' is " +
+                 ("valid" if valid else "not valid."))
 
         return valid
 
@@ -49,18 +51,17 @@ class PlanValidator(object):
             for field_type in operation.operation_type.field_types:
                 if field_type.array:
                     if len(operation.field_value(field_type.name)) == 0:
-                        self.warning(field_type.role + " " + field_type.name + \
-                                "' of '" + field_type.operation_type.name + \
-                                "' cannot be an empty array.")
+                        self.warning(field_type.role + " " + field_type.name +
+                                     "' of '" + field_type.operation_type.name +
+                                     "' cannot be an empty array.")
                         valid = False
                 else:
                     if not operation.field_value(field_type.name, field_type.role):
-                        self.warning(field_type.role + " " + field_type.name + \
-                                "' of '" + field_type.operation_type.name + \
-                                "' has not been assigned.")
+                        self.warning(field_type.role + " " + field_type.name +
+                                     "' of '" + field_type.operation_type.name +
+                                     "' has not been assigned.")
                         valid = False
         return valid
-
 
     def mark_leaves(self):
         """mark all inputs as either a leaf or not"""
@@ -73,7 +74,6 @@ class PlanValidator(object):
         for wire in self.all_wires:
             wire.destination.leaf = False
 
-
     def check_io(self):
         """check all field values for samples, items, and values"""
         valid = True
@@ -81,26 +81,25 @@ class PlanValidator(object):
             for field_value in operation.field_values:
                 if field_value.field_type.is_parameter:
                     if not field_value.value:
-                        self.warning("Parameter '" + field_value.name + \
-                                "' of '" + field_value.operation.operation_type.name + \
-                                "' has not been assigned a value.")
+                        self.warning("Parameter '" + field_value.name +
+                                     "' of '" + field_value.operation.operation_type.name +
+                                     "' has not been assigned a value.")
                         valid = False
                 elif field_value.leaf:
                     if not field_value.child_item_id:
-                        self.warning("Leaf '" + field_value.name + \
-                                "' of '" + field_value.operation.operation_type.name + \
-                                "' has not been assigned an item")
+                        self.warning("Leaf '" + field_value.name +
+                                     "' of '" + field_value.operation.operation_type.name +
+                                     "' has not been assigned an item")
                         valid = False
                 else:
                     if not field_value.child_sample_id and \
                        field_value.allowable_field_type.sample_type:
-                        self.warning(field_value.role + \
-                                " '" + field_value.name + \
-                                "' of '" + field_value.operation.operation_type.name + \
-                                "' has not been assigned a sample")
+                        self.warning(field_value.role +
+                                     " '" + field_value.name +
+                                     "' of '" + field_value.operation.operation_type.name +
+                                     "' has not been assigned a sample")
                         valid = False
         return valid
-
 
     def check_wires(self):
         """make sure all wires have have consistent endpoints"""

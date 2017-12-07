@@ -91,14 +91,15 @@ __all__ = [
 ]
 
 
-##### Mixins #####
+# Mix-ins
 
 class HasCode(object):
     """Access to latest code for OperationType, Library, etc."""
 
     def code(self, name):
         codes = [c for c in self.codes if c.name == name]
-        codes = [c for c in codes if not hasattr(c, "child_id") or c.child_id is None]
+        codes = [c for c in codes if not hasattr(
+            c, "child_id") or c.child_id is None]
         return codes[-1]
 
 
@@ -190,12 +191,14 @@ class FieldType(ModelBase, FieldMixin):
     """A FieldType model"""
     fields = dict(
         allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
-        operation_type=HasOne("OperationType", callback="find_field_parent", ref="parent_id"),
-        sample_type=HasOne("SampleType", callback="find_field_parent", ref="parent_id")
+        operation_type=HasOne(
+            "OperationType", callback="find_field_parent", ref="parent_id"),
+        sample_type=HasOne(
+            "SampleType", callback="find_field_parent", ref="parent_id")
     )
 
     def __init__(self, name=None, ftype=None, array=None, choices=None, operation_type=None,
-                preferred_field_type_id=None, preferred_operation_type_id=None,
+                 preferred_field_type_id=None, preferred_operation_type_id=None,
                  required=None, routing=None, role=None, parent_class=None, parent_id=None, sample_type=None,
                  aft_stype_and_objtype=(), allowable_field_types=None):
         if operation_type and sample_type:
@@ -242,7 +245,8 @@ class FieldType(ModelBase, FieldMixin):
             afts = self.allowable_field_types
         sample_type = self.session.SampleType.find_by_id_or_name(sample_type)
         object_type = self.session.ObjectType.find_by_id_or_name(object_type)
-        ft = AllowableFieldType(field_type=self, sample_type=sample_type, object_type=object_type)
+        ft = AllowableFieldType(
+            field_type=self, sample_type=sample_type, object_type=object_type)
         afts.append(ft)
         self.allowable_field_types = afts
         return ft
@@ -258,7 +262,8 @@ class FieldType(ModelBase, FieldMixin):
         """
 
         if not field_value:
-            field_value = FieldValue(name=self.name, role=self.role, field_type=self)
+            field_value = FieldValue(
+                name=self.name, role=self.role, field_type=self)
         if self.allowable_field_types:
             field_value.allowable_field_type_id = self.allowable_field_types[0].id
             field_value.allowable_field_type = self.allowable_field_types[0]
@@ -274,8 +279,10 @@ class FieldValue(ModelBase, FieldMixin):
         allowable_field_type=HasOne("AllowableFieldType"),
         item=HasOne("Item", ref="child_item_id"),
         sample=HasOne("Sample", ref="child_sample_id"),
-        operation=HasOne("Operation", callback="find_field_parent", ref="parent_id"),
-        parent_sample=HasOne("Sample", callback="find_field_parent", ref="parent_id"),
+        operation=HasOne(
+            "Operation", callback="find_field_parent", ref="parent_id"),
+        parent_sample=HasOne(
+            "Sample", callback="find_field_parent", ref="parent_id"),
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
         successors=HasManyThrough("Operation", "Wire"),
@@ -323,13 +330,15 @@ class FieldValue(ModelBase, FieldMixin):
         self.sample = None
         self.item = None
         self.container = None
-        self.object_type = None  # object_type is not included in the deserialization/serialization
+        # object_type is not included in the deserialization/serialization
+        self.object_type = None
 
         if field_type:
             self.set_field_type(field_type)
 
         if any([value, sample, item, container]):
-            self._set_helper(value=value, sample=sample, item=item, container=container)
+            self._set_helper(value=value, sample=sample,
+                             item=item, container=container)
         super().__init__(**vars(self))
 
     @property
@@ -361,13 +370,15 @@ class FieldValue(ModelBase, FieldMixin):
                        " in {}".format(self.item.object_type.name)
             else:
                 item = ""
-            print('{}{}.{}:{}{}'.format(pre, self.role, self.name, self.sample.name, item))
+            print('{}{}.{}:{}{}'.format(pre, self.role,
+                                        self.name, self.sample.name, item))
         elif self.value:
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
     def _set_helper(self, value=None, sample=None, container=None, item=None):
         if item and container and item.object_type_id != container.id:
-            raise AquariumModelError("Item {} is not in container {}".format(item.id, str(container)))
+            raise AquariumModelError(
+                "Item {} is not in container {}".format(item.id, str(container)))
         if value:
             self.value = value
         if item:
@@ -383,25 +394,28 @@ class FieldValue(ModelBase, FieldMixin):
             self.object_type = container
 
     def set_value(self, value=None, sample=None, container=None, item=None):
-        self._set_helper(value=value, sample=sample, container=container, item=item)
-
+        self._set_helper(value=value, sample=sample,
+                         container=container, item=item)
 
         if any([sample, container, item]):
             afts = self.field_type.allowable_field_types
             if self.sample:
-                afts = filter_list(afts, sample_type_id=self.sample.sample_type_id)
+                afts = filter_list(
+                    afts, sample_type_id=self.sample.sample_type_id)
             if self.object_type:
                 afts = filter_list(afts, object_type_id=self.object_type.id)
             if not afts:
                 available_afts = self.field_type.allowable_field_types
-                raise AquariumModelError("No allowable field types found for {} '{}'. Available afts: {}".format(self.role, self.name, available_afts))
+                raise AquariumModelError("No allowable field types found for {} '{}'. Available afts: {}".format(
+                    self.role, self.name, available_afts))
             if len(afts) > 1:
                 warnings.warn("More than one AllowableFieldType found that matches {}".format(
                     self.dump(only=('name', 'role', 'id'), partial=True)))
             elif len(afts) == 1:
                 self.set_allowable_field_type(afts[0])
             else:
-                raise AquariumModelError("No allowable field type found for {} '{}'".format(self.role, self.name))
+                raise AquariumModelError(
+                    "No allowable field type found for {} '{}'".format(self.role, self.name))
         return self
 
     def set_operation(self, op):
@@ -570,7 +584,8 @@ class Operation(ModelBase):
             self.field_values.append(fv)
 
         # set the value, finds allowable_field_types, etc.
-        fv.set_value(value=value, sample=sample, item=item, container=container)
+        fv.set_value(value=value, sample=sample,
+                     item=item, container=container)
         return self
 
     @property
@@ -616,7 +631,8 @@ class OperationType(ModelBase, HasCode):
     )
 
     def instance(self, xpos=None, ypos=None):
-        operation = Operation(operation_type_id=self.id, status='planning', x=xpos, y=ypos)
+        operation = Operation(operation_type_id=self.id,
+                              status='planning', x=xpos, y=ypos)
         operation.operation_type = self
         operation.init_field_values()
         return operation
@@ -688,10 +704,7 @@ class Plan(ModelBase, PlanValidator):
         return wires
 
     def create(self):
-        result = self.session.utils.create_plan(self)
-
-    def save(self):
-        result = self.session.utils.save_plan(self)
+        return self.session.utils.create_plan(self)
 
     def submit(self, user, budget):
         result = self.session.utils.submit_plan(self, user, budget)

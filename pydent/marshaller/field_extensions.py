@@ -3,7 +3,6 @@ Module containing custom :class:`marshmallow.fields`.
 """
 
 import json
-from copy import deepcopy
 from marshmallow import fields, ValidationError
 
 
@@ -79,10 +78,10 @@ class Relation(fields.Nested):
         if nested_obj:
             if isinstance(nested_obj, list):
                 dumped = []
-                for x in nested_obj:
+                for model in nested_obj:
                     xdumped = None
-                    if x is not None:
-                        xdumped = dump(x)
+                    if model is not None:
+                        xdumped = dump(model)
                     dumped.append(xdumped)
             else:
                 dumped = dump(nested_obj)
@@ -91,6 +90,7 @@ class Relation(fields.Nested):
     def __repr__(self):
         return "<{} (model={}, callback={}, params={})>".format(self.__class__.__name__,
                                                                 self.nested, self.callback, self.params)
+
 
 fields.Relation = Relation
 fields.JSON = JSON

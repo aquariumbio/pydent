@@ -70,7 +70,7 @@ class AqHTTP(object):
         except requests.exceptions.MissingSchema as error:
             raise TridentLoginError("Aquairum URL {0} incorrectly formatted. {1}".format(
                 self.aquarium_url, error.args[0]))
-        except requests.exceptions.ConnectTimeout as error:
+        except requests.exceptions.ConnectTimeout:
             raise TridentTimeoutError("Aquarium took too long to respond during login. Make sure "
                                       "the url {} is correct. Alternatively, use Session.set_timeout"
                                       " to increase the request timeout.".format(self.aquarium_url))
@@ -98,7 +98,8 @@ class AqHTTP(object):
         """Clears the request history."""
         self.request_history = {}
 
-    def _serialize_request(self, url, method, body):
+    @staticmethod
+    def _serialize_request(url, method, body):
         return json.dumps({
             "url": url,
             "method": method,
@@ -142,33 +143,36 @@ class AqHTTP(object):
             result = self.request_history.get(key, None)
         if result is None:
             result = self._requests_session.request(method, url_build(self.aquarium_url, path), timeout=timeout,
-                                                        **kwargs)
+                                                    **kwargs)
             self.request_history[key] = result
         return self._request_to_json(result)
 
-    def _request_to_json(self, result):
+    @staticmethod
+    def _request_to_json(result):
         """Turns :class:`requests.Request` instance into a json. Raises custom exception if not."""
         try:
             result_json = result.json()
         except json.JSONDecodeError:
-            from bs4 import BeautifulSoup
-            # print(BeautifulSoup(result.content, 'html.parser').prettify())
             raise TridentRequestError(
                 "<StatusCode: {code} ({reason})> "
                 "Response is not JSON formatted. "
                 "Trident may not be properly connected to the server. "
-                "Verify login credentials.\nContent:\n{content}".format(code=result.status_code, reason=result.reason, content=result.content))
+                "Verify login credentials.\nContent:\n{content}".format(code=result.status_code, reason=result.reason,
+                                                                        content=result.content))
         if "errors" in result_json:
             raise TridentRequestError(
-                "Request: {}\n{}\n{}".format(result.request.body, result, result_json['errors'])
+                "Request: {}\n{}\n{}".format(
+                    result.request.body, result, result_json['errors'])
             )
         return result_json
 
-    def _disallow_null_in_json(self, json_data):
+    @staticmethod
+    def _disallow_null_in_json(json_data):
         """Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if json data being sent
         contains a null value"""
         if None in json_data.values():
-            raise TridentJSONDataIncomplete("JSON data {} contains a null value.".format(json_data))
+            raise TridentJSONDataIncomplete(
+                "JSON data {} contains a null value.".format(json_data))
 
     def post(self, path, json_data=None, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
         """
@@ -182,12 +186,15 @@ class AqHTTP(object):
         :type timeout: int
         :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
         :type get_from_history_ok: boolean
+        :param allow_none: if False, throw error if json_data contains a null or None value
+        :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
         :return: json
         :rtype: dict
         """
-        return self.request("post", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, allow_none=True, **kwargs)
+        return self.request("post", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok,
+                            allow_none=allow_none, **kwargs)
 
     def put(self, path, json_data=None, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
         """
@@ -201,12 +208,15 @@ class AqHTTP(object):
         :type timeout: int
         :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
         :type get_from_history_ok: boolean
+        :param allow_none: if False, throw error if json_data contains a null or None value
+        :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
         :return: json
         :rtype: dict
         """
-        return self.request("put", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
+        return self.request("put", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok,
+                            allow_none=allow_none, **kwargs)
 
     def get(self, path, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
         """
@@ -218,12 +228,15 @@ class AqHTTP(object):
         :type timeout: int
         :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
         :type get_from_history_ok: boolean
+        :param allow_none: if False, throw error if json_data contains a null or None value
+        :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
         :return: json
         :rtype: dict
         """
-        return self.request("get", path, timeout=timeout, get_from_history_ok=get_from_history_ok, **kwargs)
+        return self.request("get", path, timeout=timeout, get_from_history_ok=get_from_history_ok,
+                            allow_none=allow_none, **kwargs)
 
     def __repr__(self):
         return "<{}({}, {})>".format(self.__class__.__name__, self.login, self.aquarium_url)

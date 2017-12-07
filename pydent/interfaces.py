@@ -31,14 +31,14 @@ Example:
     # creates samples from a list of samples by calling method "samples" in CreateInterface
 """
 
-import os
 import warnings
 
 import inflection
 
 from pydent.base import ModelRegistry
 from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
-from pydent.utils import underscore, pluralize, url_build
+from pydent.utils import url_build
+from inflection import pluralize, underscore
 
 
 class SessionInterface(object):
@@ -62,7 +62,6 @@ class SessionInterface(object):
         self.session = session
 
 
-# TODO: do we need this interface???
 class UtilityInterface(SessionInterface):
     """
     Misc. requests for creating, updating, etc.
@@ -76,56 +75,73 @@ class UtilityInterface(SessionInterface):
     #     return self.aqhttp.post("sample_types.json", sample_type.dump(relations=('field_types',)))
 
     def create_operation_type(self, operation_type):
+        """Creates a new operation type"""
         op_data = operation_type.dump(relations=('field_types',))
         result = self.aqhttp.post('operation_type.json', json_data=op_data)
         operation_type.reload(result)
         return operation_type
 
     def estimate_plan_cost(self, plan):
+        """Estimates the plan cost"""
         result = self.aqhttp.post('launcher/estimate', {'id': plan.id})
         total = 0
         for operation in plan.operations:
             for cost in result['costs']:
                 if cost['id'] == operation.id:
                     operation.cost = cost
-                    total += (cost['labor'] * cost['labor_rate'] + cost['materials']) * cost['markup_rate']
+                    total += (cost['labor'] * cost['labor_rate'] +
+                              cost['materials']) * cost['markup_rate']
         return total
 
     def create_plan(self, plan):
+        """Saves a plan"""
         user_query = "?user_id=" + str(self.session.current_user.id)
         plan_json = plan.to_save_json()
-        result = self.aqhttp.post('plans.json' + user_query, json_data=plan_json)
+        result = self.aqhttp.post(
+            'plans.json' + user_query, json_data=plan_json)
         plan.reload(result)
         return plan
 
     def replan(self, plan_id):
-        result = self.aqhttp.get('plans/replan/{plan_id}'.format(plan_id=plan_id))
+        """Copies a plan"""
+        result = self.aqhttp.get(
+            'plans/replan/{plan_id}'.format(plan_id=plan_id))
         plan_copy = self.session.Plan.load(result)
         return plan_copy
 
     def batch_operations(self, operation_ids):
+        """Batches operations from a list of operation_ids"""
         self.aqhttp.post('operations/batch', json_data=operation_ids)
 
     def unbatch_operations(self, operation_ids):
+        """Unbatches operations from a list of operation_ids"""
         self.aqhttp.post('operations/batch', json_data=operation_ids)
 
-    def step_operations(self):
-        self.aqhttp.get('operations/step')
+    # def step_operations(self):
+    #     """Steps operations"""
+    #     self.aqhttp.get('operations/step')
 
     def set_operation_status(self, operation_id, status):
-        self.aqhttp.get('operations/{oid}/status/{status}'.format(oid=operation_id, status=status))
+        """Sets an operation's status"""
+        self.aqhttp.get(
+            'operations/{oid}/status/{status}'.format(oid=operation_id, status=status))
 
     def job_debug(self, job_id):
+        """Runs debug on a job with id=job_id"""
         self.aqhttp.get('krill/debug/{jid}'.format(jid=job_id))
 
     def submit_plan(self, plan, user, budget):
+        """Submits a plan"""
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
         result = self.aqhttp.get('plans/start/' + str(plan.id) +
                                  budget_query + user_query)
+        return result
 
     def update_code(self, code):
-        controller = inflection.underscore(inflection.pluralize(code.parent_class))
+        """Updates code for a operation_type"""
+        controller = inflection.underscore(
+            inflection.pluralize(code.parent_class))
 
         code_data = {
             "id": code.parent_id,
@@ -138,7 +154,8 @@ class UtilityInterface(SessionInterface):
             code.parent_id = result["parent_id"]
             code.updated_at = result["updated_at"]
         else:
-            raise TridentRequestError("Unable to update code object {}".format(code_data))
+            raise TridentRequestError(
+                "Unable to update code object {}".format(code_data))
 
     def compatible_items(self, sample_id, object_type_id):
         """Find items compatible with the field value"""
@@ -164,6 +181,7 @@ class ModelInterface(SessionInterface):
 
     @property
     def model_name(self):
+        """Alias for self.model.__name__"""
         return self.model.__name__
 
     def _post_json(self, data, get_from_history_ok=False):
@@ -175,7 +193,8 @@ class ModelInterface(SessionInterface):
         data_dict.update(data)
 
         try:
-            post_response = self.aqhttp.post('json', json_data=data_dict, get_from_history_ok=get_from_history_ok)
+            post_response = self.aqhttp.post(
+                'json', json_data=data_dict, get_from_history_ok=get_from_history_ok)
         except TridentRequestError as e:
             warnings.warn(e.args)
             return None
@@ -185,6 +204,8 @@ class ModelInterface(SessionInterface):
         return self.load(post_response)
 
     def load(self, post_response):
+        """Loads model instance(s) from data. Model instances will be of class defined by self.model. If
+        data is a list, will return a list of model instances."""
         many = isinstance(post_response, list)
         models = self.model.load(
             post_response, many=many)
@@ -197,10 +218,12 @@ class ModelInterface(SessionInterface):
         return models
 
     def get(self, path):
+        """Makes a generic get request"""
         response = self.aqhttp.get(path)
         return self.load(response)
 
     def find_by_id_or_name(self, id_name_or_model):
+        """Finds a model by name or id. If argument is already a model, return that model"""
         if isinstance(id_name_or_model, str):
             return self.find_by_name(id_name_or_model)
         elif isinstance(id_name_or_model, int):
