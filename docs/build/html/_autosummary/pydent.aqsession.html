@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydent.aqsession &#8212; Trident 0.2a documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pydent.base" href="pydent.base.html" />
+    <link rel="prev" title="pydent.aqhttp" href="pydent.aqhttp.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydent.aqsession">
+<span id="pydent-aqsession"></span><h1>pydent.aqsession<a class="headerlink" href="#module-pydent.aqsession" title="Permalink to this headline">¶</a></h1>
+<p>Session class for interacting with Trident and Aquarium</p>
+<p>This module defines the AqSession class, which is the main entry point for accessing
+Trident&#8217;s request methods. Multiple session instances can be created using a users
+Aquarium login information. From there, the session instance is used to make http
+requests (like finding models, updating plans, etc.)</p>
+<p>AqSession creates SessionInterfaces which can make http requests to Aquarium but
+does not itself make the requests.</p>
+<p>Interfaces are accessed by:</p>
+<ol class="arabic simple">
+<li>session.&lt;ModelName&gt; - access the model interface</li>
+<li>session.create - access the create interface</li>
+<li>session.update - access the update interface</li>
+</ol>
+<p class="rubric">Functions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">confirm</span></code>([message])</td>
+<td>Display a confirmation prompt.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">prompt</span></code>([message])</td>
+<td>Get input from the user and return it.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">AqHTTP</span></code>(login,&nbsp;password,&nbsp;aquarium_url)</td>
+<td>Defines a session/connection to Aquarium.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-obj docutils literal"><span class="pre">AqSession</span></code></a>(login,&nbsp;password,&nbsp;aquarium_url[,&nbsp;name])</td>
+<td>Holds a AqHTTP with login information.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">ModelInterface</span></code>(model_name,&nbsp;aqhttp,&nbsp;session)</td>
+<td>Makes requests using AqHTTP that are model specific.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">ModelRegistry</span></code>(name,&nbsp;bases,&nbsp;selfdict)</td>
+<td>Stores a list of models that can be accessed by name.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">UtilityInterface</span></code>(aqhttp,&nbsp;session)</td>
+<td>Misc.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="pydent.aqsession.AqSession">
+<em class="property">class </em><code class="descclassname">pydent.aqsession.</code><code class="descname">AqSession</code><span class="sig-paren">(</span><em>login</em>, <em>password</em>, <em>aquarium_url</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Holds a AqHTTP with login information. Creates SessionInterfaces for models.</p>
+<dl class="docutils">
+<dt>e.g.</dt>
+<dd><p class="first">session1 = AqSession(username, password, aquairum_url)
+session1.User.find(1)</p>
+<blockquote class="last">
+<div>&lt;User(id=1,...)&gt;</div></blockquote>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pydent.aqsession.AqSession.current_user">
+<code class="descname">current_user</code><a class="headerlink" href="#pydent.aqsession.AqSession.current_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current User associated with this session</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydent.aqsession.AqSession.interactive">
+<em class="property">classmethod </em><code class="descname">interactive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.interactive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.interactive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Login using prompts and a hidden password (<strong>****</strong>)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.model_interface">
+<code class="descname">model_interface</code><span class="sig-paren">(</span><em>model_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.model_interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.model_interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns model interface by name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqSession.models">
+<code class="descname">models</code><a class="headerlink" href="#pydent.aqsession.AqSession.models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all models available</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.set_timeout">
+<code class="descname">set_timeout</code><span class="sig-paren">(</span><em>timeout_in_seconds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.set_timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.set_timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the request timeout.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api_reference.html">API Reference</a><ul>
+      <li>Previous: <a href="pydent.aqhttp.html" title="previous chapter">pydent.aqhttp</a></li>
+      <li>Next: <a href="pydent.base.html" title="next chapter">pydent.base</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/pydent.aqsession.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Justin Vrana, Eric Klavins, Ben Keller.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/_autosummary/pydent.aqsession.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Trident’s documentation! &#8212; Trident 0.2a documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api_reference.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-trident-s-documentation">
+<h1>Welcome to Trident&#8217;s documentation!<a class="headerlink" href="#welcome-to-trident-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">Trident Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#basic">Basic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#deserializing">Deserializing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#serializing">Serializing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#planning">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html#misc">Misc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="DeveloperNotes.html">Developer Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="DeveloperNotes.html#how-do-requests-happen">How do requests happen?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DeveloperNotes.html#notes-on-models">Notes on Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DeveloperNotes.html#model-fields">Model Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DeveloperNotes.html#relationships">Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DeveloperNotes.html#serialization-deserialization">Serialization/Deserialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tests.html">Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tests.html#test-coverage">Test Coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tests.html#testing-with-live-and-fake-connections">Testing with live and fake connections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingDocs.html">Creating and updating documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CreatingDocs.html#updating-sphinx-documentation">Updating sphinx documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="readme">
+<h1>ReadMe<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Python &gt; 3.4</li>
+<li>an Aquarium login</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Clone or download this repo from
+<a class="reference external" href="https://github.com/klavinslab/trident">https://github.com/klavinslab/trident</a></li>
+<li>cd to directory containing trident</li>
+<li>run <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code> or <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span> <span class="pre">--upgrade</span></code></li>
+</ol>
+</div>
+<div class="section" id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="logging-in">
+<h3>Logging in<a class="headerlink" href="#logging-in" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span>
+
+<span class="c1"># open a session</span>
+<span class="n">mysession</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;www.aquarium_nursery.url&quot;</span><span class="p">)</span>
+
+<span class="c1"># find a user</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">mysession</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># print the user data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="models">
+<h3>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">mysession</span><span class="o">.</span><span class="n">models</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="finding-models">
+<h4>Finding models<a class="headerlink" href="#finding-models" title="Permalink to this headline">¶</a></h4>
+<p><strong>find_by_name</strong> - <code class="docutils literal"><span class="pre">nursery.SampleType.find_by_name(&quot;Primer&quot;)</span></code></p>
+<p><strong>find by id</strong> - <code class="docutils literal"><span class="pre">nursery.SampleType.find(1)</span></code></p>
+<p><strong>where</strong> - <code class="docutils literal"><span class="pre">nursery.SampleType.where({'name':</span> <span class="pre">'Primer'})</span></code></p>
+<p><strong>all</strong> - <code class="docutils literal"><span class="pre">nursery.SampleType.all()</span></code></p>
+<p><strong>Getting nested data</strong></p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># samples are linked to sample_type</span>
+<span class="n">primer_type</span> <span class="o">=</span> <span class="n">mysession</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Primer&quot;</span><span class="p">)</span>
+<span class="n">primers</span> <span class="o">=</span> <span class="n">primer_type</span><span class="o">.</span><span class="n">samples</span>
+
+<span class="c1"># and sample type is linked to sample</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">primers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sample_type</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Available nested relationships</strong></p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">primer_type</span> <span class="o">=</span> <span class="n">mysession</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">primer_type</span><span class="o">.</span><span class="n">relationships</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Trident&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readme">ReadMe</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li><a class="reference internal" href="#logging-in">Logging in</a></li>
+<li><a class="reference internal" href="#models">Models</a><ul>
+<li><a class="reference internal" href="#finding-models">Finding models</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="api_reference.html" title="next chapter">API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Justin Vrana, Eric Klavins, Ben Keller.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
