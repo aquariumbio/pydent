@@ -167,6 +167,22 @@ Serializing
     }
     """
 
+**complex serializing**
+
+.. code:: python
+
+    # deserialize operations and wires. For wires, also include source and destination
+    # field_values. For operation.field_values, include allowable_field_type and operation_type.
+    # for operation_type, only serialize name
+
+    json_data = plan.dump(include={
+        'operations': {
+           'field_values': 'allowable_field_type',
+           'operation_type': {'opts': {'only': ['name']}},
+        },
+        'wires': {"source", "destination"}
+    })
+
 Planning
 --------
 

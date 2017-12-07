@@ -11,6 +11,7 @@ pydent.interfaces
    
       pluralize
       underscore
+      url_build
    
    
 
@@ -20,36 +21,10 @@ pydent.interfaces
 
    .. autosummary::
    
-      Account
-      AllowableFieldType
-      Budget
-      Code
-      Collection
-      DataAssociation
-      FieldType
-      FieldValue
-      Group
-      Invoice
-      Item
-      Job
-      JobAssociation
-      Library
-      Membership
       ModelInterface
       ModelRegistry
-      ObjectType
-      Operation
-      OperationType
-      Plan
-      PlanAssociation
-      Sample
-      SampleType
       SessionInterface
-      Upload
-      User
-      UserBudgetAssociation
       UtilityInterface
-      Wire
    
    
 

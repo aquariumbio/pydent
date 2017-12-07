@@ -5,6 +5,12 @@ pydent.aqhttp
 
    
    
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      url_build
+   
    
 
    
