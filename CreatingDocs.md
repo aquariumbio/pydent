@@ -22,11 +22,9 @@ website.
 
 ## Updating sphinx documentation
 
-To convert .md files located in the trident folder to .rst file (required
-by Sphinx), run:
+To build documentation from code, simply run
 
-```bash
-./ scripts/convert_md_to_rst.sh
 ```
-
-Following that, to update
+cd trident/docs
+bash build_docs.sh
+```
