@@ -58,8 +58,8 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
+# source_suffix = '.rst'
 
 # The master toctree document.
 master_doc = 'index'
@@ -109,7 +109,9 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'page_width': 'auto'
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -174,4 +176,7 @@ texinfo_documents = [
 ]
 
 
+source_parsers = {
+   '.md': 'recommonmark.parser.CommonMarkParser',
+}
 

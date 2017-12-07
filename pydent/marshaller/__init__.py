@@ -11,7 +11,7 @@ Submodules
     :toctree: _autosummary
 
     marshallerbase
-    relation
+    field_extensions
     schema
     exceptions
 

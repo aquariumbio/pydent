@@ -10,8 +10,7 @@ pydent.models
    .. autosummary::
    
       add_schema
-      choose_item
-      compatible_items
+      filter_list
       magiclist
    
    
@@ -28,6 +27,7 @@ pydent.models
       Code
       Collection
       DataAssociation
+      FieldMixin
       FieldType
       FieldValue
       Group
@@ -42,6 +42,7 @@ pydent.models
       JobAssociation
       Library
       Many
+      Membership
       ModelBase
       ObjectType
       One
@@ -49,13 +50,22 @@ pydent.models
       OperationType
       Plan
       PlanAssociation
+      PlanValidator
       Sample
       SampleType
+      Upload
       User
+      UserBudgetAssociation
       Wire
    
    
 
    
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      AquariumModelError
    
    

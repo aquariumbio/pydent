@@ -266,7 +266,7 @@ class FieldType(ModelBase, FieldMixin):
             field_value.allowable_field_type = self.allowable_field_types[0]
         return field_value
 
-
+# TODO: Somehow, wires_as_source is returning a non-empty string for newly created field values
 @add_schema
 class FieldValue(ModelBase, FieldMixin):
     """A FieldValue model. One of the more complex models."""
@@ -679,6 +679,7 @@ class Plan(ModelBase, PlanValidator):
     def get_wires(self, *args):
         return self.all_wires
 
+    # This is not being deserialized properly
     @property
     @magiclist
     def all_wires(self):

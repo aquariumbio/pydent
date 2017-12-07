@@ -1,4 +1,19 @@
-"""Misc. utilities for pydent"""
+"""Utilities
+
+==========
+utils
+==========
+
+Submodules
+==========
+
+.. autosummary::
+    :toctree: _autosummary
+
+    magiclist
+    plan_validator
+
+"""
 
 from pydent.utils.magiclist import MagicList, magiclist
 from inflection import underscore
@@ -35,8 +50,8 @@ def filter_list(objlist, **kwargs):
 #                 new_dict[key] = filter_dictionary(val, filter_function)
 #         return new_dict
 
-def ignore_none(d):
-    return filter_dictionary(d, lambda k, v: v is not None)
-
-def ignore_empty(d):
-    return filter_dictionary(d, lambda k, v: v != [])
+# def ignore_none(d):
+#     return filter_dictionary(d, lambda k, v: v is not None)
+#
+# def ignore_empty(d):
+#     return filter_dictionary(d, lambda k, v: v != [])

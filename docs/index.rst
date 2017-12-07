@@ -7,6 +7,8 @@ Welcome to Trident's documentation!
 ===================================
 
 .. include:: ../README.rst
+.. include:: ../DeveloperNotes.md
+.. include:: ../Examples.md
 
 
 Read More

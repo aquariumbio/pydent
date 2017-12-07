@@ -16,13 +16,21 @@ pydent.relationships
       HasMany
       HasManyGeneric
       HasManyThrough
+      HasMixin
       HasOne
+      MagicList
       Many
+      ModelBase
       One
-      Relation
    
    
 
    
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      MarshallerRelationshipError
    
    

@@ -5,6 +5,14 @@ pydent.base
 
    
    
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      magiclist
+      underscore
+      wraps
+   
    
 
    
@@ -25,6 +33,7 @@ pydent.base
 
    .. autosummary::
    
+      AquariumModelError
       TridentModelNotFoundError
    
    
