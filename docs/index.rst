@@ -20,6 +20,8 @@ Table of Contents
    api_reference
    Examples
    DeveloperNotes
+   Tests
+   CreatingDocs
 
 .. include:: README.rst
 
