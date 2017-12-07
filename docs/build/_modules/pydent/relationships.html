@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydent.relationships &#8212; Trident 0.2a documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pydent.relationships</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Nested model relationships for Aquarium models.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">inflection</span>
+
+<span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
+<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">fields</span>
+<span class="kn">from</span> <span class="nn">pydent.marshaller.exceptions</span> <span class="k">import</span> <span class="n">MarshallerRelationshipError</span>
+<span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">MagicList</span>
+
+
+<div class="viewcode-block" id="One"><a class="viewcode-back" href="../../_autosummary/pydent.relationships.html#pydent.relationships.One">[docs]</a><span class="k">class</span> <span class="nc">One</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">Relation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Defines a single relationship with another model. Subclass of :class:`pydent.marshaller.Relation`.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        One initializer. Uses &quot;find&quot; callback by default.</span>
+
+<span class="sd">        :param model: target model</span>
+<span class="sd">        :type model: basestring</span>
+<span class="sd">        :param args: other args for fields.Nested relationship</span>
+<span class="sd">        :type args: ...</span>
+<span class="sd">        :param attr: attribute to use to find model</span>
+<span class="sd">        :type attr: basestring</span>
+<span class="sd">        :param kwargs: other kwargs for fields.Nested relationship</span>
+<span class="sd">        :type kwargs: ...</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="n">ModelBase</span><span class="o">.</span><span class="n">find_callback</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Many"><a class="viewcode-back" href="../../_autosummary/pydent.relationships.html#pydent.relationships.Many">[docs]</a><span class="k">class</span> <span class="nc">Many</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">Relation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Defines a many relationship with another model. Subclass of :class:`pydent.marshaller.Relation`.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Many initializer. Uses &quot;where&quot; callback by default.</span>
+
+<span class="sd">        :param model: target model</span>
+<span class="sd">        :type model: basestring</span>
+<span class="sd">        :param args: other args for fields.Nested relationship</span>
+<span class="sd">        :type args: ...</span>
+<span class="sd">        :param attr: attribute to use to find model</span>
+<span class="sd">        :type attr: basestring</span>
+<span class="sd">        :param kwargs: other kwargs for fields.Nested relationship</span>
+<span class="sd">        :type kwargs: ...</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="n">ModelBase</span><span class="o">.</span><span class="n">where_callback</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MagicList</span><span class="p">,</span>
+                         <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HasMixin"><a class="viewcode-back" href="../../_autosummary/pydent.relationships.html#pydent.relationships.HasMixin">[docs]</a><span class="k">class</span> <span class="nc">HasMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mixin for adding the &#39;set_ref&#39; method. &#39;set_ref&#39; builds a &#39;ref&#39; and &#39;attr&#39; attributes&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HasMixin.set_ref"><a class="viewcode-back" href="../../_autosummary/pydent.relationships.html#pydent.relationships.HasMixin.set_ref">[docs]</a>    <span class="k">def</span> <span class="nf">set_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the &#39;ref&#39; and &#39;attr&#39; attributes. These attributes are used to defined parameters for</span>
+<span class="sd">        :class:`pydent.marshaller.Relation` classes.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            relation # HasOne, HasMany, or HasManyGeneric, etc.</span>
+<span class="sd">            relation.set_ref(ref=&quot;parent_id&quot;)</span>
+<span class="sd">            relation.ref    # &quot;parent_id&quot;</span>
+<span class="sd">            relation.attr   # &quot;id&quot;</span>
+
+<span class="sd">            relation.set_ref(model=&quot;SampleType&quot;)</span>
+<span class="sd">            relation.ref   # &quot;sample_type_id&quot;</span>
+<span class="sd">            relation.attr  # &quot;id&quot;</span>
+
+<span class="sd">            relation.set_ref(attr=&quot;name&quot;, model=&quot;OperationType&quot;)</span>
+<span class="sd">            relation.ref   # &quot;operation_type_name</span>
+<span class="sd">            relation.attr  # &quot;name&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+        <span class="k">if</span> <span class="n">ref</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">MarshallerRelationshipError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;attr&#39; is None. Relationship &#39;</span><span class="si">{}</span><span class="s2">&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">model</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">MarshallerRelationshipError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;model&#39; is None. Relationship &#39;</span><span class="si">{}</span><span class="s2">&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inflection</span><span class="o">.</span><span class="n">underscore</span><span class="p">(</span><span class="n">model</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">HasOne</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">One</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        HasOne initializer. Uses the &quot;get_one_generic&quot; callback and automatically</span>
+<span class="sd">        assigns attribute as in the following:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            model=&quot;SampleType&quot;, attr=&quot;id&quot; # equiv. to &#39;lambda self: self.sample_type_id.&#39;</span>
+
+<span class="sd">        :param model: model name of the target model</span>
+<span class="sd">        :type model: basestring</span>
+<span class="sd">        :param attr: attribute to append underscored model name</span>
+<span class="sd">        :type attr: basestring</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">slf</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;HasOne (model=</span><span class="si">{}</span><span class="s2">, params=lambda self: self.</span><span class="si">{}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nested</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="HasManyThrough"><a class="viewcode-back" href="../../_autosummary/pydent.relationships.html#pydent.relationships.HasManyThrough">[docs]</a><span class="k">class</span> <span class="nc">HasManyThrough</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">Many</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A relationship using an intermediate association model. Establishes a Many-to-Many relationship with another model&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">through</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
+
+        <span class="c1"># e.g. PlanAssociation &gt;&gt; plan_associations</span>
+        <span class="n">through_model_attr</span> <span class="o">=</span> <span class="n">inflection</span><span class="o">.</span><span class="n">pluralize</span><span class="p">(</span>
+            <span class="n">inflection</span><span class="o">.</span><span class="n">underscore</span><span class="p">(</span><span class="n">through</span><span class="p">))</span>
+
+        <span class="c1"># e.g. {&quot;id&quot;: x.operation_id for x in self.plan_associations</span>
+        <span class="k">def</span> <span class="nf">params</span><span class="p">(</span><span class="n">slf</span><span class="p">):</span> <span class="k">return</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span>
+                                                <span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)]}</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HasMany"><a class="viewcode-back" href="../../_autosummary/pydent.relationships.html#pydent.relationships.HasMany">[docs]</a><span class="k">class</span> <span class="nc">HasMany</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">Many</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A relationship that establishes a One-to-Many relationship with another model&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">ref_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        HasMany relationship initializer</span>
+
+<span class="sd">        :param model: Model class name for this relationship</span>
+<span class="sd">        :type model: str</span>
+<span class="sd">        :param ref_model: Reference model name of the model owning this relationships.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            @add_schema</span>
+<span class="sd">            class Author(ModelBase):</span>
+<span class="sd">                fields=dict(books=HasMany(&quot;Book&quot;, &quot;Author&quot;))  # will search for books using &#39;author_id&#39;</span>
+
+<span class="sd">        :type ref_model: str</span>
+<span class="sd">        :param attr: Attribute name to use with reference model (default=&#39;id&#39;). For example &quot;Author&quot; =&gt; &#39;author_id&#39;</span>
+<span class="sd">        :type attr: str</span>
+<span class="sd">        :param ref: The reference to use to find models. If none, a reference is built from the &#39;ref_model&#39; and &#39;attr&#39; parameters</span>
+<span class="sd">        :type ref: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ref_model</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MarshallerRelationshipError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">ref_model</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">params</span><span class="p">(</span><span class="n">slf</span><span class="p">):</span> <span class="k">return</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)}</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HasManyGeneric"><a class="viewcode-back" href="../../_autosummary/pydent.relationships.html#pydent.relationships.HasManyGeneric">[docs]</a><span class="k">class</span> <span class="nc">HasManyGeneric</span><span class="p">(</span><span class="n">HasMany</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Establishes a One-to-Many relationship using &#39;parent_id&#39; as the attribute to find other models.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Justin Vrana, Eric Klavins, Ben Keller.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

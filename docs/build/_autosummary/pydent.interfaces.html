@@ -1,0 +1,368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pydent.interfaces &#8212; Trident 0.2a documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pydent.models" href="pydent.models.html" />
+    <link rel="prev" title="pydent.exceptions" href="pydent.exceptions.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydent.interfaces">
+<span id="pydent-interfaces"></span><h1>pydent.interfaces<a class="headerlink" href="#module-pydent.interfaces" title="Permalink to this headline">¶</a></h1>
+<p>Session interfaces for interacting with Aquarium.</p>
+<p>This module contains session interfaces for interacting with an Aquarium server. Session interfaces
+are created by an AqSession instance and use an AqHTTP instance to make http requests to Aquarium.</p>
+<p>Generally, Trident users should be unable to directly access AqHTTP method to prevent potentially
+damaging requests or revealing sensitive information. Session interfaces define a particular way
+an AqHTTP is used.</p>
+<p>Interfaces are roughly grouped into:</p>
+<ol class="arabic simple">
+<li>ModelInterface - for finding and retrieving Aquarium models and information</li>
+<li>CreateInterface - for creating new objects (e.g. new Samples) in Aquarium</li>
+<li>UpdateInterface - for updating objects in Aquarium</li>
+</ol>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><p class="first">session1 = AqSession(login, password, aquarium_url)
+session1.User
+# =&gt; a ModelInterface instance</p>
+<p>session1.User.find(1)
+# use model interface with User to find User(id=1)</p>
+<p>session1.aqhttp.post(...)
+# not allowed</p>
+<p>session1.create
+# =&gt; a CreateInterface</p>
+<p class="last">session1.create.samples(list_of_samples)
+# creates samples from a list of samples by calling method &#8220;samples&#8221; in CreateInterface</p>
+</dd>
+</dl>
+<p class="rubric">Functions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">pluralize</span></code>(word)</td>
+<td>Return the plural form of a word.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">underscore</span></code>(word)</td>
+<td>Make an underscored, lowercase form from the expression in the string.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">url_build</span></code>(\*parts)</td>
+<td>Join parts of a url into a string</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.ModelInterface" title="pydent.interfaces.ModelInterface"><code class="xref py py-obj docutils literal"><span class="pre">ModelInterface</span></code></a>(model_name,&nbsp;aqhttp,&nbsp;session)</td>
+<td>Makes requests using AqHTTP that are model specific.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">ModelRegistry</span></code>(name,&nbsp;bases,&nbsp;selfdict)</td>
+<td>Stores a list of models that can be accessed by name.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-obj docutils literal"><span class="pre">SessionInterface</span></code></a>(aqhttp,&nbsp;session)</td>
+<td>Generic session interface.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.interfaces.UtilityInterface" title="pydent.interfaces.UtilityInterface"><code class="xref py py-obj docutils literal"><span class="pre">UtilityInterface</span></code></a>(aqhttp,&nbsp;session)</td>
+<td>Misc.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Exceptions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentJSONDataIncomplete</span></code>(\*args,&nbsp;\*\*kwargs)</td>
+<td>JSON data contains a null value and may be imcomplete.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentRequestError</span></code>(\*args,&nbsp;\*\*kwargs)</td>
+<td>There was an ambiguous exception that occured handling your request.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="pydent.interfaces.ModelInterface">
+<em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">ModelInterface</code><span class="sig-paren">(</span><em>model_name</em>, <em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
+<p>Makes requests using AqHTTP that are model specific. Establishes a connection between a session object and an
+Aquarium model.</p>
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface._post_json">
+<code class="descname">_post_json</code><span class="sig-paren">(</span><em>data</em>, <em>get_from_history_ok=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface._post_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface._post_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Posts a json request to this interface&#8217;s session. Attaches raw json and this session instance
+to the models it retrieves.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.all">
+<code class="descname">all</code><span class="sig-paren">(</span><em>rest=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all models</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.array_query">
+<code class="descname">array_query</code><span class="sig-paren">(</span><em>method</em>, <em>args</em>, <em>rest</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.array_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.array_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds models based on a query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.find">
+<code class="descname">find</code><span class="sig-paren">(</span><em>model_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds model by id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.find_by_id_or_name">
+<code class="descname">find_by_id_or_name</code><span class="sig-paren">(</span><em>id_name_or_model</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.find_by_id_or_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.find_by_id_or_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a model by name or id. If argument is already a model, return that model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.find_by_name">
+<code class="descname">find_by_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.find_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.find_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds model by name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a generic get request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>post_response</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads model instance(s) from data. Model instances will be of class defined by self.model. If
+data is a list, will return a list of model instances.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.interfaces.ModelInterface.model_name">
+<code class="descname">model_name</code><a class="headerlink" href="#pydent.interfaces.ModelInterface.model_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for self.model.__name__</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.patch">
+<code class="descname">patch</code><span class="sig-paren">(</span><em>model_id</em>, <em>json_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.patch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a patch or update from json_data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.where">
+<code class="descname">where</code><span class="sig-paren">(</span><em>criteria</em>, <em>methods=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#ModelInterface.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.where" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds models based on criteria</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydent.interfaces.SessionInterface">
+<em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">SessionInterface</code><span class="sig-paren">(</span><em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#SessionInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.SessionInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Generic session interface.</p>
+<p>Trident users should only be able to make requests through a SessionInterface to avoid making arbitrary and
+potentially damaging http requests.</p>
+<p>Initializer for SessionInterface</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>aqhttp</strong> (<a class="reference internal" href="pydent.aqhttp.html#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><em>AqHTTP</em></a>) &#8211; aqhttp instance for this interface</li>
+<li><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) &#8211; session instance for this interface</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pydent.interfaces.UtilityInterface">
+<em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">UtilityInterface</code><span class="sig-paren">(</span><em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
+<p>Misc. requests for creating, updating, etc.</p>
+<p>Initializer for SessionInterface</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>aqhttp</strong> (<a class="reference internal" href="pydent.aqhttp.html#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><em>AqHTTP</em></a>) &#8211; aqhttp instance for this interface</li>
+<li><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) &#8211; session instance for this interface</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.batch_operations">
+<code class="descname">batch_operations</code><span class="sig-paren">(</span><em>operation_ids</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.batch_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.batch_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Batches operations from a list of operation_ids</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.compatible_items">
+<code class="descname">compatible_items</code><span class="sig-paren">(</span><em>sample_id</em>, <em>object_type_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.compatible_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.compatible_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find items compatible with the field value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.create_operation_type">
+<code class="descname">create_operation_type</code><span class="sig-paren">(</span><em>operation_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.create_operation_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.create_operation_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new operation type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.create_plan">
+<code class="descname">create_plan</code><span class="sig-paren">(</span><em>plan</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.create_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.create_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves a plan</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.estimate_plan_cost">
+<code class="descname">estimate_plan_cost</code><span class="sig-paren">(</span><em>plan</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.estimate_plan_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.estimate_plan_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the plan cost</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.job_debug">
+<code class="descname">job_debug</code><span class="sig-paren">(</span><em>job_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.job_debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.job_debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs debug on a job with id=job_id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.replan">
+<code class="descname">replan</code><span class="sig-paren">(</span><em>plan_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.replan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.replan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies a plan</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.set_operation_status">
+<code class="descname">set_operation_status</code><span class="sig-paren">(</span><em>operation_id</em>, <em>status</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.set_operation_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.set_operation_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets an operation&#8217;s status</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.submit_plan">
+<code class="descname">submit_plan</code><span class="sig-paren">(</span><em>plan</em>, <em>user</em>, <em>budget</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.submit_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.submit_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submits a plan</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.unbatch_operations">
+<code class="descname">unbatch_operations</code><span class="sig-paren">(</span><em>operation_ids</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.unbatch_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.unbatch_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unbatches operations from a list of operation_ids</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface.update_code">
+<code class="descname">update_code</code><span class="sig-paren">(</span><em>code</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#UtilityInterface.update_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.update_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates code for a operation_type</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api_reference.html">API Reference</a><ul>
+      <li>Previous: <a href="pydent.exceptions.html" title="previous chapter">pydent.exceptions</a></li>
+      <li>Next: <a href="pydent.models.html" title="next chapter">pydent.models</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/pydent.interfaces.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Justin Vrana, Eric Klavins, Ben Keller.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/_autosummary/pydent.interfaces.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
