@@ -12,7 +12,9 @@ tests_require = [
 
 install_requires = [
     'inflection',
-    'marshmallow', 'requests', 'prompt_toolkit'
+    'marshmallow',
+    'requests',
+    'prompt_toolkit'
 ]
 
 def parse_version_file():
@@ -33,7 +35,7 @@ setup(
         title=ver['title'],
         name='pydent',
         version=ver['version'],
-        packages=["pydent"],
+        packages=["pydent", "pydent.marshaller", "pydent.utils"],
         url=ver['url'],
         license='',
         author=ver['author'],

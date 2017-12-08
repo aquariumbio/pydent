@@ -8,7 +8,7 @@ to maintain the same style of documentation as:
         """
         Initializer for SessionInterface
 
-        :param aqhttp: aqhttp instance for this interface
+        :param aqhttp: aqhttp instance for this interfaceppi
         :type aqhttp: AqHTTP
         :param session: session instance for this interface
         :type session: AqSession

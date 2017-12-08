@@ -35,9 +35,9 @@ import warnings
 
 import inflection
 
-from pydent.base import ModelRegistry
-from pydent.exceptions import TridentRequestError, TridentJSONDataIncomplete
-from pydent.utils import url_build
+from .base import ModelRegistry
+from .exceptions import TridentRequestError, TridentJSONDataIncomplete
+from .utils import url_build
 from inflection import pluralize, underscore
 
 
