@@ -1,13 +1,18 @@
 # Trident: Aquarium API Scripting
 
 Trident is the python API scripting for Aquarium.
-More extensive documentation can be found here: [Documentation](docs/index.html)
-Other documents can be found in the links below.
 
-1. [Documentation](docs/index.html)
 2. [Examples](Examples.md)
 3. [Developer Notes](DeveloperNotes.md)
 3. [Tests](Tests.md)
+4. [Updating Documentation](CreatingDocs.md)
+
+Sphinx documentation is located in `docs/index.html`. This documentation will be be hosted Github soon.
+
+## Requirements
+
+* Python > 3.4
+* an Aquarium login
 
 ## Installation
 
