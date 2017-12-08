@@ -100,7 +100,7 @@ class HasCode(object):
         codes = [c for c in self.codes if c.name == name]
         codes = [c for c in codes if not hasattr(
             c, "child_id") or c.child_id is None]
-        if len(codes) > 1:
+        if len(codes) > 0:
             return codes[-1]
 
 
