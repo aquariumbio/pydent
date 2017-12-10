@@ -59,6 +59,7 @@ class AqSession(object):
         while not confirm_register:
             password = None
             confirm_password = None
+            name = prompt('enter name for session: ')
             username = prompt('enter username: ')
             url = prompt('enter url: ')
             msg = ''
@@ -73,8 +74,7 @@ class AqSession(object):
                 'Confirm registration for {}@{}? (y/n): '.format(username, url))
             print()
         print("username {} registered".format(username))
-        login = dict(login=username, password=password, aquarium_url=url)
-        return cls(**login)
+        return cls(login=username, password=password, aquarium_url=url, name=name)
 
     @property
     def current_user(self):

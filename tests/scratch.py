@@ -4,8 +4,18 @@ from pydent.aqhttp import AqHTTP
 
 nursery = AqSession("vrana", "Mountain5", "http://52.27.43.242:81/")
 
-# d = nursery.get('operation_types/1077/stats')
+ot = nursery.OperationType.all()[-1]
 
-ft = nursery.FieldType.find(9070)
+# print(ot.operation_type)
 
-ft.print(all_relations=True)
+print(ot.protocol)
+
+print(ot.documentation)
+
+print(ot.precondition)
+
+print(ot.cost_model)
+
+lib = nursery.Library.all()[-1]
+
+print(lib.source)

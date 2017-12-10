@@ -314,8 +314,6 @@ class MarshallerBase(object):
                 # msg += "{}".format(self.dump())
                 e.args = tuple(list(e.args) + [msg])
                 warnings.warn(' '.join(e.args))
-            except TypeError as e:
-                pass
             if save_attr:
                 setattr(self, item, ret)
             return ret

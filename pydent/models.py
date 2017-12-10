@@ -103,6 +103,9 @@ class HasCode(object):
         if len(codes) > 0:
             return codes[-1]
 
+    def get_code_callback(self, model_name, name):
+        return self.code(name)
+
 
 class FieldMixin(object):
     """Mixin for finding FieldType and FieldValue relationships"""
@@ -156,8 +159,15 @@ class Budget(ModelBase):
 class Code(ModelBase):
     """A Code model"""
     fields = dict(
-        user=HasOne("User")
+        user=HasOne("User"),
+        operation_type=One("OperationType", callback="get_parent", params=None),
+        library=One("Library", callback="get_parent", params=None)
     )
+
+    def get_parent(self, parent_class, *args):
+        if parent_class != self.parent_class:
+            return None
+        return self.session.model_interface(self.parent_class).find(self.parent_id)
 
     def update(self):
         # since they may not always be tied to specific parent
@@ -495,7 +505,8 @@ class JobAssociation(ModelBase):
 class Library(ModelBase, HasCode):
     """A Library model"""
     fields = dict(
-        codes=HasManyGeneric("Code")
+        codes=HasManyGeneric("Code"),
+        source=One("Code", callback="get_code_callback", params="source")
     )
 
 
@@ -628,7 +639,11 @@ class OperationType(ModelBase, HasCode):
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
         field_types=HasManyGeneric("FieldType"),
-        codes=HasManyGeneric("Code")
+        codes=HasManyGeneric("Code"),
+        protocol=One("Code", callback="get_code_callback", params="protocol"),
+        cost_model=One("Code", callback="get_code_callback", params="cost_model"),
+        documentation=One("Code", callback="get_code_callback", params="documentation"),
+        precondition=One("Code", callback="get_code_callback", params="precondition"),
     )
 
     def instance(self, xpos=None, ypos=None):

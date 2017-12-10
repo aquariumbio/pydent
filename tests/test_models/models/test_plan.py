@@ -9,7 +9,7 @@ def test_plan_constructor():
     assert g.status == 'planning'
     print(g.plan_associations)
     assert g.operations == None
-    assert g.wires == None
+    assert g.wires == []
 
     g = Plan(name="MyPlan", status='running')
     assert g.name == 'MyPlan'

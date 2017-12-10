@@ -126,8 +126,11 @@ class HasManyThrough(HasMixin, Many):
             inflection.underscore(through))
 
         # e.g. {"id": x.operation_id for x in self.plan_associations
-        def params(slf): return {attr: [getattr(x, self.ref
-                                                ) for x in getattr(slf, through_model_attr)]}
+        def params(slf):
+            through_model = getattr(slf, through_model_attr)
+            if through_model is None:
+                return None
+            return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
         super().__init__(model, params=params, **kwargs)
 
 
