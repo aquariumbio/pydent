@@ -2,12 +2,12 @@
 
 Trident is the python API scripting for Aquarium.
 
-2. [Examples](Examples.md)
-3. [Developer Notes](DeveloperNotes.md)
-3. [Tests](Tests.md)
-4. [Updating Documentation](CreatingDocs.md)
+1. [Examples](Examples.md)
+1. [Developer Notes](DeveloperNotes.md)
+1. [Tests](Tests.md)
+1. [Updating Documentation](CreatingDocs.md)
 
-Sphinx documentation is located in `docs/index.html`. This documentation will be be hosted Github soon.
+Sphinx documentation is located in `docs/index.html`.
 
 ## Requirements
 
@@ -16,13 +16,14 @@ Sphinx documentation is located in `docs/index.html`. This documentation will be
 
 ## Installation
 
-1. Clone or download this repo from https://github.com/klavinslab/trident
-2. cd to directory containing trident
-3. run `pip install .` or `pip install . --upgrade`
+1. Clone or download [this repo](https://github.com/klavinslab/trident)
+1. cd to directory containing trident
+1. run `pip install .` or `pip install . --upgrade`
 
 ## Basic Usage
 
 ### Logging in
+
 ```python
 from pydent import AqSession
 
@@ -37,22 +38,23 @@ print(u)
 ```
 
 ### Models
+
 ```python
 print(mysession.models)
 ```
 
 #### Finding models
 
-**find_by_name** - `nursery.SampleType.find_by_name("Primer")`
+* By name: `nursery.SampleType.find_by_name("Primer")`
 
-**find by id** - `nursery.SampleType.find(1)`
+* By ID: `nursery.SampleType.find(1)`
 
-**where** - `nursery.SampleType.where({'name': 'Primer'})`
+* By property: `nursery.SampleType.where({'name': 'Primer'})`
 
-**all** - `nursery.SampleType.all()`
+* All models: `nursery.SampleType.all()`
 
+#### Getting nested data
 
-**Getting nested data**
 ```python
 # samples are linked to sample_type
 primer_type = mysession.SampleType.find_by_name("Primer")
@@ -63,7 +65,8 @@ p = primers[0]
 print(p.sample_type)
 ```
 
-**Available nested relationships**
+#### Available nested relationships
+
 ```python
 primer_type = mysession.SampleType.find(1)
 print(primer_type.relationships)
