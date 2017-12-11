@@ -7,7 +7,7 @@ Trident is the python API scripting for Aquarium.
 1. [Tests](Tests.md)
 1. [Updating Documentation](CreatingDocs.md)
 
-Sphinx documentation is located in `docs/index.html`.
+API documentation is located in `docs/index.html`.
 
 ## Requirements
 
