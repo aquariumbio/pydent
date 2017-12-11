@@ -1,6 +1,7 @@
 Trident
 ===
-The API to Aquarium
+The Python API to Aquarium.
+For JS see trident-js.
 
 Python
 ---
@@ -15,13 +16,4 @@ Next, run the tests in the test directory as follows:
 
 ```python
 > python test/basics.py
-```
-
-Node.js
----
-
-From within the js directory, run tests as follows:
-
-```javascript
-> node test/get_sample_types.js
 ```
