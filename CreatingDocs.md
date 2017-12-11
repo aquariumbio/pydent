@@ -1,7 +1,16 @@
-# Creating and updating documentation
+# Generating documentation
 
-Most functions, classes and modules are documented in the code. Try
-to maintain the same style of documentation as:
+To build documentation from code, simply run
+
+```
+cd trident/docs
+bash build_docs.sh
+```
+
+# Documentating code
+
+Most functions, classes and modules are documented in the code. 
+Maintain the same style of documentation as:
 
 ```python
     def __init__(self, aqhttp, session):
@@ -20,11 +29,4 @@ to maintain the same style of documentation as:
 These docstrings are parsed and used by Sphinx to create the documentation
 website.
 
-## Updating sphinx documentation
 
-To build documentation from code, simply run
-
-```
-cd trident/docs
-bash build_docs.sh
-```

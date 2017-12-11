@@ -1,9 +1,9 @@
 # Trident Examples
 
-## Basic
+## Basic Usage
 
+### Logging in
 
-**logging in**
 ```python
 from pydent import AqSession
 
@@ -11,13 +11,15 @@ nursery = AqSession("username", "password", "url")
 production = AqSession("username", "password", "url2")
 ```
 
-**interactive login**
+And, to login interactively
+
 ```python
 nursery = AqSession.interactive()
 # enters interactive shell
 ```
 
-**getting models**
+### Model queries
+
 ```python
 session # your AqSession
 
@@ -37,7 +39,8 @@ session.Operations.where({'name': 'Transfer to 96 Well Plate'})
 session.models
 ```
 
-**set timout**
+### Setting a query timeout
+
 ```python
 # raises timeout exception if request takes too long
 try:
@@ -52,11 +55,14 @@ print("Great!")
 
 ## Deserializing
 
-**deserializing nested data**
+### Deserializing nested data
 
-pydent knows to automatically deserialize 'sample_type' to a 'SampleType' model
-from pydent.models import Sample, SampleType
+pydent knows to automatically deserialize `sample_type` to a `SampleType` model
+
+
 ```python
+from pydent.models import Sample, SampleType
+
 # nested deserialization
 
 s = Sample.load({'id': 1, 'sample_type': {'id': 3}})
@@ -64,7 +70,8 @@ assert isinstance(s, Sample)
 assert isinstance(s.sample_type, SampleType)
 ```
 
-**deserializing with nested models**
+### Deserializing with nested models
+
 ```python
 Sample.load({
     'id': 1
@@ -72,7 +79,8 @@ Sample.load({
 }
 ```
 
-**find relationships using requests**
+### Find relationships using requests
+
 ```python
 from pydent.models import Sample, SampleType
 from pydent import AqSession
@@ -119,20 +127,23 @@ s.dump()
 """
 ```
 
-**serialize with *only* some fields**
+### Serialize with *only* some fields
+
 ```python
 s.dump(only=('data', 'name', 'description'))
 # {'name': 'IAA1-Nat-F', 'description': None, 'data': None}
 ```
 
-**serialize with some relations**
+### Serialize with some relationships
+
 ```python
 from pydent import pprint
 
 pprint(s.dump(relations=('items',)))
 ```
 
-**serialize with all relations**
+### Serialize with all relationships
+
 ```python
 from pydent import pprint
 
@@ -154,7 +165,8 @@ pprint(s.dump(all_relations=True))
 """
 ```
 
-**complex serializing**
+### complex serialization
+
 ```python
 # deserialize operations and wires. For wires, also include source and destination
 # field_values. For operation.field_values, include allowable_field_type and operation_type.
@@ -168,6 +180,7 @@ json_data = plan.dump(include={
     'wires': {"source", "destination"}
 })
 ```
+
 ## Planning
 
 ### Submitting a Plan
@@ -209,10 +222,12 @@ p.submit(session.current_user, session.current_user.budgets[0])
 print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
 ```
 
-## Misc
+## Miscellaneous
 
-**magic chaining**
-you can chain together attributes and function calls
+### Magic chaining
+
+You can chain together attributes and function calls:
+
 ```python
 [s.name for s in session.SampleType.find(1).samples][:10]
 pprint(session.SampleType.find(1).samples.name[:10])

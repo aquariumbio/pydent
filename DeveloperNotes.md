@@ -1,28 +1,25 @@
 # Developer Notes
 
-## How do requests happen?
+## Interfaces
 
-### AqHTTP
-All requests (POST, GET, PUT) happen through an pydent.aqhttp.AqHTTP
-instance, which stores a login, the aquarium url, and login data. AqHTTP
-makes generic requests to the Aquarium server.
+There are two main pydent interfaces:
 
-### Interfaces
-Rather than have direct access to AqHTTP and to avoid potentially harmful
-requests to Aquarium, special request interfaces are used
-to specify how these requests are made (pydent.interfaces).
+* `pydent.interfaces.ModelInterface` - used for finding models via `find`, `find_by_name`, `all`, or `where`
+* `pydent.interfaces.UtilityInterface` - used for other requests such as submitting plans, estimating plan costs, etc.
 
-There are two main interfaces:
-* **ModelInterface** - used for finding models via 'find', 'find_by_name', 'all', or 'where'
-* **UtilityInterface** - used for special and misc requests, such as
-submitting plans, estimating plan costs, etc.
 
-### Establishing an Interface
-Interfaces are created using a pydent.aqsession.AqSession instance.
-AqSession instances are created using a user's login information and stores
-a particular AqHTTP instance.
+All requests (POST, GET, PUT) happen through an `pydent.aqhttp.AqHTTP`
+instance, which stores a login, the aquarium url, and login data.
+But, rather than have direct access to `AqHTTP` and to avoid potentially harmful
+requests to Aquarium, the `pydent.interfaces` request interfaces are used
+to specify how these requests are made.
 
-For example, to establish a User Model interface and find a User with id=1:
+## Establishing an Interface
+Interfaces are created using a `pydent.aqsession.AqSession` instance.
+`AqSession` instances are created using a user's login information and stores
+a particular `AqHTTP` instance.
+
+For example, to establish a User Model interface and find a `User` with `id == 1`:
 
 ```python
 yoursession.User.find(1)
@@ -39,14 +36,13 @@ yoursession.utils.save_plan(myplan)
 ```
 
 Some model definitions already contain wrappers for using some interface,
-for example, "Plan" contains a wrapper for saving itself.
+for example, `Plan` contains a wrapper for saving itself:
 
-myplan.save()
 ```python
 myplane.save()
 ```
 
-## Notes on Models
+## Working with Models
 
 Most models can be initialized as follows:
 ```python
@@ -79,12 +75,12 @@ To see more information about serialization/deserialization, see Serialization/D
 
 ## Model Fields
 
-Models inherit the 'ModelBase' baseclass and are pre-loaded with a
-serialization/deserialization schema (via '@add_schema' decorator).
+Models inherit the `ModelBase` base class and are pre-loaded with a
+serialization/deserialization schema (via the `@add_schema` decorator).
 The attached schema controls how attributes are serialized and deserialized.
 
 Serialization/deserialization is controlled by the models schema. A
-model schema is automatically attached to models via the '@add_schema'
+model schema is automatically attached to models via the `@add_schema`
 decorator
 
 ```python
@@ -94,24 +90,26 @@ class Sample(ModelBase):
     pass
 ```
 
-If order for Trident to know what fields to serialize/deserialize, 'fields'
-need to be defined for the model. There are a number of ways to define
-fields for a model:
+In order for Trident to know what fields to serialize/deserialize, fields
+need to be defined for the model.
+There are a number of ways to define fields for a model:
 
-**Use the `load` class method**
+* *Use the `load` class method*
 
 ```python
     u = User.load({'name': 'GIJoe'})
 ```
 
-**Define it in the class definition using the 'fields' attribute'**
+1. *Define it in the class definition using the `fields` attribute*
+
 ```python
 @add_schema
 class Sample(ModelBase):
     fields=dict(name=fields.Str())
 ```
 
-**Establish in the __init__ using `super().__init__(**kwargs)` style**
+* *Establish in the `__init__` using `super().__init__(**kwargs)` style*
+
 ```python
 class Sample(ModelBase):
     def __init__(name=None):
@@ -120,7 +118,8 @@ class Sample(ModelBase):
         super().__init__(name=name, id=id)  # this creates a field called name
 ```
 
-**Implicitly track all init attributes using `super().__init__(**vars(self))`**
+* *Implicitly track all `init` attributes using `super().__init__(**vars(self))`*
+
 ```python
 class Sample(ModelBase):
     def __init__(name=None):
@@ -129,26 +128,27 @@ class Sample(ModelBase):
         super().__init__(**vars(self))
 ```
 
-### Notes on Editing or Creating Models
+## Editing or Creating Models
 
-* models must have the `@add_schema` class decorator
-* models inherit the `ModelBase` baseclass
-* if defining a custom `__init__`
-    * do not add positional arguments to `__init__`. The Marshaller does
+* Models must have the `@add_schema` class decorator
+* Models inherit the `ModelBase` baseclass
+* If defining a custom `__init__`
+  * do not add positional arguments to `__init__`. The Marshaller does
     not expect any positional arguments when deserializing data. Dictionary
     arguments are ok
-    * be sure to use `super().__init__`
-    * if you would like to include attributes in the serialization fields
+  * be sure to call `super().__init__`
+  * if you would like to include attributes in the serialization fields
     use `super().__init__(fieldname=whatever,...)`
-    * a short cut for tracking all attributes for serialization is to use
-    `super().__init__(**vars(self))`
-* fields (including relationships) are defined in the model's `fields` attribute,
-which expects a dictionary of field_names with Field models
+    (A short cut for tracking all attributes for serialization is to use
+    `super().__init__(**vars(self))`)
+
+* Fields (including relationships) are defined in the model's `fields` attribute,
+  which expects a dictionary of field_names with Field models
     * `pydent.marshaller.fields` is a module that contains a list of fields
-    including Str, Int, Boolean, etc. Establishing a field this way will ensure
-    that the attribute is properly validate. You'll notice that as of Dec 2017, Aquarium models
-    do not use this explicitly. If the need for validation arises, we can explicitly
-    define these fields
+    including `Str`, `Int`, `Boolean`, etc. 
+    Establishing a field this way will ensure that the attribute is properly validated. 
+    You'll notice that as of Dec 2017, Aquarium models do not use this explicitly. 
+    If the need for validation arises, we can explicitly define these fields
 
 ## Relationships
 
@@ -158,7 +158,7 @@ use the attached model session to retrieve the models through Aquarium.
 How these work isn't exactly straightforward and requires a little bit of explanation.
 
 There are HasOne, HasMany, HasManyGeneric, and HasManyThrough relationships which
-can be defined in the model definition in the 'fields' attribute. For example:
+can be defined in the model definition in the `fields` attribute. For example:
 
 ```python
 @add_schema
@@ -185,7 +185,7 @@ s.sample_type_id = 1
 assert isinstance(s.sample_type, SampleType)
 ```
 
-If forwhatever reason the *fullfillment* fails, Trident will return None
+If for whatever reason the *fullfillment* fails, Trident will return None
 
 ```python
 s = Sample.load({'sample_type_id': 100000000000})
@@ -214,39 +214,38 @@ HasMany `__init__` definition, params are established such that
 params = lambda x: {'sample_type_id': x.id}
 ```
 
-If a Sample with id=4 attempts to fullfill a sample_type relationship, it
+If a `Sample` with `id=4` attempts to fullfill a sample_type relationship, it
 finds the relationship params `lambda x: {'sample_type_id': x.id}`, passes
 in itself such that `params={'sample_type_id': 4}`. Those params are passed
 to the callback along with the model name
 
- `SampleType.where_callback('Sample', {'sample_type_id': 4})`.
+```python
+SampleType.where_callback('Sample', {'sample_type_id': 4})`
+```
 
-'where_callback' then
-uses a session instance to find Samples where {'sample_type_id': 4}.
+The function `where_callback` . uses a session instance to find all `Sample` objects where `{'sample_type_id': 4}`.
 
 You can also define custom callbacks for any relations. An example of this
-is the FieldType model with the operation_type and sample_type fields.
+is the `FieldType` model with the `operation_type` and `sample_type` fields.
 
 ## Serialization/Deserialization
 
 ### Serialization
 
-load
-load only
+* `load`
+* `load only`
 
 ### Deserialization
 
-dump only
-dump relations
-dump all_relations
-dump only dictionary
+* `dump only`
+* `dump relations`
+* `dump all_relations`
+* `dump only dictionary`
 
 ### Request History
 
 In an attempt to minimize unnecessary requests to Aquarium, Trident
-stores a 'request_history' in pydent.aqhttp.request_history. This means,
-for 'find', 'find_by_name', and 'where' will not make a new request if
+stores a request history in `pydent.aqhttp.request_history`. 
+This means calls to `find`, `find_by_name`, and `where` will not make a new request if
 an equivalent request has been previously made. Request history can
 be cleared using `session.clear_history()`
-
-I'm currently iffy on whether we should keep this behavior or not.
