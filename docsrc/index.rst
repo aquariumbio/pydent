@@ -17,11 +17,11 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
-   api_reference
-   examples
-   developer_notes
-   tests
-   creating_docs
+   user/examples
+   developer/api_reference
+   developer/developer_notes
+   developer/tests
+   developer/creating_docs
 
 .. include:: README.rst
 

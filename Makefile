@@ -25,6 +25,7 @@ html:
 	rm -rf $(SOURCEDIR)/_autosummary
 
 	# copy README.md to README.rst format for Sphinx documentation
+	# we can comment this out if we do not want to include the README.md in the sphinx documentation
 	pandoc --from=markdown --to=rst --output=$(SOURCEDIR)/README.rst README.md
 
 	# build the documentation
