@@ -33,6 +33,19 @@ class AqSession(object):
     """
 
     def __init__(self, login, password, aquarium_url, name=None):
+        """
+
+        :param login: the Aquarium login for the user
+        :type login: str
+        :param password: the password for the Aquarium login. This will not be stored anywhere. However,
+            login headers for Aquarium will be stored in .__aqhttp. This may change in the future with changes
+            authentication for the Aquarium API
+        :type password: str
+        :param aquarium_url: the http formatted Aquarium url
+        :type aquarium_url: str
+        :param name: (optional) name for this session
+        :type name: str or None
+        """
         self.name = name
         self.__aqhttp = AqHTTP(login, password, aquarium_url)
         self.__current_user = None
@@ -43,10 +56,12 @@ class AqSession(object):
 
     @property
     def url(self):
+        """Returns the aquarium_url for this session"""
         return self.__aqhttp.aquarium_url
 
     @property
     def login(self):
+        """Logs into aquarium, generating the necessary headers to perform requests to Aquarium"""
         return self.__aqhttp.login
 
     @classmethod
@@ -85,6 +100,12 @@ class AqSession(object):
         return self.__current_user
 
     def logged_in(self):
+        """
+        Returns whether the user is logged in.
+
+        :return: whether user is currently logged in
+        :rtype: boolean
+        """
         try:
             self.current_user
             return True
@@ -102,13 +123,16 @@ class AqSession(object):
 
     @property
     def utils(self):
+        """Instantiates a utility interface"""
         return UtilityInterface(self.__aqhttp, self)
 
     @staticmethod
-    def dispatch_list():
+    def _dispatch_list():
+        """List of available dispatch names (mainly for __dir__)"""
         return list(ModelRegistry.models.keys()) + [UtilityInterface.__name__]
 
-    def dispatcher(self, item):
+    def _dispatcher(self, item):
+        """Interprets an attribute name 'item' to the appropriate interface"""
         if item == UtilityInterface.__name__:
             return UtilityInterface(self.__aqhttp, self)
         elif item in ModelRegistry.models:
@@ -116,8 +140,9 @@ class AqSession(object):
         return None
 
     def __getattr__(self, item):
-        if item in self.__class__.dispatch_list():
-            return self.dispatcher(item)
+        """Override for dispatching interfaces using the .attribute syntax"""
+        if item in self.__class__._dispatch_list():
+            return self._dispatcher(item)
         return object.__getattribute__(self, item)
 
     def __repr__(self):
@@ -125,4 +150,4 @@ class AqSession(object):
 
     def __dir__(self):
         """Added expected keys for interactive interpreters,"""
-        return super().__dir__() + self.__class__.dispatch_list()
+        return super().__dir__() + self.__class__._dispatch_list()
