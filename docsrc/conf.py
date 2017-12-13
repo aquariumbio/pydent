@@ -65,9 +65,9 @@ source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
 # General information about the project.
-project = 'Trident'
+project = pydent.__title__
 copyright = '2017, Justin Vrana, Eric Klavins, Ben Keller'
-author = 'Justin Vrana, Eric Klavins, Ben Keller'
+author = pydent.__author__
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -1,5 +1,14 @@
-ReadMe
-======
+Trident: Aquarium API Scripting
+===============================
+
+Trident is the python API scripting for Aquarium.
+
+1. `Examples <Examples.md>`__
+2. `Developer Notes <DeveloperNotes.md>`__
+3. `Tests <Tests.md>`__
+4. `Updating Documentation <CreatingDocs.md>`__
+
+API documentation is located in ``docs/index.html``.
 
 Requirements
 ------------
@@ -10,8 +19,8 @@ Requirements
 Installation
 ------------
 
-1. Clone or download this repo from
-   https://github.com/klavinslab/trident
+1. Clone or download `this
+   repo <https://github.com/klavinslab/trident>`__
 2. cd to directory containing trident
 3. run ``pip install .`` or ``pip install . --upgrade``
 
@@ -44,15 +53,16 @@ Models
 Finding models
 ^^^^^^^^^^^^^^
 
-**find\_by\_name** - ``nursery.SampleType.find_by_name("Primer")``
+-  By name: ``nursery.SampleType.find_by_name("Primer")``
 
-**find by id** - ``nursery.SampleType.find(1)``
+-  By ID: ``nursery.SampleType.find(1)``
 
-**where** - ``nursery.SampleType.where({'name': 'Primer'})``
+-  By property: ``nursery.SampleType.where({'name': 'Primer'})``
 
-**all** - ``nursery.SampleType.all()``
+-  All models: ``nursery.SampleType.all()``
 
-**Getting nested data**
+Getting nested data
+^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -64,7 +74,8 @@ Finding models
     p = primers[0]
     print(p.sample_type)
 
-**Available nested relationships**
+Available nested relationships
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 

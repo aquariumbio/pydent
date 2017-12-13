@@ -18,10 +18,10 @@ Table of Contents
    :maxdepth: 2
 
    api_reference
-   Examples
-   DeveloperNotes
-   Tests
-   CreatingDocs
+   examples
+   developer_notes
+   tests
+   creating_docs
 
 .. include:: README.rst
 
