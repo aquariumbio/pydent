@@ -11,12 +11,14 @@ from pydent.marshaller import add_schema, fields
 
 
 def test_model_base():
+    """Upon instantiation, .session should be None"""
     m = ModelBase()
     assert m.session is None
 
 
 def test_record_id():
-
+    """Creating a ModelBase should create a new record id 'rid.' For each instance, a new 'rid' should be
+    created."""
     @add_schema
     class MyModel(ModelBase):
         pass
@@ -124,12 +126,14 @@ def test_no_model_in_registry():
 
 
 def test_find_no_session():
+    """ModelBase should raise AttributeError if no session is attacheded"""
     m = ModelBase()
     with pytest.raises(AttributeError):
         m.find_callback(None, None)
 
 
 def test_where_no_session():
+    """ModelBase should raise AttributeError if no session is attacheded"""
     m = ModelBase()
     with pytest.raises(AttributeError):
         m.where_callback(None, None)
