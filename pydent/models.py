@@ -97,6 +97,8 @@ class HasCode(object):
     """Access to latest code for OperationType, Library, etc."""
 
     def code(self, name):
+        if self.codes is None:
+            return None
         codes = [c for c in self.codes if c.name == name]
         codes = [c for c in codes if not hasattr(
             c, "child_id") or c.child_id is None]
