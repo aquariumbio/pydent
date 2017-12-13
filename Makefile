@@ -8,9 +8,6 @@ SPHINXPROJ    = Trident
 SOURCEDIR     = docsrc
 BUILDDIR      = docs
 
-# Custom variables
-GH_PAGES_SOURCES = docsrc
-
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
@@ -28,16 +25,4 @@ html:
 	@$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html"
-
-
-gh-pages:
-	git checkout gh-pages
-	rm -rf $(BUILDDIR) _sources _static
-	git checkout master $(GH_PAGES_SOURCES)
-	git reset HEAD
-	make html
-	mv -fv build/html/* ./
-	rm -rf $(GH_PAGES_SOURCES) build
-	git add -A
-	git ci -m "Generated gh-pages"
 
