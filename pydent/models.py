@@ -285,8 +285,6 @@ class FieldType(ModelBase, FieldMixin):
         afts = []
         if self.allowable_field_types:
             afts = self.allowable_field_types
-        sample_type = self.session.SampleType.find_by_id_or_name(sample_type)
-        object_type = self.session.ObjectType.find_by_id_or_name(object_type)
         ft = AllowableFieldType(
             field_type=self, sample_type=sample_type, object_type=object_type)
         afts.append(ft)
