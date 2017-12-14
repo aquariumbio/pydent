@@ -4,6 +4,7 @@ from pydent.base import ModelRegistry
 from pydent.aqhttp import AqHTTP
 from pydent.interfaces import ModelInterface, UtilityInterface
 from pydent.models import User
+from pydent.models import __all__ as all_models
 
 
 def test_session_models(fake_session):
@@ -23,7 +24,7 @@ def test_access_models_interface(fake_session):
     """Test accessibility of model interfaces"""
 
     # model interfaces
-    for model_name, model in ModelRegistry.models.items():
+    for model_name in all_models:
         interface = getattr(fake_session, model_name)
         assert isinstance(interface, ModelInterface)
 
@@ -32,7 +33,7 @@ def test_access_utils_interface(fake_session):
     """Test accesibility of create interface"""
 
     # create interface
-    assert isinstance(getattr(fake_session, UtilityInterface.__name__), UtilityInterface)
+    assert isinstance(fake_session.utils, UtilityInterface)
 
 
 # TODO: this is all muddled with models!

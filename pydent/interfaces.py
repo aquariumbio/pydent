@@ -218,20 +218,6 @@ class ModelInterface(SessionInterface):
         response = self.aqhttp.get(path)
         return self.load(response)
 
-    def find_by_id_or_name(self, id_name_or_model):
-        """
-        Finds a model by name or id.
-        If argument is already a model, return that model
-        """
-        if isinstance(id_name_or_model, str):
-            return self.find_by_name(id_name_or_model)
-        elif isinstance(id_name_or_model, int):
-            return self.find(id_name_or_model)
-        elif isinstance(id_name_or_model, self.model):
-            return id_name_or_model
-        raise TypeError("'id_or_name' must be a string or id or '{}'. Found '{}' type: {}".format(
-            id_name_or_model, self.model, type(id_name_or_model)))
-
     def find(self, model_id):
         """ Finds model by id """
         return self._post_json({"id": model_id}, get_from_history_ok=True)
@@ -282,7 +268,7 @@ class ModelInterface(SessionInterface):
             model_id=model_id, models=models_name), json_data=json_data)
         return result
 
-    def __call__(self, *args, **kwargs):
+    def new(self, *args, **kwargs):
         """Creates a new model instance"""
         instance = object.__new__(self.model)
         instance._session = None

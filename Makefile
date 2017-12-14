@@ -12,7 +12,7 @@ test:
 
 
 pylint:
-	pipenv run pylint pydent
+	pipenv run pylint -E pydent
 
 
 coverage:

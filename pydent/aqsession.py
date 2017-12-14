@@ -20,6 +20,7 @@ Interfaces are accessed by:
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
 from pydent.interfaces import ModelInterface, UtilityInterface
+from pydent.models import __all__ as allmodels
 from prompt_toolkit.shortcuts import confirm
 from prompt_toolkit import prompt
 
@@ -53,6 +54,10 @@ class AqSession(object):
         self.name = name
         self.__aqhttp = AqHTTP(login, password, aquarium_url)
         self.__current_user = None
+
+        # initialize model interfaces
+        for model_name in allmodels:
+            setattr(self, model_name, ModelInterface(model_name, self.__aqhttp, self))
 
     def set_timeout(self, timeout_in_seconds):
         """Sets the request timeout."""
@@ -135,28 +140,5 @@ class AqSession(object):
         """Instantiates a utility interface"""
         return UtilityInterface(self.__aqhttp, self)
 
-    @staticmethod
-    def _dispatch_list():
-        """List of available dispatch names (mainly for __dir__)"""
-        return list(ModelRegistry.models.keys()) + [UtilityInterface.__name__]
-
-    def _dispatcher(self, item):
-        """Interprets an attribute name 'item' to the appropriate interface"""
-        if item == UtilityInterface.__name__:
-            return UtilityInterface(self.__aqhttp, self)
-        elif item in ModelRegistry.models:
-            return self.model_interface(item)
-        return None
-
-    def __getattr__(self, item):
-        """Override for dispatching interfaces using the .attribute syntax"""
-        if item in self.__class__._dispatch_list():
-            return self._dispatcher(item)
-        return object.__getattribute__(self, item)
-
     def __repr__(self):
         return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self.__aqhttp)
-
-    def __dir__(self):
-        """Added expected keys for interactive interpreters,"""
-        return super().__dir__() + self.__class__._dispatch_list()
