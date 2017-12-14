@@ -480,7 +480,7 @@ class FieldValue(ModelBase, FieldMixin):
         if not first:
             index = -1
         items = self.compatible_items()
-        if len(items) > 0:
+        if items:
             item = items[index]
             self.set_value(item=item)
             return item
