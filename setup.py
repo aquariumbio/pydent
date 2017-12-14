@@ -5,9 +5,7 @@ from distutils.core import setup
 
 tests_require = [
     'pytest',
-    'pytest-runner',
-    'python-coveralls',
-    'pytest-pep8'
+    'pytest-cov'
 ]
 
 install_requires = [
