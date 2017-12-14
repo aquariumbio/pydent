@@ -7,8 +7,8 @@ Requirements
 -  python3.6
 -  pip
 
-pipenv installation (recommended)
----------------------------------
+pipenv installation
+-------------------
 
 It is recommended you install Trident using pipenv.
 `Pipenv <https://docs.pipenv.org/>`__ is now the officially
