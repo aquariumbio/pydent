@@ -62,7 +62,7 @@ class ModelRegistry(type):
         else:
             return ModelRegistry.models[model_name]
 
-    def __getattr__(self, item):
+    def __getattr__(cls, item):
         """
         Special warning for attribute errors.
         Its likely that user may have wanted to use a model interface instead of
@@ -70,7 +70,7 @@ class ModelRegistry(type):
         """
         raise AttributeError("'{0}' has no attribute '{1}'. Method may be a ModelInterface method."
                              " Did you mean '<yoursession>.{0}.{1}'?"
-                             .format(self.__name__, item))
+                             .format(cls.__name__, item))
 
 
 class ModelBase(MarshallerBase, metaclass=ModelRegistry):
