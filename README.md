@@ -1,4 +1,5 @@
 # Trident: Aquarium API Scripting
+=======
 
 Trident is the python API scripting for Aquarium.
 
@@ -70,3 +71,4 @@ print(p.sample_type)
 primer_type = mysession.SampleType.find(1)
 print(primer_type.relationships)
 ```
+
