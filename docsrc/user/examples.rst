@@ -246,11 +246,18 @@ Magic chaining
 
 You can chain together attributes and function calls:
 
-\`\`\`python [s.name for s in session.SampleType.find(1).samples][:10]
-pprint(session.SampleType.find(1).samples.name[:10])
+.. code-block:: python
 
-['IAA1-Nat-F', 'prKL1573', 'prKL744', 'prKL1927', 'prKL1928',
-'prKL1929', 'prKL1930', 'prKL506', 'prKL1708', 'lacI\_h2'] \`\`\`
+    # using tradiational list comprehension
+    [s.name for s in session.SampleType.find(1).samples][:10]
+
+    # or using magicchain
+    pprint(session.SampleType.find(1).samples.name[:10])
+
+    # returns
+    # ['IAA1-Nat-F', 'prKL1573', 'prKL744', 'prKL1927', 'prKL1928',
+    # 'prKL1929', 'prKL1930', 'prKL506', 'prKL1708', 'lacI\_h2']
+
 
 .. code:: python
 

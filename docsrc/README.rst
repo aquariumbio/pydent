@@ -16,15 +16,14 @@ Requirements
 ------------
 
 -  Python > 3.4
--  an Aquarium login
+-  An Aquarium login
 
 Quick installation
 ------------------
 
-1. Clone or download `this
-   repo <https://github.com/klavinslab/trident>`__
-2. cd to directory containing trident
-3. run ``pip install .`` or ``pip install . --upgrade``
+1. ``git clone git@github.com:klavinslab/trident.git``
+2. ``cd trident``
+3. ``make``
 
 Basic Usage
 -----------
