@@ -23,7 +23,6 @@ Table of Contents
    developer/api_reference
    developer/api_notes
    developer/tests
-   developer/creating_docs
 
 .. include:: README.rst
 
