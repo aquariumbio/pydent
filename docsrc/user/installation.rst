@@ -11,7 +11,7 @@ pipenv installation (recommended)
 ---------------------------------
 
 It is recommended you install Trident using pipenv.
-`**Pipenv** <https://docs.pipenv.org/>`__ is now the officially
+`Pipenv <https://docs.pipenv.org/>`__ is now the officially
 recommended Python packaging tool from Python.org. It will install
 packages on a *per project basis* by creating a virtualenv for your
 package containing all of trident's necessary dependencies.

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Trident's documentation!
+Trident: The Python Aquarium API
 ===================================
 
 .. toctree::
@@ -19,10 +19,10 @@ Table of Contents
 
    user/installation
    user/examples
-   developer/contributing
    developer/api_reference
    developer/api_notes
+   developer/contributing
    developer/tests
 
-.. include:: README.rst
+
 

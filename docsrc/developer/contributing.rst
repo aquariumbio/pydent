@@ -5,10 +5,9 @@ pipenv and installation notes
 -----------------------------
 
 It is recommended you install Trident using pipenv.
-`**Pipenv** <https://docs.pipenv.org/>`__ is now the officially
+`Pipenv <https://docs.pipenv.org/>`__ is now the officially
 recommended Python packaging tool from Python.org. This avoids low level
-management of pip and virtualenv. See https://docs.pipenv.org/ for more
-information.
+management of pip and virtualenv.
 
 To install a new dependency to trident, while in the trident root
 directory:
@@ -97,17 +96,7 @@ This will use sphinx (http://www.sphinx-doc.org/en/stable/) to
 autogenerate documentation from trident's docstrings using source
 documents located in ``docsrc.`` Documentation will be built in ``docs``
 
-More commands?
-~~~~~~~~~~~~~~
 
-We will likely have more command such as updating the project, tagging a
-release, etc.
-
-Releases/Tagging
-----------------
-
-We haven't released anything yet. But when we do, some information about
-making a release will go here.
 
 Documentation
 -------------
@@ -138,20 +127,12 @@ For most methods, classes, and modules, use the form:
     self.aqhttp = aqhttp
     self.session = session
 
-If documentation is obvious, use the short form of:
+If a method returns a value use the ``:returns`` tag to describe the returned 
+values, and if it throws an exception use the ``:raises`` tag to list the 
+exception classes thrown.
 
-.. code:: python
+Making a Release
+----------------
 
-    def add_numbers(x, y):
-        """This adds two numbers together"""
-        return x + y
-
-Submitting issues
------------------
-
-For now, just make an issue if something is wrong.
-
-Making a pull request
----------------------
-
-Information about how to fork and make a pull request will go here.
+We haven't released anything yet. But when we do, some information about
+making a release will go here.
