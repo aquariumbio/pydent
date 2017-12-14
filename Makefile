@@ -1,7 +1,9 @@
+PIP=pip3
+
 .PHONY: docs  # necessary so it doesn't look for 'docs/makefile html'
 
 init:
-	pip install pipenv --upgrade
+	$(PIP) install pipenv --upgrade
 	pipenv install --dev --skip-lock
 
 
