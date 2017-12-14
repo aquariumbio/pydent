@@ -2,12 +2,14 @@
 
 
 class PlanValidator(object):
-    """Will be inherited by Plan. Used to validate whether a plan is ready to
-    submit
+    """
+    Used to validate whether a plan is ready to submit.
     """
 
     def __init__(self, model, data):
-        """Initialize Plan Validate attributes"""
+        """
+        Creates a PlanValidator for the ?
+        """
         self.verbose = False
         self.messages = []
         self.name = ""
@@ -16,21 +18,35 @@ class PlanValidator(object):
         super(PlanValidator, self).__init__(model, data)
 
     def log(self, msg):
-        """Log a message"""
+        """
+        Log a message.
+
+        :param msg: the message to be logged
+        :type msg: String
+        """
         if self.verbose:
             print(msg)
         self.messages.append(msg)
 
     def warning(self, msg):
-        """Log a warning"""
+        """
+        Log a warning.
+
+        :param msg: the warning message to be logged
+        :type msg: String
+        """
         self.log("WARNING: " + msg)
 
     def clear_messages(self):
-        """Clear messages"""
+        """
+        Clear messages. 
+        """
         self.messages = []
 
     def validate(self, verbose=False):
-        """Check if the plan is valid"""
+        """
+        Check if the plan is valid.
+        """
         self.verbose = verbose
         self.clear_messages()
         self.mark_leaves()
