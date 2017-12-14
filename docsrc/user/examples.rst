@@ -1,10 +1,11 @@
 Trident Examples
 ================
 
-Basic
------
+Basic Usage
+-----------
 
-**logging in**
+Logging in
+~~~~~~~~~~
 
 .. code:: python
 
@@ -13,14 +14,15 @@ Basic
     nursery = AqSession("username", "password", "url")
     production = AqSession("username", "password", "url2")
 
-**interactive login**
+And, to login interactively
 
 .. code:: python
 
     nursery = AqSession.interactive()
     # enters interactive shell
 
-**getting models**
+Model queries
+~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -41,7 +43,8 @@ Basic
     # list all available models
     session.models
 
-**set timout**
+Setting a query timeout
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -58,12 +61,15 @@ Basic
 Deserializing
 -------------
 
-**deserializing nested data**
+Deserializing nested data
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-pydent knows to automatically deserialize 'sample\_type' to a
-'SampleType' model from pydent.models import Sample, SampleType
+pydent knows to automatically deserialize ``sample_type`` to a
+``SampleType`` model
 
 .. code:: python
+
+    from pydent.models import Sample, SampleType
 
     # nested deserialization
 
@@ -71,7 +77,8 @@ pydent knows to automatically deserialize 'sample\_type' to a
     assert isinstance(s, Sample)
     assert isinstance(s.sample_type, SampleType)
 
-**deserializing with nested models**
+Deserializing with nested models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -80,7 +87,8 @@ pydent knows to automatically deserialize 'sample\_type' to a
         'sample_type': SampleType(id=1, name="primer")
     }
 
-**find relationships using requests**
+Find relationships using requests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -129,14 +137,16 @@ Serializing
      'updated_at': '2015-11-29T07:55:20-08:00'}
     """
 
-**serialize with *only* some fields**
+Serialize with *only* some fields
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     s.dump(only=('data', 'name', 'description'))
     # {'name': 'IAA1-Nat-F', 'description': None, 'data': None}
 
-**serialize with some relations**
+Serialize with some relationships
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -144,7 +154,8 @@ Serializing
 
     pprint(s.dump(relations=('items',)))
 
-**serialize with all relations**
+Serialize with all relationships
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -167,7 +178,8 @@ Serializing
     }
     """
 
-**complex serializing**
+complex serialization
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -226,10 +238,14 @@ Submitting a Plan
 
     print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
 
-Misc
-----
+Miscellaneous
+-------------
 
-**magic chaining** you can chain together attributes and function calls
+Magic chaining
+~~~~~~~~~~~~~~
+
+You can chain together attributes and function calls:
+
 \`\`\`python [s.name for s in session.SampleType.find(1).samples][:10]
 pprint(session.SampleType.find(1).samples.name[:10])
 
