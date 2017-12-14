@@ -117,37 +117,19 @@ class MarshallerBase(object):
         """Dumps the model instance to a String. For parameter options, refer
         to :class:`pydent.marshaller.schema.DynamicSchema`
 
-        :param tuple only: A list or tuple of fields to serialize. If `None`, all non relationship
-            fields will be serialized.
-        :param str|list|tuple|set|dict include: Nested relationships to include in the serialization. This accepts a string (for one
-        nested relationship), a tuple (for multiple relationships) or a dict (for recursively applied serialization).
-        A dictionary of dump options 'opts' can be recursively applied to each serialization.
-
-        For example:
-
-        .. code-block:: python
-
-            mymodel.dump(include={'sample_type': { 'samples': {}, 'opts': {'only': ['name']} } })
-
-        :param tuple exclude: A list or tuple of fields to exclude from the
-            serialized result. Nested fields can be represented with dot delimiters.
-        :param tuple relations: A list or tuple of fields to include during
-            serialization. Unlike 'include', this will not be applied recursively
+        :param tuple only: A list or tuple of fields to serialize. If `None`, all non relationship fields will be serialized.
+        :param str|list|tuple|set|dict include: Nested relationships to include in the serialization. This accepts a string (for one nested relationship), a tuple (for multiple relationships) or a dict (for recursively applied serialization). A dictionary of dump options 'opts' can be recursively applied to each serialization.
+        :param tuple exclude: A list or tuple of fields to exclude from the serialized result. Nested fields can be represented with dot delimiters.
+        :param tuple relations: A list or tuple of fields to include during serialization. Unlike 'include', this will not be applied recursively
         :param boolean all_relations: whether to dump all relationship during deserialization
-        :param str prefix: Optional prefix that will be prepended to all the
-            serialized field names.
-        :param bool strict: If `True`, raise errors if invalid data are passed in
-            instead of failing silently and storing the errors.
-        :param bool many: Should be set to `True` if ``obj`` is a collection
-            so that the object will be serialized to a list.
-        :param dict context: Optional context passed to :class:`fields.Method` and
-            :class:`fields.Function` fields.
+        :param str prefix: Optional prefix that will be prepended to all the serialized field names.
+        :param bool strict: If `True`, raise errors if invalid data are passed in instead of failing silently and storing the errors.
+        :param bool many: Should be set to `True` if ``obj`` is a collection so that the object will be serialized to a list.
+        :param dict context: Optional context passed to :class:`fields.Method` and :class:`fields.Function` fields.
         :param tuple load_only: A list or tuple of fields to skip during serialization
-        :param tuple dump_only: A list or tuple of fields to skip during
-            deserialization, read-only fields
-        :param bool|tuple partial: Whether to ignore missing fields. If its value
-            is an iterable, only missing fields listed in that iterable will be
-            ignored.
+        :param tuple dump_only: A list or tuple of fields to skip during deserialization, read-only fields
+        :param bool|tuple partial: Whether to ignore missing fields. If its value is an iterable, only missing fields listed in that iterable will be ignored.
+
 
         Example Usage using 'only' to dump only particular relationships
 

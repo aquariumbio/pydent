@@ -2,19 +2,18 @@
 
 Trident is the python API scripting for Aquarium.
 
-1. [Examples](Examples.md)
-1. [Developer Notes](DeveloperNotes.md)
-1. [Tests](Tests.md)
-1. [Updating Documentation](CreatingDocs.md)
-
-API documentation is located in `docs/index.html`.
+1. [Installation](docsrc/user/installation.rst) - how to install pydent
+1. [Examples](docsrc/user/examples.rst) - example usages
+1. [Contributing](docsrc/developer/contributing.rst) - contributing and developer notes
+1. [API Notes](docsrc/developer/api_notes.rst) - notes on pydent/Aquarium models
+1. [Tests](docsrc/developer/tests.rst) - testing notes
 
 ## Requirements
 
 * Python > 3.4
 * an Aquarium login
 
-## Installation
+## Quick installation
 
 1. Clone or download [this repo](https://github.com/klavinslab/trident)
 1. cd to directory containing trident

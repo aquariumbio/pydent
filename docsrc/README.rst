@@ -3,10 +3,10 @@ Trident: Aquarium API Scripting
 
 Trident is the python API scripting for Aquarium.
 
-1. `Examples <Examples.md>`__
-2. `Developer Notes <DeveloperNotes.md>`__
-3. `Tests <Tests.md>`__
-4. `Updating Documentation <CreatingDocs.md>`__
+1. `Examples <docsrc/user/examples.md>`__
+2. `API Notes <docsrc/developer/api_notes.md>`__
+3. `Tests <docsrc/developer/tests.md>`__
+4. `Updating Documentation <docsrc/developer/creating_docs.md>`__
 
 API documentation is located in ``docs/index.html``.
 

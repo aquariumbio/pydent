@@ -112,7 +112,7 @@ class HasCode(object):
 class FieldMixin(object):
     """Mixin for finding FieldType and FieldValue relationships"""
 
-    def find_field_parent(self, model_name, id):
+    def find_field_parent(self, model_name, model_id):
         """Callback for finding operation_type or sample_type. If parent_class does not match
         the expected nested model name (OperationType or SampleType), callback will return
         None"""
@@ -120,7 +120,7 @@ class FieldMixin(object):
             # weird, but helps with refactoring this mixin
             fxn_name = ModelBase.find_callback.__name__
             fxn = getattr(self, fxn_name)
-            return fxn(model_name, id)
+            return fxn(model_name, model_id)
 
 
 ##### Models #####

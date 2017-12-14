@@ -1,8 +1,8 @@
 import pytest
 
+from pydent.aqhttp import AqHTTP
 from pydent.exceptions import AquariumModelError
 from pydent.models import *
-from pydent.aqhttp import AqHTTP
 
 
 def test_fv_simple_constructor():
@@ -126,7 +126,6 @@ def test_set_container():
     assert fake_fv.allowable_field_type.id == 2
 
 
-
 def test_set_sample_and_item():
     """Set value should find the second AllowableFieldType"""
     fake_fv = FieldValue.load({
@@ -191,6 +190,7 @@ def test_set_sample_and_item_no_aft():
 def test_compatible_items(monkeypatch, fake_session):
     """We expect compatible items to send a request to 'json/items' with data {'sid': 5, and 'oid': 33}
     after we set_value to the sample that has an id=5 and is associated with an aft with an object_type_id of 33."""
+
     def fake_post(self, *args, **kwargs):
         assert args[0] == 'json/items'
         assert args[1] == {'sid': 5, 'oid': 33}
@@ -215,14 +215,13 @@ def test_compatible_items(monkeypatch, fake_session):
     })
 
     sample = Sample.load({
-            "id": 5,
-            'name': 'plasmid',
-            'sample_type_id': 2
-        })
+        "id": 5,
+        'name': 'plasmid',
+        'sample_type_id': 2
+    })
     fake_fv.connect_to_session(fake_session)
     fake_fv.set_value(sample=sample)
     fake_fv.compatible_items()
-
 
 
 def test_show():
@@ -243,28 +242,30 @@ def test_show():
         },
     })
     sample = Sample.load({
-            "id": 5,
-            'name': 'plasmid',
-            'sample_type_id': 2
-        })
+        "id": 5,
+        'name': 'plasmid',
+        'sample_type_id': 2
+    })
     fake_fv.set_value(sample=sample)
     fake_fv.show()
 
 
 def test_wires_as_source(session):
-
     fv = session.FieldValue.find(520346)
     wires = fv.wires_as_source
     print(wires)
+
 
 def test_wires_as_dest(session):
     fv = session.FieldValue.find(520346)
     wires = fv.wires_as_dest
     print(wires)
 
+
 def test_successors(session):
     fv = session.FieldValue.find(520346)
     print(fv.successors)
+
 
 def test_predecessors(session):
     fv = session.FieldValue.find(520346)

@@ -1,19 +1,13 @@
 Tests
 =====
 
-Tests are written for using pytest. To install
-`pytest <https://docs.pytest.org/en/latest/getting-started.html>`__:
+Tests are written for using pytest. To run tests, move
+into trident's root directory and run
 
-.. code:: bash
+.. code::
 
-    pip install -U pytest
-
-To run the tests, simply run the following:
-
-.. code:: bash
-
-    cd trident  # cd to the trident directory
-    pytest tests
+    make
+    make test
 
 Test Coverage
 -------------
@@ -28,6 +22,11 @@ For testing of specific Aquarium models, tests are found in
 'tests/test\_models/models.' Many of these model tests use 'monkeypatch'
 to *intercept* requests and return expected information. Writing these
 tests take a long time and so not all model tests are comprehensive.
+
+Note JV 12/13/17: We may want to consider using vcr https://github.com/kevin1024/vcrpy
+which has the capacity to *record* requests and intercept http requests
+to the recorded version of the requests. As of now, I don't have the time
+to do this.
 
 Testing with live and fake connections
 --------------------------------------

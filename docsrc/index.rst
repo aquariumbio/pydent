@@ -17,9 +17,11 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
+   user/installation
    user/examples
+   developer/contributing
    developer/api_reference
-   developer/developer_notes
+   developer/api_notes
    developer/tests
    developer/creating_docs
 

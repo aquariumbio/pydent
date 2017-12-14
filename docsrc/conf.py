@@ -19,7 +19,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../pydent'))
+sys.path.insert(0, os.path.abspath('..'))
 import pydent
 
 # -- General configuration ------------------------------------------------
@@ -175,8 +175,4 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-
-source_parsers = {
-   '.md': 'recommonmark.parser.CommonMarkParser',
-}
 

@@ -26,10 +26,12 @@ class AqSession(object):
     """
     Holds a AqHTTP with login information. Creates SessionInterfaces for models.
 
-    e.g.
-        session1 = AqSession(username, password, aquairum_url)
-        session1.User.find(1)
-           <User(id=1,...)>
+    .. code-block:: python
+
+    session1 = AqSession(username, password, aquairum_url)
+    session1.User.find(1)
+    # <User(id=1,...)>
+
     """
 
     def __init__(self, login, password, aquarium_url, name=None):
