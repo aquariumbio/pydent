@@ -11,8 +11,54 @@ Trident: The Python Aquarium API
 
    self
 
-Table of Contents
+Trident is a python scripting API wrapper for Aquarium. With Trident,
+you may pull down data, submit plans, create samples, and more.
+
+**Installation**
+
+To get started, checkout the :doc:`user/installation`
+
+**Using Trident**
+
+Below is an example of how to submit a plan. Check :doc:`user/examples` for more examples.
+
+.. code-block:: python
+
+   from pydent import AqSession
+
+   session = AqSession.interactive()
+
+   primer = session.SampleType.find(1).samples[-1]
+
+   # get Order Primer operation type
+   ot = session.OperationType.find(328)
+
+   # create an operation
+   order_primer = ot.instance()
+
+   # set io
+   order_primer.set_output("Primer", sample=primer)
+   order_primer.set_input("Urgent?", value="no")
+
+   # create a new plan and add operations
+   p = session.Plan(name="MyPlan")
+   p.add_operation(order_primer)
+
+   # save the plan
+   p.create()
+   p.estimate_cost()
+   p.validate()
+   p.submit(session.current_user, session.current_user.budgets[0])
+
+**Contributing**
+
+To contribute, please checkout :doc:`developer/contributing`.
+
+
+Read More
 -----------------
+
+Check out the table of contents below (and to the left).
 
 .. toctree::
    :maxdepth: 2

@@ -101,7 +101,7 @@ documents located in ``docsrc.`` Documentation will be built in ``docs``
 Documentation
 -------------
 
-Documentation strings will be pulled from the code to create the
+Documentation is pulled from the code to create the
 documentation using sphinx. Errors in the documentation will result in
 errors when running the documentation tests, so please write
 documentation correctly.
