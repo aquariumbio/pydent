@@ -30,10 +30,12 @@ For testing of specific Aquarium models, tests are found in
 to *intercept* requests and return expected information.
 Writing these tests take a long time and so not all model tests are comprehensive.
 
-Note JV 12/13/17: We may want to consider using vcr https://github.com/kevin1024/vcrpy
-which has the capacity to *record* requests and intercept http requests
-to the recorded version of the requests. As of now, I don't have the time
-to do this.
+Note JV 12/13/17: There are likely several better options
+for running http request tests:
+* HTTPretty https://github.com/gabrielfalcao/HTTPretty - convient methods to
+intercept requests, similar to Ruby's FakeWeb
+* VCRpy https://github.com/kevin1024/vcrpy - which has the capacity to *record*
+requests and intercept http requests to the recorded version of the requests.
 
 Testing with live and fake connections
 --------------------------------------
