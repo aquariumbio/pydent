@@ -98,10 +98,19 @@ __all__ = [
 
 # Mix-ins
 
-class HasCode(object):
+class HasCodeMixin:
     """Access to latest code for OperationType, Library, etc."""
 
     def code(self, name):
+        """
+        Returns the code from an OperationType or Library
+
+        :param name: accessor name for the code.
+            "source" for Library or "protocol", "precondition", "cost_model", or "documentation" for OperationType
+        :type name: str
+        :return: the code model
+        :rtype: Code
+        """
         if self.codes is None:
             return None
         codes = [c for c in self.codes if c.name == name]
@@ -111,10 +120,23 @@ class HasCode(object):
             return codes[-1]
 
     def get_code_callback(self, model_name, name):
+        """
+        Callback for returning code members for OperationType or Library
+
+        :param model_name: the model_name, expected "Code"
+        :type model_name: str
+        :param name: accessor name for the code.
+            "source" for Library or "protocol", "precondition", "cost_model", or "documentation" for OperationType
+        :type name: str
+        :return: the code model
+        :rtype: Code
+        """
+        if model_name is not "Code":
+            raise AquariumModelError("Model name must be {}, not {}".format("Code", model_name))
         return self.code(name)
 
 
-class FieldMixin(object):
+class FieldMixin:
     """Mixin for finding FieldType and FieldValue relationships"""
 
     def find_field_parent(self, model_name, model_id):
@@ -511,7 +533,7 @@ class JobAssociation(ModelBase):
 
 
 @add_schema
-class Library(ModelBase, HasCode):
+class Library(ModelBase, HasCodeMixin):
     """A Library model"""
     fields = dict(
         codes=HasManyGeneric("Code"),
@@ -554,6 +576,8 @@ class Operation(ModelBase):
         self.id = None
         if status is None:
             self.status = "planning"
+        self.field_values = None
+        self.operation_type = None
         super().__init__(**vars(self))
 
     def init_field_values(self):
@@ -637,7 +661,7 @@ class Operation(ModelBase):
 
 
 @add_schema
-class OperationType(ModelBase, HasCode):
+class OperationType(ModelBase, HasCodeMixin):
     """A OperationType model"""
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
