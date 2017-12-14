@@ -58,7 +58,7 @@ class Many(fields.Relation):
                          many=True, callback=callback, params=params, **kwargs)
 
 
-class HasMixin(object):
+class HasMixin:
     """
     Mixin for adding the 'set_ref' method. 'set_ref' builds a 'ref' and 'attr' attributes
     """
@@ -120,7 +120,7 @@ class HasOne(HasMixin, One):
         super().__init__(model, params=(lambda slf: getattr(slf, self.ref)), **kwargs)
 
     def __repr__(self):
-        return "<HasOne (model={}, params=lambda self: self.{})>".format(self.nested, self.ref)
+        return "<HasOne (model={}, params=lambda self: self.{})>".format(self.model, self.ref)
 
 
 class HasManyThrough(HasMixin, Many):
