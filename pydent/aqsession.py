@@ -99,6 +99,9 @@ class AqSession(object):
     def current_user(self):
         """Returns the current User associated with this session"""
         if self.__current_user is None:
+            user = self.User.where({"login": self.__aqhttp.login})
+            if not user:
+                return None
             self.__current_user = self.User.where(
                 {"login": self.__aqhttp.login})[0]
         return self.__current_user
@@ -110,11 +113,9 @@ class AqSession(object):
         :return: whether user is currently logged in
         :rtype: boolean
         """
-        try:
-            self.current_user
-            return True
-        except:
+        if self.current_user is None:
             return False
+        return True
 
     @property
     def models(self):
