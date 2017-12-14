@@ -34,8 +34,6 @@ Example:
 
 import warnings
 
-import inflection
-
 from .base import ModelRegistry
 from .exceptions import TridentRequestError, TridentJSONDataIncomplete
 from .utils import url_build
@@ -135,8 +133,8 @@ class UtilityInterface(SessionInterface):
 
     def update_code(self, code):
         """Updates code for a operation_type"""
-        controller = inflection.underscore(
-            inflection.pluralize(code.parent_class))
+        controller = underscore(
+            pluralize(code.parent_class))
 
         code_data = {
             "id": code.parent_id,
