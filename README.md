@@ -1,5 +1,4 @@
 # Trident: Aquarium API Scripting
-=======
 
 Trident is the python API scripting for Aquarium.
 
@@ -12,13 +11,13 @@ Trident is the python API scripting for Aquarium.
 ## Requirements
 
 * Python > 3.4
-* an Aquarium login
+* An Aquarium login
 
 ## Quick installation
 
-1. Clone or download [this repo](https://github.com/klavinslab/trident)
-1. cd to directory containing trident
-1. run `pip install .` or `pip install . --upgrade`
+1. `git clone git@github.com:klavinslab/trident.git`
+1. `cd trident`
+1. `make`
 
 ## Basic Usage
 
