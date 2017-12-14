@@ -1,16 +1,6 @@
 Contributing
 ============
 
-Submitting issues
------------------
-
-For now, just make an issue if something is wrong.
-
-Making a pull request
----------------------
-
-Information about how to fork and make a pull request will go here.
-
 pipenv and installation notes
 -----------------------------
 
@@ -155,3 +145,13 @@ If documentation is obvious, use the short form of:
     def add_numbers(x, y):
         """This adds two numbers together"""
         return x + y
+
+Submitting issues
+-----------------
+
+For now, just make an issue if something is wrong.
+
+Making a pull request
+---------------------
+
+Information about how to fork and make a pull request will go here.
