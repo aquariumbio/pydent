@@ -16,9 +16,6 @@ recommended Python packaging tool from Python.org. It will install
 packages on a *per project basis* by creating a virtualenv for your
 package containing all of trident's necessary dependencies.
 
-Alternatively, **pip** can be used, which is probably the easiest way to
-install python packages (see "pip installation" below).
-
 pipenv trident installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -61,22 +58,6 @@ To run a python interpreter
     import pydent
 
     # stuff with trident/pydent
-
-pip installation (easiest)
---------------------------
-
-**Pip** will, for the most part, install packages *globally.* To install
-trident using pip, simply move into trident's root directory and run:
-
-::
-
-    pip install . --upgrade
-
-You will than be able to access trident in your python interpreter via:
-
-.. code:: python
-
-    import pydent
 
 installing trident from remote
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
