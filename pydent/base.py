@@ -85,12 +85,12 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
 
     _global_record_id = 0
 
-    def __init__(self, **kwargs):
+    def __init__(self, **model_args):
         self._session = None
         self._rid = ModelBase.new_record_id()
-        kwargs['rid'] = self.rid
-        vars(self).update(kwargs)
-        data = {k: v for k, v in kwargs.items() if not k == '_session'}
+        model_args['rid'] = self.rid
+        vars(self).update(model_args)
+        data = {k: v for k, v in model_args.items() if not k == '_session'}
         self._track_data(data)
 
     @staticmethod
