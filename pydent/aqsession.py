@@ -97,7 +97,8 @@ class AqSession(object):
 
     @property
     def current_user(self):
-        """Returns the current User associated with this session"""
+        """Returns the current User associated with this session. Returns None
+        if no user is found (as in cases where the Aquarium connection is down)."""
         if self.__current_user is None:
             user = self.User.where({"login": self.__aqhttp.login})
             if not user:
@@ -108,7 +109,10 @@ class AqSession(object):
 
     def logged_in(self):
         """
-        Returns whether the user is logged in.
+        Returns whether the user is logged in. If the session
+        is able to return the User model instance using the
+        session's login credentials, the user is considered
+        to be logged in.
 
         :return: whether user is currently logged in
         :rtype: boolean
