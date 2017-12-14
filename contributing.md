@@ -39,6 +39,21 @@ To install trident's dependencies plus developer dependencies:
 pipenv install --dev
 ```
 
+### Notes on Pipfile.lock
+
+Please do not commit changes to your Pipfile.lock unless you are sure
+those dependencies are the ones you want people using in their version
+of trident.
+
+### Notes on IDEs + pipenv
+
+IDEs often default to a particular python interpreter, meaning they can
+bypass the pipenv environment for trident. If running tests through tox or
+py.tests in your IDE, make sure to set your interpreter to the python
+located in your ~/.virtualenv/[project]/
+
+Which environment you are using can be found by running ``pipenv --venv``
+
 ## Makefile
 
 The `Makefile` contains entry points for running common tasks such as
