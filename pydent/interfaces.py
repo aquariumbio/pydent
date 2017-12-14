@@ -1,11 +1,12 @@
 """Session interfaces for interacting with Aquarium.
 
-This module contains session interfaces for interacting with an Aquarium server. Session interfaces
-are created by an AqSession instance and use an AqHTTP instance to make http requests to Aquarium.
+This module contains session interfaces for interacting with an Aquarium server.
+Session interfaces are created by an AqSession instance and use an AqHTTP
+instance to make http requests to Aquarium.
 
-Generally, Trident users should be unable to directly access AqHTTP method to prevent potentially
-damaging requests or revealing sensitive information. Session interfaces define a particular way
-an AqHTTP is used.
+Generally, Trident users should be unable to directly access AqHTTP method to
+prevent potentially damaging requests or revealing sensitive information.
+Session interfaces define a particular way an AqHTTP is used.
 
 Interfaces are roughly grouped into:
 
@@ -28,7 +29,7 @@ Example:
     # => a CreateInterface
 
     session1.create.samples(list_of_samples)
-    # creates samples from a list of samples by calling method "samples" in CreateInterface
+    # creates samples from a list by calling method "samples" in CreateInterface
 """
 
 import warnings
@@ -45,8 +46,9 @@ class SessionInterface(object):
     """
     Generic session interface.
 
-    Trident users should only be able to make requests through a SessionInterface to avoid making arbitrary and
-    potentially damaging http requests.
+    Trident users should only be able to make requests through a
+    SessionInterface to avoid making arbitrary and potentially damaging
+    http requests.
     """
 
     def __init__(self, aqhttp, session):
@@ -70,9 +72,6 @@ class UtilityInterface(SessionInterface):
     def create_samples(self, samples):
         json = [s.dump() for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
-
-    # def create_sample_type(self, sample_type):
-    #     return self.aqhttp.post("sample_types.json", sample_type.dump(relations=('field_types',)))
 
     def create_operation_type(self, operation_type):
         """Creates a new operation type"""
@@ -116,10 +115,6 @@ class UtilityInterface(SessionInterface):
     def unbatch_operations(self, operation_ids):
         """Unbatches operations from a list of operation_ids"""
         self.aqhttp.post('operations/batch', json_data=operation_ids)
-
-    # def step_operations(self):
-    #     """Steps operations"""
-    #     self.aqhttp.get('operations/step')
 
     def set_operation_status(self, operation_id, status):
         """Sets an operation's status"""
@@ -171,8 +166,8 @@ class UtilityInterface(SessionInterface):
 
 class ModelInterface(SessionInterface):
     """
-    Makes requests using AqHTTP that are model specific. Establishes a connection between a session object and an
-    Aquarium model.
+    Makes requests using AqHTTP that are model specific.
+    Establishes a connection between a session object and an Aquarium model.
     """
 
     def __init__(self, model_name, aqhttp, session):
@@ -186,8 +181,8 @@ class ModelInterface(SessionInterface):
 
     def _post_json(self, data, get_from_history_ok=False):
         """
-        Posts a json request to this interface's session. Attaches raw json and this session instance
-        to the models it retrieves.
+        Posts a json request to this interface's session.
+        Attaches raw json and this session instance to the models it retrieves.
         """
         data_dict = {'model': self.model_name}
         data_dict.update(data)
@@ -204,8 +199,11 @@ class ModelInterface(SessionInterface):
         return self.load(post_response)
 
     def load(self, post_response):
-        """Loads model instance(s) from data. Model instances will be of class defined by self.model. If
-        data is a list, will return a list of model instances."""
+        """
+        Loads model instance(s) from data.
+        Model instances will be of class defined by self.model.
+        If data is a list, will return a list of model instances.
+        """
         many = isinstance(post_response, list)
         models = self.model.load(
             post_response, many=many)
@@ -223,7 +221,10 @@ class ModelInterface(SessionInterface):
         return self.load(response)
 
     def find_by_id_or_name(self, id_name_or_model):
-        """Finds a model by name or id. If argument is already a model, return that model"""
+        """
+        Finds a model by name or id.
+        If argument is already a model, return that model
+        """
         if isinstance(id_name_or_model, str):
             return self.find_by_name(id_name_or_model)
         elif isinstance(id_name_or_model, int):
@@ -239,7 +240,8 @@ class ModelInterface(SessionInterface):
 
     def find_by_name(self, name):
         """ Finds model by name """
-        return self._post_json({"method": "find_by_name", "arguments": [name]}, get_from_history_ok=True)
+        return self._post_json({"method": "find_by_name", "arguments": [name]},
+                               get_from_history_ok=True)
 
     def array_query(self, method, args, rest, opts=None):
         """ Finds models based on a query """

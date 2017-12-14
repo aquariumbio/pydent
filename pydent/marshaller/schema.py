@@ -23,15 +23,15 @@ RELATIONSHIPS = "relationships"
 
 class DefaultFieldOptions(SchemaOpts):
     """
-        Serialization/Deserialization field options class (:class:`SchemaOpts`). Determines
-        how data is handled.
-        There are lots of available options, how you use them will depend on your particular
-        application.
+        Serialization/Deserialization field options class (:class:`SchemaOpts`).
+        Determines how data is handled.
+        There are lots of available options, how you use them will depend on
+        your particular application.
 
         **Field options:**
 
-        - ``load_all``: Include all attributes from the loaded data in the deserialized
-                        object
+        - ``load_all``: Include all attributes from the loaded data in the
+                        deserialized object
         - ``ignore``: List or tuple of attributes to ignore in the deserialization
                         process
         - ``load_only``: Tuple or list of fields to exclude from serialized results.
@@ -138,7 +138,8 @@ class DynamicSchema(Schema):
         # by default, relationships are 'load_only', meaning they will not be serialized
         load_only = set(list(load_only) + list(self.relationships.keys()))
 
-        # if there are any dump_relations keys, remove them from 'load_only' so they can be serialized
+        # if there are any dump_relations keys, remove them from 'load_only' so
+        # they can be serialized
         self.all_relations = dump_all_relations
         if dump_all_relations:
             dump_relations = tuple(self.relationships.keys())
@@ -148,7 +149,8 @@ class DynamicSchema(Schema):
     @pre_load
     def add_fields(self, data):
         """Filter out ignored and load missing values"""
-        # a little bit hacky, but if the data being loaded is already deserialized, just reserialize it...
+        # a little bit hacky, but if the data being loaded is already
+        # deserialized, just reserialize it...
         if isinstance(data, getattr(self.__class__, MODEL_CLASS)):
             data = data.dump()
         self.filter_ignored(data)
@@ -176,7 +178,10 @@ class DynamicSchema(Schema):
 
     @post_load
     def load_model(self, data):
-        """Loads the model using the class stored in the schema when 'add_schema' decorator was used."""
+        """
+        Loads the model using the class stored in the schema when 'add_schema'
+        decorator was used.
+        """
         model_class = getattr(self.__class__, MODEL_CLASS)
         if model_class == data.__class__:
             return data
@@ -232,8 +237,9 @@ class DynamicSchema(Schema):
 
 
 def add_schema(cls):
-    """Decorator that dynamically creates a :class:`DynamicSchema` and attaches it to a
-    :class:`pydent.marshaller.MarshallerBase` or its subclass.
+    """
+    Decorator that dynamically creates a :class:`DynamicSchema` and attaches it
+    to a :class:`pydent.marshaller.MarshallerBase` or its subclass.
 
     Example usage:
 

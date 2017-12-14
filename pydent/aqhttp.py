@@ -1,10 +1,12 @@
 """Request class for making raw http requests to Aquarium
 
-This module contains the AqHTTP class, which can make arbitrary post/put/get/etc. requests to
-Aquarium and returns JSON data.
+This module contains the AqHTTP class, which can make arbitrary post/put/get
+requests to Aquarium and returns JSON data.
 
-Generally, Trident users should be unable to make arbitrary requests using this class. Users should
-only be able to access these methods second-hand through a Session/SessionInterface instances.
+Generally, Trident users should be unable to make arbitrary requests using this
+class. 
+Users should only be able to access these methods second-hand through a 
+Session/SessionInterface instances.
 """
 
 import json
@@ -18,13 +20,15 @@ from pydent.utils import url_build
 
 # TODO: Replace request history with save_attr in models?
 class AqHTTP(object):
-    """Defines a session/connection to Aquarium. Makes HTTP requests to Aquarium and returns JSON.
+    """
+    Defines a session/connection to Aquarium.
+    Makes HTTP requests to Aquarium and returns JSON.
 
-    This class should be generally
-    obscured from Trident user so that users cannot make arbitrary requests to an Aquarium server
-    and get sensitive information (e.g. User json that is returned contains api_key,
-    password_digest, etc.) or make damaging posts. Instead, a SessionInterface should be the object
-    that makes these requests.
+    This class should be obscured from Trident user so that users cannot make
+    arbitrary requests to an Aquarium server and get sensitive information 
+    (e.g. User json that is returned contains api_key, password_digest, etc.)
+    or make damaging posts.
+    Instead, a SessionInterface should be the object that makes these requests.
     """
 
     TIMEOUT = 10
@@ -168,8 +172,10 @@ class AqHTTP(object):
 
     @staticmethod
     def _disallow_null_in_json(json_data):
-        """Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if json data being sent
-        contains a null value"""
+        """
+        Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if
+        json data being sent contains a null value
+        """
         if None in json_data.values():
             raise TridentJSONDataIncomplete(
                 "JSON data {} contains a null value.".format(json_data))

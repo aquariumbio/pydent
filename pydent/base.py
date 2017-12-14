@@ -1,13 +1,15 @@
 """Aquarium model baseclass
 
-This module contains the base classes for Trident models. Trident models intelligently load
-from JSON and dump to JSON. This is accomplished by adding the '@add_schema' decorator to
-classes inherited by the Base class. '@add_schema' dynamically creates a model schema that
-handles dumping and loading.
+This module contains the base classes for Trident models.
+Trident models load from JSON and dump to JSON.
+This is accomplished by adding the '@add_schema' decorator to classes inherited
+by the Base class.
+Using '@add_schema' dynamically creates a model schema that handles dumping and
+loading.
 
 Features of Trident models:
 
-    load - models can be intelligently loaded from JSON data. Hierarchical JSON is loaded
+    load - models can be loaded from JSON data. Hierarchical JSON is loaded
     intelligently.
 
 .. code-block:: python
@@ -15,7 +17,8 @@ Features of Trident models:
     Sample.load({"name": "MyPrimer", "sample_type": {"name": "Primer", ...} })
     # => <Sample(name="MyPrimer", sample_type=<SampleType(name="Primer")>)>
 
-dump - models can be dumped to JSON. Dependent models and relationships can be dumped as well.
+dump - models can be dumped to JSON. Dependent models and relationships can be
+       dumped as well.
 
 .. code-block:: python
 
@@ -45,7 +48,7 @@ class ModelRegistry(type):
     models = {}
 
     def __init__(cls, name, bases, selfdict):
-        """Class initializer. Called when a class is 'subclassed.' Saves model to the registry"""
+        """Saves model to the registry"""
         super().__init__(name, bases, selfdict)
         if not name == "ModelBase":
             ModelRegistry.models[name] = cls
@@ -60,18 +63,24 @@ class ModelRegistry(type):
             return ModelRegistry.models[model_name]
 
     def __getattr__(self, item):
-        """Special warning for attribute errors. Its likely that user may have wanted to use
-        a model interface instead of the Base class."""
+        """
+        Special warning for attribute errors.
+        Its likely that user may have wanted to use a model interface instead of
+        the Base class.
+        """
         raise AttributeError("'{0}' has no attribute '{1}'. Method may be a ModelInterface method."
                              " Did you mean '<yoursession>.{0}.{1}'?"
                              .format(self.__name__, item))
 
 
 class ModelBase(MarshallerBase, metaclass=ModelRegistry):
-    """Base class for Aquarium models. Subclass of :class:`pydent.marshaller.MarshallerBase`
+    """
+    Base class for Aquarium models.
+    Subclass of :class:`pydent.marshaller.MarshallerBase`
 
     - creates instances from JSON using `load`
-    - contains a reference to the :class:`pydent.session.aqsession.AqSession` instance that loaded this model
+    - contains a reference to the :class:`pydent.session.aqsession.AqSession`
+      instance that loaded this model
     """
 
     _global_record_id = 0
@@ -93,14 +102,6 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     @property
     def rid(self):
         return self._rid
-
-    # def track_all(self):
-    #     """Track all current attributes in the schema"""
-    #     self._initialize(vars(self))
-    #
-    # def track(self, **kwargs):
-    #     """Track some attributes in the schema"""
-    #     self._initialize(kwargs)
 
     def _track_data(self, data):
         if self.model_schema:
@@ -216,7 +217,6 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
                 return None
         model = ModelRegistry.get_model(model_name)
         return model.where(self.session, params)
-        # return self.session.model_interface(model_name).where(params)
 
     def patch(self, json_data):
         """Make a patch request to self using json_data. Reload model instance with new data"""

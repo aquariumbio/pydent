@@ -10,7 +10,10 @@ from pydent.utils import MagicList
 
 
 class One(fields.Relation):
-    """Defines a single relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
+    """
+    Defines a single relationship with another model.
+    Subclass of :class:`pydent.marshaller.Relation`.
+    """
 
     def __init__(self, model, *args, callback=None, params=None, **kwargs):
         """
@@ -31,7 +34,10 @@ class One(fields.Relation):
 
 
 class Many(fields.Relation):
-    """Defines a many relationship with another model. Subclass of :class:`pydent.marshaller.Relation`."""
+    """
+    Defines a many relationship with another model.
+    Subclass of :class:`pydent.marshaller.Relation`.
+    """
 
     def __init__(self, model, *args, callback=None, params=None, **kwargs):
         """
@@ -53,7 +59,9 @@ class Many(fields.Relation):
 
 
 class HasMixin(object):
-    """Mixin for adding the 'set_ref' method. 'set_ref' builds a 'ref' and 'attr' attributes"""
+    """
+    Mixin for adding the 'set_ref' method. 'set_ref' builds a 'ref' and 'attr' attributes
+    """
 
     def set_ref(self, model=None, ref=None, attr=None):
         """Sets the 'ref' and 'attr' attributes. These attributes are used to defined parameters for
@@ -116,7 +124,10 @@ class HasOne(HasMixin, One):
 
 
 class HasManyThrough(HasMixin, Many):
-    """A relationship using an intermediate association model. Establishes a Many-to-Many relationship with another model"""
+    """
+    A relationship using an intermediate association model.
+    Establishes a Many-to-Many relationship with another model
+    """
 
     def __init__(self, model, through, attr="id", ref=None, **kwargs):
         self.set_ref(model=model, attr=attr, ref=ref)
@@ -135,7 +146,9 @@ class HasManyThrough(HasMixin, Many):
 
 
 class HasMany(HasMixin, Many):
-    """A relationship that establishes a One-to-Many relationship with another model"""
+    """
+    A relationship that establishes a One-to-Many relationship with another model.
+    """
 
     def __init__(self, model, ref_model=None, attr=None, ref=None, **kwargs):
         """
@@ -149,12 +162,14 @@ class HasMany(HasMixin, Many):
 
             @add_schema
             class Author(ModelBase):
-                fields=dict(books=HasMany("Book", "Author"))  # will search for books using 'author_id'
+                fields=dict(books=HasMany("Book", "Author"))  # search for books using 'author_id'
 
         :type ref_model: str
-        :param attr: Attribute name to use with reference model (default='id'). For example "Author" => 'author_id'
+        :param attr: Attribute name to use with reference model (default='id').
+                     For example "Author" => 'author_id'
         :type attr: str
-        :param ref: The reference to use to find models. If none, a reference is built from the 'ref_model' and 'attr' parameters
+        :param ref: The reference to use to find models. If none, a reference is
+                    built from the 'ref_model' and 'attr' parameters
         :type ref: str
         """
         if ref_model is None and ref is None:
@@ -167,7 +182,10 @@ class HasMany(HasMixin, Many):
 
 
 class HasManyGeneric(HasMany):
-    """Establishes a One-to-Many relationship using 'parent_id' as the attribute to find other models."""
+    """
+    Establishes a One-to-Many relationship using 'parent_id' as the attribute
+    to find other models.
+    """
 
     def __init__(self, model, **kwargs):
         super().__init__(model, ref="parent_id", attr="id", **kwargs)

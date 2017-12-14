@@ -8,7 +8,8 @@ from pydent.utils import pformat
 
 
 class MarshallerBase(object):
-    """Base class for marshalling and unmarshalling. Used in conjunction with
+    """
+    Base class for marshalling and unmarshalling. Used in conjunction with
     :func:`pydent.marshaller.schema.add_schema`
 
     Example Usage:
@@ -71,7 +72,9 @@ class MarshallerBase(object):
 
     @classmethod
     def get_relationships(cls):
-        """Get the name: relationship (:class:`pydent.marshaller.relation.Relation`) dictionary"""
+        """
+        Get the name: relationship (:class:`pydent.marshaller.relation.Relation`) dictionary
+        """
         schema_class = cls.get_schema_class()
         if schema_class:
             return cls.get_schema_class().relationships

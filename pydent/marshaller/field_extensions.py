@@ -31,12 +31,13 @@ class JSON(fields.Field):
 
 
 class Relation(fields.Nested):
-    """Defines a nested relationship with another model. Is a subclass of :class:`Nested`.
+    """
+    Defines a nested relationship with another model.
 
-    Uses "callback" with "params" to find models. Callback is
-    applied to the model that is fullfilling this relation. Params may include lambdas
-    of the form "lambda self: <do something with self>" which passes in the model
-    instance.
+    Uses "callback" with "params" to find models. 
+    Callback is applied to the model that is fullfilling this relation. 
+    Params may include lambdas of the form "lambda self: <do something with self>"
+    which passes in the model instance.
     """
 
     def __init__(self, model, callback, params, *args, allow_none=True, **kwargs):
@@ -54,8 +55,6 @@ class Relation(fields.Nested):
         :param kwargs: rest of the parameters
         :type kwargs:
         """
-        # if kwargs.get("load_only", None) is None:
-        #     kwargs["load_only"] = True  # note that "load_only" is important and prevents dumping of all relationships
         super().__init__(model, *args, allow_none=allow_none, **kwargs)
         self.callback = callback
         # force params to be an iterable

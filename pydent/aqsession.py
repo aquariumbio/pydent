@@ -1,9 +1,11 @@
 """Session class for interacting with Trident and Aquarium
 
-This module defines the AqSession class, which is the main entry point for accessing
-Trident's request methods. Multiple session instances can be created using a users
-Aquarium login information. From there, the session instance is used to make http
-requests (like finding models, updating plans, etc.)
+This module defines the AqSession class, which is the main entry point for
+accessing the request methods.
+Multiple session instances can be created using a user's Aquarium login
+information.
+From there, the session instance is used to make http requests
+(like finding models, updating plans, etc.)
 
 AqSession creates SessionInterfaces which can make http requests to Aquarium but
 does not itself make the requests.
