@@ -268,7 +268,7 @@ class ModelInterface(SessionInterface):
             model_id=model_id, models=models_name), json_data=json_data)
         return result
 
-    def __call__(self, *args, **kwargs):
+    def new(self, *args, **kwargs):
         """Creates a new model instance"""
         instance = object.__new__(self.model)
         instance._session = None
