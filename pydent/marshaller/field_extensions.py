@@ -14,16 +14,16 @@ class JSON(fields.Field):
             return ''
         try:
             return json.dumps(value)
-        except TypeError as e:
-            raise ValidationError(e)
+        except TypeError as error:
+            raise ValidationError(error)
 
     def _deserialize(self, value, attr, data):
         if value is None:
             return ''
         try:
             return json.loads(value)
-        except json.decoder.JSONDecodeError as e:
-            raise ValidationError(e)
+        except json.decoder.JSONDecodeError as error:
+            raise ValidationError(error)
 
     default_error_message = {
         'invalid': 'field was unable to be parsed as a JSON'
@@ -34,8 +34,8 @@ class Relation(fields.Nested):
     """
     Defines a nested relationship with another model.
 
-    Uses "callback" with "params" to find models. 
-    Callback is applied to the model that is fullfilling this relation. 
+    Uses "callback" with "params" to find models.
+    Callback is applied to the model that is fullfilling this relation.
     Params may include lambdas of the form "lambda self: <do something with self>"
     which passes in the model instance.
     """
@@ -49,8 +49,9 @@ class Relation(fields.Nested):
         :type args:
         :param callback: function to use in Base to find model
         :type callback: basestring or callable
-        :param params: tuple or list of variables (or callables) to use to search for the model. If param is
-        a callable, the model instance will be passed in.
+        :param params: tuple or list of variables (or callables) to use to
+                       search for the model. If param is a callable, the model
+                       instance will be passed in.
         :type params: tuple or list
         :param kwargs: rest of the parameters
         :type kwargs:

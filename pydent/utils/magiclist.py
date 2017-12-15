@@ -11,7 +11,7 @@ class MagicList(list):
 
     .. code-block:: python
 
-        ml = MagicList(["string1   ", "   string2"])
+        lst = MagicList(["string1   ", "   string2"])
         m1.strip().upper()
         #=> ["STRING1", "STRING2"]
 
@@ -26,21 +26,19 @@ class MagicList(list):
         return super().__getitem__(key)
 
     def __getattr__(self, item):
-        ml = MagicList([getattr(x, item) for x in self])
-        if all([callable(x) for x in ml]):
-            return MagicList(ml).call
-        return ml
+        lst = MagicList([getattr(x, item) for x in self])
+        if all([callable(x) for x in lst]):
+            return MagicList(lst).call
+        return lst
 
     def call(self, *args, **kwargs):
         return MagicList([x(*args, **kwargs) for x in self])
 
-    # def __call__(self, *args, **kwargs):
-    #     return MagicList([x(*args, **kwargs) for x in self])
-
-
 def magiclist(fxn):
-    """Decorator that turns a returned value from a list to a MagicList (if possible). Otherwise
-    returns original value"""
+    """
+    Decorator that turns a returned value from a list to a MagicList as
+    possible. Otherwise, returns original value
+    """
     @wraps(fxn)
     def magiclist_wrapper(*args, **kwargs):
         ret = fxn(*args, **kwargs)

@@ -23,7 +23,7 @@ pydent\.models
       FieldType
       FieldValue
       Group
-      HasCode
+      HasCodeMixin
       Invoice
       Item
       Job

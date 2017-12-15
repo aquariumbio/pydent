@@ -64,7 +64,9 @@ class HasMixin:
     """
 
     def set_ref(self, model=None, ref=None, attr=None):
-        """Sets the 'ref' and 'attr' attributes. These attributes are used to defined parameters for
+        """
+        Sets the 'ref' and 'attr' attributes. These attributes are used to
+        defined parameters for
         :class:`pydent.marshaller.Relation` classes.
 
         For example:

@@ -4,8 +4,8 @@ This module contains the AqHTTP class, which can make arbitrary post/put/get
 requests to Aquarium and returns JSON data.
 
 Generally, Trident users should be unable to make arbitrary requests using this
-class. 
-Users should only be able to access these methods second-hand through a 
+class.
+Users should only be able to access these methods second-hand through a
 Session/SessionInterface instances.
 """
 
@@ -25,7 +25,7 @@ class AqHTTP(object):
     Makes HTTP requests to Aquarium and returns JSON.
 
     This class should be obscured from Trident user so that users cannot make
-    arbitrary requests to an Aquarium server and get sensitive information 
+    arbitrary requests to an Aquarium server and get sensitive information
     (e.g. User json that is returned contains api_key, password_digest, etc.)
     or make damaging posts.
     Instead, a SessionInterface should be the object that makes these requests.
@@ -65,7 +65,9 @@ class AqHTTP(object):
         return self.aquarium_url
 
     def _login(self, login, password):
-        """ Login to aquarium and saves header as a requests.Session() """
+        """
+        Login to aquarium and saves header as a requests.Session()
+        """
         session_data = self.__class__.create_session_json(login, password)
         res = None
         try:
@@ -118,11 +120,14 @@ class AqHTTP(object):
         :type method: str
         :param path: url to perform the request
         :type path: str
-        :param timeout: time in seconds to process request before raising exception
+        :param timeout: time in seconds to process request before raising
+                exception
         :type timeout: int
-        :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
+        :param get_from_history_ok: whether its ok to return previously found
+                request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False (default), will raise error if json_data contains a None or null value
+        :param allow_none: if False (default), will raise error if json_data
+                contains a None or null value
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
@@ -146,14 +151,19 @@ class AqHTTP(object):
         if get_from_history_ok:
             result = self.request_history.get(key, None)
         if result is None:
-            result = self._requests_session.request(method, url_build(self.aquarium_url, path), timeout=timeout,
+            result = self._requests_session.request(method,
+                                                    url_build(self.aquarium_url, path),
+                                                    timeout=timeout,
                                                     **kwargs)
             self.request_history[key] = result
         return self._request_to_json(result)
 
     @staticmethod
     def _request_to_json(result):
-        """Turns :class:`requests.Request` instance into a json. Raises custom exception if not."""
+        """
+        Turns :class:`requests.Request` instance into a json.
+        Raises custom exception if not.
+        """
         try:
             result_json = result.json()
         except json.JSONDecodeError:
@@ -188,18 +198,22 @@ class AqHTTP(object):
         :type path: str
         :param json_data: json_data to post
         :type json_data: dict
-        :param timeout: time in seconds to process request before raising exception
+        :param timeout: time in seconds to process request before raising
+                exception
         :type timeout: int
-        :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
+        :param get_from_history_ok: whether its ok to return previously found
+                request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null or None value
+        :param allow_none: if False, throw error if json_data contains a null
+                or None value
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
         :return: json
         :rtype: dict
         """
-        return self.request("post", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok,
+        return self.request("post", path, json=json_data, timeout=timeout,
+                            get_from_history_ok=get_from_history_ok,
                             allow_none=allow_none, **kwargs)
 
     def put(self, path, json_data=None, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
@@ -210,18 +224,22 @@ class AqHTTP(object):
         :type path: str
         :param json_data: json_data to post
         :type json_data: dict
-        :param timeout: time in seconds to process request before raising exception
+        :param timeout: time in seconds to process request before raising
+                exception
         :type timeout: int
-        :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
+        :param get_from_history_ok: whether its ok to return previously found
+                request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null or None value
+        :param allow_none: if False, throw error if json_data contains a null or
+                None value
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
         :return: json
         :rtype: dict
         """
-        return self.request("put", path, json=json_data, timeout=timeout, get_from_history_ok=get_from_history_ok,
+        return self.request("put", path, json=json_data, timeout=timeout,
+                            get_from_history_ok=get_from_history_ok,
                             allow_none=allow_none, **kwargs)
 
     def get(self, path, timeout=None, get_from_history_ok=False, allow_none=True, **kwargs):
@@ -230,18 +248,22 @@ class AqHTTP(object):
 
         :param path: url
         :type path: str
-        :param timeout: time in seconds to process request before raising exception
+        :param timeout: time in seconds to process request before raising
+                exception
         :type timeout: int
-        :param get_from_history_ok: whether its ok to return previously found request from history (default=False)
+        :param get_from_history_ok: whether its ok to return previously found
+                request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null or None value
+        :param allow_none: if False, throw error if json_data contains a null or
+                None value
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
         :return: json
         :rtype: dict
         """
-        return self.request("get", path, timeout=timeout, get_from_history_ok=get_from_history_ok,
+        return self.request("get", path, timeout=timeout,
+                            get_from_history_ok=get_from_history_ok,
                             allow_none=allow_none, **kwargs)
 
     def __repr__(self):

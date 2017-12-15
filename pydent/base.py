@@ -2,9 +2,9 @@
 
 This module contains the base classes for Trident models.
 Trident models load from JSON and dump to JSON.
-This is accomplished by adding the '@add_schema' decorator to classes inherited
+This is accomplished by adding the ``@add_schema`` decorator to classes inherited
 by the Base class.
-Using '@add_schema' dynamically creates a model schema that handles dumping and
+Using ``@add_schema`` dynamically creates a model schema that handles dumping and
 loading.
 
 Features of Trident models:

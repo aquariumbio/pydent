@@ -73,7 +73,8 @@ class MarshallerBase(object):
     @classmethod
     def get_relationships(cls):
         """
-        Get the name: relationship (:class:`pydent.marshaller.relation.Relation`) dictionary
+        Get the name: relationship (:class:`pydent.marshaller.relation.Relation`)
+        dictionary
         """
         schema_class = cls.get_schema_class()
         if schema_class:
@@ -82,7 +83,10 @@ class MarshallerBase(object):
 
     @property
     def relationships(self):
-        """Get the name: relationship (:class:`pydent.marshaller.relation.Relation`) dictionary"""
+        """
+        Get the name: relationship (:class:`pydent.marshaller.relation.Relation`)
+        dictionary.
+        """
         return self.__class__.get_relationships()
 
     @classmethod
@@ -120,18 +124,36 @@ class MarshallerBase(object):
         """Dumps the model instance to a String. For parameter options, refer
         to :class:`pydent.marshaller.schema.DynamicSchema`
 
-        :param tuple only: A list or tuple of fields to serialize. If `None`, all non relationship fields will be serialized.
-        :param str|list|tuple|set|dict include: Nested relationships to include in the serialization. This accepts a string (for one nested relationship), a tuple (for multiple relationships) or a dict (for recursively applied serialization). A dictionary of dump options 'opts' can be recursively applied to each serialization.
-        :param tuple exclude: A list or tuple of fields to exclude from the serialized result. Nested fields can be represented with dot delimiters.
-        :param tuple relations: A list or tuple of fields to include during serialization. Unlike 'include', this will not be applied recursively
-        :param boolean all_relations: whether to dump all relationship during deserialization
-        :param str prefix: Optional prefix that will be prepended to all the serialized field names.
-        :param bool strict: If `True`, raise errors if invalid data are passed in instead of failing silently and storing the errors.
-        :param bool many: Should be set to `True` if ``obj`` is a collection so that the object will be serialized to a list.
-        :param dict context: Optional context passed to :class:`fields.Method` and :class:`fields.Function` fields.
-        :param tuple load_only: A list or tuple of fields to skip during serialization
-        :param tuple dump_only: A list or tuple of fields to skip during deserialization, read-only fields
-        :param bool|tuple partial: Whether to ignore missing fields. If its value is an iterable, only missing fields listed in that iterable will be ignored.
+        :param tuple only: A list or tuple of fields to serialize. If `None`,
+                all non relationship fields will be serialized.
+        :param str|list|tuple|set|dict include: Nested relationships to include
+                in the serialization. This accepts a string (for one nested
+                relationship), a tuple (for multiple relationships) or a dict
+                (for recursively applied serialization). A dictionary of dump
+                options 'opts' can be recursively applied to each serialization.
+        :param tuple exclude: A list or tuple of fields to exclude from the
+                serialized result. Nested fields can be represented with dot
+                delimiters.
+        :param tuple relations: A list or tuple of fields to include during
+                serialization. Unlike 'include', this will not be applied
+                recursively
+        :param boolean all_relations: whether to dump all relationship during
+                deserialization
+        :param str prefix: Optional prefix that will be prepended to all the
+                serialized field names.
+        :param bool strict: If `True`, raise errors if invalid data are passed
+                in instead of failing silently and storing the errors.
+        :param bool many: Should be set to `True` if ``obj`` is a collection so
+                that the object will be serialized to a list.
+        :param dict context: Optional context passed to :class:`fields.Method`
+                and :class:`fields.Function` fields.
+        :param tuple load_only: A list or tuple of fields to skip during
+                serialization
+        :param tuple dump_only: A list or tuple of fields to skip during
+                deserialization, read-only fields
+        :param bool|tuple partial: Whether to ignore missing fields. If its
+                value is an iterable, only missing fields listed in that
+                iterable will be ignored.
 
 
         Example Usage using 'only' to dump only particular relationships
@@ -175,14 +197,14 @@ class MarshallerBase(object):
             opts = include.get('opts', {})
             kwargs.update(opts)
 
-        def dump_model(m):
+        def dump_model(model):
             """Tries to dump model using dumping parameters"""
-            if isinstance(m, MarshallerBase):
+            if isinstance(model, MarshallerBase):
                 _include = {}
                 if isinstance(include, dict):
                     _include = include.get(key, {})
-                m = m.dump(include=_include)
-            return m
+                model = model.dump(include=_include)
+            return model
 
         dumped = self._dump(**kwargs)
         for key in include:
@@ -231,11 +253,11 @@ class MarshallerBase(object):
         if not callable(callback):
             try:
                 callback = getattr(self, callback)
-            except AttributeError as e:
+            except AttributeError as error:
                 msg = "Could not find callback \"{}\" in {} instance".format(
                     callback, self.__class__.__name__)
-                e.args = tuple(list(e.args) + [msg])
-                raise MarshallerCallbackNotFoundError(e)
+                error.args = tuple(list(error.args) + [msg])
+                raise MarshallerCallbackNotFoundError(error)
 
         # get params; pass in self if param is callable
         fxn_params = self._get_callback_params(field)
@@ -272,15 +294,17 @@ class MarshallerBase(object):
             if name in relationships:
                 try:
                     res = self.__getattr__(name)
-                except AttributeError as e:
+                except AttributeError:
                     pass
-                except TypeError as e:
+                except TypeError:
                     pass
         return res
 
     def __getattr__(self, item):
-        """Retrieves and fullfills relationships if available. This method runs only if
-        the given attribute is not found."""
+        """
+        Retrieves and fullfills relationships if available. This method runs
+        only if the given attribute is not found.
+        """
         relationships = object.__getattribute__(self, "get_relationships")()
         save_attr = object.__getattribute__(self, "save_attr")
         if item in relationships:
@@ -289,16 +313,15 @@ class MarshallerBase(object):
             try:
                 # try to fullfill the relationships
                 ret = self._fullfill(field)
-            except AttributeError as e:
+            except AttributeError as error:
                 # display warning
                 msg = "\n"
                 msg += "Could not fullfill relationship for {}(instance).{} as relation {}\nReasons:\n".format(
                     self.__class__.__name__, item, field)
-                for i, m in enumerate(e.args):
-                    msg += "({}) {}\n".format(i, m)
-                # msg += "{}".format(self.dump())
-                e.args = tuple(list(e.args) + [msg])
-                warnings.warn(' '.join(e.args))
+                for index, message in enumerate(error.args):
+                    msg += "({}) {}\n".format(index, message)
+                error.args = tuple(list(error.args) + [msg])
+                warnings.warn(' '.join(error.args))
             if save_attr:
                 setattr(self, item, ret)
             return ret
@@ -307,7 +330,10 @@ class MarshallerBase(object):
                 self.__class__.__name__, item, ', '.join(relationships.keys())))
 
     def _relations_to_json(self):
-        """Dump relations to a dictionary. If attribute is None, return the Relation instance"""
+        """
+        Dump relations to a dictionary.
+        If attribute is None, return the Relation instance.
+        """
         dumped = {}
         for field_name, field in self.get_relationships().items():
             val = None
@@ -322,7 +348,8 @@ class MarshallerBase(object):
 
     def _to_dict(self, *args, **kwargs):
         """
-        Prints the model instance in a nice format. See :func:`pydent.marshaller.marshallerbase.dump`
+        Prints the model instance in a nice format.
+        See :func:`pydent.marshaller.marshallerbase.dump`
 
         :param args: dump arguments
         :param kwargs: dump arguments

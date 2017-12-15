@@ -23,7 +23,8 @@ The various field options and their default values are listed below.
         strict = True       # throw error during marshalling instead of storing error
         include = {}        # fields to include for serialization/deserialization.
         additional = ()     # explicitly defined fields for serialization/deserialization.
-        ignore = ()         # fields to filter during deserialization. These fields will be filtered from the JSON.
+        ignore = ()         # fields to filter during deserialization.
+                            # These fields will be filtered from the JSON.
         load_only = ()      # fields to ignore during serialization
         dump_only = ()      # fields to ignore during deserialization
 
@@ -46,7 +47,7 @@ connection with Aquarium to retrieve the given model.
 
 For example, the following will define that SampleType has many Samples.
 When .samples is called on a SampleType instance, Trident will use the database
-to retrieve all samples that have a sample_type_id equal to the id of the 
+to retrieve all samples that have a sample_type_id equal to the id of the
 SampleType:
 
 .. code-block:: python
@@ -106,7 +107,8 @@ class HasCodeMixin:
         Returns the code from an OperationType or Library
 
         :param name: accessor name for the code.
-            "source" for Library or "protocol", "precondition", "cost_model", or "documentation" for OperationType
+            "source" for Library or "protocol", "precondition", "cost_model",
+            or "documentation" for OperationType
         :type name: str
         :return: the code model
         :rtype: Code
@@ -126,7 +128,8 @@ class HasCodeMixin:
         :param model_name: the model_name, expected "Code"
         :type model_name: str
         :param name: accessor name for the code.
-            "source" for Library or "protocol", "precondition", "cost_model", or "documentation" for OperationType
+            "source" for Library or "protocol", "precondition", "cost_model", or
+            "documentation" for OperationType
         :type name: str
         :return: the code model
         :rtype: Code
@@ -137,12 +140,14 @@ class HasCodeMixin:
 
 
 class FieldMixin:
-    """Mixin for finding FieldType and FieldValue relationships"""
+    """
+    Mixin for finding FieldType and FieldValue relationships
+    """
 
     def find_field_parent(self, model_name, model_id):
         """
         Callback for finding operation_type or sample_type.
-        If parent_class does not match the expected nested model name 
+        If parent_class does not match the expected nested model name
         (OperationType or SampleType), callback will return None
         """
         if model_name == self.parent_class:
@@ -239,9 +244,10 @@ class FieldType(ModelBase, FieldMixin):
             "SampleType", callback="find_field_parent", ref="parent_id")
     )
 
-    def __init__(self, name=None, ftype=None, array=None, choices=None, operation_type=None,
-                 preferred_field_type_id=None, preferred_operation_type_id=None,
-                 required=None, routing=None, role=None, parent_class=None, parent_id=None, sample_type=None,
+    def __init__(self, name=None, ftype=None, array=None, choices=None,
+                 operation_type=None, preferred_field_type_id=None,
+                 preferred_operation_type_id=None, required=None, routing=None,
+                 role=None, parent_class=None, parent_id=None, sample_type=None,
                  aft_stype_and_objtype=(), allowable_field_types=None):
         if operation_type and sample_type:
             raise Exception()
@@ -267,8 +273,8 @@ class FieldType(ModelBase, FieldMixin):
 
         if self.allowable_field_types is None:
             if aft_stype_and_objtype:
-                for sample_type, object_type in aft_stype_and_objtype:
-                    self.create_allowable_field_type(sample_type, object_type)
+                for smple_type, obj_type in aft_stype_and_objtype:
+                    self.create_allowable_field_type(smple_type, obj_type)
 
     @property
     def is_parameter(self):
@@ -285,11 +291,11 @@ class FieldType(ModelBase, FieldMixin):
         afts = []
         if self.allowable_field_types:
             afts = self.allowable_field_types
-        ft = AllowableFieldType(
+        field_type = AllowableFieldType(
             field_type=self, sample_type=sample_type, object_type=object_type)
-        afts.append(ft)
+        afts.append(field_type)
         self.allowable_field_types = afts
-        return ft
+        return field_type
 
     def initialize_field_value(self, field_value=None):
         """
@@ -312,7 +318,9 @@ class FieldType(ModelBase, FieldMixin):
 
 @add_schema
 class FieldValue(ModelBase, FieldMixin):
-    """A FieldValue model. One of the more complex models."""
+    """
+    A FieldValue model. One of the more complex models.
+    """
     fields = dict(
         # FieldValue relationships
         field_type=HasOne("FieldType"),
@@ -458,15 +466,17 @@ class FieldValue(ModelBase, FieldMixin):
                     "No allowable field type found for {} '{}'".format(self.role, self.name))
         return self
 
-    def set_operation(self, op):
+    def set_operation(self, operation):
         self.parent_class = "Operation"
-        self.parent_id = op.id
-        self.operation = op
+        self.parent_id = operation.id
+        self.operation = operation
 
-    def set_field_type(self, ft):
-        """Sets properties from a field_type"""
-        self.field_type = ft
-        self.field_type_id = ft.id
+    def set_field_type(self, field_type):
+        """
+        Sets properties from a field_type
+        """
+        self.field_type = field_type
+        self.field_type_id = field_type.id
 
     def set_allowable_field_type(self, allowable_field_type):
         self.allowable_field_type = allowable_field_type
@@ -486,7 +496,8 @@ class FieldValue(ModelBase, FieldMixin):
 
     def compatible_items(self):
         """Find items compatible with the field value"""
-        return self.session.utils.compatible_items(self.sample.id, self.allowable_field_type.object_type_id)
+        return self.session.utils.compatible_items(self.sample.id,
+                                                   self.allowable_field_type.object_type_id)
 
 
 @add_schema
@@ -579,13 +590,18 @@ class Operation(ModelBase):
         super().__init__(**vars(self))
 
     def init_field_values(self):
-        """Inialize the field values form the field types of the parent operation type"""
+        """
+        Initialize the field values form the field types of the parent operation
+        type.
+        """
         for field_type in self.operation_type.field_types:
             self.set_field_value(field_type.name, field_type.role)
             # self.show()
 
     def field_value(self, name, role):
-        """Returns :class:`FieldValue` with name and role. Return None if not found."""
+        """
+        Returns :class:`FieldValue` with name and role. Return None if not found.
+        """
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
             if fvs:
@@ -602,27 +618,28 @@ class Operation(ModelBase):
 
     def set_field_value(self, name, role, sample=None, item=None, value=None, container=None):
         """
-        Sets the value of a :class:`FieldValue`. 
-        If the FieldValue does not exist, an 'empty' FieldValue will be created 
-        from the field_type"""
+        Sets the value of a :class:`FieldValue`.
+        If the FieldValue does not exist, an 'empty' FieldValue will be created
+        from the field_type
+        """
         # get the field value
-        fv = self.field_value(name, role)
+        field_value = self.field_value(name, role)
 
         # get the field type
-        ft = self.operation_type.field_type(name, role)
-        if ft is None:
+        field_type = self.operation_type.field_type(name, role)
+        if field_type is None:
             raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
                 self.operation_type.name, role, name))
 
         # initialize the field value from the field type
-        if not fv:
-            fv = ft.initialize_field_value(fv)
-            fv.set_operation(self)
-            self.field_values.append(fv)
+        if not field_value:
+            field_value = field_type.initialize_field_value(field_value)
+            field_value.set_operation(self)
+            self.field_values.append(field_value)
 
         # set the value, finds allowable_field_types, etc.
-        fv.set_value(value=value, sample=sample,
-                     item=item, container=container)
+        field_value.set_value(value=value, sample=sample,
+                              item=item, container=container)
         return self
 
     @property
@@ -636,13 +653,17 @@ class Operation(ModelBase):
         return self.field_value(name, 'output')
 
     def set_input(self, name, sample=None, item=None, value=None, container=None):
-        return self.set_field_value(name, 'input', sample=sample, item=item, value=value, container=container)
+        return self.set_field_value(name, 'input', sample=sample, item=item,
+                                    value=value, container=container)
 
     def set_output(self, name, sample=None, item=None, value=None, container=None):
-        return self.set_field_value(name, 'output', sample=sample, item=item, value=value, container=container)
+        return self.set_field_value(name, 'output', sample=sample, item=item,
+                                    value=value, container=container)
 
     def show(self, pre=""):
-        """Print the operation nicely"""
+        """
+        Print the operation nicely
+        """
         print(pre + self.operation_type.name + " " + str(self.cost))
         for field_value in self.field_values:
             field_value.show(pre=pre + "  ")
@@ -660,7 +681,9 @@ class Operation(ModelBase):
 
 @add_schema
 class OperationType(ModelBase, HasCodeMixin):
-    """A OperationType model"""
+    """
+    A OperationType model
+    """
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
         field_types=HasManyGeneric("FieldType"),
@@ -687,7 +710,9 @@ class OperationType(ModelBase, HasCodeMixin):
 
 @add_schema
 class Plan(ModelBase, PlanValidator):
-    """A Plan model"""
+    """
+    A Plan model
+    """
     fields = dict(
         data_associations=HasManyGeneric("DataAssociation"),
         plan_associations=HasMany("PlanAssociation", "Plan"),
@@ -712,12 +737,12 @@ class Plan(ModelBase, PlanValidator):
         self.destination = destination
         super().__init__(**vars(self))
 
-    def add_operation(self, op):
-        self.append_to_many('operations', op)
+    def add_operation(self, operation):
+        self.append_to_many('operations', operation)
 
-    def add_operations(self, ops):
-        for op in ops:
-            self.add_operation(op)
+    def add_operations(self, operations):
+        for operation in operations:
+            self.add_operation(operation)
 
     def wire(self, src, dest):
         wire = Wire(source=src, destination=dest)
@@ -753,16 +778,18 @@ class Plan(ModelBase, PlanValidator):
 
     def all_data_associations(self):
         das = self.data_associations
-        for op in self.operations:
-            das += op.data_associations
-            for field_value in op.field_values:
+        for operation in self.operations:
+            das += operation.data_associations
+            for field_value in operation.field_values:
                 if field_value.item:
                     das += field_value.item.data_associations
         return das
 
     @classmethod
     def find(cls, session, model_id):
-        """Override find for plans, because generic method is too minimal"""
+        """
+        Override find for plans, because generic method is too minimal.
+        """
         interface = cls.interface(session)
         return interface.get('plans/{}.json'.format(model_id))
 
@@ -849,17 +876,21 @@ class SampleType(ModelBase):
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
         field_types=Many("FieldType",
-                         params=lambda self: {"parent_id": self.id, "parent_class": self.__class__.__name__})
+                         params=lambda self: {"parent_id": self.id,
+                                              "parent_class": self.__class__.__name__})
     )
 
 
 @add_schema
 class Upload(ModelBase):
-    """An Upload model"""
+    """
+    An Upload model
+    """
 
     @property
     def temp_url(self):
-        return self.session.Upload.where_callback({"id", self.id}, {"methods": ["url"]})[0].url
+        return self.session.Upload.where_callback({"id", self.id},
+                                                  {"methods": ["url"]})[0].url
 
     @property
     def data(self):

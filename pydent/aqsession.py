@@ -1,4 +1,5 @@
-"""Session class for interacting with Trident and Aquarium
+"""
+Session class for interacting with Trident and Aquarium
 
 This module defines the AqSession class, which is the main entry point for
 accessing the request methods.
@@ -42,8 +43,9 @@ class AqSession(object):
 
         :param login: the Aquarium login for the user
         :type login: str
-        :param password: the password for the Aquarium login. This will not be stored anywhere. However,
-            login headers for Aquarium will be stored in .__aqhttp. This may change in the future with changes
+        :param password: the password for the Aquarium login. This will not be
+            stored anywhere. However, login headers for Aquarium will be stored
+            in .__aqhttp. This may change in the future with changes
             authentication for the Aquarium API
         :type password: str
         :param aquarium_url: the http formatted Aquarium url
@@ -70,12 +72,17 @@ class AqSession(object):
 
     @property
     def login(self):
-        """Logs into aquarium, generating the necessary headers to perform requests to Aquarium"""
+        """
+        Logs into aquarium, generating the necessary headers to perform requests
+        to Aquarium
+        """
         return self.__aqhttp.login
 
     @classmethod
     def interactive(cls):
-        """Login using prompts and a hidden password (********)"""
+        """
+        Login using prompts and a hidden password (********)
+        """
         confirm_register = False
         password = None
         username = None
@@ -102,8 +109,10 @@ class AqSession(object):
 
     @property
     def current_user(self):
-        """Returns the current User associated with this session. Returns None
-        if no user is found (as in cases where the Aquarium connection is down)."""
+        """
+        Returns the current User associated with this session. Returns None
+        if no user is found (as in cases where the Aquarium connection is down).
+        """
         if self.__current_user is None:
             user = self.User.where({"login": self.__aqhttp.login})
             if not user:
@@ -141,4 +150,5 @@ class AqSession(object):
         return UtilityInterface(self.__aqhttp, self)
 
     def __repr__(self):
-        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self.__aqhttp)
+        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__,
+                                                  self.name, self.__aqhttp)

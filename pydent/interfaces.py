@@ -33,11 +33,11 @@ Example:
 """
 
 import warnings
-
+from inflection import pluralize, underscore
 from .base import ModelRegistry
 from .exceptions import TridentRequestError, TridentJSONDataIncomplete
 from .utils import url_build
-from inflection import pluralize, underscore
+
 
 
 class SessionInterface(object):
@@ -188,11 +188,11 @@ class ModelInterface(SessionInterface):
         try:
             post_response = self.aqhttp.post(
                 'json', json_data=data_dict, get_from_history_ok=get_from_history_ok)
-        except TridentRequestError as e:
-            warnings.warn(e.args)
+        except TridentRequestError as error:
+            warnings.warn(error.args)
             return None
-        except TridentJSONDataIncomplete as e:
-            warnings.warn(e.args)
+        except TridentJSONDataIncomplete as error:
+            warnings.warn(error.args)
             return None
         return self.load(post_response)
 
