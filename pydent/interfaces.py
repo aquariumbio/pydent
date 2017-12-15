@@ -151,7 +151,9 @@ class UtilityInterface(SessionInterface):
                 "Unable to update code object {}".format(code_data))
 
     def compatible_items(self, sample_id, object_type_id):
-        """Find items compatible with the field value"""
+        """
+        Find items compatible with the field value.
+        """
         result = self.aqhttp.post("json/items", {
             "sid": sample_id,
             "oid": object_type_id
@@ -174,7 +176,9 @@ class ModelInterface(SessionInterface):
 
     @property
     def model_name(self):
-        """Alias for self.model.__name__"""
+        """
+        Alias for self.model.__name__
+        """
         return self.model.__name__
 
     def _post_json(self, data, get_from_history_ok=False):
