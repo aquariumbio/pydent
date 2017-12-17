@@ -19,14 +19,13 @@ The various field options and their default values are listed below.
 
 .. code-block:: python
 
-        load_all = True     # load data attributes not explicitly defined during serialization
-        strict = True       # throw error during marshalling instead of storing error
+        load_all = True     # load all data attributes defined for a model
+        strict = True       # throw error during marshalling
         include = {}        # fields to include for serialization/deserialization.
-        additional = ()     # explicitly defined fields for serialization/deserialization.
+        additional = ()     # explicit fields for serialization/deserialization.
         ignore = ()         # fields to filter during deserialization.
-                            # These fields will be filtered from the JSON.
-        load_only = ()      # fields to ignore during serialization
-        dump_only = ()      # fields to ignore during deserialization
+        load_only = ()      # fields to include during serialization
+        dump_only = ()      # fields to include during deserialization
 
 Trident models can also have nested relationships (for example, a Sample may
 possess a single SampleType while a SampleType may possess several Samples).

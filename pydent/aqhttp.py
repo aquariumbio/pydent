@@ -5,8 +5,8 @@ requests to Aquarium and returns JSON data.
 
 Generally, Trident users should be unable to make arbitrary requests using this
 class.
-Users should only be able to access these methods second-hand through a
-Session/SessionInterface instances.
+Users should only access these methods indirectly through a ``Session`` or
+``SessionInterface`` instance.
 """
 
 import json
