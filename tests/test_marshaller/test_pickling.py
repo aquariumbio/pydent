@@ -10,17 +10,6 @@ import pytest
 
 from pydent.marshaller import MarshallerBase, add_schema, fields
 
-
-@pytest.fixture(scope='function')
-def pickle_folder():
-    here = os.path.dirname(os.path.abspath(__file__))
-    pickle_folder = os.path.join(here, 'pickling_data')
-    if os.path.exists(pickle_folder):
-        shutil.rmtree(pickle_folder)
-    os.mkdir(pickle_folder)
-    return pickle_folder
-
-
 @add_schema
 class MyModel(MarshallerBase):
     fields = dict(
@@ -33,10 +22,10 @@ class MyModel(MarshallerBase):
         return x * y
 
 
-def test_pickling_marshallerbase_model(pickle_folder):
+def test_pickling_marshallerbase_model(tmpdir):
     """We expect to be able to pickle and unpickle a model instance"""
     m = MyModel.load({"x": 4, "y": 5})
-    filename = os.path.join(pickle_folder, 'mymodel.pkl')
+    filename = os.path.join(tmpdir, 'mymodel.pkl')
 
     with open(filename, 'wb') as f:
         pickle.dump(m, f)
