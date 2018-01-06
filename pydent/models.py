@@ -868,6 +868,11 @@ class Sample(ModelBase):
     def field_names(self):
         return [fv.name for fv in self.field_values]
 
+    def save(self):
+        """Saves the Sample to the Aquarium server. Requires
+        this Sample to be connected to a session."""
+        self.session.utils.create_samples([self])
+
 
 @add_schema
 class SampleType(ModelBase):
