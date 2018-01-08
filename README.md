@@ -8,6 +8,9 @@ Trident is the python API scripting for Aquarium.
 1. [API Notes](docsrc/developer/api_notes.rst) - notes on pydent/Aquarium models
 1. [Tests](docsrc/developer/tests.rst) - testing notes
 
+Note: the initial version is tagged as `v0.0.1-initial`, but is no longer being
+developed.
+
 ## Requirements
 
 * Python > 3.4
