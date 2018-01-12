@@ -268,6 +268,9 @@ class MarshallerBase(object):
         fxn_params = []
         for param in field.params:
             if callable(param):
+                import inspect
+                source = inspect.getsource(param)
+                p = param(self)
                 fxn_params.append(param(self))
             else:
                 fxn_params.append(param)
