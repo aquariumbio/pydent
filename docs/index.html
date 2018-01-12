@@ -1,0 +1,215 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Trident: The Aquarium API &#8212; Trident 0.0.2 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="user/installation.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="user/installation.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Trident 0.0.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
+    <a href="#">
+        <h1>Trident (V0.0.2)</h1>
+    </a>
+</p>
+
+<p>
+    Trident is a python scripting API wrapper for Aquarium. With Trident,
+    you can create python scripts and apps that mine data, create samples,
+    submit laboratory protocols, and more. You are looking at documentation
+    for version 0.0.2.
+</p>
+<h3><a href="#">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/examples.html">Trident Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/api_notes.html">Developer Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/tests.html">Tests</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="user/installation.html"
+                        title="next chapter">Installation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="trident-the-aquarium-api">
+<h1>Trident: The Aquarium API<a class="headerlink" href="#trident-the-aquarium-api" title="Permalink to this headline">¶</a></h1>
+<p>Trident is the Python scripting API for Aquarium, the software that runs the
+<a class="reference external" href="http://www.uwbiofab.org">UW BIOFAB</a>.
+The <a class="reference external" href="https://github.com/klavinslab/trident">code respository</a> is available to members of the
+<a class="reference external" href="https://github.com/klavinslab/">Klavins lab</a> GitHub
+organization, which consists of lab members and collaborators.
+There is also a Javascript version of Trident available to that group.</p>
+<div class="toctree-wrapper compound">
+</div>
+<p>Trident is a python scripting API wrapper for Aquarium. With Trident,
+you may pull down data, submit plans, create samples, and more.</p>
+<p><strong>Installation</strong></p>
+<p>To get started, checkout the <a class="reference internal" href="user/installation.html"><span class="doc">Installation</span></a></p>
+<p><strong>Using Trident</strong></p>
+<p>Below is an example of how to submit a plan. Check <a class="reference internal" href="user/examples.html"><span class="doc">Trident Examples</span></a> for more examples.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="kn">import</span> <span class="n">AqSession</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+
+<span class="n">primer</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># get Order Primer operation type</span>
+<span class="n">ot</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">328</span><span class="p">)</span>
+
+<span class="c1"># create an operation</span>
+<span class="n">order_primer</span> <span class="o">=</span> <span class="n">ot</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+
+<span class="c1"># set io</span>
+<span class="n">order_primer</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s2">&quot;Primer&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">primer</span><span class="p">)</span>
+<span class="n">order_primer</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Urgent?&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;no&quot;</span><span class="p">)</span>
+
+<span class="c1"># create a new plan and add operations</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Plan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyPlan&quot;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">order_primer</span><span class="p">)</span>
+
+<span class="c1"># save the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">estimate_cost</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">budgets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>Contributing</strong></p>
+<p>To contribute, please checkout <a class="reference internal" href="developer/contributing.html"><span class="doc">Contributing</span></a>.</p>
+<div class="section" id="read-more">
+<h2>Read More<a class="headerlink" href="#read-more" title="Permalink to this headline">¶</a></h2>
+<p>Check out the table of contents below (and to the left).</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/installation.html#pipenv-installation">pipenv installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/examples.html">Trident Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/examples.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/examples.html#deserializing">Deserializing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/examples.html#serializing">Serializing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/examples.html#planning">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/examples.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer/api_notes.html">Developer Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/api_notes.html#interfaces">Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/api_notes.html#establishing-an-interface">Establishing an Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/api_notes.html#working-with-models">Working with Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/api_notes.html#model-fields">Model Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/api_notes.html#editing-or-creating-models">Editing or Creating Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/api_notes.html#relationships">Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/api_notes.html#serialization-deserialization">Serialization/Deserialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#pipenv-and-installation-notes">pipenv and installation notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#makefile">Makefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer/tests.html">Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/tests.html#test-coverage">Test Coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/tests.html#testing-with-live-and-fake-connections">Testing with live and fake connections</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="user/installation.html" title="Installation"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Trident 0.0.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, University of Washington.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+    </div>
+  </body>
+</html>
