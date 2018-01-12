@@ -34,6 +34,13 @@ To install trident's dependencies plus developer dependencies:
 
     pipenv install --dev
 
+Before making any changes, install the git hooks to help prevent changes to the 
+docs directory, which contains generated documentation files:
+
+::
+
+    make hooks
+
 Notes on Pipfile.lock
 ~~~~~~~~~~~~~~~~~~~~~
 
