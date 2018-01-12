@@ -28,4 +28,9 @@ docs:
 	#pipenv run pandoc --from=markdown --to=rst --output=docsrc/README.rst README.md
 
 	cd docsrc && pipenv run make html
+	find docs -type f -exec chmod 444 {} \;
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/html/index.html.\n\033[0m"
+
+hooks: .git/hooks
+	cp scripts/* .git/hooks
+
