@@ -67,10 +67,11 @@ def test_add_wire():
     assert len(p.wires) == 1
 
 
-def test_new_plan(fake_session):
+# TODO: make this a deterministic test
+def test_new_plan(session):
 
     p = Plan()
-    p.connect_to_session(fake_session)
+    p.connect_to_session(session)
     assert p.operations is None
     assert p.plan_associations is None
 
