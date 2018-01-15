@@ -196,6 +196,8 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     @classmethod
     def where(cls, session, params):
         """Finds a list of models by some parameters"""
+        if params is None:
+            return None
         interface = cls.interface(session)
         return interface.where(params)
 

@@ -56,6 +56,7 @@ def test_est_costs(session):
     cost = p.estimate_cost()
     print(cost)
 
+
 def test_add_wire():
 
     p = Plan()
@@ -64,6 +65,20 @@ def test_add_wire():
     fv2 = FieldValue(name="output")
     p.wire(fv1, fv2)
     assert len(p.wires) == 1
+
+
+# TODO: make this a deterministic test
+def test_new_plan(session):
+
+    p = Plan()
+    p.connect_to_session(session)
+    assert p.operations is None
+    assert p.plan_associations is None
+
+    p.id = 1000000
+    assert p.operations == []
+    assert p.plan_associations == []
+
 
 # def test_submit(session):
 #     primer = session.SampleType.find(1).samples[-1]

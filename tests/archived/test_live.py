@@ -13,7 +13,7 @@ pytestmark = pytest.mark.skip("These tests utilize a live session with alot of r
 def test_login(session, config):
     """Test actually logging into the Aquarium server detailed in the config."""
     current = session.current_user
-    assert isinstance(current, User)
+    assert isinstance(current, models.User)
     assert current.login == config["login"]
     print(current)
 
