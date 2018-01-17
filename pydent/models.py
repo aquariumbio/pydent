@@ -521,6 +521,16 @@ class Item(ModelBase):
         data=fields.JSON(allow_none=True)
     )
 
+    def __init__(self=None, sample_id=None, object_type_id=None):
+        self.sample_id = sample_id
+        self.object_type_id = object_type_id
+        super().__init__(**vars(self))
+
+    def make(self):
+        """Makes the Item on the Aquarium server. Requires
+        this Item to be connected to a session."""
+        return self.reload(self.session.utils.create_items([self])[0]['item'])
+
 
 @add_schema
 class Job(ModelBase):

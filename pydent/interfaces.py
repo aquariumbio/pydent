@@ -71,6 +71,11 @@ class UtilityInterface(SessionInterface):
         json = [s.dump() for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
 
+    def create_items(self, items):
+        return [self.aqhttp.get('items/make/{}/{}'.format(
+                i.sample.id, i.object_type.id))
+                for i in items]
+
     def create_operation_type(self, operation_type):
         """Creates a new operation type"""
         op_data = operation_type.dump(relations=('field_types',))
