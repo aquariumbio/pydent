@@ -174,10 +174,12 @@ class AqHTTP(object):
                 "Verify login credentials.\nContent:\n{content}".format(code=result.status_code, reason=result.reason,
                                                                         content=result.content))
         if "errors" in result_json:
-            raise TridentRequestError(
-                "Request: {}\n{}\n{}".format(
-                    result.request.body, result, result_json['errors'])
-            )
+            errors = result_json['errors']
+            if hasattr(errors, '__len__') and len(errors) > 0:
+                raise TridentRequestError(
+                    "Request: {}\n{}\n{}".format(
+                        result.request.body, result, result_json['errors'])
+                )
         return result_json
 
     @staticmethod
