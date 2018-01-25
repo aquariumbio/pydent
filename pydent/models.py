@@ -601,6 +601,7 @@ class Operation(ModelBase):
             # self.show()
 
     def field_value_array(self, name, role):
+        """Returns FieldValue array with name and role."""
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
             if fvs:
@@ -626,6 +627,8 @@ class Operation(ModelBase):
         #     self.field_values = []
 
     def set_field_value_array(self, name, role, values):
+        """Sets FieldValue array using values. Values should be a list of
+        dictionaries containing sample, item, container, or values keys."""
         field_values = self.field_value_array(name, role)
 
         # get the field type
@@ -641,6 +644,7 @@ class Operation(ModelBase):
         return field_values
 
     def add_to_field_value_array(self, name, role, sample=None, item=None, value=None, container=None):
+        """Creates and adds a new :class:`FieldValue`"""
         field_type = self.operation_type.field_type(name, role)
         fv = field_type.initialize_field_value()
         fv.set_value(sample=sample, item=item, value=value, container=container)
