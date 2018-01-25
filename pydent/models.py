@@ -696,6 +696,7 @@ class OperationType(ModelBase, HasCodeMixin):
     def instance(self, xpos=None, ypos=None):
         operation = Operation(operation_type_id=self.id,
                               status='planning', x=xpos, y=ypos)
+        operation.connect_to_session(self.session)
         operation.operation_type = self
         operation.init_field_values()
         return operation
