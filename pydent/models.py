@@ -881,7 +881,7 @@ class Sample(ModelBase):
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
         this Sample to be connected to a session."""
-        self.session.utils.create_samples([self])
+        return self.reload(self.session.utils.create_samples([self])[0]['sample'])
 
 
 @add_schema
