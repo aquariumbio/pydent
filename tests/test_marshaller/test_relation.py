@@ -379,7 +379,7 @@ def test_raise_return_none():
 
 
 def test_preferentially_reload_relationships_if_none():
-
+    """We expect 'myrelation' to reload if its set to None"""
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
@@ -399,4 +399,5 @@ def test_preferentially_reload_relationships_if_none():
     assert mymodel.myrelation == 20
 
     mymodel.x = 5
+    mymodel.myrelation = None
     assert mymodel.myrelation == 25

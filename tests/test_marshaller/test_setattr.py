@@ -25,5 +25,6 @@ def test_setattr():
     assert hasattr(m, "myrelation")
 
     # when underlying parameters used in callback change, myrelation should change as well
+    m.myrelation = None
     m.other_id = 6
     assert m.myrelation == 6

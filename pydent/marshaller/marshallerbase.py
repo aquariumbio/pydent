@@ -38,7 +38,7 @@ class MarshallerBase(object):
     """
 
     model_schema = None
-    save_attr = False
+    save_attr = True
 
     @classmethod
     def create_from_json(cls, *args, data=None, **kwargs):
