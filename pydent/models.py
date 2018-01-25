@@ -594,8 +594,21 @@ class Operation(ModelBase):
         type.
         """
         for field_type in self.operation_type.field_types:
-            self.set_field_value(field_type.name, field_type.role)
+            if field_type.array:
+                self.add_to_field_value_array(field_type.name, field_type.role)
+            else:
+                self.set_field_value(field_type.name, field_type.role)
             # self.show()
+
+    def field_value_array(self, name, role):
+        if self.field_values:
+            fvs = filter_list(self.field_values, name=name, role=role)
+            if fvs:
+                if not fvs[0].field_type.array:
+                    raise AquariumModelError(
+                        "FieldValue is not an array for the field value of operation {}(id={}).{}.{}".format(
+                            self.operation_type.name, self.id, role, name))
+                return fvs
 
     def field_value(self, name, role):
         """
@@ -604,16 +617,37 @@ class Operation(ModelBase):
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
             if fvs:
-                if fvs[0].field_type.array:
-                    return fvs
-                elif len(fvs) > 1:
+                if len(fvs) > 1:
                     raise AquariumModelError(
-                        "More than one FieldValue found for the non-array field value of operation {}(id={}).{}.{}".format(
+                        "More than one FieldValue found for the field value of operation {}(id={}).{}.{}".format(
                             self.operation_type.name, self.id, role, name))
-                elif len(fvs) == 1:
-                    return fvs[0]
-        else:
+                return fvs[0]
+        # else:
+        #     self.field_values = []
+
+    def set_field_value_array(self, name, role, values):
+        field_values = self.field_value_array(name, role)
+
+        # get the field type
+        field_type = self.operation_type.field_type(name, role)
+        if field_type is None:
+            raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
+                self.operation_type.name, role, name))
+        if not len(field_values) == len(values):
+            raise AquariumModelError("Cannot set_field_value_array. Length of values must equal length of field_values")
+
+        for fv, val in zip(field_values, values):
+            fv.set_value(**val)
+        return field_values
+
+    def add_to_field_value_array(self, name, role, sample=None, item=None, value=None, container=None):
+        field_type = self.operation_type.field_type(name, role)
+        fv = field_type.initialize_field_value()
+        fv.set_value(sample=sample, item=item, value=value, container=container)
+        if self.field_values is None:
             self.field_values = []
+        self.field_values.append(fv)
+        return fv
 
     def set_field_value(self, name, role, sample=None, item=None, value=None, container=None):
         """
@@ -629,11 +663,15 @@ class Operation(ModelBase):
         if field_type is None:
             raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
                 self.operation_type.name, role, name))
+        if field_type.array:
+            raise AquariumModelError(f"FieldValue {role} {name} is an array. Use 'set_field_value_array'")
 
         # initialize the field value from the field type
         if not field_value:
             field_value = field_type.initialize_field_value(field_value)
             field_value.set_operation(self)
+            if self.field_values is None:
+                self.field_values = []
             self.field_values.append(field_value)
 
         # set the value, finds allowable_field_types, etc.
@@ -651,6 +689,20 @@ class Operation(ModelBase):
     def output(self, name):
         return self.field_value(name, 'output')
 
+    def input_array(self, name):
+        return self.field_value_array(name, "input")
+
+    def add_to_input_array(self, name, sample=None, item=None, value=None, container=None):
+        return self.add_to_field_value_array(name, "input", sample=sample, item=item,
+                                    value=value, container=container)
+
+    def add_to_output_array(self, name, sample=None, item=None, value=None, container=None):
+        return self.add_to_field_value_array(name, "output", sample=sample, item=item,
+                                    value=value, container=container)
+
+    def output_array(self, name):
+        return self.field_value_array(name, "output")
+
     def set_input(self, name, sample=None, item=None, value=None, container=None):
         return self.set_field_value(name, 'input', sample=sample, item=item,
                                     value=value, container=container)
@@ -658,6 +710,12 @@ class Operation(ModelBase):
     def set_output(self, name, sample=None, item=None, value=None, container=None):
         return self.set_field_value(name, 'output', sample=sample, item=item,
                                     value=value, container=container)
+
+    def set_input_array(self, name, values):
+        return self.set_field_value_array(name, "input", values)
+
+    def set_output_array(self, name, values):
+        return self.set_field_value_array(name, "output", values)
 
     def show(self, pre=""):
         """

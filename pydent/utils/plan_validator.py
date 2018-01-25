@@ -66,7 +66,7 @@ class PlanValidator(object):
         for operation in self.operations:
             for field_type in operation.operation_type.field_types:
                 if field_type.array:
-                    if len(operation.field_value(field_type.name)) == 0:
+                    if len(operation.field_value_array(field_type.name, field_type.role)) == 0:
                         self.warning(field_type.role + " " + field_type.name +
                                      "' of '" + field_type.operation_type.name +
                                      "' cannot be an empty array.")
