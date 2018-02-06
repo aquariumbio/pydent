@@ -668,7 +668,7 @@ class Operation(ModelBase):
             raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
                 self.operation_type.name, role, name))
         if field_type.array:
-            raise AquariumModelError(f"FieldValue {role} {name} is an array. Use 'set_field_value_array'")
+            raise AquariumModelError("FieldValue {} {} is an array. Use 'set_field_value_array'".format(role, name))
 
         # initialize the field value from the field type
         if not field_value:
