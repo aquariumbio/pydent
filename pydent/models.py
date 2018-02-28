@@ -570,6 +570,10 @@ class Membership(ModelBase):
 @add_schema
 class ObjectType(ModelBase):
     """A ObjectType model"""
+    def save(self):
+        """Saves the Object Type to the Aquarium server. Requires
+        this Object Type to be connected to a session."""
+        return self.reload(self.session.utils.create_object_type(self))
 
 
 @add_schema
@@ -893,6 +897,11 @@ class SampleType(ModelBase):
                          params=lambda self: {"parent_id": self.id,
                                               "parent_class": self.__class__.__name__})
     )
+
+    def save(self):
+        """Saves the Sample Type to the Aquarium server. Requires
+        this Sample Type to be connected to a session."""
+        return self.reload(self.session.utils.create_sample_type(self))
 
 
 @add_schema
