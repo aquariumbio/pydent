@@ -1,13 +1,16 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
     <title>Developer Notes &#8212; Trident 0.0.2 documentation</title>
+    
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -26,7 +29,7 @@
     <link rel="next" title="Contributing" href="contributing.html" />
     <link rel="prev" title="pydent.relationships" href="_autosummary/pydent.relationships.html" /> 
   </head>
-  <body>
+  <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -131,7 +134,7 @@ interfaces are used to specify how these requests are made.</p>
 <div class="section" id="establishing-an-interface">
 <h2>Establishing an Interface<a class="headerlink" href="#establishing-an-interface" title="Permalink to this headline">¶</a></h2>
 <p>Interfaces are created using a <code class="docutils literal"><span class="pre">pydent.aqsession.AqSession</span></code> instance.
-<code class="docutils literal"><span class="pre">AqSession</span></code> instances are created using a user’s login information and
+<code class="docutils literal"><span class="pre">AqSession</span></code> instances are created using a user&#8217;s login information and
 stores a particular <code class="docutils literal"><span class="pre">AqHTTP</span></code> instance.</p>
 <p>For example, to establish a User Model interface and find a <code class="docutils literal"><span class="pre">User</span></code>
 with <code class="docutils literal"><span class="pre">id</span> <span class="pre">==</span> <span class="pre">1</span></code>:</p>
@@ -169,7 +172,7 @@ interface, for example, <code class="docutils literal"><span class="pre">Plan</s
 </pre></div>
 </div>
 <p>Models instantiate with the <code class="docutils literal"><span class="pre">load</span></code> method have their attribute
-automatically ‘tracked’ by the schema. For example,</p>
+automatically &#8216;tracked&#8217; by the schema. For example,</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;GI Joe&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">:</span> <span class="s1">&#39;gijoe&#39;</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dump</span><span class="p">())</span>
 
@@ -247,13 +250,13 @@ Dictionary arguments are ok</li>
 use <code class="docutils literal"><span class="pre">super().__init__(fieldname=whatever,...)</span></code> (A short cut for
 tracking all attributes for serialization is to use
 <code class="docutils literal"><span class="pre">super().__init__(**vars(self))</span></code>)</li>
-<li>Fields (including relationships) are defined in the model’s
+<li>Fields (including relationships) are defined in the model&#8217;s
 <code class="docutils literal"><span class="pre">fields</span></code> attribute, which expects a dictionary of field_names with
 Field models<ul>
 <li><code class="docutils literal"><span class="pre">pydent.marshaller.fields</span></code> is a module that contains a list of
 fields including <code class="docutils literal"><span class="pre">Str</span></code>, <code class="docutils literal"><span class="pre">Int</span></code>, <code class="docutils literal"><span class="pre">Boolean</span></code>, etc. Establishing
 a field this way will ensure that the attribute is properly
-validated. You’ll notice that as of Dec 2017, Aquarium models do
+validated. You&#8217;ll notice that as of Dec 2017, Aquarium models do
 not use this explicitly. If the need for validation arises, we can
 explicitly define these fields</li>
 </ul>
@@ -265,7 +268,7 @@ explicitly define these fields</li>
 <p>Relationships are special model fields that establish One-to-One,
 One-to-Many, and Many-to-Many relationships between models.The
 relationships use the attached model session to retrieve the models
-through Aquarium. How these work isn’t exactly straightforward and
+through Aquarium. How these work isn&#8217;t exactly straightforward and
 requires a little bit of explanation.</p>
 <p>There are HasOne, HasMany, HasManyGeneric, and HasManyThrough
 relationships which can be defined in the model definition in the
@@ -300,10 +303,10 @@ None</p>
 </div>
 <div class="section" id="relationship-fullfillment">
 <h3>Relationship fullfillment<a class="headerlink" href="#relationship-fullfillment" title="Permalink to this headline">¶</a></h3>
-<p>The relationship fullfillment occurs through a ‘callback’ and ‘params’
+<p>The relationship fullfillment occurs through a &#8216;callback&#8217; and &#8216;params&#8217;
 attributes defined in the relationships <code class="docutils literal"><span class="pre">__init__</span></code> definition. When
-fullfilling a relationship, the model will use its ‘callback’ method and
-pass in the ‘params’ value found in the relationship. The ‘params’ may
+fullfilling a relationship, the model will use its &#8216;callback&#8217; method and
+pass in the &#8216;params&#8217; value found in the relationship. The &#8216;params&#8217; may
 include callable (i.e. lambdas), in which case the model fullfilling the
 relationship will pass in itself to retrieve the parameters.</p>
 <p>As an example, the SampleType relationship in the Sample definition:</p>
@@ -311,7 +314,7 @@ relationship will pass in itself to retrieve the parameters.</p>
     <span class="n">fields</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">sample_type</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The HasMany relationship defaults to the ‘where_callback’ method. In
+<p>The HasMany relationship defaults to the &#8216;where_callback&#8217; method. In
 the HasMany <code class="docutils literal"><span class="pre">__init__</span></code> definition, params are established such that</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;sample_type_id&#39;</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
 </pre></div>
@@ -386,7 +389,7 @@ history can be cleared using <code class="docutils literal"><span class="pre">se
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

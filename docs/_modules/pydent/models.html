@@ -1,13 +1,16 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
     <title>pydent.models &#8212; Trident 0.0.2 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -24,7 +27,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head>
-  <body>
+  <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -230,13 +233,13 @@
 
 <span class="c1">##### Models #####</span>
 
-<div class="viewcode-block" id="Account"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Account">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Account</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Account"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Account">[docs]</a><span class="k">class</span> <span class="nc">Account</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An Account model&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="AllowableFieldType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.AllowableFieldType">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">AllowableFieldType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="AllowableFieldType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.AllowableFieldType">[docs]</a><span class="k">class</span> <span class="nc">AllowableFieldType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A AllowableFieldType model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">field_type</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;FieldType&quot;</span><span class="p">),</span>
@@ -254,16 +257,16 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="Budget"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Budget">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Budget</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Budget"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Budget">[docs]</a><span class="k">class</span> <span class="nc">Budget</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Budget model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">user_budget_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;UserBudgetAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;Budget&quot;</span><span class="p">)</span>
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Code"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Code">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Code</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Code"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Code">[docs]</a><span class="k">class</span> <span class="nc">Code</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Code model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">user</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">),</span>
@@ -282,8 +285,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">update_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Collection"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Collection">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Collection</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Collection"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Collection">[docs]</a><span class="k">class</span> <span class="nc">Collection</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
     <span class="sd">&quot;&quot;&quot;A Collection model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">object_type</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;ObjectType&quot;</span><span class="p">),</span>
@@ -291,8 +294,8 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="DataAssociation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.DataAssociation">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">DataAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="DataAssociation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.DataAssociation">[docs]</a><span class="k">class</span> <span class="nc">DataAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A DataAssociation model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="nb">object</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">JSON</span><span class="p">(),</span>
@@ -304,8 +307,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="FieldType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.FieldType">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">FieldType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">FieldMixin</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="FieldType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.FieldType">[docs]</a><span class="k">class</span> <span class="nc">FieldType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">FieldMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A FieldType model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">allowable_field_types</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;AllowableFieldType&quot;</span><span class="p">,</span> <span class="s2">&quot;FieldType&quot;</span><span class="p">),</span>
@@ -387,8 +390,8 @@
         <span class="k">return</span> <span class="n">field_value</span></div></div>
 
 
-<div class="viewcode-block" id="FieldValue"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.FieldValue">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">FieldValue</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">FieldMixin</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="FieldValue"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.FieldValue">[docs]</a><span class="k">class</span> <span class="nc">FieldValue</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">FieldMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A FieldValue model. One of the more complex models.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -571,20 +574,20 @@
                                                    <span class="bp">self</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">object_type_id</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Group">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Group">[docs]</a><span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Group model&quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="Invoice"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Invoice">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Invoice</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Invoice"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Invoice">[docs]</a><span class="k">class</span> <span class="nc">Invoice</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Invoice model&quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Item">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Item">[docs]</a><span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Item model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">sample</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">),</span>
@@ -594,8 +597,8 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Job"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Job">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Job</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Job"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Job">[docs]</a><span class="k">class</span> <span class="nc">Job</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Job model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">job_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;JobAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;Job&quot;</span><span class="p">),</span>
@@ -603,8 +606,8 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="JobAssociation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.JobAssociation">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">JobAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="JobAssociation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.JobAssociation">[docs]</a><span class="k">class</span> <span class="nc">JobAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A JobAssociation model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">job</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Job&quot;</span><span class="p">),</span>
@@ -612,8 +615,8 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Library"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Library">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Library</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">HasCodeMixin</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Library"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Library">[docs]</a><span class="k">class</span> <span class="nc">Library</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">HasCodeMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Library model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">codes</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">),</span>
@@ -629,13 +632,13 @@
     <span class="p">)</span>
 
 
-<div class="viewcode-block" id="ObjectType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.ObjectType">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">ObjectType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="ObjectType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.ObjectType">[docs]</a><span class="k">class</span> <span class="nc">ObjectType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A ObjectType model&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation">[docs]</a><span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Operation model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">field_values</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;FieldValue&quot;</span><span class="p">),</span>
@@ -666,8 +669,22 @@
 <span class="sd">        type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">field_types</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">field_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="o">.</span><span class="n">role</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="n">field_type</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_to_field_value_array</span><span class="p">(</span><span class="n">field_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">field_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="o">.</span><span class="n">role</span><span class="p">)</span></div>
             <span class="c1"># self.show()</span>
+
+<div class="viewcode-block" id="Operation.field_value_array"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation.field_value_array">[docs]</a>    <span class="k">def</span> <span class="nf">field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns FieldValue array with name and role.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+            <span class="n">fvs</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fvs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">fvs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
+                        <span class="s2">&quot;FieldValue is not an array for the field value of operation </span><span class="si">{}</span><span class="s2">(id=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">fvs</span></div>
 
 <div class="viewcode-block" id="Operation.field_value"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation.field_value">[docs]</a>    <span class="k">def</span> <span class="nf">field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -676,16 +693,40 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
             <span class="n">fvs</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">fvs</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">fvs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">fvs</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
-                        <span class="s2">&quot;More than one FieldValue found for the non-array field value of operation </span><span class="si">{}</span><span class="s2">(id=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="s2">&quot;More than one FieldValue found for the field value of operation </span><span class="si">{}</span><span class="s2">(id=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">fvs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span></div>
+                <span class="k">return</span> <span class="n">fvs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="c1"># else:</span>
+        <span class="c1">#     self.field_values = []</span>
+
+<div class="viewcode-block" id="Operation.set_field_value_array"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation.set_field_value_array">[docs]</a>    <span class="k">def</span> <span class="nf">set_field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets FieldValue array using values. Values should be a list of</span>
+<span class="sd">        dictionaries containing sample, item, container, or values keys.&quot;&quot;&quot;</span>
+        <span class="n">field_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+
+        <span class="c1"># get the field type</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">field_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;No FieldType found for OperationType </span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_values</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot set_field_value_array. Length of values must equal length of field_values&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">fv</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">field_values</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+            <span class="n">fv</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="o">**</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">field_values</span></div>
+
+<div class="viewcode-block" id="Operation.add_to_field_value_array"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation.add_to_field_value_array">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates and adds a new :class:`FieldValue`&quot;&quot;&quot;</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+        <span class="n">fv</span> <span class="o">=</span> <span class="n">field_type</span><span class="o">.</span><span class="n">initialize_field_value</span><span class="p">()</span>
+        <span class="n">fv</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fv</span></div>
 
 <div class="viewcode-block" id="Operation.set_field_value"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation.set_field_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -701,11 +742,15 @@
         <span class="k">if</span> <span class="n">field_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;No FieldType found for OperationType </span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">field_type</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;FieldValue </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> is an array. Use &#39;set_field_value_array&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
 
         <span class="c1"># initialize the field value from the field type</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">field_value</span><span class="p">:</span>
             <span class="n">field_value</span> <span class="o">=</span> <span class="n">field_type</span><span class="o">.</span><span class="n">initialize_field_value</span><span class="p">(</span><span class="n">field_value</span><span class="p">)</span>
             <span class="n">field_value</span><span class="o">.</span><span class="n">set_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_value</span><span class="p">)</span>
 
         <span class="c1"># set the value, finds allowable_field_types, etc.</span>
@@ -723,6 +768,20 @@
     <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">input_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_to_input_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
+                                    <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_to_output_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
+                                    <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">output_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">set_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
                                     <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">)</span>
@@ -730,6 +789,12 @@
     <span class="k">def</span> <span class="nf">set_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
                                     <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_input_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_output_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Operation.show"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -750,8 +815,8 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">fv</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;output&#39;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="OperationType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.OperationType">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">OperationType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">HasCodeMixin</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="OperationType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.OperationType">[docs]</a><span class="k">class</span> <span class="nc">OperationType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">HasCodeMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A OperationType model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -768,6 +833,7 @@
     <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ypos</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">operation</span> <span class="o">=</span> <span class="n">Operation</span><span class="p">(</span><span class="n">operation_type_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                               <span class="n">status</span><span class="o">=</span><span class="s1">&#39;planning&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">xpos</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ypos</span><span class="p">)</span>
+        <span class="n">operation</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
         <span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">operation</span><span class="o">.</span><span class="n">init_field_values</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">operation</span>
@@ -779,8 +845,8 @@
                 <span class="k">return</span> <span class="n">fts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Plan</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">PlanValidator</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan">[docs]</a><span class="k">class</span> <span class="nc">Plan</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">PlanValidator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A Plan model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -856,8 +922,8 @@
                     <span class="n">das</span> <span class="o">+=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">data_associations</span>
         <span class="k">return</span> <span class="n">das</span>
 
-<div class="viewcode-block" id="Plan.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.find">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">model_id</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Plan.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">model_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Override find for plans, because generic method is too minimal.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -900,8 +966,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">replan</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.PlanAssociation">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">PlanAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.PlanAssociation">[docs]</a><span class="k">class</span> <span class="nc">PlanAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A PlanAssociation model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">plan</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Plan&quot;</span><span class="p">),</span>
@@ -909,8 +975,8 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Sample"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Sample">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Sample"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Sample">[docs]</a><span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Sample model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="c1"># sample relationships</span>
@@ -946,8 +1012,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">create_samples</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span></div></div>
 
 
-<div class="viewcode-block" id="SampleType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.SampleType">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">SampleType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="SampleType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.SampleType">[docs]</a><span class="k">class</span> <span class="nc">SampleType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A SampleType model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">samples</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="s2">&quot;SampleType&quot;</span><span class="p">),</span>
@@ -957,8 +1023,8 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Upload"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Upload">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Upload</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Upload"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Upload">[docs]</a><span class="k">class</span> <span class="nc">Upload</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An Upload model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -974,8 +1040,8 @@
         <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">content</span></div>
 
 
-<div class="viewcode-block" id="User"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.User">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="User"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.User">[docs]</a><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A User model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">groups</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Group&quot;</span><span class="p">,</span> <span class="s2">&quot;User&quot;</span><span class="p">),</span>
@@ -986,8 +1052,8 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="UserBudgetAssociation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.UserBudgetAssociation">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">UserBudgetAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="UserBudgetAssociation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.UserBudgetAssociation">[docs]</a><span class="k">class</span> <span class="nc">UserBudgetAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An association model between a User and a Budget&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">budget</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Budget&quot;</span><span class="p">),</span>
@@ -995,8 +1061,8 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Wire">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Wire</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Wire">[docs]</a><span class="k">class</span> <span class="nc">Wire</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Wire model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="c1"># load_only=False, will force dumping of FieldValues here...</span>
@@ -1040,7 +1106,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

@@ -1,5 +1,5 @@
-pydent\.exceptions
-==================
+pydent.exceptions
+=================
 
 .. automodule:: pydent.exceptions
 
@@ -18,6 +18,8 @@ pydent\.exceptions
    .. autosummary::
    
       AquariumModelError
+      ConnectTimeout
+      RequestException
       TridentJSONDataIncomplete
       TridentLoginError
       TridentModelNotFoundError

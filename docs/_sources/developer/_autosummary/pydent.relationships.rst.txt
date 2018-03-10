@@ -1,5 +1,5 @@
-pydent\.relationships
-=====================
+pydent.relationships
+====================
 
 .. automodule:: pydent.relationships
 
@@ -18,11 +18,19 @@ pydent\.relationships
       HasManyThrough
       HasMixin
       HasOne
+      MagicList
       Many
+      ModelBase
       One
    
    
 
    
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      MarshallerRelationshipError
    
    

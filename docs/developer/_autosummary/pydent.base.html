@@ -1,13 +1,16 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
     <title>pydent.base &#8212; Trident 0.0.2 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -26,7 +29,7 @@
     <link rel="next" title="pydent.exceptions" href="pydent.exceptions.html" />
     <link rel="prev" title="pydent.aqsession" href="pydent.aqsession.html" /> 
   </head>
-  <body>
+  <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -123,6 +126,21 @@ intelligently.</div></blockquote>
 <span class="n">primer_type</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sample_type</span>
 </pre></div>
 </div>
+<p class="rubric">Functions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">magiclist</span></code>(fxn)</td>
+<td>Decorator that turns a returned value from a list to a MagicList as possible.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">underscore</span></code>(word)</td>
+<td>Make an underscored, lowercase form from the expression in the string.</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Classes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -130,11 +148,29 @@ intelligently.</div></blockquote>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-obj docutils literal"><span class="pre">ModelBase</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">MarshallerBase</span></code></td>
+<td>Base class for marshalling and unmarshalling.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-obj docutils literal"><span class="pre">ModelBase</span></code></a>(\*\*model_args)</td>
 <td>Base class for Aquarium models.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.base.ModelRegistry" title="pydent.base.ModelRegistry"><code class="xref py py-obj docutils literal"><span class="pre">ModelRegistry</span></code></a>(name,&nbsp;bases,&nbsp;selfdict)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.base.ModelRegistry" title="pydent.base.ModelRegistry"><code class="xref py py-obj docutils literal"><span class="pre">ModelRegistry</span></code></a>(name,&nbsp;bases,&nbsp;selfdict)</td>
 <td>Stores a list of models that can be accessed by name.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Exceptions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">AquariumModelError</span></code></td>
+<td>An error occured with this Aquarium model</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentModelNotFoundError</span></code></td>
+<td>Trident could not find model in list of models.</td>
 </tr>
 </tbody>
 </table>
@@ -169,7 +205,7 @@ instance that loaded this model</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field</strong> (<em>Relation</em>) – relationship field</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field</strong> (<em>Relation</em>) &#8211; relationship field</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model that satisfies the relationship</td>
 </tr>
@@ -196,8 +232,8 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> – dump arguments</li>
-<li><strong>kwargs</strong> – dump arguments</li>
+<li><strong>args</strong> &#8211; dump arguments</li>
+<li><strong>kwargs</strong> &#8211; dump arguments</li>
 </ul>
 </td>
 </tr>
@@ -217,8 +253,8 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>str</em>) – name of the relationship or attribute</li>
-<li><strong>model</strong> (<a class="reference internal" href="#pydent.base.ModelBase" title="pydent.base.ModelBase"><em>ModelBase</em></a>) – model to append</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; name of the relationship or attribute</li>
+<li><strong>model</strong> (<a class="reference internal" href="#pydent.base.ModelBase" title="pydent.base.ModelBase"><em>ModelBase</em></a>) &#8211; model to append</li>
 </ul>
 </td>
 </tr>
@@ -246,7 +282,7 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) – json data to update instance attributes</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) &#8211; json data to update instance attributes</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model instance</td>
 </tr>
@@ -272,34 +308,34 @@ to <code class="xref py py-class docutils literal"><span class="pre">pydent.mars
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) – A list or tuple of fields to serialize. If <cite>None</cite>,
+<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
 all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) – Nested relationships to include
+<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
 in the serialization. This accepts a string (for one nested
 relationship), a tuple (for multiple relationships) or a dict
 (for recursively applied serialization). A dictionary of dump
-options ‘opts’ can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) – A list or tuple of fields to exclude from the
+options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
+<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
 serialized result. Nested fields can be represented with dot
 delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) – A list or tuple of fields to include during
-serialization. Unlike ‘include’, this will not be applied
+<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
+serialization. Unlike &#8216;include&#8217;, this will not be applied
 recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) – whether to dump all relationship during
+<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
 deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) – Optional prefix that will be prepended to all the
+<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
 serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) – If <cite>True</cite>, raise errors if invalid data are passed
+<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
 in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) – Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
+<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
 that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) – Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
+<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
 and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) – A list or tuple of fields to skip during
+<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
 serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) – A list or tuple of fields to skip during
+<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
 deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) – Whether to ignore missing fields. If its
+<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
 value is an iterable, only missing fields listed in that
 iterable will be ignored.</li>
 </ul>
@@ -307,12 +343,12 @@ iterable will be ignored.</li>
 </tr>
 </tbody>
 </table>
-<p>Example Usage using ‘only’ to dump only particular relationships</p>
+<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
 <span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Example Usage using ‘include’ to dump nested relationships:</p>
+<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
 <span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
 <span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
@@ -398,7 +434,7 @@ dictionary.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) – data to update model instance</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) &#8211; data to update model instance</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model instance</td>
 </tr>
@@ -443,8 +479,8 @@ find models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.base.ModelRegistry.mro">
-<code class="descname">mro</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#pydent.base.ModelRegistry.mro" title="Permalink to this definition">¶</a></dt>
-<dd><p>return a type’s method resolution order</p>
+<code class="descname">mro</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#pydent.base.ModelRegistry.mro" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a type&#8217;s method resolution order</p>
 </dd></dl>
 
 </dd></dl>
@@ -478,7 +514,7 @@ find models in model relationships.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

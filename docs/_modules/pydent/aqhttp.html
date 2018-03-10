@@ -1,13 +1,16 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
     <title>pydent.aqhttp &#8212; Trident 0.0.2 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -24,7 +27,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head>
-  <body>
+  <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -121,8 +124,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_login</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request_history</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="AqHTTP.create_session_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.create_session_json">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">create_session_json</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="AqHTTP.create_session_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.create_session_json">[docs]</a>    <span class="k">def</span> <span class="nf">create_session_json</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Formats login information for aquarium&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -161,8 +164,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AqHTTP.fix_remember_token"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.fix_remember_token">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">fix_remember_token</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="AqHTTP.fix_remember_token"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.fix_remember_token">[docs]</a>    <span class="k">def</span> <span class="nf">fix_remember_token</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fixes the Aquarium specific remember token &quot;&quot;&quot;</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
         <span class="n">rtok</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -230,8 +233,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">request_history</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_to_json</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AqHTTP._request_to_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._request_to_json">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_request_to_json</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="AqHTTP._request_to_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._request_to_json">[docs]</a>    <span class="k">def</span> <span class="nf">_request_to_json</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Turns :class:`requests.Request` instance into a json.</span>
 <span class="sd">        Raises custom exception if not.</span>
@@ -246,14 +249,16 @@
                 <span class="s2">&quot;Verify login credentials.</span><span class="se">\n</span><span class="s2">Content:</span><span class="se">\n</span><span class="si">{content}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">reason</span><span class="p">,</span>
                                                                         <span class="n">content</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
         <span class="k">if</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">result_json</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span>
-                <span class="s2">&quot;Request: </span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">result_json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">])</span>
-            <span class="p">)</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="n">result_json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span>
+                    <span class="s2">&quot;Request: </span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">result_json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">])</span>
+                <span class="p">)</span>
         <span class="k">return</span> <span class="n">result_json</span></div>
 
-<div class="viewcode-block" id="AqHTTP._disallow_null_in_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._disallow_null_in_json">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_disallow_null_in_json</span><span class="p">(</span><span class="n">json_data</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="AqHTTP._disallow_null_in_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._disallow_null_in_json">[docs]</a>    <span class="k">def</span> <span class="nf">_disallow_null_in_json</span><span class="p">(</span><span class="n">json_data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if</span>
 <span class="sd">        json data being sent contains a null value</span>
@@ -365,7 +370,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

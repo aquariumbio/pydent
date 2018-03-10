@@ -1,9 +1,16 @@
-pydent\.aqsession
-=================
+pydent.aqsession
+================
 
 .. automodule:: pydent.aqsession
 
    
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      confirm
+      prompt
    
    
 
@@ -13,7 +20,11 @@ pydent\.aqsession
 
    .. autosummary::
    
+      AqHTTP
       AqSession
+      ModelInterface
+      ModelRegistry
+      UtilityInterface
    
    
 

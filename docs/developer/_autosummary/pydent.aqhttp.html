@@ -1,13 +1,16 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
     <title>pydent.aqhttp &#8212; Trident 0.0.2 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -26,7 +29,7 @@
     <link rel="next" title="pydent.aqsession" href="pydent.aqsession.html" />
     <link rel="prev" title="API Reference" href="../api_reference.html" /> 
   </head>
-  <body>
+  <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -99,6 +102,18 @@ requests to Aquarium and returns JSON data.</p>
 class.
 Users should only access these methods indirectly through a <code class="docutils literal"><span class="pre">Session</span></code> or
 <code class="docutils literal"><span class="pre">SessionInterface</span></code> instance.</p>
+<p class="rubric">Functions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">url_build</span></code>(\*parts)</td>
+<td>Join parts of a url into a string</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Classes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -108,6 +123,27 @@ Users should only access these methods indirectly through a <code class="docutil
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><code class="xref py py-obj docutils literal"><span class="pre">AqHTTP</span></code></a>(login,&nbsp;password,&nbsp;aquarium_url)</td>
 <td>Defines a session/connection to Aquarium.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Exceptions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentJSONDataIncomplete</span></code>(\*args,&nbsp;\*\*kwargs)</td>
+<td>JSON data contains a null value and may be imcomplete.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentLoginError</span></code>(\*args,&nbsp;\*\*kwargs)</td>
+<td>Trident is not properly connected to the server.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentRequestError</span></code>(\*args,&nbsp;\*\*kwargs)</td>
+<td>There was an ambiguous exception that occured handling your request.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentTimeoutError</span></code>(\*args,&nbsp;\*\*kwargs)</td>
+<td>Trident took too long to respond</td>
 </tr>
 </tbody>
 </table>
@@ -128,8 +164,8 @@ Instead, a SessionInterface should be the object that makes these requests.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>login</strong> (<em>str</em>) – Aquarium login</li>
-<li><strong>aquarium_url</strong> (<em>str</em>) – aquarium url to the server</li>
+<li><strong>login</strong> (<em>str</em>) &#8211; Aquarium login</li>
+<li><strong>aquarium_url</strong> (<em>str</em>) &#8211; aquarium url to the server</li>
 </ul>
 </td>
 </tr>
@@ -182,14 +218,14 @@ Raises custom exception if not.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>str</em>) – url</li>
-<li><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
+<li><strong>path</strong> (<em>str</em>) &#8211; url</li>
+<li><strong>timeout</strong> (<em>int</em>) &#8211; time in seconds to process request before raising
 exception</li>
-<li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
+<li><strong>get_from_history_ok</strong> (<em>boolean</em>) &#8211; whether its ok to return previously found
 request from history (default=False)</li>
-<li><strong>allow_none</strong> (<em>boolean</em>) – if False, throw error if json_data contains a null or
+<li><strong>allow_none</strong> (<em>boolean</em>) &#8211; if False, throw error if json_data contains a null or
 None value</li>
-<li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
+<li><strong>kwargs</strong> (<em>dict</em>) &#8211; additional arguments to post to request</li>
 </ul>
 </td>
 </tr>
@@ -212,15 +248,15 @@ None value</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>str</em>) – url</li>
-<li><strong>json_data</strong> (<em>dict</em>) – json_data to post</li>
-<li><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
+<li><strong>path</strong> (<em>str</em>) &#8211; url</li>
+<li><strong>json_data</strong> (<em>dict</em>) &#8211; json_data to post</li>
+<li><strong>timeout</strong> (<em>int</em>) &#8211; time in seconds to process request before raising
 exception</li>
-<li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
+<li><strong>get_from_history_ok</strong> (<em>boolean</em>) &#8211; whether its ok to return previously found
 request from history (default=False)</li>
-<li><strong>allow_none</strong> (<em>boolean</em>) – if False, throw error if json_data contains a null
+<li><strong>allow_none</strong> (<em>boolean</em>) &#8211; if False, throw error if json_data contains a null
 or None value</li>
-<li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
+<li><strong>kwargs</strong> (<em>dict</em>) &#8211; additional arguments to post to request</li>
 </ul>
 </td>
 </tr>
@@ -243,15 +279,15 @@ or None value</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>str</em>) – url</li>
-<li><strong>json_data</strong> (<em>dict</em>) – json_data to post</li>
-<li><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
+<li><strong>path</strong> (<em>str</em>) &#8211; url</li>
+<li><strong>json_data</strong> (<em>dict</em>) &#8211; json_data to post</li>
+<li><strong>timeout</strong> (<em>int</em>) &#8211; time in seconds to process request before raising
 exception</li>
-<li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
+<li><strong>get_from_history_ok</strong> (<em>boolean</em>) &#8211; whether its ok to return previously found
 request from history (default=False)</li>
-<li><strong>allow_none</strong> (<em>boolean</em>) – if False, throw error if json_data contains a null or
+<li><strong>allow_none</strong> (<em>boolean</em>) &#8211; if False, throw error if json_data contains a null or
 None value</li>
-<li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
+<li><strong>kwargs</strong> (<em>dict</em>) &#8211; additional arguments to post to request</li>
 </ul>
 </td>
 </tr>
@@ -274,15 +310,15 @@ None value</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>method</strong> (<em>str</em>) – request method (e.g. ‘put’, ‘post’, ‘get’, etc.)</li>
-<li><strong>path</strong> (<em>str</em>) – url to perform the request</li>
-<li><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
+<li><strong>method</strong> (<em>str</em>) &#8211; request method (e.g. &#8216;put&#8217;, &#8216;post&#8217;, &#8216;get&#8217;, etc.)</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; url to perform the request</li>
+<li><strong>timeout</strong> (<em>int</em>) &#8211; time in seconds to process request before raising
 exception</li>
-<li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
+<li><strong>get_from_history_ok</strong> (<em>boolean</em>) &#8211; whether its ok to return previously found
 request from history (default=False)</li>
-<li><strong>allow_none</strong> (<em>boolean</em>) – if False (default), will raise error if json_data
+<li><strong>allow_none</strong> (<em>boolean</em>) &#8211; if False (default), will raise error if json_data
 contains a None or null value</li>
-<li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
+<li><strong>kwargs</strong> (<em>dict</em>) &#8211; additional arguments to post to request</li>
 </ul>
 </td>
 </tr>
@@ -333,7 +369,7 @@ contains a None or null value</li>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>
