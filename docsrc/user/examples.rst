@@ -203,7 +203,9 @@ Submitting a Plan
 
 .. code:: python
 
-    session = AqSession.interactive()
+    from pydent import AqSession, models
+
+    session = AqSession("vrana", "Mountain5", "http://52.27.43.242:81/")
 
     primer = session.SampleType.find(1).samples[-1]
 
@@ -217,8 +219,13 @@ Submitting a Plan
     order_primer.set_output("Primer", sample=primer)
     order_primer.set_input("Urgent?", value="no")
 
-    # create a new plan and add operations
-    p = session.Plan(name="MyPlan")
+    # create a new plan
+    p = models.Plan(name="MyPlan")
+
+    # connect the plan to the session
+    p.connect_to_session(session)
+
+    # add the operation to the plan
     p.add_operation(order_primer)
 
     # save the plan
@@ -243,6 +250,11 @@ Submitting a Gibson Assembly
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
+
+
+    from pydent import AqSession, models
+
+    session = AqSession("vrana", "Mountain5", "http://52.27.43.242:81/")
 
     # find "Assembly Plasmid" protocol
     gibson_type = session.OperationType.where({"deployed": True, "name": "Assemble Plasmid"})[0]
@@ -329,6 +341,7 @@ Submitting a Gibson Assembly
     p.submit(session.current_user, session.current_user.budgets[0])
 
     print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+
 
 Miscellaneous
 -------------
