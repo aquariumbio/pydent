@@ -205,7 +205,7 @@ Submitting a Plan
 
     from pydent import AqSession, models
 
-    session = AqSession("vrana", "Mountain5", "http://52.27.43.242:81/")
+    session = AqSession.interactive()
 
     primer = session.SampleType.find(1).samples[-1]
 
@@ -254,7 +254,7 @@ Submitting a Gibson Assembly
 
     from pydent import AqSession, models
 
-    session = AqSession("vrana", "Mountain5", "http://52.27.43.242:81/")
+    session = AqSession.interactive()
 
     # find "Assembly Plasmid" protocol
     gibson_type = session.OperationType.where({"deployed": True, "name": "Assemble Plasmid"})[0]

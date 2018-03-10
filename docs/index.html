@@ -111,7 +111,7 @@ you may pull down data, submit plans, create samples, and more.</p>
 <p>To get started, checkout the <a class="reference internal" href="user/installation.html"><span class="doc">Installation</span></a></p>
 <p><strong>Using Trident</strong></p>
 <p>Below is an example of how to submit a plan. Check <a class="reference internal" href="user/examples.html"><span class="doc">Trident Examples</span></a> for more examples.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="kn">import</span> <span class="n">AqSession</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span><span class="p">,</span> <span class="n">models</span>
 
 <span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 
@@ -127,15 +127,31 @@ you may pull down data, submit plans, create samples, and more.</p>
 <span class="n">order_primer</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s2">&quot;Primer&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">primer</span><span class="p">)</span>
 <span class="n">order_primer</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Urgent?&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;no&quot;</span><span class="p">)</span>
 
-<span class="c1"># create a new plan and add operations</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Plan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyPlan&quot;</span><span class="p">)</span>
+<span class="c1"># create a new plan</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Plan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyPlan&quot;</span><span class="p">)</span>
+
+<span class="c1"># connect the plan to the session</span>
+<span class="n">p</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+
+<span class="c1"># add the operation to the plan</span>
 <span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">order_primer</span><span class="p">)</span>
 
 <span class="c1"># save the plan</span>
 <span class="n">p</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+<span class="c1"># estimate the cost</span>
 <span class="n">p</span><span class="o">.</span><span class="n">estimate_cost</span><span class="p">()</span>
+
+<span class="c1"># validate the plan</span>
 <span class="n">p</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+<span class="c1"># show the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># submit the plan</span>
 <span class="n">p</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">budgets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You may open you plan here: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/plans?plan_id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p><strong>Contributing</strong></p>

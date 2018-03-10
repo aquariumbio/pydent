@@ -315,7 +315,7 @@
 <h3>Submitting a Plan<a class="headerlink" href="#submitting-a-plan" title="Permalink to this headline">¶</a></h3>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span><span class="p">,</span> <span class="n">models</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;vrana&quot;</span><span class="p">,</span> <span class="s2">&quot;Mountain5&quot;</span><span class="p">,</span> <span class="s2">&quot;http://52.27.43.242:81/&quot;</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 
 <span class="n">primer</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
@@ -361,7 +361,7 @@
 <h3>Submitting a Gibson Assembly<a class="headerlink" href="#submitting-a-gibson-assembly" title="Permalink to this headline">¶</a></h3>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span><span class="p">,</span> <span class="n">models</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;vrana&quot;</span><span class="p">,</span> <span class="s2">&quot;Mountain5&quot;</span><span class="p">,</span> <span class="s2">&quot;http://52.27.43.242:81/&quot;</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 
 <span class="c1"># find &quot;Assembly Plasmid&quot; protocol</span>
 <span class="n">gibson_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Assemble Plasmid&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>

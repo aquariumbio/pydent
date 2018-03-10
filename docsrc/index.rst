@@ -29,33 +29,50 @@ To get started, checkout the :doc:`user/installation`
 
 Below is an example of how to submit a plan. Check :doc:`user/examples` for more examples.
 
-.. code-block:: python
+.. code:: python
 
-   from pydent import AqSession
+    from pydent import AqSession, models
 
-   session = AqSession.interactive()
+    session = AqSession.interactive()
 
-   primer = session.SampleType.find(1).samples[-1]
+    primer = session.SampleType.find(1).samples[-1]
 
-   # get Order Primer operation type
-   ot = session.OperationType.find(328)
+    # get Order Primer operation type
+    ot = session.OperationType.find(328)
 
-   # create an operation
-   order_primer = ot.instance()
+    # create an operation
+    order_primer = ot.instance()
 
-   # set io
-   order_primer.set_output("Primer", sample=primer)
-   order_primer.set_input("Urgent?", value="no")
+    # set io
+    order_primer.set_output("Primer", sample=primer)
+    order_primer.set_input("Urgent?", value="no")
 
-   # create a new plan and add operations
-   p = session.Plan(name="MyPlan")
-   p.add_operation(order_primer)
+    # create a new plan
+    p = models.Plan(name="MyPlan")
 
-   # save the plan
-   p.create()
-   p.estimate_cost()
-   p.validate()
-   p.submit(session.current_user, session.current_user.budgets[0])
+    # connect the plan to the session
+    p.connect_to_session(session)
+
+    # add the operation to the plan
+    p.add_operation(order_primer)
+
+    # save the plan
+    p.create()
+
+    # estimate the cost
+    p.estimate_cost()
+
+    # validate the plan
+    p.validate()
+
+    # show the plan
+    p.show()
+
+    # submit the plan
+    p.submit(session.current_user, session.current_user.budgets[0])
+
+    print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+
 
 **Contributing**
 
