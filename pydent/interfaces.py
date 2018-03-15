@@ -92,7 +92,24 @@ class UtilityInterface(SessionInterface):
 
     def create_operation_type(self, operation_type):
         """Creates a new operation type"""
-        op_data = operation_type.dump(relations=('field_types',))
+        op_data = operation_type.dump(include={
+            'field_types': {
+                'allowable_field_types': {}
+            },
+            'protocol': {},
+            'cost_model': {},
+            'documentation': {},
+            'precondition': {}
+        })
+
+        # Format 'sample_type' and 'object_type' keys for afts
+        for ft_d, ft in zip(
+                op_data['field_types'], operation_type.field_types):
+            for aft_d, aft in zip(
+                    ft_d['allowable_field_types'], ft.allowable_field_types):
+                aft_d['sample_type'] = {'name': aft.sample_type.name}
+                aft_d['object_type'] = {'name': aft.object_type.name}
+
         result = self.aqhttp.post('operation_types.json', json_data=op_data)
         operation_type.reload(result)
         return operation_type
