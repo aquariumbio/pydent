@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydent.base &#8212; Trident 0.0.2 documentation</title>
+    <title>pydent.base &#8212; Trident 0.0.8 documentation</title>
     
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.0.2',
+        VERSION:     '0.0.8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -45,14 +45,14 @@
         <li class="right" >
           <a href="pydent.aqsession.html" title="pydent.aqsession"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.2)</h1>
+        <h1>Trident (V0.0.8)</h1>
     </a>
 </p>
 
@@ -60,7 +60,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.2.
+    for version 0.0.8.
 </p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="pydent.aqsession.html"
@@ -299,64 +299,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.base.ModelBase.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.base.ModelBase.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -508,7 +450,7 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.aqsession.html" title="pydent.aqsession"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

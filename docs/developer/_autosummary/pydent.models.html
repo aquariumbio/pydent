@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydent.models &#8212; Trident 0.0.2 documentation</title>
+    <title>pydent.models &#8212; Trident 0.0.8 documentation</title>
     
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.0.2',
+        VERSION:     '0.0.8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -45,14 +45,14 @@
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.2)</h1>
+        <h1>Trident (V0.0.8)</h1>
     </a>
 </p>
 
@@ -60,7 +60,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.2.
+    for version 0.0.8.
 </p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="pydent.interfaces.html"
@@ -149,7 +149,7 @@ SampleType:</p>
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">add_schema</span></code>(cls)</td>
-<td>Decorator that dynamically creates a <code class="xref py py-class docutils literal"><span class="pre">DynamicSchema</span></code> and attaches it to a <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.MarshallerBase</span></code> or its subclass.</td>
+<td>Class Decorator that dynamically creates a <code class="xref py py-class docutils literal"><span class="pre">DynamicSchema</span></code> and attaches it to a <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.MarshallerBase</span></code> or its subclass.</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">filter_list</span></code>(objlist,&nbsp;\*\*kwargs)</td>
 <td>Filters a list of objects based on attributes in kwargs</td>
@@ -214,7 +214,7 @@ SampleType:</p>
 <tr class="row-even"><td><a class="reference internal" href="#pydent.models.Invoice" title="pydent.models.Invoice"><code class="xref py py-obj docutils literal"><span class="pre">Invoice</span></code></a>(\*\*model_args)</td>
 <td>A Invoice model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-obj docutils literal"><span class="pre">Item</span></code></a>(\*\*model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-obj docutils literal"><span class="pre">Item</span></code></a>([sample_id,&nbsp;object_type_id])</td>
 <td>A Item model</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pydent.models.Job" title="pydent.models.Job"><code class="xref py py-obj docutils literal"><span class="pre">Job</span></code></a>(\*\*model_args)</td>
@@ -404,64 +404,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.Account.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Account.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -692,64 +634,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.AllowableFieldType.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.AllowableFieldType.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -974,64 +858,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.Budget.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Budget.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -1262,64 +1088,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Code.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Code.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -1544,64 +1312,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.Collection.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Collection.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -1832,64 +1542,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.DataAssociation.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.DataAssociation.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -2114,64 +1766,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.FieldType.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.FieldType.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -2454,64 +2048,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.FieldValue.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.FieldValue.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -2765,64 +2301,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Group.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Group.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -3050,64 +2528,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Invoice.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Invoice.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -3218,7 +2638,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Item">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>sample_id=None</em>, <em>object_type_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Item model</p>
 <dl class="method">
@@ -3335,64 +2755,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Item.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Item.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -3435,6 +2797,13 @@ dictionary</p>
 <dt id="pydent.models.Item.load">
 <code class="descname">load</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new model instance from loaded attributes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item.make">
+<code class="descname">make</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item.make"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item.make" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the Item on the Aquarium server. Requires
+this Item to be connected to a session.</p>
 </dd></dl>
 
 <dl class="method">
@@ -3617,64 +2986,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.Job.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Job.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -3902,64 +3213,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.JobAssociation.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.JobAssociation.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -4207,64 +3460,6 @@ or &#8220;documentation&#8221; for OperationType</td>
 <dt id="pydent.models.Library.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Library.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -4521,64 +3716,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.ObjectType.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.ObjectType.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -4664,6 +3801,13 @@ dictionary.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.ObjectType.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#ObjectType.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.ObjectType.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the Object Type to the Aquarium server. Requires
+this Object Type to be connected to a session.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4809,64 +3953,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.Operation.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Operation.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -5157,64 +4243,6 @@ or &#8220;documentation&#8221; for OperationType</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.OperationType.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.OperationType.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -5498,64 +4526,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Plan.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Plan.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -5835,64 +4805,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.PlanAssociation.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.PlanAssociation.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -6117,64 +5029,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.Sample.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Sample.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -6418,64 +5272,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.SampleType.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.SampleType.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -6561,6 +5357,13 @@ dictionary.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.SampleType.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#SampleType.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.SampleType.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the Sample Type to the Aquarium server. Requires
+this Sample Type to be connected to a session.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6700,64 +5503,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.Upload.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Upload.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -6988,64 +5733,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.User.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.User.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -7270,64 +5957,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dt id="pydent.models.UserBudgetAssociation.create_schema_instance">
 <code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.UserBudgetAssociation.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -7558,64 +6187,6 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Wire.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><em>only=()</em>, <em>include=()</em>, <em>exclude=()</em>, <em>relations=()</em>, <em>all_relations=False</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to serialize. If <cite>None</cite>,
-all non relationship fields will be serialized.</li>
-<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) &#8211; Nested relationships to include
-in the serialization. This accepts a string (for one nested
-relationship), a tuple (for multiple relationships) or a dict
-(for recursively applied serialization). A dictionary of dump
-options &#8216;opts&#8217; can be recursively applied to each serialization.</li>
-<li><strong>exclude</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to exclude from the
-serialized result. Nested fields can be represented with dot
-delimiters.</li>
-<li><strong>relations</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to include during
-serialization. Unlike &#8216;include&#8217;, this will not be applied
-recursively</li>
-<li><strong>all_relations</strong> (<em>boolean</em>) &#8211; whether to dump all relationship during
-deserialization</li>
-<li><strong>prefix</strong> (<em>str</em>) &#8211; Optional prefix that will be prepended to all the
-serialized field names.</li>
-<li><strong>strict</strong> (<em>bool</em>) &#8211; If <cite>True</cite>, raise errors if invalid data are passed
-in instead of failing silently and storing the errors.</li>
-<li><strong>many</strong> (<em>bool</em>) &#8211; Should be set to <cite>True</cite> if <code class="docutils literal"><span class="pre">obj</span></code> is a collection so
-that the object will be serialized to a list.</li>
-<li><strong>context</strong> (<em>dict</em>) &#8211; Optional context passed to <code class="xref py py-class docutils literal"><span class="pre">fields.Method</span></code>
-and <code class="xref py py-class docutils literal"><span class="pre">fields.Function</span></code> fields.</li>
-<li><strong>load_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-serialization</li>
-<li><strong>dump_only</strong> (<em>tuple</em>) &#8211; A list or tuple of fields to skip during
-deserialization, read-only fields</li>
-<li><strong>partial</strong> (<em>bool|tuple</em>) &#8211; Whether to ignore missing fields. If its
-value is an iterable, only missing fields listed in that
-iterable will be ignored.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example Usage using &#8216;only&#8217; to dump only particular relationships</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Example Usage using &#8216;include&#8217; to dump nested relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
-<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
-<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Wire.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
@@ -7753,7 +6324,7 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
