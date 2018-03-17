@@ -67,26 +67,18 @@ def test_submit_gibson(session):
 
     # wires
     p.wire(purify_op.output("Fragment"), fv)
+
+    # create the plan on the server
+    p.create()
+
+    # add some more wires
     p.wire(extract_op.output("Fragment"), purify_op.input("Gel"))
     p.wire(gel_op.output("Fragment"), extract_op.input("Fragment"))
     p.wire(pcr_op.output("Fragment"), gel_op.input("Fragment"))
     p.wire(pcr_op.output("Fragment"), gel_op.input("Fragment"))
 
-
-    # create the plan on the Aq server
-    p.create()
-
-    # estimate the cost
-    p.estimate_cost()
-
-    # validate the plan
-    p.validate()
-
-    # show the plan
-    p.show()
-
-    # submit the plan
-    p.submit(session.current_user, session.current_user.budgets[0])
+    # save the plan
+    p.save()
 
     print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
 

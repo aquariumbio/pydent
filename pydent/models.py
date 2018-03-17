@@ -65,6 +65,7 @@ from pydent.marshaller import add_schema, fields
 from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough, HasManyGeneric
 from pydent.utils import magiclist, filter_list
 from pydent.utils.plan_validator import PlanValidator
+import json
 
 __all__ = [
     "Account",
@@ -324,6 +325,7 @@ class FieldValue(ModelBase, FieldMixin):
         # FieldValue relationships
         field_type=HasOne("FieldType"),
         allowable_field_type=HasOne("AllowableFieldType"),
+        array=fields.Function(lambda fv: fv.array),
         item=HasOne("Item", ref="child_item_id"),
         sample=HasOne("Sample", ref="child_sample_id"),
         operation=HasOne(
@@ -333,6 +335,7 @@ class FieldValue(ModelBase, FieldMixin):
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
         successors=HasManyThrough("Operation", "Wire"),
+        sid=fields.Function(lambda fv: fv.sid, allow_none=True),
         ignore=('object_type',)
     )
 
@@ -387,6 +390,18 @@ class FieldValue(ModelBase, FieldMixin):
             self._set_helper(value=value, sample=sample,
                              item=item, container=container)
         super().__init__(**vars(self))
+
+    @property
+    def array(self):
+        arr = self.field_type.array
+        if arr is None:
+            return False
+        return arr
+
+    @property
+    def sid(self):
+        if self.sample is not None:
+            return self.sample.identifier
 
     @property
     def outgoing_wires(self):
@@ -585,6 +600,7 @@ class Operation(ModelBase):
         operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
         jobs=HasManyThrough("Job", "JobAssociation"),
+        routing=fields.Function(lambda op: op.routing, allow_none=True),
         plan_associations=HasMany("PlanAssociation", "Operation"),
         plans=HasManyThrough("Plan", "PlanAssociation")
     )
@@ -593,7 +609,6 @@ class Operation(ModelBase):
         self.operation_type_id = operation_type_id
         self.x = x
         self.y = y
-        self.routing = {}
         self.parent = 0
         self.id = None
         if status is None:
@@ -601,6 +616,21 @@ class Operation(ModelBase):
         self.field_values = None
         self.operation_type = None
         super().__init__(**vars(self))
+
+    @property
+    def routing(self):
+        routing = {}
+        fvs = self.field_values
+        ot = self.operation_type
+        if ot is None:
+            return routing
+        for ft in ot.field_types:
+            routing[ft.routing] = None
+        if fvs is not None:
+            for fv in self.field_values:
+                ft = fv.field_type
+                routing[ft.routing] = fv.sid
+        return routing
 
     def init_field_values(self):
         """
@@ -793,7 +823,8 @@ class Plan(ModelBase, PlanValidator):
         data_associations=HasManyGeneric("DataAssociation"),
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
-        wires=Many("Wire", callback="get_wires", params=None)
+        wires=Many("Wire", callback="get_wires", params=None),
+        layout=fields.JSON()
     )
 
     def __init__(self, name=None, status=None, source=None, destination=None):
@@ -804,7 +835,18 @@ class Plan(ModelBase, PlanValidator):
             status = 'planning'
         self.id = None
         self.status = status
-        self.layout = {"id": 0, "parent_id": -1, "wires": [], "name": "no_name"}
+        self.layout = {
+            "id": 0,
+            "children": [],
+            "documentation": "No documentation ofr this module",
+            "height": 60,
+            "input": [],
+            "output": [],
+            "name": "no_name",
+            "parent_id": -1,
+            "width": 160,
+            "wires": []
+        }
         # self.operations = []
         # self.wires = []
         self.data_associations = None
@@ -872,15 +914,16 @@ class Plan(ModelBase, PlanValidator):
     def to_save_json(self):
         json_data = self.dump(include={
             'operations': {
-                'field_values': 'allowable_field_type',
-                'operation_type': {},
+                'field_values': {},
             },
             'wires': {"source", "destination"}
         })
-        return json_data
+        json_data['layout'] = json.loads(json_data['layout'])
 
-    def save(self):
-        self.session.utils.save_plan(self)
+        for wire in self.wires:
+            wire.dump()
+
+        return json_data
 
     def estimate_cost(self):
         return self.session.utils.estimate_plan_cost(self)
@@ -895,6 +938,12 @@ class Plan(ModelBase, PlanValidator):
             operation.show(pre="  ")
         for wire in self.wires:
             wire.show(pre="  ")
+
+    def save(self):
+        return self.session.utils.save_plan(self)
+
+    def delete(self):
+        return self.session.utils.delete_plan(self)
 
     def replan(self):
         """Copies or replans the plan. Returns a plan copy"""
@@ -1017,6 +1066,7 @@ class Wire(ModelBase):
     def __init__(self, source=None, destination=None):
         self.source = source
         self.destination = destination
+        self.active=True
         super().__init__(**vars(self))
 
     def to_save_json(self):

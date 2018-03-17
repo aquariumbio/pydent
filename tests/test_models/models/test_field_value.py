@@ -249,6 +249,32 @@ def test_show():
     fake_fv.set_value(sample=sample)
     fake_fv.show()
 
+def test_dump():
+    fake_fv = FieldValue.load({
+        "id": 200,
+        "child_item_id": None,
+        "allowable_field_type_id": None,
+        "allowable_field_type": None,
+        'parent_class': "Operation",
+        'role': 'input',
+        'name': 'my_fake_fv',
+        "field_type": {
+            "id": 100,
+            "allowable_field_types": [
+                {"id": 1, "object_type_id": 44, "sample_type_id": 3},
+                {"id": 2, "object_type_id": 33, "sample_type_id": 2}  # should find this
+            ]
+        },
+    })
+    sample = Sample.load({
+        "id": 5,
+        'name': 'plasmid',
+        'sample_type_id': 2
+    })
+    fake_fv.set_value(sample=sample)
+    fake_dump = fake_fv.dump()
+    assert fake_dump['sid'] == fake_fv.sid
+
 
 def test_wires_as_source(session):
     fv = session.FieldValue.find(520346)
