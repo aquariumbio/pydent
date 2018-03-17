@@ -238,7 +238,7 @@ class DynamicSchema(Schema):
 
 def add_schema(cls):
     """
-    Decorator that dynamically creates a :class:`DynamicSchema` and attaches it
+    Class Decorator that dynamically creates a :class:`DynamicSchema` and attaches it
     to a :class:`pydent.marshaller.MarshallerBase` or its subclass.
 
     Example usage:
