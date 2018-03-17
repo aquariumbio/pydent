@@ -856,9 +856,25 @@ class Plan(ModelBase, PlanValidator):
         super().__init__(**vars(self))
 
     def add_operation(self, operation):
+        """
+        Adds an operation to the Plan
+
+        :param operation: Operation to add
+        :type operation: Operation
+        :return: None
+        :rtype: None
+        """
         self.append_to_many('operations', operation)
 
     def add_operations(self, operations):
+        """
+        Adds multiple operations to the Plan
+
+        :param operations: list of Operations
+        :type operations: list
+        :return: None
+        :rtype: None
+        """
         for operation in operations:
             self.add_operation(operation)
 
@@ -888,11 +904,28 @@ class Plan(ModelBase, PlanValidator):
         return wires
 
     def create(self):
+        """
+        Creates the Plan on the Aquarium server.
+
+        :return: Submitted Plan (self)
+        :rtype: Plan
+        """
         return self.session.utils.create_plan(self)
 
     def submit(self, user, budget):
+        """
+        Submits the Plan to the Aquarium server.
+
+        :param user: User to submit the Plan
+        :type user: User
+        :param budget: Budget to use for the Plan
+        :type budget: Budget
+        :return: JSON
+        :rtype: dict
+        """
         result = self.session.utils.submit_plan(self, user, budget)
         print(result)
+        return result
 
     def all_data_associations(self):
         das = self.data_associations
@@ -912,6 +945,13 @@ class Plan(ModelBase, PlanValidator):
         return interface.get('plans/{}.json'.format(model_id))
 
     def to_save_json(self):
+        """
+        Returns the json representation of the plan for saving and creating Plans on the
+        Aquarium server.
+
+        :return: JSON
+        :rtype: dict
+        """
         json_data = self.dump(include={
             'operations': {
                 'field_values': {},
@@ -926,6 +966,12 @@ class Plan(ModelBase, PlanValidator):
         return json_data
 
     def estimate_cost(self):
+        """
+        Estimates the cost of the plan on the Aquarium server. This is necessary before plan submission.
+
+        :return: cost
+        :rtype: dict
+        """
         return self.session.utils.estimate_plan_cost(self)
 
     def field_values(self):
@@ -940,9 +986,21 @@ class Plan(ModelBase, PlanValidator):
             wire.show(pre="  ")
 
     def save(self):
+        """
+        Updates/patches the plan on the Aquarium server
+
+        :return: updated Plan (self)
+        :rtype: Plan
+        """
         return self.session.utils.save_plan(self)
 
     def delete(self):
+        """
+        Deletes the plan on the Aquarium server
+
+        :return: None
+        :rtype: None
+        """
         return self.session.utils.delete_plan(self)
 
     def replan(self):
