@@ -20,6 +20,8 @@ class JSON(fields.Field):
     def _deserialize(self, value, attr, data):
         if value is None:
             return ''
+        if isinstance(value, dict):
+            return value
         try:
             return json.loads(value)
         except json.decoder.JSONDecodeError as error:
