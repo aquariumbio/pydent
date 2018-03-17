@@ -13,7 +13,7 @@ developed.
 
 ## Documentation
 
-API documentation can be found here at [klavinslab.org/trident](www.klavinslab.org/trident)
+[API documentation can be found here at klavinslab.org/trident](http://www.klavinslab.org/trident)
 
 ## Requirements
 
