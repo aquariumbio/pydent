@@ -268,6 +268,9 @@ class AqHTTP(object):
                             get_from_history_ok=get_from_history_ok,
                             allow_none=allow_none, **kwargs)
 
+    def delete(self, path, timeout=None, **kwargs):
+        return self.request("delete", path, timeout=timeout, **kwargs)
+
     def __repr__(self):
         return "<{}({}, {})>".format(self.__class__.__name__, self.login, self.aquarium_url)
 
