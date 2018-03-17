@@ -930,12 +930,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">add_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">append_to_many</span><span class="p">(</span><span class="s1">&#39;operations&#39;</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
+<div class="viewcode-block" id="Plan.add_operation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.add_operation">[docs]</a>    <span class="k">def</span> <span class="nf">add_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds an operation to the Plan</span>
 
-    <span class="k">def</span> <span class="nf">add_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">):</span>
+<span class="sd">        :param operation: Operation to add</span>
+<span class="sd">        :type operation: Operation</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_to_many</span><span class="p">(</span><span class="s1">&#39;operations&#39;</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plan.add_operations"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.add_operations">[docs]</a>    <span class="k">def</span> <span class="nf">add_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds multiple operations to the Plan</span>
+
+<span class="sd">        :param operations: list of Operations</span>
+<span class="sd">        :type operations: list</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
         <span class="n">wire</span> <span class="o">=</span> <span class="n">Wire</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">src</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">dest</span><span class="p">)</span>
@@ -962,12 +978,29 @@
                         <span class="n">wires</span> <span class="o">+=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">incoming_wires</span>
         <span class="k">return</span> <span class="n">wires</span>
 
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">create_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<div class="viewcode-block" id="Plan.create"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates the Plan on the Aquarium server.</span>
 
-    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">):</span>
+<span class="sd">        :return: Submitted Plan (self)</span>
+<span class="sd">        :rtype: Plan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">create_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plan.submit"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.submit">[docs]</a>    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Submits the Plan to the Aquarium server.</span>
+
+<span class="sd">        :param user: User to submit the Plan</span>
+<span class="sd">        :type user: User</span>
+<span class="sd">        :param budget: Budget to use for the Plan</span>
+<span class="sd">        :type budget: Budget</span>
+<span class="sd">        :return: JSON</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">submit_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="k">def</span> <span class="nf">all_data_associations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">das</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_associations</span>
@@ -986,7 +1019,14 @@
         <span class="n">interface</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">interface</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;plans/</span><span class="si">{}</span><span class="s1">.json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_id</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">to_save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Plan.to_save_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.to_save_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the json representation of the plan for saving and creating Plans on the</span>
+<span class="sd">        Aquarium server.</span>
+
+<span class="sd">        :return: JSON</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">json_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span>
             <span class="s1">&#39;operations&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;field_values&#39;</span><span class="p">:</span> <span class="p">{},</span>
@@ -998,10 +1038,16 @@
         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
             <span class="n">wire</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">json_data</span>
+        <span class="k">return</span> <span class="n">json_data</span></div>
 
-    <span class="k">def</span> <span class="nf">estimate_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">estimate_plan_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.estimate_cost">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Estimates the cost of the plan on the Aquarium server. This is necessary before plan submission.</span>
+
+<span class="sd">        :return: cost</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">estimate_plan_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">field_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
@@ -1014,11 +1060,23 @@
         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
             <span class="n">wire</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">save_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<div class="viewcode-block" id="Plan.save"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates/patches the plan on the Aquarium server</span>
 
-    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">delete_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="sd">        :return: updated Plan (self)</span>
+<span class="sd">        :rtype: Plan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">save_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plan.delete"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes the plan on the Aquarium server</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">delete_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.replan">[docs]</a>    <span class="k">def</span> <span class="nf">replan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copies or replans the plan. Returns a plan copy&quot;&quot;&quot;</span>

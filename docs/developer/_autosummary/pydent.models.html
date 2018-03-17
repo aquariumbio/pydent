@@ -4442,6 +4442,42 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Plan.add_operation">
+<code class="descname">add_operation</code><span class="sig-paren">(</span><em>operation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.add_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.add_operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an operation to the Plan</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>operation</strong> (<a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><em>Operation</em></a>) &#8211; Operation to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.add_operations">
+<code class="descname">add_operations</code><span class="sig-paren">(</span><em>operations</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.add_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.add_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds multiple operations to the Plan</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>operations</strong> (<em>list</em>) &#8211; list of Operations</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Plan.append_to_many">
 <code class="descname">append_to_many</code><span class="sig-paren">(</span><em>name</em>, <em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.append_to_many" title="Permalink to this definition">¶</a></dt>
 <dd><p>Appends a model to the many relationship</p>
@@ -4502,6 +4538,22 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Plan.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the Plan on the Aquarium server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Submitted Plan (self)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan">Plan</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Plan.create_from_json">
 <code class="descname">create_from_json</code><span class="sig-paren">(</span><em>*args</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.create_from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Special constructor method for instantiating with JSON data</p>
@@ -4526,10 +4578,42 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Plan.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the plan on the Aquarium server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Plan.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
 to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.estimate_cost">
+<code class="descname">estimate_cost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.estimate_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.estimate_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the cost of the plan on the Aquarium server. This is necessary before plan submission.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">cost</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
@@ -4639,6 +4723,22 @@ dictionary.</p>
 <dd><p>Copies or replans the plan. Returns a plan copy</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydent.models.Plan.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates/patches the plan on the Aquarium server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">updated Plan (self)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan">Plan</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pydent.models.Plan.session">
 <code class="descname">session</code><a class="headerlink" href="#pydent.models.Plan.session" title="Permalink to this definition">¶</a></dt>
@@ -4649,6 +4749,47 @@ dictionary.</p>
 <dt id="pydent.models.Plan.show">
 <code class="descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.show" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print the plan nicely</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.submit">
+<code class="descname">submit</code><span class="sig-paren">(</span><em>user</em>, <em>budget</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submits the Plan to the Aquarium server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><em>User</em></a>) &#8211; User to submit the Plan</li>
+<li><strong>budget</strong> (<a class="reference internal" href="#pydent.models.Budget" title="pydent.models.Budget"><em>Budget</em></a>) &#8211; Budget to use for the Plan</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">JSON</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.to_save_json">
+<code class="descname">to_save_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.to_save_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.to_save_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the json representation of the plan for saving and creating Plans on the
+Aquarium server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

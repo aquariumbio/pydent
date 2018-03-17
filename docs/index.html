@@ -136,8 +136,11 @@ you may pull down data, submit plans, create samples, and more.</p>
 <span class="c1"># add the operation to the plan</span>
 <span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">order_primer</span><span class="p">)</span>
 
-<span class="c1"># save the plan</span>
+<span class="c1"># create the plan on the server</span>
 <span class="n">p</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+<span class="c1"># changes to plan can be saved (not necessary here)</span>
+<span class="c1"># p.save()</span>
 
 <span class="c1"># estimate the cost</span>
 <span class="n">p</span><span class="o">.</span><span class="n">estimate_cost</span><span class="p">()</span>

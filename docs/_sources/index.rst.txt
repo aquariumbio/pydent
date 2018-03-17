@@ -56,8 +56,11 @@ Below is an example of how to submit a plan. Check :doc:`user/examples` for more
     # add the operation to the plan
     p.add_operation(order_primer)
 
-    # save the plan
+    # create the plan on the server
     p.create()
+
+    # changes to plan can be saved (not necessary here)
+    # p.save()
 
     # estimate the cost
     p.estimate_cost()
