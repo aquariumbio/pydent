@@ -11,6 +11,10 @@ Trident is the python API scripting for Aquarium.
 Note: the initial version is tagged as `v0.0.1-initial`, but is no longer being
 developed.
 
+## Documentation
+
+API documentation can be found here at [klavinslab.org/trident](www.klavinslab.org/trident)
+
 ## Requirements
 
 * Python > 3.4
