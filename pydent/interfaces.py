@@ -111,12 +111,24 @@ class UtilityInterface(SessionInterface):
 
     def create_plan(self, plan):
         """Saves a plan"""
-        user_query = "?user_id=" + str(self.session.current_user.id)
-        plan_json = plan.to_save_json()
+        plan_data = plan.to_save_json()
         result = self.aqhttp.post(
-            'plans.json' + user_query, json_data=plan_json)
+            "plans.json?user_id={}".format(self.session.current_user.id),
+            json_data=plan_data)
         plan.reload(result)
         return plan
+
+    def save_plan(self, plan):
+        plan_data = plan.to_save_json()
+        result = self.aqhttp.put(
+            "plans/{}.json?user_id={}".format(plan.id, self.session.current_user.id),
+            json_data=plan_data
+        )
+        plan.reload(result)
+        return plan
+
+    def delete_plan(self, plan):
+        self.aqhttp.delete('plans/{}'.format(plan.id))
 
     def replan(self, plan_id):
         """Copies a plan"""
