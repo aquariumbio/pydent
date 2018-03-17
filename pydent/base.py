@@ -87,11 +87,15 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
 
     def __init__(self, **model_args):
         self._session = None
-        self._rid = ModelBase.new_record_id()
+        self._rid = None
+        self._new_record_id()
         model_args['rid'] = self.rid
         vars(self).update(model_args)
         data = {k: v for k, v in model_args.items() if not k == '_session'}
         self._track_data(data)
+
+    def _new_record_id(self):
+        self._rid = ModelBase.new_record_id()
 
     @staticmethod
     def new_record_id():
@@ -143,7 +147,19 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     @magiclist
     def load(cls, *args, **kwargs):
         """Create a new model instance from loaded attributes"""
-        return super().load(*args, **kwargs)
+        inst = super().load(*args, **kwargs)
+        if isinstance(inst, list):
+            for _inst in inst:
+                _inst._new_record_id()
+        else:
+            inst._new_record_id()
+        return inst
+
+    def dump(self, *args, **kwargs):
+        d = super().dump(*args, **kwargs)
+        if d is not None:
+            d['rid'] = self._rid
+        return d
 
     def reload(self, data):
         """
@@ -154,7 +170,7 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         :return: model instance
         :rtype: ModelBase
         """
-        temp_model = self.__class__.load(data)
+        temp_model = self.__class__.load(data=data)
         temp_model.connect_to_session(self.session)
         vars(self).update(vars(temp_model))
         return self

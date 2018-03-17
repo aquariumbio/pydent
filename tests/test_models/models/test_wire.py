@@ -12,5 +12,6 @@ def test_constructor():
     assert w.to_save_json() == {
             "from": fvin.dump(),
             "to": fvout.dump(),
-            'rid': w.rid
+            'rid': w.rid,
+            "active": True
     }
