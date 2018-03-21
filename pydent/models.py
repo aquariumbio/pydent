@@ -251,10 +251,10 @@ class FieldType(ModelBase, FieldMixin):
                  aft_stype_and_objtype=(), allowable_field_types=None):
         if operation_type and sample_type:
             raise Exception()
-        if operation_type:
+        if operation_type is not None:
             parent_id = operation_type.id
             parent_class = "OperationType"
-        if sample_type:
+        if sample_type is not None:
             parent_id = sample_type.id
             parent_class = "SampleType"
         self.name = name
@@ -272,7 +272,7 @@ class FieldType(ModelBase, FieldMixin):
         super().__init__(**vars(self))
 
         if self.allowable_field_types is None:
-            if aft_stype_and_objtype:
+            if aft_stype_and_objtype is not None:
                 for smple_type, obj_type in aft_stype_and_objtype:
                     self.create_allowable_field_type(smple_type, obj_type)
 
@@ -383,7 +383,7 @@ class FieldValue(ModelBase, FieldMixin):
         # object_type is not included in the deserialization/serialization
         self.object_type = None
 
-        if field_type:
+        if field_type is not None:
             self.set_field_type(field_type)
 
         if any([value, sample, item, container]):
@@ -441,18 +441,18 @@ class FieldValue(ModelBase, FieldMixin):
         if item and container and item.object_type_id != container.id:
             raise AquariumModelError(
                 "Item {} is not in container {}".format(item.id, str(container)))
-        if value:
+        if value is not None:
             self.value = value
-        if item:
+        if item is not None:
             self.item = item
             self.child_item_id = item.id
             self.object_type = item.object_type
             if not sample:
                 sample = item.sample
-        if sample:
+        if sample is not None:
             self.sample = sample
             self.child_sample_id = sample.id
-        if container:
+        if container is not None:
             self.object_type = container
 
     def set_value(self, value=None, sample=None, container=None, item=None):
@@ -461,12 +461,12 @@ class FieldValue(ModelBase, FieldMixin):
 
         if any([sample, container, item]):
             afts = self.field_type.allowable_field_types
-            if self.sample:
+            if self.sample is not None:
                 afts = filter_list(
                     afts, sample_type_id=self.sample.sample_type_id)
-            if self.object_type:
+            if self.object_type is not None:
                 afts = filter_list(afts, object_type_id=self.object_type.id)
-            if not afts:
+            if len(afts) == 0:
                 available_afts = self.field_type.allowable_field_types
                 raise AquariumModelError("No allowable field types found for {} '{}'. Available afts: {}".format(
                     self.role, self.name, available_afts))
@@ -502,7 +502,7 @@ class FieldValue(ModelBase, FieldMixin):
         if not first:
             index = -1
         items = self.compatible_items()
-        if items:
+        if items is not None and len(items) > 0:
             item = items[index]
             self.set_value(item=item)
             return item
@@ -650,7 +650,7 @@ class Operation(ModelBase):
         """Returns FieldValue array with name and role."""
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
-            if fvs:
+            if len(fvs) > 0:
                 if not fvs[0].field_type.array:
                     raise AquariumModelError(
                         "FieldValue is not an array for the field value of operation {}(id={}).{}.{}".format(
@@ -663,7 +663,7 @@ class Operation(ModelBase):
         """
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
-            if fvs:
+            if len(fvs) > 0:
                 if len(fvs) > 1:
                     raise AquariumModelError(
                         "More than one FieldValue found for the field value of operation {}(id={}).{}.{}".format(
@@ -812,7 +812,7 @@ class OperationType(ModelBase, HasCodeMixin):
     def field_type(self, name, role):
         if self.field_types:
             fts = filter_list(self.field_types, role=role, name=name)
-            if fts:
+            if len(fts) > 0:
                 return fts[0]
 
     def save(self):
