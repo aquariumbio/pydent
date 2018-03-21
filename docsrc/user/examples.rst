@@ -1,6 +1,29 @@
 Trident Examples
 ================
 
+.. testsetup::
+
+    import os
+    import json
+    from pydent import AqSession
+
+    def config():
+        """Returns the config dictionary for live tests."""
+        dir = os.path.realpath('../tests')
+        config_path = os.path.join(dir, "secrets", "config.json.secret")
+        config = None
+        with open(config_path, 'rU') as f:
+            config = json.load(f)
+        return config
+
+
+    def session():
+        """Returns a live aquarium connection."""
+        return AqSession(**config())
+
+    session = session()
+
+
 Basic Usage
 -----------
 
@@ -24,24 +47,53 @@ And, to login interactively
 Model queries
 ~~~~~~~~~~~~~
 
-.. code:: python
+Find Sample with id==1
 
-    session # your AqSession
 
-    # find Sample with id=1
-    session.Sample.find(1)
+.. testcode::
 
-    # find SampleTypes with name="Primer"
-    session.SampleType.find_by_name("Primer")
+    mysample = session.Sample.find(1)
+    print(mysample.id)
 
-    # find all SampleTypes
-    session.SampleType.all()
+.. testoutput::
 
-    # find Operations where name="Transfer to 96 Well Plate"
-    session.Operations.where({'name': 'Transfer to 96 Well Plate'})
+    1
 
-    # list all available models
-    session.models
+Find SampleTypes with name=="Primer"
+
+
+.. testcode::
+
+    mysample = session.SampleType.find_by_name("Primer")
+    print(mysample.name)
+
+.. testoutput::
+
+    "Primer"
+
+
+Find Operations where name="Transfer to 96 Well Plate"
+
+.. testcode::
+
+    myoperation = session.Operations.where({"name": "Order Primer"})[0]
+    print(myoperation.name)
+
+.. testoutput::
+
+    "OrderPrimer"
+
+
+list all available models
+
+.. testcode::
+
+    print(session.models)
+
+.. testoutput::
+
+    ['Account', 'AllowableFieldType', 'Budget', 'Code', 'Collection', 'DataAssociation', 'FieldType', 'FieldValue', 'Group', 'Invoice', 'Item', 'Job', 'JobAssociation', 'Library', 'Membership', 'ObjectType', 'Operation', 'OperationType', 'Plan', 'PlanAssociation', 'Sample', 'SampleType', 'Upload', 'User', 'UserBudgetAssociation', 'Wire']
+
 
 Setting a query timeout
 ~~~~~~~~~~~~~~~~~~~~~~~
