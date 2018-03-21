@@ -831,7 +831,7 @@ class Plan(ModelBase, PlanValidator):
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
         wires=Many("Wire", callback="get_wires", params=None),
-        layout=fields.JSON()
+        layout=fields.JSON(allow_none=True)
     )
 
     def __init__(self, name=None, status=None, source=None, destination=None):
@@ -931,7 +931,6 @@ class Plan(ModelBase, PlanValidator):
         :rtype: dict
         """
         result = self.session.utils.submit_plan(self, user, budget)
-        print(result)
         return result
 
     def all_data_associations(self):

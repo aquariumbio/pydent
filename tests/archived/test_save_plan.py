@@ -14,7 +14,8 @@ def test_submit_order_primer(session):
 
     p.create()
 
-def test_devins_plan(session):
+
+def test_plan_with_parameter(session):
     primer = session.SampleType.where({'name': 'Primer'})[0].samples[-1]
     print(primer)
     print()
@@ -43,6 +44,10 @@ def test_devins_plan(session):
 
     # save the plan
     p.create()
+
+    assert p.id is not None
+    plan_from_server = session.Plan.find(p.id)
+    assert len(plan_from_server.operations) == 1
 
 
 def test_submit_gibson(session):
@@ -124,5 +129,5 @@ def test_submit_gibson(session):
     # save the plan
     p.save()
 
-    print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+    # print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
 
