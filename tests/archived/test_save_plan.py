@@ -50,6 +50,26 @@ def test_plan_with_parameter(session):
     assert len(plan_from_server.operations) == 1
 
 
+def test_parameter_to_zero(session):
+    test_plan = models.Plan(name="Test Plan")
+    op_type = session.OperationType.where({'name': 'Challenge and Label'})[0]
+
+    op1 = op_type.instance()
+    op1.set_input('Protease Concentration', value=0)
+
+    op2 = op_type.instance()
+    op2.set_input('Protease Concentration', value=250)
+
+    test_plan.add_operations([op1, op2])
+
+    assert op1.input('Protease Concentration').value == 0
+    assert op2.input('Protease Concentration').value == 250
+    assert not op1.input('Protease Concentration').value == 2
+
+    # test_plan.connect_to_session(session)
+    # test_plan.create()
+
+
 def test_submit_gibson(session):
 
     # find "Assembly Plasmid" protocol

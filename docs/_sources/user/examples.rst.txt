@@ -5,7 +5,7 @@ Trident Examples
 
     import os
     import json
-    from pydent import AqSession, models
+    from pydent import AqSession, models, ModelBase
 
     def config():
         """Returns the config dictionary for live tests."""
@@ -21,6 +21,7 @@ Trident Examples
         """Returns a live aquarium connection."""
         return AqSession(**config())
 
+    ModelBase.new_record_id = lambda: 1
     prettyprint = lambda x: json.dumps(x, indent=4, sort_keys=True)
 
     session = session()
@@ -201,7 +202,7 @@ Find relationships using requests
     {
         "name": "MyPrimer",
         "project": null,
-        "rid": 19,
+        "rid": 1,
         "sample_type_id": 1
     }
 
@@ -211,7 +212,7 @@ Find relationships using requests
         "description": "A short double stranded piece of DNA for PCR and sequencing",
         "id": 1,
         "name": "Primer",
-        "rid": 21,
+        "rid": 1,
         "updated_at": "2015-11-29T07:55:20-08:00"
     }
 
@@ -233,7 +234,7 @@ Serializing
         "description": "A short double stranded piece of DNA for PCR and sequencing",
         "id": 1,
         "name": "Primer",
-        "rid": 23,
+        "rid": 1,
         "updated_at": "2015-11-29T07:55:20-08:00"
     }
 
@@ -253,7 +254,7 @@ Serialize with *only* some fields
     {
         "description": "A short double stranded piece of DNA for PCR and sequencing",
         "name": "Primer",
-        "rid": 25
+        "rid": 1
     }
 
 Serialize with some relationships
@@ -273,7 +274,7 @@ Serialize with some relationships
         "description": "A short double stranded piece of DNA for PCR and sequencing",
         "id": 1,
         "name": "Primer",
-        "rid": 27,
+        "rid": 1,
         "updated_at": "2015-11-29T07:55:20-08:00"
     }
 
@@ -349,22 +350,22 @@ complex serialization
                 "id": 438,
                 "object_type": {
                     "name": "Primer Aliquot",
-                    "rid": 9659
+                    "rid": 1
                 },
-                "rid": 9656
+                "rid": 1
             },
             {
                 "id": 441,
                 "object_type": {
                     "name": "Plasmid Stock",
-                    "rid": 9661
+                    "rid": 1
                 },
-                "rid": 9657
+                "rid": 1
             }
         ],
         "name": "IAA1-Nat-F",
         "project": "Auxin",
-        "rid": 9653,
+        "rid": 1,
         "sample_type_id": 1,
         "updated_at": "2013-10-08T10:18:48-07:00",
         "user_id": 1
