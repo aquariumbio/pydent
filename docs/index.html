@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Trident: The Aquarium API &#8212; Trident 0.0.9 documentation</title>
+    <title>Trident: The Aquarium API &#8212; Trident 0.0.10 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.9',
+        VERSION:     '0.0.10',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -41,13 +41,13 @@
         <li class="right" >
           <a href="user/installation.html" title="Installation"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Trident 0.0.9 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Trident 0.0.10 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="#">
-        <h1>Trident (V0.0.9)</h1>
+        <h1>Trident (V0.0.10)</h1>
     </a>
 </p>
 
@@ -55,7 +55,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.9.
+    for version 0.0.10.
 </p>
 <h3><a href="#">Table Of Contents</a></h3>
 <ul>
@@ -111,9 +111,7 @@ you may pull down data, submit plans, create samples, and more.</p>
 <p>To get started, checkout the <a class="reference internal" href="user/installation.html"><span class="doc">Installation</span></a></p>
 <p><strong>Using Trident</strong></p>
 <p>Below is an example of how to submit a plan. Check <a class="reference internal" href="user/examples.html"><span class="doc">Trident Examples</span></a> for more examples.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span><span class="p">,</span> <span class="n">models</span>
-
-<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># session = AqSession(&quot;user&quot;, &quot;password&quot;, &quot;http://you.aquarium.url&quot;)</span>
 
 <span class="n">primer</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
@@ -149,12 +147,16 @@ you may pull down data, submit plans, create samples, and more.</p>
 <span class="n">p</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
 
 <span class="c1"># show the plan</span>
-<span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># p.show()</span>
 
 <span class="c1"># submit the plan</span>
 <span class="n">p</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">budgets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You may open you plan here: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/plans?plan_id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span>
+<span class="c1"># print(&quot;You may open you plan here: {}&quot;.format(session.url + &quot;/plans?plan_id={}&quot;.format(p.id)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your plan was successfully submitted!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Your plan was successfully submitted!
 </pre></div>
 </div>
 <p><strong>Contributing</strong></p>
@@ -226,7 +228,7 @@ you may pull down data, submit plans, create samples, and more.</p>
         <li class="right" >
           <a href="user/installation.html" title="Installation"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Trident 0.0.9 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">Trident 0.0.10 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

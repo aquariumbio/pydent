@@ -29,11 +29,35 @@ To get started, checkout the :doc:`user/installation`
 
 Below is an example of how to submit a plan. Check :doc:`user/examples` for more examples.
 
-.. code:: python
 
+.. testsetup::
+
+    import os
+    import json
     from pydent import AqSession, models
 
-    session = AqSession.interactive()
+    def config():
+        """Returns the config dictionary for live tests."""
+        dir = os.path.realpath('../tests')
+        config_path = os.path.join(dir, "secrets", "config.json.secret")
+        config = None
+        with open(config_path, 'rU') as f:
+            config = json.load(f)
+        return config
+
+
+    def session():
+        """Returns a live aquarium connection."""
+        return AqSession(**config())
+
+    prettyprint = lambda x: json.dumps(x, indent=4, sort_keys=True)
+
+    session = session()
+
+
+.. testcode::
+
+    # session = AqSession("user", "password", "http://you.aquarium.url")
 
     primer = session.SampleType.find(1).samples[-1]
 
@@ -69,12 +93,17 @@ Below is an example of how to submit a plan. Check :doc:`user/examples` for more
     p.validate()
 
     # show the plan
-    p.show()
+    # p.show()
 
     # submit the plan
     p.submit(session.current_user, session.current_user.budgets[0])
 
-    print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+    # print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+    print("Your plan was successfully submitted!")
+
+.. testoutput::
+
+   Your plan was successfully submitted!
 
 
 **Contributing**

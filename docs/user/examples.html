@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Trident Examples &#8212; Trident 0.0.9 documentation</title>
+    <title>Trident Examples &#8212; Trident 0.0.10 documentation</title>
     
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.0.9',
+        VERSION:     '0.0.10',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -45,13 +45,13 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.9 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.10 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../index.html">
-        <h1>Trident (V0.0.9)</h1>
+        <h1>Trident (V0.0.10)</h1>
     </a>
 </p>
 
@@ -59,7 +59,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.9.
+    for version 0.0.10.
 </p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -133,7 +133,7 @@
 <h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="logging-in">
 <h3>Logging in<a class="headerlink" href="#logging-in" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span><span class="p">,</span> <span class="n">models</span>
 
 <span class="n">nursery</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">)</span>
 <span class="n">production</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;url2&quot;</span><span class="p">)</span>
@@ -147,36 +147,58 @@
 </div>
 <div class="section" id="model-queries">
 <h3>Model queries<a class="headerlink" href="#model-queries" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="c1"># your AqSession</span>
-
-<span class="c1"># find Sample with id=1</span>
-<span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># find SampleTypes with name=&quot;Primer&quot;</span>
-<span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Primer&quot;</span><span class="p">)</span>
-
-<span class="c1"># find all SampleTypes</span>
-<span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-
-<span class="c1"># find Operations where name=&quot;Transfer to 96 Well Plate&quot;</span>
-<span class="n">session</span><span class="o">.</span><span class="n">Operations</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Transfer to 96 Well Plate&#39;</span><span class="p">})</span>
-
-<span class="c1"># list all available models</span>
-<span class="n">session</span><span class="o">.</span><span class="n">models</span>
+<p>Find Sample with id==1</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+<p>Find SampleTypes with name==&#8221;Primer&#8221;</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Primer&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Primer
+</pre></div>
+</div>
+<p>Find OperationType where name=&#8221;Transfer to 96 Well Plate&#8221;</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">myoperation</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Order Primer&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">myoperation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Order Primer
+</pre></div>
+</div>
+<p>list all available models</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">models</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>[&#39;Account&#39;, &#39;AllowableFieldType&#39;, &#39;Budget&#39;, &#39;Code&#39;, &#39;Collection&#39;, &#39;DataAssociation&#39;, &#39;FieldType&#39;, &#39;FieldValue&#39;, &#39;Group&#39;, &#39;Invoice&#39;, &#39;Item&#39;, &#39;Job&#39;, &#39;JobAssociation&#39;, &#39;Library&#39;, &#39;Membership&#39;, &#39;ObjectType&#39;, &#39;Operation&#39;, &#39;OperationType&#39;, &#39;Plan&#39;, &#39;PlanAssociation&#39;, &#39;Sample&#39;, &#39;SampleType&#39;, &#39;Upload&#39;, &#39;User&#39;, &#39;UserBudgetAssociation&#39;, &#39;Wire&#39;]
 </pre></div>
 </div>
 </div>
 <div class="section" id="setting-a-query-timeout">
 <h3>Setting a query timeout<a class="headerlink" href="#setting-a-query-timeout" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># raises timeout exception if request takes too long</span>
+<p>The following should raise an exception if the request takes too long.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># we set timeout to 0s</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">session</span><span class="o">.</span><span class="n">FieldValue</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Request took too long!&quot;</span><span class="p">)</span>
-
-<span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="n">session</span><span class="o">.</span><span class="n">FieldValue</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Attempted to set connect timeout to 0, but the timeout cannot be set to a value less than or equal to 0.
+</pre></div>
+</div>
+<p>You can increase the timeout</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># we set timeout to 10s</span>
+<span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Great!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Great!
 </pre></div>
 </div>
 </div>
@@ -185,95 +207,138 @@
 <h2>Deserializing<a class="headerlink" href="#deserializing" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="deserializing-nested-data">
 <h3>Deserializing nested data<a class="headerlink" href="#deserializing-nested-data" title="Permalink to this headline">¶</a></h3>
-<p>pydent knows to automatically deserialize <code class="docutils literal"><span class="pre">sample_type</span></code> to a
+<p>Pydent automatically deserializes model relationships.
+Below is an example of how pydent deserializes <code class="docutils literal"><span class="pre">sample_type</span></code> to a
 <code class="docutils literal"><span class="pre">SampleType</span></code> model</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">Sample</span><span class="p">,</span> <span class="n">SampleType</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># nested deserialization</span>
 
-<span class="c1"># nested deserialization</span>
-
-<span class="n">s</span> <span class="o">=</span> <span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}})</span>
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Sample</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="p">,</span> <span class="n">SampleType</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}})</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Sample</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">SampleType</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;class &#39;pydent.models.SampleType&#39;&gt;
 </pre></div>
 </div>
 </div>
 <div class="section" id="deserializing-with-nested-models">
 <h3>Deserializing with nested models<a class="headerlink" href="#deserializing-with-nested-models" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span>
-    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="n">SampleType</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;primer&quot;</span><span class="p">)</span>
-<span class="p">}</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">SampleType</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;primer&quot;</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>primer
 </pre></div>
 </div>
 </div>
 <div class="section" id="find-relationships-using-requests">
 <h3>Find relationships using requests<a class="headerlink" href="#find-relationships-using-requests" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">Sample</span><span class="p">,</span> <span class="n">SampleType</span>
-<span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span>
-
-<span class="n">nursery</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">Sample</span><span class="p">,</span> <span class="n">SampleType</span>
 
 <span class="c1"># create new sample</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">Sample</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;MyPrimer&#39;</span><span class="p">,</span> <span class="n">sample_type_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># connect sample with session (will throw warning if no session is connected)</span>
-<span class="n">s</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="n">nursery</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
 
 <span class="c1"># find the sample type using &#39;sample_type_id&#39;</span>
 <span class="n">s</span><span class="o">.</span><span class="n">sample_type</span>
 
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="p">,</span> <span class="n">SampleType</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="p">)</span>
+<span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">&lt;class &#39;pydent.models.SampleType&#39;&gt;: {</span>
-<span class="sd">    &quot;id&quot;: 1,</span>
-<span class="sd">    &quot;created_at&quot;: &quot;2013-10-08T10:18:01-07:00&quot;,</span>
-<span class="sd">    &quot;name&quot;: &quot;Primer&quot;,</span>
-<span class="sd">    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,</span>
-<span class="sd">    &quot;updated_at&quot;: &quot;2015-11-29T07:55:20-08:00&quot;,</span>
-<span class="sd">&quot;samples&quot;: &quot;&lt;HasMany (model=Sample, callback=where_using_session, params=(&lt;function HasMany.__init__.&lt;locals&gt;.&lt;lambda&gt; at 0x10c3b7620&gt;,))&gt;&quot;,</span>
-<span class="sd">    &quot;field_types&quot;: &quot;&lt;Many (model=FieldType, callback=where_using_session, params=(&lt;function SampleType.&lt;lambda&gt; at 0x10c3b76a8&gt;,))&gt;&quot;</span>
-<span class="sd">}</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">sample_data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+<span class="n">sample_type_data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sample:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sample_data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SampleType:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sample_type_data</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Sample:
+{
+    &quot;name&quot;: &quot;MyPrimer&quot;,
+    &quot;project&quot;: null,
+    &quot;rid&quot;: 19,
+    &quot;sample_type_id&quot;: 1
+}
+
+SampleType:
+{
+    &quot;created_at&quot;: &quot;2013-10-08T10:18:01-07:00&quot;,
+    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Primer&quot;,
+    &quot;rid&quot;: 21,
+    &quot;updated_at&quot;: &quot;2015-11-29T07:55:20-08:00&quot;
+}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="serializing">
 <h2>Serializing<a class="headerlink" href="#serializing" title="Permalink to this headline">¶</a></h2>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sample_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">{&#39;created_at&#39;: &#39;2013-10-08T10:18:01-07:00&#39;,</span>
-<span class="sd"> &#39;description&#39;: &#39;A short double stranded piece of DNA for PCR and sequencing&#39;,</span>
-<span class="sd"> &#39;id&#39;: 1,</span>
-<span class="sd"> &#39;name&#39;: &#39;Primer&#39;,</span>
-<span class="sd"> &#39;updated_at&#39;: &#39;2015-11-29T07:55:20-08:00&#39;}</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sample_type</span><span class="o">.</span><span class="n">dump</span><span class="p">()))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>{
+    &quot;created_at&quot;: &quot;2013-10-08T10:18:01-07:00&quot;,
+    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Primer&quot;,
+    &quot;rid&quot;: 23,
+    &quot;updated_at&quot;: &quot;2015-11-29T07:55:20-08:00&quot;
+}
 </pre></div>
 </div>
 <div class="section" id="serialize-with-only-some-fields">
 <h3>Serialize with <em>only</em> some fields<a class="headerlink" href="#serialize-with-only-some-fields" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">))</span>
-<span class="c1"># {&#39;name&#39;: &#39;IAA1-Nat-F&#39;, &#39;description&#39;: None, &#39;data&#39;: None}</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sdata</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>{
+    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,
+    &quot;name&quot;: &quot;Primer&quot;,
+    &quot;rid&quot;: 25
+}
 </pre></div>
 </div>
 </div>
 <div class="section" id="serialize-with-some-relationships">
 <h3>Serialize with some relationships<a class="headerlink" href="#serialize-with-some-relationships" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">pprint</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">relations</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,))</span>
 
-<span class="n">pprint</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">relations</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sdata</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>{
+    &quot;created_at&quot;: &quot;2013-10-08T10:18:01-07:00&quot;,
+    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Primer&quot;,
+    &quot;rid&quot;: 27,
+    &quot;updated_at&quot;: &quot;2015-11-29T07:55:20-08:00&quot;
+}
 </pre></div>
 </div>
 </div>
 <div class="section" id="serialize-with-all-relationships">
 <h3>Serialize with all relationships<a class="headerlink" href="#serialize-with-all-relationships" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">pprint</span>
-
-<span class="n">pprint</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">all_relations</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">all_relations</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">{&#39;created_at&#39;: &#39;2013-10-08T10:18:48-07:00&#39;,</span>
 <span class="sd">&#39;data&#39;: None,</span>
@@ -294,17 +359,54 @@
 </div>
 <div class="section" id="complex-serialization">
 <h3>complex serialization<a class="headerlink" href="#complex-serialization" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># deserialize operations and wires. For wires, also include source and destination</span>
-<span class="c1"># field_values. For operation.field_values, include allowable_field_type and operation_type.</span>
-<span class="c1"># for operation_type, only serialize name</span>
-
-<span class="n">json_data</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span>
-    <span class="s1">&#39;operations&#39;</span><span class="p">:</span> <span class="p">{</span>
-       <span class="s1">&#39;field_values&#39;</span><span class="p">:</span> <span class="s1">&#39;allowable_field_type&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;operation_type&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}},</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;destination&quot;</span><span class="p">}</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+    <span class="n">include</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="p">{</span>                  <span class="c1"># serialize the items</span>
+            <span class="s1">&#39;object_type&#39;</span><span class="p">:</span> <span class="p">{</span>        <span class="c1"># serialize the object_type for each item</span>
+                <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span>  <span class="c1"># only serialize the name for the object_type</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+        <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="s1">&#39;id&#39;</span>            <span class="c1"># only serialize the id for each item (in addition to the object_type)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 <span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sdata</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>{
+    &quot;created_at&quot;: &quot;2013-10-08T10:18:48-07:00&quot;,
+    &quot;data&quot;: null,
+    &quot;description&quot;: null,
+    &quot;id&quot;: 1,
+    &quot;items&quot;: [
+        {
+            &quot;id&quot;: 438,
+            &quot;object_type&quot;: {
+                &quot;name&quot;: &quot;Primer Aliquot&quot;,
+                &quot;rid&quot;: 9659
+            },
+            &quot;rid&quot;: 9656
+        },
+        {
+            &quot;id&quot;: 441,
+            &quot;object_type&quot;: {
+                &quot;name&quot;: &quot;Plasmid Stock&quot;,
+                &quot;rid&quot;: 9661
+            },
+            &quot;rid&quot;: 9657
+        }
+    ],
+    &quot;name&quot;: &quot;IAA1-Nat-F&quot;,
+    &quot;project&quot;: &quot;Auxin&quot;,
+    &quot;rid&quot;: 9653,
+    &quot;sample_type_id&quot;: 1,
+    &quot;updated_at&quot;: &quot;2013-10-08T10:18:48-07:00&quot;,
+    &quot;user_id&quot;: 1
+}
 </pre></div>
 </div>
 </div>
@@ -313,11 +415,7 @@
 <h2>Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="submitting-a-plan">
 <h3>Submitting a Plan<a class="headerlink" href="#submitting-a-plan" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span><span class="p">,</span> <span class="n">models</span>
-
-<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-
-<span class="n">primer</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">primer</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="c1"># get Order Primer operation type</span>
 <span class="n">ot</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">328</span><span class="p">)</span>
@@ -348,22 +446,23 @@
 <span class="n">p</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
 
 <span class="c1"># show the plan</span>
-<span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># p.show()</span>
 
 <span class="c1"># submit the plan</span>
 <span class="n">p</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">budgets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You may open you plan here: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/plans?plan_id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your plan was submitted successfully!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Your plan was submitted successfully!
+True
 </pre></div>
 </div>
 </div>
 <div class="section" id="submitting-a-gibson-assembly">
 <h3>Submitting a Gibson Assembly<a class="headerlink" href="#submitting-a-gibson-assembly" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span><span class="p">,</span> <span class="n">models</span>
-
-<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-
-<span class="c1"># find &quot;Assembly Plasmid&quot; protocol</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># find &quot;Assembly Plasmid&quot; protocol</span>
 <span class="n">gibson_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Assemble Plasmid&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># instantiate gibson operation</span>
@@ -442,12 +541,17 @@
 <span class="n">p</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
 
 <span class="c1"># show the plan</span>
-<span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># p.show()</span>
 
 <span class="c1"># submit the plan</span>
 <span class="n">p</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">budgets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You may open you plan here: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;/plans?plan_id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your plan was submitted successfully!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Your plan was submitted successfully!
+True
 </pre></div>
 </div>
 </div>
@@ -510,7 +614,7 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.9 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.10 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

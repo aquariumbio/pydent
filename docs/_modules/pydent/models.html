@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydent.models &#8212; Trident 0.0.9 documentation</title>
+    <title>pydent.models &#8212; Trident 0.0.10 documentation</title>
     
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.0.9',
+        VERSION:     '0.0.10',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -37,14 +37,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.10 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.9)</h1>
+        <h1>Trident (V0.0.10)</h1>
     </a>
 </p>
 
@@ -52,7 +52,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.9.
+    for version 0.0.10.
 </p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
@@ -906,7 +906,7 @@
         <span class="n">plan_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;PlanAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;Plan&quot;</span><span class="p">),</span>
         <span class="n">operations</span><span class="o">=</span><span class="n">HasManyThrough</span><span class="p">(</span><span class="s2">&quot;Operation&quot;</span><span class="p">,</span> <span class="s2">&quot;PlanAssociation&quot;</span><span class="p">),</span>
         <span class="n">wires</span><span class="o">=</span><span class="n">Many</span><span class="p">(</span><span class="s2">&quot;Wire&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_wires&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-        <span class="n">layout</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">JSON</span><span class="p">()</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">JSON</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1006,7 +1006,6 @@
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">submit_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="k">def</span> <span class="nf">all_data_associations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1234,7 +1233,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.10 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

@@ -1,6 +1,31 @@
 Trident Examples
 ================
 
+.. testsetup::
+
+    import os
+    import json
+    from pydent import AqSession, models
+
+    def config():
+        """Returns the config dictionary for live tests."""
+        dir = os.path.realpath('../tests')
+        config_path = os.path.join(dir, "secrets", "config.json.secret")
+        config = None
+        with open(config_path, 'rU') as f:
+            config = json.load(f)
+        return config
+
+
+    def session():
+        """Returns a live aquarium connection."""
+        return AqSession(**config())
+
+    prettyprint = lambda x: json.dumps(x, indent=4, sort_keys=True)
+
+    session = session()
+
+
 Basic Usage
 -----------
 
@@ -9,7 +34,7 @@ Logging in
 
 .. code:: python
 
-    from pydent import AqSession
+    from pydent import AqSession, models
 
     nursery = AqSession("username", "password", "url")
     production = AqSession("username", "password", "url2")
@@ -24,39 +49,84 @@ And, to login interactively
 Model queries
 ~~~~~~~~~~~~~
 
-.. code:: python
+Find Sample with id==1
 
-    session # your AqSession
 
-    # find Sample with id=1
-    session.Sample.find(1)
+.. testcode::
 
-    # find SampleTypes with name="Primer"
-    session.SampleType.find_by_name("Primer")
+    mysample = session.Sample.find(1)
+    print(mysample.id)
 
-    # find all SampleTypes
-    session.SampleType.all()
+.. testoutput::
 
-    # find Operations where name="Transfer to 96 Well Plate"
-    session.Operations.where({'name': 'Transfer to 96 Well Plate'})
+    1
 
-    # list all available models
-    session.models
+Find SampleTypes with name=="Primer"
+
+
+.. testcode::
+
+    mysample = session.SampleType.find_by_name("Primer")
+    print(mysample.name)
+
+.. testoutput::
+
+    Primer
+
+
+Find OperationType where name="Transfer to 96 Well Plate"
+
+.. testcode::
+
+    myoperation = session.OperationType.where({"name": "Order Primer"})[0]
+    print(myoperation.name)
+
+.. testoutput::
+
+    Order Primer
+
+
+list all available models
+
+.. testcode::
+
+    print(session.models)
+
+.. testoutput::
+
+    ['Account', 'AllowableFieldType', 'Budget', 'Code', 'Collection', 'DataAssociation', 'FieldType', 'FieldValue', 'Group', 'Invoice', 'Item', 'Job', 'JobAssociation', 'Library', 'Membership', 'ObjectType', 'Operation', 'OperationType', 'Plan', 'PlanAssociation', 'Sample', 'SampleType', 'Upload', 'User', 'UserBudgetAssociation', 'Wire']
+
 
 Setting a query timeout
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
+The following should raise an exception if the request takes too long.
 
-    # raises timeout exception if request takes too long
+.. testcode::
+
+    session.set_timeout(0)  # we set timeout to 0s
     try:
-        session.FieldValue.all()
-    except Exception:
-        print("Request took too long!")
+        session.Sample.find(100)
+    except ValueError as e:
+        print(e)
 
-    session.set_timeout(60)
-    session.FieldValue.all()
+.. testoutput::
+
+    Attempted to set connect timeout to 0, but the timeout cannot be set to a value less than or equal to 0.
+
+
+You can increase the timeout
+
+.. testcode::
+
+    session.set_timeout(10)  # we set timeout to 10s
+    session.Sample.find(1)
     print("Great!")
+
+.. testoutput::
+
+    Great!
+
 
 Deserializing
 -------------
@@ -64,104 +134,156 @@ Deserializing
 Deserializing nested data
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-pydent knows to automatically deserialize ``sample_type`` to a
+Pydent automatically deserializes model relationships.
+Below is an example of how pydent deserializes ``sample_type`` to a
 ``SampleType`` model
 
-.. code:: python
-
-    from pydent.models import Sample, SampleType
+.. testcode::
 
     # nested deserialization
 
-    s = Sample.load({'id': 1, 'sample_type': {'id': 3}})
-    assert isinstance(s, Sample)
-    assert isinstance(s.sample_type, SampleType)
+    s = models.Sample.load({'id': 1, 'sample_type': {'id': 3}})
+    assert isinstance(s, models.Sample)
+    assert isinstance(s.sample_type, models.SampleType)
+    print(s.sample_type.__class__)
+
+.. testoutput::
+
+    <class 'pydent.models.SampleType'>
+
 
 Deserializing with nested models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
+.. testcode::
 
-    Sample.load({
-        'id': 1
-        'sample_type': SampleType(id=1, name="primer")
-    }
+    mysample = models.Sample.load({
+        'id': 1,
+        'sample_type': models.SampleType(id=1, name="primer")
+    })
+    print(mysample.sample_type.name)
+
+.. testoutput::
+
+    primer
+
 
 Find relationships using requests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
+.. testcode::
 
     from pydent.models import Sample, SampleType
-    from pydent import AqSession
-
-    nursery = AqSession("username", "password", "url")
 
     # create new sample
     s = Sample(name='MyPrimer', sample_type_id=1)
 
     # connect sample with session (will throw warning if no session is connected)
-    s.connect_to_session(nursery)
+    s.connect_to_session(session)
 
     # find the sample type using 'sample_type_id'
     s.sample_type
 
-    assert isinstance(s.sample_type, SampleType)
-    print(s.sample_type)
+    prettyprint = lambda x: json.dumps(x, indent=4, sort_keys=True)
 
-    """
-    <class 'pydent.models.SampleType'>: {
-        "id": 1,
-        "created_at": "2013-10-08T10:18:01-07:00",
-        "name": "Primer",
-        "description": "A short double stranded piece of DNA for PCR and sequencing",
-        "updated_at": "2015-11-29T07:55:20-08:00",
-    "samples": "<HasMany (model=Sample, callback=where_using_session, params=(<function HasMany.__init__.<locals>.<lambda> at 0x10c3b7620>,))>",
-        "field_types": "<Many (model=FieldType, callback=where_using_session, params=(<function SampleType.<lambda> at 0x10c3b76a8>,))>"
+    sample_data = s.dump()
+    sample_type_data = s.sample_type.dump()
+
+    print("Sample:")
+    print(prettyprint(sample_data))
+    print("")
+    print("SampleType:")
+    print(prettyprint(sample_type_data))
+
+.. testoutput::
+
+    Sample:
+    {
+        "name": "MyPrimer",
+        "project": null,
+        "rid": 19,
+        "sample_type_id": 1
     }
-    """
+
+    SampleType:
+    {
+        "created_at": "2013-10-08T10:18:01-07:00",
+        "description": "A short double stranded piece of DNA for PCR and sequencing",
+        "id": 1,
+        "name": "Primer",
+        "rid": 21,
+        "updated_at": "2015-11-29T07:55:20-08:00"
+    }
 
 Serializing
 -----------
 
-.. code:: python
+.. testcode::
 
-    s = session.SampleType.find(1)
-    s.dump()
 
-    """
-    {'created_at': '2013-10-08T10:18:01-07:00',
-     'description': 'A short double stranded piece of DNA for PCR and sequencing',
-     'id': 1,
-     'name': 'Primer',
-     'updated_at': '2015-11-29T07:55:20-08:00'}
-    """
+    sample_type = session.SampleType.find(1)
+    prettyprint = lambda x: json.dumps(x, indent=4, sort_keys=True)
+
+    print(prettyprint(sample_type.dump()))
+
+.. testoutput::
+
+    {
+        "created_at": "2013-10-08T10:18:01-07:00",
+        "description": "A short double stranded piece of DNA for PCR and sequencing",
+        "id": 1,
+        "name": "Primer",
+        "rid": 23,
+        "updated_at": "2015-11-29T07:55:20-08:00"
+    }
 
 Serialize with *only* some fields
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
+.. testcode::
 
-    s.dump(only=('data', 'name', 'description'))
-    # {'name': 'IAA1-Nat-F', 'description': None, 'data': None}
+    prettyprint = lambda x: json.dumps(x, indent=4, sort_keys=True)
+    s = session.SampleType.find(1)
+    sdata = s.dump(only=('name', 'description'))
+
+    print(prettyprint(sdata))
+
+.. testoutput::
+
+    {
+        "description": "A short double stranded piece of DNA for PCR and sequencing",
+        "name": "Primer",
+        "rid": 25
+    }
 
 Serialize with some relationships
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
+.. testcode::
 
-    from pydent import pprint
+    s = session.SampleType.find(1)
+    sdata = s.dump(relations=('items',))
 
-    pprint(s.dump(relations=('items',)))
+    print(prettyprint(sdata))
+
+.. testoutput::
+
+    {
+        "created_at": "2013-10-08T10:18:01-07:00",
+        "description": "A short double stranded piece of DNA for PCR and sequencing",
+        "id": 1,
+        "name": "Primer",
+        "rid": 27,
+        "updated_at": "2015-11-29T07:55:20-08:00"
+    }
 
 Serialize with all relationships
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
+.. code::
 
-    from pydent import pprint
-
-    pprint(s.dump(all_relations=True))
+    s = session.SampleType.find(1)
+    print(prettyprint(s.dump(all_relations=True)))
     """
     {'created_at': '2013-10-08T10:18:48-07:00',
     'data': None,
@@ -178,22 +300,75 @@ Serialize with all relationships
     }
     """
 
+.. testcode::
+    :hide:
+
+    s = session.SampleType.find(1)
+    prettyprint(s.dump(all_relations=True))
+    print('ok')
+
+.. testoutput::
+    :hide:
+
+    ok
+
 complex serialization
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
 
-    # deserialize operations and wires. For wires, also include source and destination
-    # field_values. For operation.field_values, include allowable_field_type and operation_type.
-    # for operation_type, only serialize name
 
-    json_data = plan.dump(include={
-        'operations': {
-           'field_values': 'allowable_field_type',
-           'operation_type': {'opts': {'only': ['name']}},
-        },
-        'wires': {"source", "destination"}
+.. testcode::
+
+    s = session.Sample.find(1)
+    sdata = s.dump(
+        include={
+            'items': {                  # serialize the items
+                'object_type': {        # serialize the object_type for each item
+                    'opts': {
+                        'only': 'name'  # only serialize the name for the object_type
+                    }
+                },
+            'opts': {
+                'only': 'id'            # only serialize the id for each item (in addition to the object_type)
+                }
+            }
     })
+
+    print(prettyprint(sdata))
+
+
+.. testoutput::
+
+    {
+        "created_at": "2013-10-08T10:18:48-07:00",
+        "data": null,
+        "description": null,
+        "id": 1,
+        "items": [
+            {
+                "id": 438,
+                "object_type": {
+                    "name": "Primer Aliquot",
+                    "rid": 9659
+                },
+                "rid": 9656
+            },
+            {
+                "id": 441,
+                "object_type": {
+                    "name": "Plasmid Stock",
+                    "rid": 9661
+                },
+                "rid": 9657
+            }
+        ],
+        "name": "IAA1-Nat-F",
+        "project": "Auxin",
+        "rid": 9653,
+        "sample_type_id": 1,
+        "updated_at": "2013-10-08T10:18:48-07:00",
+        "user_id": 1
+    }
 
 Planning
 --------
@@ -201,11 +376,7 @@ Planning
 Submitting a Plan
 ~~~~~~~~~~~~~~~~~
 
-.. code:: python
-
-    from pydent import AqSession, models
-
-    session = AqSession.interactive()
+.. testcode::
 
     primer = session.SampleType.find(1).samples[-1]
 
@@ -238,23 +409,24 @@ Submitting a Plan
     p.validate()
 
     # show the plan
-    p.show()
+    # p.show()
 
     # submit the plan
     p.submit(session.current_user, session.current_user.budgets[0])
 
-    print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+    print("Your plan was submitted successfully!")
+    print(p.id is not None)
+
+.. testoutput::
+
+    Your plan was submitted successfully!
+    True
 
 
 Submitting a Gibson Assembly
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
-
-
-    from pydent import AqSession, models
-
-    session = AqSession.interactive()
+.. testcode::
 
     # find "Assembly Plasmid" protocol
     gibson_type = session.OperationType.where({"deployed": True, "name": "Assemble Plasmid"})[0]
@@ -335,12 +507,18 @@ Submitting a Gibson Assembly
     p.validate()
 
     # show the plan
-    p.show()
+    # p.show()
 
     # submit the plan
     p.submit(session.current_user, session.current_user.budgets[0])
 
-    print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+    print("Your plan was submitted successfully!")
+    print(p.id is not None)
+
+.. testoutput::
+
+    Your plan was submitted successfully!
+    True
 
 
 Miscellaneous
