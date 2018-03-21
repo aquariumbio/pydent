@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydent.interfaces &#8212; Trident 0.0.8 documentation</title>
+    <title>pydent.interfaces &#8212; Trident 0.0.9 documentation</title>
     
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.0.8',
+        VERSION:     '0.0.9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -37,14 +37,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.9 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.8)</h1>
+        <h1>Trident (V0.0.9)</h1>
     </a>
 </p>
 
@@ -52,7 +52,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.8.
+    for version 0.0.9.
 </p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
@@ -167,7 +167,24 @@
 
 <div class="viewcode-block" id="UtilityInterface.create_operation_type"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.create_operation_type">[docs]</a>    <span class="k">def</span> <span class="nf">create_operation_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a new operation type&quot;&quot;&quot;</span>
-        <span class="n">op_data</span> <span class="o">=</span> <span class="n">operation_type</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">relations</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;field_types&#39;</span><span class="p">,))</span>
+        <span class="n">op_data</span> <span class="o">=</span> <span class="n">operation_type</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;field_types&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;allowable_field_types&#39;</span><span class="p">:</span> <span class="p">{}</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;protocol&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;cost_model&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;documentation&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;precondition&#39;</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">})</span>
+
+        <span class="c1"># Format &#39;sample_type&#39; and &#39;object_type&#39; keys for afts</span>
+        <span class="k">for</span> <span class="n">ft_d</span><span class="p">,</span> <span class="n">ft</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                <span class="n">op_data</span><span class="p">[</span><span class="s1">&#39;field_types&#39;</span><span class="p">],</span> <span class="n">operation_type</span><span class="o">.</span><span class="n">field_types</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">aft_d</span><span class="p">,</span> <span class="n">aft</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                    <span class="n">ft_d</span><span class="p">[</span><span class="s1">&#39;allowable_field_types&#39;</span><span class="p">],</span> <span class="n">ft</span><span class="o">.</span><span class="n">allowable_field_types</span><span class="p">):</span>
+                <span class="n">aft_d</span><span class="p">[</span><span class="s1">&#39;sample_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">aft</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+                <span class="n">aft_d</span><span class="p">[</span><span class="s1">&#39;object_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">aft</span><span class="o">.</span><span class="n">object_type</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;operation_types.json&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">op_data</span><span class="p">)</span>
         <span class="n">operation_type</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">operation_type</span></div>
@@ -401,7 +418,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.9 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
