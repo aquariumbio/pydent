@@ -15,7 +15,7 @@ To run tests, run:
 
     make tests
 
-To run doctests located in :doc:`user/examples`.
+To run doctests located in `user/examples`.
 
 .. code::
 
