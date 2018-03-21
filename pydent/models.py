@@ -619,18 +619,20 @@ class Operation(ModelBase):
 
     @property
     def routing(self):
-        routing = {}
+        routing_dict = {}
         fvs = self.field_values
         ot = self.operation_type
         if ot is None:
-            return routing
+            return routing_dict
         for ft in ot.field_types:
-            routing[ft.routing] = None
+            if ft.routing is not None:
+                routing_dict[ft.routing] = None
         if fvs is not None:
             for fv in self.field_values:
                 ft = fv.field_type
-                routing[ft.routing] = fv.sid
-        return routing
+                if ft.routing is not None:
+                    routing_dict[ft.routing] = fv.sid
+        return routing_dict
 
     def init_field_values(self):
         """
