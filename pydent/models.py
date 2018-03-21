@@ -813,6 +813,11 @@ class OperationType(ModelBase, HasCodeMixin):
             if fts:
                 return fts[0]
 
+    def save(self):
+        """Saves the Operation Type to the Aquarium server. Requires
+        this Operation Type to be connected to a session."""
+        return self.reload(self.session.utils.create_operation_type(self))
+
 
 @add_schema
 class Plan(ModelBase, PlanValidator):
