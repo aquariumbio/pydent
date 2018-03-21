@@ -1,6 +1,50 @@
 from pydent import models
 from marshmallow import pprint
 
+
+def test_submit_order_primer(session):
+    order_primer = session.OperationType.where({"deployed": True, "name": "Assemble Plasmid"})[0]
+
+    order_primer_op = order_primer.instance()
+
+    p = models.Plan(name="MyOrderPrimerTest")
+    p.add_operation(order_primer_op)
+    p.connect_to_session(session)
+    # p.add_operation(order_primer_op)
+
+    p.create()
+
+def test_devins_plan(session):
+    primer = session.SampleType.where({'name': 'Primer'})[0].samples[-1]
+    print(primer)
+    print()
+
+    # get Order Primer operation type
+    ot = session.OperationType.where({'name': 'Order Primer'})[1]
+    print(ot)
+
+    # create an operation
+    order_primer = ot.instance()
+
+    # set io
+    order_primer.set_output("Primer", sample=primer)
+    order_primer.set_input("Urgent?", value="no")
+
+    # create a new plan
+    p = models.Plan(name="MyPlan")
+
+    # connect the plan to the session
+    p.connect_to_session(session)
+
+    # add the operation to the plan
+    p.add_operation(order_primer)
+
+    pprint(p.to_save_json())
+
+    # save the plan
+    p.create()
+
+
 def test_submit_gibson(session):
 
     # find "Assembly Plasmid" protocol
