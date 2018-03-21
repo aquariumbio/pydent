@@ -5,7 +5,7 @@ Requirements
 ------------
 
 -  python3.6
--  pip
+-  pip3
 
 pipenv installation
 -------------------
