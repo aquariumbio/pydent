@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pydent.models &#8212; Trident 0.0.10 documentation</title>
+    <title>pydent.models &#8212; Trident 0.0.11 documentation</title>
     
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.0.10',
+        VERSION:     '0.0.11',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -37,14 +37,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.11 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.10)</h1>
+        <h1>Trident (V0.0.11)</h1>
     </a>
 </p>
 
@@ -52,7 +52,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.10.
+    for version 0.0.11.
 </p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
@@ -326,10 +326,10 @@
                  <span class="n">aft_stype_and_objtype</span><span class="o">=</span><span class="p">(),</span> <span class="n">allowable_field_types</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">operation_type</span> <span class="ow">and</span> <span class="n">sample_type</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">operation_type</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">operation_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">parent_id</span> <span class="o">=</span> <span class="n">operation_type</span><span class="o">.</span><span class="n">id</span>
             <span class="n">parent_class</span> <span class="o">=</span> <span class="s2">&quot;OperationType&quot;</span>
-        <span class="k">if</span> <span class="n">sample_type</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sample_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">parent_id</span> <span class="o">=</span> <span class="n">sample_type</span><span class="o">.</span><span class="n">id</span>
             <span class="n">parent_class</span> <span class="o">=</span> <span class="s2">&quot;SampleType&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -347,7 +347,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowable_field_types</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">aft_stype_and_objtype</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">aft_stype_and_objtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">smple_type</span><span class="p">,</span> <span class="n">obj_type</span> <span class="ow">in</span> <span class="n">aft_stype_and_objtype</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">create_allowable_field_type</span><span class="p">(</span><span class="n">smple_type</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">)</span>
 
@@ -458,7 +458,7 @@
         <span class="c1"># object_type is not included in the deserialization/serialization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object_type</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="n">field_type</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_field_type</span><span class="p">(</span><span class="n">field_type</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">value</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">container</span><span class="p">]):</span>
@@ -516,18 +516,18 @@
         <span class="k">if</span> <span class="n">item</span> <span class="ow">and</span> <span class="n">container</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">object_type_id</span> <span class="o">!=</span> <span class="n">container</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
                 <span class="s2">&quot;Item </span><span class="si">{}</span><span class="s2"> is not in container </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">container</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">if</span> <span class="n">item</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">item</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">child_item_id</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">object_type</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">object_type</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">sample</span><span class="p">:</span>
                 <span class="n">sample</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">sample</span>
-        <span class="k">if</span> <span class="n">sample</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sample</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sample</span> <span class="o">=</span> <span class="n">sample</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">child_sample_id</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">id</span>
-        <span class="k">if</span> <span class="n">container</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">container</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">object_type</span> <span class="o">=</span> <span class="n">container</span>
 
     <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -536,12 +536,12 @@
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">sample</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">item</span><span class="p">]):</span>
             <span class="n">afts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">allowable_field_types</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">afts</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span>
                     <span class="n">afts</span><span class="p">,</span> <span class="n">sample_type_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_type_id</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_type</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">afts</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="n">afts</span><span class="p">,</span> <span class="n">object_type_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object_type</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">afts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">afts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">available_afts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">allowable_field_types</span>
                 <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;No allowable field types found for </span><span class="si">{}</span><span class="s2"> &#39;</span><span class="si">{}</span><span class="s2">&#39;. Available afts: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">available_afts</span><span class="p">))</span>
@@ -577,7 +577,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">first</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compatible_items</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">items</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">item</span>
@@ -725,7 +725,7 @@
         <span class="sd">&quot;&quot;&quot;Returns FieldValue array with name and role.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
             <span class="n">fvs</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">fvs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">fvs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
                         <span class="s2">&quot;FieldValue is not an array for the field value of operation </span><span class="si">{}</span><span class="s2">(id=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -738,7 +738,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
             <span class="n">fvs</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">fvs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
                         <span class="s2">&quot;More than one FieldValue found for the field value of operation </span><span class="si">{}</span><span class="s2">(id=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -887,7 +887,7 @@
     <span class="k">def</span> <span class="nf">field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">:</span>
             <span class="n">fts</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">fts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">fts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <div class="viewcode-block" id="OperationType.save"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.OperationType.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1233,7 +1233,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.11 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
