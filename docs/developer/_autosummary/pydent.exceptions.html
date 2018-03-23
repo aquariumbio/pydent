@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>pydent.exceptions &#8212; Trident 0.0.11 documentation</title>
-    
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.0.11',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -28,8 +17,7 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.interfaces" href="pydent.interfaces.html" />
     <link rel="prev" title="pydent.base" href="pydent.base.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -77,12 +65,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -103,28 +93,22 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.AquariumModelError" title="pydent.exceptions.AquariumModelError"><code class="xref py py-obj docutils literal"><span class="pre">AquariumModelError</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.AquariumModelError" title="pydent.exceptions.AquariumModelError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AquariumModelError</span></code></a></td>
 <td>An error occured with this Aquarium model</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">ConnectTimeout</span></code>(\*args,&nbsp;\*\*kwargs)</td>
-<td>The request timed out while trying to connect to the remote server.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">RequestException</span></code>(\*args,&nbsp;\*\*kwargs)</td>
-<td>There was an ambiguous exception that occurred while handling your request.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentJSONDataIncomplete" title="pydent.exceptions.TridentJSONDataIncomplete"><code class="xref py py-obj docutils literal"><span class="pre">TridentJSONDataIncomplete</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentJSONDataIncomplete" title="pydent.exceptions.TridentJSONDataIncomplete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentJSONDataIncomplete</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>JSON data contains a null value and may be imcomplete.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentLoginError" title="pydent.exceptions.TridentLoginError"><code class="xref py py-obj docutils literal"><span class="pre">TridentLoginError</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentLoginError" title="pydent.exceptions.TridentLoginError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentLoginError</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>Trident is not properly connected to the server.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentModelNotFoundError" title="pydent.exceptions.TridentModelNotFoundError"><code class="xref py py-obj docutils literal"><span class="pre">TridentModelNotFoundError</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentModelNotFoundError" title="pydent.exceptions.TridentModelNotFoundError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentModelNotFoundError</span></code></a></td>
 <td>Trident could not find model in list of models.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentRequestError" title="pydent.exceptions.TridentRequestError"><code class="xref py py-obj docutils literal"><span class="pre">TridentRequestError</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentRequestError" title="pydent.exceptions.TridentRequestError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentRequestError</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>There was an ambiguous exception that occured handling your request.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentTimeoutError" title="pydent.exceptions.TridentTimeoutError"><code class="xref py py-obj docutils literal"><span class="pre">TridentTimeoutError</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentTimeoutError" title="pydent.exceptions.TridentTimeoutError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentTimeoutError</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>Trident took too long to respond</td>
 </tr>
 </tbody>
@@ -132,12 +116,12 @@
 <dl class="exception">
 <dt id="pydent.exceptions.AquariumModelError">
 <em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">AquariumModelError</code><a class="reference internal" href="../../_modules/pydent/exceptions.html#AquariumModelError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.AquariumModelError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>An error occured with this Aquarium model</p>
 <dl class="method">
 <dt id="pydent.exceptions.AquariumModelError.with_traceback">
 <code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.exceptions.AquariumModelError.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) &#8211;
+<dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
@@ -146,7 +130,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.exceptions.TridentJSONDataIncomplete">
 <em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">TridentJSONDataIncomplete</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/exceptions.html#TridentJSONDataIncomplete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.TridentJSONDataIncomplete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">requests.exceptions.RequestException</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.exceptions.RequestException</span></code></p>
 <p>JSON data contains a null value and may be imcomplete.</p>
 <p>Initialize RequestException with <cite>request</cite> and <cite>response</cite> objects.</p>
 <dl class="attribute">
@@ -176,7 +160,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="method">
 <dt id="pydent.exceptions.TridentJSONDataIncomplete.with_traceback">
 <code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.exceptions.TridentJSONDataIncomplete.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) &#8211;
+<dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
@@ -185,7 +169,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.exceptions.TridentLoginError">
 <em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">TridentLoginError</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/exceptions.html#TridentLoginError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.TridentLoginError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">requests.exceptions.RequestException</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.exceptions.RequestException</span></code></p>
 <p>Trident is not properly connected to the server.
 Verify login credentials are correct.</p>
 <p>Initialize RequestException with <cite>request</cite> and <cite>response</cite> objects.</p>
@@ -216,7 +200,7 @@ Verify login credentials are correct.</p>
 <dl class="method">
 <dt id="pydent.exceptions.TridentLoginError.with_traceback">
 <code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.exceptions.TridentLoginError.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) &#8211;
+<dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
@@ -225,12 +209,12 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.exceptions.TridentModelNotFoundError">
 <em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">TridentModelNotFoundError</code><a class="reference internal" href="../../_modules/pydent/exceptions.html#TridentModelNotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.TridentModelNotFoundError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">AttributeError</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AttributeError</span></code></p>
 <p>Trident could not find model in list of models.</p>
 <dl class="method">
 <dt id="pydent.exceptions.TridentModelNotFoundError.with_traceback">
 <code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.exceptions.TridentModelNotFoundError.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) &#8211;
+<dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
@@ -239,7 +223,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.exceptions.TridentRequestError">
 <em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">TridentRequestError</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/exceptions.html#TridentRequestError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.TridentRequestError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">requests.exceptions.RequestException</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.exceptions.RequestException</span></code></p>
 <p>There was an ambiguous exception that occured handling your request.</p>
 <p>Initialize RequestException with <cite>request</cite> and <cite>response</cite> objects.</p>
 <dl class="attribute">
@@ -269,7 +253,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="method">
 <dt id="pydent.exceptions.TridentRequestError.with_traceback">
 <code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.exceptions.TridentRequestError.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) &#8211;
+<dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
@@ -278,7 +262,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.exceptions.TridentTimeoutError">
 <em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">TridentTimeoutError</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/exceptions.html#TridentTimeoutError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.TridentTimeoutError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">requests.exceptions.ConnectTimeout</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.exceptions.ConnectTimeout</span></code></p>
 <p>Trident took too long to respond</p>
 <p>Initialize RequestException with <cite>request</cite> and <cite>response</cite> objects.</p>
 <dl class="attribute">
@@ -308,7 +292,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="method">
 <dt id="pydent.exceptions.TridentTimeoutError.with_traceback">
 <code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.exceptions.TridentTimeoutError.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) &#8211;
+<dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
@@ -343,7 +327,7 @@ set self.__traceback__ to tb and return self.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
     </div>
   </body>
 </html>

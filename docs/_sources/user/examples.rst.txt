@@ -75,7 +75,8 @@ Find SampleTypes with name=="Primer"
     Primer
 
 
-Find OperationType where name="Transfer to 96 Well Plate"
+Find OperationType where name="Transfer to 96 Well Plate". The method
+will return an array where the conditions are true.
 
 .. testcode::
 
@@ -87,7 +88,44 @@ Find OperationType where name="Transfer to 96 Well Plate"
     Order Primer
 
 
-list all available models
+You can use where with more specific conditions
+
+.. testcode::
+
+    mysampletypes = session.OperationType.where({"name": "Assemble Plasmid", "deployed": True})
+    print(mysampletypes[0].name)
+
+.. testoutput::
+
+    Assemble Plasmid
+
+You can use where with SQL-like queries as well
+
+.. testcode::
+
+    mysample = session.SampleType.where("id=1")[0]
+    print(mysample.name)
+
+.. testoutput::
+
+    Primer
+
+Here's an example of finding all Jobs created in the last 24 hours
+
+.. testcode::
+
+    import udatetime
+    from datetime import timedelta
+
+    last24 = udatetime.to_string(udatetime.utcnow() - timedelta(hours=24))
+    jobs = session.Job.where("created_at > '{}'".format(last24))
+    print("jobs found")
+
+.. testoutput::
+
+    jobs found
+
+Use session.models to list all available models in Aquarium.
 
 .. testcode::
 
@@ -96,6 +134,9 @@ list all available models
 .. testoutput::
 
     ['Account', 'AllowableFieldType', 'Budget', 'Code', 'Collection', 'DataAssociation', 'FieldType', 'FieldValue', 'Group', 'Invoice', 'Item', 'Job', 'JobAssociation', 'Library', 'Membership', 'ObjectType', 'Operation', 'OperationType', 'Plan', 'PlanAssociation', 'Sample', 'SampleType', 'Upload', 'User', 'UserBudgetAssociation', 'Wire']
+
+
+
 
 
 Setting a query timeout

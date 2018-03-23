@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Developer Notes &#8212; Trident 0.0.11 documentation</title>
-    
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.11',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -28,8 +17,7 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Contributing" href="contributing.html" />
     <link rel="prev" title="pydent.relationships" href="_autosummary/pydent.relationships.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -98,12 +86,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -120,60 +110,60 @@
 <h2>Interfaces<a class="headerlink" href="#interfaces" title="Permalink to this headline">¶</a></h2>
 <p>There are two main pydent interfaces:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">pydent.interfaces.ModelInterface</span></code> - used for finding models via
-<code class="docutils literal"><span class="pre">find</span></code>, <code class="docutils literal"><span class="pre">find_by_name</span></code>, <code class="docutils literal"><span class="pre">all</span></code>, or <code class="docutils literal"><span class="pre">where</span></code></li>
-<li><code class="docutils literal"><span class="pre">pydent.interfaces.UtilityInterface</span></code> - used for other requests such
+<li><code class="docutils literal notranslate"><span class="pre">pydent.interfaces.ModelInterface</span></code> - used for finding models via
+<code class="docutils literal notranslate"><span class="pre">find</span></code>, <code class="docutils literal notranslate"><span class="pre">find_by_name</span></code>, <code class="docutils literal notranslate"><span class="pre">all</span></code>, or <code class="docutils literal notranslate"><span class="pre">where</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">pydent.interfaces.UtilityInterface</span></code> - used for other requests such
 as submitting plans, estimating plan costs, etc.</li>
 </ul>
-<p>All requests (POST, GET, PUT) happen through an <code class="docutils literal"><span class="pre">pydent.aqhttp.AqHTTP</span></code>
+<p>All requests (POST, GET, PUT) happen through an <code class="docutils literal notranslate"><span class="pre">pydent.aqhttp.AqHTTP</span></code>
 instance, which stores a login, the aquarium url, and login data. But,
-rather than have direct access to <code class="docutils literal"><span class="pre">AqHTTP</span></code> and to avoid potentially
-harmful requests to Aquarium, the <code class="docutils literal"><span class="pre">pydent.interfaces</span></code> request
+rather than have direct access to <code class="docutils literal notranslate"><span class="pre">AqHTTP</span></code> and to avoid potentially
+harmful requests to Aquarium, the <code class="docutils literal notranslate"><span class="pre">pydent.interfaces</span></code> request
 interfaces are used to specify how these requests are made.</p>
 </div>
 <div class="section" id="establishing-an-interface">
 <h2>Establishing an Interface<a class="headerlink" href="#establishing-an-interface" title="Permalink to this headline">¶</a></h2>
-<p>Interfaces are created using a <code class="docutils literal"><span class="pre">pydent.aqsession.AqSession</span></code> instance.
-<code class="docutils literal"><span class="pre">AqSession</span></code> instances are created using a user&#8217;s login information and
-stores a particular <code class="docutils literal"><span class="pre">AqHTTP</span></code> instance.</p>
-<p>For example, to establish a User Model interface and find a <code class="docutils literal"><span class="pre">User</span></code>
-with <code class="docutils literal"><span class="pre">id</span> <span class="pre">==</span> <span class="pre">1</span></code>:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">yoursession</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<p>Interfaces are created using a <code class="docutils literal notranslate"><span class="pre">pydent.aqsession.AqSession</span></code> instance.
+<code class="docutils literal notranslate"><span class="pre">AqSession</span></code> instances are created using a user’s login information and
+stores a particular <code class="docutils literal notranslate"><span class="pre">AqHTTP</span></code> instance.</p>
+<p>For example, to establish a User Model interface and find a <code class="docutils literal notranslate"><span class="pre">User</span></code>
+with <code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">==</span> <span class="pre">1</span></code>:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yoursession</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># or</span>
 <span class="n">yoursession</span><span class="o">.</span><span class="n">model_interface</span><span class="p">(</span><span class="s1">&#39;User&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can get a list of available models by <code class="docutils literal"><span class="pre">yoursession.models</span></code></p>
+<p>You can get a list of available models by <code class="docutils literal notranslate"><span class="pre">yoursession.models</span></code></p>
 <p>For example, to save a plan using the utility interface:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">yoursession</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">save_plan</span><span class="p">(</span><span class="n">myplan</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yoursession</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">save_plan</span><span class="p">(</span><span class="n">myplan</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Some model definitions already contain wrappers for using some
-interface, for example, <code class="docutils literal"><span class="pre">Plan</span></code> contains a wrapper for saving itself:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">myplane</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+interface, for example, <code class="docutils literal notranslate"><span class="pre">Plan</span></code> contains a wrapper for saving itself:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myplane</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="working-with-models">
 <h2>Working with Models<a class="headerlink" href="#working-with-models" title="Permalink to this headline">¶</a></h2>
 <p>Most models can be initialized as follows:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
 
 <span class="c1"># or</span>
 <span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">login</span><span class="o">=</span><span class="s1">&#39;mylogin&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;myname&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Models can be pre-loaded with attributes using the <code class="docutils literal"><span class="pre">load</span></code> class method</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;GI Joe&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">:</span> <span class="s1">&#39;gijoe&#39;</span><span class="p">})</span>
+<p>Models can be pre-loaded with attributes using the <code class="docutils literal notranslate"><span class="pre">load</span></code> class method</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;GI Joe&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">:</span> <span class="s1">&#39;gijoe&#39;</span><span class="p">})</span>
 
 <span class="c1"># attributes are loaded from the dictionary</span>
 <span class="k">assert</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;GI Joe&quot;</span>
 <span class="k">assert</span> <span class="n">u</span><span class="o">.</span><span class="n">login</span> <span class="o">==</span> <span class="s2">&quot;gijoe&quot;</span>
 </pre></div>
 </div>
-<p>Models instantiate with the <code class="docutils literal"><span class="pre">load</span></code> method have their attribute
-automatically &#8216;tracked&#8217; by the schema. For example,</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;GI Joe&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">:</span> <span class="s1">&#39;gijoe&#39;</span><span class="p">})</span>
+<p>Models instantiate with the <code class="docutils literal notranslate"><span class="pre">load</span></code> method have their attribute
+automatically ‘tracked’ by the schema. For example,</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;GI Joe&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">:</span> <span class="s1">&#39;gijoe&#39;</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dump</span><span class="p">())</span>
 
 <span class="c1">#&gt;&gt;&gt; {&quot;name&quot;: &quot;GI Joe&quot;, &quot;login&quot;: &#39;gijoe&#39;}</span>
@@ -184,14 +174,14 @@ Serialization/Deserialization below</p>
 </div>
 <div class="section" id="model-fields">
 <h2>Model Fields<a class="headerlink" href="#model-fields" title="Permalink to this headline">¶</a></h2>
-<p>Models inherit the <code class="docutils literal"><span class="pre">ModelBase</span></code> base class and are pre-loaded with a
-serialization/deserialization schema (via the <code class="docutils literal"><span class="pre">&#64;add_schema</span></code>
+<p>Models inherit the <code class="docutils literal notranslate"><span class="pre">ModelBase</span></code> base class and are pre-loaded with a
+serialization/deserialization schema (via the <code class="docutils literal notranslate"><span class="pre">&#64;add_schema</span></code>
 decorator). The attached schema controls how attributes are serialized
 and deserialized.</p>
 <p>Serialization/deserialization is controlled by the models schema. A
-model schema is automatically attached to models via the <code class="docutils literal"><span class="pre">&#64;add_schema</span></code>
+model schema is automatically attached to models via the <code class="docutils literal notranslate"><span class="pre">&#64;add_schema</span></code>
 decorator</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nd">@add_schema</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="k">pass</span>
 </pre></div>
@@ -202,13 +192,13 @@ define fields for a model:</p>
 <ul class="simple">
 <li><em>Use the ``load`` class method</em></li>
 </ul>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;GIJoe&#39;</span><span class="p">})</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;GIJoe&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
 <ol class="arabic simple">
 <li><em>Define it in the class definition using the ``fields`` attribute</em></li>
 </ol>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nd">@add_schema</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="n">fields</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">Str</span><span class="p">())</span>
 </pre></div>
@@ -217,7 +207,7 @@ define fields for a model:</p>
 <li><em>Establish in the ``__init__`` using ``super().__init__(**kwargs)``
 style</em></li>
 </ul>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="kc">None</span>
@@ -228,7 +218,7 @@ style</em></li>
 <li><em>Implicitly track all ``init`` attributes using
 ``super().__init__(**vars(self))``</em></li>
 </ul>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="kc">None</span>
@@ -239,24 +229,24 @@ style</em></li>
 <div class="section" id="editing-or-creating-models">
 <h2>Editing or Creating Models<a class="headerlink" href="#editing-or-creating-models" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Models must have the <code class="docutils literal"><span class="pre">&#64;add_schema</span></code> class decorator</li>
-<li>Models inherit the <code class="docutils literal"><span class="pre">ModelBase</span></code> baseclass</li>
-<li>If defining a custom <code class="docutils literal"><span class="pre">__init__</span></code></li>
-<li>do not add positional arguments to <code class="docutils literal"><span class="pre">__init__</span></code>. The Marshaller does
+<li>Models must have the <code class="docutils literal notranslate"><span class="pre">&#64;add_schema</span></code> class decorator</li>
+<li>Models inherit the <code class="docutils literal notranslate"><span class="pre">ModelBase</span></code> baseclass</li>
+<li>If defining a custom <code class="docutils literal notranslate"><span class="pre">__init__</span></code></li>
+<li>do not add positional arguments to <code class="docutils literal notranslate"><span class="pre">__init__</span></code>. The Marshaller does
 not expect any positional arguments when deserializing data.
 Dictionary arguments are ok</li>
-<li>be sure to call <code class="docutils literal"><span class="pre">super().__init__</span></code></li>
+<li>be sure to call <code class="docutils literal notranslate"><span class="pre">super().__init__</span></code></li>
 <li>if you would like to include attributes in the serialization fields
-use <code class="docutils literal"><span class="pre">super().__init__(fieldname=whatever,...)</span></code> (A short cut for
+use <code class="docutils literal notranslate"><span class="pre">super().__init__(fieldname=whatever,...)</span></code> (A short cut for
 tracking all attributes for serialization is to use
-<code class="docutils literal"><span class="pre">super().__init__(**vars(self))</span></code>)</li>
-<li>Fields (including relationships) are defined in the model&#8217;s
-<code class="docutils literal"><span class="pre">fields</span></code> attribute, which expects a dictionary of field_names with
+<code class="docutils literal notranslate"><span class="pre">super().__init__(**vars(self))</span></code>)</li>
+<li>Fields (including relationships) are defined in the model’s
+<code class="docutils literal notranslate"><span class="pre">fields</span></code> attribute, which expects a dictionary of field_names with
 Field models<ul>
-<li><code class="docutils literal"><span class="pre">pydent.marshaller.fields</span></code> is a module that contains a list of
-fields including <code class="docutils literal"><span class="pre">Str</span></code>, <code class="docutils literal"><span class="pre">Int</span></code>, <code class="docutils literal"><span class="pre">Boolean</span></code>, etc. Establishing
+<li><code class="docutils literal notranslate"><span class="pre">pydent.marshaller.fields</span></code> is a module that contains a list of
+fields including <code class="docutils literal notranslate"><span class="pre">Str</span></code>, <code class="docutils literal notranslate"><span class="pre">Int</span></code>, <code class="docutils literal notranslate"><span class="pre">Boolean</span></code>, etc. Establishing
 a field this way will ensure that the attribute is properly
-validated. You&#8217;ll notice that as of Dec 2017, Aquarium models do
+validated. You’ll notice that as of Dec 2017, Aquarium models do
 not use this explicitly. If the need for validation arises, we can
 explicitly define these fields</li>
 </ul>
@@ -268,12 +258,12 @@ explicitly define these fields</li>
 <p>Relationships are special model fields that establish One-to-One,
 One-to-Many, and Many-to-Many relationships between models.The
 relationships use the attached model session to retrieve the models
-through Aquarium. How these work isn&#8217;t exactly straightforward and
+through Aquarium. How these work isn’t exactly straightforward and
 requires a little bit of explanation.</p>
 <p>There are HasOne, HasMany, HasManyGeneric, and HasManyThrough
 relationships which can be defined in the model definition in the
-<code class="docutils literal"><span class="pre">fields</span></code> attribute. For example:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nd">@add_schema</span>
+<code class="docutils literal notranslate"><span class="pre">fields</span></code> attribute. For example:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">SamlpeType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="n">fields</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">)</span>
 </pre></div>
@@ -281,7 +271,7 @@ relationships which can be defined in the model definition in the
 <p>Trident will always attempt to <em>fullfill</em> relationships for attributes
 if possible</p>
 <p>For example:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># create empty Sample</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create empty Sample</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">Sample</span><span class="p">()</span>
 
 <span class="c1"># s has no sample_type_id</span>
@@ -297,41 +287,41 @@ if possible</p>
 </div>
 <p>If for whatever reason the <em>fullfillment</em> fails, Trident will return
 None</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s1">&#39;sample_type_id&#39;</span><span class="p">:</span> <span class="mi">100000000000</span><span class="p">})</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s1">&#39;sample_type_id&#39;</span><span class="p">:</span> <span class="mi">100000000000</span><span class="p">})</span>
 <span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="n">sample_type</span> <span class="ow">is</span> <span class="kc">None</span>
 </pre></div>
 </div>
 <div class="section" id="relationship-fullfillment">
 <h3>Relationship fullfillment<a class="headerlink" href="#relationship-fullfillment" title="Permalink to this headline">¶</a></h3>
-<p>The relationship fullfillment occurs through a &#8216;callback&#8217; and &#8216;params&#8217;
-attributes defined in the relationships <code class="docutils literal"><span class="pre">__init__</span></code> definition. When
-fullfilling a relationship, the model will use its &#8216;callback&#8217; method and
-pass in the &#8216;params&#8217; value found in the relationship. The &#8216;params&#8217; may
+<p>The relationship fullfillment occurs through a ‘callback’ and ‘params’
+attributes defined in the relationships <code class="docutils literal notranslate"><span class="pre">__init__</span></code> definition. When
+fullfilling a relationship, the model will use its ‘callback’ method and
+pass in the ‘params’ value found in the relationship. The ‘params’ may
 include callable (i.e. lambdas), in which case the model fullfilling the
 relationship will pass in itself to retrieve the parameters.</p>
 <p>As an example, the SampleType relationship in the Sample definition:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SampleType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SampleType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="n">fields</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">sample_type</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The HasMany relationship defaults to the &#8216;where_callback&#8217; method. In
-the HasMany <code class="docutils literal"><span class="pre">__init__</span></code> definition, params are established such that</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;sample_type_id&#39;</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+<p>The HasMany relationship defaults to the ‘where_callback’ method. In
+the HasMany <code class="docutils literal notranslate"><span class="pre">__init__</span></code> definition, params are established such that</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;sample_type_id&#39;</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>If a <code class="docutils literal"><span class="pre">Sample</span></code> with <code class="docutils literal"><span class="pre">id=4</span></code> attempts to fullfill a sample_type
+<p>If a <code class="docutils literal notranslate"><span class="pre">Sample</span></code> with <code class="docutils literal notranslate"><span class="pre">id=4</span></code> attempts to fullfill a sample_type
 relationship, it finds the relationship params
-<code class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">{'sample_type_id':</span> <span class="pre">x.id}</span></code>, passes in itself such that
-<code class="docutils literal"><span class="pre">params={'sample_type_id':</span> <span class="pre">4}</span></code>. Those params are passed to the
+<code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">{'sample_type_id':</span> <span class="pre">x.id}</span></code>, passes in itself such that
+<code class="docutils literal notranslate"><span class="pre">params={'sample_type_id':</span> <span class="pre">4}</span></code>. Those params are passed to the
 callback along with the model name</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>SampleType.where_callback(&#39;Sample&#39;, {&#39;sample_type_id&#39;: 4})`
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>SampleType.where_callback(&#39;Sample&#39;, {&#39;sample_type_id&#39;: 4})`
 </pre></div>
 </div>
-<p>The function <code class="docutils literal"><span class="pre">where_callback</span></code> . uses a session instance to find all
-<code class="docutils literal"><span class="pre">Sample</span></code> objects where <code class="docutils literal"><span class="pre">{'sample_type_id':</span> <span class="pre">4}</span></code>.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">where_callback</span></code> . uses a session instance to find all
+<code class="docutils literal notranslate"><span class="pre">Sample</span></code> objects where <code class="docutils literal notranslate"><span class="pre">{'sample_type_id':</span> <span class="pre">4}</span></code>.</p>
 <p>You can also define custom callbacks for any relations. An example of
-this is the <code class="docutils literal"><span class="pre">FieldType</span></code> model with the <code class="docutils literal"><span class="pre">operation_type</span></code> and
-<code class="docutils literal"><span class="pre">sample_type</span></code> fields.</p>
+this is the <code class="docutils literal notranslate"><span class="pre">FieldType</span></code> model with the <code class="docutils literal notranslate"><span class="pre">operation_type</span></code> and
+<code class="docutils literal notranslate"><span class="pre">sample_type</span></code> fields.</p>
 </div>
 </div>
 <div class="section" id="serialization-deserialization">
@@ -339,26 +329,26 @@ this is the <code class="docutils literal"><span class="pre">FieldType</span></c
 <div class="section" id="serialization">
 <h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">load</span></code></li>
-<li><code class="docutils literal"><span class="pre">load</span> <span class="pre">only</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">load</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">load</span> <span class="pre">only</span></code></li>
 </ul>
 </div>
 <div class="section" id="deserialization">
 <h3>Deserialization<a class="headerlink" href="#deserialization" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">dump</span> <span class="pre">only</span></code></li>
-<li><code class="docutils literal"><span class="pre">dump</span> <span class="pre">relations</span></code></li>
-<li><code class="docutils literal"><span class="pre">dump</span> <span class="pre">all_relations</span></code></li>
-<li><code class="docutils literal"><span class="pre">dump</span> <span class="pre">only</span> <span class="pre">dictionary</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">dump</span> <span class="pre">only</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">dump</span> <span class="pre">relations</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">dump</span> <span class="pre">all_relations</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">dump</span> <span class="pre">only</span> <span class="pre">dictionary</span></code></li>
 </ul>
 </div>
 <div class="section" id="request-history">
 <h3>Request History<a class="headerlink" href="#request-history" title="Permalink to this headline">¶</a></h3>
 <p>In an attempt to minimize unnecessary requests to Aquarium, Trident
-stores a request history in <code class="docutils literal"><span class="pre">pydent.aqhttp.request_history</span></code>. This
-means calls to <code class="docutils literal"><span class="pre">find</span></code>, <code class="docutils literal"><span class="pre">find_by_name</span></code>, and <code class="docutils literal"><span class="pre">where</span></code> will not make a
+stores a request history in <code class="docutils literal notranslate"><span class="pre">pydent.aqhttp.request_history</span></code>. This
+means calls to <code class="docutils literal notranslate"><span class="pre">find</span></code>, <code class="docutils literal notranslate"><span class="pre">find_by_name</span></code>, and <code class="docutils literal notranslate"><span class="pre">where</span></code> will not make a
 new request if an equivalent request has been previously made. Request
-history can be cleared using <code class="docutils literal"><span class="pre">session.clear_history()</span></code></p>
+history can be cleared using <code class="docutils literal notranslate"><span class="pre">session.clear_history()</span></code></p>
 </div>
 </div>
 </div>
@@ -389,7 +379,7 @@ history can be cleared using <code class="docutils literal"><span class="pre">se
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
     </div>
   </body>
 </html>
