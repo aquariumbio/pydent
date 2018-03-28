@@ -444,12 +444,18 @@ class FieldValue(ModelBase, FieldMixin):
         if value is not None:
             self.value = value
         if item is not None:
+            if not hasattr(item, 'id') or item.id is None:
+                raise AquariumModelError("Cannot set FieldValue. Item must be saved before setting a FieldValue. Connect the Item to a session "
+                                         "using 'connect_to_session' and use 'save' to save the Item.")
             self.item = item
             self.child_item_id = item.id
             self.object_type = item.object_type
             if not sample:
                 sample = item.sample
         if sample is not None:
+            if not hasattr(sample, 'id') or item.id is None:
+                raise AquariumModelError("Cannot set FieldValue. Sample must be saved before setting a FieldValue. Connect the Sample to a session "
+                                         "using 'connect_to_session' and use 'save' to save the Sample.")
             self.sample = sample
             self.child_sample_id = sample.id
         if container is not None:
@@ -458,7 +464,7 @@ class FieldValue(ModelBase, FieldMixin):
     def set_value(self, value=None, sample=None, container=None, item=None):
         self._set_helper(value=value, sample=sample,
                          container=container, item=item)
-
+        """Sets the value of a """
         if any([sample, container, item]):
             afts = self.field_type.allowable_field_types
             if self.sample is not None:
@@ -636,7 +642,7 @@ class Operation(ModelBase):
 
     def init_field_values(self):
         """
-        Initialize the field values form the field types of the parent operation
+        Initialize the :class:`FieldValue` from the :class:`FieldType` of the parent :class:`Operation`
         type.
         """
         for field_type in self.operation_type.field_types:
@@ -647,7 +653,7 @@ class Operation(ModelBase):
             # self.show()
 
     def field_value_array(self, name, role):
-        """Returns FieldValue array with name and role."""
+        """Returns :class:`FieldValue` array with name and role."""
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
             if len(fvs) > 0:
@@ -673,8 +679,20 @@ class Operation(ModelBase):
         #     self.field_values = []
 
     def set_field_value_array(self, name, role, values):
-        """Sets FieldValue array using values. Values should be a list of
-        dictionaries containing sample, item, container, or values keys."""
+        """
+        Sets :class:`FieldValue` array using values. Values should be a list of
+        dictionaries containing sample, item, container, or values keys. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldType/FieldValues being modified
+        :type name: string
+        :param role: role of the FieldType/FieldValue being modified ("input" or "output")
+        :type role: string
+        :param values: list of dictionary of values to set (e.g. [{"sample": mysample}, {"item": myitem}])
+        :type values: list
+        :return: the list of modified FieldValues
+        :rtype: list
+        """
         field_values = self.field_value_array(name, role)
 
         # get the field type
@@ -690,7 +708,25 @@ class Operation(ModelBase):
         return field_values
 
     def add_to_field_value_array(self, name, role, sample=None, item=None, value=None, container=None):
-        """Creates and adds a new :class:`FieldValue`"""
+        """
+        Creates and adds a new :class:`FieldValue`. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldType/FieldValue
+        :type name: string
+        :param role: role of the FieldValue ("input" or "output")
+        :type role: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the newly created FieldValue
+        :rtype: FieldValue
+        """
         field_type = self.operation_type.field_type(name, role)
         fv = field_type.initialize_field_value()
         fv.set_value(sample=sample, item=item, value=value, container=container)
@@ -701,9 +737,23 @@ class Operation(ModelBase):
 
     def set_field_value(self, name, role, sample=None, item=None, value=None, container=None):
         """
-        Sets the value of a :class:`FieldValue`.
-        If the FieldValue does not exist, an 'empty' FieldValue will be created
-        from the field_type
+        Sets the a :class:`FieldValue` to a value. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldValue/FieldType
+        :type name: string
+        :param role: role of the FieldValue ("input" or "output")
+        :type role: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the existing FieldValue modified
+        :rtype: FieldValue
         """
         # get the field value
         field_value = self.field_value(name, role)
@@ -734,37 +784,133 @@ class Operation(ModelBase):
         return self.plans[0]
 
     def input(self, name):
+        """Returns the input :class:`FieldValue` by name"""
         return self.field_value(name, 'input')
 
     def output(self, name):
+        """Returns the output :class:`FieldValue` by name"""
         return self.field_value(name, 'output')
 
-    def input_array(self, name):
-        return self.field_value_array(name, "input")
-
     def add_to_input_array(self, name, sample=None, item=None, value=None, container=None):
+        """
+        Creates and adds a new input :class:`FieldValue`. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldType/FieldValue
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the newly created FieldValue
+        :rtype: FieldValue
+        """
         return self.add_to_field_value_array(name, "input", sample=sample, item=item,
                                     value=value, container=container)
 
     def add_to_output_array(self, name, sample=None, item=None, value=None, container=None):
+        """
+        Creates and adds a new output :class:`FieldValue`. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldType/FieldValue
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the newly created FieldValue
+        :rtype: FieldValue
+        """
         return self.add_to_field_value_array(name, "output", sample=sample, item=item,
                                     value=value, container=container)
 
+    def input_array(self, name):
+        """Return a list of all input :class:`FieldValues`"""
+        return self.field_value_array(name, "input")
+
     def output_array(self, name):
+        """Return a list of all output :class:`FieldValues`"""
         return self.field_value_array(name, "output")
 
     def set_input(self, name, sample=None, item=None, value=None, container=None):
+        """
+        Sets a input :class:`FieldValue` to a value. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldValue/FieldType
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the existing FieldValue modified
+        :rtype: FieldValue
+        """
         return self.set_field_value(name, 'input', sample=sample, item=item,
                                     value=value, container=container)
 
     def set_output(self, name, sample=None, item=None, value=None, container=None):
+        """
+        Sets a output :class:`FieldValue` to a value. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldValue/FieldType
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the existing FieldValue modified
+        :rtype: FieldValue
+        """
         return self.set_field_value(name, 'output', sample=sample, item=item,
                                     value=value, container=container)
 
     def set_input_array(self, name, values):
+        """
+        Sets input :class:`FieldValue` array using values. Values should be a list of
+        dictionaries containing sample, item, container, or values keys. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldType/FieldValues being modified
+        :type name: string
+        :param values: list of dictionary of values to set (e.g. [{"sample": mysample}, {"item": myitem}])
+        :type values: list
+        :return: the list of modified FieldValues
+        :rtype: list
+        """
         return self.set_field_value_array(name, "input", values)
 
     def set_output_array(self, name, values):
+        """
+        Sets output :class:`FieldValue` array using values. Values should be a list of
+        dictionaries containing sample, item, container, or values keys. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldType/FieldValues being modified
+        :type name: string
+        :param values: list of dictionary of values to set (e.g. [{"sample": mysample}, {"item": myitem}])
+        :type values: list
+        :return: the list of modified FieldValues
+        :rtype: list
+        """
         return self.set_field_value_array(name, "output", values)
 
     def show(self, pre=""):
@@ -1061,7 +1207,8 @@ class Sample(ModelBase):
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
         this Sample to be connected to a session."""
-        return self.reload(self.session.utils.create_samples([self])[0]['sample'])
+        result = self.session.utils.create_samples([self])
+        return self.reload(result['samples'][0])
 
 
 @add_schema
