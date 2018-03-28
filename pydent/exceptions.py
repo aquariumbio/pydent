@@ -10,7 +10,7 @@ class TridentRequestError(RequestException):
 
 
 class TridentJSONDataIncomplete(RequestException):
-    """JSON data contains a null value and may be imcomplete."""
+    """JSON data contains a null value and may be incomplete."""
 
 
 class TridentLoginError(RequestException):
