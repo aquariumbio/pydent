@@ -550,7 +550,12 @@ class Item(ModelBase):
     def make(self):
         """Makes the Item on the Aquarium server. Requires
         this Item to be connected to a session."""
-        return self.reload(self.session.utils.create_items([self])[0]['item'])
+        result = self.session.utils.create_items([self])
+        return self.reload(result[0]["item"])
+
+    def save(self):
+        """A synonym for `make`"""
+        return self.make()
 
 
 @add_schema
