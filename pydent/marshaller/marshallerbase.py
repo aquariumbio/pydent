@@ -321,7 +321,7 @@ class MarshallerBase(object):
                 for index, message in enumerate(error.args):
                     msg += "({}) {}\n".format(index, message)
                 error.args = tuple(list(error.args) + [msg])
-                warnings.warn(' '.join(error.args))
+                # warnings.warn(' '.join(error.args))
             if save_attr:
                 setattr(self, item, ret)
             return ret
