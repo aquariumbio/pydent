@@ -5,6 +5,12 @@ pydent.aqhttp
 
    
    
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      url_build
+   
    
 
    
@@ -18,5 +24,14 @@ pydent.aqhttp
    
 
    
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      TridentJSONDataIncomplete
+      TridentLoginError
+      TridentRequestError
+      TridentTimeoutError
    
    
