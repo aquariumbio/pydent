@@ -444,20 +444,16 @@ class FieldValue(ModelBase, FieldMixin):
         if value is not None:
             self.value = value
         if item is not None:
-            if not hasattr(item, 'id') or item.id is None:
-                raise AquariumModelError("Cannot set FieldValue. Item must be saved before setting a FieldValue. Connect the Item to a session "
-                                         "using 'connect_to_session' and use 'save' to save the Item.")
             self.item = item
-            self.child_item_id = item.id
+            if hasattr(item, 'id'):
+                self.child_item_id = item.id
             self.object_type = item.object_type
             if not sample:
                 sample = item.sample
         if sample is not None:
-            if not hasattr(sample, 'id') or sample.id is None:
-                raise AquariumModelError("Cannot set FieldValue. Sample must be saved before setting a FieldValue. Connect the Sample to a session "
-                                         "using 'connect_to_session' and use 'save' to save the Sample.")
             self.sample = sample
-            self.child_sample_id = sample.id
+            if hasattr(sample, 'id'):
+                self.child_sample_id = sample.id
         if container is not None:
             self.object_type = container
 
