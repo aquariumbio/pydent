@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Contributing &#8212; Trident 0.0.13 documentation</title>
-    
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.13',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -28,8 +17,7 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Tests" href="tests.html" />
     <link rel="prev" title="Developer Notes" href="api_notes.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -70,11 +58,11 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#makefile">Makefile</a><ul>
-<li><a class="reference internal" href="#make"><code class="docutils literal"><span class="pre">make</span></code></a></li>
-<li><a class="reference internal" href="#make-test"><code class="docutils literal"><span class="pre">make</span> <span class="pre">test</span></code></a></li>
-<li><a class="reference internal" href="#make-coverage"><code class="docutils literal"><span class="pre">make</span> <span class="pre">coverage</span></code></a></li>
-<li><a class="reference internal" href="#make-pylint"><code class="docutils literal"><span class="pre">make</span> <span class="pre">pylint</span></code></a></li>
-<li><a class="reference internal" href="#make-docs"><code class="docutils literal"><span class="pre">make</span> <span class="pre">docs</span></code></a></li>
+<li><a class="reference internal" href="#make"><code class="docutils literal notranslate"><span class="pre">make</span></code></a></li>
+<li><a class="reference internal" href="#make-test"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code></a></li>
+<li><a class="reference internal" href="#make-coverage"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">coverage</span></code></a></li>
+<li><a class="reference internal" href="#make-pylint"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">pylint</span></code></a></li>
+<li><a class="reference internal" href="#make-docs"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#documentation">Documentation</a><ul>
@@ -101,12 +89,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -127,24 +117,24 @@ recommended Python packaging tool from Python.org. This avoids low level
 management of pip and virtualenv.</p>
 <p>To install a new dependency to trident, while in the trident root
 directory:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="p">[</span><span class="n">name_of_dependency</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="p">[</span><span class="n">name_of_dependency</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>To freeze the requirements to the <code class="docutils literal"><span class="pre">Pipfile.lock</span></code> file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">lock</span>
+<p>To freeze the requirements to the <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">lock</span>
 </pre></div>
 </div>
-<p>To install trident&#8217;s dependencies to its virtual environment:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span>
+<p>To install trident’s dependencies to its virtual environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span>
 </pre></div>
 </div>
-<p>To install trident&#8217;s dependencies plus developer dependencies:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">dev</span>
+<p>To install trident’s dependencies plus developer dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">dev</span>
 </pre></div>
 </div>
 <p>Before making any changes, install the git hooks to help prevent changes to the
 docs directory, which contains generated documentation files:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">hooks</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">hooks</span>
 </pre></div>
 </div>
 <div class="section" id="notes-on-pipfile-lock">
@@ -160,43 +150,43 @@ bypass the pipenv environment for trident. If running tests through tox
 or py.tests in your IDE, make sure to set your interpreter to the python
 located in your ~/.virtualenv/[project]/</p>
 <p>Which environment you are using can be found by running
-<code class="docutils literal"><span class="pre">pipenv</span> <span class="pre">--venv</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">--venv</span></code></p>
 </div>
 </div>
 <div class="section" id="makefile">
 <h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal"><span class="pre">Makefile</span></code> contains entry points for running common tasks such as
+<p>The <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> contains entry points for running common tasks such as
 installation of developer dependencies, testing, testing coverage,
 updating documentation. These tasks will utilize the dependency
-environment located in the <code class="docutils literal"><span class="pre">Pipfile.lock</span></code> For more information
+environment located in the <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> For more information
 regarding pipenv and Pipfile.lock, see <a class="reference external" href="https://docs.pipenv.org/">https://docs.pipenv.org/</a>.</p>
 <p>A breakdown the current tasks are below.</p>
 <div class="section" id="make">
-<h3><code class="docutils literal"><span class="pre">make</span></code><a class="headerlink" href="#make" title="Permalink to this headline">¶</a></h3>
-<p>This command runs the <code class="docutils literal"><span class="pre">init</span></code> command and will essentially install
+<h3><code class="docutils literal notranslate"><span class="pre">make</span></code><a class="headerlink" href="#make" title="Permalink to this headline">¶</a></h3>
+<p>This command runs the <code class="docutils literal notranslate"><span class="pre">init</span></code> command and will essentially install
 developer dependencies for trident.</p>
 </div>
 <div class="section" id="make-test">
-<h3><code class="docutils literal"><span class="pre">make</span> <span class="pre">test</span></code><a class="headerlink" href="#make-test" title="Permalink to this headline">¶</a></h3>
-<p>This will run all the pytests located in the <code class="docutils literal"><span class="pre">tests</span></code> folder. It will
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code><a class="headerlink" href="#make-test" title="Permalink to this headline">¶</a></h3>
+<p>This will run all the pytests located in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder. It will
 also test the creation of the sphinx documentation.</p>
 <p>These tests are governed by
 <a class="reference external" href="https://tox.readthedocs.io/en/latest/">tox</a>, a testing automation
-package (see the <code class="docutils literal"><span class="pre">tox.ini</span></code> file)</p>
+package (see the <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file)</p>
 </div>
 <div class="section" id="make-coverage">
-<h3><code class="docutils literal"><span class="pre">make</span> <span class="pre">coverage</span></code><a class="headerlink" href="#make-coverage" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">coverage</span></code><a class="headerlink" href="#make-coverage" title="Permalink to this headline">¶</a></h3>
 <p>This will run testing coverage for the pydent directory.</p>
 </div>
 <div class="section" id="make-pylint">
-<h3><code class="docutils literal"><span class="pre">make</span> <span class="pre">pylint</span></code><a class="headerlink" href="#make-pylint" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">pylint</span></code><a class="headerlink" href="#make-pylint" title="Permalink to this headline">¶</a></h3>
 <p>This will run pylint in the pipenv environment.</p>
 </div>
 <div class="section" id="make-docs">
-<h3><code class="docutils literal"><span class="pre">make</span> <span class="pre">docs</span></code><a class="headerlink" href="#make-docs" title="Permalink to this headline">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code><a class="headerlink" href="#make-docs" title="Permalink to this headline">¶</a></h3>
 <p>This will use sphinx (<a class="reference external" href="http://www.sphinx-doc.org/en/stable/">http://www.sphinx-doc.org/en/stable/</a>) to
-autogenerate documentation from trident&#8217;s docstrings using source
-documents located in <code class="docutils literal"><span class="pre">docsrc.</span></code> Documentation will be built in <code class="docutils literal"><span class="pre">docs</span></code></p>
+autogenerate documentation from trident’s docstrings using source
+documents located in <code class="docutils literal notranslate"><span class="pre">docsrc.</span></code> Documentation will be built in <code class="docutils literal notranslate"><span class="pre">docs</span></code></p>
 </div>
 </div>
 <div class="section" id="documentation">
@@ -208,7 +198,7 @@ documentation correctly.</p>
 <div class="section" id="doc-style">
 <h3>doc style<a class="headerlink" href="#doc-style" title="Permalink to this headline">¶</a></h3>
 <p>For most methods, classes, and modules, use the form:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Initializer for SessionInterface</span>
 
@@ -222,14 +212,14 @@ documentation correctly.</p>
 <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
 </pre></div>
 </div>
-<p>If a method returns a value use the <code class="docutils literal"><span class="pre">:returns</span></code> tag to describe the returned
-values, and if it throws an exception use the <code class="docutils literal"><span class="pre">:raises</span></code> tag to list the
+<p>If a method returns a value use the <code class="docutils literal notranslate"><span class="pre">:returns</span></code> tag to describe the returned
+values, and if it throws an exception use the <code class="docutils literal notranslate"><span class="pre">:raises</span></code> tag to list the
 exception classes thrown.</p>
 </div>
 </div>
 <div class="section" id="making-a-release">
 <h2>Making a Release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
-<p>We haven&#8217;t released anything yet. But when we do, some information about
+<p>We haven’t released anything yet. But when we do, some information about
 making a release will go here.</p>
 </div>
 </div>
@@ -260,7 +250,7 @@ making a release will go here.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>

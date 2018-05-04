@@ -5,14 +5,6 @@ pydent.interfaces
 
    
    
-   .. rubric:: Functions
-
-   .. autosummary::
-   
-      pluralize
-      underscore
-      url_build
-   
    
 
    
@@ -22,19 +14,11 @@ pydent.interfaces
    .. autosummary::
    
       ModelInterface
-      ModelRegistry
       SessionInterface
       UtilityInterface
    
    
 
    
-   
-   .. rubric:: Exceptions
-
-   .. autosummary::
-   
-      TridentJSONDataIncomplete
-      TridentRequestError
    
    

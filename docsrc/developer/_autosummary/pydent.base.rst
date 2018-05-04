@@ -5,13 +5,6 @@ pydent.base
 
    
    
-   .. rubric:: Functions
-
-   .. autosummary::
-   
-      magiclist
-      underscore
-   
    
 
    
@@ -20,19 +13,11 @@ pydent.base
 
    .. autosummary::
    
-      MarshallerBase
       ModelBase
       ModelRegistry
    
    
 
    
-   
-   .. rubric:: Exceptions
-
-   .. autosummary::
-   
-      AquariumModelError
-      TridentModelNotFoundError
    
    
