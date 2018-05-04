@@ -157,6 +157,28 @@ class FieldMixin:
             return fxn(model_name, model_id)
 
 
+class DataAssociatorMixin:
+    """
+    Mixin for handling data associations
+    """
+
+    # Should this be modified to handle uploads so that it mirrors the back end?
+    def associate(self, key, value):
+        session = self.session
+        aqhttp = session._AqSession__aqhttp
+
+        data = {
+            "model": {"model": DataAssociation.__name__, "record_methods": {}, "record_getters": {}},
+            "parent_id": self.id,
+            "key": str(key),
+            "object": json.dumps({str(key): value}),
+            "parent_class": self.__class__.__name__,
+        }
+
+        result = aqhttp.post("json/save", json_data=data)
+        return session.DataAssociation.find(result["id"])
+
+
 ##### Models #####
 
 @add_schema
@@ -212,7 +234,7 @@ class Code(ModelBase):
 
 
 @add_schema
-class Collection(ModelBase):  # pylint: disable=too-few-public-methods
+class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-public-methods
     """A Collection model"""
     fields = dict(
         object_type=HasOne("ObjectType"),
@@ -533,7 +555,7 @@ class Invoice(ModelBase):
 
 
 @add_schema
-class Item(ModelBase):
+class Item(ModelBase, DataAssociatorMixin):
     """A Item model"""
     fields = dict(
         sample=HasOne("Sample"),
@@ -603,7 +625,7 @@ class ObjectType(ModelBase):
 
 
 @add_schema
-class Operation(ModelBase):
+class Operation(ModelBase, DataAssociatorMixin):
     """A Operation model"""
     fields = dict(
         field_values=HasManyGeneric("FieldValue"),
@@ -973,7 +995,7 @@ class OperationType(ModelBase, HasCodeMixin):
 
 
 @add_schema
-class Plan(ModelBase, PlanValidator):
+class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
     """
     A Plan model
     """
