@@ -83,7 +83,7 @@ class DynamicSchema(Schema):
     Meta = DefaultFieldOptions
     relationships = {}
 
-    def __init__(self, *args, only=(), exclude=(), relations=(), all_relations=False,
+    def __init__(self, *args, only=None, exclude=(), relations=(), all_relations=False,
                  strict=None, many=False,
                  context=None, load_only=(), dump_only=(), partial=False, prefix='',
                  **kwargs):
@@ -144,6 +144,7 @@ class DynamicSchema(Schema):
         if dump_all_relations:
             dump_relations = tuple(self.relationships.keys())
         load_only = tuple(set(load_only) - set(dump_relations))
+
         return dump_relations, load_only, only
 
     @pre_load
