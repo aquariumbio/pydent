@@ -90,7 +90,7 @@ class MarshallerBase(object):
         return self.__class__.get_relationships()
 
     @classmethod
-    def load(cls, data, *args, only=(), exclude=(), all_relations=False,
+    def load(cls, data, *args, only=None, exclude=(), all_relations=False,
              prefix='', strict=None, many=False, relations=(), load_only=(), dump_only=(),
              partial=False, **kwargs):
         """Loads the model instance from JSON. For parameter options, refer to
@@ -117,7 +117,7 @@ class MarshallerBase(object):
             warnings.warn(
                 "Cannot dump! No schema attached to '{}'".format(cls.__name__))
 
-    def dump(self, only=(), include=(), exclude=(), relations=(),
+    def dump(self, only=None, include=(), exclude=(), relations=(),
              all_relations=False, prefix='', strict=None,
              many=False, load_only=(), dump_only=(),
              partial=False, **kwargs):

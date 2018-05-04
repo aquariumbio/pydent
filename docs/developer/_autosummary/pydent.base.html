@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pydent.base &#8212; Trident 0.0.12 documentation</title>
-    
+    <title>pydent.base &#8212; Trident 0.0.13 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.0.12',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -28,8 +17,7 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.exceptions" href="pydent.exceptions.html" />
     <link rel="prev" title="pydent.aqsession" href="pydent.aqsession.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,14 +33,14 @@
         <li class="right" >
           <a href="pydent.aqsession.html" title="pydent.aqsession"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.12 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.13 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.12)</h1>
+        <h1>Trident (V0.0.13)</h1>
     </a>
 </p>
 
@@ -60,7 +48,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.12.
+    for version 0.0.13.
 </p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="pydent.aqsession.html"
@@ -77,12 +65,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -98,15 +88,15 @@
 <p>Aquarium model baseclass</p>
 <p>This module contains the base classes for Trident models.
 Trident models load from JSON and dump to JSON.
-This is accomplished by adding the <code class="docutils literal"><span class="pre">&#64;add_schema</span></code> decorator to classes inherited
+This is accomplished by adding the <code class="docutils literal notranslate"><span class="pre">&#64;add_schema</span></code> decorator to classes inherited
 by the Base class.
-Using <code class="docutils literal"><span class="pre">&#64;add_schema</span></code> dynamically creates a model schema that handles dumping and
+Using <code class="docutils literal notranslate"><span class="pre">&#64;add_schema</span></code> dynamically creates a model schema that handles dumping and
 loading.</p>
 <p>Features of Trident models:</p>
 <blockquote>
 <div>load - models can be loaded from JSON data. Hierarchical JSON is loaded
 intelligently.</div></blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;MyPrimer&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_type&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Primer&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">}</span> <span class="p">})</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;MyPrimer&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_type&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Primer&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">}</span> <span class="p">})</span>
 <span class="c1"># =&gt; &lt;Sample(name=&quot;MyPrimer&quot;, sample_type=&lt;SampleType(name=&quot;Primer&quot;)&gt;)&gt;</span>
 </pre></div>
 </div>
@@ -114,11 +104,11 @@ intelligently.</div></blockquote>
 <dt>dump - models can be dumped to JSON. Dependent models and relationships can be</dt>
 <dd>dumped as well.</dd>
 </dl>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;sample_type&quot;</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;sample_type&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>relationships - models relationships are stored</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;MyPrimer&quot;</span><span class="p">,</span>
     <span class="s2">&quot;sample_type_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
 <span class="p">)</span>
@@ -126,21 +116,6 @@ intelligently.</div></blockquote>
 <span class="n">primer_type</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sample_type</span>
 </pre></div>
 </div>
-<p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">magiclist</span></code>(fxn)</td>
-<td>Decorator that turns a returned value from a list to a MagicList as possible.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">underscore</span></code>(word)</td>
-<td>Make an underscored, lowercase form from the expression in the string.</td>
-</tr>
-</tbody>
-</table>
 <p class="rubric">Classes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -148,41 +123,23 @@ intelligently.</div></blockquote>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">MarshallerBase</span></code></td>
-<td>Base class for marshalling and unmarshalling.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-obj docutils literal"><span class="pre">ModelBase</span></code></a>(\*\*model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelBase</span></code></a>(**model_args)</td>
 <td>Base class for Aquarium models.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.base.ModelRegistry" title="pydent.base.ModelRegistry"><code class="xref py py-obj docutils literal"><span class="pre">ModelRegistry</span></code></a>(name,&nbsp;bases,&nbsp;selfdict)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.base.ModelRegistry" title="pydent.base.ModelRegistry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelRegistry</span></code></a>(name,&nbsp;bases,&nbsp;selfdict)</td>
 <td>Stores a list of models that can be accessed by name.</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Exceptions</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">AquariumModelError</span></code></td>
-<td>An error occured with this Aquarium model</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentModelNotFoundError</span></code></td>
-<td>Trident could not find model in list of models.</td>
 </tr>
 </tbody>
 </table>
 <dl class="class">
 <dt id="pydent.base.ModelBase">
 <em class="property">class </em><code class="descclassname">pydent.base.</code><code class="descname">ModelBase</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/base.html#ModelBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.base.ModelBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.marshallerbase.MarshallerBase</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.marshallerbase.MarshallerBase</span></code></p>
 <p>Base class for Aquarium models.
-Subclass of <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.MarshallerBase</span></code></p>
+Subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.MarshallerBase</span></code></p>
 <ul class="simple">
 <li>creates instances from JSON using <cite>load</cite></li>
-<li>contains a reference to the <code class="xref py py-class docutils literal"><span class="pre">pydent.session.aqsession.AqSession</span></code>
+<li>contains a reference to the <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.session.aqsession.AqSession</span></code>
 instance that loaded this model</li>
 </ul>
 <dl class="method">
@@ -205,7 +162,7 @@ instance that loaded this model</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field</strong> (<em>Relation</em>) &#8211; relationship field</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field</strong> (<em>Relation</em>) – relationship field</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model that satisfies the relationship</td>
 </tr>
@@ -226,14 +183,14 @@ If attribute is None, return the Relation instance.</p>
 <dt id="pydent.base.ModelBase._to_dict">
 <code class="descname">_to_dict</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase._to_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints the model instance in a nice format.
-See <code class="xref py py-func docutils literal"><span class="pre">pydent.marshaller.marshallerbase.dump()</span></code></p>
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">pydent.marshaller.marshallerbase.dump()</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> &#8211; dump arguments</li>
-<li><strong>kwargs</strong> &#8211; dump arguments</li>
+<li><strong>args</strong> – dump arguments</li>
+<li><strong>kwargs</strong> – dump arguments</li>
 </ul>
 </td>
 </tr>
@@ -253,8 +210,8 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; name of the relationship or attribute</li>
-<li><strong>model</strong> (<a class="reference internal" href="#pydent.base.ModelBase" title="pydent.base.ModelBase"><em>ModelBase</em></a>) &#8211; model to append</li>
+<li><strong>name</strong> (<em>str</em>) – name of the relationship or attribute</li>
+<li><strong>model</strong> (<a class="reference internal" href="#pydent.base.ModelBase" title="pydent.base.ModelBase"><em>ModelBase</em></a>) – model to append</li>
 </ul>
 </td>
 </tr>
@@ -274,15 +231,15 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="classmethod">
 <dt id="pydent.base.ModelBase.create_from_json">
-<code class="descname">create_from_json</code><span class="sig-paren">(</span><em>*args</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.create_from_json" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">create_from_json</code><span class="sig-paren">(</span><em>*args</em>, <em>data=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.create_from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Special constructor method for instantiating with JSON data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) &#8211; json data to update instance attributes</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) – json data to update instance attributes</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model instance</td>
 </tr>
@@ -292,17 +249,75 @@ See <code class="xref py py-func docutils literal"><span class="pre">pydent.mars
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="classmethod">
 <dt id="pydent.base.ModelBase.create_schema_instance">
-<code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.create_schema_instance" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">create_schema_instance</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.create_schema_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Schema instance for loading or dumping</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.base.ModelBase.dump">
+<code class="descname">dump</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/base.html#ModelBase.dump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.base.ModelBase.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dumps the model instance to a String. For parameter options, refer
+to <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>only</strong> (<em>tuple</em>) – A list or tuple of fields to serialize. If <cite>None</cite>,
+all non relationship fields will be serialized.</li>
+<li><strong>include</strong> (<em>str|list|tuple|set|dict</em>) – Nested relationships to include
+in the serialization. This accepts a string (for one nested
+relationship), a tuple (for multiple relationships) or a dict
+(for recursively applied serialization). A dictionary of dump
+options ‘opts’ can be recursively applied to each serialization.</li>
+<li><strong>exclude</strong> (<em>tuple</em>) – A list or tuple of fields to exclude from the
+serialized result. Nested fields can be represented with dot
+delimiters.</li>
+<li><strong>relations</strong> (<em>tuple</em>) – A list or tuple of fields to include during
+serialization. Unlike ‘include’, this will not be applied
+recursively</li>
+<li><strong>all_relations</strong> (<em>boolean</em>) – whether to dump all relationship during
+deserialization</li>
+<li><strong>prefix</strong> (<em>str</em>) – Optional prefix that will be prepended to all the
+serialized field names.</li>
+<li><strong>strict</strong> (<em>bool</em>) – If <cite>True</cite>, raise errors if invalid data are passed
+in instead of failing silently and storing the errors.</li>
+<li><strong>many</strong> (<em>bool</em>) – Should be set to <cite>True</cite> if <code class="docutils literal notranslate"><span class="pre">obj</span></code> is a collection so
+that the object will be serialized to a list.</li>
+<li><strong>context</strong> (<em>dict</em>) – Optional context passed to <code class="xref py py-class docutils literal notranslate"><span class="pre">fields.Method</span></code>
+and <code class="xref py py-class docutils literal notranslate"><span class="pre">fields.Function</span></code> fields.</li>
+<li><strong>load_only</strong> (<em>tuple</em>) – A list or tuple of fields to skip during
+serialization</li>
+<li><strong>dump_only</strong> (<em>tuple</em>) – A list or tuple of fields to skip during
+deserialization, read-only fields</li>
+<li><strong>partial</strong> (<em>bool|tuple</em>) – Whether to ignore missing fields. If its
+value is an iterable, only missing fields listed in that
+iterable will be ignored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example Usage using ‘only’ to dump only particular relationships</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># dump &#39;name&#39; and nested relationship &#39;sample_type&#39;</span>
+<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Example Usage using ‘include’ to dump nested relationships:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># dump nested relationships &#39;sample_type&#39; and &#39;samples&#39; in &#39;sample_type&#39;</span>
+<span class="c1"># for &#39;sample_type&#39; dump only &#39;name&#39; in addition to &#39;samples&#39;</span>
+<span class="n">mydump</span> <span class="o">=</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;samples&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]}</span> <span class="p">}</span> <span class="p">})</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.base.ModelBase.dumps">
 <code class="descname">dumps</code><span class="sig-paren">(</span><em>*schema_args</em>, <em>**schema_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.dumps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps the model instance to a String. For parameter options, refer
-to <code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
+to <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.schema.DynamicSchema</span></code></p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -318,16 +333,16 @@ to <code class="xref py py-class docutils literal"><span class="pre">pydent.mars
 models in model relationships.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="classmethod">
 <dt id="pydent.base.ModelBase.get_relationships">
-<code class="descname">get_relationships</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.get_relationships" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the name: relationship (<code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.relation.Relation</span></code>)
+<em class="property">classmethod </em><code class="descname">get_relationships</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.get_relationships" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the name: relationship (<code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.relation.Relation</span></code>)
 dictionary</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="classmethod">
 <dt id="pydent.base.ModelBase.get_schema_class">
-<code class="descname">get_schema_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.get_schema_class" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">get_schema_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.get_schema_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Schema class associated with this model</p>
 </dd></dl>
 
@@ -364,7 +379,7 @@ dictionary</p>
 <dl class="attribute">
 <dt id="pydent.base.ModelBase.relationships">
 <code class="descname">relationships</code><a class="headerlink" href="#pydent.base.ModelBase.relationships" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the name: relationship (<code class="xref py py-class docutils literal"><span class="pre">pydent.marshaller.relation.Relation</span></code>)
+<dd><p>Get the name: relationship (<code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.relation.Relation</span></code>)
 dictionary.</p>
 </dd></dl>
 
@@ -376,7 +391,7 @@ dictionary.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) &#8211; data to update model instance</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) – data to update model instance</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model instance</td>
 </tr>
@@ -410,7 +425,7 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.base.ModelRegistry">
 <em class="property">class </em><code class="descclassname">pydent.base.</code><code class="descname">ModelRegistry</code><span class="sig-paren">(</span><em>name</em>, <em>bases</em>, <em>selfdict</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/base.html#ModelRegistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.base.ModelRegistry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">type</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></p>
 <p>Stores a list of models that can be accessed by name.</p>
 <p>Saves model to the registry</p>
 <dl class="staticmethod">
@@ -421,8 +436,8 @@ find models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.base.ModelRegistry.mro">
-<code class="descname">mro</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#pydent.base.ModelRegistry.mro" title="Permalink to this definition">¶</a></dt>
-<dd><p>return a type&#8217;s method resolution order</p>
+<code class="descname">mro</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#pydent.base.ModelRegistry.mro" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a type’s method resolution order</p>
 </dd></dl>
 
 </dd></dl>
@@ -450,13 +465,13 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.aqsession.html" title="pydent.aqsession"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.12 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.13 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>
