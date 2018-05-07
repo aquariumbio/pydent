@@ -2,13 +2,14 @@ import pytest
 
 from pydent.aqhttp import AqHTTP
 from pydent.exceptions import AquariumModelError
-from pydent.models import *
+from pydent.models import (FieldValue, Sample, Item, ObjectType)
 
 
 def test_fv_simple_constructor():
     fv = FieldValue(name="something")
     print(fv)
 
+    assert fv, "Field value should be non-null"
     assert 'name' in fv.dump()
     assert fv.name is not None
     assert fv.dump()['name'] == fv.name
@@ -34,10 +35,13 @@ def test_constructor_with_value():
 
 
 def test_constructor_with_container():
-    fv = FieldValue(container=ObjectType.load({'id': 5}))
-    FieldValue(container=ObjectType.load({'id': 5}), item=Item.load({'id': 4, 'object_type_id': 5}))
+    # TODO what's the test here? there are no assertions
+    FieldValue(container=ObjectType.load({'id': 5}))
+    FieldValue(container=ObjectType.load({'id': 5}),
+               item=Item.load({'id': 4, 'object_type_id': 5}))
     with pytest.raises(AquariumModelError):
-        FieldValue(container=ObjectType.load({'id': 5}), item=Item.load({'id': 4, 'object_type_id': 4}))
+        FieldValue(container=ObjectType.load(
+            {'id': 5}), item=Item.load({'id': 4, 'object_type_id': 4}))
 
 
 def test_set_item():
@@ -139,7 +143,8 @@ def test_set_sample_and_item():
             "id": 100,
             "allowable_field_types": [
                 {"id": 1, "object_type_id": 2, "sample_type_id": 3},
-                {"id": 2, "object_type_id": 44, "sample_type_id": 2}  # should find this
+                {"id": 2, "object_type_id": 44,
+                    "sample_type_id": 2}  # should find this
             ]
         }
     })
@@ -170,7 +175,8 @@ def test_set_sample_and_item_no_aft():
             "id": 100,
             "allowable_field_types": [
                 {"id": 1, "object_type_id": 44, "sample_type_id": 3},
-                {"id": 2, "object_type_id": 33, "sample_type_id": 2}  # should find this
+                {"id": 2, "object_type_id": 33,
+                    "sample_type_id": 2}  # should find this
             ]
         }
     })
@@ -188,8 +194,12 @@ def test_set_sample_and_item_no_aft():
 
 
 def test_compatible_items(monkeypatch, fake_session):
-    """We expect compatible items to send a request to 'json/items' with data {'sid': 5, and 'oid': 33}
-    after we set_value to the sample that has an id=5 and is associated with an aft with an object_type_id of 33."""
+    """
+    We expect compatible items to send a request to 'json/items' with data
+    {'sid': 5, and 'oid': 33}
+    after we set_value to the sample that has an id=5 and is associated with
+    an aft with an object_type_id of 33.
+    """
 
     def fake_post(self, *args, **kwargs):
         assert args[0] == 'json/items'
@@ -209,7 +219,8 @@ def test_compatible_items(monkeypatch, fake_session):
             "id": 100,
             "allowable_field_types": [
                 {"id": 1, "object_type_id": 44, "sample_type_id": 3},
-                {"id": 2, "object_type_id": 33, "sample_type_id": 2}  # should find this
+                {"id": 2, "object_type_id": 33,
+                    "sample_type_id": 2}  # should find this
             ]
         },
     })
@@ -237,7 +248,8 @@ def test_show():
             "id": 100,
             "allowable_field_types": [
                 {"id": 1, "object_type_id": 44, "sample_type_id": 3},
-                {"id": 2, "object_type_id": 33, "sample_type_id": 2}  # should find this
+                {"id": 2, "object_type_id": 33,
+                    "sample_type_id": 2}  # should find this
             ]
         },
     })
@@ -248,6 +260,7 @@ def test_show():
     })
     fake_fv.set_value(sample=sample)
     fake_fv.show()
+
 
 def test_dump():
     fake_fv = FieldValue.load({
@@ -262,7 +275,8 @@ def test_dump():
             "id": 100,
             "allowable_field_types": [
                 {"id": 1, "object_type_id": 44, "sample_type_id": 3},
-                {"id": 2, "object_type_id": 33, "sample_type_id": 2}  # should find this
+                {"id": 2, "object_type_id": 33,
+                    "sample_type_id": 2}  # should find this
             ]
         },
     })
@@ -278,21 +292,25 @@ def test_dump():
 
 def test_wires_as_source(session):
     fv = session.FieldValue.find(520346)
+    assert fv, "FieldValue 520346 not found"
     wires = fv.wires_as_source
     print(wires)
 
 
 def test_wires_as_dest(session):
     fv = session.FieldValue.find(520346)
+    assert fv, "FieldValue 520346 not found"
     wires = fv.wires_as_dest
     print(wires)
 
 
 def test_successors(session):
     fv = session.FieldValue.find(520346)
+    assert fv, "FieldValue 520346 not found"
     print(fv.successors)
 
 
 def test_predecessors(session):
     fv = session.FieldValue.find(520346)
+    assert fv, "FieldValue 520346 not found"
     print(fv.predecessors)

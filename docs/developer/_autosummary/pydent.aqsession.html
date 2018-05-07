@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>pydent.aqsession &#8212; Trident 0.0.12 documentation</title>
-    
+    <title>pydent.aqsession &#8212; Trident 0.0.13 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.0.12',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -28,8 +17,7 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.base" href="pydent.base.html" />
     <link rel="prev" title="pydent.aqhttp" href="pydent.aqhttp.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,14 +33,14 @@
         <li class="right" >
           <a href="pydent.aqhttp.html" title="pydent.aqhttp"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.12 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.13 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.12)</h1>
+        <h1>Trident (V0.0.13)</h1>
     </a>
 </p>
 
@@ -60,7 +48,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.12.
+    for version 0.0.13.
 </p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="pydent.aqhttp.html"
@@ -77,12 +65,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -98,7 +88,7 @@
 <p>Session class for interacting with Trident and Aquarium</p>
 <p>This module defines the AqSession class, which is the main entry point for
 accessing the request methods.
-Multiple session instances can be created using a user&#8217;s Aquarium login
+Multiple session instances can be created using a user’s Aquarium login
 information.
 From there, the session instance is used to make http requests
 (like finding models, updating plans, etc.)</p>
@@ -110,21 +100,6 @@ does not itself make the requests.</p>
 <li>session.create - access the create interface</li>
 <li>session.update - access the update interface</li>
 </ol>
-<p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">confirm</span></code>([message])</td>
-<td>Display a confirmation prompt.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">prompt</span></code>([message])</td>
-<td>Get input from the user and return it.</td>
-</tr>
-</tbody>
-</table>
 <p class="rubric">Classes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -132,46 +107,34 @@ does not itself make the requests.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">AqHTTP</span></code>(login,&nbsp;password,&nbsp;aquarium_url)</td>
-<td>Defines a session/connection to Aquarium.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-obj docutils literal"><span class="pre">AqSession</span></code></a>(login,&nbsp;password,&nbsp;aquarium_url[,&nbsp;name])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AqSession</span></code></a>(login,&nbsp;password,&nbsp;aquarium_url[,&nbsp;name])</td>
 <td>Holds a AqHTTP with login information.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">ModelInterface</span></code>(model_name,&nbsp;aqhttp,&nbsp;session)</td>
-<td>Makes requests using AqHTTP that are model specific.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">ModelRegistry</span></code>(name,&nbsp;bases,&nbsp;selfdict)</td>
-<td>Stores a list of models that can be accessed by name.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">UtilityInterface</span></code>(aqhttp,&nbsp;session)</td>
-<td>Misc.</td>
 </tr>
 </tbody>
 </table>
 <dl class="class">
 <dt id="pydent.aqsession.AqSession">
 <em class="property">class </em><code class="descclassname">pydent.aqsession.</code><code class="descname">AqSession</code><span class="sig-paren">(</span><em>login</em>, <em>password</em>, <em>aquarium_url</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqsession.html#AqSession"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Holds a AqHTTP with login information. Creates SessionInterfaces for models.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 <p>session1 = AqSession(username, password, aquairum_url)
 session1.User.find(1)
-# &lt;User(id=1,...)&gt;</p>
+# &lt;User(id=1,…)&gt;</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>login</strong> (<em>str</em>) &#8211; the Aquarium login for the user</li>
-<li><strong>password</strong> (<em>str</em>) &#8211; the password for the Aquarium login. This will not be
+<li><strong>login</strong> (<em>str</em>) – the Aquarium login for the user</li>
+<li><strong>password</strong> (<em>str</em>) – the password for the Aquarium login. This will not be
 stored anywhere. However, login headers for Aquarium will be stored
 in .__aqhttp. This may change in the future with changes
 authentication for the Aquarium API</li>
-<li><strong>aquarium_url</strong> (<em>str</em>) &#8211; the http formatted Aquarium url</li>
-<li><strong>name</strong> (<em>str</em><em> or </em><em>None</em>) &#8211; (optional) name for this session</li>
+<li><strong>aquarium_url</strong> (<em>str</em>) – the http formatted Aquarium url</li>
+<li><strong>name</strong> (<em>str</em><em> or </em><em>None</em>) – (optional) name for this session</li>
 </ul>
 </td>
 </tr>
@@ -195,7 +158,7 @@ if no user is found (as in cases where the Aquarium connection is down).</p>
 <code class="descname">logged_in</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqsession.html#AqSession.logged_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.logged_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether the user is logged in. If the session
 is able to return the User model instance using the
-session&#8217;s login credentials, the user is considered
+session’s login credentials, the user is considered
 to be logged in.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -271,13 +234,13 @@ to Aquarium</p>
         <li class="right" >
           <a href="pydent.aqhttp.html" title="pydent.aqhttp"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.12 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.13 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>

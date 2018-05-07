@@ -21,8 +21,8 @@ The various field options and their default values are listed below.
 
         load_all = True     # load all data attributes defined for a model
         strict = True       # throw error during marshalling
-        include = {}        # fields to include for serialization/deserialization.
-        additional = ()     # explicit fields for serialization/deserialization.
+        include = {}        # fields to include for serialization
+        additional = ()     # explicit fields for serialization
         ignore = ()         # fields to filter during deserialization.
         load_only = ()      # fields to include during serialization
         dump_only = ()      # fields to include during deserialization
@@ -53,7 +53,8 @@ SampleType:
 
     @add_schema
     class SampleType(Base):
-        samples = Many("Sample", params={"sample_type_id": lambda self: self.id})
+        samples = Many("Sample",
+            params={"sample_type_id": lambda self: self.id})
 """
 
 import warnings
@@ -62,7 +63,8 @@ import requests
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema, fields
-from pydent.relationships import One, Many, HasOne, HasMany, HasManyThrough, HasManyGeneric
+from pydent.relationships import (One, Many, HasOne, HasMany,
+                                  HasManyThrough, HasManyGeneric)
 from pydent.utils import magiclist, filter_list
 from pydent.utils.plan_validator import PlanValidator
 import json
@@ -128,14 +130,15 @@ class HasCodeMixin:
         :param model_name: the model_name, expected "Code"
         :type model_name: str
         :param name: accessor name for the code.
-            "source" for Library or "protocol", "precondition", "cost_model", or
-            "documentation" for OperationType
+            "source" for Library or "protocol", "precondition", "cost_model",
+            or "documentation" for OperationType
         :type name: str
         :return: the code model
         :rtype: Code
         """
         if model_name is not "Code":
-            raise AquariumModelError("Model name must be {}, not {}".format("Code", model_name))
+            raise AquariumModelError(
+                "Model name must be {}, not {}".format("Code", model_name))
         return self.code(name)
 
 
@@ -179,7 +182,8 @@ class DataAssociatorMixin:
         return session.DataAssociation.find(result["id"])
 
 
-##### Models #####
+
+# Models #####
 
 @add_schema
 class Account(ModelBase):
@@ -218,14 +222,16 @@ class Code(ModelBase):
     """A Code model"""
     fields = dict(
         user=HasOne("User"),
-        operation_type=One("OperationType", callback="get_parent", params=None),
+        operation_type=One(
+            "OperationType", callback="get_parent", params=None),
         library=One("Library", callback="get_parent", params=None)
     )
 
     def get_parent(self, parent_class, *args):
         if parent_class != self.parent_class:
             return None
-        return self.session.model_interface(self.parent_class).find(self.parent_id)
+        return self.session.model_interface(
+            self.parent_class).find(self.parent_id)
 
     def update(self):
         # since they may not always be tied to specific parent
@@ -269,8 +275,9 @@ class FieldType(ModelBase, FieldMixin):
     def __init__(self, name=None, ftype=None, array=None, choices=None,
                  operation_type=None, preferred_field_type_id=None,
                  preferred_operation_type_id=None, required=None, routing=None,
-                 role=None, parent_class=None, parent_id=None, sample_type=None,
-                 aft_stype_and_objtype=(), allowable_field_types=None):
+                 role=None, parent_class=None, parent_id=None,
+                 sample_type=None, aft_stype_and_objtype=(),
+                 allowable_field_types=None):
         if operation_type and sample_type:
             raise Exception()
         if operation_type is not None:
@@ -462,24 +469,21 @@ class FieldValue(ModelBase, FieldMixin):
     def _set_helper(self, value=None, sample=None, container=None, item=None):
         if item and container and item.object_type_id != container.id:
             raise AquariumModelError(
-                "Item {} is not in container {}".format(item.id, str(container)))
+                "Item {} is not in container {}".format(
+                    item.id, str(container)))
         if value is not None:
             self.value = value
         if item is not None:
-            if not hasattr(item, 'id') or item.id is None:
-                raise AquariumModelError("Cannot set FieldValue. Item must be saved before setting a FieldValue. Connect the Item to a session "
-                                         "using 'connect_to_session' and use 'save' to save the Item.")
             self.item = item
-            self.child_item_id = item.id
+            if hasattr(item, 'id'):
+                self.child_item_id = item.id
             self.object_type = item.object_type
             if not sample:
                 sample = item.sample
         if sample is not None:
-            if not hasattr(sample, 'id') or sample.id is None:
-                raise AquariumModelError("Cannot set FieldValue. Sample must be saved before setting a FieldValue. Connect the Sample to a session "
-                                         "using 'connect_to_session' and use 'save' to save the Sample.")
             self.sample = sample
-            self.child_sample_id = sample.id
+            if hasattr(sample, 'id'):
+                self.child_sample_id = sample.id
         if container is not None:
             self.object_type = container
 
@@ -496,16 +500,20 @@ class FieldValue(ModelBase, FieldMixin):
                 afts = filter_list(afts, object_type_id=self.object_type.id)
             if len(afts) == 0:
                 available_afts = self.field_type.allowable_field_types
-                raise AquariumModelError("No allowable field types found for {} '{}'. Available afts: {}".format(
+                msg = "No allowable field types found for {} '{}'."
+                msg += " Available afts: {}"
+                raise AquariumModelError(msg.format(
                     self.role, self.name, available_afts))
             if len(afts) > 1:
-                warnings.warn("More than one AllowableFieldType found that matches {}".format(
+                msg = "More than one AllowableFieldType found that matches {}"
+                warnings.warn(msg.format(
                     self.dump(only=('name', 'role', 'id'), partial=True)))
             elif len(afts) == 1:
                 self.set_allowable_field_type(afts[0])
             else:
+                msg = "No allowable field type found for {} '{}'"
                 raise AquariumModelError(
-                    "No allowable field type found for {} '{}'".format(self.role, self.name))
+                    msg.format(self.role, self.name))
         return self
 
     def set_operation(self, operation):
@@ -538,8 +546,9 @@ class FieldValue(ModelBase, FieldMixin):
 
     def compatible_items(self):
         """Find items compatible with the field value"""
-        return self.session.utils.compatible_items(self.sample.id,
-                                                   self.allowable_field_type.object_type_id)
+        return self.session.utils.compatible_items(
+            self.sample.id,
+            self.allowable_field_type.object_type_id)
 
 
 @add_schema
@@ -618,6 +627,7 @@ class Membership(ModelBase):
 @add_schema
 class ObjectType(ModelBase):
     """A ObjectType model"""
+
     def save(self):
         """Saves the Object Type to the Aquarium server. Requires
         this Object Type to be connected to a session."""
@@ -669,8 +679,8 @@ class Operation(ModelBase, DataAssociatorMixin):
 
     def init_field_values(self):
         """
-        Initialize the :class:`FieldValue` from the :class:`FieldType` of the parent :class:`Operation`
-        type.
+        Initialize the :class:`FieldValue` from the :class:`FieldType` of the
+        parent :class:`Operation` type.
         """
         for field_type in self.operation_type.field_types:
             if field_type.array:
@@ -681,41 +691,47 @@ class Operation(ModelBase, DataAssociatorMixin):
 
     def field_value_array(self, name, role):
         """Returns :class:`FieldValue` array with name and role."""
-        if self.field_values:
-            fvs = filter_list(self.field_values, name=name, role=role)
-            if len(fvs) > 0:
-                if not fvs[0].field_type.array:
-                    raise AquariumModelError(
-                        "FieldValue is not an array for the field value of operation {}(id={}).{}.{}".format(
-                            self.operation_type.name, self.id, role, name))
-                return fvs
+        result = self.field_value(name, role)
+        if result.field_type.array:
+            return result
+
+        msg = "FieldValue is not an array for the field value of operation"
+        msg += " {}(id={}).{}.{}"
+        raise AquariumModelError(
+            msg.format(self.operation_type.name, self.id, role, name))
 
     def field_value(self, name, role):
         """
-        Returns :class:`FieldValue` with name and role. Return None if not found.
+        Returns :class:`FieldValue` with name and role.
+        Return None if not found.
         """
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
-            if len(fvs) > 0:
-                if len(fvs) > 1:
-                    raise AquariumModelError(
-                        "More than one FieldValue found for the field value of operation {}(id={}).{}.{}".format(
-                            self.operation_type.name, self.id, role, name))
+            if len(fvs) == 0:
+                return None
+
+            if (len(fvs) == 1):
                 return fvs[0]
-        # else:
-        #     self.field_values = []
+
+            msg = "More than one FieldValue found for the field value"
+            msg += " of operation {}(id={}).{}.{}"
+            raise AquariumModelError(
+                msg.format(self.operation_type.name, self.id, role, name))
 
     def set_field_value_array(self, name, role, values):
         """
         Sets :class:`FieldValue` array using values. Values should be a list of
-        dictionaries containing sample, item, container, or values keys. When setting values to
-        items/samples/containers, the item/sample/container must be saved.
+        dictionaries containing sample, item, container, or values keys.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValues being modified
         :type name: string
-        :param role: role of the FieldType/FieldValue being modified ("input" or "output")
+        :param role: role of the FieldType/FieldValue being modified
+                ("input" or "output")
         :type role: string
-        :param values: list of dictionary of values to set (e.g. [{"sample": mysample}, {"item": myitem}])
+        :param values: list of dictionary of values to set
+                (e.g. [{"sample": mysample}, {"item": myitem}])
         :type values: list
         :return: the list of modified FieldValues
         :rtype: list
@@ -725,16 +741,21 @@ class Operation(ModelBase, DataAssociatorMixin):
         # get the field type
         field_type = self.operation_type.field_type(name, role)
         if field_type is None:
-            raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
+            msg = "No FieldType found for OperationType {}.{}.{}"
+            raise AquariumModelError(msg.format(
                 self.operation_type.name, role, name))
         if not len(field_values) == len(values):
-            raise AquariumModelError("Cannot set_field_value_array. Length of values must equal length of field_values")
+            msg = "Cannot set_field_value_array."
+            msg += " Length of values must equal length of field_values"
+            raise AquariumModelError(
+                msg)
 
         for fv, val in zip(field_values, values):
             fv.set_value(**val)
         return field_values
 
-    def add_to_field_value_array(self, name, role, sample=None, item=None, value=None, container=None):
+    def add_to_field_value_array(self, name, role, sample=None, item=None,
+                                 value=None, container=None):
         """
         Creates and adds a new :class:`FieldValue`. When setting values to
         items/samples/containers, the item/sample/container must be saved.
@@ -756,13 +777,15 @@ class Operation(ModelBase, DataAssociatorMixin):
         """
         field_type = self.operation_type.field_type(name, role)
         fv = field_type.initialize_field_value()
-        fv.set_value(sample=sample, item=item, value=value, container=container)
+        fv.set_value(sample=sample, item=item,
+                     value=value, container=container)
         if self.field_values is None:
             self.field_values = []
         self.field_values.append(fv)
         return fv
 
-    def set_field_value(self, name, role, sample=None, item=None, value=None, container=None):
+    def set_field_value(self, name, role, sample=None, item=None, value=None,
+                        container=None):
         """
         Sets the a :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
@@ -788,10 +811,13 @@ class Operation(ModelBase, DataAssociatorMixin):
         # get the field type
         field_type = self.operation_type.field_type(name, role)
         if field_type is None:
-            raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
+            msg = "No FieldType found for OperationType {}.{}.{}"
+            raise AquariumModelError(msg.format(
                 self.operation_type.name, role, name))
         if field_type.array:
-            raise AquariumModelError("FieldValue {} {} is an array. Use 'set_field_value_array'".format(role, name))
+            msg = "FieldValue {} {} is an array. Use 'set_field_value_array'"
+            raise AquariumModelError(
+                msg.format(role, name))
 
         # initialize the field value from the field type
         if not field_value:
@@ -818,10 +844,12 @@ class Operation(ModelBase, DataAssociatorMixin):
         """Returns the output :class:`FieldValue` by name"""
         return self.field_value(name, 'output')
 
-    def add_to_input_array(self, name, sample=None, item=None, value=None, container=None):
+    def add_to_input_array(self, name, sample=None, item=None, value=None,
+                           container=None):
         """
-        Creates and adds a new input :class:`FieldValue`. When setting values to
-        items/samples/containers, the item/sample/container must be saved.
+        Creates and adds a new input :class:`FieldValue`.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValue
         :type name: string
@@ -836,13 +864,18 @@ class Operation(ModelBase, DataAssociatorMixin):
         :return: the newly created FieldValue
         :rtype: FieldValue
         """
-        return self.add_to_field_value_array(name, "input", sample=sample, item=item,
-                                    value=value, container=container)
+        return self.add_to_field_value_array(name, "input",
+                                             sample=sample,
+                                             item=item,
+                                             value=value,
+                                             container=container)
 
-    def add_to_output_array(self, name, sample=None, item=None, value=None, container=None):
+    def add_to_output_array(self, name, sample=None, item=None, value=None,
+                            container=None):
         """
-        Creates and adds a new output :class:`FieldValue`. When setting values to
-        items/samples/containers, the item/sample/container must be saved.
+        Creates and adds a new output :class:`FieldValue`.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValue
         :type name: string
@@ -857,8 +890,11 @@ class Operation(ModelBase, DataAssociatorMixin):
         :return: the newly created FieldValue
         :rtype: FieldValue
         """
-        return self.add_to_field_value_array(name, "output", sample=sample, item=item,
-                                    value=value, container=container)
+        return self.add_to_field_value_array(name, "output",
+                                             sample=sample,
+                                             item=item,
+                                             value=value,
+                                             container=container)
 
     def input_array(self, name):
         """Return a list of all input :class:`FieldValues`"""
@@ -868,7 +904,8 @@ class Operation(ModelBase, DataAssociatorMixin):
         """Return a list of all output :class:`FieldValues`"""
         return self.field_value_array(name, "output")
 
-    def set_input(self, name, sample=None, item=None, value=None, container=None):
+    def set_input(self, name, sample=None, item=None, value=None,
+                  container=None):
         """
         Sets a input :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
@@ -889,7 +926,8 @@ class Operation(ModelBase, DataAssociatorMixin):
         return self.set_field_value(name, 'input', sample=sample, item=item,
                                     value=value, container=container)
 
-    def set_output(self, name, sample=None, item=None, value=None, container=None):
+    def set_output(self, name, sample=None, item=None, value=None,
+                   container=None):
         """
         Sets a output :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
@@ -912,13 +950,16 @@ class Operation(ModelBase, DataAssociatorMixin):
 
     def set_input_array(self, name, values):
         """
-        Sets input :class:`FieldValue` array using values. Values should be a list of
-        dictionaries containing sample, item, container, or values keys. When setting values to
-        items/samples/containers, the item/sample/container must be saved.
+        Sets input :class:`FieldValue` array using values.
+        Values should be a list of dictionaries containing sample, item,
+        container, or values keys.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValues being modified
         :type name: string
-        :param values: list of dictionary of values to set (e.g. [{"sample": mysample}, {"item": myitem}])
+        :param values: list of dictionary of values to set
+                (e.g. [{"sample": mysample}, {"item": myitem}])
         :type values: list
         :return: the list of modified FieldValues
         :rtype: list
@@ -927,13 +968,16 @@ class Operation(ModelBase, DataAssociatorMixin):
 
     def set_output_array(self, name, values):
         """
-        Sets output :class:`FieldValue` array using values. Values should be a list of
-        dictionaries containing sample, item, container, or values keys. When setting values to
-        items/samples/containers, the item/sample/container must be saved.
+        Sets output :class:`FieldValue` array using values.
+        Values should be a list of dictionaries containing sample, item,
+        container, or values keys.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValues being modified
         :type name: string
-        :param values: list of dictionary of values to set (e.g. [{"sample": mysample}, {"item": myitem}])
+        :param values: list of dictionary of values to set
+                (e.g. [{"sample": mysample}, {"item": myitem}])
         :type values: list
         :return: the list of modified FieldValues
         :rtype: list
@@ -969,9 +1013,12 @@ class OperationType(ModelBase, HasCodeMixin):
         field_types=HasManyGeneric("FieldType"),
         codes=HasManyGeneric("Code"),
         protocol=One("Code", callback="get_code_callback", params="protocol"),
-        cost_model=One("Code", callback="get_code_callback", params="cost_model"),
-        documentation=One("Code", callback="get_code_callback", params="documentation"),
-        precondition=One("Code", callback="get_code_callback", params="precondition"),
+        cost_model=One("Code", callback="get_code_callback",
+                       params="cost_model"),
+        documentation=One("Code", callback="get_code_callback",
+                          params="documentation"),
+        precondition=One("Code", callback="get_code_callback",
+                         params="precondition"),
     )
 
     def instance(self, xpos=None, ypos=None):
@@ -1125,8 +1172,8 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
 
     def to_save_json(self):
         """
-        Returns the json representation of the plan for saving and creating Plans on the
-        Aquarium server.
+        Returns the json representation of the plan for saving and creating
+        Plans on the Aquarium server.
 
         :return: JSON
         :rtype: dict
@@ -1146,7 +1193,8 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
 
     def estimate_cost(self):
         """
-        Estimates the cost of the plan on the Aquarium server. This is necessary before plan submission.
+        Estimates the cost of the plan on the Aquarium server.
+        This is necessary before plan submission.
 
         :return: cost
         :rtype: dict
@@ -1244,8 +1292,9 @@ class SampleType(ModelBase):
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
         field_types=Many("FieldType",
-                         params=lambda self: {"parent_id": self.id,
-                                              "parent_class": self.__class__.__name__})
+                         params=lambda self: {
+                             "parent_id": self.id,
+                             "parent_class": self.__class__.__name__})
     )
 
     def save(self):
@@ -1304,7 +1353,7 @@ class Wire(ModelBase):
     def __init__(self, source=None, destination=None):
         self.source = source
         self.destination = destination
-        self.active=True
+        self.active = True
         super().__init__(**vars(self))
 
     def to_save_json(self):

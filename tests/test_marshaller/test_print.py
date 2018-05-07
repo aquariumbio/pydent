@@ -1,12 +1,14 @@
 import pytest
 from pydent.marshaller import MarshallerBase, add_schema, fields
 
+
 @pytest.fixture(scope='function')
 def author():
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=fields.Relation("Book", many=True, callback="get_books", params=())
+            books=fields.Relation(
+                "Book", many=True, callback="get_books", params=())
         )
 
         def __init__(self, x=None):
@@ -52,7 +54,8 @@ def test_marshallerbase_print():
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=fields.Relation("Book", many=True, callback="get_books", params=())
+            books=fields.Relation("Book", many=True,
+                                  callback="get_books", params=())
         )
 
         def __init__(self, x=None):
@@ -63,5 +66,3 @@ def test_marshallerbase_print():
 
     a = Author()
     print(a)
-
-
