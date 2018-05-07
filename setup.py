@@ -10,7 +10,7 @@ tests_require = [
 
 install_requires = [
     'inflection',
-    'marshmallow',
+    'marshmallow==2.15.1',
     'requests',
     'prompt_toolkit'
 ]

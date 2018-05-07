@@ -38,8 +38,10 @@ def test_dumps():
 
 
 def test_load_only():
-    """Test loading a model with ignored fields. The model is expected to NOT have an id or field1, but
-    have a name"""
+    """
+    Test loading a model with ignored fields.
+    The model is expected to NOT have an id or field1, but have a name
+    """
 
     @add_schema
     class MyModel(MarshallerBase):

@@ -1,4 +1,4 @@
-from pydent.models import *
+from pydent.models import (FieldValue, Operation, Plan)
 
 
 def test_plan_constructor():
@@ -8,7 +8,7 @@ def test_plan_constructor():
     assert g.destination is None
     assert g.status == 'planning'
     print(g.plan_associations)
-    assert g.operations == None
+    assert g.operations is None
     assert g.wires == []
 
     g = Plan(name="MyPlan", status='running')
@@ -21,7 +21,7 @@ def test_add_operation(fake_session):
     p = Plan()
 
     # add first operation
-    assert p.operations == None
+    assert p.operations is None
     p.add_operation(op)
     assert p.operations == [op]
 
@@ -53,6 +53,7 @@ def test_wire():
 
 def test_est_costs(session):
     p = session.Plan.find(79147)
+    assert p, "Plan 79147 not found"
     cost = p.estimate_cost()
     print(cost)
 
@@ -111,7 +112,8 @@ def test_new_plan(session):
 
 # def test_submit_pcr(session):
 #     def get_op(name):
-#         return session.OperationType.where({'name': name, 'deployed': True})[-1].instance()
+#         return session.OperationType.where(
+#               {'name': name, 'deployed': True})[-1].instance()
 #
 #     make_pcr_fragment = get_op('Make PCR Fragment')
 #     pour_gel = get_op('Pour Gel')
