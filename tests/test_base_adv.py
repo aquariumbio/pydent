@@ -1,7 +1,8 @@
 from pydent.marshaller import add_schema
 from pydent.relationships import HasMany
 from pydent import ModelBase, pprint
-from pydent.models import *
+from pydent.models import (AllowableFieldType, FieldType,
+                           ObjectType, OperationType, SampleType)
 
 
 def test_attribute_missing():
@@ -26,7 +27,8 @@ def test_attribute_missing():
 def test_nested_dump_relations():
 
     ot = OperationType(name="MyOT")
-    aft = AllowableFieldType(object_type=ObjectType(id=1, name="MyOBJ"), sample_type=SampleType(id=2, name="MYSAMPLETYPE"))
+    aft = AllowableFieldType(object_type=ObjectType(id=1, name="MyOBJ"),
+                             sample_type=SampleType(id=2, name="MYSAMPLETYPE"))
     ot.field_types = [FieldType(name="MyFV", allowable_field_types=[aft])]
     ot.operations = []
     #
@@ -38,7 +40,8 @@ def test_nested_dump_relations():
     # ft_data['allowable_field_types'] = [aft.dump()]
     # expected['field_types'] = [ft_data]
     # #
-    # assert expected == ot.dump(relations={'field_types': ['allowable_field_types']})
+    # assert expected == ot.dump(
+    #   relations={'field_types': ['allowable_field_types']})
     #
     # # also dump with object_type
     # expected['field_types'][0]['allowable_field_types'][0]['object_type'] = aft.object_type.dump()
@@ -48,6 +51,7 @@ def test_nested_dump_relations():
     # schema = ot.create_schema_instance(dump_relations={'field_types': {'allowable_field_types': 'object_type'}})
     print()
     print()
-    pprint(ot.dump(relations={'field_types': {'allowable_field_types': 'object_type'}}))
+    pprint(ot.dump(relations={'field_types': {
+           'allowable_field_types': 'object_type'}}))
     # pprint(expected)
     # assert expected == ot.dump(relations={'field_types': {'allowable_field_types': 'object_type'}})

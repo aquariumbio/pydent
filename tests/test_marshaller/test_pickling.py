@@ -4,17 +4,15 @@ Tests for pickling and unpickling of marshallerbase models
 
 import os
 import pickle
-import shutil
-
-import pytest
 
 from pydent.marshaller import MarshallerBase, add_schema, fields
+
 
 @add_schema
 class MyModel(MarshallerBase):
     fields = dict(
         myrelation=fields.Relation("Anymodelname", callback="test_callback",
-                            params=lambda self: (self.x, self.y))
+                                   params=lambda self: (self.x, self.y))
     )
 
     def test_callback(self, model_name, _xy):

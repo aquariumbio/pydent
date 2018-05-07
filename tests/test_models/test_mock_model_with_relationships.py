@@ -8,8 +8,8 @@ def test_load_model_from_json(monkeypatch, mock_login_post):
     """
     Tests heirarchical loading of a JSON file into Trident Models.
 
-    Should return a User with name and login attributes. Groups attribute should
-    contain a list of Group models.
+    Should return a User with name and login attributes.
+    Groups attribute should contain a list of Group models.
     """
     # Create a mock session
     monkeypatch.setattr(requests, "post", mock_login_post)
@@ -41,7 +41,6 @@ def test_load_model_from_json(monkeypatch, mock_login_post):
     assert u.login == "default_login"
 
     # test load groups
-    g = u.groups
     assert len(u.groups) == 2
     assert isinstance(u.groups[0], Group)
     assert u.groups[1].id == 2
@@ -109,19 +108,21 @@ def test_load_model_with_many(monkeypatch, mock_login_post):
     session = AqSession("username", "password", aquarium_url)
 
     def mock_post(*args, json_data=None, **kwargs):
-        if "method" in json_data:
-            if json_data["method"] == "where":
-                samples = [
-                    {"id": 1, "sample_type_id": 3, "name": "sample1"},
-                    {"id": 2, "sample_type_id": 3, "name": "sample2"},
-                    {"id": 3, "sample_type_id": 5, "name": "sample3"},
-                ]
-                return [s for s in samples if
-                        s["sample_type_id"] == json_data["arguments"]["sample_type_id"]]
-        return {
-                "id": 3,
-                "name": "Primer"
-            }
+        dummy_object = {
+            "id": 3,
+            "name": "Primer"
+        }
+        if "method" not in json_data or json_data["method"] != "where":
+            return dummy_object
+
+        samples = [
+            {"id": 1, "sample_type_id": 3, "name": "sample1"},
+            {"id": 2, "sample_type_id": 3, "name": "sample2"},
+            {"id": 3, "sample_type_id": 5, "name": "sample3"},
+        ]
+        return [
+            s for s in samples if
+            s["sample_type_id"] == json_data["arguments"]["sample_type_id"]]
 
     monkeypatch.setattr(AqHTTP, "post", mock_post)
 
@@ -135,7 +136,8 @@ def test_load_model_with_many(monkeypatch, mock_login_post):
 # def test_load_model_with_many_through(monkeypatch, mock_post):
 #     """Tests a relationship using a database connection.
 #
-#         Should return a Sample instance with an accessible SampleType instance.
+#         Should return a Sample instance with an accessible SampleType
+#         instance.
 #     """
 #
 #     # Create a mock session

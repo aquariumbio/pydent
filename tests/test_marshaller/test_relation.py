@@ -1,14 +1,16 @@
 import pytest
 from marshmallow import fields
 from pydent.marshaller import MarshallerBase
-from pydent.marshaller import fields, add_schema
+from pydent.marshaller import add_schema
 from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError
 from pydent.marshaller.schema import MODEL_SCHEMA
 
 
 def test_relationship_access():
-    """fields.Relationships should behave just like other fields. fields.Relationships inherit fields.Field, and
-    so should behave just like other fields. This test makes sure they are found in the 'relationships'
+    """
+    fields.Relationships should behave just like other fields.
+    fields.Relationships inherit fields.Field, and so should behave just like
+    other fields. This test makes sure they are found in the 'relationships'
     in the schema and get included in the fields in the schema."""
 
     @add_schema
@@ -27,7 +29,8 @@ def test_relationship_access():
         def __init__(self):
             pass
 
-    # Should be exactly 2 relationships, one in "include" and one in class variable
+    # Should be exactly 2 relationships, one in "include" and one in
+    # class variable
     assert len(MyModel.get_relationships()) == 2
 
     # Test access to relationships
@@ -43,13 +46,15 @@ def test_relationship_access():
     assert "field4" not in relationships
 
     # make sure relationships are in the schema fields
-    assert "field5" in schema().fields
-    assert "field6" in schema().fields
+    assert "field5" in schema.fields
+    assert "field6" in schema.fields
 
 
 def test_relationships_property():
-    """MarshallerBase should contain a relationships property that should
-    return .get_relationships()"""
+    """
+    MarshallerBase should contain a relationships property that should
+    return .get_relationships()
+    """
     class MyModel(MarshallerBase):
         fields = dict(
             field5=fields.Relation(None, None, None),
@@ -64,15 +69,18 @@ def test_relationships_property():
 
 
 def test_basic_callback():
-    """fields.Relations can use a callback from the model that instantiates it. All callbacks expect
-     a model name as the first parameter.
-     This callback returns the model name that was passed into it."""
+    """
+    fields.Relations can use a callback from the model that instantiates it.
+    All callbacks expect a model name as the first parameter.
+    This callback returns the model name that was passed into it.
+    """
     model_name = "AnyModelName"
 
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=fields.Relation(model_name, callback="test_callback", params=())
+            myrelation=fields.Relation(
+                model_name, callback="test_callback", params=())
         )
 
         def test_callback(self, model_name):
@@ -83,14 +91,18 @@ def test_basic_callback():
 
 
 def test_callback_with_params():
-    """When my relation is called as an attribute, 'test_callback' should get called
-    with params (model_name, 1, 2, 3) passed in. Expected result is x + y + z == 6"""
+    """
+    When my relation is called as an attribute, 'test_callback' should get
+    called with params (model_name, 1, 2, 3) passed in.
+    Expected result is x + y + z == 6
+    """
     model_name = "AnyModelName"
 
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=fields.Relation(model_name, callback="test_callback", params=(1, 2, 3))
+            myrelation=fields.Relation(
+                model_name, callback="test_callback", params=(1, 2, 3))
         )
 
         def test_callback(self, model_name, x, y, z):
@@ -101,17 +113,23 @@ def test_callback_with_params():
 
 
 def test_callback_with_lambda():
-    """When my relation is called as an attribute, 'test_callback' should get called. Since
-    the params is a lambda (a callable), the lambda will pass in the model instance. The expected
-    result is that a tuple (self.x, self.y) == (4,5) will get passed in. The expected result is 4*5 == 20
-    with params (model_name, lambda self: (self.x, self.y) passed in. """
+    """
+    When my relation is called as an attribute, 'test_callback' should get
+    called.
+    Since the params is a lambda (a callable), the lambda will pass in the
+    model instance.
+    The expected result is that a tuple (self.x, self.y) == (4,5) will get
+    passed in.
+    The expected result is 4*5 == 20 with params
+    (model_name, lambda self: (self.x, self.y) passed in.
+    """
     model_name = "AnyModelName"
 
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation(model_name, callback="test_callback",
-                                params=lambda self: (self.x, self.y))
+                                       params=lambda self: (self.x, self.y))
         )
 
         def test_callback(self, model_name, _xy):
@@ -123,8 +141,11 @@ def test_callback_with_lambda():
 
 
 def test_alternative_callback():
-    """Callables can be used in lieu of function names. In this case, an alternative callback
-    is used and is expected to return the model_name passed in."""
+    """
+    Callables can be used in lieu of function names.
+    In this case, an alternative callback
+    is used and is expected to return the model_name passed in.
+    """
 
     model_name = "AnyModelName"
 
@@ -134,7 +155,8 @@ def test_alternative_callback():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=fields.Relation(model_name, callback=alternative_callback, params=())
+            myrelation=fields.Relation(
+                model_name, callback=alternative_callback, params=())
         )
 
     m = MyModel.load({"x": 4, "y": 5})
@@ -142,10 +164,16 @@ def test_alternative_callback():
 
 
 def test_callback_with_lambda_with_alternative_callback():
-    """When my relation is called as an attribute, alternative_callback should get called. Since
-    the params is a lambda (a callable), the lambda will pass in the model instance. The expected
-    result is that a tuple (self.x, self.y) == (4,5) will get passed in. The expected result is 5-4 == 1
-    with params (model_name, lambda self: (self.x, self.y) passed in. """
+    """
+    When my relation is called as an attribute, alternative_callback should get
+    called.
+    Since the params is a lambda (a callable), the lambda will pass in the
+    model instance.
+    The expected result is that a tuple (self.x, self.y) == (4,5) will get
+    passed in.
+    The expected result is 5-4 == 1 with params
+    (model_name, lambda self: (self.x, self.y) passed in.
+    """
     model_name = "AnyModelName"
 
     def alternative_callback(model_name, _xy):
@@ -155,8 +183,9 @@ def test_callback_with_lambda_with_alternative_callback():
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
-            myrelation=fields.Relation(model_name, callback=alternative_callback,
-                                params=lambda self: (self.x, self.y))
+            myrelation=fields.Relation(model_name,
+                                       callback=alternative_callback,
+                                       params=lambda self: (self.x, self.y))
         )
 
         def test_callback(self, model_name, _xy):
@@ -168,13 +197,15 @@ def test_callback_with_lambda_with_alternative_callback():
 
 
 def test_raises_MarshallerCallbackNotFoundError():
-    """If callback doesn't exist, raises a CallbackNotFoundError"""
+    """
+    If callback doesn't exist, raises a CallbackNotFoundError
+    """
 
     @add_schema
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation("lkjlfj", callback="callback",
-                                params=lambda self: (self.x, self.y))
+                                       params=lambda self: (self.x, self.y))
         )
 
     m = MyModel.load({"x": 4, "y": 5})
@@ -183,15 +214,18 @@ def test_raises_MarshallerCallbackNotFoundError():
 
 
 def test_deserialize_relationship():
-    """If the nested relationship is available, deserialize the data. In this case,
-    since the data for deserializing book instances are available in 'books', the loaded
-    deserialized model instance should also contain an attribute 'books' which is a list
-    of Book models."""
+    """
+    If the nested relationship is available, deserialize the data.
+    In this case, since the data for deserializing book instances are available
+    in 'books', the loaded deserialized model instance should also contain an
+    attribute 'books' which is a list of Book models.
+    """
 
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=fields.Relation("Book", many=True, callback="get_books", params=())
+            books=fields.Relation(
+                "Book", many=True, callback="get_books", params=())
         )
 
         def get_books(self):
@@ -221,13 +255,17 @@ def test_deserialize_relationship():
 
 
 def test_dump_relations():
-    """fields.Relations can be specified to be included in serialized results. Here, publisher and
-    books relations are specified below in the serialized results."""
+    """
+    fields.Relations can be specified to be included in serialized results.
+    Here, publisher and books relations are specified below in the serialized
+    results.
+    """
 
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=fields.Relation("Book", many=True, callback="get_books", params=()),
+            books=fields.Relation(
+                "Book", many=True, callback="get_books", params=()),
             publisher=fields.Relation("Publisher", None, None, many=False),
         )
 
@@ -255,8 +293,6 @@ def test_dump_relations():
         ],
         "publisher": {"name": "Penguin"}
     }
-
-
 
     a = Author.load(author_data)
 
@@ -285,14 +321,19 @@ def test_dump_relations():
     assert d['books'] == author_data['books']
     assert d['publisher'] == author_data['publisher']
 
+
 def test_dump_relations_with_only():
-    """fields.Relations can be specified to be included in serialized results. Here, publisher and
-    books relations are specified below in the serialized results."""
+    """
+    fields.Relations can be specified to be included in serialized results.
+    Here, publisher and books relations are specified below in the serialized
+    results.
+    """
 
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=fields.Relation("Book", many=True, callback="get_books", params=()),
+            books=fields.Relation(
+                "Book", many=True, callback="get_books", params=()),
             publisher=fields.Relation("Publisher", None, None, many=False),
         )
 
@@ -321,8 +362,6 @@ def test_dump_relations_with_only():
         "publisher": {"name": "Penguin"}
     }
 
-
-
     a = Author.load(author_data)
 
     # no relations in dump
@@ -337,7 +376,8 @@ def test_dump_relations_with_only():
     assert 'publisher' not in d
 
 
-## This was changed, relationships will simply return None they cannot be fullfilled
+# This was changed, relationships will simply return None
+#  they cannot be fullfilled
 # def test_raise_Marshallerfields.RelationshipError():
 #     """We expect an error to be raised since the MyModel instance will
 #     be missing an 'x' attribute, which is needed for the test callback"""
@@ -367,7 +407,7 @@ def test_raise_return_none():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation(model_name, callback="test_callback",
-                                params=lambda self: (self.x, self.y))
+                                       params=lambda self: (self.x, self.y))
         )
 
         def test_callback(self, model_name, _xy):
@@ -384,7 +424,7 @@ def test_preferentially_reload_relationships_if_none():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation("lkjlj", callback="test_callback",
-                                params=lambda self: (self.x, self.y))
+                                       params=lambda self: (self.x, self.y))
         )
 
         def test_callback(self, model_name, _xy):

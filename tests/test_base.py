@@ -11,14 +11,19 @@ from pydent.marshaller import add_schema, fields
 
 
 def test_model_base():
-    """Upon instantiation, .session should be None"""
+    """
+    Upon instantiation, .session should be None
+    """
     m = ModelBase()
     assert m.session is None
 
 
 def test_record_id():
-    """Creating a ModelBase should create a new record id 'rid.' For each instance, a new 'rid' should be
-    created."""
+    """
+    Creating a ModelBase should create a new record id 'rid.'
+    For each instance, a new 'rid' should be
+    created.
+    """
     @add_schema
     class MyModel(ModelBase):
         pass
@@ -36,7 +41,9 @@ def test_record_id():
 
 
 def test_base_constructor():
-    """Base initializes should absorb kwargs into attributes. Without a schema, """
+    """
+    Base initializes should absorb kwargs into attributes. Without a schema,
+    """
     m = ModelBase(name="SomeName", id=2)
     assert m.name == "SomeName"
     assert m.id == 2
@@ -44,7 +51,8 @@ def test_base_constructor():
 
 
 def test_base_constructor_with_marshaller():
-    """MyModel initializes should absorb kwargs into attributes. With a schema, those
+    """MyModel initializes should absorb kwargs into attributes.
+    With a schema, those
     attributes are also tracked and available for dumping."""
 
     @add_schema
@@ -60,7 +68,8 @@ def test_base_constructor_with_marshaller():
 
 
 def test_base_constructor_with_invalid_data():
-    """MyModel initializes should absorb kwargs into attributes. With a schema, those
+    """MyModel initializes should absorb kwargs into attributes.
+    With a schema, those
     attributes are also tracked and available for dumping."""
 
     @add_schema
@@ -70,7 +79,7 @@ def test_base_constructor_with_invalid_data():
         )
 
     with pytest.raises(Exception):
-        m = MyModel(name=5, id=5)
+        MyModel(name=5, id=5)
 
 
 def test_connect_to_session(fake_session):
@@ -98,7 +107,9 @@ def test_empty_relationships():
 
 
 def test_check_for_session(fake_session):
-    """If session is none, _check_for_session should raise an AttributeError"""
+    """
+    If session is none, _check_for_session should raise an AttributeError
+    """
     m = ModelBase()
     with pytest.raises(AttributeError):
         m._check_for_session()
@@ -108,7 +119,9 @@ def test_check_for_session(fake_session):
 
 
 def test_model_registry():
-    """We expect get_model to return the value in the models dictionary"""
+    """
+    We expect get_model to return the value in the models dictionary
+    """
 
     class MyModel(ModelBase):
         pass
@@ -120,33 +133,43 @@ def test_model_registry():
 
 
 def test_no_model_in_registry():
-    """ModelRegistry should raise error if model doesn't exist"""
+    """
+    ModelRegistry should raise error if model doesn't exist
+    """
     with pytest.raises(TridentModelNotFoundError):
         ModelRegistry.get_model("SomeModelThatDoesntExist")
 
 
 def test_find_no_session():
-    """ModelBase should raise AttributeError if no session is attacheded"""
+    """
+    ModelBase should raise AttributeError if no session is attacheded
+    """
     m = ModelBase()
     with pytest.raises(AttributeError):
         m.find_callback(None, None)
 
 
 def test_where_no_session():
-    """ModelBase should raise AttributeError if no session is attacheded"""
+    """
+    ModelBase should raise AttributeError if no session is attacheded
+    """
     m = ModelBase()
     with pytest.raises(AttributeError):
         m.where_callback(None, None)
 
 
 def test_where_and_find(monkeypatch, fake_session):
-    """Calling the 'where' wrapper on a ModelBase should attempt to
+    """
+    Calling the 'where' wrapper on a ModelBase should attempt to
     get a model interface and call 'where' or 'find' on the interface.
     In this case, a fake model interface is returned in which the methods
-    return the parameter passed in"""
+    return the parameter passed in
+    """
 
     def fake_model_interface(self, model_name):
-        """A fake model interface to test where"""
+        """
+        A fake model interface to test where
+        """
 
         class FakeInterface:
             def find(id):
@@ -157,7 +180,8 @@ def test_where_and_find(monkeypatch, fake_session):
 
         return FakeInterface
 
-    monkeypatch.setattr(AqSession, AqSession.model_interface.__name__, fake_model_interface)
+    monkeypatch.setattr(AqSession, AqSession.model_interface.__name__,
+                        fake_model_interface)
 
     m = ModelBase()
     ModelRegistry.models["FakeModel"] = ModelBase
@@ -170,4 +194,3 @@ def test_print():
     m = ModelBase()
     print(m)
     m.print()
-

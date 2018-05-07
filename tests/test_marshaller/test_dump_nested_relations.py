@@ -9,7 +9,8 @@ def author():
     @add_schema
     class Author(MarshallerBase):
         fields = dict(
-            books=fields.Relation("Book", many=True, callback="get_books", params=()),
+            books=fields.Relation("Book", many=True, callback="get_books",
+                                  params=()),
             publisher=fields.Relation("Publisher", None, None, many=False),
         )
 
@@ -69,7 +70,8 @@ def test_with_one(author):
     # include 'books'
     assert author.dump(include={'books'}) == {
         "name": "Fyodor Dostoevsky",
-        "books": [{"title": "Demons", "year": 1871, }, {"title": "The Idiot", "year": 1868, }]}
+        "books": [{"title": "Demons", "year": 1871, },
+                  {"title": "The Idiot", "year": 1868, }]}
 
     # include 'publisher'
     adata = author.dump(include={"publisher"})
@@ -113,7 +115,8 @@ def test_nested_with_many(author):
     # include 'books'
     assert author.dump(include={'books'}) == {
         "name": "Fyodor Dostoevsky",
-        "books": [{"title": "Demons", "year": 1871, }, {"title": "The Idiot", "year": 1868, }]}
+        "books": [{"title": "Demons", "year": 1871, },
+                  {"title": "The Idiot", "year": 1868, }]}
 
     # include 'books' with 'meta'
     adata = author.dump(include={"books": {"meta"}})
@@ -133,6 +136,7 @@ def test_nested_with_many(author):
             }
         ]
     }
+
 
 def test_include_opts(author):
     adata = author.dump(

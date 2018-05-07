@@ -690,14 +690,13 @@ class Operation(ModelBase, DataAssociatorMixin):
 
     def field_value_array(self, name, role):
         """Returns :class:`FieldValue` array with name and role."""
-        result = self.field_value(name, role)
-        if result.field_type.array:
-            return result
-
-        msg = "FieldValue is not an array for the field value of operation"
-        msg += " {}(id={}).{}.{}"
-        raise AquariumModelError(
-            msg.format(self.operation_type.name, self.id, role, name))
+        ft = self.operation_type.field_type(name, role)
+        if not ft.array:
+            msg = "FieldValue is not an array for the field value of operation"
+            msg += " {}(id={}).{}.{}"
+            raise AquariumModelError(
+                msg.format(self.operation_type.name, self.id, role, name))
+        return filter_list(self.field_values, name=name, role=role)
 
     def field_value(self, name, role):
         """
@@ -709,7 +708,7 @@ class Operation(ModelBase, DataAssociatorMixin):
             if len(fvs) == 0:
                 return None
 
-            if (len(fvs) == 1):
+            if len(fvs) == 1:
                 return fvs[0]
 
             msg = "More than one FieldValue found for the field value"
@@ -778,6 +777,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         fv = field_type.initialize_field_value()
         fv.set_value(sample=sample, item=item,
                      value=value, container=container)
+        fv.operation = self
         if self.field_values is None:
             self.field_values = []
         self.field_values.append(fv)
@@ -1009,7 +1009,10 @@ class OperationType(ModelBase, HasCodeMixin):
     """
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
-        field_types=HasManyGeneric("FieldType"),
+        field_types=Many("FieldType",
+                         params=lambda self: {
+                             "parent_id": self.id,
+                             "parent_class": self.__class__.__name__}),
         codes=HasManyGeneric("Code"),
         protocol=One("Code", callback="get_code_callback", params="protocol"),
         cost_model=One("Code", callback="get_code_callback",
@@ -1019,6 +1022,10 @@ class OperationType(ModelBase, HasCodeMixin):
         precondition=One("Code", callback="get_code_callback",
                          params="precondition"),
     )
+
+    def get_field_type(self, model_name, parent_class):
+
+        return self.code(name)
 
     def instance(self, xpos=None, ypos=None):
         operation = Operation(operation_type_id=self.id,

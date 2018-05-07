@@ -21,6 +21,7 @@ def test_json_deserialize_with_error():
     d = myschema.load({'json': 'not a json'})
     assert len(d.errors) == 1
 
+
 def test_json_serialize():
     class MySchema(Schema):
         json = JSON()
@@ -49,4 +50,3 @@ def test_json_serialize_with_error():
     schema = MySchema()
     d = schema.dump(m)
     assert len(d.errors) == 1
-
