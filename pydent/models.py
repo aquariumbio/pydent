@@ -135,7 +135,8 @@ class HasCodeMixin:
         :rtype: Code
         """
         if model_name is not "Code":
-            raise AquariumModelError("Model name must be {}, not {}".format("Code", model_name))
+            raise AquariumModelError(
+                "Model name must be {}, not {}".format("Code", model_name))
         return self.code(name)
 
 
@@ -196,7 +197,8 @@ class Code(ModelBase):
     """A Code model"""
     fields = dict(
         user=HasOne("User"),
-        operation_type=One("OperationType", callback="get_parent", params=None),
+        operation_type=One(
+            "OperationType", callback="get_parent", params=None),
         library=One("Library", callback="get_parent", params=None)
     )
 
@@ -473,13 +475,15 @@ class FieldValue(ModelBase, FieldMixin):
                 raise AquariumModelError("No allowable field types found for {} '{}'. Available afts: {}".format(
                     self.role, self.name, available_afts))
             if len(afts) > 1:
-                warnings.warn("More than one AllowableFieldType found that matches {}".format(
+                msg = "More than one AllowableFieldType found that matches {}"
+                warnings.warn(msg.format(
                     self.dump(only=('name', 'role', 'id'), partial=True)))
             elif len(afts) == 1:
                 self.set_allowable_field_type(afts[0])
             else:
+                msg = "No allowable field type found for {} '{}'"
                 raise AquariumModelError(
-                    "No allowable field type found for {} '{}'".format(self.role, self.name))
+                    msg.format(self.role, self.name))
         return self
 
     def set_operation(self, operation):
@@ -512,8 +516,9 @@ class FieldValue(ModelBase, FieldMixin):
 
     def compatible_items(self):
         """Find items compatible with the field value"""
-        return self.session.utils.compatible_items(self.sample.id,
-                                                   self.allowable_field_type.object_type_id)
+        return self.session.utils.compatible_items(
+            self.sample.id,
+            self.allowable_field_type.object_type_id)
 
 
 @add_schema
@@ -592,6 +597,7 @@ class Membership(ModelBase):
 @add_schema
 class ObjectType(ModelBase):
     """A ObjectType model"""
+
     def save(self):
         """Saves the Object Type to the Aquarium server. Requires
         this Object Type to be connected to a session."""
@@ -643,8 +649,8 @@ class Operation(ModelBase):
 
     def init_field_values(self):
         """
-        Initialize the :class:`FieldValue` from the :class:`FieldType` of the parent :class:`Operation`
-        type.
+        Initialize the :class:`FieldValue` from the :class:`FieldType` of the 
+        parent :class:`Operation` type.
         """
         for field_type in self.operation_type.field_types:
             if field_type.array:
@@ -659,8 +665,9 @@ class Operation(ModelBase):
             fvs = filter_list(self.field_values, name=name, role=role)
             if len(fvs) > 0:
                 if not fvs[0].field_type.array:
+                    msg = "FieldValue is not an array for the field value of operation {}(id={}).{}.{}"
                     raise AquariumModelError(
-                        "FieldValue is not an array for the field value of operation {}(id={}).{}.{}".format(
+                        msg.format(
                             self.operation_type.name, self.id, role, name))
                 return fvs
 
@@ -682,8 +689,9 @@ class Operation(ModelBase):
     def set_field_value_array(self, name, role, values):
         """
         Sets :class:`FieldValue` array using values. Values should be a list of
-        dictionaries containing sample, item, container, or values keys. When setting values to
-        items/samples/containers, the item/sample/container must be saved.
+        dictionaries containing sample, item, container, or values keys. 
+        When setting values to items/samples/containers, the 
+        item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValues being modified
         :type name: string
@@ -702,7 +710,8 @@ class Operation(ModelBase):
             raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
                 self.operation_type.name, role, name))
         if not len(field_values) == len(values):
-            raise AquariumModelError("Cannot set_field_value_array. Length of values must equal length of field_values")
+            raise AquariumModelError(
+                "Cannot set_field_value_array. Length of values must equal length of field_values")
 
         for fv, val in zip(field_values, values):
             fv.set_value(**val)
@@ -730,7 +739,8 @@ class Operation(ModelBase):
         """
         field_type = self.operation_type.field_type(name, role)
         fv = field_type.initialize_field_value()
-        fv.set_value(sample=sample, item=item, value=value, container=container)
+        fv.set_value(sample=sample, item=item,
+                     value=value, container=container)
         if self.field_values is None:
             self.field_values = []
         self.field_values.append(fv)
@@ -765,7 +775,8 @@ class Operation(ModelBase):
             raise AquariumModelError("No FieldType found for OperationType {}.{}.{}".format(
                 self.operation_type.name, role, name))
         if field_type.array:
-            raise AquariumModelError("FieldValue {} {} is an array. Use 'set_field_value_array'".format(role, name))
+            raise AquariumModelError(
+                "FieldValue {} {} is an array. Use 'set_field_value_array'".format(role, name))
 
         # initialize the field value from the field type
         if not field_value:
@@ -811,7 +822,7 @@ class Operation(ModelBase):
         :rtype: FieldValue
         """
         return self.add_to_field_value_array(name, "input", sample=sample, item=item,
-                                    value=value, container=container)
+                                             value=value, container=container)
 
     def add_to_output_array(self, name, sample=None, item=None, value=None, container=None):
         """
@@ -832,7 +843,7 @@ class Operation(ModelBase):
         :rtype: FieldValue
         """
         return self.add_to_field_value_array(name, "output", sample=sample, item=item,
-                                    value=value, container=container)
+                                             value=value, container=container)
 
     def input_array(self, name):
         """Return a list of all input :class:`FieldValues`"""
@@ -943,9 +954,12 @@ class OperationType(ModelBase, HasCodeMixin):
         field_types=HasManyGeneric("FieldType"),
         codes=HasManyGeneric("Code"),
         protocol=One("Code", callback="get_code_callback", params="protocol"),
-        cost_model=One("Code", callback="get_code_callback", params="cost_model"),
-        documentation=One("Code", callback="get_code_callback", params="documentation"),
-        precondition=One("Code", callback="get_code_callback", params="precondition"),
+        cost_model=One("Code", callback="get_code_callback",
+                       params="cost_model"),
+        documentation=One("Code", callback="get_code_callback",
+                          params="documentation"),
+        precondition=One("Code", callback="get_code_callback",
+                         params="precondition"),
     )
 
     def instance(self, xpos=None, ypos=None):
@@ -1278,7 +1292,7 @@ class Wire(ModelBase):
     def __init__(self, source=None, destination=None):
         self.source = source
         self.destination = destination
-        self.active=True
+        self.active = True
         super().__init__(**vars(self))
 
     def to_save_json(self):
