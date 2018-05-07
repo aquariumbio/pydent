@@ -9,6 +9,7 @@ def test_fv_simple_constructor():
     fv = FieldValue(name="something")
     print(fv)
 
+    assert fv, "Field value should be non-null"
     assert 'name' in fv.dump()
     assert fv.name is not None
     assert fv.dump()['name'] == fv.name
@@ -278,21 +279,25 @@ def test_dump():
 
 def test_wires_as_source(session):
     fv = session.FieldValue.find(520346)
+    assert fv, "FieldValue 520346 not found"
     wires = fv.wires_as_source
     print(wires)
 
 
 def test_wires_as_dest(session):
     fv = session.FieldValue.find(520346)
+    assert fv, "FieldValue 520346 not found"
     wires = fv.wires_as_dest
     print(wires)
 
 
 def test_successors(session):
     fv = session.FieldValue.find(520346)
+    assert fv, "FieldValue 520346 not found"    
     print(fv.successors)
 
 
 def test_predecessors(session):
     fv = session.FieldValue.find(520346)
+    assert fv, "FieldValue 520346 not found"    
     print(fv.predecessors)

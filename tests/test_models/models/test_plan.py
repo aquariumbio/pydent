@@ -53,6 +53,7 @@ def test_wire():
 
 def test_est_costs(session):
     p = session.Plan.find(79147)
+    assert p, "Plan 79147 not found"
     cost = p.estimate_cost()
     print(cost)
 
