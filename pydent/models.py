@@ -182,7 +182,6 @@ class DataAssociatorMixin:
         return session.DataAssociation.find(result["id"])
 
 
-
 # Models #####
 
 @add_schema
