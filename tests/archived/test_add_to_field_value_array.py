@@ -20,4 +20,3 @@ def test_add_field_value_array(session):
             s.connect_to_session(session)
             s.save()
         op.add_to_field_value_array('Inserts', 'input', sample=s)
-make
