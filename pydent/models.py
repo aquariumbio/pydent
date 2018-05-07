@@ -758,6 +758,7 @@ class Operation(ModelBase):
         fv = field_type.initialize_field_value()
         fv.set_value(sample=sample, item=item,
                      value=value, container=container)
+        fv.operation = self
         if self.field_values is None:
             self.field_values = []
         self.field_values.append(fv)
@@ -988,7 +989,10 @@ class OperationType(ModelBase, HasCodeMixin):
     """
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
-        field_types=HasManyGeneric("FieldType"),
+        field_types=Many("FieldType",
+                         params=lambda self: {
+                             "parent_id": self.id,
+                             "parent_class": self.__class__.__name__}),
         codes=HasManyGeneric("Code"),
         protocol=One("Code", callback="get_code_callback", params="protocol"),
         cost_model=One("Code", callback="get_code_callback",
@@ -998,6 +1002,10 @@ class OperationType(ModelBase, HasCodeMixin):
         precondition=One("Code", callback="get_code_callback",
                          params="precondition"),
     )
+
+    def get_field_type(self, model_name, parent_class):
+
+        return self.code(name)
 
     def instance(self, xpos=None, ypos=None):
         operation = Operation(operation_type_id=self.id,
