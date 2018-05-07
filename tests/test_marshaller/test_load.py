@@ -3,8 +3,11 @@ from pydent.marshaller import add_schema, MarshallerBase
 
 
 def test_load_all():
-    """This test loading a model with data. The model is expected to collect the attributes from the
-    JSON formatted data"""
+    """
+    This test loading a model with data.
+    The model is expected to collect the attributes from the
+    JSON formatted data
+    """
 
     @add_schema
     class MyModel(MarshallerBase):
@@ -26,8 +29,11 @@ def test_load_all():
 
 
 def test_no_load_all():
-    """Test loading a model without loading missing values. The model is expected to NOT collect
-    the attributes from the JSON formatted data"""
+    """
+    Test loading a model without loading missing values.
+    The model is expected to NOT collect
+    the attributes from the JSON formatted data
+    """
 
     @add_schema
     class MyModel(MarshallerBase):
@@ -50,8 +56,9 @@ def test_no_load_all():
 
 
 def test_ignore():
-    """Test loading a model with ignored fields. The model is expected to NOT have an id or field1, but
-    have a name"""
+    """Test loading a model with ignored fields.
+    The model is expected to NOT have an id or field1, but have a name
+    """
 
     @add_schema
     class MyModel(MarshallerBase):

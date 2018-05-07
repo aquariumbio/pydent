@@ -8,8 +8,8 @@ def test_model():
     """
     Tests heirarchical loading of a JSON file into Trident Models.
 
-    Should return a User with name and login attributes. Groups attribute should
-    contain a list of Group models.
+    Should return a User with name and login attributes.
+    Groups attribute should contain a list of Group models.
     """
 
     # Make a dummy model
@@ -17,7 +17,7 @@ def test_model():
     # these fields should be ignored and should not appear in the model
     ignored = ("field1", "field2", "field3")
 
-    # these fields should appear in the model, but should not get dumped to json
+    # these fields are in the model, but should not get dumped to json
     loadonly = ("field6", "field7")
 
     @add_schema
@@ -37,7 +37,7 @@ def test_model():
 
 
 def test_fields_ignored(test_model):
-    m, ignored, loadonly, data, MyModel = test_model
+    m, ignored, _loadonly, data, _MyModel = test_model
     keys = list(data.keys())
 
     # Check model for attributes
@@ -49,7 +49,7 @@ def test_fields_ignored(test_model):
 
 
 def test_fields_dumped(test_model):
-    m, ignored, loadonly, data, MyModel = test_model
+    m, ignored, loadonly, data, _MyModel = test_model
     keys = list(data.keys())
 
     # Check dumped JSON
@@ -58,16 +58,17 @@ def test_fields_dumped(test_model):
     for field in fields_expected_in_dump:
         assert field in d
     for field in ignored:
-        assert not field in d
+        assert field not in d
 
 
 def test_load_dump_repeat(test_model):
-    m, ignored, loadonly, data, MyModel = test_model
+    m, _ignored, _loadonly, data, MyModel = test_model
     keys = list(data.keys())
+    assert keys
 
     # Check dumped JSON
-    fields_expected_in_dump = set(keys) - set(ignored) - set(loadonly)
-    d = m.dump()
+    # fields_expected_in_dump = set(keys) - set(ignored) - set(loadonly)
+    assert m.dump()
     m = MyModel.load(data)
     m.dump()
     m = MyModel.load(data)
