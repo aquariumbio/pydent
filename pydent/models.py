@@ -477,7 +477,8 @@ class FieldValue(ModelBase, FieldMixin):
                 afts = filter_list(afts, object_type_id=self.object_type.id)
             if len(afts) == 0:
                 available_afts = self.field_type.allowable_field_types
-                msg = "No allowable field types found for {} '{}'. Available afts: {}"
+                msg = "No allowable field types found for {} '{}'."
+                msg += " Available afts: {}"
                 raise AquariumModelError(msg.format(
                     self.role, self.name, available_afts))
             if len(afts) > 1:
@@ -671,7 +672,8 @@ class Operation(ModelBase):
             fvs = filter_list(self.field_values, name=name, role=role)
             if len(fvs) > 0:
                 if not fvs[0].field_type.array:
-                    msg = "FieldValue is not an array for the field value of operation {}(id={}).{}.{}"
+                    msg = "FieldValue is not an array for the field value of"
+                    msg += " operation {}(id={}).{}.{}"
                     raise AquariumModelError(
                         msg.format(
                             self.operation_type.name, self.id, role, name))
@@ -686,7 +688,8 @@ class Operation(ModelBase):
             fvs = filter_list(self.field_values, name=name, role=role)
             if len(fvs) > 0:
                 if len(fvs) > 1:
-                    msg = "More than one FieldValue found for the field value of operation {}(id={}).{}.{}"
+                    msg = "More than one FieldValue found for the field value"
+                    msg += " of operation {}(id={}).{}.{}"
                     raise AquariumModelError(
                         msg.format(
                             self.operation_type.name, self.id, role, name))
