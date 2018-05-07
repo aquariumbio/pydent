@@ -668,16 +668,14 @@ class Operation(ModelBase):
 
     def field_value_array(self, name, role):
         """Returns :class:`FieldValue` array with name and role."""
-        if self.field_values:
-            fvs = filter_list(self.field_values, name=name, role=role)
-            if len(fvs) > 0:
-                if not fvs[0].field_type.array:
-                    msg = "FieldValue is not an array for the field value of"
-                    msg += " operation {}(id={}).{}.{}"
-                    raise AquariumModelError(
-                        msg.format(
-                            self.operation_type.name, self.id, role, name))
-                return fvs
+        result = self.field_value(name, role)
+        if result.field_type.array:
+            return result
+
+        msg = "FieldValue is not an array for the field value of operation"
+        msg += " {}(id={}).{}.{}"
+        raise AquariumModelError(
+            msg.format(self.operation_type.name, self.id, role, name))
 
     def field_value(self, name, role):
         """
@@ -686,16 +684,16 @@ class Operation(ModelBase):
         """
         if self.field_values:
             fvs = filter_list(self.field_values, name=name, role=role)
-            if len(fvs) > 0:
-                if len(fvs) > 1:
-                    msg = "More than one FieldValue found for the field value"
-                    msg += " of operation {}(id={}).{}.{}"
-                    raise AquariumModelError(
-                        msg.format(
-                            self.operation_type.name, self.id, role, name))
+            if len(fvs) == 0:
+                return None
+
+            if (len(fvs) == 1):
                 return fvs[0]
-        # else:
-        #     self.field_values = []
+
+            msg = "More than one FieldValue found for the field value"
+            msg += " of operation {}(id={}).{}.{}"
+            raise AquariumModelError(
+                msg.format(self.operation_type.name, self.id, role, name))
 
     def set_field_value_array(self, name, role, values):
         """
@@ -870,7 +868,8 @@ class Operation(ModelBase):
         :return: the newly created FieldValue
         :rtype: FieldValue
         """
-        return self.add_to_field_value_array(name, "output", sample=sample,
+        return self.add_to_field_value_array(name, "output",
+                                             sample=sample,
                                              item=item,
                                              value=value,
                                              container=container)
