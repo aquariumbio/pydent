@@ -1,9 +1,13 @@
 from pydent.marshaller import add_schema, MarshallerBase
 import json
 
+
 def test_dump():
-    """Test loading a model with ignored fields. The model is expected to NOT have an id or field1, but
-    have a name"""
+    """
+    Test loading a model with ignored fields.
+    The model is expected to NOT have an id or field1, but
+    have a name
+    """
 
     @add_schema
     class MyModel(MarshallerBase):
@@ -59,4 +63,3 @@ def test_load_only():
 
     d = u.dump()
     assert d == {"id": 5, "field1": 1}
-

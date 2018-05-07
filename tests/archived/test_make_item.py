@@ -1,5 +1,5 @@
 from pydent import models
-from marshmallow import pprint
+
 
 def test_make_item(session):
     st = session.SampleType.find_by_name("Fragment")

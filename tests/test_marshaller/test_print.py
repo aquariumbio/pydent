@@ -46,7 +46,8 @@ def test_to_json_with_value_for_relations(author):
 # def test_to_json_pass_in_dump_args(author):
 #     author_data = {'name': 'JoeSmo', 'id': 4}
 #     a = author.load(author_data)
-#     assert a._to_dict(only=('name',), all_relations=False) == {'name': 'JoeSmo'}
+#     assert a._to_dict(only=('name',),
+#           all_relations=False) == {'name': 'JoeSmo'}
 #
 
 def test_marshallerbase_print():

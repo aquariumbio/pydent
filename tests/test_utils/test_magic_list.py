@@ -17,8 +17,11 @@ def test_MagicList_callable():
 
 
 def test_MagicList_chaining():
-    """Tests various chaining of MagicList attributes. Applying an attribute or function
-    should be equivalent to a list comperhension (but less code necessary)."""
+    """
+    Tests various chaining of MagicList attributes. Applying an attribute
+    or function should be equivalent to a list comperhension (but less code
+    necessary).
+    """
 
     xlist = [" the cow", "jumped    ", "over the ", "moon"]
     xmagic = MagicList(xlist)
@@ -32,7 +35,8 @@ def test_MagicList_chaining():
     # .strip().upper() should be chainable
     assert xmagic.strip().upper() == [x.strip().upper() for x in xlist]
 
-    # list used to derive the MagicList should be distinct from the MagicList instance
+    # list used to derive the MagicList should be distinct from the MagicList
+    # instance
     xlist.pop()
     assert len(xlist) + 1 == len(xmagic)
 
@@ -42,32 +46,40 @@ def test_MagicList_chaining():
 
 
 def test_MagicList_apply():
-    """MagicList should be able to apply a callable function to all of its members."""
+    """
+    MagicList should be able to apply a callable function to all of its
+    members.
+    """
 
     xlist = [" the cow", "jumped    ", "over the ", "moon"]
     xmagic = MagicList(xlist)
 
-    fxn = lambda x: x.strip()
+    def fxn(x): return x.strip()
 
     assert xmagic.apply(fxn) == [x.strip() for x in xlist]
 
 
 def test_magiclist_callable():
-    """MagicList can contain a list of callables"""
+    """
+    MagicList can contain a list of callables
+    """
 
     xlist = [lambda x: x ** 2, lambda y: y ** 3]
     xmagic = MagicList(xlist)
 
     with pytest.raises(TypeError):
-        assert xmagic(3) == [3 ** 2, 3 ** 3]
+        assert xmagic.call(3) == [3 ** 2, 3 ** 3]
 
     assert xmagic.call(3) == [3 ** 2, 3 ** 3]
 
 
 def test_MagicList_getitem():
-    """We can apply dictionary keys to a MagicList. However, applying ...['x'] should raise a type
-    error, as the magiclist expects [int] to return the positional object in the list. However, '.get'
-    get return the dictionary key"""
+    """
+    We can apply dictionary keys to a MagicList. However, applying ...['x']
+    should raise a type error, as the magiclist expects [int] to return the
+    positional object in the list.
+    However, '.get' get return the dictionary key
+    """
     xlist = [
         {'x': 5, 'y': 6},
         {'x': 4, 'y': 60}
@@ -82,7 +94,9 @@ def test_MagicList_getitem():
 
 
 def test_MagicList_indexing():
-    """Positional indices should work on MagicList instances"""
+    """
+    Positional indices should work on MagicList instances
+    """
     xlist = [
         {'x': 5, 'y': 6},
         {'x': 4, 'y': 60},
@@ -95,7 +109,9 @@ def test_MagicList_indexing():
 
 
 def test_MagicList_slicing():
-    """List slices of magiclist should return a new MagicList instance"""
+    """
+    List slices of magiclist should return a new MagicList instance
+    """
     xlist = [
         {'x': 5, 'y': 6},
         {'x': 4, 'y': 60},
@@ -140,7 +156,9 @@ def test_MagicList_2D():
 
 
 def test_MagicList_TypeError():
-    """Only iterables should be allowed to create MagicLists"""
+    """
+    Only iterables should be allowed to create MagicLists
+    """
     with pytest.raises(TypeError):
         MagicList(5)
 
@@ -149,7 +167,9 @@ def test_MagicList_TypeError():
 
 
 def test_magiclist_decorator_with_list():
-    """Ensures that magiclist decorator forces returned iterable to a MagicList"""
+    """
+    Ensures that magiclist decorator forces returned iterable to a MagicList
+    """
 
     @magiclist
     def returns_a_list():
@@ -160,7 +180,9 @@ def test_magiclist_decorator_with_list():
 
 
 def test_magiclist_decorator_with_tuple():
-    """Ensures that magiclist decoraor forces returned iterable to a MagicList"""
+    """
+    Ensures that magiclist decoraor forces returned iterable to a MagicList
+    """
 
     @magiclist
     def returns_a_tuple():
@@ -171,7 +193,9 @@ def test_magiclist_decorator_with_tuple():
 
 
 def test_magiclist_decorator_with_dict_keys():
-    """Ensures that magiclist decorator forces returned iterable to a MagicList"""
+    """
+    Ensures that magiclist decorator forces returned iterable to a MagicList
+    """
 
     @magiclist
     def returns_a_dict_keys():
@@ -182,7 +206,9 @@ def test_magiclist_decorator_with_dict_keys():
 
 
 def test_magiclist_decorator_with_float():
-    """Ensures that magiclist decorator forces returned iterable to a MagicList"""
+    """
+    Ensures that magiclist decorator forces returned iterable to a MagicList
+    """
 
     @magiclist
     def returns_a_float():
@@ -192,7 +218,10 @@ def test_magiclist_decorator_with_float():
 
 
 def test_magiclist_decorator_TypeError():
-    """If returned value is not iterable, value should be returned without forcing to a magiclist """
+    """
+    If returned value is not iterable, value should be returned without forcing
+    to a magiclist
+    """
 
     @magiclist
     def returns_int():
@@ -202,7 +231,9 @@ def test_magiclist_decorator_TypeError():
 
 
 def test_magiclist_applied_to_class_method():
-    """magiclist decorator should work using class methods"""
+    """
+    magiclist decorator should work using class methods
+    """
 
     class Klass(object):
         def __init__(self):

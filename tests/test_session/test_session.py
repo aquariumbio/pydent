@@ -13,6 +13,7 @@ def test_session_models(fake_session):
 
 def test_session_repr(fake_session):
     repr = str(fake_session)
+    assert repr
 
 
 def test_interactive_login():
@@ -61,6 +62,7 @@ def test_not_logged_in(monkeypatch, fake_session):
     monkeypatch.setattr(AqHTTP, 'post', fake_post)
     assert not fake_session.logged_in()
 
+
 def test_logged_in(monkeypatch, fake_session):
 
     def fake_post(*args, **kwargs):
@@ -73,8 +75,8 @@ def test_logged_in(monkeypatch, fake_session):
     monkeypatch.setattr(AqHTTP, 'post', fake_post)
     assert fake_session.logged_in()
 
+
 def test_set_timeout(fake_session):
 
     fake_session.set_timeout(5)
     assert fake_session._AqSession__aqhttp.timeout == 5
-

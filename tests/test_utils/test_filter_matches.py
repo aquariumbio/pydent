@@ -2,6 +2,7 @@ import pytest
 
 from pydent.utils import filter_list
 
+
 @pytest.fixture
 def example():
     class Foo:

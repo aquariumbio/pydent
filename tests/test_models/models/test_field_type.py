@@ -1,4 +1,3 @@
-import pytest
 from pydent.models import FieldType
 from pydent.aqhttp import AqHTTP
 
@@ -43,11 +42,15 @@ def test_field_type_is_parameter():
 
 
 def test_initialize_field_value():
-    ft = FieldType.load({'id': 5, 'name': 'Plasmid', 'role': 'input', 'allowable_field_types': [
-        {
-            'id': 1
-        }
-    ]})
+    ft = FieldType.load(
+        {'id': 5,
+         'name': 'Plasmid',
+         'role': 'input',
+         'allowable_field_types': [
+             {
+                 'id': 1
+             }
+         ]})
     fv = ft.initialize_field_value()
     assert fv.field_type == ft
     assert fv.field_type_id == ft.id

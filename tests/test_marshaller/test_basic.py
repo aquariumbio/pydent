@@ -28,7 +28,10 @@ def mymodel():
 
 
 def test_basic_field_access(mymodel):
-    """Fields in the model definition should be accumulated in the 'include' attribute of its schema."""
+    """
+    Fields in the model definition should be accumulated in the 'include'
+    attribute of its schema.
+    """
     # Test basic access
 
     assert hasattr(mymodel, MODEL_SCHEMA)
