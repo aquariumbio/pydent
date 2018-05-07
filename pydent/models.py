@@ -668,14 +668,13 @@ class Operation(ModelBase):
 
     def field_value_array(self, name, role):
         """Returns :class:`FieldValue` array with name and role."""
-        result = self.field_value(name, role)
-        if result.field_type.array:
-            return result
-
-        msg = "FieldValue is not an array for the field value of operation"
-        msg += " {}(id={}).{}.{}"
-        raise AquariumModelError(
-            msg.format(self.operation_type.name, self.id, role, name))
+        ft = self.operation_type.field_type(name, role)
+        if not ft.array:
+            msg = "FieldValue is not an array for the field value of operation"
+            msg += " {}(id={}).{}.{}"
+            raise AquariumModelError(
+                msg.format(self.operation_type.name, self.id, role, name))
+        return filter_list(self.field_values, name=name, role=role)
 
     def field_value(self, name, role):
         """
@@ -687,7 +686,7 @@ class Operation(ModelBase):
             if len(fvs) == 0:
                 return None
 
-            if (len(fvs) == 1):
+            if len(fvs) == 1:
                 return fvs[0]
 
             msg = "More than one FieldValue found for the field value"
