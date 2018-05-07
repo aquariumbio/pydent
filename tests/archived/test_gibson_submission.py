@@ -1,6 +1,5 @@
 from pydent import models
 from pydent.exceptions import TridentRequestError
-from marshmallow import pprint
 
 
 def test_submit_gibson(session):
@@ -54,7 +53,7 @@ def test_submit_gibson(session):
     assert len(op_types) > 0, "Operation type Make PCR Fragment not found"
     pcr_type = op_types[0]
     pcr_op = pcr_type.instance()
-    forward_primer_sample = sample.field_value( "Forward Primer").sample
+    forward_primer_sample = sample.field_value("Forward Primer").sample
     assert forward_primer_sample
     pcr_op.set_input("Forward Primer", sample=forward_primer_sample)
     pcr_op.set_input("Reverse Primer", sample=forward_primer_sample)

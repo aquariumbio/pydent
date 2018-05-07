@@ -166,4 +166,5 @@ def test_submit_gibson(session):
     # save the plan
     p.save()
 
-    # print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+    # print("You may open you plan here: {}".format(
+    #       session.url + "/plans?plan_id={}".format(p.id)))
