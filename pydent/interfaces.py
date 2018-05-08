@@ -170,6 +170,11 @@ class UtilityInterface(SessionInterface):
         plan_copy = self.session.Plan.load(result)
         return plan_copy
 
+    def start_job(self, job_id):
+        result = self.aqhttp.get(
+            'krill/start?job={job_id}'.format(job_id=job_id))
+        return result
+
     def batch_operations(self, operation_ids):
         """
         Batches operations from a list of operation_ids
