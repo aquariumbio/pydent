@@ -115,7 +115,7 @@ arbitrary requests to an Aquarium server and get sensitive information
 (e.g. User json that is returned contains api_key, password_digest, etc.)
 or make damaging posts.
 Instead, a SessionInterface should be the object that makes these requests.</p>
-<p>Initializes an aquarium session with login, password, server combination</p>
+<p>Initializes an aquarium session with login, password, and server.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -180,8 +180,8 @@ Raises custom exception if not.</p>
 exception</li>
 <li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
 request from history (default=False)</li>
-<li><strong>allow_none</strong> (<em>boolean</em>) – if False, throw error if json_data contains a null or
-None value</li>
+<li><strong>allow_none</strong> (<em>boolean</em>) – if False, throw error if json_data contains a null
+or None value</li>
 <li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
 </ul>
 </td>
@@ -242,8 +242,8 @@ or None value</li>
 exception</li>
 <li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
 request from history (default=False)</li>
-<li><strong>allow_none</strong> (<em>boolean</em>) – if False, throw error if json_data contains a null or
-None value</li>
+<li><strong>allow_none</strong> (<em>boolean</em>) – if False, throw error if json_data contains a null
+or None value</li>
 <li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
 </ul>
 </td>
