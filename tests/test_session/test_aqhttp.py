@@ -232,7 +232,7 @@ def test_aqhttp_get(monkeypatch, aqhttp):
     # test get
     json_result = aqhttp.get(
         request_path, timeout=request_timeout, **extra_kwargs)
-    assert json_result
+    assert isinstance(json_result, dict) and not json_result
 
 
 def test_improperly_formatted_json_raise_TridentRequestError(monkeypatch,
