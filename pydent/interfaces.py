@@ -1,6 +1,6 @@
-"""Session interfaces for interacting with Aquarium.
+"""
+Session interfaces for interacting with Aquarium.
 
-This module contains session interfaces for interacting with an Aquarium server.
 Session interfaces are created by an AqSession instance and use an AqHTTP
 instance to make http requests to Aquarium.
 
@@ -29,7 +29,7 @@ Example:
     # => a CreateInterface
 
     session1.create.samples(list_of_samples)
-    # creates samples from a list by calling method "samples" in CreateInterface
+    # creates samples from a list by calling method CreateInterface.samples
 """
 
 import warnings
@@ -37,7 +37,6 @@ from inflection import pluralize, underscore
 from .base import ModelRegistry
 from .exceptions import TridentRequestError, TridentJSONDataIncomplete
 from .utils import url_build
-
 
 
 class SessionInterface(object):
@@ -64,7 +63,7 @@ class SessionInterface(object):
 
 class UtilityInterface(SessionInterface):
     """
-    Misc. requests for creating, updating, etc.
+    Miscellaneous requests for creating, updating, etc.
     """
 
     def create_samples(self, samples):
@@ -77,21 +76,27 @@ class UtilityInterface(SessionInterface):
                 for i in items]
 
     def create_sample_type(self, sample_type):
-        """Creates a new sample type"""
+        """
+        Creates a new sample type
+        """
         st_data = sample_type.dump(relations=('field_types'))
         result = self.aqhttp.post('sample_types.json', json_data=st_data)
         sample_type.reload(result)
         return sample_type
 
     def create_object_type(self, object_type):
-        """Creates a new object type"""
+        """
+        Creates a new object type
+        """
         ot_data = object_type.dump()
         result = self.aqhttp.post('object_types.json', json_data=ot_data)
         object_type.reload(result)
         return object_type
 
     def create_operation_type(self, operation_type):
-        """Creates a new operation type"""
+        """
+        Creates a new operation type
+        """
         op_data = operation_type.dump(include={
             'field_types': {
                 'allowable_field_types': {}
@@ -115,7 +120,9 @@ class UtilityInterface(SessionInterface):
         return operation_type
 
     def estimate_plan_cost(self, plan):
-        """Estimates the plan cost"""
+        """
+        Estimates the plan cost
+        """
         result = self.aqhttp.post('launcher/estimate', {'id': plan.id})
         total = 0
         for operation in plan.operations:
@@ -127,7 +134,9 @@ class UtilityInterface(SessionInterface):
         return total
 
     def create_plan(self, plan):
-        """Saves a plan"""
+        """
+        Saves a plan
+        """
         pre_ops = plan.operations
         plan_data = plan.to_save_json()
         result = self.aqhttp.post(
@@ -142,7 +151,8 @@ class UtilityInterface(SessionInterface):
     def save_plan(self, plan):
         plan_data = plan.to_save_json()
         result = self.aqhttp.put(
-            "plans/{}.json?user_id={}".format(plan.id, self.session.current_user.id),
+            "plans/{}.json?user_id={}".format(plan.id,
+                                              self.session.current_user.id),
             json_data=plan_data
         )
         plan.reload(result)
@@ -152,31 +162,45 @@ class UtilityInterface(SessionInterface):
         self.aqhttp.delete('plans/{}'.format(plan.id))
 
     def replan(self, plan_id):
-        """Copies a plan"""
+        """
+        Copies a plan
+        """
         result = self.aqhttp.get(
             'plans/replan/{plan_id}'.format(plan_id=plan_id))
         plan_copy = self.session.Plan.load(result)
         return plan_copy
 
     def batch_operations(self, operation_ids):
-        """Batches operations from a list of operation_ids"""
+        """
+        Batches operations from a list of operation_ids
+        """
         self.aqhttp.post('operations/batch', json_data=operation_ids)
 
     def unbatch_operations(self, operation_ids):
-        """Unbatches operations from a list of operation_ids"""
+        """
+        Unbatches operations from a list of operation_ids
+        """
         self.aqhttp.post('operations/batch', json_data=operation_ids)
 
     def set_operation_status(self, operation_id, status):
-        """Sets an operation's status"""
-        self.aqhttp.get(
-            'operations/{oid}/status/{status}'.format(oid=operation_id, status=status))
+        """
+        Sets an operation's status
+        """
+        msg = 'operations/{oid}/status/{status}'.format(
+            oid=operation_id,
+            status=status)
+        self.aqhttp.get(msg)
 
     def job_debug(self, job_id):
-        """Runs debug on a job with id=job_id"""
+        """
+        Runs debug on a job with id=job_id
+        """
         self.aqhttp.get('krill/debug/{jid}'.format(jid=job_id))
 
     def submit_plan(self, plan, user, budget):
-        """Submits a plan"""
+        """
+        Submits a plan
+        """
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
         result = self.aqhttp.get('plans/start/' + str(plan.id) +
@@ -184,7 +208,9 @@ class UtilityInterface(SessionInterface):
         return result
 
     def update_code(self, code):
-        """Updates code for a operation_type"""
+        """
+        Updates code for a operation_type
+        """
         controller = underscore(
             pluralize(code.parent_class))
 
@@ -243,7 +269,9 @@ class ModelInterface(SessionInterface):
 
         try:
             post_response = self.aqhttp.post(
-                'json', json_data=data_dict, get_from_history_ok=get_from_history_ok)
+                'json',
+                json_data=data_dict,
+                get_from_history_ok=get_from_history_ok)
         except TridentRequestError as error:
             warnings.warn(error.args)
             return None
@@ -270,21 +298,28 @@ class ModelInterface(SessionInterface):
         return models
 
     def get(self, path):
-        """Makes a generic get request"""
+        """
+        Makes a generic get request
+        """
         response = self.aqhttp.get(path)
         return self.load(response)
 
     def find(self, model_id):
-        """ Finds model by id """
+        """
+        Finds model by id """
         return self._post_json({"id": model_id}, get_from_history_ok=True)
 
     def find_by_name(self, name):
-        """ Finds model by name """
+        """
+        Finds model by name
+        """
         return self._post_json({"method": "find_by_name", "arguments": [name]},
                                get_from_history_ok=True)
 
     def array_query(self, method, args, rest, opts=None):
-        """ Finds models based on a query """
+        """
+        Finds models based on a query
+        """
         if opts is None:
             opts = {}
         options = {"offset": -1, "limit": -1, "reverse": False}
@@ -298,7 +333,9 @@ class ModelInterface(SessionInterface):
         return res
 
     def all(self, rest=None, opts=None):
-        """ Finds all models """
+        """
+        Finds all models
+        """
         if rest is None:
             rest = {}
         if opts is None:
@@ -308,7 +345,9 @@ class ModelInterface(SessionInterface):
         return self.array_query("all", [], rest, options)
 
     def where(self, criteria, methods=None, opts=None):
-        """ Finds models based on criteria """
+        """
+        Finds models based on criteria
+        """
         if methods is None:
             methods = {}
         if opts is None:
@@ -318,14 +357,18 @@ class ModelInterface(SessionInterface):
         return self.array_query("where", criteria, methods, options)
 
     def patch(self, model_id, json_data):
-        """Makes a patch or update from json_data"""
+        """
+        Makes a patch or update from json_data
+        """
         models_name = pluralize(underscore(self.model_name))
         result = self.aqhttp.put('{models}/{model_id}'.format(
             model_id=model_id, models=models_name), json_data=json_data)
         return result
 
     def new(self, *args, **kwargs):
-        """Creates a new model instance"""
+        """
+        Creates a new model instance
+        """
         instance = object.__new__(self.model)
         instance._session = None
         instance.connect_to_session(self.session)
