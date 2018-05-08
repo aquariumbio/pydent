@@ -130,8 +130,8 @@ class AqHTTP(object):
         :param get_from_history_ok: whether its ok to return previously found
                 request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False (default), will raise error if json_data
-                contains a None or null value
+        :param allow_none: if False will raise error when json_data
+                contains a None or null value (default: True)
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
@@ -169,7 +169,7 @@ class AqHTTP(object):
     def _request_to_json(result):
         """
         Turns :class:`requests.Request` instance into a json.
-        Raises custom exception if not.
+        Raises TridentRequestError if an error occurs.
         """
         try:
             result_json = result.json()
@@ -181,13 +181,13 @@ class AqHTTP(object):
                 "Verify login credentials.\nContent:\n{content}".format(
                     code=result.status_code, reason=result.reason,
                     content=result.content))
-        if "errors" in result_json:
+        """if "errors" in result_json:
             errors = result_json['errors']
             if hasattr(errors, '__len__') and len(errors) > 0:
                 raise TridentRequestError(
                     "Request: {}\n{}\n{}".format(
                         result.request.body, result, result_json['errors'])
-                )
+                )"""
         return result_json
 
     @staticmethod
@@ -215,8 +215,8 @@ class AqHTTP(object):
         :param get_from_history_ok: whether its ok to return previously found
                 request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null
-                or None value
+        :param allow_none: if False throw error if json_data contains a null
+                or None value (default True)
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
@@ -242,8 +242,8 @@ class AqHTTP(object):
         :param get_from_history_ok: whether its ok to return previously found
                 request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null
-                or None value
+        :param allow_none: if False throw error when json_data contains a null
+                or None value (default True)
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
@@ -267,8 +267,8 @@ class AqHTTP(object):
         :param get_from_history_ok: whether its ok to return previously found
                 request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null
-                or None value
+        :param allow_none: if False throw error when json_data contains a null
+                or None value (default: True)
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
