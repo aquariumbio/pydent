@@ -34,6 +34,7 @@ class MagicList(list):
     def call(self, *args, **kwargs):
         return MagicList([x(*args, **kwargs) for x in self])
 
+
 def magiclist(fxn):
     """
     Decorator that turns a returned value from a list to a MagicList as
