@@ -101,8 +101,8 @@ definition.
 The various field options and their default values are listed below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">load_all</span> <span class="o">=</span> <span class="bp">True</span>     <span class="c1"># load all data attributes defined for a model</span>
 <span class="n">strict</span> <span class="o">=</span> <span class="bp">True</span>       <span class="c1"># throw error during marshalling</span>
-<span class="n">include</span> <span class="o">=</span> <span class="p">{}</span>        <span class="c1"># fields to include for serialization/deserialization.</span>
-<span class="n">additional</span> <span class="o">=</span> <span class="p">()</span>     <span class="c1"># explicit fields for serialization/deserialization.</span>
+<span class="n">include</span> <span class="o">=</span> <span class="p">{}</span>        <span class="c1"># fields to include for serialization</span>
+<span class="n">additional</span> <span class="o">=</span> <span class="p">()</span>     <span class="c1"># explicit fields for serialization</span>
 <span class="n">ignore</span> <span class="o">=</span> <span class="p">()</span>         <span class="c1"># fields to filter during deserialization.</span>
 <span class="n">load_only</span> <span class="o">=</span> <span class="p">()</span>      <span class="c1"># fields to include during serialization</span>
 <span class="n">dump_only</span> <span class="o">=</span> <span class="p">()</span>      <span class="c1"># fields to include during deserialization</span>
@@ -128,7 +128,8 @@ to retrieve all samples that have a sample_type_id equal to the id of the
 SampleType:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">SampleType</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
-    <span class="n">samples</span> <span class="o">=</span> <span class="n">Many</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">Many</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
 </pre></div>
 </div>
 <p class="rubric">Classes</p>
@@ -4325,8 +4326,8 @@ models in model relationships.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>model_name</strong> (<em>str</em>) – the model_name, expected “Code”</li>
 <li><strong>name</strong> (<em>str</em>) – accessor name for the code.
-“source” for Library or “protocol”, “precondition”, “cost_model”, or
-“documentation” for OperationType</li>
+“source” for Library or “protocol”, “precondition”, “cost_model”,
+or “documentation” for OperationType</li>
 </ul>
 </td>
 </tr>
@@ -5119,8 +5120,9 @@ items/samples/containers, the item/sample/container must be saved.</p>
 <dl class="method">
 <dt id="pydent.models.Operation.add_to_input_array">
 <code class="descname">add_to_input_array</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.add_to_input_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.add_to_input_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates and adds a new input <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a>. When setting values to
-items/samples/containers, the item/sample/container must be saved.</p>
+<dd><p>Creates and adds a new input <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a>.
+When setting values to items/samples/containers, the
+item/sample/container must be saved.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5147,8 +5149,9 @@ items/samples/containers, the item/sample/container must be saved.</p>
 <dl class="method">
 <dt id="pydent.models.Operation.add_to_output_array">
 <code class="descname">add_to_output_array</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.add_to_output_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.add_to_output_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates and adds a new output <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a>. When setting values to
-items/samples/containers, the item/sample/container must be saved.</p>
+<dd><p>Creates and adds a new output <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a>.
+When setting values to items/samples/containers, the
+item/sample/container must be saved.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5294,7 +5297,8 @@ to <code class="xref py py-class docutils literal notranslate"><span class="pre"
 <dl class="method">
 <dt id="pydent.models.Operation.field_value">
 <code class="descname">field_value</code><span class="sig-paren">(</span><em>name</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.field_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> with name and role. Return None if not found.</p>
+<dd><p>Returns <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> with name and role.
+Return None if not found.</p>
 </dd></dl>
 
 <dl class="method">
@@ -5332,8 +5336,8 @@ dictionary</p>
 <dl class="method">
 <dt id="pydent.models.Operation.init_field_values">
 <code class="descname">init_field_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.init_field_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.init_field_values" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize the <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> from the <a class="reference internal" href="#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldType</span></code></a> of the parent <a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>
-type.</p>
+<dd><p>Initialize the <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> from the <a class="reference internal" href="#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldType</span></code></a> of the
+parent <a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> type.</p>
 </dd></dl>
 
 <dl class="method">
@@ -5460,16 +5464,19 @@ items/samples/containers, the item/sample/container must be saved.</p>
 <dt id="pydent.models.Operation.set_field_value_array">
 <code class="descname">set_field_value_array</code><span class="sig-paren">(</span><em>name</em>, <em>role</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_field_value_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array using values. Values should be a list of
-dictionaries containing sample, item, container, or values keys. When setting values to
-items/samples/containers, the item/sample/container must be saved.</p>
+dictionaries containing sample, item, container, or values keys.
+When setting values to items/samples/containers, the
+item/sample/container must be saved.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<em>string</em>) – name of the FieldType/FieldValues being modified</li>
-<li><strong>role</strong> (<em>string</em>) – role of the FieldType/FieldValue being modified (“input” or “output”)</li>
-<li><strong>values</strong> (<em>list</em>) – list of dictionary of values to set (e.g. [{“sample”: mysample}, {“item”: myitem}])</li>
+<li><strong>role</strong> (<em>string</em>) – role of the FieldType/FieldValue being modified
+(“input” or “output”)</li>
+<li><strong>values</strong> (<em>list</em>) – list of dictionary of values to set
+(e.g. [{“sample”: mysample}, {“item”: myitem}])</li>
 </ul>
 </td>
 </tr>
@@ -5514,16 +5521,19 @@ items/samples/containers, the item/sample/container must be saved.</p>
 <dl class="method">
 <dt id="pydent.models.Operation.set_input_array">
 <code class="descname">set_input_array</code><span class="sig-paren">(</span><em>name</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_input_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_input_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets input <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array using values. Values should be a list of
-dictionaries containing sample, item, container, or values keys. When setting values to
-items/samples/containers, the item/sample/container must be saved.</p>
+<dd><p>Sets input <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array using values.
+Values should be a list of dictionaries containing sample, item,
+container, or values keys.
+When setting values to items/samples/containers, the
+item/sample/container must be saved.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<em>string</em>) – name of the FieldType/FieldValues being modified</li>
-<li><strong>values</strong> (<em>list</em>) – list of dictionary of values to set (e.g. [{“sample”: mysample}, {“item”: myitem}])</li>
+<li><strong>values</strong> (<em>list</em>) – list of dictionary of values to set
+(e.g. [{“sample”: mysample}, {“item”: myitem}])</li>
 </ul>
 </td>
 </tr>
@@ -5568,16 +5578,19 @@ items/samples/containers, the item/sample/container must be saved.</p>
 <dl class="method">
 <dt id="pydent.models.Operation.set_output_array">
 <code class="descname">set_output_array</code><span class="sig-paren">(</span><em>name</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_output_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_output_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets output <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array using values. Values should be a list of
-dictionaries containing sample, item, container, or values keys. When setting values to
-items/samples/containers, the item/sample/container must be saved.</p>
+<dd><p>Sets output <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array using values.
+Values should be a list of dictionaries containing sample, item,
+container, or values keys.
+When setting values to items/samples/containers, the
+item/sample/container must be saved.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<em>string</em>) – name of the FieldType/FieldValues being modified</li>
-<li><strong>values</strong> (<em>list</em>) – list of dictionary of values to set (e.g. [{“sample”: mysample}, {“item”: myitem}])</li>
+<li><strong>values</strong> (<em>list</em>) – list of dictionary of values to set
+(e.g. [{“sample”: mysample}, {“item”: myitem}])</li>
 </ul>
 </td>
 </tr>
@@ -5839,8 +5852,8 @@ models in model relationships.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>model_name</strong> (<em>str</em>) – the model_name, expected “Code”</li>
 <li><strong>name</strong> (<em>str</em>) – accessor name for the code.
-“source” for Library or “protocol”, “precondition”, “cost_model”, or
-“documentation” for OperationType</li>
+“source” for Library or “protocol”, “precondition”, “cost_model”,
+or “documentation” for OperationType</li>
 </ul>
 </td>
 </tr>
@@ -6240,7 +6253,8 @@ to <code class="xref py py-class docutils literal notranslate"><span class="pre"
 <dl class="method">
 <dt id="pydent.models.Plan.estimate_cost">
 <code class="descname">estimate_cost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.estimate_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.estimate_cost" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the cost of the plan on the Aquarium server. This is necessary before plan submission.</p>
+<dd><p>Estimates the cost of the plan on the Aquarium server.
+This is necessary before plan submission.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -6421,8 +6435,8 @@ dictionary.</p>
 <dl class="method">
 <dt id="pydent.models.Plan.to_save_json">
 <code class="descname">to_save_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.to_save_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.to_save_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the json representation of the plan for saving and creating Plans on the
-Aquarium server.</p>
+<dd><p>Returns the json representation of the plan for saving and creating
+Plans on the Aquarium server.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
