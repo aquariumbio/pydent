@@ -17,16 +17,14 @@ def test_submit_order_primer(session):
 
 
 def test_plan_with_parameter(session):
-    primer = session.SampleType.where({'name': 'Primer'})[0].samples[-1]
+    primer = session.SampleType.find_by_name('Primer')
     assert(primer), "Sample type Primer not found"
-    print(primer)
-    print()
+    print("primer:\n{}\n".format(primer))
 
     # get Order Primer operation type
-    op_types = session.OperationType.where({'name': 'Order Primer'})
-    assert(len(op_types) > 1), "Operation type Order Primer not found"
-    ot = op_types[1]
-    print(ot)
+    ot = session.OperationType.find_by_name('Order Primer')
+    assert ot, "Operation type Order Primer not found"
+    print("op type:\n{}\n".format(ot))
 
     # create an operation
     order_primer = ot.instance()
@@ -56,9 +54,8 @@ def test_plan_with_parameter(session):
 
 def test_parameter_to_zero(session):
     test_plan = models.Plan(name="Test Plan")
-    op_types = session.OperationType.where({'name': 'Challenge and Label'})
-    assert(len(op_types) > 0), "Operation type Challenge and Label not found"
-    op_type = op_types[0]
+    op_type = session.OperationType.find_by_name('Challenge and Label')
+    assert(op_type), "Operation type Challenge and Label not found"
 
     op1 = op_type.instance()
     op1.set_input('Protease Concentration', value=0)
