@@ -1,4 +1,3 @@
-import warnings
 
 from pydent.base import ModelRegistry
 from pydent.aqhttp import AqHTTP
@@ -14,11 +13,6 @@ def test_session_models(fake_session):
 def test_session_repr(fake_session):
     repr = str(fake_session)
     assert repr
-
-
-def test_interactive_login():
-    warnings.warn("No test implemented for interactive login...")
-    # I don't know how to test interactive inputs...
 
 
 def test_access_models_interface(fake_session):
