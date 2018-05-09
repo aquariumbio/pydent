@@ -2,7 +2,8 @@ import json
 import warnings
 from copy import deepcopy
 
-from pydent.marshaller.exceptions import MarshallerCallbackNotFoundError, MarshallerRelationshipError
+from pydent.marshaller.exceptions import (MarshallerCallbackNotFoundError,
+                                          MarshallerRelationshipError)
 from pydent.marshaller.schema import MODEL_SCHEMA
 from pydent.utils import pformat
 
@@ -23,7 +24,8 @@ class MarshallerBase(object):
         class UserModel(MarshallerBase):
             fields = dict(
                 ignore=("password",),
-                budgets=Relation("Budget", callback="find_budgets", params=lambda self: self.id)
+                budgets=Relation("Budget", callback="find_budgets",
+                                 params=lambda self: self.id)
             )
 
             def find_budgets(user_id):
@@ -73,7 +75,8 @@ class MarshallerBase(object):
     @classmethod
     def get_relationships(cls):
         """
-        Get the name: relationship (:class:`pydent.marshaller.relation.Relation`)
+        Get the name: relationship
+        (:class:`pydent.marshaller.relation.Relation`)
         dictionary
         """
         schema_class = cls.get_schema_class()
@@ -84,15 +87,16 @@ class MarshallerBase(object):
     @property
     def relationships(self):
         """
-        Get the name: relationship (:class:`pydent.marshaller.relation.Relation`)
+        Get the name: relationship
+        (:class:`pydent.marshaller.relation.Relation`)
         dictionary.
         """
         return self.__class__.get_relationships()
 
     @classmethod
     def load(cls, data, *args, only=None, exclude=(), all_relations=False,
-             prefix='', strict=None, many=False, relations=(), load_only=(), dump_only=(),
-             partial=False, **kwargs):
+             prefix='', strict=None, many=False, relations=(), load_only=(),
+             dump_only=(), partial=False, **kwargs):
         """Loads the model instance from JSON. For parameter options, refer to
         :class:`pydent.marshaller.schema.DynamicSchema`"""
 
@@ -113,9 +117,10 @@ class MarshallerBase(object):
         schema = cls.create_schema_instance(*args, **schema_kwargs)
         if schema:
             return schema.load(data).data
-        else:
-            warnings.warn(
-                "Cannot dump! No schema attached to '{}'".format(cls.__name__))
+
+        # TODO: violates an invariant, throw an exception
+        warnings.warn(
+            "Cannot dump! No schema attached to '{}'".format(cls.__name__))
 
     def dump(self, only=None, include=(), exclude=(), relations=(),
              all_relations=False, prefix='', strict=None,
@@ -198,7 +203,9 @@ class MarshallerBase(object):
             kwargs.update(opts)
 
         def dump_model(model):
-            """Tries to dump model using dumping parameters"""
+            """
+            Tries to dump model using dumping parameters
+            """
             if isinstance(model, MarshallerBase):
                 _include = {}
                 if isinstance(include, dict):
@@ -228,13 +235,16 @@ class MarshallerBase(object):
         schema = self.__class__.create_schema_instance(*args, **kwargs)
         if schema:
             return schema.dump(self).data
-        else:
-            warnings.warn("Cannot dump! No schema attached to '{}'".format(
-                self.__class__.__name__))
+
+        # TODO: throw an exception. this is an invariant
+        warnings.warn("Cannot dump! No schema attached to '{}'".format(
+            self.__class__.__name__))
 
     def dumps(self, *schema_args, **schema_kwargs):
-        """Dumps the model instance to a String. For parameter options, refer
-        to :class:`pydent.marshaller.schema.DynamicSchema`"""
+        """
+        Dumps the model instance to a String. For parameter options, refer
+        to :class:`pydent.marshaller.schema.DynamicSchema`
+        """
         json_data = self.dump(*schema_args, **schema_kwargs)
         return json.dumps(json_data)
 
@@ -321,13 +331,14 @@ class MarshallerBase(object):
                 for index, message in enumerate(error.args):
                     msg += "({}) {}\n".format(index, message)
                 error.args = tuple(list(error.args) + [msg])
-                # warnings.warn(' '.join(error.args))
+                #warnings.warn(' '.join(error.args))
             if save_attr:
                 setattr(self, item, ret)
             return ret
         raise MarshallerRelationshipError(
             "'{}' model has no attribute '{}'. Attribute was not found in list of relationships: {}".format(
-                self.__class__.__name__, item, ', '.join(relationships.keys())))
+                self.__class__.__name__, item,
+                ', '.join(relationships.keys())))
 
     def _relations_to_json(self):
         """

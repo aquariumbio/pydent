@@ -51,11 +51,11 @@ def test_wire():
     print(p.wires)
 
 
-def test_est_costs(session):
-    p = session.Plan.find(79147)
-    assert p, "Plan 79147 not found"
-    cost = p.estimate_cost()
-    print(cost)
+# def test_est_costs(session):
+#    p = session.Plan.find(79147)
+#    assert p, "Plan 79147 not found"
+#    cost = p.estimate_cost()
+#    print(cost)
 
 
 def test_add_wire():
@@ -69,7 +69,7 @@ def test_add_wire():
 
 
 # TODO: make this a deterministic test
-def test_new_plan(session):
+"""def test_new_plan(session):
 
     p = Plan()
     p.connect_to_session(session)
@@ -78,7 +78,7 @@ def test_new_plan(session):
 
     p.id = 1000000
     assert p.operations == []
-    assert p.plan_associations == []
+    assert p.plan_associations == []"""
 
 
 # def test_submit(session):
@@ -122,10 +122,13 @@ def test_new_plan(session):
 #     purify_gel = get_op('Purify Gel Slice')
 #
 #     # setup pcr
-#     make_pcr_fragment.set_input('Forward Primer', item=session.Item.find(81867))
-#     make_pcr_fragment.set_input('Reverse Primer', item=session.Item.find(57949))
+#     make_pcr_fragment.set_input('Forward Primer',
+#                                 item=session.Item.find(81867))
+#     make_pcr_fragment.set_input('Reverse Primer',
+#                                 item=session.Item.find(57949))
 #     make_pcr_fragment.set_input('Template', item=session.Item.find(61832))
-#     make_pcr_fragment.set_output('Fragment', sample=session.Sample.find(16976))
+#     make_pcr_fragment.set_output('Fragment',
+#                                  sample=session.Sample.find(16976))
 #
 #     # setup outputs
 #     # run_gel.set_output(sample=session.Sample.find(16976))
@@ -135,7 +138,8 @@ def test_new_plan(session):
 #
 #     # new plan
 #     p = session.Plan()
-#     p.add_operations([make_pcr_fragment, pour_gel, run_gel, extract_gel_slice, purify_gel])
+#     p.add_operations([make_pcr_fragment, pour_gel, run_gel,
+#                       extract_gel_slice, purify_gel])
 #
 #     p.add_wires([
 #         (make_pcr_fragment.output("Fragment"), run_gel.input("Fragment")),
@@ -144,7 +148,8 @@ def test_new_plan(session):
 #         (extract_gel_slice.output("Fragment"), purify_gel.input("Gel"))
 #     ])
 #
-#     make_pcr_fragment.set_output("Fragment", sample=session.Sample.find(16976))
+#     make_pcr_fragment.set_output("Fragment",
+#                                  sample=session.Sample.find(16976))
 #
 #
 #     pdata = p.to_save_json()

@@ -165,13 +165,19 @@ class DataAssociatorMixin:
     Mixin for handling data associations
     """
 
-    # Should this be modified to handle uploads so that it mirrors the back end?
     def associate(self, key, value):
+        """
+        Adds a data association with the key and value to this object.
+        """
         session = self.session
         aqhttp = session._AqSession__aqhttp
 
         data = {
-            "model": {"model": DataAssociation.__name__, "record_methods": {}, "record_getters": {}},
+            "model": {
+                "model": DataAssociation.__name__,
+                "record_methods": {},
+                "record_getters": {}
+            },
             "parent_id": self.id,
             "key": str(key),
             "object": json.dumps({str(key): value}),
@@ -1024,8 +1030,7 @@ class OperationType(ModelBase, HasCodeMixin):
     )
 
     def get_field_type(self, model_name, parent_class):
-
-        return self.code(name)
+        return self.code(model_name)
 
     def instance(self, xpos=None, ypos=None):
         operation = Operation(operation_type_id=self.id,

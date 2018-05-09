@@ -67,9 +67,6 @@ def test_magiclist_callable():
     xlist = [lambda x: x ** 2, lambda y: y ** 3]
     xmagic = MagicList(xlist)
 
-    with pytest.raises(TypeError):
-        assert xmagic.call(3) == [3 ** 2, 3 ** 3]
-
     assert xmagic.call(3) == [3 ** 2, 3 ** 3]
 
 

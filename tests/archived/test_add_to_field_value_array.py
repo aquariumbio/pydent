@@ -3,8 +3,7 @@ from marshmallow import pprint
 
 
 def test_add_field_value_array(session):
-    op_type = session.OperationType.where(
-        {'name': "Assemble NEB Golden Gate"})[0]
+    op_type = session.OperationType.find_by_name("Assemble NEB Golden Gate")
     op = op_type.instance()
 
     st = session.SampleType.find_by_name("Fragment")

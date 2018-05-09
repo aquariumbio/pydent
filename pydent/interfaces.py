@@ -32,7 +32,6 @@ Example:
     # creates samples from a list by calling method CreateInterface.samples
 """
 
-import warnings
 from inflection import pluralize, underscore
 from .base import ModelRegistry
 from .exceptions import TridentRequestError, TridentJSONDataIncomplete
@@ -231,7 +230,7 @@ class UtilityInterface(SessionInterface):
             code.updated_at = result["updated_at"]
         else:
             raise TridentRequestError(
-                "Unable to update code object {}".format(code_data))
+                "Unable to update code object {}".format(code_data), result)
 
     def compatible_items(self, sample_id, object_type_id):
         """
@@ -266,24 +265,25 @@ class ModelInterface(SessionInterface):
 
     def _post_json(self, data, get_from_history_ok=False):
         """
-        Posts a json request to this interface's session.
+        Posts a json request to session for this interface.
         Attaches raw json and this session instance to the models it retrieves.
         """
         data_dict = {'model': self.model_name}
         data_dict.update(data)
 
+        post_response = None
         try:
             post_response = self.aqhttp.post(
                 'json',
                 json_data=data_dict,
                 get_from_history_ok=get_from_history_ok)
-        except TridentRequestError as error:
-            warnings.warn(error.args)
-            return None
-        except TridentJSONDataIncomplete as error:
-            warnings.warn(error.args)
-            return None
-        return self.load(post_response)
+        except TridentRequestError as err:
+            if err.response.status_code == 422:
+                return None
+            raise err
+
+        if post_response:
+            return self.load(post_response)
 
     def load(self, post_response):
         """
@@ -292,8 +292,7 @@ class ModelInterface(SessionInterface):
         If data is a list, will return a list of model instances.
         """
         many = isinstance(post_response, list)
-        models = self.model.load(
-            post_response, many=many)
+        models = self.model.load(post_response, many=many)
         if many:
             assert len(post_response) == len(models)
             for model in models:
@@ -311,7 +310,8 @@ class ModelInterface(SessionInterface):
 
     def find(self, model_id):
         """
-        Finds model by id """
+        Finds model by id
+        """
         return self._post_json({"id": model_id}, get_from_history_ok=True)
 
     def find_by_name(self, name):

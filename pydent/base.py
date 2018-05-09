@@ -1,4 +1,5 @@
-"""Aquarium model baseclass
+"""
+Aquarium model baseclass
 
 This module contains the base classes for Trident models.
 Trident models load from JSON and dump to JSON.

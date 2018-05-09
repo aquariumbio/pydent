@@ -1,4 +1,5 @@
-"""Request class for making raw http requests to Aquarium
+"""
+Request class for making raw http requests to Aquarium
 
 This module contains the AqHTTP class, which can make arbitrary post/put/get
 requests to Aquarium and returns JSON data.
@@ -130,8 +131,8 @@ class AqHTTP(object):
         :param get_from_history_ok: whether its ok to return previously found
                 request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False (default), will raise error if json_data
-                contains a None or null value
+        :param allow_none: if False will raise error when json_data
+                contains a None or null value (default: True)
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
@@ -163,31 +164,20 @@ class AqHTTP(object):
                 timeout=timeout,
                 **kwargs)
             self.request_history[key] = result
-        return self._request_to_json(result)
+        return self._response_to_json(result)
 
     @staticmethod
-    def _request_to_json(result):
+    def _response_to_json(result):
         """
         Turns :class:`requests.Request` instance into a json.
-        Raises custom exception if not.
+        Raises TridentRequestError if an error occurs.
         """
         try:
             result_json = result.json()
         except json.JSONDecodeError:
-            raise TridentRequestError(
-                "<StatusCode: {code} ({reason})> "
-                "Response is not JSON formatted. "
-                "Trident may not be properly connected to the server. "
-                "Verify login credentials.\nContent:\n{content}".format(
-                    code=result.status_code, reason=result.reason,
-                    content=result.content))
-        if "errors" in result_json:
-            errors = result_json['errors']
-            if hasattr(errors, '__len__') and len(errors) > 0:
-                raise TridentRequestError(
-                    "Request: {}\n{}\n{}".format(
-                        result.request.body, result, result_json['errors'])
-                )
+            raise TridentRequestError("Response is not JSON formatted", result)
+        if result_json and 'errors' in result_json:
+            raise TridentRequestError("Error response", result)
         return result_json
 
     @staticmethod
@@ -215,8 +205,8 @@ class AqHTTP(object):
         :param get_from_history_ok: whether its ok to return previously found
                 request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null
-                or None value
+        :param allow_none: if False throw error if json_data contains a null
+                or None value (default True)
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
@@ -242,8 +232,8 @@ class AqHTTP(object):
         :param get_from_history_ok: whether its ok to return previously found
                 request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null
-                or None value
+        :param allow_none: if False throw error when json_data contains a null
+                or None value (default True)
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict
@@ -267,8 +257,8 @@ class AqHTTP(object):
         :param get_from_history_ok: whether its ok to return previously found
                 request from history (default=False)
         :type get_from_history_ok: boolean
-        :param allow_none: if False, throw error if json_data contains a null
-                or None value
+        :param allow_none: if False throw error when json_data contains a null
+                or None value (default: True)
         :type allow_none: boolean
         :param kwargs: additional arguments to post to request
         :type kwargs: dict

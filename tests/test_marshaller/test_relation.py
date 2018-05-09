@@ -46,8 +46,8 @@ def test_relationship_access():
     assert "field4" not in relationships
 
     # make sure relationships are in the schema fields
-    assert "field5" in schema.fields
-    assert "field6" in schema.fields
+    assert "field5" in schema().fields
+    assert "field6" in schema().fields
 
 
 def test_relationships_property():
