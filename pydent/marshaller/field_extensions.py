@@ -38,12 +38,13 @@ class Relation(fields.Nested):
 
     Uses "callback" with "params" to find models.
     Callback is applied to the model that is fullfilling this relation.
-    Params may include lambdas of the form "lambda self: <do something with self>"
+    Params may be lambdas of the form "lambda self: <do something with self>"
     which passes in the model instance.
     """
 
     def __init__(self, model, callback, params, *args, allow_none=True, **kwargs):
-        """Relation initializer.
+        """
+        Relation initializer.
 
         :param model: target model
         :type model: basestring
@@ -90,8 +91,9 @@ class Relation(fields.Nested):
         return dumped
 
     def __repr__(self):
-        return "<{} (model={}, callback={}, params={})>".format(self.__class__.__name__,
-                                                                self.nested, self.callback, self.params)
+        return "<{} (model={}, callback={}, params={})>".format(
+            self.__class__.__name__,
+            self.nested, self.callback, self.params)
 
 
 fields.Relation = Relation

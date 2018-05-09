@@ -1,4 +1,5 @@
-"""Request class for making raw http requests to Aquarium
+"""
+Request class for making raw http requests to Aquarium
 
 This module contains the AqHTTP class, which can make arbitrary post/put/get
 requests to Aquarium and returns JSON data.
