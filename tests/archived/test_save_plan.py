@@ -78,7 +78,7 @@ def test_submit_gibson(session):
     # find "Assembly Plasmid" protocol
     op_types = session.OperationType.where(
         {"deployed": True, "name": "Assemble Plasmid"})
-    assert(len(op_types) > 1), "Operation type Assemble Plasmid not found"
+    assert(len(op_types) > 0), "Operation type Assemble Plasmid not found"
     gibson_type = op_types[0]
 
     # instantiate gibson operation
