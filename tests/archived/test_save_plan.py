@@ -30,7 +30,7 @@ def test_plan_with_parameter(session):
     order_primer = ot.instance()
 
     # set io
-    order_primer.set_output("Primer", sample=primer)
+    order_primer.set_output("Primer", sample=primer.samples[0])
     order_primer.set_input("Urgent?", value="no")
 
     # create a new plan
