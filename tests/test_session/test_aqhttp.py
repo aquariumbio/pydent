@@ -258,39 +258,6 @@ def test_improperly_formatted_json_raise_TridentRequestError(monkeypatch,
         aqhttp.post("someurl", json_data={})
 
 
-def test_json_returned_with_errors(monkeypatch, aqhttp):
-    """
-    If JSON is returned with 'errors' TridentRequestError should be raised.
-    """
-
-    error_message = 'some error happened'
-
-    # A fake requests sessions object
-    class mock_request(object):
-        @staticmethod
-        def request(method, path, timeout=None, **kwargs):
-            # return faked response
-            fake_requests_response = requests.Response()
-            fake_requests_response.json = lambda: {'errors': [error_message]}
-
-            class Fake:
-                body = 'RequestBody'
-
-            fake_requests_response.request = Fake
-            return fake_requests_response
-
-    monkeypatch.setattr(aqhttp, '_requests_session', mock_request)
-
-    # assert error is raised
-    with pytest.raises(TridentRequestError):
-        aqhttp.post("someurl", json_data={})
-
-    # assert the error message is returned in the raised error
-    try:
-        aqhttp.post('ljlj', json_data={})
-    except TridentRequestError as e:
-        assert error_message in e.args[0]
-
 
 def test_request_history(monkeypatch, aqhttp):
     """
