@@ -290,27 +290,27 @@ def test_dump():
     assert fake_dump['sid'] == fake_fv.sid
 
 
-def test_wires_as_source(session):
-    fv = session.FieldValue.find(520346)
-    assert fv, "FieldValue 520346 not found"
-    wires = fv.wires_as_source
-    print(wires)
+# def test_wires_as_source(session):
+#    fv = session.FieldValue.find(520346)
+#    assert fv, "FieldValue 520346 not found"
+#    wires = fv.wires_as_source
+#    print(wires)
 
 
-def test_wires_as_dest(session):
-    fv = session.FieldValue.find(520346)
-    assert fv, "FieldValue 520346 not found"
-    wires = fv.wires_as_dest
-    print(wires)
+# def test_wires_as_dest(session):
+#    fv = session.FieldValue.find(520346)
+#    assert fv, "FieldValue 520346 not found"
+#    wires = fv.wires_as_dest
+#    print(wires)
 
 
-def test_successors(session):
-    fv = session.FieldValue.find(520346)
-    assert fv, "FieldValue 520346 not found"
-    print(fv.successors)
+# def test_successors(session):
+#    fv = session.FieldValue.find(520346)
+#    assert fv, "FieldValue 520346 not found"
+#    print(fv.successors)
 
 
-def test_predecessors(session):
-    fv = session.FieldValue.find(520346)
-    assert fv, "FieldValue 520346 not found"
-    print(fv.predecessors)
+# def test_predecessors(session):
+#    fv = session.FieldValue.find(520346)
+#    assert fv, "FieldValue 520346 not found"
+#    print(fv.predecessors)
