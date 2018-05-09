@@ -230,7 +230,7 @@ class UtilityInterface(SessionInterface):
             code.updated_at = result["updated_at"]
         else:
             raise TridentRequestError(
-                "Unable to update code object {}".format(code_data))
+                "Unable to update code object {}".format(code_data), result)
 
     def compatible_items(self, sample_id, object_type_id):
         """
@@ -271,11 +271,17 @@ class ModelInterface(SessionInterface):
         data_dict = {'model': self.model_name}
         data_dict.update(data)
 
-        post_response = self.aqhttp.post(
-            'json',
-            json_data=data_dict,
-            get_from_history_ok=get_from_history_ok)
-            
+        post_response = None
+        try:
+            post_response = self.aqhttp.post(
+                'json',
+                json_data=data_dict,
+                get_from_history_ok=get_from_history_ok)
+        except TridentRequestError as err:
+            if err.response.status_code == 422:
+                return None
+            raise err
+
         if post_response:
             return self.load(post_response)
 
@@ -286,8 +292,7 @@ class ModelInterface(SessionInterface):
         If data is a list, will return a list of model instances.
         """
         many = isinstance(post_response, list)
-        models = self.model.load(
-            post_response, many=many)
+        models = self.model.load(post_response, many=many)
         if many:
             assert len(post_response) == len(models)
             for model in models:
