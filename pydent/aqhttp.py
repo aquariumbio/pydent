@@ -163,10 +163,10 @@ class AqHTTP(object):
                 timeout=timeout,
                 **kwargs)
             self.request_history[key] = result
-        return self._request_to_json(result)
+        return self._response_to_json(result)
 
     @staticmethod
-    def _request_to_json(result):
+    def _response_to_json(result):
         """
         Turns :class:`requests.Request` instance into a json.
         Raises TridentRequestError if an error occurs.
@@ -174,14 +174,9 @@ class AqHTTP(object):
         try:
             result_json = result.json()
         except json.JSONDecodeError:
-            raise TridentRequestError(
-                "<StatusCode: {code} ({reason})> "
-                "Response is not JSON formatted. "
-                "Trident may not be properly connected to the server. "
-                "Verify login credentials.\nContent:\n{content}".format(
-                    code=result.status_code, reason=result.reason,
-                    content=result.content))
-
+            raise TridentRequestError("Response is not JSON formatted", result)
+        if result_json and 'errors' in result_json:
+            raise TridentRequestError("Error response", result)
         return result_json
 
     @staticmethod
