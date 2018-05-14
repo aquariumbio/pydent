@@ -34,7 +34,7 @@ Example:
 
 from inflection import pluralize, underscore
 from .base import ModelRegistry
-from .exceptions import TridentRequestError, TridentJSONDataIncomplete
+from .exceptions import TridentRequestError
 from .utils import url_build
 
 
