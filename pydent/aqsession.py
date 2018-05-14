@@ -8,8 +8,8 @@ information.
 From there, the session instance is used to make http requests
 (like finding models, updating plans, etc.)
 
-AqSession creates SessionInterfaces which can make http requests to Aquarium but
-does not itself make the requests.
+AqSession creates SessionInterfaces which can make http requests to Aquarium
+but does not itself make the requests.
 
 Interfaces are accessed by:
 
@@ -28,7 +28,8 @@ from prompt_toolkit import prompt
 
 class AqSession(object):
     """
-    Holds a AqHTTP with login information. Creates SessionInterfaces for models.
+    Holds an AqHTTP with login information.
+    Creates SessionInterfaces for models.
 
     .. code-block:: python
 
