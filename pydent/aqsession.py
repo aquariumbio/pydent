@@ -60,7 +60,8 @@ class AqSession(object):
 
         # initialize model interfaces
         for model_name in allmodels:
-            setattr(self, model_name, ModelInterface(model_name, self.__aqhttp, self))
+            setattr(self, model_name,
+                    ModelInterface(model_name, self.__aqhttp, self))
 
     def set_timeout(self, timeout_in_seconds):
         """Sets the request timeout."""
