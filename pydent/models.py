@@ -58,8 +58,9 @@ SampleType:
 """
 
 import warnings
-
+import shutil
 import requests
+import os
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema, fields
@@ -601,6 +602,11 @@ class Job(ModelBase):
         job_associations=HasMany("JobAssociation", "Job"),
         operations=HasManyThrough("Operation", "JobAssociation")
     )
+
+    @property
+    def uploads(self):
+        http = self.session._AqSession__aqhttp
+        return http.get("krill/uploads?job={}".format(self.id))['uploads']
 
 
 @add_schema
@@ -1319,14 +1325,44 @@ class Upload(ModelBase):
     """
     An Upload model
     """
+    fields = dict(
+        job=HasOne("Job")
+    )
 
-    @property
+    # def _get_uploads_from_job_id(self, job_id):
+
+    def _get_uploads_from_job(self):
+        http = self.session._AqSession__aqhttp
+        return http.get("krill/uploads?job={}".format(self.job_id))['uploads']
+
     def temp_url(self):
-        return self.session.Upload.where_callback({"id", self.id},
-                                                  {"methods": ["url"]})[0].url
+        uploads = self._get_uploads_from_job()
+        _u_arr = [upload for upload in uploads if upload['id'] == self.id]
+        return _u_arr[0]['url']
+
+    def _download_image_from_url(self, url, outpath):
+        response = requests.get(url, stream=True)
+        with open(outpath, 'wb') as out_file:
+            shutil.copyfileobj(response.raw, out_file)
+        return response.raw
+
+    def download(self, outdir=None, filename=None):
+        """
+        Downloads the uploaded file
+
+        :param outdir: path of directory of output file (default is current directory)
+        :param outfile: filename of output file (defaults to upload_filename)
+        :return:
+        """
+        if outdir is None:
+            outdir = '.'
+        if filename is None:
+            filename = "{}_{}".format(self.id, self.upload_file_name)
+        self._download_image_from_url(self.temp_url(), os.path.join(outdir, filename))
 
     @property
     def data(self):
+        print(self.temp_url())
         result = requests.get(self.temp_url)
         return result.content
 
