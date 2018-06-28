@@ -1278,6 +1278,7 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         """
         return Plan._async_download_files(self.data_associations, outdir, overwrite)
 
+
 @add_schema
 class PlanAssociation(ModelBase):
     """A PlanAssociation model"""
@@ -1317,6 +1318,33 @@ class Sample(ModelBase):
     @property
     def field_names(self):
         return [fv.name for fv in self.field_values]
+
+    def _fv_dict(self, expected_keys):
+        d = {k: None for k in expected_keys}
+        fvs = self.field_values
+        if fvs is not None:
+            for fv in fvs:
+                if fv.name in d:
+                    v = None
+                    if fv.sample is not None:
+                        v = fv.sample
+                    else:
+                        v = fv.value
+                    if d[fv.name] is None:
+                        # set value
+                        d[fv.name] = v
+                    elif type(d[fv.name]) is list:
+                        # append to list
+                        d[fv.name].append(v)
+                    else:
+                        # make values an array
+                        d[fv.name] = d[fv.name] + [v]
+        return d
+
+    @property
+    def properties(self):
+        fv_keys = [ft.name for ft in self.sample_type.field_types]
+        return self._fv_dict(fv_keys)
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
