@@ -12,7 +12,8 @@ install_requires = [
     'inflection',
     'marshmallow==2.15.1',
     'requests',
-    'prompt_toolkit'
+    'prompt_toolkit',
+    'tqdm'
 ]
 
 def parse_version_file():
