@@ -68,6 +68,7 @@ from pydent.relationships import (One, Many, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric)
 from pydent.utils import magiclist, filter_list
 from pydent.utils.plan_validator import PlanValidator
+from pydent.utils.async_requests import make_async
 import json
 
 __all__ = [
@@ -1255,6 +1256,27 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         """Copies or replans the plan"""
         return self.replan()
 
+    @staticmethod
+    @make_async(1)
+    def _async_download_files(data_associations, outdir=None, overwrite=True):
+        Plan._download_files(data_associations, outdir=outdir, overwrite=overwrite)
+
+    @staticmethod
+    def _download_files(data_associations, outdir=None, overwrite=True):
+        for da in data_associations:
+            if da.upload is not None:
+                da.upload.download(outdir=outdir, overwrite=overwrite)
+
+    def download_files(self, outdir=None, overwrite=True):
+        """
+        Downloads all uploads associated with the plan. Downloads happen
+        ansynchrounously.
+
+        :param outdir: output directory for downloaded files
+        :param overwrite: whether to overwrite files if they exist
+        :return: None
+        """
+        return Plan._async_download_files(self.data_associations, outdir, overwrite)
 
 @add_schema
 class PlanAssociation(ModelBase):
@@ -1346,19 +1368,22 @@ class Upload(ModelBase):
             shutil.copyfileobj(response.raw, out_file)
         return response.raw
 
-    def download(self, outdir=None, filename=None):
+    def download(self, outdir=None, filename=None, overwrite=True):
         """
         Downloads the uploaded file
 
         :param outdir: path of directory of output file (default is current directory)
         :param outfile: filename of output file (defaults to upload_filename)
+        :param overwrite: whether to overwrite file if it already exists
         :return:
         """
         if outdir is None:
             outdir = '.'
         if filename is None:
             filename = "{}_{}".format(self.id, self.upload_file_name)
-        self._download_image_from_url(self.temp_url(), os.path.join(outdir, filename))
+        filepath = os.path.join(outdir, filename)
+        if not os.path.exists(filepath) or overwrite:
+            self._download_image_from_url(self.temp_url(), filepath)
 
     @property
     def data(self):
