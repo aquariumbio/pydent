@@ -19,6 +19,7 @@ pydent.models
       Code
       Collection
       DataAssociation
+      DataAssociatorMixin
       FieldMixin
       FieldType
       FieldValue
