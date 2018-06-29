@@ -15,11 +15,9 @@ def config():
     dir = os.path.dirname(os.path.abspath(__file__))
 
     config_path = os.path.join(dir, "secrets", "config.json.secret")
-    if os.path.isfile(config_path):
-        with open(config_path, 'rU') as f:
-            config = json.load(f)
-        return config
-    return None
+    with open(config_path, 'rU') as f:
+        config = json.load(f)
+    return config
 
 
 @pytest.fixture(scope="session")

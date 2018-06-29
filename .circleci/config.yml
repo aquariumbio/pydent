@@ -49,7 +49,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pytest tests
+            pytest tests --ignore tests/archived
 
       - store_artifacts:
           path: test-reports
