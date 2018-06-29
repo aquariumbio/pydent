@@ -49,8 +49,7 @@ jobs:
             pytest tests --ignore tests/archived
 
       - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          path: ~/pytest_results
 
       - store_test_results:
           path: ~/pytest_results
