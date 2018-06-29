@@ -25,9 +25,17 @@ developed.
 
 ## Quick installation
 
-1. `git clone git@github.com:klavinslab/trident.git`
-1. `cd trident`
-1. `make`
+Pydent can be installed using `pip3`
+
+```
+    pip3 install pydent
+```
+
+or upgraded using
+
+```
+    pip3 install pydent --upgrade
+```
 
 ## Basic Usage
 

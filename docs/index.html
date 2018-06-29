@@ -101,8 +101,26 @@ There is also a Javascript version of Trident available to that group.</p>
 </div>
 <p>Trident is a python scripting API wrapper for Aquarium. With Trident,
 you may pull down data, submit plans, create samples, and more.</p>
-<p><strong>Installation</strong></p>
-<p>To get started, checkout the <a class="reference internal" href="user/installation.html"><span class="doc">Installation</span></a></p>
+<p><strong>Getting Started</strong></p>
+<p>Pydent can be install using the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="n">pydent</span> <span class="o">--</span><span class="n">upgrade</span>
+</pre></div>
+</div>
+<p>To use trident, you’ll need an Aquarium login, password, and url</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;http://you.aquarium.url&quot;</span><span class="p">)</span>
+
+<span class="n">sample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>More Installation Instructions</strong></p>
+<p>For more information on installation, checkout the <a class="reference internal" href="user/installation.html"><span class="doc">Installation</span></a></p>
 <p><strong>Using Trident</strong></p>
 <p>Below is an example of how to submit a plan. Check <a class="reference internal" href="user/examples.html"><span class="doc">Trident Examples</span></a> for more examples.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># session = AqSession(&quot;user&quot;, &quot;password&quot;, &quot;http://you.aquarium.url&quot;)</span>
@@ -162,6 +180,7 @@ you may pull down data, submit plans, create samples, and more.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="user/installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="user/installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/installation.html#pip-installation">pip installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user/installation.html#pipenv-installation">pipenv installation</a></li>
 </ul>
 </li>
