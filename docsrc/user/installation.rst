@@ -7,6 +7,16 @@ Requirements
 -  python3.6
 -  pip3
 
+
+pip installation
+----------------
+
+To install pydent from the remove PyPi releases, run
+
+::
+
+    pip3 install pydent --upgrade
+
 pipenv installation
 -------------------
 
@@ -19,14 +29,12 @@ package containing all of trident's necessary dependencies.
 pipenv trident installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To install trident, download trident from github, move into trident's
-root directory and run:
+To install trident, run the following to pull from the
 
 ::
 
-    make
+    pipenv install pydent --upgrade
 
-That's it. You'll be able to install pydent to your projects (see below)
 
 pipenv trident environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
