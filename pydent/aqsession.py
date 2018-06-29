@@ -22,8 +22,6 @@ from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
 from pydent.interfaces import ModelInterface, UtilityInterface
 from pydent.models import __all__ as allmodels
-from prompt_toolkit.shortcuts import confirm
-from prompt_toolkit import prompt
 
 
 class AqSession(object):
@@ -79,35 +77,6 @@ class AqSession(object):
         to Aquarium
         """
         return self.__aqhttp.login
-
-    @classmethod
-    def interactive(cls):
-        """
-        Login using prompts and a hidden password (********)
-        """
-        confirm_register = False
-        password = None
-        username = None
-        url = None
-        while not confirm_register:
-            password = None
-            confirm_password = None
-            name = prompt('enter name for session: ')
-            username = prompt('enter username: ')
-            url = prompt('enter url: ')
-            msg = ''
-            while confirm_password is None or password != confirm_password:
-                if msg:
-                    print(msg)
-                password = prompt('enter password: ', is_password=True)
-                confirm_password = prompt(
-                    'confirm password: ', is_password=True)
-                msg = "passwords did not match!"
-            confirm_register = confirm(
-                'Confirm registration for {}@{}? (y/n): '.format(username, url))
-            print()
-        print("username {} registered".format(username))
-        return cls(login=username, password=password, aquarium_url=url, name=name)
 
     @property
     def current_user(self):
