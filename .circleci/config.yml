@@ -43,6 +43,7 @@ jobs:
       - run:
           name: run tests
           command: |
+            mkdir -p ~/pytest_results
             python3 -m venv venv
             . venv/bin/activate
             pytest tests --ignore tests/archived
@@ -52,5 +53,12 @@ jobs:
           destination: test-reports
 
       - store_test_results:
-          path: test-results
+          path: ~/pytest_results
 
+      # run doctests
+      - run:
+          name: create docs
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            make docs
