@@ -14,7 +14,6 @@ install_requires = [
     'inflection',
     'marshmallow==2.15.1',
     'requests',
-    'prompt-toolkit==2.0.3',
     'tqdm==4.23.4'
 ]
 
