@@ -40,14 +40,17 @@ doctest:
 
 
 testdeploy:
-	pandoc --from=markdown --to=rst --output=README README.md
+	rm -rf dist
+	pandoc --from=markdown --to=rst --output=README.rst README.md
 	python setup.py sdist
 	twine upload dist/* -r testpypi
 
 
 deploy:
-	pandoc --from=markdown --to=rst --output=README README.md
-	python setup.py sdist bdist_wheel
+	rm -rf dist
+	pandoc --from=markdown --to=rst --output=README.rst README.md
+	python setup.py sdist
+	python setup.py bdist_wheel
 	twine upload dist/*
 
 
