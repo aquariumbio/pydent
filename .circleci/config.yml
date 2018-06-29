@@ -135,13 +135,13 @@ jobs:
 
 workflows:
   version: 2
-  build_and_test:
-    jobs:
-      - buildwithrequirements
-      - buildwithsetup
   build_and_deploy:
     jobs:
       - buildwithrequirements:
+          filters:
+            tags:
+              only: /.*/
+      - buildwithsetup:
           filters:
             tags:
               only: /.*/
