@@ -39,7 +39,7 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements-dev.txt" }}
 
-      # run tests
+      # run tests using requirements.txt
       - run:
           name: run tests
           command: |
@@ -54,10 +54,9 @@ jobs:
       - store_test_results:
           path: ~/pytest_results
 
-      # run doctests
+      # run tests
       - run:
           name: create docs
           command: |
-            pip3 install pipenv
-            pipenv install .
-            make docs
+            pip3 install .
+            pytest tests
