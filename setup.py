@@ -12,8 +12,8 @@ install_requires = [
     'inflection',
     'marshmallow==2.15.1',
     'requests',
-    'prompt_toolkit',
-    'tqdm'
+    'prompt-toolkit==2.0.3',
+    'tqdm==4.23.4'
 ]
 
 def parse_version_file():
@@ -23,7 +23,10 @@ def parse_version_file():
         for line in f.readlines():
             m = re.match('__(\w+)__\s*=\s*(.+)', line)
             if m:
-                ver_dict[m.group(1)] = m.group(2)
+                key = m.group(1)
+                val = m.group(2)
+                val = re.sub("[\'\"]", "", val)
+                ver_dict[key] = val
     return ver_dict
 
 
@@ -38,7 +41,7 @@ setup(
         url=ver['url'],
         license='',
         author=ver['author'],
-        author_email='',
+        author_email=ver['author_email'],
         keywords='aquarium api',
         description=ver['description'],
         install_requires=install_requires,
