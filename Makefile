@@ -39,5 +39,17 @@ doctest:
 	cd docsrc && pipenv run make doctest
 
 
+testdeploy:
+	pandoc --from=markdown --to=rst --output=README README.md
+	python setup.py sdist
+	twine upload dist/* -r testpypi
+
+
+deploy:
+	pandoc --from=markdown --to=rst --output=README README.md
+	python setup.py sdist bdist_wheel
+	twine upload dist/*
+
+
 hooks: .git/hooks
 	cp scripts/* .git/hooks
