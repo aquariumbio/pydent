@@ -39,11 +39,7 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements-dev.txt" }}
 
-      # run tests!
-      # this example uses Django's built-in test-runner
-      # other common Python testing frameworks include pytest and nose
-      # https://pytest.org
-      # https://nose.readthedocs.io
+      # run tests
       - run:
           name: run tests
           command: |
@@ -54,3 +50,7 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
+      - store_test_results:
+          path: test-results
+
