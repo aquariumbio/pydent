@@ -1,0 +1,644 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Trident Examples &#8212; Trident 0.0.15 documentation</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../developer/api_reference.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../developer/api_reference.html" title="API Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.15 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
+    <a href="../index.html">
+        <h1>Trident (V0.0.15)</h1>
+    </a>
+</p>
+
+<p>
+    Trident is a python scripting API wrapper for Aquarium. With Trident,
+    you can create python scripts and apps that mine data, create samples,
+    submit laboratory protocols, and more. You are looking at documentation
+    for version 0.0.15.
+</p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Trident Examples</a><ul>
+<li><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li><a class="reference internal" href="#logging-in">Logging in</a></li>
+<li><a class="reference internal" href="#model-queries">Model queries</a></li>
+<li><a class="reference internal" href="#setting-a-query-timeout">Setting a query timeout</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deserializing">Deserializing</a><ul>
+<li><a class="reference internal" href="#deserializing-nested-data">Deserializing nested data</a></li>
+<li><a class="reference internal" href="#deserializing-with-nested-models">Deserializing with nested models</a></li>
+<li><a class="reference internal" href="#find-relationships-using-requests">Find relationships using requests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#serializing">Serializing</a><ul>
+<li><a class="reference internal" href="#serialize-with-only-some-fields">Serialize with <em>only</em> some fields</a></li>
+<li><a class="reference internal" href="#serialize-with-some-relationships">Serialize with some relationships</a></li>
+<li><a class="reference internal" href="#serialize-with-all-relationships">Serialize with all relationships</a></li>
+<li><a class="reference internal" href="#complex-serialization">complex serialization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#planning">Planning</a><ul>
+<li><a class="reference internal" href="#submitting-a-plan">Submitting a Plan</a></li>
+<li><a class="reference internal" href="#submitting-a-gibson-assembly">Submitting a Gibson Assembly</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#miscellaneous">Miscellaneous</a><ul>
+<li><a class="reference internal" href="#magic-chaining">Magic chaining</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../developer/api_reference.html"
+                        title="next chapter">API Reference</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user/examples.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="trident-examples">
+<h1>Trident Examples<a class="headerlink" href="#trident-examples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="logging-in">
+<h3>Logging in<a class="headerlink" href="#logging-in" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span><span class="p">,</span> <span class="n">models</span>
+
+<span class="n">nursery</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">)</span>
+<span class="n">production</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;url2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And, to login interactively</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nursery</span> <span class="o">=</span> <span class="n">AqSession</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="c1"># enters interactive shell</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-queries">
+<h3>Model queries<a class="headerlink" href="#model-queries" title="Permalink to this headline">¶</a></h3>
+<p>Find Sample with id==1</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+<p>Find SampleTypes with name==”Primer”</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Primer&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Primer
+</pre></div>
+</div>
+<p>Find OperationType where name=”Transfer to 96 Well Plate”. The method
+will return an array where the conditions are true.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">myoperation</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Order Primer&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">myoperation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Order Primer
+</pre></div>
+</div>
+<p>You can use where with more specific conditions</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mysampletypes</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Assemble Plasmid&quot;</span><span class="p">,</span> <span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mysampletypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Assemble Plasmid
+</pre></div>
+</div>
+<p>You can use where with SQL-like queries as well</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id=1&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Primer
+</pre></div>
+</div>
+<p>Here’s an example of finding all Jobs created in the last 24 hours</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">udatetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="n">last24</span> <span class="o">=</span> <span class="n">udatetime</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">udatetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">))</span>
+<span class="n">jobs</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Job</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;created_at &gt; &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">last24</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;jobs found&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>jobs found
+</pre></div>
+</div>
+<p>Use session.models to list all available models in Aquarium.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">models</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;Account&#39;, &#39;AllowableFieldType&#39;, &#39;Budget&#39;, &#39;Code&#39;, &#39;Collection&#39;, &#39;DataAssociation&#39;, &#39;FieldType&#39;, &#39;FieldValue&#39;, &#39;Group&#39;, &#39;Invoice&#39;, &#39;Item&#39;, &#39;Job&#39;, &#39;JobAssociation&#39;, &#39;Library&#39;, &#39;Membership&#39;, &#39;ObjectType&#39;, &#39;Operation&#39;, &#39;OperationType&#39;, &#39;Plan&#39;, &#39;PlanAssociation&#39;, &#39;Sample&#39;, &#39;SampleType&#39;, &#39;Upload&#39;, &#39;User&#39;, &#39;UserBudgetAssociation&#39;, &#39;Wire&#39;]
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-a-query-timeout">
+<h3>Setting a query timeout<a class="headerlink" href="#setting-a-query-timeout" title="Permalink to this headline">¶</a></h3>
+<p>The following should raise an exception if the request takes too long.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># we set timeout to 0s</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Attempted to set connect timeout to 0, but the timeout cannot be set to a value less than or equal to 0.
+</pre></div>
+</div>
+<p>You can increase the timeout</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># we set timeout to 10s</span>
+<span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Great!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Great!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="deserializing">
+<h2>Deserializing<a class="headerlink" href="#deserializing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="deserializing-nested-data">
+<h3>Deserializing nested data<a class="headerlink" href="#deserializing-nested-data" title="Permalink to this headline">¶</a></h3>
+<p>Pydent automatically deserializes model relationships.
+Below is an example of how pydent deserializes <code class="docutils literal notranslate"><span class="pre">sample_type</span></code> to a
+<code class="docutils literal notranslate"><span class="pre">SampleType</span></code> model</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># nested deserialization</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}})</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Sample</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">SampleType</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pydent.models.SampleType&#39;&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="deserializing-with-nested-models">
+<h3>Deserializing with nested models<a class="headerlink" href="#deserializing-with-nested-models" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">SampleType</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;primer&quot;</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>primer
+</pre></div>
+</div>
+</div>
+<div class="section" id="find-relationships-using-requests">
+<h3>Find relationships using requests<a class="headerlink" href="#find-relationships-using-requests" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.models</span> <span class="kn">import</span> <span class="n">Sample</span><span class="p">,</span> <span class="n">SampleType</span>
+
+<span class="c1"># create new sample</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Sample</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;MyPrimer&#39;</span><span class="p">,</span> <span class="n">sample_type_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># connect sample with session (will throw warning if no session is connected)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+
+<span class="c1"># find the sample type using &#39;sample_type_id&#39;</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sample_type</span>
+
+<span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">sample_data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+<span class="n">sample_type_data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sample:&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sample_data</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;SampleType:&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sample_type_data</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Sample:
+{
+    &quot;name&quot;: &quot;MyPrimer&quot;,
+    &quot;project&quot;: null,
+    &quot;rid&quot;: 1,
+    &quot;sample_type_id&quot;: 1
+}
+
+SampleType:
+{
+    &quot;created_at&quot;: &quot;2013-10-08T10:18:01-07:00&quot;,
+    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Primer&quot;,
+    &quot;rid&quot;: 1,
+    &quot;updated_at&quot;: &quot;2015-11-29T07:55:20-08:00&quot;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="serializing">
+<h2>Serializing<a class="headerlink" href="#serializing" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sample_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sample_type</span><span class="o">.</span><span class="n">dump</span><span class="p">()))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;created_at&quot;: &quot;2013-10-08T10:18:01-07:00&quot;,
+    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Primer&quot;,
+    &quot;rid&quot;: 1,
+    &quot;updated_at&quot;: &quot;2015-11-29T07:55:20-08:00&quot;
+}
+</pre></div>
+</div>
+<div class="section" id="serialize-with-only-some-fields">
+<h3>Serialize with <em>only</em> some fields<a class="headerlink" href="#serialize-with-only-some-fields" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sdata</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,
+    &quot;name&quot;: &quot;Primer&quot;,
+    &quot;rid&quot;: 1
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="serialize-with-some-relationships">
+<h3>Serialize with some relationships<a class="headerlink" href="#serialize-with-some-relationships" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">relations</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sdata</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;created_at&quot;: &quot;2013-10-08T10:18:01-07:00&quot;,
+    &quot;description&quot;: &quot;A short double stranded piece of DNA for PCR and sequencing&quot;,
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Primer&quot;,
+    &quot;rid&quot;: 1,
+    &quot;updated_at&quot;: &quot;2015-11-29T07:55:20-08:00&quot;
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="serialize-with-all-relationships">
+<h3>Serialize with all relationships<a class="headerlink" href="#serialize-with-all-relationships" title="Permalink to this headline">¶</a></h3>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">all_relations</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">{&#39;created_at&#39;: &#39;2013-10-08T10:18:48-07:00&#39;,</span>
+<span class="sd">&#39;data&#39;: None,</span>
+<span class="sd">&#39;description&#39;: None,</span>
+<span class="sd">&#39;field_values&#39;: [{&#39;allowable_field_type_id&#39;: None,</span>
+<span class="sd">                       &#39;child_item_id&#39;: None,</span>
+<span class="sd">                       &#39;child_sample_id&#39;: None,</span>
+<span class="sd">                       &#39;column&#39;: None,</span>
+<span class="sd">                       &#39;created_at&#39;: &#39;2016-05-09T20:41:06-07:00&#39;,</span>
+<span class="sd">                       &#39;field_type_id&#39;: None,</span>
+<span class="sd">                       &#39;id&#39;: 67853,</span>
+<span class="sd">                        ...</span>
+<span class="sd">...</span>
+<span class="sd">}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complex-serialization">
+<h3>complex serialization<a class="headerlink" href="#complex-serialization" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+    <span class="n">include</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="p">{</span>                  <span class="c1"># serialize the items</span>
+            <span class="s1">&#39;object_type&#39;</span><span class="p">:</span> <span class="p">{</span>        <span class="c1"># serialize the object_type for each item</span>
+                <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span>  <span class="c1"># only serialize the name for the object_type</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+        <span class="s1">&#39;opts&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="s1">&#39;id&#39;</span>            <span class="c1"># only serialize the id for each item (in addition to the object_type)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">})</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">sdata</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;created_at&quot;: &quot;2013-10-08T10:18:48-07:00&quot;,
+    &quot;data&quot;: null,
+    &quot;description&quot;: null,
+    &quot;id&quot;: 1,
+    &quot;items&quot;: [
+        {
+            &quot;id&quot;: 438,
+            &quot;object_type&quot;: {
+                &quot;name&quot;: &quot;Primer Aliquot&quot;,
+                &quot;rid&quot;: 1
+            },
+            &quot;rid&quot;: 1
+        },
+        {
+            &quot;id&quot;: 441,
+            &quot;object_type&quot;: {
+                &quot;name&quot;: &quot;Plasmid Stock&quot;,
+                &quot;rid&quot;: 1
+            },
+            &quot;rid&quot;: 1
+        }
+    ],
+    &quot;name&quot;: &quot;IAA1-Nat-F&quot;,
+    &quot;project&quot;: &quot;Auxin&quot;,
+    &quot;rid&quot;: 1,
+    &quot;sample_type_id&quot;: 1,
+    &quot;updated_at&quot;: &quot;2013-10-08T10:18:48-07:00&quot;,
+    &quot;user_id&quot;: 1
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="planning">
+<h2>Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="submitting-a-plan">
+<h3>Submitting a Plan<a class="headerlink" href="#submitting-a-plan" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">primer</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># get Order Primer operation type</span>
+<span class="n">ot</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">328</span><span class="p">)</span>
+
+<span class="c1"># create an operation</span>
+<span class="n">order_primer</span> <span class="o">=</span> <span class="n">ot</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+
+<span class="c1"># set io</span>
+<span class="n">order_primer</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s2">&quot;Primer&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">primer</span><span class="p">)</span>
+<span class="n">order_primer</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Urgent?&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;no&quot;</span><span class="p">)</span>
+
+<span class="c1"># create a new plan</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Plan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyPlan&quot;</span><span class="p">)</span>
+
+<span class="c1"># connect the plan to the session</span>
+<span class="n">p</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+
+<span class="c1"># add the operation to the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">order_primer</span><span class="p">)</span>
+
+<span class="c1"># save the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+<span class="c1"># estimate the cost</span>
+<span class="n">p</span><span class="o">.</span><span class="n">estimate_cost</span><span class="p">()</span>
+
+<span class="c1"># validate the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+<span class="c1"># show the plan</span>
+<span class="c1"># p.show()</span>
+
+<span class="c1"># submit the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">budgets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Your plan was submitted successfully!&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Your plan was submitted successfully!
+True
+</pre></div>
+</div>
+</div>
+<div class="section" id="submitting-a-gibson-assembly">
+<h3>Submitting a Gibson Assembly<a class="headerlink" href="#submitting-a-gibson-assembly" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># find &quot;Assembly Plasmid&quot; protocol</span>
+<span class="n">gibson_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Assemble Plasmid&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># instantiate gibson operation</span>
+<span class="n">gibson_op</span> <span class="o">=</span> <span class="n">gibson_type</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="n">gibson_op</span><span class="o">.</span><span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="c1"># set output</span>
+<span class="n">gibson_op</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s2">&quot;Assembled Plasmid&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;pCAG-NLS-HA-Bxb1&quot;</span><span class="p">))</span>
+
+<span class="c1"># set input 1</span>
+<span class="n">gibson_op</span><span class="o">.</span><span class="n">add_to_input_array</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span>
+                             <span class="n">sample</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;SV40NLS1-FLP-SV40NLS2&quot;</span><span class="p">),</span>
+                             <span class="n">item</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">Item</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">84034</span><span class="p">))</span>
+
+<span class="c1"># set input 2</span>
+<span class="n">gibson_op</span><span class="o">.</span><span class="n">add_to_input_array</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span>
+                             <span class="n">sample</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;CRPos0-HDAC4_split&quot;</span><span class="p">),</span>
+                             <span class="n">item</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">Item</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">83714</span><span class="p">))</span>
+
+
+<span class="c1"># set input 3</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;_HDAC4_split_part1&quot;</span><span class="p">)</span>
+<span class="n">fv</span> <span class="o">=</span> <span class="n">gibson_op</span><span class="o">.</span><span class="n">add_to_input_array</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span>
+                             <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+
+<span class="c1"># PCR</span>
+<span class="n">pcr_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Make PCR Fragment&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">pcr_op</span> <span class="o">=</span> <span class="n">pcr_type</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="n">pcr_op</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Forward Primer&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">field_value</span><span class="p">(</span><span class="s2">&quot;Forward Primer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">pcr_op</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Reverse Primer&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">field_value</span><span class="p">(</span><span class="s2">&quot;Forward Primer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">pcr_op</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Template&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">field_value</span><span class="p">(</span><span class="s2">&quot;Template&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">pcr_op</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+
+<span class="c1"># Run gel</span>
+<span class="n">gel_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Run Gel&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">gel_op</span> <span class="o">=</span> <span class="n">gel_type</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="n">gel_op</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">gel_op</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+
+<span class="c1"># extract gel</span>
+<span class="n">extract_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Extract Gel Slice&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">extract_op</span> <span class="o">=</span> <span class="n">extract_type</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="n">extract_op</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">extract_op</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+
+<span class="c1"># purify gel slice</span>
+<span class="n">purify_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Purify Gel Slice&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">purify_op</span> <span class="o">=</span> <span class="n">purify_type</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="n">purify_op</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;Gel&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">purify_op</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+
+<span class="c1"># create a new plan and add operations</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Plan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyPlan&quot;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">gibson_op</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">pcr_op</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">gel_op</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">extract_op</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">purify_op</span><span class="p">)</span>
+
+<span class="c1"># wires</span>
+<span class="n">p</span><span class="o">.</span><span class="n">wire</span><span class="p">(</span><span class="n">purify_op</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">),</span> <span class="n">fv</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">wire</span><span class="p">(</span><span class="n">extract_op</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">),</span> <span class="n">purify_op</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Gel&quot;</span><span class="p">))</span>
+<span class="n">p</span><span class="o">.</span><span class="n">wire</span><span class="p">(</span><span class="n">gel_op</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">),</span> <span class="n">extract_op</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">))</span>
+<span class="n">p</span><span class="o">.</span><span class="n">wire</span><span class="p">(</span><span class="n">pcr_op</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">),</span> <span class="n">gel_op</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">))</span>
+<span class="n">p</span><span class="o">.</span><span class="n">wire</span><span class="p">(</span><span class="n">pcr_op</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">),</span> <span class="n">gel_op</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s2">&quot;Fragment&quot;</span><span class="p">))</span>
+
+<span class="c1"># save the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+<span class="c1"># estimate the cost</span>
+<span class="n">p</span><span class="o">.</span><span class="n">estimate_cost</span><span class="p">()</span>
+
+<span class="c1"># validate the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+<span class="c1"># show the plan</span>
+<span class="c1"># p.show()</span>
+
+<span class="c1"># submit the plan</span>
+<span class="n">p</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">budgets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Your plan was submitted successfully!&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Your plan was submitted successfully!
+True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="magic-chaining">
+<h3>Magic chaining<a class="headerlink" href="#magic-chaining" title="Permalink to this headline">¶</a></h3>
+<p>You can chain together attributes and function calls:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># using tradiational list comprehension</span>
+<span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span>
+
+<span class="c1"># or using magicchain</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+
+<span class="c1"># returns</span>
+<span class="c1"># [&#39;IAA1-Nat-F&#39;, &#39;prKL1573&#39;, &#39;prKL744&#39;, &#39;prKL1927&#39;, &#39;prKL1928&#39;,</span>
+<span class="c1"># &#39;prKL1929&#39;, &#39;prKL1930&#39;, &#39;prKL506&#39;, &#39;prKL1708&#39;, &#39;lacI\_h2&#39;]</span>
+</pre></div>
+</div>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pcr</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Make PCR Fragment&quot;</span><span class="p">)</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">pcr</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">field_values</span><span class="o">.</span><span class="n">name</span>
+<span class="p">[[</span><span class="s1">&#39;Forward Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Reverse Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Template&#39;</span><span class="p">,</span> <span class="s1">&#39;Fragment&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;Forward Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Reverse Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Template&#39;</span><span class="p">,</span> <span class="s1">&#39;Fragment&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;Forward Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Reverse Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Template&#39;</span><span class="p">,</span> <span class="s1">&#39;Fragment&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;Forward Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Reverse Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Template&#39;</span><span class="p">,</span> <span class="s1">&#39;Fragment&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;Forward Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Reverse Primer&#39;</span><span class="p">,</span> <span class="s1">&#39;Template&#39;</span><span class="p">,</span> <span class="s1">&#39;Fragment&#39;</span><span class="p">]]</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">pcr</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">field_values</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="p">[[</span><span class="mi">114549</span><span class="p">,</span> <span class="mi">62943</span><span class="p">,</span> <span class="mi">22929</span><span class="p">,</span> <span class="mi">114553</span><span class="p">],</span>
+ <span class="p">[</span><span class="mi">114564</span><span class="p">,</span> <span class="mi">62943</span><span class="p">,</span> <span class="mi">22929</span><span class="p">,</span> <span class="mi">114566</span><span class="p">],</span>
+ <span class="p">[</span><span class="mi">114737</span><span class="p">,</span> <span class="mi">62943</span><span class="p">,</span> <span class="mi">22929</span><span class="p">,</span> <span class="mi">114739</span><span class="p">],</span>
+ <span class="p">[</span><span class="mi">114748</span><span class="p">,</span> <span class="mi">62943</span><span class="p">,</span> <span class="mi">22929</span><span class="p">,</span> <span class="mi">114750</span><span class="p">],</span>
+ <span class="p">[</span><span class="mi">114782</span><span class="p">,</span> <span class="mi">62943</span><span class="p">,</span> <span class="mi">22929</span><span class="p">,</span> <span class="mi">114784</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../developer/api_reference.html" title="API Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.15 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, University of Washington.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
+    </div>
+  </body>
+</html>
