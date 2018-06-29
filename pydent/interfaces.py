@@ -64,7 +64,7 @@ class UtilityInterface(SessionInterface):
     """
     Miscellaneous requests for creating, updating, etc.
     """
-
+    # TODO: have ability to save new properties
     def create_samples(self, samples):
         json = [s.dump() for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
