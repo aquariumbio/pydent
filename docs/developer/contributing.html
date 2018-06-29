@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Contributing &#8212; Trident 0.0.15 documentation</title>
+    <title>Contributing &#8212; Trident 0.0.16 documentation</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -33,13 +33,13 @@
         <li class="right" >
           <a href="api_notes.html" title="Developer Notes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.15 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.16 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../index.html">
-        <h1>Trident (V0.0.15)</h1>
+        <h1>Trident (V0.0.16)</h1>
     </a>
 </p>
 
@@ -47,8 +47,11 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.15.
+    for version 0.0.16.
 </p>
+<div>
+    <img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status">
+</div>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Contributing</a><ul>
@@ -63,6 +66,8 @@
 <li><a class="reference internal" href="#make-coverage"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">coverage</span></code></a></li>
 <li><a class="reference internal" href="#make-pylint"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">pylint</span></code></a></li>
 <li><a class="reference internal" href="#make-docs"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code></a></li>
+<li><a class="reference internal" href="#make-doctest"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">doctest</span></code></a></li>
+<li><a class="reference internal" href="#make-testdeploy"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testdeploy</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#documentation">Documentation</a><ul>
@@ -186,7 +191,15 @@ package (see the <code class="docutils literal notranslate"><span class="pre">to
 <h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code><a class="headerlink" href="#make-docs" title="Permalink to this headline">¶</a></h3>
 <p>This will use sphinx (<a class="reference external" href="http://www.sphinx-doc.org/en/stable/">http://www.sphinx-doc.org/en/stable/</a>) to
 autogenerate documentation from trident’s docstrings using source
-documents located in <code class="docutils literal notranslate"><span class="pre">docsrc.</span></code> Documentation will be built in <code class="docutils literal notranslate"><span class="pre">docs</span></code></p>
+documents located in <code class="docutils literal notranslate"><span class="pre">docsrc</span></code>. Documentation will be built in <code class="docutils literal notranslate"><span class="pre">docs</span></code>.</p>
+</div>
+<div class="section" id="make-doctest">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">doctest</span></code><a class="headerlink" href="#make-doctest" title="Permalink to this headline">¶</a></h3>
+<p>Runs api tests contained in the <code class="docutils literal notranslate"><span class="pre">docsrc</span></code>.</p>
+</div>
+<div class="section" id="make-testdeploy">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testdeploy</span></code><a class="headerlink" href="#make-testdeploy" title="Permalink to this headline">¶</a></h3>
+<p>Deploys release to PyPi test server</p>
 </div>
 </div>
 <div class="section" id="documentation">
@@ -219,8 +232,33 @@ exception classes thrown.</p>
 </div>
 <div class="section" id="making-a-release">
 <h2>Making a Release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
-<p>We haven’t released anything yet. But when we do, some information about
-making a release will go here.</p>
+<ol class="arabic simple">
+<li>Make sure tests clear</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">test</span>
+<span class="n">make</span> <span class="n">doctest</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Update documentation</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">hooks</span>
+<span class="n">make</span> <span class="n">docs</span>
+</pre></div>
+</div>
+<ol class="arabic" start="3">
+<li><p class="first">Commit changes to github.</p>
+</li>
+<li><p class="first">Make a release on github.</p>
+<blockquote>
+<div><p>make testdeploy</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Then commit on github. Make a new release on github. Release to PyPi using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">deploy</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -245,7 +283,7 @@ making a release will go here.</p>
         <li class="right" >
           <a href="api_notes.html" title="Developer Notes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.15 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.16 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

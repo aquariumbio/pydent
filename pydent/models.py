@@ -1403,7 +1403,7 @@ class Upload(ModelBase):
         :param outdir: path of directory of output file (default is current directory)
         :param outfile: filename of output file (defaults to upload_filename)
         :param overwrite: whether to overwrite file if it already exists
-        :return:
+        :return: None
         """
         if outdir is None:
             outdir = '.'
