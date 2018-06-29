@@ -1,5 +1,7 @@
 # Trident: Aquarium API Scripting
 
+[![CircleCI](https://circleci.com/gh/klavinslab/trident.svg?style=svg)](https://circleci.com/gh/klavinslab/trident)
+
 Trident is the python API scripting for Aquarium.
 
 1. [Installation](docsrc/user/installation.rst) - how to install pydent
