@@ -101,8 +101,17 @@ This will run pylint in the pipenv environment.
 
 This will use sphinx (http://www.sphinx-doc.org/en/stable/) to
 autogenerate documentation from trident's docstrings using source
-documents located in ``docsrc.`` Documentation will be built in ``docs``
+documents located in ``docsrc``. Documentation will be built in ``docs``.
 
+``make doctest``
+~~~~~~~~~~~~~~~~
+
+Runs api tests contained in the ``docsrc``.
+
+``make testdeploy``
+~~~~~~~~~~~~~~~~~~~
+
+Deploys release to PyPi test server
 
 
 Documentation
@@ -141,5 +150,28 @@ exception classes thrown.
 Making a Release
 ----------------
 
-We haven't released anything yet. But when we do, some information about
-making a release will go here.
+1. Make sure tests clear
+
+::
+
+    make test
+    make doctest
+
+2. Update documentation
+
+::
+
+    make hooks
+    make docs
+
+3. Commit changes to github.
+4. Make a release on github.
+
+
+    make testdeploy
+
+Then commit on github. Make a new release on github. Release to PyPi using:
+
+::
+
+    make deploy
