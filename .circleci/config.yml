@@ -49,7 +49,7 @@ jobs:
             pytest tests --ignore tests/archived
 
       - store_artifacts:
-          path: ~/pytest_results
+          path: test-reports
 
       - store_test_results:
           path: ~/pytest_results
@@ -58,6 +58,6 @@ jobs:
       - run:
           name: create docs
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
+            pip3 install pipenv
+            pipenv install .
             make docs
