@@ -1,7 +1,6 @@
 # Trident: Aquarium API Scripting
 
-
-[![CircleCI](https://circleci.com/gh/klavinslab/trident/tree/master.svg?style=svg)](https://circleci.com/gh/klavinslab/trident/tree/master)
+[![CircleCI](https://circleci.com/gh/klavinslab/trident/tree/master.svg?style=svg&circle-token=88677c59698d55a127a080cba9ca025cf8072f6c)]
 
 Trident is the python API scripting for Aquarium.
 
