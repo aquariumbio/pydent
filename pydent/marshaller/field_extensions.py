@@ -11,7 +11,7 @@ class JSON(fields.Field):
 
     def _serialize(self, value, attr, obj):
         if value is None:
-            return ''
+            return None
         try:
             return json.dumps(value)
         except TypeError as error:
@@ -19,7 +19,9 @@ class JSON(fields.Field):
 
     def _deserialize(self, value, attr, data):
         if value is None:
-            return ''
+            return None
+        elif value == '':
+            return None
         if isinstance(value, dict):
             return value
         try:
