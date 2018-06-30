@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.aqsession &#8212; Trident 0.0.24 documentation</title>
+    <title>pydent.aqsession &#8212; Trident 0.0.25 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -25,14 +25,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.24 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.25 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.24)</h1>
+        <h1>Trident (V0.0.25)</h1>
     </a>
 </p>
 
@@ -40,7 +40,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.24.
+    for version 0.0.25.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -91,8 +91,6 @@
 <span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelRegistry</span>
 <span class="kn">from</span> <span class="nn">pydent.interfaces</span> <span class="k">import</span> <span class="n">ModelInterface</span><span class="p">,</span> <span class="n">UtilityInterface</span>
 <span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">__all__</span> <span class="k">as</span> <span class="n">allmodels</span>
-<span class="kn">from</span> <span class="nn">prompt_toolkit.shortcuts</span> <span class="k">import</span> <span class="n">confirm</span>
-<span class="kn">from</span> <span class="nn">prompt_toolkit</span> <span class="k">import</span> <span class="n">prompt</span>
 
 
 <div class="viewcode-block" id="AqSession"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqsession.html#pydent.aqsession.AqSession">[docs]</a><span class="k">class</span> <span class="nc">AqSession</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -148,35 +146,6 @@
 <span class="sd">        to Aquarium</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aqhttp</span><span class="o">.</span><span class="n">login</span>
-
-<div class="viewcode-block" id="AqSession.interactive"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqsession.html#pydent.aqsession.AqSession.interactive">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">interactive</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Login using prompts and a hidden password (********)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">confirm_register</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">password</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">username</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="n">confirm_register</span><span class="p">:</span>
-            <span class="n">password</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">confirm_password</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">prompt</span><span class="p">(</span><span class="s1">&#39;enter name for session: &#39;</span><span class="p">)</span>
-            <span class="n">username</span> <span class="o">=</span> <span class="n">prompt</span><span class="p">(</span><span class="s1">&#39;enter username: &#39;</span><span class="p">)</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="n">prompt</span><span class="p">(</span><span class="s1">&#39;enter url: &#39;</span><span class="p">)</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-            <span class="k">while</span> <span class="n">confirm_password</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">password</span> <span class="o">!=</span> <span class="n">confirm_password</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-                <span class="n">password</span> <span class="o">=</span> <span class="n">prompt</span><span class="p">(</span><span class="s1">&#39;enter password: &#39;</span><span class="p">,</span> <span class="n">is_password</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">confirm_password</span> <span class="o">=</span> <span class="n">prompt</span><span class="p">(</span>
-                    <span class="s1">&#39;confirm password: &#39;</span><span class="p">,</span> <span class="n">is_password</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;passwords did not match!&quot;</span>
-            <span class="n">confirm_register</span> <span class="o">=</span> <span class="n">confirm</span><span class="p">(</span>
-                <span class="s1">&#39;Confirm registration for </span><span class="si">{}</span><span class="s1">@</span><span class="si">{}</span><span class="s1">? (y/n): &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">url</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;username </span><span class="si">{}</span><span class="s2"> registered&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">login</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">aquarium_url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -239,7 +208,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.24 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.25 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
