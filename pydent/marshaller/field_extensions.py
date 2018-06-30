@@ -9,23 +9,42 @@ from marshmallow import fields, ValidationError
 class JSON(fields.Field):
     """A custom JSON field"""
 
+    def __init__(self, *args, strict=True, **kwargs):
+        """
+        Serializes and deserializes JSON
+
+        :param args: params
+        :param strict: if True, returns error if value is not strictly a JSON
+        :param kwargs: key-value params
+        """
+        super().__init__(*args, **kwargs)
+        self.strict = strict
+
     def _serialize(self, value, attr, obj):
         if value is None:
-            return ''
+            return None
         try:
             return json.dumps(value)
         except TypeError as error:
-            raise ValidationError(error)
+            if self.strict:
+                raise ValidationError(error)
+            else:
+                return value
 
     def _deserialize(self, value, attr, data):
         if value is None:
-            return ''
+            return None
+        elif value == '':
+            return None
         if isinstance(value, dict):
             return value
         try:
             return json.loads(value)
         except json.decoder.JSONDecodeError as error:
-            raise ValidationError(error)
+            if self.strict:
+                raise ValidationError(error)
+            else:
+                return value
 
     default_error_message = {
         'invalid': 'field was unable to be parsed as a JSON'
