@@ -22,6 +22,24 @@ def test_json_deserialize_with_empty_string():
     assert d.data['json'] is None
     assert len(d.errors) == 0
 
+def test_json_deserialize_with_strict():
+    class MySchema(Schema):
+        json = JSON(allow_none=True)
+
+    myschema = MySchema()
+    d = myschema.load({'json': 'this is not a JSON'})
+    assert len(d.errors) == 1
+
+def test_json_deserialize_without_strict():
+    class MySchema(Schema):
+        json = JSON(allow_none=True, strict=False)
+
+    myschema = MySchema()
+    d = myschema.load({'json': 'this is not a JSON'})
+    assert len(d.errors) == 0
+    assert d.data['json'] == 'this is not a JSON'
+
+
 def test_json_deserialize_with_None():
     class MySchema(Schema):
         json = JSON(allow_none=True)
