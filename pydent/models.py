@@ -1034,6 +1034,7 @@ class OperationType(ModelBase, HasCodeMixin):
                           params="documentation"),
         precondition=One("Code", callback="get_code_callback",
                          params="precondition"),
+        user=HasOne("User")
     )
 
     def get_field_type(self, model_name, parent_class):
