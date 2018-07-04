@@ -162,6 +162,7 @@ class FieldMixin:
             return fxn(model_name, model_id)
 
 
+# TODO: handle uploaded files (only safe files)
 class DataAssociatorMixin:
     """
     Mixin for handling data associations
@@ -187,7 +188,20 @@ class DataAssociatorMixin:
         }
 
         result = aqhttp.post("json/save", json_data=data)
-        return session.DataAssociation.find(result["id"])
+        data_association = session.DataAssociation.find(result['id'])
+        self.data_associations.append(data_association)
+        return data_association
+
+    def get(self, key):
+        val = []
+        for da in self.data_associations:
+            if da.key == key:
+                val.append(da.value)
+        if len(val) == 1:
+            return val[0]
+        elif len(val) == 0:
+            return None
+        return val
 
 
 # Models #####
@@ -1263,20 +1277,6 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         """Copies or replans the plan"""
         return self.replan()
 
-    @staticmethod
-    @make_async(1)
-    def _async_download_files(data_associations, outdir=None, overwrite=True):
-        return Plan._download_files(data_associations, outdir=outdir, overwrite=overwrite)
-
-    @staticmethod
-    def _download_files(data_associations, outdir=None, overwrite=True):
-        filepaths = []
-        for da in data_associations:
-            if da.upload is not None:
-                filepath = da.upload.download(outdir=outdir, overwrite=overwrite)
-                filepaths.append(filepath)
-        return filepaths
-
     def download_files(self, outdir=None, overwrite=True):
         """
         Downloads all uploads associated with the plan. Downloads happen
@@ -1286,7 +1286,11 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         :param overwrite: whether to overwrite files if they exist
         :return: None
         """
-        return Plan._async_download_files(self.data_associations, outdir, overwrite)
+        uploads = []
+        for da in self.data_associations:
+            if da.upload is not None:
+                uploads.append(da.upload)
+        return Upload.async_download(uploads, outdir, overwrite)
 
 
 @add_schema
@@ -1379,7 +1383,7 @@ class SampleType(ModelBase):
         this Sample Type to be connected to a session."""
         return self.reload(self.session.utils.create_sample_type(self))
 
-
+# TODO: save upload to Aquarium (safe files only)
 @add_schema
 class Upload(ModelBase):
     """
@@ -1400,11 +1404,59 @@ class Upload(ModelBase):
         _u_arr = [upload for upload in uploads if upload['id'] == self.id]
         return _u_arr[0]['url']
 
-    def _download_image_from_url(self, url, outpath):
+    @staticmethod
+    def _download_file_from_url(url, outpath):
+        """
+        Downloads a file from a url
+
+        :param url: url of file
+        :type url: str
+        :param outpath: filepath of out file
+        :type outpath: str
+        :return: http response
+        :rtype: str
+        """
         response = requests.get(url, stream=True)
         with open(outpath, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         return response.raw
+
+    @staticmethod
+    @make_async(1)
+    def async_download(uploads, outdir=None, overwrite=True):
+        """
+        Asynchronously downloads from list of :class:`Upload` models.
+
+        :param uploads: list of Uploads
+        :type uploads: list
+        :param outdir: path to output directory to save downloaded files
+        :type outdir: str
+        :param overwrite: if True, will overwrite existing files
+        :type overwrite: bool
+        :return: list of filepaths
+        :rtype: list
+        """
+        return Upload._download_files(uploads, outdir, overwrite)
+
+    @staticmethod
+    def _download_files(uploads, outdir, overwrite):
+        """
+        Downloads uploaded file from list of :class:`Upload` models.
+
+        :param uploads: list of Uploads
+        :type uploads: list
+        :param outdir: path to output directory to save downloaded files (defaults to current directory)
+        :type outdir: str
+        :param overwrite: if True, will overwrite existing files (default: True)
+        :type overwrite: bool
+        :return: list of filepaths
+        :rtype: list
+        """
+        filepaths = []
+        for upload in uploads:
+            filepath = upload.download(outdir=outdir, overwrite=overwrite)
+            filepaths.append(filepath)
+        return filepaths
 
     def download(self, outdir=None, filename=None, overwrite=True):
         """
@@ -1421,7 +1473,7 @@ class Upload(ModelBase):
             filename = "{}_{}".format(self.id, self.upload_file_name)
         filepath = os.path.join(outdir, filename)
         if not os.path.exists(filepath) or overwrite:
-            self._download_image_from_url(self.temp_url(), filepath)
+            self._download_file_from_url(self.temp_url(), filepath)
         return filepath
 
     @property
@@ -1429,7 +1481,6 @@ class Upload(ModelBase):
         print(self.temp_url())
         result = requests.get(self.temp_url)
         return result.content
-
 
 @add_schema
 class User(ModelBase):
