@@ -1260,13 +1260,16 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
     @staticmethod
     @make_async(1)
     def _async_download_files(data_associations, outdir=None, overwrite=True):
-        Plan._download_files(data_associations, outdir=outdir, overwrite=overwrite)
+        return Plan._download_files(data_associations, outdir=outdir, overwrite=overwrite)
 
     @staticmethod
     def _download_files(data_associations, outdir=None, overwrite=True):
+        filepaths = []
         for da in data_associations:
             if da.upload is not None:
-                da.upload.download(outdir=outdir, overwrite=overwrite)
+                filepath = da.upload.download(outdir=outdir, overwrite=overwrite)
+                filepaths.append(filepath)
+        return filepaths
 
     def download_files(self, outdir=None, overwrite=True):
         """
@@ -1413,6 +1416,7 @@ class Upload(ModelBase):
         filepath = os.path.join(outdir, filename)
         if not os.path.exists(filepath) or overwrite:
             self._download_image_from_url(self.temp_url(), filepath)
+        return filepath
 
     @property
     def data(self):
