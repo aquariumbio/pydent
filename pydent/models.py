@@ -168,11 +168,48 @@ class DataAssociatorMixin:
     Mixin for handling data associations
     """
 
-    def associate(self, key, value):
+    def associate(self, key, value, upload=None):
         """
         Adds a data association with the key and value to this object.
         """
-        return self.session.utils.create_data_association(self, key, value)
+        return self.session.utils.create_data_association(self, key, value, upload=upload)
+
+    def associate_file(self, key, value, file, job_id=None):
+        """
+        Associate a file
+
+        :param key: association key
+        :type key: str or json
+        :param value: association value
+        :type value: str or json
+        :param file: file to create :class:`Upload`
+        :type file: file object
+        :param job_id: optional job_id to associate the :class:`Upload`
+        :type job_id: int
+        :return: new data association
+        :rtype: :class:`DataAssociation`
+        """
+        u = self.session.Upload.new(job_id=job_id, file=file)
+        u.save()
+        return self.associate(key, value, upload=u)
+
+    def associate_file_from_path(self, key, value, filepath, job_id=None):
+        """
+        Associate a file from a filepath
+
+        :param key: association key
+        :type key: str or json
+        :param value: association value
+        :type value: str or json
+        :param filepath: path to file to create :class:`Upload`
+        :type filepath: str
+        :param job_id: optional job_id to associate the :class:`Upload`
+        :type job_id: int
+        :return: new data association
+        :rtype: :class:`DataAssociation`
+        """
+        with open(filepath, 'rb') as f:
+            return self.associate_file(key, value, f, job_id=job_id)
 
     def get(self, key):
         val = []
@@ -1375,6 +1412,19 @@ class Upload(ModelBase):
         job=HasOne("Job")
     )
 
+    def __init__(self, job_id=None, file=None):
+        """
+        Create a new upload
+
+        :param job_id: job id to associate the upload to
+        :type job_id: int
+        :param file: file to upload
+        :type file: file object
+        """
+        self.job_id = job_id
+        self.file = file
+        super().__init__(**vars(self))
+
     # def _get_uploads_from_job_id(self, job_id):
 
     def _get_uploads_from_job(self):
@@ -1463,6 +1513,9 @@ class Upload(ModelBase):
         print(self.temp_url())
         result = requests.get(self.temp_url)
         return result.content
+
+    def save(self):
+        return self.session.utils.create_upload(self)
 
 @add_schema
 class User(ModelBase):
