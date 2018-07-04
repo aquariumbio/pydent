@@ -251,8 +251,14 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
     """A Collection model"""
     fields = dict(
         object_type=HasOne("ObjectType"),
-        data_associations=HasManyGeneric("DataAssociation")
+        data_associations=HasManyGeneric("DataAssociation"),
+        data=fields.JSON(allow_none=True, strict=False)
     )
+
+    @property
+    def matrix(self):
+        return self.data['matrix']
+
 
 
 @add_schema
