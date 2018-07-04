@@ -172,25 +172,7 @@ class DataAssociatorMixin:
         """
         Adds a data association with the key and value to this object.
         """
-        session = self.session
-        aqhttp = session._AqSession__aqhttp
-
-        data = {
-            "model": {
-                "model": DataAssociation.__name__,
-                "record_methods": {},
-                "record_getters": {}
-            },
-            "parent_id": self.id,
-            "key": str(key),
-            "object": json.dumps({str(key): value}),
-            "parent_class": self.__class__.__name__,
-        }
-
-        result = aqhttp.post("json/save", json_data=data)
-        data_association = session.DataAssociation.find(result['id'])
-        self.data_associations.append(data_association)
-        return data_association
+        return self.session.utils.create_data_association(self, key, value)
 
     def get(self, key):
         val = []
@@ -204,7 +186,7 @@ class DataAssociatorMixin:
         return val
 
 
-# Models #####
+# Models
 
 @add_schema
 class Account(ModelBase):

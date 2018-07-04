@@ -36,7 +36,7 @@ from inflection import pluralize, underscore
 from .base import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
-
+import json
 
 class SessionInterface(object):
     """
@@ -244,6 +244,23 @@ class UtilityInterface(SessionInterface):
         for element in result:
             print(element)
         return items
+
+    def create_data_association(self, model_inst, key, value):
+        data = {
+            "model": {
+                "model": "DataAssociation",
+                "record_methods": {},
+                "record_getters": {}
+            },
+            "parent_id": model_inst.id,
+            "key": str(key),
+            "object": json.dumps({str(key): value}),
+            "parent_class": model_inst.__class__.__name__,
+        }
+        result = self.aqhttp.post("json/save", json_data=data)
+        data_association = model_inst.session.DataAssociation.find(result['id'])
+        model_inst.data_associations.append(data_association)
+        return data_association
 
 
 class ModelInterface(SessionInterface):
