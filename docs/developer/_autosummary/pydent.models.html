@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.models &#8212; Trident 0.0.25 documentation</title>
+    <title>pydent.models &#8212; Trident 0.0.26 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -33,14 +33,14 @@
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.25 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.26 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.25)</h1>
+        <h1>Trident (V0.0.26)</h1>
     </a>
 </p>
 
@@ -48,7 +48,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.25.
+    for version 0.0.26.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -212,13 +212,13 @@ SampleType:</p>
 <tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PlanAssociation" title="pydent.models.PlanAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></a>(**model_args)</td>
 <td>A PlanAssociation model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a>([name,&nbsp;project,&nbsp;sample_type_id])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a>([name,&nbsp;project,&nbsp;description,&nbsp;…])</td>
 <td>A Sample model</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleType</span></code></a>(**model_args)</td>
 <td>A SampleType model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></a>(**model_args)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></a>([job_id,&nbsp;file])</td>
 <td>An Upload model</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a>(**model_args)</td>
@@ -1494,8 +1494,60 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 
 <dl class="method">
 <dt id="pydent.models.Collection.associate">
-<code class="descname">associate</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.associate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">associate</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>upload=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.associate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a data association with the key and value to this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.associate_file">
+<code class="descname">associate_file</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>file</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.associate_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate a file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em><em> or </em><em>json</em>) – association key</li>
+<li><strong>value</strong> (<em>str</em><em> or </em><em>json</em>) – association value</li>
+<li><strong>file</strong> (<em>file object</em>) – file to create <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+<li><strong>job_id</strong> (<em>int</em>) – optional job_id to associate the <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new data association</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.associate_file_from_path">
+<code class="descname">associate_file_from_path</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>filepath</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.associate_file_from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate a file from a filepath</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em><em> or </em><em>json</em>) – association key</li>
+<li><strong>value</strong> (<em>str</em><em> or </em><em>json</em>) – association value</li>
+<li><strong>filepath</strong> (<em>str</em>) – path to file to create <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+<li><strong>job_id</strong> (<em>int</em>) – optional job_id to associate the <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new data association</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3336,8 +3388,60 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 
 <dl class="method">
 <dt id="pydent.models.Item.associate">
-<code class="descname">associate</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.associate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">associate</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>upload=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.associate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a data association with the key and value to this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item.associate_file">
+<code class="descname">associate_file</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>file</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.associate_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate a file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em><em> or </em><em>json</em>) – association key</li>
+<li><strong>value</strong> (<em>str</em><em> or </em><em>json</em>) – association value</li>
+<li><strong>file</strong> (<em>file object</em>) – file to create <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+<li><strong>job_id</strong> (<em>int</em>) – optional job_id to associate the <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new data association</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item.associate_file_from_path">
+<code class="descname">associate_file_from_path</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>filepath</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.associate_file_from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate a file from a filepath</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em><em> or </em><em>json</em>) – association key</li>
+<li><strong>value</strong> (<em>str</em><em> or </em><em>json</em>) – association value</li>
+<li><strong>filepath</strong> (<em>str</em>) – path to file to create <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+<li><strong>job_id</strong> (<em>int</em>) – optional job_id to associate the <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new data association</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5252,8 +5356,60 @@ item/sample/container must be saved.</p>
 
 <dl class="method">
 <dt id="pydent.models.Operation.associate">
-<code class="descname">associate</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.associate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">associate</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>upload=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.associate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a data association with the key and value to this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation.associate_file">
+<code class="descname">associate_file</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>file</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.associate_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate a file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em><em> or </em><em>json</em>) – association key</li>
+<li><strong>value</strong> (<em>str</em><em> or </em><em>json</em>) – association value</li>
+<li><strong>file</strong> (<em>file object</em>) – file to create <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+<li><strong>job_id</strong> (<em>int</em>) – optional job_id to associate the <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new data association</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation.associate_file_from_path">
+<code class="descname">associate_file_from_path</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>filepath</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.associate_file_from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate a file from a filepath</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em><em> or </em><em>json</em>) – association key</li>
+<li><strong>value</strong> (<em>str</em><em> or </em><em>json</em>) – association value</li>
+<li><strong>filepath</strong> (<em>str</em>) – path to file to create <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+<li><strong>job_id</strong> (<em>int</em>) – optional job_id to associate the <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new data association</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6156,8 +6312,60 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 
 <dl class="method">
 <dt id="pydent.models.Plan.associate">
-<code class="descname">associate</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.associate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">associate</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>upload=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.associate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a data association with the key and value to this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.associate_file">
+<code class="descname">associate_file</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>file</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.associate_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate a file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em><em> or </em><em>json</em>) – association key</li>
+<li><strong>value</strong> (<em>str</em><em> or </em><em>json</em>) – association value</li>
+<li><strong>file</strong> (<em>file object</em>) – file to create <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+<li><strong>job_id</strong> (<em>int</em>) – optional job_id to associate the <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new data association</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.associate_file_from_path">
+<code class="descname">associate_file_from_path</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>filepath</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.associate_file_from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate a file from a filepath</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em><em> or </em><em>json</em>) – association key</li>
+<li><strong>value</strong> (<em>str</em><em> or </em><em>json</em>) – association value</li>
+<li><strong>filepath</strong> (<em>str</em>) – path to file to create <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+<li><strong>job_id</strong> (<em>int</em>) – optional job_id to associate the <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new data association</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6870,9 +7078,24 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Sample">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>name=None</em>, <em>project=None</em>, <em>sample_type_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>name=None</em>, <em>project=None</em>, <em>description=None</em>, <em>sample_type_id=None</em>, <em>properties=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Sample model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> – </li>
+<li><strong>project</strong> – </li>
+<li><strong>description</strong> – </li>
+<li><strong>sample_type_id</strong> – </li>
+<li><strong>properties</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="pydent.models.Sample._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample._check_for_session" title="Permalink to this definition">¶</a></dt>
@@ -7476,13 +7699,75 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Upload">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Upload</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Upload</code><span class="sig-paren">(</span><em>job_id=None</em>, <em>file=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>An Upload model</p>
+<p>Create a new upload</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>job_id</strong> (<em>int</em>) – job id to associate the upload to</li>
+<li><strong>file</strong> (<em>file object</em>) – file to upload</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="pydent.models.Upload._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload._check_for_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises error if model is not connected to a session</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pydent.models.Upload._download_file_from_url">
+<em class="property">static </em><code class="descname">_download_file_from_url</code><span class="sig-paren">(</span><em>url</em>, <em>outpath</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload._download_file_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload._download_file_from_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a file from a url</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> (<em>str</em>) – url of file</li>
+<li><strong>outpath</strong> (<em>str</em>) – filepath of out file</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">http response</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pydent.models.Upload._download_files">
+<em class="property">static </em><code class="descname">_download_files</code><span class="sig-paren">(</span><em>uploads</em>, <em>outdir</em>, <em>overwrite</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload._download_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload._download_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads uploaded file from list of <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a> models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>uploads</strong> (<em>list</em>) – list of Uploads</li>
+<li><strong>outdir</strong> (<em>str</em>) – path to output directory to save downloaded files (defaults to current directory)</li>
+<li><strong>overwrite</strong> (<em>bool</em>) – if True, will overwrite existing files (default: True)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of filepaths</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -7556,6 +7841,31 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pydent.models.Upload.async_download">
+<em class="property">static </em><code class="descname">async_download</code><span class="sig-paren">(</span><em>uploads</em>, <em>outdir=None</em>, <em>overwrite=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload.async_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload.async_download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asynchronously downloads from list of <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a> models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>uploads</strong> (<em>list</em>) – list of Uploads</li>
+<li><strong>outdir</strong> (<em>str</em>) – path to output directory to save downloaded files</li>
+<li><strong>overwrite</strong> (<em>bool</em>) – if True, will overwrite existing files</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of filepaths</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
 </td>
 </tr>
 </tbody>
@@ -8697,7 +9007,7 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.25 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.26 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

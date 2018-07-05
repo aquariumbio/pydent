@@ -36,7 +36,7 @@ from inflection import pluralize, underscore
 from .base import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
-
+import json
 
 class SessionInterface(object):
     """
@@ -66,7 +66,7 @@ class UtilityInterface(SessionInterface):
     """
     # TODO: have ability to save new properties
     def create_samples(self, samples):
-        json = [s.dump() for s in samples]
+        json = [s.dump(include={"field_values"}) for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
 
     def create_items(self, items):
@@ -244,6 +244,36 @@ class UtilityInterface(SessionInterface):
         for element in result:
             print(element)
         return items
+
+    def create_data_association(self, model_inst, key, value, upload=None):
+        upload_id = None
+        if upload is not None:
+            upload_id = upload.id
+        data = {
+            "model": {
+                "model": "DataAssociation",
+                "record_methods": {},
+                "record_getters": {}
+            },
+            "parent_id": model_inst.id,
+            "key": str(key),
+            "object": json.dumps({str(key): value}),
+            "parent_class": model_inst.__class__.__name__,
+            "upload_id": upload_id
+        }
+        result = self.aqhttp.post("json/save", json_data=data)
+        data_association = model_inst.session.DataAssociation.find(result['id'])
+        model_inst.data_associations.append(data_association)
+        return data_association
+
+    def create_upload(self, upload):
+        files = {
+            'file': upload.file
+        }
+
+        result = self.aqhttp.post("krill/upload?job={}".format(upload.job_id), files=files)
+        upload.reload(result)
+        return upload
 
 
 class ModelInterface(SessionInterface):

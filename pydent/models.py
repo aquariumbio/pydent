@@ -162,35 +162,68 @@ class FieldMixin:
             return fxn(model_name, model_id)
 
 
+# TODO: handle uploaded files (only safe files)
 class DataAssociatorMixin:
     """
     Mixin for handling data associations
     """
 
-    def associate(self, key, value):
+    def associate(self, key, value, upload=None):
         """
         Adds a data association with the key and value to this object.
         """
-        session = self.session
-        aqhttp = session._AqSession__aqhttp
+        return self.session.utils.create_data_association(self, key, value, upload=upload)
 
-        data = {
-            "model": {
-                "model": DataAssociation.__name__,
-                "record_methods": {},
-                "record_getters": {}
-            },
-            "parent_id": self.id,
-            "key": str(key),
-            "object": json.dumps({str(key): value}),
-            "parent_class": self.__class__.__name__,
-        }
+    def associate_file(self, key, value, file, job_id=None):
+        """
+        Associate a file
 
-        result = aqhttp.post("json/save", json_data=data)
-        return session.DataAssociation.find(result["id"])
+        :param key: association key
+        :type key: str or json
+        :param value: association value
+        :type value: str or json
+        :param file: file to create :class:`Upload`
+        :type file: file object
+        :param job_id: optional job_id to associate the :class:`Upload`
+        :type job_id: int
+        :return: new data association
+        :rtype: :class:`DataAssociation`
+        """
+        u = self.session.Upload.new(job_id=job_id, file=file)
+        u.save()
+        return self.associate(key, value, upload=u)
+
+    def associate_file_from_path(self, key, value, filepath, job_id=None):
+        """
+        Associate a file from a filepath
+
+        :param key: association key
+        :type key: str or json
+        :param value: association value
+        :type value: str or json
+        :param filepath: path to file to create :class:`Upload`
+        :type filepath: str
+        :param job_id: optional job_id to associate the :class:`Upload`
+        :type job_id: int
+        :return: new data association
+        :rtype: :class:`DataAssociation`
+        """
+        with open(filepath, 'rb') as f:
+            return self.associate_file(key, value, f, job_id=job_id)
+
+    def get(self, key):
+        val = []
+        for da in self.data_associations:
+            if da.key == key:
+                val.append(da.value)
+        if len(val) == 1:
+            return val[0]
+        elif len(val) == 0:
+            return None
+        return val
 
 
-# Models #####
+# Models
 
 @add_schema
 class Account(ModelBase):
@@ -251,8 +284,14 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
     """A Collection model"""
     fields = dict(
         object_type=HasOne("ObjectType"),
-        data_associations=HasManyGeneric("DataAssociation")
+        data_associations=HasManyGeneric("DataAssociation"),
+        data=fields.JSON(allow_none=True, strict=False)
     )
+
+    @property
+    def matrix(self):
+        return self.data['matrix']
+
 
 
 @add_schema
@@ -311,6 +350,12 @@ class FieldType(ModelBase, FieldMixin):
             if aft_stype_and_objtype is not None:
                 for smple_type, obj_type in aft_stype_and_objtype:
                     self.create_allowable_field_type(smple_type, obj_type)
+
+    def load_choice(self, value):
+        return value.split(',')
+
+    def get_choice(self, obj):
+        return ','.join(obj.choices)
 
     @property
     def is_parameter(self):
@@ -372,7 +417,9 @@ class FieldValue(ModelBase, FieldMixin):
         wires_as_dest=HasMany("Wire", ref="to_id"),
         successors=HasManyThrough("Operation", "Wire"),
         sid=fields.Function(lambda fv: fv.sid, allow_none=True),
-        ignore=('object_type',)
+        child_sample_name=fields.Function(lambda fv: fv.sid, allow_none=True),
+        allowable_child_types=fields.Function(lambda fv: fv.allowable_child_types, allow_none=True),
+        ignore=('object_type',),
     )
 
     def __init__(self, name=None, role=None, parent_class=None, parent_id=None,
@@ -428,6 +475,10 @@ class FieldValue(ModelBase, FieldMixin):
         super().__init__(**vars(self))
 
     @property
+    def child_sample_name(self):
+        return "{}: {}".format(self.child_sample_id, self.sample.name)
+
+    @property
     def array(self):
         arr = self.field_type.array
         if arr is None:
@@ -438,6 +489,12 @@ class FieldValue(ModelBase, FieldMixin):
     def sid(self):
         if self.sample is not None:
             return self.sample.identifier
+
+    @property
+    def allowable_child_types(self):
+        if self.sample:
+            return [aft.sample.name for aft in self.field_type.allowable_field_types]
+        return []
 
     @property
     def outgoing_wires(self):
@@ -479,6 +536,11 @@ class FieldValue(ModelBase, FieldMixin):
                 "Item {} is not in container {}".format(
                     item.id, str(container)))
         if value is not None:
+            if self.field_type.choices is not None:
+                choices = self.field_type.choices.split(',')
+                if value not in choices and str(value) not in choices:
+                    raise AquariumModelError("Value \'{}\' not in list of field "
+                                             "type choices \'{}\'".format(value, choices))
             self.value = value
         if item is not None:
             self.item = item
@@ -1034,6 +1096,7 @@ class OperationType(ModelBase, HasCodeMixin):
                           params="documentation"),
         precondition=One("Code", callback="get_code_callback",
                          params="precondition"),
+        user=HasOne("User")
     )
 
     def get_field_type(self, model_name, parent_class):
@@ -1256,17 +1319,6 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         """Copies or replans the plan"""
         return self.replan()
 
-    @staticmethod
-    @make_async(1)
-    def _async_download_files(data_associations, outdir=None, overwrite=True):
-        Plan._download_files(data_associations, outdir=outdir, overwrite=overwrite)
-
-    @staticmethod
-    def _download_files(data_associations, outdir=None, overwrite=True):
-        for da in data_associations:
-            if da.upload is not None:
-                da.upload.download(outdir=outdir, overwrite=overwrite)
-
     def download_files(self, outdir=None, overwrite=True):
         """
         Downloads all uploads associated with the plan. Downloads happen
@@ -1276,7 +1328,11 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         :param overwrite: whether to overwrite files if they exist
         :return: None
         """
-        return Plan._async_download_files(self.data_associations, outdir, overwrite)
+        uploads = []
+        for da in self.data_associations:
+            if da.upload is not None:
+                uploads.append(da.upload)
+        return Upload.async_download(uploads, outdir, overwrite)
 
 
 @add_schema
@@ -1298,11 +1354,27 @@ class Sample(ModelBase):
         field_values=HasMany("FieldValue", ref="parent_id"),
     )
 
-    def __init__(self, name=None, project=None, sample_type_id=None):
+    def __init__(self, name=None, project=None, description=None, sample_type_id=None, properties=None):
+        """
+
+        :param name:
+        :type name:
+        :param project:
+        :type project:
+        :param description:
+        :type description:
+        :param sample_type_id:
+        :type sample_type_id:
+        :param properties:
+        :type properties:
+        """
         self.name = name
         self.project = project
         self.sample_type_id = sample_type_id
+        self.description = description
         super().__init__(**vars(self))
+        if properties is not None:
+            self.initialize_field_values(properties, self.sample_type)
 
     @property
     def identifier(self):
@@ -1338,8 +1410,28 @@ class Sample(ModelBase):
                         d[fv.name].append(v)
                     else:
                         # make values an array
-                        d[fv.name] = d[fv.name] + [v]
+                        d[fv.name] = [d[fv.name]] + [v]
         return d
+
+    def empty_properties(self):
+        return {ft.name: None for ft in self.sample_type.field_types}
+
+    def initialize_field_values(self, prop_dict, sample_type):
+        fts = sample_type.field_types
+        ft_names = [ft.name for ft in fts]
+        ft_dict = dict(zip(ft_names, fts))
+        fvs = []
+        for prop, val in prop_dict.items():
+            if val is not None:
+                ft = ft_dict[prop]
+                fv = ft.initialize_field_value()
+                if ft.ftype == 'sample':
+                    fv.set_value(sample=val)
+                else:
+                    fv.set_value(value=val)
+                fvs.append(fv)
+        self.field_values = fvs
+        return fvs
 
     @property
     def properties(self):
@@ -1370,6 +1462,7 @@ class SampleType(ModelBase):
         return self.reload(self.session.utils.create_sample_type(self))
 
 
+# TODO: save upload to Aquarium (safe files only)
 @add_schema
 class Upload(ModelBase):
     """
@@ -1378,6 +1471,19 @@ class Upload(ModelBase):
     fields = dict(
         job=HasOne("Job")
     )
+
+    def __init__(self, job_id=None, file=None):
+        """
+        Create a new upload
+
+        :param job_id: job id to associate the upload to
+        :type job_id: int
+        :param file: file to upload
+        :type file: file object
+        """
+        self.job_id = job_id
+        self.file = file
+        super().__init__(**vars(self))
 
     # def _get_uploads_from_job_id(self, job_id):
 
@@ -1390,11 +1496,59 @@ class Upload(ModelBase):
         _u_arr = [upload for upload in uploads if upload['id'] == self.id]
         return _u_arr[0]['url']
 
-    def _download_image_from_url(self, url, outpath):
+    @staticmethod
+    def _download_file_from_url(url, outpath):
+        """
+        Downloads a file from a url
+
+        :param url: url of file
+        :type url: str
+        :param outpath: filepath of out file
+        :type outpath: str
+        :return: http response
+        :rtype: str
+        """
         response = requests.get(url, stream=True)
         with open(outpath, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         return response.raw
+
+    @staticmethod
+    @make_async(1)
+    def async_download(uploads, outdir=None, overwrite=True):
+        """
+        Asynchronously downloads from list of :class:`Upload` models.
+
+        :param uploads: list of Uploads
+        :type uploads: list
+        :param outdir: path to output directory to save downloaded files
+        :type outdir: str
+        :param overwrite: if True, will overwrite existing files
+        :type overwrite: bool
+        :return: list of filepaths
+        :rtype: list
+        """
+        return Upload._download_files(uploads, outdir, overwrite)
+
+    @staticmethod
+    def _download_files(uploads, outdir, overwrite):
+        """
+        Downloads uploaded file from list of :class:`Upload` models.
+
+        :param uploads: list of Uploads
+        :type uploads: list
+        :param outdir: path to output directory to save downloaded files (defaults to current directory)
+        :type outdir: str
+        :param overwrite: if True, will overwrite existing files (default: True)
+        :type overwrite: bool
+        :return: list of filepaths
+        :rtype: list
+        """
+        filepaths = []
+        for upload in uploads:
+            filepath = upload.download(outdir=outdir, overwrite=overwrite)
+            filepaths.append(filepath)
+        return filepaths
 
     def download(self, outdir=None, filename=None, overwrite=True):
         """
@@ -1411,7 +1565,8 @@ class Upload(ModelBase):
             filename = "{}_{}".format(self.id, self.upload_file_name)
         filepath = os.path.join(outdir, filename)
         if not os.path.exists(filepath) or overwrite:
-            self._download_image_from_url(self.temp_url(), filepath)
+            self._download_file_from_url(self.temp_url(), filepath)
+        return filepath
 
     @property
     def data(self):
@@ -1419,6 +1574,8 @@ class Upload(ModelBase):
         result = requests.get(self.temp_url)
         return result.content
 
+    def save(self):
+        return self.session.utils.create_upload(self)
 
 @add_schema
 class User(ModelBase):
