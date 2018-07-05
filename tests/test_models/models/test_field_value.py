@@ -30,8 +30,20 @@ def test_constructor_with_item():
 
 
 def test_constructor_with_value():
-    fv = FieldValue(role='input', parent_class='Operation', value=400)
+    fv = FieldValue.load(dict(
+        role='input', parent_class='Operation', value=400, field_type=dict(choices='400', id=5)
+    ))
     assert fv.value == 400
+
+
+def test_raises_exception_with_wrong_choice():
+    fv = FieldValue.load(dict(
+        role='input', parent_class='Operation', value=400, field_type=dict(choices='400,301', id=5)
+    ))
+    fv.set_value(value=301)
+    assert fv.value == 301
+    with pytest.raises(AquariumModelError):
+        fv.set_value(value=300)
 
 
 def test_constructor_with_container():
