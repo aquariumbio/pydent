@@ -351,6 +351,12 @@ class FieldType(ModelBase, FieldMixin):
                 for smple_type, obj_type in aft_stype_and_objtype:
                     self.create_allowable_field_type(smple_type, obj_type)
 
+    def load_choice(self, value):
+        return value.split(',')
+
+    def get_choice(self, obj):
+        return ','.join(obj.choices)
+
     @property
     def is_parameter(self):
         return self.ftype != "sample"
@@ -411,7 +417,9 @@ class FieldValue(ModelBase, FieldMixin):
         wires_as_dest=HasMany("Wire", ref="to_id"),
         successors=HasManyThrough("Operation", "Wire"),
         sid=fields.Function(lambda fv: fv.sid, allow_none=True),
-        ignore=('object_type',)
+        child_sample_name=fields.Function(lambda fv: fv.sid, allow_none=True),
+        allowable_child_types=fields.Function(lambda fv: fv.allowable_child_types, allow_none=True),
+        ignore=('object_type',),
     )
 
     def __init__(self, name=None, role=None, parent_class=None, parent_id=None,
@@ -467,6 +475,10 @@ class FieldValue(ModelBase, FieldMixin):
         super().__init__(**vars(self))
 
     @property
+    def child_sample_name(self):
+        return "{}: {}".format(self.child_sample_id, self.sample.name)
+
+    @property
     def array(self):
         arr = self.field_type.array
         if arr is None:
@@ -477,6 +489,12 @@ class FieldValue(ModelBase, FieldMixin):
     def sid(self):
         if self.sample is not None:
             return self.sample.identifier
+
+    @property
+    def allowable_child_types(self):
+        if self.sample:
+            return [aft.sample.name for aft in self.field_type.allowable_field_types]
+        return []
 
     @property
     def outgoing_wires(self):
@@ -518,6 +536,11 @@ class FieldValue(ModelBase, FieldMixin):
                 "Item {} is not in container {}".format(
                     item.id, str(container)))
         if value is not None:
+            if self.field_type.choices is not None:
+                choices = self.field_type.choices.split(',')
+                if value not in choices and str(value) not in choices:
+                    raise AquariumModelError("Value \'{}\' not in list of field "
+                                             "type choices \'{}\'".format(value, choices))
             self.value = value
         if item is not None:
             self.item = item
@@ -1331,11 +1354,27 @@ class Sample(ModelBase):
         field_values=HasMany("FieldValue", ref="parent_id"),
     )
 
-    def __init__(self, name=None, project=None, sample_type_id=None):
+    def __init__(self, name=None, project=None, description=None, sample_type_id=None, properties=None):
+        """
+
+        :param name:
+        :type name:
+        :param project:
+        :type project:
+        :param description:
+        :type description:
+        :param sample_type_id:
+        :type sample_type_id:
+        :param properties:
+        :type properties:
+        """
         self.name = name
         self.project = project
         self.sample_type_id = sample_type_id
+        self.description = description
         super().__init__(**vars(self))
+        if properties is not None:
+            self.initialize_field_values(properties, self.sample_type)
 
     @property
     def identifier(self):
@@ -1374,6 +1413,28 @@ class Sample(ModelBase):
                         d[fv.name] = [d[fv.name]] + [v]
         return d
 
+    def empty_properties(self):
+        return {ft.name: None for ft in self.sample_type.field_types}
+
+    def initialize_field_values(self, prop_dict, sample_type):
+        fts = sample_type.field_types
+        ft_names = [ft.name for ft in fts]
+        ft_dict = dict(zip(ft_names, fts))
+        fvs = []
+        for prop, val in prop_dict.items():
+            if val is not None:
+                ft = ft_dict[prop]
+                afts = ft.allowable_field_types
+                fv = ft.initialize_field_value()
+
+                if afts is None or afts == []:
+                    fv.set_value(value=val)
+                else:
+                    fv.set_value(sample=val)
+                fvs.append(fv)
+        self.field_values = fvs
+        return fvs
+
     @property
     def properties(self):
         fv_keys = [ft.name for ft in self.sample_type.field_types]
@@ -1401,6 +1462,7 @@ class SampleType(ModelBase):
         """Saves the Sample Type to the Aquarium server. Requires
         this Sample Type to be connected to a session."""
         return self.reload(self.session.utils.create_sample_type(self))
+
 
 # TODO: save upload to Aquarium (safe files only)
 @add_schema

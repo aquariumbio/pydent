@@ -66,7 +66,7 @@ class UtilityInterface(SessionInterface):
     """
     # TODO: have ability to save new properties
     def create_samples(self, samples):
-        json = [s.dump() for s in samples]
+        json = [s.dump(include={"field_values"}) for s in samples]
         return self.aqhttp.post('browser/create_samples', {"samples": json})
 
     def create_items(self, items):
