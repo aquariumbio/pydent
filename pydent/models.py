@@ -1424,13 +1424,11 @@ class Sample(ModelBase):
         for prop, val in prop_dict.items():
             if val is not None:
                 ft = ft_dict[prop]
-                afts = ft.allowable_field_types
                 fv = ft.initialize_field_value()
-
-                if afts is None or afts == []:
-                    fv.set_value(value=val)
-                else:
+                if ft.ftype == 'sample':
                     fv.set_value(sample=val)
+                else:
+                    fv.set_value(value=val)
                 fvs.append(fv)
         self.field_values = fvs
         return fvs
