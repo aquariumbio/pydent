@@ -1371,7 +1371,7 @@ class Sample(ModelBase):
                         d[fv.name].append(v)
                     else:
                         # make values an array
-                        d[fv.name] = d[fv.name] + [v]
+                        d[fv.name] = [d[fv.name]] + [v]
         return d
 
     @property
