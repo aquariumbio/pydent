@@ -181,7 +181,6 @@ class AqHTTP(object):
         if result_json and 'errors' in result_json:
             errors = result_json['errors']
             msg = "Error response:\n{}".format("\n".join(errors))
-            print(msg)
             raise TridentRequestError(msg, result)
         return result_json
 
