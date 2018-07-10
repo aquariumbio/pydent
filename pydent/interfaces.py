@@ -383,13 +383,14 @@ class ModelInterface(SessionInterface):
         """
         Finds models based on criteria
         """
-        if methods is None:
-            methods = {}
+        rest = {}
+        if methods is not None:
+            rest = {"methods": methods}
         if opts is None:
             opts = {}
         options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
-        return self.array_query("where", criteria, methods, options)
+        return self.array_query("where", criteria, rest, options)
 
     def patch(self, model_id, json_data):
         """

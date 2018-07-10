@@ -1462,7 +1462,7 @@ class SampleType(ModelBase):
         return self.reload(self.session.utils.create_sample_type(self))
 
 
-# TODO: save upload to Aquarium (safe files only)
+# TODO: expiring_url is never updated...
 @add_schema
 class Upload(ModelBase):
     """
@@ -1492,9 +1492,8 @@ class Upload(ModelBase):
         return http.get("krill/uploads?job={}".format(self.job_id))['uploads']
 
     def temp_url(self):
-        uploads = self._get_uploads_from_job()
-        _u_arr = [upload for upload in uploads if upload['id'] == self.id]
-        return _u_arr[0]['url']
+        data = self.session.Upload.where({"id": self.id}, methods=["expiring_url"])[0].raw
+        return data['expiring_url']
 
     @staticmethod
     def _download_file_from_url(url, outpath):

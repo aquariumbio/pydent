@@ -177,6 +177,7 @@ class AqHTTP(object):
         except json.JSONDecodeError:
             msg = "Response is not JSON formatted"
             msg += "\nMessage:\n" + result.text
+            print(msg)
             raise TridentRequestError(msg, result)
         if result_json and 'errors' in result_json:
             errors = result_json['errors']
