@@ -15,6 +15,8 @@ def test_submit_order_primer(session):
 
     p.create()
 
+    p.delete()
+
 
 def test_plan_with_parameter(session):
     primer = session.SampleType.find_by_name('Primer')
@@ -22,7 +24,7 @@ def test_plan_with_parameter(session):
     print("primer:\n{}\n".format(primer))
 
     # get Order Primer operation type
-    ot = session.OperationType.find_by_name('Order Primer')
+    ot = session.OperationType.where({'name': 'Order Primer', 'deployed': True})[0]
     assert ot, "Operation type Order Primer not found"
     print("op type:\n{}\n".format(ot))
 
@@ -50,6 +52,8 @@ def test_plan_with_parameter(session):
     assert p.id is not None
     plan_from_server = session.Plan.find(p.id)
     assert len(plan_from_server.operations) == 1
+
+    plan_from_server.delete()
 
 
 def test_parameter_to_zero(session):
@@ -162,6 +166,8 @@ def test_submit_gibson(session):
 
     # save the plan
     p.save()
+
+    p.delete()
 
     # print("You may open you plan here: {}".format(
     #       session.url + "/plans?plan_id={}".format(p.id)))
