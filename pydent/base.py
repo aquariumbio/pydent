@@ -237,16 +237,16 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         model = ModelRegistry.get_model(model_name)
         return model.where(self.session, params)
 
-    def patch(self, json_data):
-        """Make a patch request to self using json_data. Reload model instance with new data"""
-        result = self.create_interface().patch(self.id, json_data=json_data)
-        self.reload(data=result)
-        return self
-
-    def patch_with_self(self, **kwargs):
-        """Update changes to this model instance to Aquarium."""
-        json_data = self.dump(**kwargs)
-        return self.patch(json_data=json_data)
+    # def patch(self, json_data):
+    #     """Make a patch request to self using json_data. Reload model instance with new data"""
+    #     result = self.create_interface().patch(self.id, json_data=json_data)
+    #     self.reload(data=result)
+    #     return self
+    #
+    # def patch_with_self(self, **kwargs):
+    #     """Update changes to this model instance to Aquarium."""
+    #     json_data = self.dump(**kwargs)
+    #     return self.patch(json_data=json_data)
 
     def __getattribute__(self, name):
         """Override getattribute to automatically connect sessions"""

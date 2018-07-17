@@ -392,14 +392,14 @@ class ModelInterface(SessionInterface):
         options.update(opts)
         return self.array_query("where", criteria, rest, options)
 
-    def patch(self, model_id, json_data):
-        """
-        Makes a patch or update from json_data
-        """
-        models_name = pluralize(underscore(self.model_name))
-        result = self.aqhttp.put('{models}/{model_id}'.format(
-            model_id=model_id, models=models_name), json_data=json_data)
-        return result
+    # def patch(self, model_id, json_data):
+    #     """
+    #     Makes a patch or update from json_data
+    #     """
+    #     models_name = pluralize(underscore(self.model_name))
+    #     result = self.aqhttp.put('{models}/{model_id}'.format(
+    #         model_id=model_id, models=models_name), json_data=json_data)
+    #     return result
 
     def new(self, *args, **kwargs):
         """
