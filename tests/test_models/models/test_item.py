@@ -43,3 +43,8 @@ def test_item_get_data_association():
 
     assert item.get('key0') == 'hello'
     assert item.get('key1') == [[1,2,3,4], [2,2,3,4]]
+    assert not hasattr(item, "locator_id")
+
+    item.locator_id = 5
+
+    assert 'locator_id' not in item.dump()
