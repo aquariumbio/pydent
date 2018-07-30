@@ -650,7 +650,8 @@ class Item(ModelBase, DataAssociatorMixin):
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        data=fields.JSON(allow_none=True, strict=False)
+        data=fields.JSON(allow_none=True, strict=False),
+        ignore=("locator_id",)
     )
 
     def __init__(self=None, sample_id=None, object_type_id=None):
