@@ -7,9 +7,9 @@ from requests.exceptions import RequestException, ConnectTimeout
 
 class TridentRequestError(RequestException):
     """There was an ambiguous exception that occured handling your request."""
-    def __init__(self, message, response):
-        self.message = message
-        self.response = response
+    # def __init__(self, message, response):
+    #     self.message = message
+    #     self.response = response
 
 
 class TridentJSONDataIncomplete(RequestException):

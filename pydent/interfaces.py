@@ -245,6 +245,19 @@ class UtilityInterface(SessionInterface):
             print(element)
         return items
 
+    # TODO: fix delete association
+    def delete_data_association(self, association):
+        data = {
+            "model": {
+                "model": "DataAssociation",
+                "record_methods": {},
+                "record_getters": {}
+            },
+        }
+        data.update(association.dump())
+        result = self.aqhttp.post("json/delete", json_data=data)
+        return result
+
     def create_data_association(self, model_inst, key, value, upload=None):
         upload_id = None
         if upload is not None:
