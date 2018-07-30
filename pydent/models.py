@@ -211,6 +211,13 @@ class DataAssociatorMixin:
         with open(filepath, 'rb') as f:
             return self.associate_file(key, value, f, job_id=job_id)
 
+    def get_data_associations(self, key):
+        das = []
+        for da in self.data_associations:
+            if da.key == key:
+                das.append(da)
+        return das
+
     def get(self, key):
         val = []
         for da in self.data_associations:
@@ -305,6 +312,10 @@ class DataAssociation(ModelBase):
     @property
     def value(self):
         return self.object.get(self.key, None)
+
+
+    def delete(self):
+        return self.session.utils.delete_data_association(self)
 
 
 @add_schema
