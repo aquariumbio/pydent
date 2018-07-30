@@ -59,6 +59,7 @@
 <li><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
 <li><a class="reference internal" href="#logging-in">Logging in</a></li>
 <li><a class="reference internal" href="#model-queries">Model queries</a></li>
+<li><a class="reference internal" href="#creating-samples">Creating Samples</a></li>
 <li><a class="reference internal" href="#setting-a-query-timeout">Setting a query timeout</a></li>
 </ul>
 </li>
@@ -199,6 +200,46 @@ will return an array where the conditions are true.</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;Account&#39;, &#39;AllowableFieldType&#39;, &#39;Budget&#39;, &#39;Code&#39;, &#39;Collection&#39;, &#39;DataAssociation&#39;, &#39;FieldType&#39;, &#39;FieldValue&#39;, &#39;Group&#39;, &#39;Invoice&#39;, &#39;Item&#39;, &#39;Job&#39;, &#39;JobAssociation&#39;, &#39;Library&#39;, &#39;Membership&#39;, &#39;ObjectType&#39;, &#39;Operation&#39;, &#39;OperationType&#39;, &#39;Plan&#39;, &#39;PlanAssociation&#39;, &#39;Sample&#39;, &#39;SampleType&#39;, &#39;Upload&#39;, &#39;User&#39;, &#39;UserBudgetAssociation&#39;, &#39;Wire&#39;]
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-samples">
+<h3>Creating Samples<a class="headerlink" href="#creating-samples" title="Permalink to this headline">¶</a></h3>
+<p>The syntax for creating new Samples, Items, etc. is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mysession</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="n">mysession</span><span class="o">.</span><span class="n">Item</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="n">mysession</span><span class="o">.</span><span class="n">Plan</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="c1"># and so on</span>
+</pre></div>
+</div>
+<p>The <em>session.Sample.new()</em> syntax will instantiate the model and connect the
+model to the session. Alternatively, you can create samples by manually
+connecting to a session.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.models</span> <span class="kn">import</span> <span class="n">Sample</span>
+
+<span class="n">mysample</span> <span class="o">=</span> <span class="n">Sample</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">mysample</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+<span class="n">mysample</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plasmid</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;puc19-pBAD-GFP&quot;</span><span class="p">)</span>
+<span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mysample&#39;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;my optional description&#39;</span><span class="p">,</span>
+    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my project&#39;</span><span class="p">,</span>
+    <span class="n">sample_type_id</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Yeast Strain&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="n">properties</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;Mating Type&quot;</span><span class="p">:</span> <span class="s2">&quot;MATa&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Integrant&quot;</span><span class="p">:</span> <span class="n">plasmid</span><span class="p">,</span>
+        <span class="s2">&quot;Has this strain passed QC?&quot;</span><span class="p">:</span> <span class="s2">&quot;No&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Integrated Marker(s)&quot;</span><span class="p">:</span> <span class="s2">&quot;URA&quot;</span>
+        <span class="p">})</span>
+<span class="n">mysample</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
 </div>
