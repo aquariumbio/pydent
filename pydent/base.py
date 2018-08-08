@@ -201,7 +201,9 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
 
     @classmethod
     def interface(cls, session):
-        """Creates a model interface from this class and a session"""
+        """Creates a model interface from this class and a session
+
+        This method can be overridden in model definitions for special cases."""
         return session.model_interface(cls.__name__)
 
     @classmethod

@@ -1256,12 +1256,17 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         return das
 
     @classmethod
-    def find(cls, session, model_id):
-        """
-        Override find for plans, because generic method is too minimal.
-        """
-        interface = cls.interface(session)
-        return interface.get('plans/{}.json'.format(model_id))
+    def interface(cls, session):
+        # get model interface from Base class
+        model_interface = super(Plan, cls).interface(session)
+
+        # make a special find method for plans, as generic method is too minimal.
+        new_find = lambda model_id: model_interface.get('plans/{}.json'.format(model_id))
+
+        # override the old find method
+        model_interface.find = new_find
+
+        return model_interface
 
     def to_save_json(self):
         """
