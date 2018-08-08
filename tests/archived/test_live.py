@@ -3,7 +3,7 @@ from marshmallow import pprint
 from pydent import models, ModelRegistry
 from pydent.exceptions import TridentRequestError
 
-# skip tests
+skip tests
 pytestmark = pytest.mark.skip("These tests utilize a live session with alot of requests."
                               "In the future, we may want to utilize something like pyvrc to avoid"
                               "sending live requests to Aquarium.")
@@ -51,8 +51,9 @@ class TestModelRelationships:
             try:
                 print("Finding '{}' model with {}".format(model_class_name,
                                                           iden))
-                model_instance = session.model_interface(
-                    model_class_name).find(iden)
+                interface = getattr(session, model_class_name)
+
+                model_instance = interface.find(iden)
             except TridentRequestError as e:
                 print(e)
             if model_instance:
@@ -66,8 +67,6 @@ class TestModelRelationships:
 
         # Discover and access model relationships
         relationships = model_class.get_relationships()
-        msg = "No relationships found for model '{}'".format(model_class_name)
-        assert len(relationships) > 0, msg
 
         print("\nRelationships:")
         pprint(relationships)
@@ -79,15 +78,13 @@ class TestModelRelationships:
                                                         attr,
                                                         val))
             if relationship.many:
-                msg = "Attribute {}.{} was empty list".format(
-                    model_class.__name__, attr)
-                assert len(val) > 0, msg
-                assert isinstance(val[0], nested_model)
+                if val is not None:
+                    if len(val) > 0:
+                        assert isinstance(val[0], nested_model)
             else:
                 nested_model = ModelRegistry.get_model(relationship.nested)
-                assert val, "Attribute {}.{} was null".format(
-                    model_class.__name__, attr)
-                assert isinstance(val, nested_model)
+                if val is not None:
+                    assert isinstance(val, nested_model)
 
     def test_model_relationships(self, model_relationships):
         """
