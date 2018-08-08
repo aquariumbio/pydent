@@ -405,6 +405,7 @@ class ModelInterface(SessionInterface):
         options.update(opts)
         return self.array_query("where", criteria, rest, options)
 
+    # TODO: implement 'patch' or 'update'? Would this be too dangerous?
     # def patch(self, model_id, json_data):
     #     """
     #     Makes a patch or update from json_data
