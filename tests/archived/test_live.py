@@ -3,7 +3,7 @@ from marshmallow import pprint
 from pydent import models, ModelRegistry
 from pydent.exceptions import TridentRequestError
 
-skip tests
+# skip tests
 pytestmark = pytest.mark.skip("These tests utilize a live session with alot of requests."
                               "In the future, we may want to utilize something like pyvrc to avoid"
                               "sending live requests to Aquarium.")
