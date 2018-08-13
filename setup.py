@@ -30,6 +30,7 @@ def parse_version_file():
                 ver_dict[key] = val
     return ver_dict
 
+
 def readme():
     """print long description"""
     with open('README.rst') as f:
