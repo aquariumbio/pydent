@@ -362,7 +362,7 @@ class ModelInterface(SessionInterface):
         Finds model by name
         """
         return self._post_json({"method": "find_by_name", "arguments": [name]},
-                               get_from_history_ok=True)
+                               get_from_history_ok=False)
 
     def array_query(self, method, args, rest, opts=None):
         """
