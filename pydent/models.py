@@ -634,7 +634,10 @@ class Invoice(ModelBase):
 
 @add_schema
 class Item(ModelBase, DataAssociatorMixin):
-    """A Item model"""
+    """
+    Defines a proxy object for an Item model in Aquarium.
+    An Item is a physical object in the lab.
+    """
     fields = dict(
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
@@ -1080,7 +1083,8 @@ class Operation(ModelBase, DataAssociatorMixin):
 @add_schema
 class OperationType(ModelBase, HasCodeMixin):
     """
-    A OperationType model
+    Represents an OperationType, which is the definition of a protocol in
+    Aquarium.
     """
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
@@ -1570,8 +1574,7 @@ class Upload(ModelBase):
 
     @property
     def data(self):
-        print(self.temp_url())
-        result = requests.get(self.temp_url)
+        result = requests.get(self.temp_url())
         return result.content
 
     def save(self):
