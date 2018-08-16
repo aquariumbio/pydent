@@ -6,10 +6,10 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.models &#8212; Trident 0.0.27 documentation</title>
+    <title>pydent.models &#8212; Trident 0.0.28 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -33,14 +33,14 @@
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.27 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.28 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.27)</h1>
+        <h1>Trident (V0.0.28)</h1>
     </a>
 </p>
 
@@ -48,7 +48,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.27.
+    for version 0.0.28.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -183,7 +183,7 @@ SampleType:</p>
 <td>A Invoice model</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Item</span></code></a>([sample_id,&nbsp;object_type_id])</td>
-<td>A Item model</td>
+<td>Defines a proxy object for an Item model in Aquarium.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Job" title="pydent.models.Job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Job</span></code></a>(**model_args)</td>
 <td>A Job model</td>
@@ -204,7 +204,7 @@ SampleType:</p>
 <td>A Operation model</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OperationType</span></code></a>(**model_args)</td>
-<td>A OperationType model</td>
+<td>Represents an OperationType, which is the definition of a protocol in Aquarium.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plan</span></code></a>([name,&nbsp;status,&nbsp;source,&nbsp;destination])</td>
 <td>A Plan model</td>
@@ -3302,7 +3302,8 @@ find models in model relationships.</p>
 <dt id="pydent.models.Item">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>sample_id=None</em>, <em>object_type_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code></p>
-<p>A Item model</p>
+<p>Defines a proxy object for an Item model in Aquarium.
+An Item is a physical object in the lab.</p>
 <dl class="method">
 <dt id="pydent.models.Item._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item._check_for_session" title="Permalink to this definition">¶</a></dt>
@@ -5844,7 +5845,8 @@ find models in model relationships.</p>
 <dt id="pydent.models.OperationType">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">OperationType</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#OperationType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.HasCodeMixin</span></code></p>
-<p>A OperationType model</p>
+<p>Represents an OperationType, which is the definition of a protocol in
+Aquarium.</p>
 <dl class="method">
 <dt id="pydent.models.OperationType._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType._check_for_session" title="Permalink to this definition">¶</a></dt>
@@ -9007,13 +9009,13 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.27 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.28 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>
