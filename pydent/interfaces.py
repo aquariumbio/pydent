@@ -32,11 +32,14 @@ Example:
     # creates samples from a list by calling method CreateInterface.samples
 """
 
+import json
+
 from inflection import pluralize, underscore
+
 from .base import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
-import json
+
 
 class SessionInterface(object):
     """
@@ -64,6 +67,7 @@ class UtilityInterface(SessionInterface):
     """
     Miscellaneous requests for creating, updating, etc.
     """
+
     # TODO: have ability to save new properties
     def create_samples(self, samples):
         json = [s.dump(include={"field_values"}) for s in samples]
@@ -71,8 +75,8 @@ class UtilityInterface(SessionInterface):
 
     def create_items(self, items):
         return [self.aqhttp.get('items/make/{}/{}'.format(
-                i.sample.id, i.object_type.id))
-                for i in items]
+            i.sample.id, i.object_type.id))
+            for i in items]
 
     def create_sample_type(self, sample_type):
         """
@@ -306,7 +310,7 @@ class ModelInterface(SessionInterface):
         """
         return self.model.__name__
 
-    def _post_json(self, data, get_from_history_ok=False):
+    def _post_json(self, data):
         """
         Posts a json request to session for this interface.
         Attaches raw json and this session instance to the models it retrieves.
@@ -314,12 +318,11 @@ class ModelInterface(SessionInterface):
         data_dict = {'model': self.model_name}
         data_dict.update(data)
 
-        post_response = None
         try:
             post_response = self.aqhttp.post(
                 'json',
                 json_data=data_dict,
-                get_from_history_ok=get_from_history_ok)
+            )
         except TridentRequestError as err:
             if err.response and err.response.status_code == 422:
                 return None
@@ -355,14 +358,13 @@ class ModelInterface(SessionInterface):
         """
         Finds model by id
         """
-        return self._post_json({"id": model_id}, get_from_history_ok=True)
+        return self._post_json({"id": model_id}, )
 
     def find_by_name(self, name):
         """
         Finds model by name
         """
-        return self._post_json({"method": "find_by_name", "arguments": [name]},
-                               get_from_history_ok=False)
+        return self._post_json({"method": "find_by_name", "arguments": [name]})
 
     def array_query(self, method, args, rest, opts=None):
         """

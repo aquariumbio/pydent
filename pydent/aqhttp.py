@@ -19,8 +19,6 @@ from pydent.exceptions import (TridentRequestError, TridentLoginError,
                                TridentTimeoutError, TridentJSONDataIncomplete)
 from pydent.utils import url_build
 
-
-# TODO: Replace request history with save_attr in models?
 class AqHTTP(object):
     """
     Defines a session/connection to Aquarium.
@@ -49,7 +47,6 @@ class AqHTTP(object):
         self._requests_session = None
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
-        self.request_history = {}
 
     @staticmethod
     def create_session_json(login, password):
@@ -104,10 +101,6 @@ class AqHTTP(object):
                 rtok = cparts[1]
         return "remember_token=" + rtok + "; " + header
 
-    def clear_history(self):
-        """Clears the request history."""
-        self.request_history = {}
-
     @staticmethod
     def _serialize_request(url, method, body):
         return json.dumps({
@@ -116,8 +109,7 @@ class AqHTTP(object):
             "body": body
         }, sort_keys=True)
 
-    def request(self, method, path, timeout=None,
-                get_from_history_ok=False, allow_none=True, **kwargs):
+    def request(self, method, path, timeout=None, allow_none=True, **kwargs):
         """
         Performs a http request.
 
@@ -128,9 +120,6 @@ class AqHTTP(object):
         :param timeout: time in seconds to process request before raising
                 exception
         :type timeout: int
-        :param get_from_history_ok: whether its ok to return previously found
-                request from history (default=False)
-        :type get_from_history_ok: boolean
         :param allow_none: if False will raise error when json_data
                 contains a None or null value (default: True)
         :type allow_none: boolean
@@ -150,12 +139,9 @@ class AqHTTP(object):
         if 'json' in kwargs:
             body = kwargs['json']
 
-        # get result from history (if ok) otherwise, make a http request;
-        # save result to history
         key = self._serialize_request(url, method, body)
         result = None
-        if get_from_history_ok:
-            result = self.request_history.get(key, None)
+
         if result is None:
             result = self._requests_session.request(
                 method,
@@ -163,7 +149,6 @@ class AqHTTP(object):
                     self.aquarium_url, path),
                 timeout=timeout,
                 **kwargs)
-            self.request_history[key] = result
         return self._response_to_json(result)
 
     @staticmethod
@@ -196,8 +181,7 @@ class AqHTTP(object):
             raise TridentJSONDataIncomplete(
                 "JSON data {} contains a null value.".format(json_data))
 
-    def post(self, path, json_data=None, timeout=None,
-             get_from_history_ok=False, allow_none=True, **kwargs):
+    def post(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
         """
         Make a post request to the session
 
@@ -208,9 +192,6 @@ class AqHTTP(object):
         :param timeout: time in seconds to process request before raising
                 exception
         :type timeout: int
-        :param get_from_history_ok: whether its ok to return previously found
-                request from history (default=False)
-        :type get_from_history_ok: boolean
         :param allow_none: if False throw error if json_data contains a null
                 or None value (default True)
         :type allow_none: boolean
@@ -220,11 +201,9 @@ class AqHTTP(object):
         :rtype: dict
         """
         return self.request("post", path, json=json_data, timeout=timeout,
-                            get_from_history_ok=get_from_history_ok,
                             allow_none=allow_none, **kwargs)
 
-    def put(self, path, json_data=None, timeout=None,
-            get_from_history_ok=False, allow_none=True, **kwargs):
+    def put(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
         """
         Make a put request to the session
 
@@ -235,9 +214,6 @@ class AqHTTP(object):
         :param timeout: time in seconds to process request before raising
                 exception
         :type timeout: int
-        :param get_from_history_ok: whether its ok to return previously found
-                request from history (default=False)
-        :type get_from_history_ok: boolean
         :param allow_none: if False throw error when json_data contains a null
                 or None value (default True)
         :type allow_none: boolean
@@ -247,11 +223,9 @@ class AqHTTP(object):
         :rtype: dict
         """
         return self.request("put", path, json=json_data, timeout=timeout,
-                            get_from_history_ok=get_from_history_ok,
                             allow_none=allow_none, **kwargs)
 
-    def get(self, path, timeout=None,
-            get_from_history_ok=False, allow_none=True, **kwargs):
+    def get(self, path, timeout=None,allow_none=True, **kwargs):
         """
         Make a get request to the session
 
@@ -260,9 +234,6 @@ class AqHTTP(object):
         :param timeout: time in seconds to process request before raising
                 exception
         :type timeout: int
-        :param get_from_history_ok: whether its ok to return previously found
-                request from history (default=False)
-        :type get_from_history_ok: boolean
         :param allow_none: if False throw error when json_data contains a null
                 or None value (default: True)
         :type allow_none: boolean
@@ -272,7 +243,6 @@ class AqHTTP(object):
         :rtype: dict
         """
         return self.request("get", path, timeout=timeout,
-                            get_from_history_ok=get_from_history_ok,
                             allow_none=allow_none, **kwargs)
 
     def delete(self, path, timeout=None, **kwargs):
