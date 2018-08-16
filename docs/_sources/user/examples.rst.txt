@@ -136,8 +136,51 @@ Use session.models to list all available models in Aquarium.
     ['Account', 'AllowableFieldType', 'Budget', 'Code', 'Collection', 'DataAssociation', 'FieldType', 'FieldValue', 'Group', 'Invoice', 'Item', 'Job', 'JobAssociation', 'Library', 'Membership', 'ObjectType', 'Operation', 'OperationType', 'Plan', 'PlanAssociation', 'Sample', 'SampleType', 'Upload', 'User', 'UserBudgetAssociation', 'Wire']
 
 
+Creating Samples
+~~~~~~~~~~~~~~~~
 
+The syntax for creating new Samples, Items, etc. is:
 
+.. code-block:: python
+
+    mysession.Sample.new(**kwargs).save()
+    mysession.Item.new(**kwargs).save()
+    mysession.Plan.new(**kwargs).save()
+    # and so on
+
+The *session.Sample.new()* syntax will instantiate the model and connect the
+model to the session. Alternatively, you can create samples by manually
+connecting to a session.
+
+.. code-block:: python
+
+    from pydent.models import Sample
+
+    mysample = Sample(**kwargs)
+    mysample.connect_to_session(session)
+    mysample.save()
+
+.. testcode::
+
+    plasmid = session.Sample.find_by_name("puc19-pBAD-GFP")
+    mysample = session.Sample.new(
+        name='mysample',
+        description='my optional description',
+        project='my project',
+        sample_type_id=session.SampleType.find_by_name("Yeast Strain").id,
+        properties={
+            "Mating Type": "MATa",
+            "Integrant": plasmid,
+            "Has this strain passed QC?": "No",
+            "Integrated Marker(s)": "URA"
+	    })
+    mysample.save()
+
+    print(isinstance(mysample.id, int))
+
+.. testoutput::
+
+    True
 
 Setting a query timeout
 ~~~~~~~~~~~~~~~~~~~~~~~
