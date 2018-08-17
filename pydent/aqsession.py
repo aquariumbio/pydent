@@ -58,7 +58,7 @@ class AqSession(object):
 
         # initialize model interfaces
         for model_name in allmodels:
-            # get model class (e.g. "Sample")
+            # get model class f(e.g. "Sample")
             model = ModelRegistry.get_model(model_name)
 
             # get model interface from model class

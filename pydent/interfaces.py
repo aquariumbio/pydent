@@ -421,7 +421,7 @@ class ModelInterface(SessionInterface):
         """
         Creates a new model instance
         """
-        instance = object.__new__(self.model)
+        instance = self.model.__new__(self.model)
         instance._session = None
         instance.connect_to_session(self.session)
         instance.__init__(*args, **kwargs)

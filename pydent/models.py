@@ -766,6 +766,24 @@ class Operation(ModelBase, DataAssociatorMixin):
                     routing_dict[ft.routing] = fv.sid
         return routing_dict
 
+    @property
+    def successors(self):
+        successors = []
+        if self.outputs:
+            for output in self.outputs:
+                for s in output.successors:
+                    successors.append(s.operation)
+        return successors
+
+    @property
+    def predecessors(self):
+        predecessors = []
+        if self.inputs:
+            for inputs in self.inputs:
+                for s in inputs.predecessors:
+                    predecessors.append(s.operation)
+        return predecessors
+
     def init_field_values(self):
         """
         Initialize the :class:`FieldValue` from the :class:`FieldType` of the
@@ -1132,6 +1150,12 @@ class OperationType(ModelBase, HasCodeMixin):
             if len(fts) > 0:
                 return fts[0]
 
+    def output(self, name):
+        return self.field_type(name, "output")
+
+    def input(self, name):
+        return self.field_type(name, "input")
+
     def save(self):
         """Saves the Operation Type to the Aquarium server. Requires
         this Operation Type to be connected to a session."""
@@ -1364,6 +1388,10 @@ class PlanAssociation(ModelBase):
         operation=HasOne("Operation")
     )
 
+    def __init__(self, plan_id=None, operation_id=None):
+        self.plan_id = plan_id
+        self.operation_id = operation_id
+        super().__init__(**vars(self))
 
 @add_schema
 class Sample(ModelBase):
@@ -1616,6 +1644,8 @@ class UserBudgetAssociation(ModelBase):
         user=HasOne("User")
     )
 
+    def __init__(self):
+        super().__init__(**vars(self))
 
 @add_schema
 class Wire(ModelBase):
