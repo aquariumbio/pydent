@@ -94,6 +94,7 @@ class Module(IO):
 
 
 class Canvas(object):
+    """A user-interface for making experimental plans and layouts."""
 
     def __init__(self, session, plan_id=None):
         self.plan_id = plan_id
