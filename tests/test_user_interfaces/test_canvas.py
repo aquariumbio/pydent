@@ -40,30 +40,71 @@ def test_load_canvas(session):
 
     # print(canvas.url)
 
-def test_topological_sort(session):
-    import networkx as nx
-    from collections import OrderedDict
 
-    canvas = designer.Canvas(session, plan_id=122133)
-    G = canvas.networkx()
-    sorted = list(nx.topological_sort(G))[::-1]
-    # y = 100
-    res = nx.single_source_shortest_path_length(G, sorted[-1])
-    by_depth = OrderedDict()
-    for k, v in res.items():
-        by_depth.setdefault(v, [])
-        by_depth[v].append(k)
-    y = 100
-    for depth, op_ids in reversed(list(by_depth.items())):
-        x = 100
-        for op_id in op_ids:
-            op = G.node[op_id]['operation']
-            op.x = x
-            op.y = y
-            x += 170
-        y += 70
-    canvas.save()
-    print(canvas.url)
+def test_layout(session):
+
+    pass
+
+
+def test_add_op(session):
+    canvas = designer.Canvas(session, plan_id=23055)
+    canvas.plan.validate(True)
+
+def test_create_glycerol_stock(session):
+
+
+    samples = ['pMOD6-pGRR-W17-yeGFP',
+ 'pMOD6-pGRR-W36-yeGFP',
+ 'pMOD6-pGRR-W8-yeGFP',
+ 'pMOD6-pGRR-W10-yeGFP',
+ 'pMOD6-pGRR-W5-yeGFP',
+ 'pMOD6-pGRR-W20-yeGFP',
+ 'pMOD6-pGRR-W34-yeGFP',
+ 'pMOD6-pGRR-W8-yeGFP',
+ 'pMOD6-pGRR-W10-yeGFP',
+ 'pMOD6-pGRR-W5-yeGFP',
+ 'pMOD6-pGRR-W17-yeGFP',
+ 'pMOD6-pGRR-W36-yeGFP',
+ 'pMOD6-pGRR-W20-yeGFP',
+ 'pMOD6-pGRR-W34-yeGFP']
+
+    for sample in samples:
+        print("planning {}".format(sample))
+        canvas = designer.Canvas(session)
+        op = canvas.create_operation_by_name("Transform Cells")
+        s = session.Sample.find_by_name(sample)
+        items = [i for i in s.items if i.object_type.name == "Plasmid Stock"]
+        canvas.set_field_value(op.input("Plasmid"), sample=s, item=items[-1])
+        canvas.set_field_value(op.input("Comp Cells"), sample=session.Sample.find_by_name("DH5alpha"))
+
+        op1 = canvas.create_operation_by_name("Make Overnight Suspension")
+        canvas.quick_create_chain(op, "Plate Transformed Cells", "Check Plate", op1, "Make Glycerol Stock")
+
+        gop = canvas.find_operations_by_name("Make Glycerol Stock")[0]
+        canvas.set_field_value(gop.input("Needs Sequencing Results?"), value="No")
+        # canvas.quick_create_chain(op1, "Make Miniprep", "Send to Sequencing", "Upload Sequencing Results")
+        canvas.topo_sort()
+        canvas.name = "Glycerol stock {}".format(sample)
+        canvas.create()
+        print(canvas.url)
+
+        canvas.plan.estimate_cost()
+    # # data = canvas.plan.to_save_json()
+    #
+    # op = canvas.get_operation(113772)
+    #
+    # op2 = canvas.create_operation_by_name("Fragment Analyzing")
+    # # canvas.quick_wire_ops(op, op2)
+    # # data = canvas.plan.to_save_json()
+    # # import json
+    # # with open('temp.json', 'w') as f:
+    # #     json.dump(data, f)
+    # canvas.save()
+
+
+    # for op in canvas.plan.operations:
+
+
 
     # for n in list(nx.topological_sort(G))[::-1]:
     #     op = G.nodes[n]['operation']

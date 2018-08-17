@@ -351,7 +351,12 @@ class ModelInterface(SessionInterface):
         """
         Makes a generic get request
         """
-        response = self.aqhttp.get(path)
+        try:
+            response = self.aqhttp.get(path)
+        except TridentRequestError as err:
+            if err.response.status_code == 404:
+                return None
+            raise err
         return self.load(response)
 
     def find(self, model_id):

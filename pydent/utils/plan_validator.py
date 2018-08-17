@@ -82,10 +82,11 @@ class PlanValidator(object):
     def mark_leaves(self):
         """mark all inputs as either a leaf or not"""
         for operation in self.operations:
+            for field_value in operation.inputs:
+                field_value.leaf = False
+        for operation in self.operations:
             for field_value in operation.outputs:
                 field_value.leaf = False
-            for field_value in operation.inputs:
-                field_value.leaf = True
 
         for wire in self.all_wires:
             wire.destination.leaf = False
@@ -121,10 +122,17 @@ class PlanValidator(object):
         """make sure all wires have have consistent endpoints"""
         valid = True
         for wire in self.all_wires:
-            stid1 = wire.source.allowable_field_type.sample_type_id
-            stid2 = wire.destination.allowable_field_type.sample_type_id
-            otid1 = wire.source.allowable_field_type.object_type_id
-            otid2 = wire.destination.allowable_field_type.object_type_id
+            aft1 = wire.source.allowable_field_type
+            aft2 = wire.destination.allowable_field_type
+            if aft1 is None or aft2 is None:
+                pass
+            try:
+                stid1 = wire.source.allowable_field_type.sample_type_id
+                stid2 = wire.destination.allowable_field_type.sample_type_id
+                otid1 = wire.source.allowable_field_type.object_type_id
+                otid2 = wire.destination.allowable_field_type.object_type_id
+            except:
+                pass
             if stid1 != stid2 or otid1 != otid2:
                 valid = False
         return valid

@@ -1310,6 +1310,7 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
             },
             'wires': {"source", "destination"}
         })
+        # del json_data['layout']
         json_data['layout'] = json.loads(json_data['layout'])
 
         for wire in self.wires:

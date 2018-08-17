@@ -100,6 +100,8 @@ class Canvas(object):
         self.plan_id = plan_id
         if self.plan_id is not None:
             self.plan = session.Plan.find(plan_id)
+            if self.plan is None:
+                raise Exception("Could not find plan with id={}".format(plan_id))
         else:
             self.plan = session.Plan.new()
         self.session = session
@@ -142,15 +144,72 @@ class Canvas(object):
         return self.create_operation_by_type(ots[0])
 
     @staticmethod
-    def _find_wire(fv1, fv2):
-        if fv1.outgoing_wires is not None:
-            for wire in fv1.outgoing_wires:
-                if wire.to_id == fv2.id:
-                    return wire
-        if fv2.incoming_wires is not None:
-            for wire in fv2.incoming_wires:
-                if wire.from_id == fv1.id:
-                    return wire
+    def eq(m1, m2):
+        if m1.id is None and m2.id is None:
+            if m1.rid == m2.rid:
+                return True
+        elif m1.id == m2.id:
+            return True
+        return False
+
+    # def get_operation_where(self, **params):
+    #     ops = []
+    #     for op in self.plan.operations:
+    #         passes = True
+    #         for k, v in params.items():
+    #             if getattr(op, k) != v:
+    #                 passes = False
+    #                 break
+    #         ops.append(op)
+    #     return ops
+
+    def get_operation(self, id):
+        for op in self.plan.operations:
+            if op.id == id:
+                return op
+
+    def get_wire(self, fv1, fv2):
+        for wire in self.plan.wires:
+            if self.eq(wire.source, fv1) and self.eq(wire.destination, fv2):
+                return wire
+
+    def get_outgoing_wires(self, fv):
+        wires = []
+        for wire in self.plan.wires:
+            if self.eq(wire.source, fv):
+                wires.append(wire)
+        return wires
+
+    def get_incoming_wires(self, fv):
+        wires = []
+        for wire in self.plan.wires:
+            if self.eq(wire.destination, fv):
+                wires.append(wire)
+        return wires
+
+    def get_fv_successors(self, fv):
+        fvs = []
+        for wire in self.get_outgoing_wires(fv):
+            fvs.append(wire.destination)
+        return fvs
+
+    def get_fv_predecessors(self, fv):
+        fvs = []
+        for wire in self.get_incoming_wires(fv):
+            fvs.append(wire.source)
+        return fvs
+
+    def get_op_successors(self, op):
+        ops = []
+        for output in op.outputs:
+            ops += [fv.operation for fv in self.get_fv_successors(output)]
+        return ops
+
+    def get_op_predecessors(self, op):
+        ops = []
+        for input in op.inputs:
+            ops += [fv.operation for fv in self.get_fv_predecessors(input)]
+        return ops
 
     @classmethod
     def _find_matching_afts_for_ops(cls, op1, op2):
@@ -180,13 +239,15 @@ class Canvas(object):
         self.create_operation_by_name(otname2)
         return self.quick_wire(otname1, otname2)
 
-    def quick_create_chain(self, *otnames):
-        prev_name = otnames[0]
-        self.create_operation_by_name(prev_name)
-        for otname in otnames[1:]:
-            self.create_operation_by_name(otname)
-            self.quick_wire(prev_name, otname)
-            prev_name = otname
+    def quick_create_chain(self, *op_or_otnames):
+        op1 = op_or_otnames[0]
+        if isinstance(op1, str):
+            op1 = self.create_operation_by_name(op1)
+        for op2 in op_or_otnames[1:]:
+            if isinstance(op2, str):
+                op2 = self.create_operation_by_name(op2)
+            self.quick_wire_ops(op1, op2)
+            op1 = op2
 
     def quick_wire_ops(self, op1, op2, fvnames=None):
         if fvnames is not None:
@@ -208,10 +269,9 @@ class Canvas(object):
         op2 = self.find_operations_by_name(otname2)[-1]
         return self.quick_wire_ops(op1, op2, fvnames=fvnames)
 
-
     def add_wire(self, fv1, fv2):
         """Note that fv2.operation will not inherit parent_id of fv1"""
-        wire = self._find_wire(fv1, fv2)
+        wire = self.get_wire(fv1, fv2)
         if wire is None:
             # print("Creating new wire")
             self.plan.wire(fv1, fv2)
@@ -244,11 +304,11 @@ class Canvas(object):
         routing = field_value.field_type.routing
         fvs = cls.get_routing_dict(field_value.operation)[routing]
         field_value.set_value(sample=sample, item=item, container=container, value=value)
-        cls.update(field_value)
+        # cls._json_update(field_value)
         if field_value.field_type.ftype == 'sample':
             for fv in fvs:
                 fv.sample = field_value.sample
-                cls.update(fv)
+                # cls._json_update(fv)
 
     @staticmethod
     def _json_update(model, **params):
@@ -265,8 +325,8 @@ class Canvas(object):
         pa = op.plan_associations[0]
         pa.plan_id = plan_id
         op.parent_id = 0
-        cls.update(op)
-        cls.update(pa)
+        cls._json_update(op)
+        cls._json_update(pa)
 
     def find_operations_by_name(self, operation_type_name):
         return [op for op in self.plan.operations if
