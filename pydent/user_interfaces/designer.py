@@ -304,10 +304,58 @@ class Canvas(object):
 
     def networkx(self):
         G = nx.DiGraph()
-        edges, nodes = self._rid_adjacency_list()
-        G.add_nodes_from(nodes)
+        edges = []
+        nodes = []
+
+        def id_getter(model):
+            id = model.id
+            if id is None:
+                id = "r{}".format(model.rid)
+            return id
+
+        for wire in self.plan.wires:
+            from_id = id_getter(wire.source.operation)
+            to_id = id_getter(wire.destination.operation)
+            if from_id is not None and to_id is not None:
+                edges.append((from_id, to_id))
+        for op in self.plan.operations:
+            op_id = id_getter(op)
+            if op_id is not None:
+                G.add_node(op_id, operation=op)
         G.add_edges_from(edges)
+
         return G
+
+    def topo_sort(self):
+        """Attempt a rudimentary topological sort on the plan"""
+        from collections import OrderedDict
+
+        x = 100
+        y = 100
+        delta_x = 170
+        delta_y = 70
+
+        G = self.networkx()
+        sorted = list(nx.topological_sort(G))[::-1]
+        res = nx.single_source_shortest_path_length(G, sorted[-1])
+        by_depth = OrderedDict()
+        for k, v in res.items():
+            by_depth.setdefault(v, [])
+            by_depth[v].append(k)
+        for depth, op_ids in reversed(list(by_depth.items())):
+            for op_id in op_ids:
+                op = G.node[op_id]['operation']
+                op.x = x
+                op.y = y
+                x += delta_x
+            y += delta_y
+
+    # def draw(self):
+        # import matplotlib.pyplot as plt
+        # pos = {op.id: (op.x, op.y) for op in self.plan.operations}
+        # G = self.networkx()
+        # nx.draw(G, pos=pos)
+        # plt.draw()
 
     # @staticmethod
     # def is_leaf(op):

@@ -42,8 +42,35 @@ def test_load_canvas(session):
 
 def test_topological_sort(session):
     import networkx as nx
+    from collections import OrderedDict
+
     canvas = designer.Canvas(session, plan_id=122133)
     G = canvas.networkx()
-    for n in nx.topological_sort(G):
-        print(n)
+    sorted = list(nx.topological_sort(G))[::-1]
+    # y = 100
+    res = nx.single_source_shortest_path_length(G, sorted[-1])
+    by_depth = OrderedDict()
+    for k, v in res.items():
+        by_depth.setdefault(v, [])
+        by_depth[v].append(k)
+    y = 100
+    for depth, op_ids in reversed(list(by_depth.items())):
+        x = 100
+        for op_id in op_ids:
+            op = G.node[op_id]['operation']
+            op.x = x
+            op.y = y
+            x += 170
+        y += 70
+    canvas.save()
+    print(canvas.url)
+
+    # for n in list(nx.topological_sort(G))[::-1]:
+    #     op = G.nodes[n]['operation']
+    #     op.y = y
+    #     y += 75
+    # canvas.save()
+
+    # canvas.draw()/
+    # print(canvas.url)
 
