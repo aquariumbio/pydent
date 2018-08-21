@@ -1,4 +1,3 @@
-
 def test_find_returns_none(session):
     """Find queries should return None, if model is not found"""
     x = session.Operation.find(1000000000000)
