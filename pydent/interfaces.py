@@ -312,7 +312,7 @@ class ModelInterface(SessionInterface):
                 return None
             raise err
 
-        if post_response:
+        if post_response is not None:
             return self.load(post_response)
 
     def load(self, post_response):
