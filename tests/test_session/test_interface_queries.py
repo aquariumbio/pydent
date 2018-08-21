@@ -1,7 +1,9 @@
+import requests
+
 from pydent import AqSession
 from pydent.aqhttp import AqHTTP
 from pydent.exceptions import TridentRequestError
-import requests
+
 
 def test_where_queries_should_return_empty_array(monkeypatch, mock_login_post):
     """Empty where queries should return empty arrays.
@@ -51,4 +53,3 @@ def test_find_query_returns_none(monkeypatch, mock_login_post):
     sample = session.SampleType.find(2342342)
 
     assert sample is None
-    
