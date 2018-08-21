@@ -2,6 +2,7 @@ from pydent.models import User, Group, Sample, SampleType
 import requests
 from pydent import AqSession
 from pydent.aqhttp import AqHTTP
+from pydent.exceptions import TridentRequestError
 
 
 def test_load_model_from_json(monkeypatch, mock_login_post):
@@ -132,39 +133,38 @@ def test_load_model_with_many(monkeypatch, mock_login_post):
     assert len(samples) == 2
     assert isinstance(samples[0], Sample)
 
-#
-# def test_load_model_with_many_through(monkeypatch, mock_post):
-#     """Tests a relationship using a database connection.
-#
-#         Should return a Sample instance with an accessible SampleType
-#         instance.
-#     """
-#
-#     # Create a mock session
-#     monkeypatch.setattr(requests, "post", mock_post)
-#     aquarium_url = "http://52.52.525.52"
-#     session = AqSession("username", "password", aquarium_url)
-#
-#     def mock_post(*args, json_data=None, **kwargs):
-#         if "method" in json_data:
-#             if json_data["method"] == "where":
-#                 if json_data["model"] ==
-#                 samples = [
-#                     {"id": 1, "sample_type_id": 3, "name": "sample1"},
-#                     {"id": 2, "sample_type_id": 3, "name": "sample2"},
-#                     {"id": 3, "sample_type_id": 5, "name": "sample3"},
-#                 ]
-#                 return [s for s in samples if
-#                         s["sample_type_id"] == json_data["arguments"]["sample_type_id"]]
-#         return {
-#                 "id": 3,
-#                 "name": "Primer"
-#             }
-#
-#     monkeypatch.setattr(AqHTTP, "post", mock_post)
-#
-#     st = session.SampleType.find(3)
-#     samples = st.samples
-#
-#     assert len(samples) == 2
-#     assert isinstance(samples[0], Sample)
+
+def test_load_model_with_many_through(monkeypatch, mock_login_post):
+    """Tests a relationship using a database connection.
+
+        Should return a Sample instance with an accessible SampleType
+        instance.
+    """
+
+    # Create a mock session
+    monkeypatch.setattr(requests, "post", mock_login_post)
+    aquarium_url = "http://52.52.525.52"
+    session = AqSession("username", "password", aquarium_url)
+
+    def mock_post(*args, json_data=None, **kwargs):
+        if "method" in json_data:
+            if json_data["method"] == "where":
+                samples = [
+                    {"id": 1, "sample_type_id": 3, "name": "sample1"},
+                    {"id": 2, "sample_type_id": 3, "name": "sample2"},
+                    {"id": 3, "sample_type_id": 5, "name": "sample3"},
+                ]
+                return [s for s in samples if
+                        s["sample_type_id"] == json_data["arguments"]["sample_type_id"]]
+        return {
+                "id": 3,
+                "name": "Primer"
+            }
+
+    monkeypatch.setattr(AqHTTP, "post", mock_post)
+
+    st = session.SampleType.find(3)
+    samples = st.samples
+
+    assert len(samples) == 2
+    assert isinstance(samples[0], Sample)
