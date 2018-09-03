@@ -1660,6 +1660,9 @@ class User(ModelBase):
         ignore=("password_digest", "remember_token", "key")
     )
 
+    def __init__(self):
+        super().__init__(**vars(self))
+
 
 @add_schema
 class UserBudgetAssociation(ModelBase):
