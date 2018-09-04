@@ -1160,7 +1160,7 @@ class OperationType(ModelBase, HasCodeMixin):
     def get_field_type(self, model_name, parent_class):
         return self.code(model_name)
 
-    def instance(self, xpos=None, ypos=None):
+    def instance(self, xpos=0, ypos=0):
         operation = Operation(operation_type_id=self.id,
                               status='planning', x=xpos, y=ypos)
         operation.connect_to_session(self.session)
