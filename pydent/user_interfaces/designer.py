@@ -240,14 +240,20 @@ class Canvas(object):
         return self.quick_wire(otname1, otname2)
 
     def quick_create_chain(self, *op_or_otnames):
-        op1 = op_or_otnames[0]
-        if isinstance(op1, str):
-            op1 = self.create_operation_by_name(op1)
+        def resolve_op(op):
+            if isinstance(op, str):
+                print("Creating operation \"{}\"".format(op))
+                return self.create_operation_by_name(op)
+            return op
+
+        op1 = resolve_op(op_or_otnames[0])
+        ops = [op1]
         for op2 in op_or_otnames[1:]:
-            if isinstance(op2, str):
-                op2 = self.create_operation_by_name(op2)
+            op2 = resolve_op(op2)
+            ops.append(op2)
             self.quick_wire_ops(op1, op2)
             op1 = op2
+        return ops
 
     def quick_wire_ops(self, op1, op2, fvnames=None):
         if fvnames is not None:
@@ -391,8 +397,10 @@ class Canvas(object):
         """Attempt a rudimentary topological sort on the plan"""
         from collections import OrderedDict
 
-        x = 100
-        y = 100
+        _x = 100
+        _y = 100
+
+        y = _y
         delta_x = 170
         delta_y = 70
 
@@ -404,12 +412,43 @@ class Canvas(object):
             by_depth.setdefault(v, [])
             by_depth[v].append(k)
         for depth, op_ids in reversed(list(by_depth.items())):
+            mid = (len(op_ids)-1) / 2
+            x = _x - mid*delta_x
             for op_id in op_ids:
                 op = G.node[op_id]['operation']
                 op.x = x
                 op.y = y
                 x += delta_x
             y += delta_y
+
+        # readjust
+        min_x = 0
+        min_y = 0
+        ops = [G.node[n]['operation'] for n in G.nodes]
+        for op in ops:
+            if op.x < min_x:
+                min_x = op.x
+            if op.y < min_y:
+                min_y = op.y
+        self.adjust_upper_left(_x, _y)
+
+    def adjust_upper_left(self, x, y, ops=None):
+        if ops is None:
+            ops = self.plan.operations
+        xb, yb = self.bounds_of_ops(ops)[0]
+        self.translate_ops(ops, x - xb, y-yb)
+
+    def bounds_of_ops(self, ops):
+        """Returns upper-left and lower-right bounding corners of the plan (assuming no modules...)"""
+        xarr = [op.x for op in ops]
+        yarr = [op.y for op in ops]
+        return ((min(xarr), min(yarr)), (max(xarr), max(yarr)))
+
+    def translate_ops(self, ops, deltax, deltay):
+        for op in ops:
+            op.x += deltax
+            op.y += deltay
+        return ops
 
     # def draw(self):
         # import matplotlib.pyplot as plt

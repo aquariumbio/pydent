@@ -20,9 +20,9 @@ def test_where_queries_should_return_empty_array(monkeypatch, mock_login_post):
 
     monkeypatch.setattr(AqHTTP, "post", mock_post)
 
-    samples = session.SampleType.where({"id": 234234})
+    samples = session.SampleType.where({"id": 3454345, "object_type_id": 23432})
 
-    assert samples == []
+    assert samples == [], "Where should return an empty list"
 
 
 def test_find_query_returns_none(monkeypatch, mock_login_post):

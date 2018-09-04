@@ -25,7 +25,10 @@ def test_canvas_chain(session):
 
     # print(canvas.plan.wires)
     G = canvas.networkx()
-    print(G.edges)
+    edges = list(G.edges)
+    assert len(edges) == 2, "There should only be 2 edges/wires in the graph/plan"
+    assert len(G.nodes) == 3, "There should only be 3 nodes/Operations in the graph/plan"
+    assert edges[0][1] == edges[1][0], "Check Yeast Plate should be in both wires"
 
 
 def test_load_canvas(session):
