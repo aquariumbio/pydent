@@ -17,6 +17,7 @@ install_requires = [
     'tqdm==4.23.4'
 ]
 
+
 def parse_version_file():
     here = os.path.abspath(os.path.dirname(__file__))
     ver_dict = {}

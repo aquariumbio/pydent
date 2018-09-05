@@ -48,45 +48,6 @@ def test_add_op(session):
     canvas = designer.Canvas(session, plan_id=23055)
     canvas.plan.validate(True)
 
-def test_create_glycerol_stock(session):
-
-
-    samples = ['pMOD6-pGRR-W17-yeGFP',
- 'pMOD6-pGRR-W36-yeGFP',
- 'pMOD6-pGRR-W8-yeGFP',
- 'pMOD6-pGRR-W10-yeGFP',
- 'pMOD6-pGRR-W5-yeGFP',
- 'pMOD6-pGRR-W20-yeGFP',
- 'pMOD6-pGRR-W34-yeGFP',
- 'pMOD6-pGRR-W8-yeGFP',
- 'pMOD6-pGRR-W10-yeGFP',
- 'pMOD6-pGRR-W5-yeGFP',
- 'pMOD6-pGRR-W17-yeGFP',
- 'pMOD6-pGRR-W36-yeGFP',
- 'pMOD6-pGRR-W20-yeGFP',
- 'pMOD6-pGRR-W34-yeGFP']
-
-    for sample in samples:
-        print("planning {}".format(sample))
-        canvas = designer.Canvas(session)
-        op = canvas.create_operation_by_name("Transform Cells")
-        s = session.Sample.find_by_name(sample)
-        items = [i for i in s.items if i.object_type.name == "Plasmid Stock"]
-        canvas.set_field_value(op.input("Plasmid"), sample=s, item=items[-1])
-        canvas.set_field_value(op.input("Comp Cells"), sample=session.Sample.find_by_name("DH5alpha"))
-
-        op1 = canvas.create_operation_by_name("Make Overnight Suspension")
-        canvas.quick_create_chain(op, "Plate Transformed Cells", "Check Plate", op1, "Make Glycerol Stock")
-
-        gop = canvas.find_operations_by_name("Make Glycerol Stock")[0]
-        canvas.set_field_value(gop.input("Needs Sequencing Results?"), value="No")
-        # canvas.quick_create_chain(op1, "Make Miniprep", "Send to Sequencing", "Upload Sequencing Results")
-        canvas.topo_sort()
-        canvas.name = "Glycerol stock {}".format(sample)
-        canvas.create()
-        print(canvas.url)
-
-        canvas.plan.estimate_cost()
     # # data = canvas.plan.to_save_json()
     #
     # op = canvas.get_operation(113772)

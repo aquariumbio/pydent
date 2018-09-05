@@ -1,13 +1,6 @@
 import networkx as nx
 
 
-# def get_networkx_predecessors(self, op_id):
-#     return self.networkx.predecessors(self._id_getter(op_id))
-#
-# def get_networkx_successors(self, op_id):
-#     return self.networkx.successors(self._id_getter(op_id))
-
-
 class CanvasLayout(object):
 
     def __init__(self, G=None):
@@ -93,6 +86,19 @@ class CanvasLayout(object):
             subgraphs.append(sublayout)
         return subgraphs
 
+    def _topo_sort(self):
+        subgraphs = self.get_independent_subgraphs()
+        x, y = 100, 100
+        for subgraph in subgraphs:
+            self._topo_sort_helper(subgraph.G)
+        self.arrange_layouts(subgraphs)
+
+    def topo_sort_in_place(self):
+        cx, cy = self.midpoint()
+        self._topo_sort()
+        cx2, cy2 = self.midpoint()
+        self.translate(cx - cx2, cy - cy2)
+
     def topo_sort(self):
         """
         Topologically sorts Operations in the layout. Discovers individual subgraphs and topologically sorts
@@ -101,14 +107,19 @@ class CanvasLayout(object):
         :return: None
         :rtype: None
         """
-        subgraphs = self.get_independent_subgraphs()
-        x, y = 100, 100
-        for subgraph in subgraphs:
-            self.topo_sort_helper(subgraph.G)
-            self.align_upper_left_to(x, y)
-            x += subgraph.midpoint()[0]
+        self._topo_sort()
+        self.align_upper_left_to(100, 100)
 
-    def topo_sort_helper(self, G):
+    @classmethod
+    def arrange_layouts(cls, layouts):
+        x = 0
+        y = 0
+        for layout in layouts:
+            layout.align_upper_left_to(x, y)
+            x = layout.bounds()[1][0]
+            y = layout.bounds()[0][1]
+
+    def _topo_sort_helper(self, G):
         """Attempt a rudimentary topological sort on the plan"""
         from collections import OrderedDict
 
@@ -340,6 +351,21 @@ class CanvasLayout(object):
         for op in self.operations:
             op.x += deltax
             op.y += deltay
+
+    @property
+    def width(self):
+        return self.bounds()[1][0] - self.bounds()[0][0]
+
+    @property
+    def height(self):
+        return self.bounds()[1][1] - self.bounds()[1][0]
+
+    def draw(self):
+        pos = {}
+        for n in self.nodes:
+            op = self.G.node[n]['operation']
+            pos[n] = (op.x, -op.y)
+        return nx.draw(self.G, pos=pos)
 
     def __len__(self):
         return len(self.G)

@@ -1,3 +1,14 @@
-"""Provides intuitive methods for common tasks in Aquarium"""
+"""User Interfaces
 
+==========
+user_interfaces
+==========
+
+Submodules
+==========
+
+.. autosummary::
+    :toctree: _autosummary
+
+"""
 from pydent.user_interfaces import designer, developer, inventory
