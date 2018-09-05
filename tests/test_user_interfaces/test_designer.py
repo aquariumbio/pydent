@@ -3,14 +3,7 @@ from pydent import designer
 def test_add_operation_by_name(session):
     plan = session.Plan.find(121080)
     canvas = designer.Canvas(session, plan_id=121080)
-    canvas.create_operation_by_name(plan, "Yeast Transformation")
-
-
-def test_layout(session):
-    plan = session.Plan.find(121081)
-    layout = plan.layout
-    pass
-
+    canvas.create_operation_by_name("Yeast Transformation")
 
 def test_find_layout_inconsistencies(session):
     pass
@@ -96,7 +89,7 @@ class TestCanvasLayout:
         for op in ops:
             layout._add_operation(op)
 
-        layout.adjust_upper_left(100, 100)
+        layout.align_upper_left_to(100, 100)
 
         assert op1.x == 100
         assert op2.x == 200
@@ -131,7 +124,6 @@ class TestCanvasLayout:
         canvas = designer.Canvas(session)
 
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells", "Plate Transformed Cells", "Check Plate", category="Cloning")
-        new_ops = []
 
         for i in range(3):
             canvas.quick_create_chain(ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR")
@@ -150,23 +142,3 @@ class TestCanvasLayout:
         graph = canvas.layout.ops_to_subgraph(ops[-2:])
         assert len(graph) == 2
         canvas.layout.topo_sort()
-
-# add wire
-
-# remove wire
-
-# validate plan
-
-# update plan
-
-# new plan
-
-# move operation
-
-# create a new layout
-
-# create a new module
-
-# create intra-plan wire
-
-# propogate sample and items along wires

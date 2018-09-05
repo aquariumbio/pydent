@@ -141,6 +141,8 @@ class UtilityInterface(SessionInterface):
         Saves a plan
         """
         pre_ops = plan.operations
+        if pre_ops is None:
+            pre_ops = []
         plan_data = plan.to_save_json()
         result = self.aqhttp.post(
             "plans.json?user_id={}".format(self.session.current_user.id),

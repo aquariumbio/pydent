@@ -24,7 +24,7 @@ def test_canvas_chain(session):
     canvas.quick_create_chain("Yeast Transformation", "Check Yeast Plate", "Yeast Overnight Suspension")
 
     # print(canvas.plan.wires)
-    G = canvas.networkx()
+    G = canvas.layout.G
     edges = list(G.edges)
     assert len(edges) == 2, "There should only be 2 edges/wires in the graph/plan"
     assert len(G.nodes) == 3, "There should only be 3 nodes/Operations in the graph/plan"
@@ -34,14 +34,9 @@ def test_canvas_chain(session):
 def test_load_canvas(session):
 
     canvas = designer.Canvas(session, plan_id=122133)
-    canvas.create_operation_by_name("Streak Plate")
-    canvas.quick_wire("Yeast Overnight Suspension", "Streak Plate")
-    canvas.save()
-
-    print(canvas.url)
-    # canvas.create()
-
-    # print(canvas.url)
+    assert canvas is not None
+    assert canvas.plan is not None
+    assert canvas.plan.operations is not None
 
 
 def test_layout(session):
