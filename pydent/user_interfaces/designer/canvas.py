@@ -35,8 +35,9 @@ class Canvas(object):
         self.plan.save()
         return self.plan
 
-    def create_operation_by_type(self, ot):
+    def create_operation_by_type(self, ot, status="planning"):
         op = ot.instance()
+        op.status = status
         self.plan.add_operation(op)
         return op
 

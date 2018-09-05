@@ -1,7 +1,23 @@
 import networkx as nx
-
+from collections import OrderedDict
 
 class CanvasLayout(object):
+
+    TOP_RIGHT = (100, 100)
+    BOX_DELTAX = 170
+    BOX_DELTAY = 70
+    BOX_WIDTH = 100
+    BOX_HEIGHT = 70
+    STATUS_COLORS = {
+            "waiting": "orange",
+            "error": "red",
+            "pending": "yellow",
+            "running": "green",
+            "delayed": "magenta",
+            "done": "black",
+            "planning": "grey"
+        }
+
 
     def __init__(self, G=None):
         if G is None:
@@ -63,11 +79,11 @@ class CanvasLayout(object):
         """Returns node_ids for each operation"""
         return [self._id_getter(op) for op in ops]
 
-    def ops_to_subgraph(self, ops):
+    def ops_to_layout(self, ops):
         """Returns a sub-layout containing only the operations"""
         return self.subgraph(self.ops_to_nodes(ops))
 
-    def get_independent_subgraphs(self):
+    def get_independent_layouts(self):
         """
         Finds all independent subgraphs.
 
@@ -87,10 +103,10 @@ class CanvasLayout(object):
         return subgraphs
 
     def _topo_sort(self):
-        subgraphs = self.get_independent_subgraphs()
-        x, y = 100, 100
+        subgraphs = self.get_independent_layouts()
+        print("{} kkhsubgraphs".format(len(subgraphs)))
         for subgraph in subgraphs:
-            self._topo_sort_helper(subgraph.G)
+            subgraph._topo_sort_helper()
         self.arrange_layouts(subgraphs)
 
     def topo_sort_in_place(self):
@@ -108,55 +124,53 @@ class CanvasLayout(object):
         :rtype: None
         """
         self._topo_sort()
-        self.align_upper_left_to(100, 100)
+        self.move(*self.TOP_RIGHT)
 
     @classmethod
     def arrange_layouts(cls, layouts):
         x = 0
         y = 0
         for layout in layouts:
-            layout.align_upper_left_to(x, y)
-            x = layout.bounds()[1][0]
-            y = layout.bounds()[0][1]
+            layout.move(x, y)
+            x += layout.width + cls.BOX_DELTAX
+            y = layout.y
 
-    def _topo_sort_helper(self, G):
+    # TODO: minimize crossings
+    def _topo_sort_helper(self):
         """Attempt a rudimentary topological sort on the plan"""
-        from collections import OrderedDict
 
-        _x = 100
-        _y = 100
+        _x, _y = self.TOP_RIGHT
 
         y = _y
-        delta_x = 170
-        delta_y = -70
+        delta_x = self.BOX_DELTAX
+        delta_y = -self.BOX_DELTAY
 
-        sorted = list(nx.topological_sort(G))[::-1]
-
-        res = nx.single_source_shortest_path_length(G, sorted[-1])
+        max_depth = {}
+        roots = self.roots()
+        for root in roots:
+            depths = nx.single_source_shortest_path_length(self.G, root)
+            for n, d in depths.items():
+                max_depth[n] = max(max_depth.get(n, d), d)
         by_depth = OrderedDict()
-        for k, v in res.items():
+        for k, v in max_depth.items():
             by_depth.setdefault(v, [])
             by_depth[v].append(k)
-        for depth, op_ids in list(by_depth.items()):
-            ops = [G.node[op_id]['operation'] for op_id in op_ids]
+        for depth in sorted(by_depth):
+            op_ids = by_depth[depth]
+            print("Depth {} ({}) {} ops".format(depth, y, len(op_ids)))
+            layer = self.subgraph(op_ids)
             x = _x
+            ops = sorted(layer.operations, key=lambda op: op.x)
             for op in ops:
                 op.x = x
                 op.y = y
                 x += delta_x
-            self.align_ops_with_predecessors(ops)
+            pred_layout = self.predecessor_layout(layer)
+            layer.align_x_midpoints(pred_layout)
             y += delta_y
 
         # readjust
-        min_x = 0
-        min_y = 0
-        ops = [G.node[n]['operation'] for n in G.nodes]
-        for op in ops:
-            if op.x < min_x:
-                min_x = op.x
-            if op.y < min_y:
-                min_y = op.y
-        self.align_upper_left_to(_x, _y)
+        self.move(_x, _y)
 
     def align_ops_with_successors(self, ops):
         """
@@ -203,6 +217,14 @@ class CanvasLayout(object):
         :rtype: list
         """
         return self.G.successors(node)
+
+    def predecessor_layout(self, layout):
+        nbunch = self.collect_predecessors(layout.roots())
+        return self.subgraph(nbunch)
+
+    def successor_layout(self, layout):
+        nbunch = self.collect_successors(layout.leaves())
+        return self.subgraph(nbunch)
 
     def collect_predecessors(self, nodes):
         """
@@ -256,7 +278,29 @@ class CanvasLayout(object):
         nodes = self.collect_successors(self.ops_to_nodes(ops))
         return self.nodes_to_ops(nodes)
 
-    def align_x_with_other(self, other_layout):
+    def leaves(self):
+        """Returns the leaves of this layout"""
+        leaves = []
+        for n in self.nodes:
+            if len(list(self.successors(n))) == 0:
+                leaves.append(n)
+        return leaves
+
+    def roots(self):
+        """Returns the roots of this layout"""
+        roots = []
+        for n in self.nodes:
+            if len(list(self.predecessors(n))) == 0:
+                roots.append(n)
+        return roots
+
+    def ops_to_leaves(self):
+        return self.nodes_to_ops(self.leaves())
+
+    def ops_to_roots(self):
+        return self.nodes_to_ops(self.roots())
+
+    def align_x_midpoints(self, other_layout):
         """
         Align this layout'x midpoint x-coordinate with the midpoint x-coordinate of another layout
 
@@ -268,10 +312,13 @@ class CanvasLayout(object):
         if len(other_layout.G) == 0:
             return
         otherx, othery = other_layout.midpoint()
+        x_arr1 = [op.x for op in other_layout.operations]
+        x_arr2 = [op.x for op in self.operations]
         x, y = self.midpoint()
-        return self.translate(otherx - x, 0)
+        deltax = otherx - x
+        self.translate(otherx - x, 0)
 
-    def align_y_with_other(self, other_layout):
+    def align_y_midpoints(self, other_layout):
         """
         Align this layout'x midpoint y-coordinate with the midpoint y-coordinate of another layout
 
@@ -283,8 +330,7 @@ class CanvasLayout(object):
         if len(other_layout.G) == 0:
             return
         otherx, othery = other_layout.midpoint()
-        x, y = self.midpoint()
-        return self.translate(0, othery - y)
+        self.y = othery
 
     def align_x_of_ops(self, ops1, ops2):
         """
@@ -297,23 +343,31 @@ class CanvasLayout(object):
         :return: None
         :rtype: None
         """
-        layout1 = self.ops_to_subgraph(ops1)
-        layout2 = self.ops_to_subgraph(ops2)
-        return layout1.align_x_with_other(layout2)
+        layout1 = self.ops_to_layout(ops1)
+        layout2 = self.ops_to_layout(ops2)
+        return layout1.align_x_midpoints(layout2)
 
-    def align_upper_left_to(self, x, y):
-        """
-        Aligns the upper left corner of the layout to the x,y coordinate
+    @property
+    def xy(self):
+        return self.bounds()[0]
 
-        :param x: x-coor
-        :type x: int
-        :param y: y-coor
-        :type y: int
-        :return: None
-        :rtype: None
-        """
-        xb, yb = self.bounds()[0]
-        return self.translate(x - xb, y - yb)
+    @property
+    def x(self):
+        return self.xy[0]
+
+    @property
+    def y(self):
+        return self.xy[1]
+
+    @x.setter
+    def x(self, new_x):
+        deltax = new_x - self.x
+        self.translate(deltax, 0)
+
+    @y.setter
+    def y(self, new_y):
+        deltay = new_y - self.y
+        self.translate(0, deltay)
 
     def bounds(self):
         """
@@ -352,6 +406,10 @@ class CanvasLayout(object):
             op.x += deltax
             op.y += deltay
 
+    def move(self, x, y):
+        self.x = x
+        self.y = y
+
     @property
     def width(self):
         return self.bounds()[1][0] - self.bounds()[0][0]
@@ -365,7 +423,10 @@ class CanvasLayout(object):
         for n in self.nodes:
             op = self.G.node[n]['operation']
             pos[n] = (op.x, -op.y)
-        return nx.draw(self.G, pos=pos)
+
+        node_color = [self.STATUS_COLORS.get(op.status, "rosybrown") for op in self.operations]
+
+        return nx.draw(self.G, pos=pos, node_color=node_color)
 
     def __len__(self):
         return len(self.G)
