@@ -3,7 +3,7 @@ def new_operation_by_id(plan, ot_id):
     if ot is None:
         raise Exception("Could not find deployed OperationType \"{}\"".format(operation_type_name))
     op = ot.instance()
-    plan.add_operation(op)
+    plan._add_operation(op)
     return op
 
 
@@ -13,7 +13,7 @@ def new_operation(plan, operation_type_name):
         raise Exception("Could not find deployed OperationType \"{}\"".format(operation_type_name))
     ot = ots[0]
     op = ot.instance()
-    plan.add_operation(op)
+    plan._add_operation(op)
     return op
 
 

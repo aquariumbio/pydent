@@ -17,7 +17,7 @@ order_primer.set_input("Urgent?", value="no")
 
 # create a new plan and add operations
 p = session.Plan(name="MyPlan")
-p.add_operation(order_primer)
+p._add_operation(order_primer)
 
 # save the plan
 p.create()

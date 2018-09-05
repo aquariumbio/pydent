@@ -1,10 +1,9 @@
 from pydent import designer
 
-
 def test_add_operation_by_name(session):
     plan = session.Plan.find(121080)
-    op = designer.create_operation_by_name(plan, "Yeast Transformation")
-    print(op.id)
+    canvas = designer.Canvas(session, plan_id=121080)
+    canvas.create_operation_by_name(plan, "Yeast Transformation")
 
 
 def test_layout(session):
@@ -29,10 +28,19 @@ def test_find_operations_of_type(session):
 class TestCanvasLayout:
 
     class FakeOp():
-
+        rid = 0
         def __init__(self, x, y):
             self.x = x
             self.y = y
+            self.id = self.__class__.rid
+            self.__class__.rid += 1
+
+    def test_layout(self, session):
+        canvas = designer.Canvas(session)
+        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells", "Plate Transformed Cells", "Check Plate",
+                                        category="Cloning")
+        assert canvas.layout is not None
+
 
     def test_bounds_of_ops(self):
         op1 = self.FakeOp(300, 50)
@@ -40,7 +48,11 @@ class TestCanvasLayout:
         op3 = self.FakeOp(0, 700)
         ops = [op1, op2, op3]
 
-        ul, lr = designer.Canvas.bounds_of_ops(ops)
+        layout = designer.CanvasLayout()
+        for op in ops:
+            layout._add_operation(op)
+
+        ul, lr = layout.bounds()
 
         assert ul == (0, 50)
         assert lr == (300, 700)
@@ -49,7 +61,13 @@ class TestCanvasLayout:
         op1 = self.FakeOp(-100, 50)
         op2 = self.FakeOp(100, 400)
         op3 = self.FakeOp(300, 700)
-        x, y = designer.Canvas.midpoint_of_ops([op1, op2, op3])
+        ops = [op1, op2, op3]
+
+        layout = designer.CanvasLayout()
+        for op in ops:
+            layout._add_operation(op)
+
+        x, y = layout.midpoint()
 
         assert x == 100, "Should 100"
         assert y == (700 - 50) / 2.0 + 50
@@ -60,7 +78,11 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        designer.Canvas.translate_ops(ops, -10, 30)
+        layout = designer.CanvasLayout()
+        for op in ops:
+            layout._add_operation(op)
+
+        layout.translate(-10, 30)
         assert op1.x == -10
         assert op2.y == 430
 
@@ -70,7 +92,11 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        designer.Canvas.adjust_upper_left(ops, 100, 100)
+        layout = designer.CanvasLayout()
+        for op in ops:
+            layout._add_operation(op)
+
+        layout.adjust_upper_left(100, 100)
 
         assert op1.x == 100
         assert op2.x == 200
@@ -93,14 +119,13 @@ class TestCanvasLayout:
         new_ops[1].x = 100
         new_ops[2].x = 150
 
+        ops_layout = canvas.layout.ops_to_subgraph(ops)
+        new_op_layout = canvas.layout.ops_to_subgraph(new_ops)
 
-        assert canvas.midpoint_of_ops(new_ops)[0] != ops[-1].x
-        for op in new_ops:
-            print("{} {}".format(op.x, op.y))
-        canvas.align_x_with_predecessors(new_ops)
-        for op in new_ops:
-            print("{} {}".format(op.x, op.y))
-        assert canvas.midpoint_of_ops(new_ops)[0] == ops[-1].x
+
+        assert new_op_layout.midpoint()[0] != ops[-1].x
+        new_op_layout.align_x_with_other(ops_layout)
+        assert new_op_layout.midpoint()[0] == ops[-1].x
 
     def test_topo_sort(self, session):
         canvas = designer.Canvas(session)
@@ -113,9 +138,18 @@ class TestCanvasLayout:
 
         lysate = canvas.find_operations_by_name("E Coli Lysate")
         pcr = canvas.find_operations_by_name("E Coli Colony PCR")
-        canvas.topo_sort()
-        assert canvas.midpoint_of_ops(lysate)[0] == ops[-1].x
-        assert canvas.midpoint_of_ops(lysate)[0] == canvas.midpoint_of_ops(pcr)[0]
+        canvas.layout.topo_sort()
+        assert canvas.layout.ops_to_subgraph(lysate).midpoint()[0] == ops[-1].x
+        assert canvas.layout.ops_to_subgraph(lysate).midpoint()[0] == canvas.layout.ops_to_subgraph(pcr).midpoint()[0]
+
+    def test_subgraph(self, session):
+        canvas = designer.Canvas(session)
+        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells", "Plate Transformed Cells", "Check Plate",
+                                        category="Cloning")
+
+        graph = canvas.layout.ops_to_subgraph(ops[-2:])
+        assert len(graph) == 2
+        canvas.layout.topo_sort()
 
 # add wire
 
