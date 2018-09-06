@@ -159,10 +159,16 @@ class Canvas(object):
         self.quick_create_operation_by_name(otname2)
         return self.quick_wire(otname1, otname2)
 
+    def _contains_op(self, op):
+        return op in self.plan.operations
+
     def _resolve_op(self, op, category=None):
         if isinstance(op, tuple):
             return self.create_operation_by_name(op[0], category=op[1])
         if isinstance(op, str):
+            if not self._contains_op(op):
+                op_iden = "(id={} type={})"
+                raise Exception("Operation {} not in plan. ")
             print("Creating operation \"{}\"".format(op))
             return self.create_operation_by_name(op, category=category)
         return op

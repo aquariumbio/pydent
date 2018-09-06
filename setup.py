@@ -14,7 +14,8 @@ install_requires = [
     'inflection',
     'marshmallow==2.15.1',
     'requests',
-    'tqdm==4.23.4'
+    'tqdm==4.23.4',
+    'networkx',
 ]
 
 
