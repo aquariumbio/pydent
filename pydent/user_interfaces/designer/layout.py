@@ -416,7 +416,7 @@ class CanvasLayout(object):
 
     @property
     def height(self):
-        return self.bounds()[1][1] - self.bounds()[1][0]
+        return self.bounds()[1][1] - self.bounds()[0][1]
 
     def draw(self):
         pos = {}

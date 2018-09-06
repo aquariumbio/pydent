@@ -69,6 +69,19 @@ class TestCanvasLayout:
         assert x == 100, "Should 100"
         assert y == (700 - 50) / 2.0 + 50
 
+    def test_height_and_width(self):
+        op1 = self.FakeOp(-100, 50)
+        op2 = self.FakeOp(100, 400)
+        op3 = self.FakeOp(300, 700)
+        ops = [op1, op2, op3]
+
+        layout = designer.CanvasLayout()
+        for op in ops:
+            layout._add_operation(op)
+
+        assert layout.height == 650
+        assert layout.width == 400
+
     def test_translate_ops(self):
         op1 = self.FakeOp(0, 50)
         op2 = self.FakeOp(100, 400)
