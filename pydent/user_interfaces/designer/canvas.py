@@ -214,7 +214,7 @@ class Canvas(object):
         # propogate up?
         if fv1.sample is not None and (fv2.sample is None or fv2.sample.id != fv1.sample.id):
             self.set_field_value(fv2, sample=fv1.sample)
-        if fv1.sample is None and fv2.sample is not None:
+        elif fv2.sample is not None and (fv1.sample is None or fv2.sample.id != fv1.sample.id):
             self.set_field_value(fv1, sample=fv2.sample)
 
     @staticmethod

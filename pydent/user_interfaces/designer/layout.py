@@ -104,7 +104,6 @@ class CanvasLayout(object):
 
     def _topo_sort(self):
         subgraphs = self.get_independent_layouts()
-        print("{} kkhsubgraphs".format(len(subgraphs)))
         for subgraph in subgraphs:
             subgraph._topo_sort_helper()
         self.arrange_layouts(subgraphs)
@@ -157,7 +156,6 @@ class CanvasLayout(object):
             by_depth[v].append(k)
         for depth in sorted(by_depth):
             op_ids = by_depth[depth]
-            print("Depth {} ({}) {} ops".format(depth, y, len(op_ids)))
             layer = self.subgraph(op_ids)
             x = _x
             ops = sorted(layer.operations, key=lambda op: op.x)
