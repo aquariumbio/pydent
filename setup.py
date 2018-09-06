@@ -59,7 +59,7 @@ setup(
         title=ver['title'],
         name='pydent',
         version=ver['version'],
-        packages=["pydent", "pydent.marshaller", "pydent.utils", "pydent.user_interfaces"],
+        packages=["pydent", "pydent.marshaller", "pydent.utils", "pydent.user_interfaces", "pydent.user_interfaces.designer"],
         long_description=readme(),
         url=ver['url'],
         license='',

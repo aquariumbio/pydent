@@ -1,4 +1,4 @@
-from .layout import CanvasLayout
+from pydent.user_interfaces.designer.layout import CanvasLayout
 
 
 class Canvas(object):
