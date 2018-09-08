@@ -541,7 +541,16 @@ class FieldValue(ModelBase, FieldMixin):
         elif self.value:
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
-    def _set_helper(self, value=None, sample=None, container=None, item=None):
+    # TODO: object_type isn't a real attribute, its just for AFT
+    def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
+        if row is not None:
+            if not self.field_type.part:
+                raise AquariumModelError("Cannot set row of a non-part for {} {}".format(self.role, self.name))
+            self.row = row
+        if column is not None:
+            if not self.field_type.part:
+                raise AquariumModelError("Cannot set column of a non-part for {} {}".format(self.role, self.name))
+            self.column = column
         if item and container and item.object_type_id != container.id:
             raise AquariumModelError(
                 "Item {} is not in container {}".format(
@@ -567,25 +576,35 @@ class FieldValue(ModelBase, FieldMixin):
         if container is not None:
             self.object_type = container
 
-    def set_value(self, value=None, sample=None, container=None, item=None):
+    def set_value(self, value=None, sample=None, container=None, item=None, row=None, column=None):
         self._set_helper(value=value, sample=sample,
-                         container=container, item=item)
+                         container=container, item=item, row=row, column=column)
         """Sets the value of a """
         if any([sample, container, item]):
             afts = self.field_type.allowable_field_types
+            afts = filter_list(afts, part=self.field_type.part)
             if self.sample is not None:
                 afts = filter_list(
                     afts, sample_type_id=self.sample.sample_type_id)
             if self.object_type is not None:
                 afts = filter_list(afts, object_type_id=self.object_type.id)
             if len(afts) == 0:
-                available_afts = self.field_type.allowable_field_types
-                msg = "No allowable field types found for {} '{}'."
-                msg += " Available afts: {}"
+                msg = "No allowable field types found for {} {}."
+
+                aft_list = []
+                for aft in self.field_type.allowable_field_types:
+                    st = "none"
+                    ot = "none"
+                    if aft.object_type is not None:
+                        ot = aft.object_type.name
+                    if aft.sample_type is not None:
+                        st = aft.sample_type.name
+                    aft_list += "{}:{}".format(st, ot)
                 raise AquariumModelError(msg.format(
-                    self.role, self.name, available_afts))
+                    self.role, self.name, ', '.join(aft_list)))
             if len(afts) > 1:
-                msg = "More than one AllowableFieldType found that matches {}"
+                msg = "More than one AllowableFieldType found that matches {}" + \
+                      " Available afts: {}"
                 warnings.warn(msg.format(
                     self.dump(only=('name', 'role', 'id'), partial=True)))
             elif len(afts) == 1:
