@@ -87,6 +87,12 @@ class Canvas(object):
             if self.eq(wire.source, fv1) and self.eq(wire.destination, fv2):
                 return wire
 
+    def remove_wire(self, fv1, fv2):
+        wire = self.get_wire(fv1, fv2)
+        if wire.id is not None:
+            wire.delete()
+        self.plan.wires.remove(wire)
+
     def get_outgoing_wires(self, fv):
         wires = []
         for wire in self.plan.wires:
@@ -220,7 +226,7 @@ class Canvas(object):
         # propogate up?
         if fv1.sample is not None and (fv2.sample is None or fv2.sample.id != fv1.sample.id):
             self.set_field_value(fv2, sample=fv1.sample)
-        elif fv2.sample is not None and (fv1.sample is None or fv2.sample.id != fv1.sample.id):
+        if fv2.sample is not None and (fv1.sample is None or fv2.sample.id != fv1.sample.id):
             self.set_field_value(fv1, sample=fv2.sample)
 
     @staticmethod

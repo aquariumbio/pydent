@@ -1693,6 +1693,9 @@ class Wire(ModelBase):
     def to_save_json(self):
         return self.dump(include={'source', 'destination'})
 
+    def delete(self):
+        return self.session.utils.delete_wire(self)
+
     def show(self, pre=""):
         """Show the wire nicely"""
         print(pre + self.source.operation.operation_type.name +
