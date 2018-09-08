@@ -15,4 +15,4 @@ Submodules
 
 """
 
-from .canvas import Canvas, CanvasLayout
+from .canvas import Canvas, CanvasLayout, CanvasException

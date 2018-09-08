@@ -1,7 +1,106 @@
 from pydent.user_interfaces.designer.layout import CanvasLayout
+from pydent.user_interfaces.designer.utils import arr_to_pairs
+from uuid import uuid4
+from functools import wraps
+
+from pydent.models import FieldValue, Operation
+
+class CanvasException(Exception):
+    """Generic Canvas Exception"""
+
+def verify_plan_models(fxn):
+    """Will do a check to verify if any FieldValues or Operations passed as arguments
+    exist in the plan."""
+    @wraps(fxn)
+    def wrapper(self, *args, **kwargs):
+        if not issubclass(self.__class__, Canvas):
+            raise CanvasException("Cannot apply 'verify_plan_models' to a non-Canvas instance.")
+        for arg in args:
+            if issubclass(arg.__class__, FieldValue):
+                fv = arg
+                if not self._contains_op(fv.operation):
+                    fviden = "{} {}".format(fv.role, fv.name)
+                    raise CanvasException("FieldValue \"{}\" not found in Canvas.".format(fviden))
+            elif issubclass(arg.__class__, Operation):
+                op = arg
+                if not self._contains_op(op):
+                    opiden = "{}".format(op.operation_type.name)
+                    raise CanvasException("Operation \"{}\" not found in Canvas.".format(opiden))
+        return fxn(self, *args, **kwargs)
+    return wrapper
 
 
-class Canvas(object):
+class PlanOptimizer(object):
+
+    @staticmethod
+    def op_to_hash(op):
+        ot_id = op.operation_type.id
+
+        ftids = []
+
+        for ft in op.operation_type.field_types:
+            if ft.ftype == "sample":
+                fv = op.field_value(ft.name, ft.role)
+
+                # none valued Samples are never equivaent
+                sid = str(uuid4())
+                if fv.sample is not None:
+                    sid = "{}{}".format(fv.role, fv.sample.id)
+
+                itemid = "none"
+                if fv.item is not None:
+                    itemid = "{}{}".format(fv.role, fv.item.id)
+
+                ftids.append("{}:{}:{}:{}".format(ft.name, ft.role, sid, itemid))
+        ftids = sorted(ftids)
+        return "{}_{}".format(ot_id, "#".join(ftids))
+
+    @classmethod
+    def group_by_hashes(cls, ops):
+        hashgroup = {}
+        for op in ops:
+            h = cls.op_to_hash(op)
+            hashgroup.setdefault(h, [])
+            hashgroup[h].append(op)
+        return hashgroup
+
+    @classmethod
+    def optimize_plan(cls, canvas, operations=None):
+        """
+        Optimizes a plan by removing redundent operations.
+        :param canvas:
+        :return:
+        """
+        print("Optimizing Plan")
+        if operations is None:
+            operations = [op for op in canvas.plan.operations if op.status == 'planning']
+        groups = {k: v for k, v in cls.group_by_hashes(operations).items() if len(v) > 1}
+
+        num_inputs_rewired = 0
+        num_outputs_rewired = 0
+        num_ops_removed = 0
+        for k, gops in groups.items():
+            op = gops[0]
+            other_ops = gops[1:]
+            for other_op in other_ops:
+                for i in other_op.inputs:
+                    for w in canvas.get_incoming_wires(i):
+                        canvas.add_wire(w.source, op.input(i.name))
+                        canvas.remove_wire(w.source, w.destination)
+                        num_inputs_rewired += 1
+                for o in other_op.outputs:
+                    for w in canvas.get_outgoing_wires(o):
+                        canvas.add_wire(op.output(o.name), w.destination)
+                        canvas.remove_wire(w.source, w.destination)
+                        num_outputs_rewired += 1
+                canvas.plan.operations.remove(other_op)
+                num_ops_removed += 1
+        print("\t{} operations removed".format(num_ops_removed))
+        print("\t{} number of inputs removed".format(num_inputs_rewired))
+        print("\t{} number of outputs removed".format(num_outputs_rewired))
+
+
+class Canvas(PlanOptimizer):
     """A user-interface for making experimental plans and layouts."""
 
     def __init__(self, session, plan_id=None):
@@ -9,7 +108,7 @@ class Canvas(object):
         if self.plan_id is not None:
             self.plan = session.Plan.find(plan_id)
             if self.plan is None:
-                raise Exception("Could not find plan with id={}".format(plan_id))
+                raise CanvasException("Could not find plan with id={}".format(plan_id))
         else:
             self.plan = session.Plan.new()
         self.session = session
@@ -52,9 +151,9 @@ class Canvas(object):
             query['category'] = category
         ots = self.session.OperationType.where(query)
         if len(ots) > 1:
-            raise Exception("Found more than one OperationType for query \"{}\"".format(query))
+            raise CanvasException("Found more than one OperationType for query \"{}\"".format(query))
         if ots is None or len(ots) == 0:
-            raise Exception("Could not find deployed OperationType \"{}\"".format(operation_type_name))
+            raise CanvasException("Could not find deployed OperationType \"{}\"".format(operation_type_name))
         return self.create_operation_by_type(ots[0])
 
     @staticmethod
@@ -66,45 +165,38 @@ class Canvas(object):
             return True
         return False
 
-    # def get_operation_where(self, **params):
-    #     ops = []
-    #     for op in self.plan.operations:
-    #         passes = True
-    #         for k, v in params.items():
-    #             if getattr(op, k) != v:
-    #                 passes = False
-    #                 break
-    #         ops.append(op)
-    #     return ops
-
     def get_operation(self, id):
         for op in self.plan.operations:
             if op.id == id:
                 return op
 
+    @verify_plan_models
     def get_wire(self, fv1, fv2):
-        self._check_for_fv(fv1)
-        self._check_for_fv(fv2)
         for wire in self.plan.wires:
             if self.eq(wire.source, fv1) and self.eq(wire.destination, fv2):
                 return wire
 
+    @verify_plan_models
     def remove_wire(self, fv1, fv2):
-        self._check_for_fv(fv1)
-        self._check_for_fv(fv2)
+        """
+        Removes a wire between two field values from a plan
+        :param fv1:
+        :param fv2:
+        :return:
+        """
         wire = self.get_wire(fv1, fv2)
         self.plan.wires.remove(wire)
 
+    @verify_plan_models
     def get_outgoing_wires(self, fv):
-        self._check_for_fv(fv)
         wires = []
         for wire in self.plan.wires:
             if self.eq(wire.source, fv):
                 wires.append(wire)
         return wires
 
+    @verify_plan_models
     def get_incoming_wires(self, fv):
-        self._check_for_fv(fv)
         wires = []
         for wire in self.plan.wires:
             if self.eq(wire.destination, fv):
@@ -136,18 +228,47 @@ class Canvas(object):
         return ops
 
     @classmethod
-    def _find_matching_afts_for_ops(cls, op1, op2):
-        outputs = [fv for fv in op1.outputs if fv.field_type.ftype == 'sample']
-        inputs = [fv for fv in op2.inputs if fv.field_type.ftype == 'sample']
+    def _resolve_source_to_outputs(cls, source):
+        """Resolves a FieldValue or Operation to its sample output FieldValues"""
+        if isinstance(source, FieldValue):
+            if source.role == "output":
+                outputs = [source]
+            else:
+                raise CanvasException("Canvas attempted to find matching allowable_field_types for"
+                                " an output FieldValue but found an input FieldValue")
+        elif isinstance(source, Operation):
+            outputs = [fv for fv in source.outputs if fv.field_type.ftype == 'sample']
+        return outputs
+
+    @classmethod
+    def _resolve_destination_to_inputs(cls, destination):
+        """Resolves a FieldValue or Operation to its sample input FieldValues"""
+        if isinstance(destination, FieldValue):
+            if destination.role == "input":
+                inputs = [destination]
+            else:
+                raise CanvasException("Canvas attempted to find matching allowable_field_types for"
+                                " an input FieldValue but found an output FieldValue")
+        elif isinstance(destination, Operation):
+            inputs = [fv for fv in destination.inputs if fv.field_type.ftype == 'sample']
+        return inputs
+
+    @classmethod
+    def _collect_matching_afts(cls, source, destination):
+        """Find matching AllowableFieldTypes"""
+        inputs = cls._resolve_destination_to_inputs(destination)
+        outputs = cls._resolve_source_to_outputs(source)
 
         matching_afts = []
         for output in outputs:
             for input in inputs:
-                matching_afts += cls._find_matching_afts(output, input)
+                if input.field_type.part == output.field_type.part:
+                    matching_afts += cls._find_matching_afts(output, input)
         return matching_afts
 
     @staticmethod
     def _find_matching_afts(output, input):
+        """Finds matching afts between two FieldValues"""
         afts = []
         output_afts = output.field_type.allowable_field_types
         input_afts = input.field_type.allowable_field_types
@@ -167,86 +288,94 @@ class Canvas(object):
     def quick_create_and_wire(self, otname1, otname2, fvnames=None):
         self.quick_create_operation_by_name(otname1)
         self.quick_create_operation_by_name(otname2)
-        return self.quick_wire(otname1, otname2)
+        return self.quick_wire_by_name(otname1, otname2)
 
     def _contains_op(self, op):
         return op in self.plan.operations
 
-    def _check_for_op(self, op):
-        if not self._contains_op:
-            op_iden = "(id={} type={})".format(op.id, op.operation_type.name)
-            raise Exception("Operation {} not in plan.".format(op_iden))
-
-    def _check_for_fv(self, fv):
-        self._check_for_op(fv.operation)
-
+    @verify_plan_models
     def _resolve_op(self, op, category=None):
         if isinstance(op, tuple):
-            return self.create_operation_by_name(op[0], category=op[1])
+            op = self.create_operation_by_name(op[0], category=op[1])
         if isinstance(op, str):
             print("Creating operation \"{}\"".format(op))
-            return self.create_operation_by_name(op, category=category)
-        self._check_for_op(op)
+            op = self.create_operation_by_name(op, category=category)
         return op
 
     def quick_create_chain(self, *op_or_otnames, category=None):
-        op1 = self._resolve_op(op_or_otnames[0], category=category)
-        ops = [op1]
-        for op2 in op_or_otnames[1:]:
-            op2 = self._resolve_op(op2, category=category)
-            ops.append(op2)
-            self.quick_wire_ops(op1, op2)
-            op1 = op2
+        ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
+        pairs = arr_to_pairs(ops)
+        for op1, op2 in pairs:
+            self.quick_wire(op1, op2)
         return ops
 
-    def quick_wire_ops(self, op1, op2, fvnames=None, strict=True):
-        self._check_for_op(op1)
-        self._check_for_op(op2)
-        if fvnames is not None:
-            if len(fvnames) == 2:
-                return self.add_wire(op1.output(fvnames[0]), op2.input(fvnames[1]))
-            else:
-                raise Exception("Field Value names must be a list or tupe of length 2.")
-        afts = self._find_matching_afts_for_ops(op1, op2)
+    @verify_plan_models
+    def quick_wire(self, source, destination, strict=True):
+        afts = self._collect_matching_afts(source, destination)
 
         if len(afts) > 1 and strict:
-            raise Exception("Cannot quick wire. Ambiguous wiring between {} and {}".format(op1.operation_type.name,
-                                                                                           op2.operation_type.name))
-
-        for aft1, aft2 in self._find_matching_afts_for_ops(op1, op2):
-            o = op1.output(aft1.field_type.name)
-            i = op2.input(aft2.field_type.name)
+            raise CanvasException("Cannot quick wire. Ambiguous wiring between {} and {}".format(source.operation_type.name,
+                                                                                           destination.operation_type.name))
+        for aft1, aft2 in afts:
+            o = source.output(aft1.field_type.name)
+            i = destination.input(aft2.field_type.name)
             o.allowable_field_type_id = aft1.id
             i.allowable_field_type_id = aft2.id
             return self.add_wire(o, i)
 
-    def quick_wire(self, otname1, otname2, fvnames=None):
+    def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""
         op1 = self.find_operations_by_name(otname1)[-1]
         op2 = self.find_operations_by_name(otname2)[-1]
-        return self.quick_wire_ops(op1, op2, fvnames=fvnames)
+        return self.quick_wire(op1, op2)
 
+    def _set_wire(self, src_fv, dest_fv, preference="source"):
+
+        # resolve sample
+        samples = [src_fv.sample, dest_fv.sample]
+        samples = [s for s in samples if s is not None]
+
+        afts = self._collect_matching_afts(src_fv, dest_fv)
+
+        if len(afts) == 0:
+            raise CanvasException("Cannot wire \"{}\" to \"{}\". No allowable field types match."
+                            .format(src_fv.name, dest_fv.name))
+
+        if len(samples) > 0:
+            selected_sample = samples[0]
+            if preference == "destination":
+                selected_sample = samples[1]
+
+            # filter afts by sample_type_id
+            afts = [aft for aft in afts if aft.sample_type_id == selected_sample.sample_type_id]
+
+            if len(afts) == 0:
+                raise CanvasException("No allowable_field_types were found for FieldValues {} & {} for"
+                                " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name))
+
+            self.set_field_value(src_fv, sample=selected_sample)
+            self.set_field_value(dest_fv, sample=selected_sample)
+
+            # set the sample (and allowable_field_type)
+            if src_fv.sample is not None and (dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
+                self.set_field_value(dest_fv, sample=src_fv.sample)
+            if dest_fv.sample is not None and (src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
+                self.set_field_value(src_fv, sample=dest_fv.sample)
+        else:
+            # no samples set, so just set the allowable_field_type
+            aft = afts[0]
+            src_fv.allowable_field_type_id = aft[0].id
+            dest_fv.allowable_field_type_id = aft[1].id
+
+    @verify_plan_models
     def add_wire(self, fv1, fv2):
         """Note that fv2.operation will not inherit parent_id of fv1"""
-        self._check_for_fv(fv1)
-        self._check_for_fv(fv2)
         wire = self.get_wire(fv1, fv2)
+        self._set_wire(fv1, fv2)
         if wire is None:
-            # print("Creating new wire")
+            # wire does not exist, so create it
             self.plan.wire(fv1, fv2)
-
-            # check and set allowable field type
-            afts = self._find_matching_afts(fv1, fv2)
-            if len(afts) == 0:
-                raise Exception("Cannot wire \"{}\" to \"{}\". No allowable field types match."
-                                .format(fv1.name, fv2.name))
-            fv1.allowable_field_type_id = afts[0][0].id
-            fv2.allowable_field_type_id = afts[0][1].id
-        # propogate up?
-        if fv1.sample is not None and (fv2.sample is None or fv2.sample.id != fv1.sample.id):
-            self.set_field_value(fv2, sample=fv1.sample)
-        if fv2.sample is not None and (fv1.sample is None or fv2.sample.id != fv1.sample.id):
-            self.set_field_value(fv1, sample=fv2.sample)
+        return wire
 
     @staticmethod
     def get_routing_dict(op):
@@ -258,8 +387,8 @@ class Canvas(object):
             routing_dict[fv.field_type.routing] = routing_fvs
         return routing_dict
 
+    @verify_plan_models
     def set_field_value(self, field_value, sample=None, item=None, container=None, value=None):
-        self._check_for_fv(field_value)
         routing = field_value.field_type.routing
         fvs = self.get_routing_dict(field_value.operation)[routing]
         field_value.set_value(sample=sample, item=item, container=container, value=value)
@@ -296,6 +425,8 @@ class Canvas(object):
         canvas = self.__class__()
         canvas.plan = self.plan.replan()
         return canvas
+
+
 
     # @staticmethod
     # def _id_getter(model):
@@ -406,65 +537,3 @@ class Canvas(object):
 #
 # def remove_wire(fv1, fv2):
 #     pass
-
-
-
-
-# OPTIMIZER
-asdfaldsjfl;ajds
-from uuid import uuid4
-def op_to_hash(op):
-    ot_id = op.operation_type.id
-
-    ftids = []
-
-    for ft in op.operation_type.field_types:
-        if ft.ftype == "sample":
-            fv = op.field_value(ft.name, ft.role)
-
-            # none valued Samples are never equivaent
-            sid = str(uuid4())
-            if fv.sample is not None:
-                sid = "{}{}".format(fv.role, fv.sample.id)
-
-            itemid = "none"
-            if fv.item is not None:
-                itemid = "{}{}".format(fv.role, fv.item.id)
-
-            ftids.append("{}:{}:{}:{}".format(ft.name, ft.role, sid, itemid))
-    ftids = sorted(ftids)
-    return "{}_{}".format(ot_id, "#".join(ftids))
-
-
-def group_by_hashes(ops):
-    hashgroup = {}
-    for op in ops:
-        h = op_to_hash(op)
-        hashgroup.setdefault(h, [])
-        hashgroup[h].append(op)
-    return hashgroup
-
-
-def optimize_plan(canvas):
-    ops = [op for op in canvas.plan.operations if op.status == 'planning']
-    groups = {k: v for k, v in group_by_hashes(ops).items() if len(v) > 1}
-
-    print('found {} groups'.format(len(groups)))
-    print(groups)
-
-    for k, gops in groups.items():
-        op = gops[0]
-        print(op.operation_type.name)
-        other_ops = gops[1:]
-        for other_op in other_ops:
-            for i in other_op.inputs:
-                for w in canvas.get_incoming_wires(i):
-                    canvas.add_wire(w.source, op.input(i.name))
-                    canvas.remove_wire(w.source, w.destination)
-                    print("deleted wire to {}".format(i.name))
-            for o in other_op.outputs:
-                for w in canvas.get_outgoing_wires(o):
-                    canvas.add_wire(op.output(o.name), w.destination)
-                    print("rewiring wire from {}".format(o.name))
-                    canvas.remove_wire(w.source, w.destination)
-            canvas.plan.operations.remove(other_op)

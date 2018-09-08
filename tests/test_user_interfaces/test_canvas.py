@@ -1,3 +1,4 @@
+import pytest
 from pydent import designer
 
 def test_canvas_create(session):
@@ -5,13 +6,33 @@ def test_canvas_create(session):
     canvas.create()
     print(canvas.plan.id)
 
+def test_raises_exception_wiring_with_no_afts(session):
+    canvas = designer.Canvas(session)
+    op1 = canvas.create_operation_by_name("Make PCR Fragment", category="Cloning")
+    op2 = canvas.create_operation_by_name("Check Plate", category="Cloning")
+
+    with pytest.raises(designer.CanvasException):
+        canvas._set_wire(op1.outputs[0], op2.inputs[0])
+
+def test_add_wire(session):
+    canvas = designer.Canvas(session)
+    assert len(canvas.plan.wires) == 0
+    op1 = canvas.create_operation_by_name("Make PCR Fragment", category="Cloning")
+    op2 = canvas.create_operation_by_name("Rehydrate Primer", category="Cloning")
+
+    canvas.add_wire(op2.outputs[0], op1.input("Forward Primer"))
+    assert len(canvas.plan.wires) == 1
+    wire = canvas.plan.wires[0]
+    assert wire.source.allowable_field_type.sample_type_id == wire.destination.allowable_field_type.sample_type_id
+    assert wire.source.allowable_field_type.object_type_id == wire.destination.allowable_field_type.object_type_id
+
 
 def test_canvas_add_op(session):
 
     canvas = designer.Canvas(session)
     canvas.create_operation_by_name("Yeast Transformation")
     canvas.create_operation_by_name("Yeast Antibiotic Plating")
-    canvas.quick_wire("Yeast Transformation", "Yeast Antibiotic Plating")
+    canvas.quick_wire_by_name("Yeast Transformation", "Yeast Antibiotic Plating")
     canvas.create()
 
     p = session.Plan.find(canvas.plan.id)
@@ -40,7 +61,6 @@ def test_load_canvas(session):
 
 
 def test_layout(session):
-
     pass
 
 
