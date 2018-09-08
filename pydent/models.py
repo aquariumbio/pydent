@@ -582,15 +582,12 @@ class FieldValue(ModelBase, FieldMixin):
         """Sets the value of a """
         if any([sample, container, item]):
             afts = self.field_type.allowable_field_types
-            afts = filter_list(afts, part=self.field_type.part)
             if self.sample is not None:
                 afts = filter_list(
                     afts, sample_type_id=self.sample.sample_type_id)
             if self.object_type is not None:
                 afts = filter_list(afts, object_type_id=self.object_type.id)
             if len(afts) == 0:
-                msg = "No allowable field types found for {} {}."
-
                 aft_list = []
                 for aft in self.field_type.allowable_field_types:
                     st = "none"
@@ -599,9 +596,17 @@ class FieldValue(ModelBase, FieldMixin):
                         ot = aft.object_type.name
                     if aft.sample_type is not None:
                         st = aft.sample_type.name
-                    aft_list += "{}:{}".format(st, ot)
+                    aft_list.append("{}:{}".format(st, ot))
+                sid = "none"
+                if self.sample is not None:
+                    sid = self.sample.sample_type.name
+                oid = "none"
+                if self.object_type is not None:
+                    oid = self.object_type.name
+                msg = "No allowable field types found for {} {} using {} {}."
+                msg += " Available afts: {}"
                 raise AquariumModelError(msg.format(
-                    self.role, self.name, ', '.join(aft_list)))
+                    self.role, self.name, sid, oid, ', '.join(aft_list)))
             if len(afts) > 1:
                 msg = "More than one AllowableFieldType found that matches {}" + \
                       " Available afts: {}"

@@ -5,12 +5,15 @@ from functools import wraps
 
 from pydent.models import FieldValue, Operation
 
+
 class CanvasException(Exception):
     """Generic Canvas Exception"""
+
 
 def verify_plan_models(fxn):
     """Will do a check to verify if any FieldValues or Operations passed as arguments
     exist in the plan."""
+
     @wraps(fxn)
     def wrapper(self, *args, **kwargs):
         if not issubclass(self.__class__, Canvas):
@@ -27,6 +30,7 @@ def verify_plan_models(fxn):
                     opiden = "{}".format(op.operation_type.name)
                     raise CanvasException("Operation \"{}\" not found in Canvas.".format(opiden))
         return fxn(self, *args, **kwargs)
+
     return wrapper
 
 
@@ -78,24 +82,33 @@ class PlanOptimizer(object):
 
         num_inputs_rewired = 0
         num_outputs_rewired = 0
-        num_ops_removed = 0
+        ops_to_remove = []
         for k, gops in groups.items():
             op = gops[0]
             other_ops = gops[1:]
             for other_op in other_ops:
-                for i in other_op.inputs:
-                    for w in canvas.get_incoming_wires(i):
-                        canvas.add_wire(w.source, op.input(i.name))
-                        canvas.remove_wire(w.source, w.destination)
-                        num_inputs_rewired += 1
-                for o in other_op.outputs:
-                    for w in canvas.get_outgoing_wires(o):
-                        canvas.add_wire(op.output(o.name), w.destination)
-                        canvas.remove_wire(w.source, w.destination)
-                        num_outputs_rewired += 1
-                canvas.plan.operations.remove(other_op)
-                num_ops_removed += 1
-        print("\t{} operations removed".format(num_ops_removed))
+                connected_ops = canvas.get_op_successors(other_op)
+                connected_ops += canvas.get_op_predecessors(other_op)
+                if all([_op.status == "planning" for _op in connected_ops]):
+                    # only optimize if ALL connected operations are in planning status
+                    for i in other_op.inputs:
+                        in_wires = canvas.get_incoming_wires(i)
+                        for w in in_wires:
+                            if w.source.operation.status == "planning":
+                                canvas.add_wire(w.source, op.input(i.name))
+                                canvas.remove_wire(w.source, w.destination)
+                                num_inputs_rewired += 1
+                    for o in other_op.outputs:
+                        out_wires = canvas.get_outgoing_wires(o)
+                        for w in out_wires:
+                            if w.destination.status == "planning":
+                                canvas.add_wire(op.output(o.name), w.destination)
+                                canvas.remove_wire(w.source, w.destination)
+                                num_outputs_rewired += 1
+                    ops_to_remove.append(other_op)
+        for op in ops_to_remove:
+            canvas.plan.operations.remove(op)
+        print("\t{} operations removed".format(len(ops_to_remove)))
         print("\t{} number of inputs removed".format(num_inputs_rewired))
         print("\t{} number of outputs removed".format(num_outputs_rewired))
 
@@ -235,7 +248,7 @@ class Canvas(PlanOptimizer):
                 outputs = [source]
             else:
                 raise CanvasException("Canvas attempted to find matching allowable_field_types for"
-                                " an output FieldValue but found an input FieldValue")
+                                      " an output FieldValue but found an input FieldValue")
         elif isinstance(source, Operation):
             outputs = [fv for fv in source.outputs if fv.field_type.ftype == 'sample']
         return outputs
@@ -248,7 +261,7 @@ class Canvas(PlanOptimizer):
                 inputs = [destination]
             else:
                 raise CanvasException("Canvas attempted to find matching allowable_field_types for"
-                                " an input FieldValue but found an output FieldValue")
+                                      " an input FieldValue but found an output FieldValue")
         elif isinstance(destination, Operation):
             inputs = [fv for fv in destination.inputs if fv.field_type.ftype == 'sample']
         return inputs
@@ -261,8 +274,10 @@ class Canvas(PlanOptimizer):
 
         matching_afts = []
         for output in outputs:
+            opart = output.field_type.part == True
             for input in inputs:
-                if input.field_type.part == output.field_type.part:
+                ipart = input.field_type.part == True
+                if ipart == opart:
                     matching_afts += cls._find_matching_afts(output, input)
         return matching_afts
 
@@ -314,8 +329,13 @@ class Canvas(PlanOptimizer):
         afts = self._collect_matching_afts(source, destination)
 
         if len(afts) > 1 and strict:
-            raise CanvasException("Cannot quick wire. Ambiguous wiring between {} and {}".format(source.operation_type.name,
-                                                                                           destination.operation_type.name))
+            raise CanvasException(
+                "Cannot quick wire. Ambiguous wiring between {} and {}".format(source.operation_type.name,
+                                        destination.operation_type.name))
+        elif len(afts) == 0:
+            raise CanvasException(
+                "Cannot quick wire. No available field types found between {} and {}".format(source.operation_type.name,
+                                                                    destination.operation_type.name))
         for aft1, aft2 in afts:
             o = source.output(aft1.field_type.name)
             i = destination.input(aft2.field_type.name)
@@ -339,7 +359,7 @@ class Canvas(PlanOptimizer):
 
         if len(afts) == 0:
             raise CanvasException("Cannot wire \"{}\" to \"{}\". No allowable field types match."
-                            .format(src_fv.name, dest_fv.name))
+                                  .format(src_fv.name, dest_fv.name))
 
         if len(samples) > 0:
             selected_sample = samples[0]
@@ -347,11 +367,11 @@ class Canvas(PlanOptimizer):
                 selected_sample = samples[1]
 
             # filter afts by sample_type_id
-            afts = [aft for aft in afts if aft.sample_type_id == selected_sample.sample_type_id]
+            afts = [aft for aft in afts if aft[0].sample_type_id == selected_sample.sample_type_id]
 
             if len(afts) == 0:
                 raise CanvasException("No allowable_field_types were found for FieldValues {} & {} for"
-                                " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name))
+                                      " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name))
 
             self.set_field_value(src_fv, sample=selected_sample)
             self.set_field_value(dest_fv, sample=selected_sample)
@@ -388,10 +408,10 @@ class Canvas(PlanOptimizer):
         return routing_dict
 
     @verify_plan_models
-    def set_field_value(self, field_value, sample=None, item=None, container=None, value=None):
+    def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
         routing = field_value.field_type.routing
         fvs = self.get_routing_dict(field_value.operation)[routing]
-        field_value.set_value(sample=sample, item=item, container=container, value=value)
+        field_value.set_value(sample=sample, item=item, container=container, value=value, row=None, column=None)
         # cls._json_update(field_value)
         if field_value.field_type.ftype == 'sample':
             for fv in fvs:
@@ -425,8 +445,6 @@ class Canvas(PlanOptimizer):
         canvas = self.__class__()
         canvas.plan = self.plan.replan()
         return canvas
-
-
 
     # @staticmethod
     # def _id_getter(model):

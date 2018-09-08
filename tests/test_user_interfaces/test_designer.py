@@ -162,6 +162,22 @@ class TestCanvasLayout:
         assert op2.y == 450
         assert op3.y == 750
 
+    def test_collect_successors(self, session):
+        canvas = designer.Canvas(session)
+        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells", "Plate Transformed Cells", "Check Plate",
+                                        category="Cloning")
+        print(canvas.layout.ops_to_nodes(ops))
+        s = canvas.layout.collect_successors(["r{}".format(ops[0].rid)])
+        assert s == ["r{}".format(ops[1].rid)]
+
+    def test_collect_predecessors(self, session):
+        canvas = designer.Canvas(session)
+        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells", "Plate Transformed Cells", "Check Plate",
+                                        category="Cloning")
+        print(canvas.layout.ops_to_nodes(ops))
+        s = canvas.layout.collect_predecessors(["r{}".format(ops[1].rid)])
+        assert s == ["r{}".format(ops[0].rid)]
+
     def test_align_x_with_predecessors(self, session):
         canvas = designer.Canvas(session)
 

@@ -1,10 +1,12 @@
 import pytest
 from pydent import designer
 
+
 def test_canvas_create(session):
     canvas = designer.Canvas(session)
     canvas.create()
     print(canvas.plan.id)
+
 
 def test_raises_exception_wiring_with_no_afts(session):
     canvas = designer.Canvas(session)
@@ -13,6 +15,7 @@ def test_raises_exception_wiring_with_no_afts(session):
 
     with pytest.raises(designer.CanvasException):
         canvas._set_wire(op1.outputs[0], op2.inputs[0])
+
 
 def test_add_wire(session):
     canvas = designer.Canvas(session)
@@ -25,6 +28,58 @@ def test_add_wire(session):
     wire = canvas.plan.wires[0]
     assert wire.source.allowable_field_type.sample_type_id == wire.destination.allowable_field_type.sample_type_id
     assert wire.source.allowable_field_type.object_type_id == wire.destination.allowable_field_type.object_type_id
+
+
+def test_add_wire_sets_sample_from_destination(session):
+    canvas = designer.Canvas(session)
+    assert len(canvas.plan.wires) == 0
+    p = canvas.session.SampleType.find_by_name("Primer").samples[0]
+    destination = canvas.create_operation_by_name("Make PCR Fragment", category="Cloning")
+    source = canvas.create_operation_by_name("Rehydrate Primer", category="Cloning")
+    canvas.set_field_value(destination.input("Forward Primer"), sample=p)
+    canvas.add_wire(source.outputs[0], destination.input("Forward Primer"))
+    assert source.outputs[0].sample == p
+
+
+def test_add_wire_sets_sample_from_source(session):
+    canvas = designer.Canvas(session)
+    assert len(canvas.plan.wires) == 0
+    p = canvas.session.SampleType.find_by_name("Primer").samples[0]
+    destination = canvas.create_operation_by_name("Make PCR Fragment", category="Cloning")
+    source = canvas.create_operation_by_name("Rehydrate Primer", category="Cloning")
+    canvas.set_field_value(source.outputs[0], sample=p)
+    canvas.add_wire(source.outputs[0], destination.input("Forward Primer"))
+    assert destination.input("Forward Primer").sample == p
+
+
+def test_collect_matching_afts(session):
+    canvas = designer.Canvas(session)
+
+    op1 = canvas.create_operation_by_name("Check Plate", category="Cloning")
+    op2 = canvas.create_operation_by_name("E Coli Lysate", category="Cloning")
+    afts = canvas._collect_matching_afts(op1, op2)
+    print(afts)
+
+def test_raise_exception_if_wiring_two_inputs(session):
+    canvas = designer.Canvas(session)
+    assert len(canvas.plan.wires) == 0
+
+    op1 = canvas.create_operation_by_name("Check Plate", category="Cloning")
+    op2 = canvas.create_operation_by_name("Check Plate", category="Cloning")
+
+    with pytest.raises(designer.CanvasException):
+        canvas.add_wire(op1.inputs[0], op2.inputs[0])
+
+
+def test_raise_exception_if_wiring_two_outputs(session):
+    canvas = designer.Canvas(session)
+    assert len(canvas.plan.wires) == 0
+
+    op1 = canvas.create_operation_by_name("Check Plate", category="Cloning")
+    op2 = canvas.create_operation_by_name("Check Plate", category="Cloning")
+
+    with pytest.raises(designer.CanvasException):
+        canvas.add_wire(op1.outputs[0], op2.outputs[0])
 
 
 def test_canvas_add_op(session):
@@ -43,8 +98,29 @@ def test_canvas_chain(session):
     canvas = designer.Canvas(session)
 
     canvas.quick_create_chain("Yeast Transformation", "Check Yeast Plate", "Yeast Overnight Suspension")
+    assert len(canvas.plan.operations) == 3
+    assert len(canvas.plan.wires) == 2
 
-    # print(canvas.plan.wires)
+
+def test_quick_chain_to_existing_operation(session):
+    canvas = designer.Canvas(session)
+    op = canvas.create_operation_by_name("Yeast Transformation")
+    canvas.quick_create_chain(op, "Check Yeast Plate")
+    assert len(canvas.plan.wires) == 1
+
+def test_canvas_chaining(session):
+    canvas = designer.Canvas(session)
+    ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells", "Plate Transformed Cells", "Check Plate",
+                                    category="Cloning")
+    assert len(canvas.plan.wires) == 3
+    new_ops = []
+    for i in range(3):
+        new_ops += canvas.quick_create_chain(ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR")[1:]
+    assert len(canvas.plan.wires) == 2 * 3 + 3
+
+def test_layout_edges_and_nodes(session):
+    canvas = designer.Canvas(session)
+    canvas.quick_create_chain("Yeast Transformation", "Check Yeast Plate", "Yeast Overnight Suspension")
     G = canvas.layout.G
     edges = list(G.edges)
     assert len(edges) == 2, "There should only be 2 edges/wires in the graph/plan"
