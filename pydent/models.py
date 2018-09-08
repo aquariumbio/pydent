@@ -1688,6 +1688,7 @@ class Wire(ModelBase):
         self.source = source
         self.destination = destination
         self.active = True
+        self.id=None
         super().__init__(**vars(self))
 
     def to_save_json(self):

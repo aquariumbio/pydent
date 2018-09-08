@@ -83,17 +83,22 @@ class Canvas(object):
                 return op
 
     def get_wire(self, fv1, fv2):
+        self._check_for_fv(fv1)
+        self._check_for_fv(fv2)
         for wire in self.plan.wires:
             if self.eq(wire.source, fv1) and self.eq(wire.destination, fv2):
                 return wire
 
     def remove_wire(self, fv1, fv2):
+        self._check_for_fv(fv1)
+        self._check_for_fv(fv2)
         wire = self.get_wire(fv1, fv2)
         if wire.id is not None:
             wire.delete()
         self.plan.wires.remove(wire)
 
     def get_outgoing_wires(self, fv):
+        self._check_for_fv(fv)
         wires = []
         for wire in self.plan.wires:
             if self.eq(wire.source, fv):
@@ -101,6 +106,7 @@ class Canvas(object):
         return wires
 
     def get_incoming_wires(self, fv):
+        self._check_for_fv(fv)
         wires = []
         for wire in self.plan.wires:
             if self.eq(wire.destination, fv):
@@ -168,15 +174,21 @@ class Canvas(object):
     def _contains_op(self, op):
         return op in self.plan.operations
 
+    def _check_for_op(self, op):
+        if not self._contains_op:
+            op_iden = "(id={} type={})".format(op.id, op.operation_type.name)
+            raise Exception("Operation {} not in plan.".format(op_iden))
+
+    def _check_for_fv(self, fv):
+        self._check_for_op(fv.operation)
+
     def _resolve_op(self, op, category=None):
         if isinstance(op, tuple):
             return self.create_operation_by_name(op[0], category=op[1])
         if isinstance(op, str):
-            if not self._contains_op(op):
-                op_iden = "(id={} type={})"
-                raise Exception("Operation {} not in plan. ")
             print("Creating operation \"{}\"".format(op))
             return self.create_operation_by_name(op, category=category)
+        self._check_for_op(op)
         return op
 
     def quick_create_chain(self, *op_or_otnames, category=None):
@@ -190,6 +202,8 @@ class Canvas(object):
         return ops
 
     def quick_wire_ops(self, op1, op2, fvnames=None):
+        self._check_for_op(op1)
+        self._check_for_op(op2)
         if fvnames is not None:
             if len(fvnames) == 2:
                 return self.add_wire(op1.output(fvnames[0]), op2.input(fvnames[1]))
@@ -211,6 +225,8 @@ class Canvas(object):
 
     def add_wire(self, fv1, fv2):
         """Note that fv2.operation will not inherit parent_id of fv1"""
+        self._check_for_fv(fv1)
+        self._check_for_fv(fv2)
         wire = self.get_wire(fv1, fv2)
         if wire is None:
             # print("Creating new wire")
@@ -239,15 +255,16 @@ class Canvas(object):
             routing_dict[fv.field_type.routing] = routing_fvs
         return routing_dict
 
-    @classmethod
-    def set_field_value(cls, field_value, sample=None, item=None, container=None, value=None):
+
+    def set_field_value(self, field_value, sample=None, item=None, container=None, value=None):
+        self._check_for_fv(field_value)
         routing = field_value.field_type.routing
-        fvs = cls.get_routing_dict(field_value.operation)[routing]
+        fvs = self.get_routing_dict(field_value.operation)[routing]
         field_value.set_value(sample=sample, item=item, container=container, value=value)
         # cls._json_update(field_value)
         if field_value.field_type.ftype == 'sample':
             for fv in fvs:
-                fv.sample = field_value.sample
+                fv.set_value(sample=sample)
                 # cls._json_update(fv)
 
     @staticmethod
