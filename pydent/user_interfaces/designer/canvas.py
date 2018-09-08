@@ -37,7 +37,7 @@ def verify_plan_models(fxn):
 class PlanOptimizer(object):
 
     @staticmethod
-    def op_to_hash(op):
+    def _op_to_hash(op):
         ot_id = op.operation_type.id
 
         ftids = []
@@ -60,16 +60,15 @@ class PlanOptimizer(object):
         return "{}_{}".format(ot_id, "#".join(ftids))
 
     @classmethod
-    def group_by_hashes(cls, ops):
+    def _group_ops_by_hashes(cls, ops):
         hashgroup = {}
         for op in ops:
-            h = cls.op_to_hash(op)
+            h = cls._op_to_hash(op)
             hashgroup.setdefault(h, [])
             hashgroup[h].append(op)
         return hashgroup
 
-    @classmethod
-    def optimize_plan(cls, canvas, operations=None):
+    def optimize_plan(self, operations=None):
         """
         Optimizes a plan by removing redundent operations.
         :param canvas:
@@ -77,8 +76,8 @@ class PlanOptimizer(object):
         """
         print("Optimizing Plan")
         if operations is None:
-            operations = [op for op in canvas.plan.operations if op.status == 'planning']
-        groups = {k: v for k, v in cls.group_by_hashes(operations).items() if len(v) > 1}
+            operations = [op for op in self.plan.operations if op.status == 'planning']
+        groups = {k: v for k, v in self._group_ops_by_hashes(operations).items() if len(v) > 1}
 
         num_inputs_rewired = 0
         num_outputs_rewired = 0
@@ -87,30 +86,30 @@ class PlanOptimizer(object):
             op = gops[0]
             other_ops = gops[1:]
             for other_op in other_ops:
-                connected_ops = canvas.get_op_successors(other_op)
-                connected_ops += canvas.get_op_predecessors(other_op)
+                connected_ops = self.get_op_successors(other_op)
+                connected_ops += self.get_op_predecessors(other_op)
                 if all([_op.status == "planning" for _op in connected_ops]):
                     # only optimize if ALL connected operations are in planning status
                     for i in other_op.inputs:
-                        in_wires = canvas.get_incoming_wires(i)
+                        in_wires = self.get_incoming_wires(i)
                         for w in in_wires:
                             if w.source.operation.status == "planning":
-                                canvas.add_wire(w.source, op.input(i.name))
-                                canvas.remove_wire(w.source, w.destination)
+                                self.add_wire(w.source, op.input(i.name))
+                                self.remove_wire(w.source, w.destination)
                                 num_inputs_rewired += 1
                     for o in other_op.outputs:
-                        out_wires = canvas.get_outgoing_wires(o)
+                        out_wires = self.get_outgoing_wires(o)
                         for w in out_wires:
-                            if w.destination.status == "planning":
-                                canvas.add_wire(op.output(o.name), w.destination)
-                                canvas.remove_wire(w.source, w.destination)
+                            if w.destination.operation.status == "planning":
+                                self.add_wire(op.output(o.name), w.destination)
+                                self.remove_wire(w.source, w.destination)
                                 num_outputs_rewired += 1
                     ops_to_remove.append(other_op)
         for op in ops_to_remove:
-            canvas.plan.operations.remove(op)
+            self.plan.operations.remove(op)
         print("\t{} operations removed".format(len(ops_to_remove)))
-        print("\t{} number of inputs removed".format(num_inputs_rewired))
-        print("\t{} number of outputs removed".format(num_outputs_rewired))
+        print("\t{} input wires re-wired".format(num_inputs_rewired))
+        print("\t{} output wires re-wired".format(num_outputs_rewired))
 
 
 class Canvas(PlanOptimizer):
@@ -273,13 +272,19 @@ class Canvas(PlanOptimizer):
         outputs = cls._resolve_source_to_outputs(source)
 
         matching_afts = []
+        matching_inputs = []
+        matching_outputs = []
         for output in outputs:
             opart = output.field_type.part == True
             for input in inputs:
-                ipart = input.field_type.part == True
-                if ipart == opart:
-                    matching_afts += cls._find_matching_afts(output, input)
-        return matching_afts
+                io_matching_afts = cls._find_matching_afts(output, input)
+                if len(io_matching_afts) > 0:
+                    if input not in matching_inputs:
+                        matching_inputs.append(input)
+                    if output not in matching_outputs:
+                        matching_outputs.append(output)
+                matching_afts += io_matching_afts
+        return matching_afts, matching_inputs, matching_outputs
 
     @staticmethod
     def _find_matching_afts(output, input):
@@ -287,10 +292,17 @@ class Canvas(PlanOptimizer):
         afts = []
         output_afts = output.field_type.allowable_field_types
         input_afts = input.field_type.allowable_field_types
+        input_part = input.field_type.part == True
+        output_part = input.field_type.part == True
+        if input_part != output_part:
+            return []
         for input_aft in input_afts:
             for output_aft in output_afts:
-                if input_aft.sample_type_id == output_aft.sample_type_id and \
-                        input_aft.object_type_id == output_aft.object_type_id:
+                out_object_type_id = output_aft.object_type_id
+                in_object_type_id = input_aft.object_type_id
+                out_sample_type_id = output_aft.sample_type_id
+                in_sample_type_id = input_aft.sample_type_id
+                if out_object_type_id == in_object_type_id and out_sample_type_id == in_sample_type_id:
                     afts.append((output_aft, input_aft))
         return afts
 
@@ -326,12 +338,16 @@ class Canvas(PlanOptimizer):
 
     @verify_plan_models
     def quick_wire(self, source, destination, strict=True):
-        afts = self._collect_matching_afts(source, destination)
+        afts, minputs, moutputs = self._collect_matching_afts(source, destination)
 
-        if len(afts) > 1 and strict:
+        # TODO: only if matching FVs are ambiquous raise Exception
+        if (len(minputs) > 1 or len(moutputs) > 1) and strict:
             raise CanvasException(
-                "Cannot quick wire. Ambiguous wiring between {} and {}".format(source.operation_type.name,
-                                        destination.operation_type.name))
+                "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}".format(
+                    ', '.join([fv.name for fv in minputs]),
+                    minputs[0].operation.operation_type.name,
+                    ', '.join([fv.name for fv in moutputs]),
+                    moutputs[0].operation.operation_type.name))
         elif len(afts) == 0:
             raise CanvasException(
                 "Cannot quick wire. No available field types found between {} and {}".format(source.operation_type.name,
@@ -355,7 +371,7 @@ class Canvas(PlanOptimizer):
         samples = [src_fv.sample, dest_fv.sample]
         samples = [s for s in samples if s is not None]
 
-        afts = self._collect_matching_afts(src_fv, dest_fv)
+        afts = self._collect_matching_afts(src_fv, dest_fv)[0]
 
         if len(afts) == 0:
             raise CanvasException("Cannot wire \"{}\" to \"{}\". No allowable field types match."

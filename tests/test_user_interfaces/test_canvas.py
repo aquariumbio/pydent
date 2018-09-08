@@ -93,13 +93,19 @@ def test_canvas_add_op(session):
     p = session.Plan.find(canvas.plan.id)
     pass
 
-def test_canvas_chain(session):
+
+def test_canvas_quick_create_chain(session):
 
     canvas = designer.Canvas(session)
 
     canvas.quick_create_chain("Yeast Transformation", "Check Yeast Plate", "Yeast Overnight Suspension")
     assert len(canvas.plan.operations) == 3
     assert len(canvas.plan.wires) == 2
+
+
+def test_chain_run_gel(session):
+    canvas = designer.Canvas(session)
+    canvas.quick_create_chain("Make PCR Fragment", "Run Gel", category="Cloning")
 
 
 def test_quick_chain_to_existing_operation(session):
