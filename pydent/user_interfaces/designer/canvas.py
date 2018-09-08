@@ -93,8 +93,6 @@ class Canvas(object):
         self._check_for_fv(fv1)
         self._check_for_fv(fv2)
         wire = self.get_wire(fv1, fv2)
-        if wire.id is not None:
-            wire.delete()
         self.plan.wires.remove(wire)
 
     def get_outgoing_wires(self, fv):
@@ -201,7 +199,7 @@ class Canvas(object):
             op1 = op2
         return ops
 
-    def quick_wire_ops(self, op1, op2, fvnames=None):
+    def quick_wire_ops(self, op1, op2, fvnames=None, strict=True):
         self._check_for_op(op1)
         self._check_for_op(op2)
         if fvnames is not None:
@@ -209,6 +207,11 @@ class Canvas(object):
                 return self.add_wire(op1.output(fvnames[0]), op2.input(fvnames[1]))
             else:
                 raise Exception("Field Value names must be a list or tupe of length 2.")
+        afts = self._find_matching_afts_for_ops(op1, op2)
+
+        if len(afts) > 1 and strict:
+            raise Exception("Cannot quick wire. Ambiguous wiring between {} and {}".format(op1.operation_type.name,
+                                                                                           op2.operation_type.name))
 
         for aft1, aft2 in self._find_matching_afts_for_ops(op1, op2):
             o = op1.output(aft1.field_type.name)
@@ -254,7 +257,6 @@ class Canvas(object):
             routing_fvs.append(fv)
             routing_dict[fv.field_type.routing] = routing_fvs
         return routing_dict
-
 
     def set_field_value(self, field_value, sample=None, item=None, container=None, value=None):
         self._check_for_fv(field_value)
@@ -404,3 +406,65 @@ class Canvas(object):
 #
 # def remove_wire(fv1, fv2):
 #     pass
+
+
+
+
+# OPTIMIZER
+asdfaldsjfl;ajds
+from uuid import uuid4
+def op_to_hash(op):
+    ot_id = op.operation_type.id
+
+    ftids = []
+
+    for ft in op.operation_type.field_types:
+        if ft.ftype == "sample":
+            fv = op.field_value(ft.name, ft.role)
+
+            # none valued Samples are never equivaent
+            sid = str(uuid4())
+            if fv.sample is not None:
+                sid = "{}{}".format(fv.role, fv.sample.id)
+
+            itemid = "none"
+            if fv.item is not None:
+                itemid = "{}{}".format(fv.role, fv.item.id)
+
+            ftids.append("{}:{}:{}:{}".format(ft.name, ft.role, sid, itemid))
+    ftids = sorted(ftids)
+    return "{}_{}".format(ot_id, "#".join(ftids))
+
+
+def group_by_hashes(ops):
+    hashgroup = {}
+    for op in ops:
+        h = op_to_hash(op)
+        hashgroup.setdefault(h, [])
+        hashgroup[h].append(op)
+    return hashgroup
+
+
+def optimize_plan(canvas):
+    ops = [op for op in canvas.plan.operations if op.status == 'planning']
+    groups = {k: v for k, v in group_by_hashes(ops).items() if len(v) > 1}
+
+    print('found {} groups'.format(len(groups)))
+    print(groups)
+
+    for k, gops in groups.items():
+        op = gops[0]
+        print(op.operation_type.name)
+        other_ops = gops[1:]
+        for other_op in other_ops:
+            for i in other_op.inputs:
+                for w in canvas.get_incoming_wires(i):
+                    canvas.add_wire(w.source, op.input(i.name))
+                    canvas.remove_wire(w.source, w.destination)
+                    print("deleted wire to {}".format(i.name))
+            for o in other_op.outputs:
+                for w in canvas.get_outgoing_wires(o):
+                    canvas.add_wire(op.output(o.name), w.destination)
+                    print("rewiring wire from {}".format(o.name))
+                    canvas.remove_wire(w.source, w.destination)
+            canvas.plan.operations.remove(other_op)
