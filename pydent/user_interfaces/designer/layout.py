@@ -150,10 +150,18 @@ class CanvasLayout(object):
             depths = nx.single_source_shortest_path_length(self.G, root)
             for n, d in depths.items():
                 max_depth[n] = max(max_depth.get(n, d), d)
+
+        # push roots 'up' so they are not stuck on layer one
+        for root in self.roots():
+            successors = list(self.successors(root))
+            if len(successors) > 0:
+                min_depth = min([max_depth[s] for s in successors])
+                max_depth[root] = min_depth - 1
+
         by_depth = OrderedDict()
-        for k, v in max_depth.items():
-            by_depth.setdefault(v, [])
-            by_depth[v].append(k)
+        for node, depth in max_depth.items():
+            by_depth.setdefault(depth, [])
+            by_depth[depth].append(node)
         for depth in sorted(by_depth):
             op_ids = by_depth[depth]
             layer = self.subgraph(op_ids)

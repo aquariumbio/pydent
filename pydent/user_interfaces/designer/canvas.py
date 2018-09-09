@@ -325,7 +325,7 @@ class Canvas(PlanOptimizer):
         if isinstance(op, tuple):
             op = self.create_operation_by_name(op[0], category=op[1])
         if isinstance(op, str):
-            print("Creating operation \"{}\"".format(op))
+            # print("Creating operation \"{}\"".format(op))
             op = self.create_operation_by_name(op, category=category)
         return op
 
