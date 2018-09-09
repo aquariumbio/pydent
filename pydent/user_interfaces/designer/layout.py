@@ -164,13 +164,27 @@ class CanvasLayout(object):
             by_depth[depth].append(node)
         for depth in sorted(by_depth):
             op_ids = by_depth[depth]
-            layer = self.subgraph(op_ids)
+
+            # sort by predecessor_layout
+            pred_avg_x = []
+            x = 0
+            for op_id in op_ids:
+                preds = list(self.predecessors(op_id))
+                if len(preds) > 0:
+                    x, _ = self.subgraph(preds).midpoint()
+                    pred_avg_x.append((x,op_id))
+                else:
+                    pred_avg_x.append((x+1, op_id))
+            sorted_op_ids = [op_id for _, op_id in sorted(pred_avg_x, key=lambda x: x[0])]
+
             x = _x
-            ops = sorted(layer.operations, key=lambda op: op.x)
+            # sorted_op_ids = sorted(op_ids)
+            ops = self.nodes_to_ops(sorted_op_ids)
             for op in ops:
                 op.x = x
                 op.y = y
                 x += delta_x
+            layer = self.subgraph(op_ids)
             pred_layout = self.predecessor_layout(layer)
             layer.align_x_midpoints(pred_layout)
             y += delta_y
