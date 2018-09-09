@@ -137,12 +137,20 @@ class Canvas(PlanOptimizer):
     def url(self):
         return self.session.url + "plans?plan_id={}".format(self.plan.id)
 
+    def _pull_annotations_from_layout(self):
+        self.plan.layout['text_boxes'] = self.layout.annotations
+
+    def _update_from_layout(self):
+        self._pull_annotations_from_layout()
+
     def create(self):
         """Create the plan on Aquarium"""
+        self._update_from_layout()
         self.plan.create()
 
     def save(self):
         """Save the plan on Aquarium"""
+        self._update_from_layout()
         self.plan.save()
         return self.plan
 
@@ -461,6 +469,28 @@ class Canvas(PlanOptimizer):
         canvas = self.__class__()
         canvas.plan = self.plan.replan()
         return canvas
+
+    def annotate(self, markdown, x, y, width, height):
+        annotation = {
+            "anchor": {"x": width, "y": height},
+            "x": x,
+            "y": y,
+            "markdown": markdown
+        }
+        self.plan.layout.setdefault('text_boxes', [])
+        if annotation not in self.plan.layout['text_boxes']:
+            self.plan.layout['text_boxes'].append(annotation)
+
+    def annotate_above_layout(self, markdown, width, height, layout=None):
+        if layout is None:
+            layout = self.layout
+        x, y = layout.midpoint()
+        x += layout.BOX_WIDTH/2
+        # x -= width/2
+        y -= height
+        y -= layout.BOX_DELTAY
+        self.annotate(markdown, x, y, width, height)
+
 
     # @staticmethod
     # def _id_getter(model):
