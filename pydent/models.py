@@ -362,11 +362,11 @@ class FieldType(ModelBase, FieldMixin):
                 for smple_type, obj_type in aft_stype_and_objtype:
                     self.create_allowable_field_type(smple_type, obj_type)
 
-    def load_choice(self, value):
-        return value.split(',')
-
-    def get_choice(self, obj):
-        return ','.join(obj.choices)
+    def get_choices(self):
+        if self.choices == '':
+            return None
+        if self.choices is not None:
+            return self.choices.split(',')
 
     @property
     def is_parameter(self):
@@ -556,11 +556,11 @@ class FieldValue(ModelBase, FieldMixin):
                 "Item {} is not in container {}".format(
                     item.id, str(container)))
         if value is not None:
-            if self.field_type.choices is not None:
-                choices = self.field_type.choices.split(',')
+            choices = self.field_type.get_choices()
+            if choices is not None:
                 if value not in choices and str(value) not in choices:
                     raise AquariumModelError("Value \'{}\' not in list of field "
-                                             "type choices \'{}\'".format(value, choices))
+                                                 "type choices \'{}\'".format(value, choices))
             self.value = value
         if item is not None:
             self.item = item
@@ -1471,7 +1471,7 @@ class Sample(ModelBase):
         self.description = description
         super().__init__(**vars(self))
         if properties is not None:
-            self.initialize_field_values(properties, self.sample_type)
+            self.update_properties(properties)
 
     @property
     def identifier(self):
@@ -1484,11 +1484,7 @@ class Sample(ModelBase):
                 return field_value
         return None
 
-    @property
-    def field_names(self):
-        return [fv.name for fv in self.field_values]
-
-    def _fv_dict(self, expected_keys):
+    def _prop_dict(self, expected_keys):
         d = {k: None for k in expected_keys}
         fvs = self.field_values
         if fvs is not None:
@@ -1510,30 +1506,40 @@ class Sample(ModelBase):
                         d[fv.name] = [d[fv.name]] + [v]
         return d
 
+    def _fv_dict(self):
+        d = {}
+        if self.field_values is not None:
+            d = {fv.name: fv for fv in self.field_values}
+        fv_dict = {}
+        for ft in self.sample_type.field_types:
+            fv_dict[ft.name] = d.get(ft.name, None)
+        return fv_dict
+
     def empty_properties(self):
         return {ft.name: None for ft in self.sample_type.field_types}
 
-    def initialize_field_values(self, prop_dict, sample_type):
-        fts = sample_type.field_types
-        ft_names = [ft.name for ft in fts]
-        ft_dict = dict(zip(ft_names, fts))
-        fvs = []
-        for prop, val in prop_dict.items():
-            if val is not None:
-                ft = ft_dict[prop]
-                fv = ft.initialize_field_value()
-                if ft.ftype == 'sample':
-                    fv.set_value(sample=val)
-                else:
-                    fv.set_value(value=val)
-                fvs.append(fv)
-        self.field_values = fvs
-        return fvs
+    @staticmethod
+    def _set_field_value(field_value, value):
+        if field_value.field_type.ftype == 'sample':
+            field_value.set_value(sample=value)
+        else:
+            field_value.set_value(value=value)
+
+    def update_properties(self, prop_dict):
+        for k, v in prop_dict.items():
+            fv = self._fv_dict()[k]
+            ft_dict = {ft.name: ft for ft in self.sample_type.field_types}
+            if fv is None:
+                fv = ft_dict[k].initialize_field_value()
+                if self.field_values is None:
+                    self.field_values = []
+                self.field_values.append(fv)
+            self._set_field_value(fv, v)
 
     @property
     def properties(self):
         fv_keys = [ft.name for ft in self.sample_type.field_types]
-        return self._fv_dict(fv_keys)
+        return self._prop_dict(fv_keys)
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires

@@ -39,8 +39,6 @@ class CanvasLayout(object):
         for op in plan.operations:
             layout._add_operation(op)
         layout.G.add_edges_from(edges)
-        if 'text_boxes' in plan.layout:
-            layout.annotations = plan.layout['text_boxes']
         return layout
 
     @staticmethod

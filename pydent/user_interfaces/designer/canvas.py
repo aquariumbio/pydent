@@ -137,20 +137,12 @@ class Canvas(PlanOptimizer):
     def url(self):
         return self.session.url + "plans?plan_id={}".format(self.plan.id)
 
-    def _pull_annotations_from_layout(self):
-        self.plan.layout['text_boxes'] = self.layout.annotations
-
-    def _update_from_layout(self):
-        self._pull_annotations_from_layout()
-
     def create(self):
         """Create the plan on Aquarium"""
-        self._update_from_layout()
         self.plan.create()
 
     def save(self):
         """Save the plan on Aquarium"""
-        self._update_from_layout()
         self.plan.save()
         return self.plan
 
