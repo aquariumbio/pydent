@@ -359,7 +359,7 @@ class ModelInterface(SessionInterface):
         try:
             response = self.aqhttp.get(path)
         except TridentRequestError as err:
-            if err.response.status_code == 404:
+            if err.strerror.status_code == 404:
                 return None
             raise err
         return self.load(response)

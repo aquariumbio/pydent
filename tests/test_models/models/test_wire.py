@@ -13,5 +13,6 @@ def test_constructor():
             "from": fvin.dump(),
             "to": fvout.dump(),
             'rid': w.rid,
-            "active": True
+            "active": True,
+            'id': None
     }
