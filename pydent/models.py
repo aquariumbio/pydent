@@ -126,7 +126,7 @@ class HasCodeMixin:
             return codes[-1]
 
     def get_code_callback(self, model_name, name):
-        """
+        self.code_ = """
         Callback for returning code members for OperationType or Library
 
         :param model_name: the model_name, expected "Code"
@@ -1358,7 +1358,10 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
             'wires': {"source", "destination"}
         })
         # del json_data['layout']
-        json_data['layout'] = json.loads(json_data['layout'])
+        if json_data['layout'] is not None:
+            json_data['layout'] = json.loads(json_data['layout'])
+        else:
+            del json_data['layout']
 
         for wire in self.wires:
             wire.dump()

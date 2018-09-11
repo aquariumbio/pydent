@@ -58,14 +58,17 @@ class AqSession(object):
 
         # initialize model interfaces
         for model_name in allmodels:
-            # get model class f(e.g. "Sample")
-            model = ModelRegistry.get_model(model_name)
+            self._register_interface(model_name)
 
-            # get model interface from model class
-            model_interface = model.interface(self)
+    def _register_interface(self, model_name):
+        # get model class f(e.g. "Sample")
+        model = ModelRegistry.get_model(model_name)
 
-            # set interface to session attribute (e.g. session.Sample calls Sample model interface)
-            setattr(self, model_name, model_interface)
+        # get model interface from model class
+        model_interface = model.interface(self)
+
+        # set interface to session attribute (e.g. session.Sample calls Sample model interface)
+        setattr(self, model_name, model_interface)
 
     def set_timeout(self, timeout_in_seconds):
         """Sets the request timeout."""

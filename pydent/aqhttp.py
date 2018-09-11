@@ -15,7 +15,7 @@ import re
 
 import requests
 
-from pydent.exceptions import (TridentRequestError, TridentLoginError,
+from pydent.exceptions import (TridentRequestError, TridentLoginError, AquariumError,
                                TridentTimeoutError, TridentJSONDataIncomplete)
 from pydent.utils import url_build
 

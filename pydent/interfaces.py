@@ -329,7 +329,7 @@ class ModelInterface(SessionInterface):
                 json_data=data_dict,
             )
         except TridentRequestError as err:
-            if err.response.status_code == 422:
+            if err.strerror.status_code == 422:
                 return None
             raise err
 
