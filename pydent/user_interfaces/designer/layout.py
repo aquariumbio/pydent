@@ -1,3 +1,7 @@
+"""
+CanvasLayout
+"""
+
 import networkx as nx
 from collections import OrderedDict
 

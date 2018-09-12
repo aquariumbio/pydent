@@ -113,6 +113,13 @@ Runs api tests contained in the ``docsrc``.
 
 Deploys release to PyPi test server
 
+Continuous Integration
+----------------------
+
+Continuous integration is maintained by CircleCI. Tagging a new release will initiate
+CircleCI to deploy onto PyPI. Be sure to increment the version number in pydent/__version__.py
+to match the release version. All version tags should have a 'x.y.z' format
+(NOT 'vX.Y.Z'; no 'v' prefix).
 
 Documentation
 -------------

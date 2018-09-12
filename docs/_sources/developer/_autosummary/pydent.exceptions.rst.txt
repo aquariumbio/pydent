@@ -17,6 +17,7 @@ pydent.exceptions
 
    .. autosummary::
    
+      AquariumError
       AquariumModelError
       TridentJSONDataIncomplete
       TridentLoginError

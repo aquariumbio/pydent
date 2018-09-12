@@ -6,10 +6,10 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.utils.plan_validator &#8212; Trident 0.0.28 documentation</title>
+    <title>pydent.utils.plan_validator &#8212; Trident 0.0.29-development documentation</title>
     <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -25,14 +25,15 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.0.28 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.0.29-development documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../../index.html">
-        <h1>Trident (V0.0.28)</h1>
+        <h1>Trident</h1>
+        <h2>0.0.29-development</h2>
     </a>
 </p>
 
@@ -40,7 +41,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.28.
+    for version <b>0.0.29-development</b>.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -151,10 +152,11 @@
     <span class="k">def</span> <span class="nf">mark_leaves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;mark all inputs as either a leaf or not&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                <span class="n">field_value</span><span class="o">.</span><span class="n">leaf</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
                 <span class="n">field_value</span><span class="o">.</span><span class="n">leaf</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-                <span class="n">field_value</span><span class="o">.</span><span class="n">leaf</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_wires</span><span class="p">:</span>
             <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">leaf</span> <span class="o">=</span> <span class="kc">False</span>
@@ -190,10 +192,17 @@
         <span class="sd">&quot;&quot;&quot;make sure all wires have have consistent endpoints&quot;&quot;&quot;</span>
         <span class="n">valid</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_wires</span><span class="p">:</span>
-            <span class="n">stid1</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">sample_type_id</span>
-            <span class="n">stid2</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">sample_type_id</span>
-            <span class="n">otid1</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">object_type_id</span>
-            <span class="n">otid2</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">object_type_id</span>
+            <span class="n">aft1</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">allowable_field_type</span>
+            <span class="n">aft2</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">allowable_field_type</span>
+            <span class="k">if</span> <span class="n">aft1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">aft2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">stid1</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">sample_type_id</span>
+                <span class="n">stid2</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">sample_type_id</span>
+                <span class="n">otid1</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">object_type_id</span>
+                <span class="n">otid2</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="o">.</span><span class="n">object_type_id</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
             <span class="k">if</span> <span class="n">stid1</span> <span class="o">!=</span> <span class="n">stid2</span> <span class="ow">or</span> <span class="n">otid1</span> <span class="o">!=</span> <span class="n">otid2</span><span class="p">:</span>
                 <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">valid</span>
@@ -213,13 +222,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.0.28 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.0.29-development documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
     </div>
   </body>
 </html>

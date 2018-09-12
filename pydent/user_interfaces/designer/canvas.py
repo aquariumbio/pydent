@@ -1,3 +1,7 @@
+"""
+Canvas
+"""
+
 from pydent.user_interfaces.designer.layout import CanvasLayout
 from pydent.user_interfaces.designer.utils import arr_to_pairs
 from uuid import uuid4

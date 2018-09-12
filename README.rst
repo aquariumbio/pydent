@@ -1,7 +1,8 @@
 Trident: Aquarium API Scripting
 ===============================
 
-|CircleCI| |PyPI version|
+`CircleCI <https://circleci.com/gh/klavinslab/trident/tree/master>`__
+`PyPI version <https://badge.fury.io/py/pydent>`__
 
 Trident is the python API scripting for Aquarium.
 
@@ -101,8 +102,3 @@ Available nested relationships
 
    primer_type = mysession.SampleType.find(1)
    print(primer_type.relationships)
-
-.. |CircleCI| image:: https://circleci.com/gh/klavinslab/trident/tree/master.svg?style=svg&circle-token=88677c59698d55a127a080cba9ca025cf8072f6c
-   :target: https://circleci.com/gh/klavinslab/trident/tree/master
-.. |PyPI version| image:: https://badge.fury.io/py/pydent.svg
-   :target: https://badge.fury.io/py/pydent

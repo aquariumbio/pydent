@@ -6,10 +6,10 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.models &#8212; Trident 0.0.28 documentation</title>
+    <title>pydent.models &#8212; Trident 0.0.29-development documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -33,14 +33,15 @@
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.28 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.29-development documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.28)</h1>
+        <h1>Trident</h1>
+        <h2>0.0.29-development</h2>
     </a>
 </p>
 
@@ -48,7 +49,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.28.
+    for version <b>0.0.29-development</b>.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -209,7 +210,7 @@ SampleType:</p>
 <tr class="row-even"><td><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plan</span></code></a>([name,&nbsp;status,&nbsp;source,&nbsp;destination])</td>
 <td>A Plan model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PlanAssociation" title="pydent.models.PlanAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PlanAssociation" title="pydent.models.PlanAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></a>([plan_id,&nbsp;operation_id])</td>
 <td>A PlanAssociation model</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a>([name,&nbsp;project,&nbsp;description,&nbsp;…])</td>
@@ -221,10 +222,10 @@ SampleType:</p>
 <tr class="row-even"><td><a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></a>([job_id,&nbsp;file])</td>
 <td>An Upload model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a>()</td>
 <td>A User model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.UserBudgetAssociation" title="pydent.models.UserBudgetAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UserBudgetAssociation</span></code></a>(**model_args)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.UserBudgetAssociation" title="pydent.models.UserBudgetAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UserBudgetAssociation</span></code></a>()</td>
 <td>An association model between a User and a Budget</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Wire" title="pydent.models.Wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wire</span></code></a>([source,&nbsp;destination])</td>
@@ -446,6 +447,7 @@ dictionary</p>
 <dt id="pydent.models.Account.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -464,18 +466,6 @@ dictionary</p>
 <dt id="pydent.models.Account.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Account.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Account.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -739,6 +729,7 @@ dictionary</p>
 <dt id="pydent.models.AllowableFieldType.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -757,18 +748,6 @@ dictionary</p>
 <dt id="pydent.models.AllowableFieldType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.AllowableFieldType.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.AllowableFieldType.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1032,6 +1011,7 @@ dictionary</p>
 <dt id="pydent.models.Budget.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -1050,18 +1030,6 @@ dictionary</p>
 <dt id="pydent.models.Budget.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Budget.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Budget.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1325,6 +1293,7 @@ dictionary</p>
 <dt id="pydent.models.Code.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -1343,18 +1312,6 @@ dictionary</p>
 <dt id="pydent.models.Code.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Code.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Code.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1676,6 +1633,7 @@ dictionary</p>
 <dt id="pydent.models.Collection.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -1694,18 +1652,6 @@ dictionary</p>
 <dt id="pydent.models.Collection.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Collection.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Collection.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1969,6 +1915,7 @@ dictionary</p>
 <dt id="pydent.models.DataAssociation.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -1987,18 +1934,6 @@ dictionary</p>
 <dt id="pydent.models.DataAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.DataAssociation.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.DataAssociation.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2288,6 +2223,7 @@ dictionary</p>
 <dt id="pydent.models.FieldType.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -2306,18 +2242,6 @@ dictionary</p>
 <dt id="pydent.models.FieldType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.FieldType.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.FieldType.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2621,6 +2545,7 @@ dictionary</p>
 <dt id="pydent.models.FieldValue.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -2645,18 +2570,6 @@ dictionary</p>
 <dt id="pydent.models.FieldValue.outgoing_wires">
 <code class="descname">outgoing_wires</code><a class="headerlink" href="#pydent.models.FieldValue.outgoing_wires" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias of ‘wires_as_source’</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.FieldValue.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.FieldValue.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2926,6 +2839,7 @@ dictionary</p>
 <dt id="pydent.models.Group.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -2944,18 +2858,6 @@ dictionary</p>
 <dt id="pydent.models.Group.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Group.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Group.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3219,6 +3121,7 @@ dictionary</p>
 <dt id="pydent.models.Invoice.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -3237,18 +3140,6 @@ dictionary</p>
 <dt id="pydent.models.Invoice.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Invoice.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Invoice.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3571,6 +3462,7 @@ dictionary</p>
 <dt id="pydent.models.Item.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -3596,18 +3488,6 @@ this Item to be connected to a session.</p>
 <dt id="pydent.models.Item.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Item.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Item.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3877,6 +3757,7 @@ dictionary</p>
 <dt id="pydent.models.Job.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -3895,18 +3776,6 @@ dictionary</p>
 <dt id="pydent.models.Job.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Job.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Job.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4170,6 +4039,7 @@ dictionary</p>
 <dt id="pydent.models.JobAssociation.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -4188,18 +4058,6 @@ dictionary</p>
 <dt id="pydent.models.JobAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.JobAssociation.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.JobAssociation.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4465,32 +4323,6 @@ to <code class="xref py py-class docutils literal notranslate"><span class="pre"
 models in model relationships.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydent.models.Library.get_code_callback">
-<code class="descname">get_code_callback</code><span class="sig-paren">(</span><em>model_name</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.get_code_callback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback for returning code members for OperationType or Library</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>model_name</strong> (<em>str</em>) – the model_name, expected “Code”</li>
-<li><strong>name</strong> (<em>str</em>) – accessor name for the code.
-“source” for Library or “protocol”, “precondition”, “cost_model”,
-or “documentation” for OperationType</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the code model</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.Code" title="pydent.models.Code">Code</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="classmethod">
 <dt id="pydent.models.Library.get_relationships">
 <em class="property">classmethod </em><code class="descname">get_relationships</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.get_relationships" title="Permalink to this definition">¶</a></dt>
@@ -4509,6 +4341,7 @@ dictionary</p>
 <dt id="pydent.models.Library.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -4527,18 +4360,6 @@ dictionary</p>
 <dt id="pydent.models.Library.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Library.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Library.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4801,6 +4622,7 @@ dictionary</p>
 <dt id="pydent.models.Membership.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -4819,18 +4641,6 @@ dictionary</p>
 <dt id="pydent.models.Membership.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Membership.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Membership.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5094,6 +4904,7 @@ dictionary</p>
 <dt id="pydent.models.ObjectType.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -5112,18 +4923,6 @@ dictionary</p>
 <dt id="pydent.models.ObjectType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.ObjectType.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.ObjectType.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5571,6 +5370,7 @@ parent <a class="reference internal" href="#pydent.models.Operation" title="pyde
 <dt id="pydent.models.Operation.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -5601,18 +5401,6 @@ parent <a class="reference internal" href="#pydent.models.Operation" title="pyde
 <dt id="pydent.models.Operation.output_array">
 <code class="descname">output_array</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.output_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.output_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of all output <code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValues</span></code></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Operation.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Operation.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6058,32 +5846,6 @@ to <code class="xref py py-class docutils literal notranslate"><span class="pre"
 models in model relationships.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydent.models.OperationType.get_code_callback">
-<code class="descname">get_code_callback</code><span class="sig-paren">(</span><em>model_name</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.get_code_callback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback for returning code members for OperationType or Library</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>model_name</strong> (<em>str</em>) – the model_name, expected “Code”</li>
-<li><strong>name</strong> (<em>str</em>) – accessor name for the code.
-“source” for Library or “protocol”, “precondition”, “cost_model”,
-or “documentation” for OperationType</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the code model</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.Code" title="pydent.models.Code">Code</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="classmethod">
 <dt id="pydent.models.OperationType.get_relationships">
 <em class="property">classmethod </em><code class="descname">get_relationships</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.get_relationships" title="Permalink to this definition">¶</a></dt>
@@ -6100,8 +5862,9 @@ dictionary</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.OperationType.interface">
-<em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.interface" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#OperationType.interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -6120,18 +5883,6 @@ dictionary</p>
 <dt id="pydent.models.OperationType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.OperationType.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.OperationType.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6568,8 +6319,8 @@ This is necessary before plan submission.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Plan.find">
-<em class="property">classmethod </em><code class="descname">find</code><span class="sig-paren">(</span><em>session</em>, <em>model_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.find" title="Permalink to this definition">¶</a></dt>
-<dd><p>Override find for plans, because generic method is too minimal.</p>
+<em class="property">classmethod </em><code class="descname">find</code><span class="sig-paren">(</span><em>session</em>, <em>model_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a model instance by its model_id</p>
 </dd></dl>
 
 <dl class="method">
@@ -6595,8 +6346,9 @@ dictionary</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Plan.interface">
-<em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.interface" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -6635,18 +6387,6 @@ dictionary</p>
 <dt id="pydent.models.Plan.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Plan.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Plan.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6787,7 +6527,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.PlanAssociation">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">PlanAssociation</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#PlanAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.PlanAssociation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">PlanAssociation</code><span class="sig-paren">(</span><em>plan_id=None</em>, <em>operation_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#PlanAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.PlanAssociation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A PlanAssociation model</p>
 <dl class="method">
@@ -6999,6 +6739,7 @@ dictionary</p>
 <dt id="pydent.models.PlanAssociation.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -7017,18 +6758,6 @@ dictionary</p>
 <dt id="pydent.models.PlanAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.PlanAssociation.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.PlanAssociation.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7313,6 +7042,7 @@ dictionary</p>
 <dt id="pydent.models.Sample.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -7331,18 +7061,6 @@ dictionary</p>
 <dt id="pydent.models.Sample.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Sample.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Sample.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7613,6 +7331,7 @@ dictionary</p>
 <dt id="pydent.models.SampleType.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -7631,18 +7350,6 @@ dictionary</p>
 <dt id="pydent.models.SampleType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.SampleType.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.SampleType.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -8022,6 +7729,7 @@ dictionary</p>
 <dt id="pydent.models.Upload.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -8040,18 +7748,6 @@ dictionary</p>
 <dt id="pydent.models.Upload.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Upload.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Upload.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -8103,7 +7799,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.User">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">User</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.User" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">User</code><a class="reference internal" href="../../_modules/pydent/models.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.User" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A User model</p>
 <dl class="method">
@@ -8315,6 +8011,7 @@ dictionary</p>
 <dt id="pydent.models.User.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -8333,18 +8030,6 @@ dictionary</p>
 <dt id="pydent.models.User.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.User.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.User.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -8396,7 +8081,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.UserBudgetAssociation">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">UserBudgetAssociation</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#UserBudgetAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.UserBudgetAssociation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">UserBudgetAssociation</code><a class="reference internal" href="../../_modules/pydent/models.html#UserBudgetAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.UserBudgetAssociation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>An association model between a User and a Budget</p>
 <dl class="method">
@@ -8608,6 +8293,7 @@ dictionary</p>
 <dt id="pydent.models.UserBudgetAssociation.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -8626,18 +8312,6 @@ dictionary</p>
 <dt id="pydent.models.UserBudgetAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.UserBudgetAssociation.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.UserBudgetAssociation.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -8901,6 +8575,7 @@ dictionary</p>
 <dt id="pydent.models.Wire.interface">
 <em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -8919,18 +8594,6 @@ dictionary</p>
 <dt id="pydent.models.Wire.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Wire.patch">
-<code class="descname">patch</code><span class="sig-paren">(</span><em>json_data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a patch request to self using json_data. Reload model instance with new data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Wire.patch_with_self">
-<code class="descname">patch_with_self</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.patch_with_self" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update changes to this model instance to Aquarium.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -9009,13 +8672,13 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.28 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.29-development documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
     </div>
   </body>
 </html>

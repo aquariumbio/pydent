@@ -144,6 +144,7 @@ Check out the table of contents below (and to the left).
    :maxdepth: 2
 
    user/installation
+   user/planning
    user/examples
    developer/api_reference
    developer/api_notes

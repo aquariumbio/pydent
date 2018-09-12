@@ -63,6 +63,7 @@ class AqHTTP(object):
         """An alias of aquarium_url"""
         return self.aquarium_url
 
+
     def _login(self, login, password):
         """
         Login to aquarium and saves header as a requests.Session()
