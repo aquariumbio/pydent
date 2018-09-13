@@ -46,7 +46,6 @@ class AqHTTP(object):
         """
         self.login = login
         self.aquarium_url = aquarium_url
-        self._requests_session = None
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
         self.request_history = {}
@@ -70,11 +69,23 @@ class AqHTTP(object):
         """
         Login to aquarium and saves header as a requests.Session()
         """
-        session_data = self.__class__.create_session_json(login, password)
-        res = None
+        session_data = self.create_session_json(login, password)
         try:
             res = requests.post(url_build(self.aquarium_url, "sessions.json"),
                                 json=session_data, timeout=self.timeout)
+
+            cookies = dict(res.cookies)
+            if not any(["remember_token" in k for k in cookies]):
+                raise TridentLoginError(
+                    "Authentication error. Remember token not found in login request."
+                    " Contact developers."
+                )
+
+            # fix remember token (for some outdated versions of Aquarium)
+            for c in dict(cookies):
+                if "remember_token" in c:
+                    cookies["remember_token"] = cookies[c]
+            self.cookies = cookies
         except requests.exceptions.MissingSchema as error:
             raise TridentLoginError(
                 "Aquairum URL {0} incorrectly formatted. {1}".format(
@@ -84,25 +95,6 @@ class AqHTTP(object):
                 "Aquarium took too long to respond during login. Make sure "
                 "the url {} is correct. Alternatively, use Session.set_timeout"
                 " to increase the request timeout.".format(self.aquarium_url))
-        headers = res.headers
-        if 'set-cookie' not in headers:
-            raise TridentLoginError(
-                "Could not find proper login header for Aquarium.")
-        headers = {"cookie": self.__class__.fix_remember_token(
-            res.headers["set-cookie"])}
-        self._requests_session = requests.Session()
-        self._requests_session.headers.update(headers)
-
-    @staticmethod
-    def fix_remember_token(header):
-        """ Fixes the Aquarium specific remember token """
-        parts = header.split(';')
-        rtok = ""
-        for part in parts:
-            cparts = part.split('=')
-            if re.match('remember_token', cparts[0]):
-                rtok = cparts[1]
-        return "remember_token=" + rtok + "; " + header
 
     def clear_history(self):
         """Clears the request history."""
@@ -157,11 +149,12 @@ class AqHTTP(object):
         if get_from_history_ok:
             result = self.request_history.get(key, None)
         if result is None:
-            result = self._requests_session.request(
+            result = requests.request(
                 method,
                 url_build(
                     self.aquarium_url, path),
                 timeout=timeout,
+                cookies=self.cookies,
                 **kwargs)
             self.request_history[key] = result
         return self._response_to_json(result)
