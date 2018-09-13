@@ -474,6 +474,8 @@ class Canvas(PlanOptimizer):
             "markdown": markdown
         }
         self.plan.layout.setdefault('text_boxes', [])
+        if self.plan.layout['text_boxes'] is None:
+            self.plan.layout['text_boxes'] = []
         if annotation not in self.plan.layout['text_boxes']:
             self.plan.layout['text_boxes'].append(annotation)
 
