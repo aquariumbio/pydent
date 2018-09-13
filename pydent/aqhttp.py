@@ -159,12 +159,15 @@ class AqHTTP(object):
             self.request_history[key] = result
         return self._response_to_json(result)
 
-    @staticmethod
-    def _response_to_json(result):
+    def _response_to_json(self, result):
         """
         Turns :class:`requests.Request` instance into a json.
         Raises TridentRequestError if an error occurs.
         """
+        if result.url == url_build(self.aquarium_url, "signin"):
+            msg = "There was an error with authenticating the request. Aquarium " + \
+            "re-routed to the sign-in page."
+            raise TridentRequestError(msg, result)
         try:
             result_json = result.json()
         except json.JSONDecodeError:
