@@ -389,7 +389,9 @@ class ModelInterface(SessionInterface):
                  "arguments": args,
                  "options": options}
         query.update(rest)
-        res = self._post_json(query)  # type: dict
+        res = self._post_json(query)
+        if res is None:
+            return []
         return res
 
     def all(self, rest=None, opts=None):

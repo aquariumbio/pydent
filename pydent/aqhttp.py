@@ -11,13 +11,13 @@ Users should only access these methods indirectly through a ``Session`` or
 """
 
 import json
-import re
 
 import requests
 
 from pydent.exceptions import (TridentRequestError, TridentLoginError, AquariumError,
                                TridentTimeoutError, TridentJSONDataIncomplete)
 from pydent.utils import url_build
+
 
 class AqHTTP(object):
     """
@@ -48,31 +48,34 @@ class AqHTTP(object):
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
 
-    @staticmethod
-    def create_session_json(login, password):
-        """Formats login information for aquarium"""
-        return {
-            "session": {
-                "login": login,
-                "password": password
-            }
-        }
-
     @property
     def url(self):
         """An alias of aquarium_url"""
         return self.aquarium_url
 
+    @staticmethod
+    def create_session_json(login, password):
+        return {"session": {
+            "login": login,
+            "password": password
+        }}
 
     def _login(self, login, password):
         """
         Login to aquarium and saves header as a requests.Session()
         """
-        session_data = self.__class__.create_session_json(login, password)
-        res = None
+        session_data = self.create_session_json(login, password)
         try:
             res = requests.post(url_build(self.aquarium_url, "sessions.json"),
                                 json=session_data, timeout=self.timeout)
+
+            cookies = dict(res.cookies)
+
+            # fix remember token (for some outdated versions of Aquarium)
+            for c in dict(cookies):
+                if "remember_token" in c:
+                    cookies["remember_token"] = cookies[c]
+            self.cookies = cookies
         except requests.exceptions.MissingSchema as error:
             raise TridentLoginError(
                 "Aquairum URL {0} incorrectly formatted. {1}".format(
@@ -82,25 +85,35 @@ class AqHTTP(object):
                 "Aquarium took too long to respond during login. Make sure "
                 "the url {} is correct. Alternatively, use Session.set_timeout"
                 " to increase the request timeout.".format(self.aquarium_url))
-        headers = res.headers
-        if 'set-cookie' not in headers:
+        if not any(["remember_token" in k for k in dict(res.cookies)]):
             raise TridentLoginError(
-                "Could not find proper login header for Aquarium.")
-        headers = {"cookie": self.__class__.fix_remember_token(
-            res.headers["set-cookie"])}
-        self._requests_session = requests.Session()
-        self._requests_session.headers.update(headers)
+                "Authentication error. Remember token not found in login request."
+                " Contact developers."
+            )
 
-    @staticmethod
-    def fix_remember_token(header):
-        """ Fixes the Aquarium specific remember token """
-        parts = header.split(';')
-        rtok = ""
-        for part in parts:
-            cparts = part.split('=')
-            if re.match('remember_token', cparts[0]):
-                rtok = cparts[1]
-        return "remember_token=" + rtok + "; " + header
+        # if not any(["remember_token" in k for k in dict(self.cookies).values()]):
+        #     raise TridentLoginError(
+        #         "Authentication error. Remember token not found in login request."
+        #     )
+        # headers = res.headers
+        # if 'set-cookie' not in headers:
+        #     raise TridentLoginError(
+        #         "Could not find proper login header for Aquarium.")
+        # headers = {"cookie": self.__class__.fix_remember_token(
+        #     res.headers["set-cookie"])}
+        # self._requests_session = requests.Session()
+        # self._requests_session.headers.update(headers)
+
+    # @staticmethod
+    # def fix_remember_token(header):
+    #     """ Fixes the Aquarium specific remember token """
+    #     parts = header.split(';')
+    #     rtok = ""
+    #     for part in parts:
+    #         cparts = part.split('=')
+    #         if re.match('remember_token', cparts[0]):
+    #             rtok = cparts[1]
+    #     return "remember_token=" + rtok + "; " + header
 
     @staticmethod
     def _serialize_request(url, method, body):
@@ -144,20 +157,27 @@ class AqHTTP(object):
         result = None
 
         if result is None:
-            result = self._requests_session.request(
+            result = requests.request(
                 method,
                 url_build(
                     self.aquarium_url, path),
                 timeout=timeout,
+                cookies=self.cookies,
                 **kwargs)
+
         return self._response_to_json(result)
 
-    @staticmethod
-    def _response_to_json(result):
+    def _response_to_json(self, result):
         """
         Turns :class:`requests.Request` instance into a json.
         Raises TridentRequestError if an error occurs.
         """
+
+        if result.url == url_build(self.aquarium_url, "signin"):
+            msg = "There was an error with authenticating the request. Aquarium " + \
+            "re-routed to the sign-in page."
+            raise TridentRequestError(msg, result)
+
         try:
             result_json = result.json()
         except json.JSONDecodeError:
@@ -226,7 +246,7 @@ class AqHTTP(object):
         return self.request("put", path, json=json_data, timeout=timeout,
                             allow_none=allow_none, **kwargs)
 
-    def get(self, path, timeout=None,allow_none=True, **kwargs):
+    def get(self, path, timeout=None, allow_none=True, **kwargs):
         """
         Make a get request to the session
 

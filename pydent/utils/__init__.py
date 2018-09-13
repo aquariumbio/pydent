@@ -43,7 +43,8 @@ def filter_list(objlist, **kwargs):
 
 def url_build(*parts):
     """Join parts of a url into a string"""
-    return '/'.join(p.strip('/') for p in parts)
+    url = '/'.join(p.strip('/') for p in parts)
+    return url
 
 # def filter_dictionary(dictionary, filter_function):
 #     new_dict = {}
