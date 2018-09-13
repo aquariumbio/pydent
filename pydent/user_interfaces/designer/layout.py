@@ -139,6 +139,59 @@ class CanvasLayout(object):
             x += layout.width + cls.BOX_DELTAX
             y = layout.y
 
+    def to_grid(self, columns, axis=1, borderx=None, bordery=None):
+        """
+        Arrange layouts in a grid format.
+
+        :param columns: maximum number of columns (or rows when axis=0)
+        :type columns: int
+        :param axis: which axis to limi. Default: 1 (columns) or 0 (rows)
+        :type axis: int
+        :param borderx: (optional) separation between each cell in the grid
+        :type borderx: int
+        :param bordery: (optional) separation between each cell in the grid
+        :type bordery: int
+        :return: layout
+        :rtype: layout
+        """
+        layouts = self.layout.get_independent_layouts()
+        if len(layouts) == 1:
+            self.layout.move(100, 100)
+            return self.layout
+
+        # make grid assignments
+        assignments = []
+        c = 0
+        r = 0
+        for layout in layouts:
+            assignments.append((r, c, layout))
+            c += 1
+            if c >= columns:
+                r += 1
+                c = 0
+
+        # find cell height and width
+        if borderx is None:
+            borderx = self.layout.BOX_DELTAX * 2
+        if bordery is None:
+            bordery = self.layout.BOX_DELTAY * 2
+        grid_cell_height = 0
+        grid_cell_width = 0
+        for layout in layouts:
+            if layout.height > grid_cell_height:
+                grid_cell_height = layout.height
+            if layout.width > grid_cell_width:
+                grid_cell_width = layout.width
+        grid_cell_height += bordery
+        grid_cell_width += borderx
+
+        for r, c, layout in assignments:
+            if axis == 0:
+                r, c = c, r
+            layout.center(c * grid_cell_width, r * grid_cell_height)
+        self.layout.move(100, 100)
+        return self.layout
+
     # TODO: minimize crossings
     def _topo_sort_helper(self):
         """Attempt a rudimentary topological sort on the plan"""
@@ -434,6 +487,9 @@ class CanvasLayout(object):
     def move(self, x, y):
         self.x = x
         self.y = y
+
+    def center(self, x, y):
+        self.move(x - self.width/2, y - self.height/2)
 
     @property
     def width(self):
