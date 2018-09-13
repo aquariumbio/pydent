@@ -71,25 +71,29 @@ class AqHTTP(object):
 
             cookies = dict(res.cookies)
 
+            # Check for remember token
+            if not any(["remember_token" in k for k in dict(res.cookies)]):
+                raise TridentLoginError(
+                    "Authentication error. Remember token not found in login request."
+                    " Contact developers."
+                )
+
             # fix remember token (for some outdated versions of Aquarium)
             for c in dict(cookies):
                 if "remember_token" in c:
                     cookies["remember_token"] = cookies[c]
-            self.cookies = cookies
+            # TODO: do we remove the session cookie to handle asynchrounous requests?
+            self.cookies = dict(cookies)
         except requests.exceptions.MissingSchema as error:
             raise TridentLoginError(
                 "Aquairum URL {0} incorrectly formatted. {1}".format(
                     self.aquarium_url, error.args[0]))
         except requests.exceptions.ConnectTimeout:
             raise TridentTimeoutError(
-                "Aquarium took too long to respond during login. Make sure "
-                "the url {} is correct. Alternatively, use Session.set_timeout"
+                "Either Aquarium took too long to respond during login or you internet"
+                " connection is slow. Make sure the url {} is correct. Alternatively,"
+                " use Session.set_timeout"
                 " to increase the request timeout.".format(self.aquarium_url))
-        if not any(["remember_token" in k for k in dict(res.cookies)]):
-            raise TridentLoginError(
-                "Authentication error. Remember token not found in login request."
-                " Contact developers."
-            )
 
     @staticmethod
     def _serialize_request(url, method, body):

@@ -4,6 +4,8 @@ CanvasLayout
 
 import networkx as nx
 from collections import OrderedDict
+from pydent.utils import make_async
+
 
 class CanvasLayout(object):
 
@@ -35,14 +37,32 @@ class CanvasLayout(object):
         layout = cls(nx.DiGraph())
         edges = []
 
-        for wire in plan.wires:
-            from_id = layout._id_getter(wire.source.operation)
-            to_id = layout._id_getter(wire.destination.operation)
-            if from_id is not None and to_id is not None:
-                edges.append((from_id, to_id))
-        for op in plan.operations:
-            layout._add_operation(op)
+        @make_async(10, progress_bar=False)
+        def add_wires(wires):
+            for wire in wires:
+                from_id = layout._id_getter(wire.source.operation)
+                to_id = layout._id_getter(wire.destination.operation)
+                if from_id is not None and to_id is not None:
+                    edges.append((from_id, to_id))
+            return wires
+
+        @make_async(10, progress_bar=False)
+        def add_ops(ops):
+            for op in ops:
+                layout._add_operation(op)
+            return ops
+
+        add_wires(plan.wires)
+        add_ops(plan.operations)
         layout.G.add_edges_from(edges)
+
+        # fix operation coordinates if None
+        for op in layout.operations:
+            if op.x is None:
+                op.x = 0
+            if op.y is None:
+                op.y = 0
+
         return layout
 
     @staticmethod

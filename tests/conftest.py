@@ -26,7 +26,9 @@ def session():
     """
     Returns a live aquarium connection.
     """
-    return AqSession(**config())
+    session = AqSession(**config())
+    # session.set_timeout(30)
+    return session
 
 
 @pytest.fixture(scope="session")
