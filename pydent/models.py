@@ -1484,6 +1484,8 @@ class Sample(ModelBase):
     def field_value(self, name):
         for field_value in self.field_values:
             if field_value.name == name:
+                if field_value.field_type is None:
+                    field_value.field_type = self.sample_type.field_type(field_value.name)
                 return field_value
         return None
 
@@ -1512,7 +1514,10 @@ class Sample(ModelBase):
     def _fv_dict(self):
         d = {}
         if self.field_values is not None:
-            d = {fv.name: fv for fv in self.field_values}
+            for fv in self.field_values:
+                if fv.field_type is None:
+                    fv.field_type = self.sample_type.field_type(fv.name) # corrects wierdness with field_types being absent
+                d[fv.name] = fv
         fv_dict = {}
         for ft in self.sample_type.field_types:
             fv_dict[ft.name] = d.get(ft.name, None)
@@ -1534,9 +1539,8 @@ class Sample(ModelBase):
     def update_properties(self, prop_dict):
         for k, v in prop_dict.items():
             fv = self._fv_dict()[k]
-            ft_dict = {ft.name: ft for ft in self.sample_type.field_types}
             if fv is None:
-                fv = ft_dict[k].initialize_field_value()
+                fv = self.sample_type.field_type(k).initialize_field_value()
                 if self.field_values is None:
                     self.field_values = []
                 self.field_values.append(fv)
