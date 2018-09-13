@@ -91,30 +91,6 @@ class AqHTTP(object):
                 " Contact developers."
             )
 
-        # if not any(["remember_token" in k for k in dict(self.cookies).values()]):
-        #     raise TridentLoginError(
-        #         "Authentication error. Remember token not found in login request."
-        #     )
-        # headers = res.headers
-        # if 'set-cookie' not in headers:
-        #     raise TridentLoginError(
-        #         "Could not find proper login header for Aquarium.")
-        # headers = {"cookie": self.__class__.fix_remember_token(
-        #     res.headers["set-cookie"])}
-        # self._requests_session = requests.Session()
-        # self._requests_session.headers.update(headers)
-
-    # @staticmethod
-    # def fix_remember_token(header):
-    #     """ Fixes the Aquarium specific remember token """
-    #     parts = header.split(';')
-    #     rtok = ""
-    #     for part in parts:
-    #         cparts = part.split('=')
-    #         if re.match('remember_token', cparts[0]):
-    #             rtok = cparts[1]
-    #     return "remember_token=" + rtok + "; " + header
-
     @staticmethod
     def _serialize_request(url, method, body):
         return json.dumps({
