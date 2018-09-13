@@ -1521,9 +1521,12 @@ class Sample(ModelBase):
     def empty_properties(self):
         return {ft.name: None for ft in self.sample_type.field_types}
 
-    @staticmethod
-    def _set_field_value(field_value, value):
-        if field_value.field_type.ftype == 'sample':
+    # TODO: somehow do some kind of type checking for field_types. Note the field_values do not have field_types for some reason unless they are a sample field value
+    def _set_field_value(self, field_value, value):
+        ft = field_value.field_type
+        if ft is None:
+            ft = self.sample_type.field_type(field_value.name)
+        if ft.ftype == 'sample':
             field_value.set_value(sample=value)
         else:
             field_value.set_value(value=value)
@@ -1561,6 +1564,12 @@ class SampleType(ModelBase):
                              "parent_id": self.id,
                              "parent_class": self.__class__.__name__})
     )
+
+    def field_type(self, name):
+        """Return the field_type by name"""
+        for ft in self.field_types:
+            if ft.name == name:
+                return ft
 
     def save(self):
         """Saves the Sample Type to the Aquarium server. Requires
