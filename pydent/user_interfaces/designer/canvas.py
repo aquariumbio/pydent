@@ -334,6 +334,38 @@ class Canvas(PlanOptimizer):
         return op
 
     def quick_create_chain(self, *op_or_otnames, category=None):
+        """
+        Creates a chain of operations by *guessing* wires between operations based on the
+        AllowableFieldTypes between the inputs and outputs of each operation type.
+        Sample inputs and outputs will be set along the wire if possible.
+
+        e.g.
+
+        .. code::
+
+            # create four new operations based on their OperationType names
+            canvas.quick_create_chain("Make PCR Fragment", "Run Gel",
+                                      "Extract Gel Slice", "Purify Gel Slice")
+
+            # create four new operations based on their OperationType names by
+            # finding OperationTypes only in the "Cloning" category
+            canvas.quick_create_chain("Make PCR Fragment", "Run Gel",
+                                      "Extract Gel Slice", "Purify Gel Slice", category="Cloning")
+
+            # create four new operations based on their OperationType names by
+            # finding OperationTypes only in the "Cloning" category,
+            # except find "Make PCR Fragment" in the "Cloning Sandbox" category
+            canvas.quick_create_chain(("Make PCR Fragment", "Cloning Sandbox"), "Run Gel",
+                                      "Extract Gel Slice", "Purify Gel Slice", category="Cloning")
+
+            # create and wire new operations to an existing operations while
+            # routing samples
+            pcr_op = canvas.create_operation_by_name("Make PCR Fragment")
+            canvas.set_field_value(pcr_op.outputs[0], sample=my_sample)
+            new_ops = canvas.quick_create_chain(pcr_op, "Run Gel")
+            run_gel = new_ops[1]
+            canvas.quick_create_chain("Pour Gel", run_gel)
+        """
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
         pairs = arr_to_pairs(ops)
         for op1, op2 in pairs:
