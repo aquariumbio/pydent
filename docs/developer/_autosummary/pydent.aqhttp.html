@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.aqhttp &#8212; Trident 0.0.29 documentation</title>
+    <title>pydent.aqhttp &#8212; Trident 0.0.31 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -33,14 +33,14 @@
         <li class="right" >
           <a href="../api_reference.html" title="API Reference"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.29 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.31 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.29)</h1>
+        <h1>Trident (V0.0.31)</h1>
     </a>
 </p>
 
@@ -48,7 +48,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.29.
+    for version 0.0.31.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -145,34 +145,16 @@ json data being sent contains a null value</p>
 <dd><p>Login to aquarium and saves header as a requests.Session()</p>
 </dd></dl>
 
-<dl class="staticmethod">
+<dl class="method">
 <dt id="pydent.aqhttp.AqHTTP._response_to_json">
-<em class="property">static </em><code class="descname">_response_to_json</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP._response_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP._response_to_json" title="Permalink to this definition">¶</a></dt>
+<code class="descname">_response_to_json</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP._response_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP._response_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turns <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Request</span></code> instance into a json.
 Raises TridentRequestError if an error occurs.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.aqhttp.AqHTTP.clear_history">
-<code class="descname">clear_history</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.clear_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.clear_history" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clears the request history.</p>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="pydent.aqhttp.AqHTTP.create_session_json">
-<em class="property">static </em><code class="descname">create_session_json</code><span class="sig-paren">(</span><em>login</em>, <em>password</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.create_session_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.create_session_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Formats login information for aquarium</p>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="pydent.aqhttp.AqHTTP.fix_remember_token">
-<em class="property">static </em><code class="descname">fix_remember_token</code><span class="sig-paren">(</span><em>header</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.fix_remember_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.fix_remember_token" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fixes the Aquarium specific remember token</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.aqhttp.AqHTTP.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>path</em>, <em>timeout=None</em>, <em>get_from_history_ok=False</em>, <em>allow_none=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>path</em>, <em>timeout=None</em>, <em>allow_none=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a get request to the session</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -182,8 +164,6 @@ Raises TridentRequestError if an error occurs.</p>
 <li><strong>path</strong> (<em>str</em>) – url</li>
 <li><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
 exception</li>
-<li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
-request from history (default=False)</li>
 <li><strong>allow_none</strong> (<em>boolean</em>) – if False throw error when json_data contains a null
 or None value (default: True)</li>
 <li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
@@ -202,7 +182,7 @@ or None value (default: True)</li>
 
 <dl class="method">
 <dt id="pydent.aqhttp.AqHTTP.post">
-<code class="descname">post</code><span class="sig-paren">(</span><em>path</em>, <em>json_data=None</em>, <em>timeout=None</em>, <em>get_from_history_ok=False</em>, <em>allow_none=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.post" title="Permalink to this definition">¶</a></dt>
+<code class="descname">post</code><span class="sig-paren">(</span><em>path</em>, <em>json_data=None</em>, <em>timeout=None</em>, <em>allow_none=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.post" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a post request to the session</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -213,8 +193,6 @@ or None value (default: True)</li>
 <li><strong>json_data</strong> (<em>dict</em>) – json_data to post</li>
 <li><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
 exception</li>
-<li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
-request from history (default=False)</li>
 <li><strong>allow_none</strong> (<em>boolean</em>) – if False throw error if json_data contains a null
 or None value (default True)</li>
 <li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
@@ -233,7 +211,7 @@ or None value (default True)</li>
 
 <dl class="method">
 <dt id="pydent.aqhttp.AqHTTP.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>path</em>, <em>json_data=None</em>, <em>timeout=None</em>, <em>get_from_history_ok=False</em>, <em>allow_none=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.put" title="Permalink to this definition">¶</a></dt>
+<code class="descname">put</code><span class="sig-paren">(</span><em>path</em>, <em>json_data=None</em>, <em>timeout=None</em>, <em>allow_none=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.put" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a put request to the session</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -244,8 +222,6 @@ or None value (default True)</li>
 <li><strong>json_data</strong> (<em>dict</em>) – json_data to post</li>
 <li><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
 exception</li>
-<li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
-request from history (default=False)</li>
 <li><strong>allow_none</strong> (<em>boolean</em>) – if False throw error when json_data contains a null
 or None value (default True)</li>
 <li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
@@ -264,7 +240,7 @@ or None value (default True)</li>
 
 <dl class="method">
 <dt id="pydent.aqhttp.AqHTTP.request">
-<code class="descname">request</code><span class="sig-paren">(</span><em>method</em>, <em>path</em>, <em>timeout=None</em>, <em>get_from_history_ok=False</em>, <em>allow_none=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.request" title="Permalink to this definition">¶</a></dt>
+<code class="descname">request</code><span class="sig-paren">(</span><em>method</em>, <em>path</em>, <em>timeout=None</em>, <em>allow_none=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a http request.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -275,8 +251,6 @@ or None value (default True)</li>
 <li><strong>path</strong> (<em>str</em>) – url to perform the request</li>
 <li><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
 exception</li>
-<li><strong>get_from_history_ok</strong> (<em>boolean</em>) – whether its ok to return previously found
-request from history (default=False)</li>
 <li><strong>allow_none</strong> (<em>boolean</em>) – if False will raise error when json_data
 contains a None or null value (default: True)</li>
 <li><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</li>
@@ -324,7 +298,7 @@ contains a None or null value (default: True)</li>
         <li class="right" >
           <a href="../api_reference.html" title="API Reference"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.29 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.31 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

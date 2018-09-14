@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.exceptions &#8212; Trident 0.0.29 documentation</title>
+    <title>pydent.exceptions &#8212; Trident 0.0.31 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -33,14 +33,14 @@
         <li class="right" >
           <a href="pydent.base.html" title="pydent.base"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.29 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.31 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
-        <h1>Trident (V0.0.29)</h1>
+        <h1>Trident (V0.0.31)</h1>
     </a>
 </p>
 
@@ -48,7 +48,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.29.
+    for version 0.0.31.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -97,26 +97,67 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.AquariumModelError" title="pydent.exceptions.AquariumModelError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AquariumModelError</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.AquariumError" title="pydent.exceptions.AquariumError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AquariumError</span></code></a></td>
+<td>Aquarium raised an error</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.AquariumModelError" title="pydent.exceptions.AquariumModelError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AquariumModelError</span></code></a></td>
 <td>An error occured with this Aquarium model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentJSONDataIncomplete" title="pydent.exceptions.TridentJSONDataIncomplete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentJSONDataIncomplete</span></code></a>(*args,&nbsp;**kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentJSONDataIncomplete" title="pydent.exceptions.TridentJSONDataIncomplete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentJSONDataIncomplete</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>JSON data contains a null value and may be incomplete.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentLoginError" title="pydent.exceptions.TridentLoginError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentLoginError</span></code></a>(*args,&nbsp;**kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentLoginError" title="pydent.exceptions.TridentLoginError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentLoginError</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>Trident is not properly connected to the server.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentModelNotFoundError" title="pydent.exceptions.TridentModelNotFoundError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentModelNotFoundError</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentModelNotFoundError" title="pydent.exceptions.TridentModelNotFoundError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentModelNotFoundError</span></code></a></td>
 <td>Trident could not find model in list of models.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentRequestError" title="pydent.exceptions.TridentRequestError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentRequestError</span></code></a>(message,&nbsp;response)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentRequestError" title="pydent.exceptions.TridentRequestError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentRequestError</span></code></a></td>
 <td>There was an ambiguous exception that occured handling your request.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.exceptions.TridentTimeoutError" title="pydent.exceptions.TridentTimeoutError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentTimeoutError</span></code></a>(*args,&nbsp;**kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.exceptions.TridentTimeoutError" title="pydent.exceptions.TridentTimeoutError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TridentTimeoutError</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>Trident took too long to respond</td>
 </tr>
 </tbody>
 </table>
+<dl class="exception">
+<dt id="pydent.exceptions.AquariumError">
+<em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">AquariumError</code><a class="reference internal" href="../../_modules/pydent/exceptions.html#AquariumError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.AquariumError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code></p>
+<p>Aquarium raised an error</p>
+<dl class="attribute">
+<dt id="pydent.exceptions.AquariumError.errno">
+<code class="descname">errno</code><a class="headerlink" href="#pydent.exceptions.AquariumError.errno" title="Permalink to this definition">¶</a></dt>
+<dd><p>POSIX exception code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.exceptions.AquariumError.filename">
+<code class="descname">filename</code><a class="headerlink" href="#pydent.exceptions.AquariumError.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>exception filename</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.exceptions.AquariumError.filename2">
+<code class="descname">filename2</code><a class="headerlink" href="#pydent.exceptions.AquariumError.filename2" title="Permalink to this definition">¶</a></dt>
+<dd><p>second exception filename</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.exceptions.AquariumError.strerror">
+<code class="descname">strerror</code><a class="headerlink" href="#pydent.exceptions.AquariumError.strerror" title="Permalink to this definition">¶</a></dt>
+<dd><p>exception strerror</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.exceptions.AquariumError.with_traceback">
+<code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.exceptions.AquariumError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="exception">
 <dt id="pydent.exceptions.AquariumModelError">
 <em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">AquariumModelError</code><a class="reference internal" href="../../_modules/pydent/exceptions.html#AquariumModelError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.AquariumModelError" title="Permalink to this definition">¶</a></dt>
@@ -226,8 +267,8 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="exception">
 <dt id="pydent.exceptions.TridentRequestError">
-<em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">TridentRequestError</code><span class="sig-paren">(</span><em>message</em>, <em>response</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/exceptions.html#TridentRequestError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.TridentRequestError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.exceptions.RequestException</span></code></p>
+<em class="property">exception </em><code class="descclassname">pydent.exceptions.</code><code class="descname">TridentRequestError</code><a class="reference internal" href="../../_modules/pydent/exceptions.html#TridentRequestError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.exceptions.TridentRequestError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code></p>
 <p>There was an ambiguous exception that occured handling your request.</p>
 <dl class="attribute">
 <dt id="pydent.exceptions.TridentRequestError.errno">
@@ -324,7 +365,7 @@ set self.__traceback__ to tb and return self.</p>
         <li class="right" >
           <a href="pydent.base.html" title="pydent.base"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.29 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.31 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

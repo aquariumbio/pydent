@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index &#8212; Trident 0.0.29 documentation</title>
+    <title>Index &#8212; Trident 0.0.31 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -26,13 +26,13 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Trident 0.0.29 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Trident 0.0.31 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="index.html">
-        <h1>Trident (V0.0.29)</h1>
+        <h1>Trident (V0.0.31)</h1>
     </a>
 </p>
 
@@ -40,7 +40,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version 0.0.29.
+    for version 0.0.31.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -361,7 +361,7 @@
         <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Wire._relations_to_json">(pydent.models.Wire method)</a>
 </li>
       </ul></li>
-      <li><a href="developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._response_to_json">_response_to_json() (pydent.aqhttp.AqHTTP static method)</a>
+      <li><a href="developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._response_to_json">_response_to_json() (pydent.aqhttp.AqHTTP method)</a>
 </li>
       <li><a href="developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMany._serialize">_serialize() (pydent.relationships.HasMany method)</a>
 
@@ -545,6 +545,8 @@
 </li>
       <li><a href="developer/_autosummary/pydent.aqsession.html#pydent.aqsession.AqSession">AqSession (class in pydent.aqsession)</a>
 </li>
+      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumError">AquariumError</a>
+</li>
       <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumModelError">AquariumModelError</a>
 </li>
       <li><a href="developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.array_query">array_query() (pydent.interfaces.ModelInterface method)</a>
@@ -606,8 +608,6 @@
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Plan.check_wires">check_wires() (pydent.models.Plan method)</a>
 </li>
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.FieldValue.choose_item">choose_item() (pydent.models.FieldValue method)</a>
-</li>
-      <li><a href="developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.clear_history">clear_history() (pydent.aqhttp.AqHTTP method)</a>
 </li>
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Plan.clear_messages">clear_messages() (pydent.models.Plan method)</a>
 </li>
@@ -823,8 +823,6 @@
         <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Wire.create_schema_instance">(pydent.models.Wire class method)</a>
 </li>
       </ul></li>
-      <li><a href="developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.create_session_json">create_session_json() (pydent.aqhttp.AqHTTP static method)</a>
-</li>
       <li><a href="developer/_autosummary/pydent.aqsession.html#pydent.aqsession.AqSession.current_user">current_user (pydent.aqsession.AqSession attribute)</a>
 </li>
   </ul></td>
@@ -975,9 +973,11 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.errno">errno (pydent.exceptions.TridentJSONDataIncomplete attribute)</a>
+      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumError.errno">errno (pydent.exceptions.AquariumError attribute)</a>
 
       <ul>
+        <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.errno">(pydent.exceptions.TridentJSONDataIncomplete attribute)</a>
+</li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentLoginError.errno">(pydent.exceptions.TridentLoginError attribute)</a>
 </li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentRequestError.errno">(pydent.exceptions.TridentRequestError attribute)</a>
@@ -1011,6 +1011,8 @@
         <li><a href="developer/_autosummary/pydent.relationships.html#pydent.relationships.One.fail">(pydent.relationships.One method)</a>
 </li>
       </ul></li>
+      <li><a href="developer/_autosummary/pydent.models.html#pydent.models.SampleType.field_type">field_type() (pydent.models.SampleType method)</a>
+</li>
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Operation.field_value">field_value() (pydent.models.Operation method)</a>
 </li>
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Operation.field_value_array">field_value_array() (pydent.models.Operation method)</a>
@@ -1019,9 +1021,11 @@
 </li>
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.FieldValue">FieldValue (class in pydent.models)</a>
 </li>
-      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.filename">filename (pydent.exceptions.TridentJSONDataIncomplete attribute)</a>
+      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumError.filename">filename (pydent.exceptions.AquariumError attribute)</a>
 
       <ul>
+        <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.filename">(pydent.exceptions.TridentJSONDataIncomplete attribute)</a>
+</li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentLoginError.filename">(pydent.exceptions.TridentLoginError attribute)</a>
 </li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentRequestError.filename">(pydent.exceptions.TridentRequestError attribute)</a>
@@ -1029,9 +1033,11 @@
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentTimeoutError.filename">(pydent.exceptions.TridentTimeoutError attribute)</a>
 </li>
       </ul></li>
-      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.filename2">filename2 (pydent.exceptions.TridentJSONDataIncomplete attribute)</a>
+      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumError.filename2">filename2 (pydent.exceptions.AquariumError attribute)</a>
 
       <ul>
+        <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.filename2">(pydent.exceptions.TridentJSONDataIncomplete attribute)</a>
+</li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentLoginError.filename2">(pydent.exceptions.TridentLoginError attribute)</a>
 </li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentRequestError.filename2">(pydent.exceptions.TridentRequestError attribute)</a>
@@ -1163,8 +1169,6 @@
         <li><a href="developer/_autosummary/pydent.models.html#pydent.models.FieldValue.find_field_parent">(pydent.models.FieldValue method)</a>
 </li>
       </ul></li>
-      <li><a href="developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.fix_remember_token">fix_remember_token() (pydent.aqhttp.AqHTTP static method)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -1175,12 +1179,6 @@
 
       <ul>
         <li><a href="developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.get">(pydent.interfaces.ModelInterface method)</a>
-</li>
-      </ul></li>
-      <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Library.get_code_callback">get_code_callback() (pydent.models.Library method)</a>
-
-      <ul>
-        <li><a href="developer/_autosummary/pydent.models.html#pydent.models.OperationType.get_code_callback">(pydent.models.OperationType method)</a>
 </li>
       </ul></li>
       <li><a href="developer/_autosummary/pydent.base.html#pydent.base.ModelRegistry.get_model">get_model() (pydent.base.ModelRegistry static method)</a>
@@ -1680,8 +1678,6 @@
       <li><a href="developer/_autosummary/pydent.base.html#pydent.base.ModelBase.patch">patch() (pydent.base.ModelBase method)</a>
 
       <ul>
-        <li><a href="developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.patch">(pydent.interfaces.ModelInterface method)</a>
-</li>
         <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Account.patch">(pydent.models.Account method)</a>
 </li>
         <li><a href="developer/_autosummary/pydent.models.html#pydent.models.AllowableFieldType.patch">(pydent.models.AllowableFieldType method)</a>
@@ -2109,9 +2105,11 @@
         <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Wire.show">(pydent.models.Wire method)</a>
 </li>
       </ul></li>
-      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.strerror">strerror (pydent.exceptions.TridentJSONDataIncomplete attribute)</a>
+      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumError.strerror">strerror (pydent.exceptions.AquariumError attribute)</a>
 
       <ul>
+        <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.strerror">(pydent.exceptions.TridentJSONDataIncomplete attribute)</a>
+</li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentLoginError.strerror">(pydent.exceptions.TridentLoginError attribute)</a>
 </li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentRequestError.strerror">(pydent.exceptions.TridentRequestError attribute)</a>
@@ -2305,9 +2303,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Wire">Wire (class in pydent.models)</a>
 </li>
-      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumModelError.with_traceback">with_traceback() (pydent.exceptions.AquariumModelError method)</a>
+      <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumError.with_traceback">with_traceback() (pydent.exceptions.AquariumError method)</a>
 
       <ul>
+        <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.AquariumModelError.with_traceback">(pydent.exceptions.AquariumModelError method)</a>
+</li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentJSONDataIncomplete.with_traceback">(pydent.exceptions.TridentJSONDataIncomplete method)</a>
 </li>
         <li><a href="developer/_autosummary/pydent.exceptions.html#pydent.exceptions.TridentLoginError.with_traceback">(pydent.exceptions.TridentLoginError method)</a>
@@ -2338,7 +2338,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Trident 0.0.29 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Trident 0.0.31 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
