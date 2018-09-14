@@ -81,13 +81,13 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="kn">from</span> <span class="nn">pydent.exceptions</span> <span class="k">import</span> <span class="p">(</span><span class="n">TridentRequestError</span><span class="p">,</span> <span class="n">TridentLoginError</span><span class="p">,</span> <span class="n">AquariumError</span><span class="p">,</span>
                                <span class="n">TridentTimeoutError</span><span class="p">,</span> <span class="n">TridentJSONDataIncomplete</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">url_build</span>
+
 
 <div class="viewcode-block" id="AqHTTP"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP">[docs]</a><span class="k">class</span> <span class="nc">AqHTTP</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -118,58 +118,52 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">TIMEOUT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_login</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 
-<div class="viewcode-block" id="AqHTTP.create_session_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.create_session_json">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">create_session_json</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Formats login information for aquarium&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;login&quot;</span><span class="p">:</span> <span class="n">login</span><span class="p">,</span>
-                <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span>
-            <span class="p">}</span>
-        <span class="p">}</span></div>
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;An alias of aquarium_url&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create_session_json</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;login&quot;</span><span class="p">:</span> <span class="n">login</span><span class="p">,</span>
+            <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span>
+        <span class="p">}}</span>
+
 <div class="viewcode-block" id="AqHTTP._login"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._login">[docs]</a>    <span class="k">def</span> <span class="nf">_login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Login to aquarium and saves header as a requests.Session()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">session_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">create_session_json</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">session_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_session_json</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url_build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="s2">&quot;sessions.json&quot;</span><span class="p">),</span>
                                 <span class="n">json</span><span class="o">=</span><span class="n">session_data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="n">cookies</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">cookies</span><span class="p">)</span>
+
+            <span class="c1"># Check for remember token</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="s2">&quot;remember_token&quot;</span> <span class="ow">in</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">cookies</span><span class="p">)]):</span>
+                <span class="k">raise</span> <span class="n">TridentLoginError</span><span class="p">(</span>
+                    <span class="s2">&quot;Authentication error. Remember token not found in login request.&quot;</span>
+                    <span class="s2">&quot; Contact developers.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># fix remember token (for some outdated versions of Aquarium)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cookies</span><span class="p">):</span>
+                <span class="k">if</span> <span class="s2">&quot;remember_token&quot;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+                    <span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;remember_token&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cookies</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+            <span class="c1"># TODO: do we remove the session cookie to handle asynchrounous requests?</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cookies</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">MissingSchema</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TridentLoginError</span><span class="p">(</span>
                 <span class="s2">&quot;Aquairum URL </span><span class="si">{0}</span><span class="s2"> incorrectly formatted. </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
         <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectTimeout</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TridentTimeoutError</span><span class="p">(</span>
-                <span class="s2">&quot;Aquarium took too long to respond during login. Make sure &quot;</span>
-                <span class="s2">&quot;the url </span><span class="si">{}</span><span class="s2"> is correct. Alternatively, use Session.set_timeout&quot;</span>
-                <span class="s2">&quot; to increase the request timeout.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">))</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">headers</span>
-        <span class="k">if</span> <span class="s1">&#39;set-cookie&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TridentLoginError</span><span class="p">(</span>
-                <span class="s2">&quot;Could not find proper login header for Aquarium.&quot;</span><span class="p">)</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cookie&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">fix_remember_token</span><span class="p">(</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;set-cookie&quot;</span><span class="p">])}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="AqHTTP.fix_remember_token"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.fix_remember_token">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">fix_remember_token</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fixes the Aquarium specific remember token &quot;&quot;&quot;</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
-        <span class="n">rtok</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
-            <span class="n">cparts</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;remember_token&#39;</span><span class="p">,</span> <span class="n">cparts</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-                <span class="n">rtok</span> <span class="o">=</span> <span class="n">cparts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="s2">&quot;remember_token=&quot;</span> <span class="o">+</span> <span class="n">rtok</span> <span class="o">+</span> <span class="s2">&quot;; &quot;</span> <span class="o">+</span> <span class="n">header</span></div>
+                <span class="s2">&quot;Either Aquarium took too long to respond during login or you internet&quot;</span>
+                <span class="s2">&quot; connection is slow. Make sure the url </span><span class="si">{}</span><span class="s2"> is correct. Alternatively,&quot;</span>
+                <span class="s2">&quot; use Session.set_timeout&quot;</span>
+                <span class="s2">&quot; to increase the request timeout.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">))</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
@@ -213,20 +207,27 @@
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
                 <span class="n">method</span><span class="p">,</span>
                 <span class="n">url_build</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="n">path</span><span class="p">),</span>
                 <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">cookies</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cookies</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_to_json</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AqHTTP._response_to_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._response_to_json">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_response_to_json</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+<div class="viewcode-block" id="AqHTTP._response_to_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._response_to_json">[docs]</a>    <span class="k">def</span> <span class="nf">_response_to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Turns :class:`requests.Request` instance into a json.</span>
 <span class="sd">        Raises TridentRequestError if an error occurs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">url</span> <span class="o">==</span> <span class="n">url_build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="s2">&quot;signin&quot;</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;There was an error with authenticating the request. Aquarium &quot;</span> <span class="o">+</span> \
+            <span class="s2">&quot;re-routed to the sign-in page.&quot;</span>
+            <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">result_json</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
@@ -295,7 +296,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;put&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
                             <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AqHTTP.get"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="AqHTTP.get"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make a get request to the session</span>
 
