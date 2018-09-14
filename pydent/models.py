@@ -354,8 +354,11 @@ class FieldType(ModelBase, FieldMixin):
     def load_choice(self, value):
         return value.split(',')
 
-    def get_choice(self, obj):
-        return ','.join(obj.choices)
+    def get_choices(self):
+        if self.choices == '':
+            return None
+        if self.choices is not None:
+            return self.choices.split(',')
 
     @property
     def is_parameter(self):
