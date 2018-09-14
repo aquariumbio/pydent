@@ -32,11 +32,14 @@ Example:
     # creates samples from a list by calling method CreateInterface.samples
 """
 
+import json
+
 from inflection import pluralize, underscore
+
 from .base import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
-import json
+
 
 class SessionInterface(object):
     """
@@ -64,6 +67,7 @@ class UtilityInterface(SessionInterface):
     """
     Miscellaneous requests for creating, updating, etc.
     """
+
     # TODO: have ability to save new properties
     def create_samples(self, samples):
         json = [s.dump(include={"field_values"}) for s in samples]
@@ -71,8 +75,8 @@ class UtilityInterface(SessionInterface):
 
     def create_items(self, items):
         return [self.aqhttp.get('items/make/{}/{}'.format(
-                i.sample.id, i.object_type.id))
-                for i in items]
+            i.sample.id, i.object_type.id))
+            for i in items]
 
     def create_sample_type(self, sample_type):
         """
@@ -137,6 +141,8 @@ class UtilityInterface(SessionInterface):
         Saves a plan
         """
         pre_ops = plan.operations
+        if pre_ops is None:
+            pre_ops = []
         plan_data = plan.to_save_json()
         result = self.aqhttp.post(
             "plans.json?user_id={}".format(self.session.current_user.id),
@@ -159,6 +165,9 @@ class UtilityInterface(SessionInterface):
 
     def delete_plan(self, plan):
         self.aqhttp.delete('plans/{}'.format(plan.id))
+
+    def delete_wire(self, wire):
+        self.aqhttp.delete('wires/{}'.format(wire.id))
 
     def replan(self, plan_id):
         """
@@ -245,6 +254,19 @@ class UtilityInterface(SessionInterface):
             print(element)
         return items
 
+    # TODO: fix delete association
+    def delete_data_association(self, association):
+        data = {
+            "model": {
+                "model": "DataAssociation",
+                "record_methods": {},
+                "record_getters": {}
+            },
+        }
+        data.update(association.dump())
+        result = self.aqhttp.post("json/delete", json_data=data)
+        return result
+
     def create_data_association(self, model_inst, key, value, upload=None):
         upload_id = None
         if upload is not None:
@@ -293,7 +315,7 @@ class ModelInterface(SessionInterface):
         """
         return self.model.__name__
 
-    def _post_json(self, data, get_from_history_ok=False):
+    def _post_json(self, data):
         """
         Posts a json request to session for this interface.
         Attaches raw json and this session instance to the models it retrieves.
@@ -301,14 +323,13 @@ class ModelInterface(SessionInterface):
         data_dict = {'model': self.model_name}
         data_dict.update(data)
 
-        post_response = None
         try:
             post_response = self.aqhttp.post(
                 'json',
                 json_data=data_dict,
-                get_from_history_ok=get_from_history_ok)
+            )
         except TridentRequestError as err:
-            if err.response.status_code == 422:
+            if err.strerror.status_code == 422:
                 return None
             raise err
 
@@ -335,21 +356,25 @@ class ModelInterface(SessionInterface):
         """
         Makes a generic get request
         """
-        response = self.aqhttp.get(path)
+        try:
+            response = self.aqhttp.get(path)
+        except TridentRequestError as err:
+            if err.strerror.status_code == 404:
+                return None
+            raise err
         return self.load(response)
 
     def find(self, model_id):
         """
         Finds model by id
         """
-        return self._post_json({"id": model_id}, get_from_history_ok=True)
+        return self._post_json({"id": model_id}, )
 
     def find_by_name(self, name):
         """
         Finds model by name
         """
-        return self._post_json({"method": "find_by_name", "arguments": [name]},
-                               get_from_history_ok=True)
+        return self._post_json({"method": "find_by_name", "arguments": [name]})
 
     def array_query(self, method, args, rest, opts=None):
         """
@@ -364,7 +389,9 @@ class ModelInterface(SessionInterface):
                  "arguments": args,
                  "options": options}
         query.update(rest)
-        res = self._post_json(query)  # type: dict
+        res = self._post_json(query)
+        if res is None:
+            return []
         return res
 
     def all(self, rest=None, opts=None):
@@ -383,28 +410,30 @@ class ModelInterface(SessionInterface):
         """
         Finds models based on criteria
         """
-        if methods is None:
-            methods = {}
+        rest = {}
+        if methods is not None:
+            rest = {"methods": methods}
         if opts is None:
             opts = {}
         options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
-        return self.array_query("where", criteria, methods, options)
+        return self.array_query("where", criteria, rest, options)
 
-    def patch(self, model_id, json_data):
-        """
-        Makes a patch or update from json_data
-        """
-        models_name = pluralize(underscore(self.model_name))
-        result = self.aqhttp.put('{models}/{model_id}'.format(
-            model_id=model_id, models=models_name), json_data=json_data)
-        return result
+    # TODO: implement 'patch' or 'update'? Would this be too dangerous?
+    # def patch(self, model_id, json_data):
+    #     """
+    #     Makes a patch or update from json_data
+    #     """
+    #     models_name = pluralize(underscore(self.model_name))
+    #     result = self.aqhttp.put('{models}/{model_id}'.format(
+    #         model_id=model_id, models=models_name), json_data=json_data)
+    #     return result
 
     def new(self, *args, **kwargs):
         """
         Creates a new model instance
         """
-        instance = object.__new__(self.model)
+        instance = self.model.__new__(self.model)
         instance._session = None
         instance.connect_to_session(self.session)
         instance.__init__(*args, **kwargs)
