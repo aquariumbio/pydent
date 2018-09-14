@@ -126,7 +126,7 @@ class HasCodeMixin:
             return codes[-1]
 
     def get_code_callback(self, model_name, name):
-        """
+        self.code_ = """
         Callback for returning code members for OperationType or Library
 
         :param model_name: the model_name, expected "Code"
@@ -210,6 +210,13 @@ class DataAssociatorMixin:
         """
         with open(filepath, 'rb') as f:
             return self.associate_file(key, value, f, job_id=job_id)
+
+    def get_data_associations(self, key):
+        das = []
+        for da in self.data_associations:
+            if da.key == key:
+                das.append(da)
+        return das
 
     def get(self, key):
         val = []
@@ -307,6 +314,10 @@ class DataAssociation(ModelBase):
         return self.object.get(self.key, None)
 
 
+    def delete(self):
+        return self.session.utils.delete_data_association(self)
+
+
 @add_schema
 class FieldType(ModelBase, FieldMixin):
     """A FieldType model"""
@@ -351,11 +362,11 @@ class FieldType(ModelBase, FieldMixin):
                 for smple_type, obj_type in aft_stype_and_objtype:
                     self.create_allowable_field_type(smple_type, obj_type)
 
-    def load_choice(self, value):
-        return value.split(',')
-
-    def get_choice(self, obj):
-        return ','.join(obj.choices)
+    def get_choices(self):
+        if self.choices == '':
+            return None
+        if self.choices is not None:
+            return self.choices.split(',')
 
     @property
     def is_parameter(self):
@@ -530,17 +541,26 @@ class FieldValue(ModelBase, FieldMixin):
         elif self.value:
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
-    def _set_helper(self, value=None, sample=None, container=None, item=None):
+    # TODO: object_type isn't a real attribute, its just for AFT
+    def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
+        if row is not None:
+            if not self.field_type.part:
+                raise AquariumModelError("Cannot set row of a non-part for {} {}".format(self.role, self.name))
+            self.row = row
+        if column is not None:
+            if not self.field_type.part:
+                raise AquariumModelError("Cannot set column of a non-part for {} {}".format(self.role, self.name))
+            self.column = column
         if item and container and item.object_type_id != container.id:
             raise AquariumModelError(
                 "Item {} is not in container {}".format(
                     item.id, str(container)))
         if value is not None:
-            if self.field_type.choices is not None:
-                choices = self.field_type.choices.split(',')
+            choices = self.field_type.get_choices()
+            if choices is not None:
                 if value not in choices and str(value) not in choices:
                     raise AquariumModelError("Value \'{}\' not in list of field "
-                                             "type choices \'{}\'".format(value, choices))
+                                                 "type choices \'{}\'".format(value, choices))
             self.value = value
         if item is not None:
             self.item = item
@@ -556,9 +576,9 @@ class FieldValue(ModelBase, FieldMixin):
         if container is not None:
             self.object_type = container
 
-    def set_value(self, value=None, sample=None, container=None, item=None):
+    def set_value(self, value=None, sample=None, container=None, item=None, row=None, column=None):
         self._set_helper(value=value, sample=sample,
-                         container=container, item=item)
+                         container=container, item=item, row=row, column=column)
         """Sets the value of a """
         if any([sample, container, item]):
             afts = self.field_type.allowable_field_types
@@ -568,15 +588,29 @@ class FieldValue(ModelBase, FieldMixin):
             if self.object_type is not None:
                 afts = filter_list(afts, object_type_id=self.object_type.id)
             if len(afts) == 0:
-                available_afts = self.field_type.allowable_field_types
-                msg = "No allowable field types found for {} '{}'."
+                aft_list = []
+                for aft in self.field_type.allowable_field_types:
+                    st = "none"
+                    ot = "none"
+                    if aft.object_type is not None:
+                        ot = aft.object_type.name
+                    if aft.sample_type is not None:
+                        st = aft.sample_type.name
+                    aft_list.append("{}:{}".format(st, ot))
+                sid = "none"
+                if self.sample is not None:
+                    sid = self.sample.sample_type.name
+                oid = "none"
+                if self.object_type is not None:
+                    oid = self.object_type.name
+                msg = "No allowable field types found for {} {} using {} {}."
                 msg += " Available afts: {}"
                 raise AquariumModelError(msg.format(
-                    self.role, self.name, available_afts))
+                    self.role, self.name, sid, oid, ', '.join(aft_list)))
             if len(afts) > 1:
                 msg = "More than one AllowableFieldType found that matches {}"
                 warnings.warn(msg.format(
-                    self.dump(only=('name', 'role', 'id'), partial=True)))
+                    self.dumps(only=('name', 'role', 'id'), partial=True)))
             elif len(afts) == 1:
                 self.set_allowable_field_type(afts[0])
             else:
@@ -642,7 +676,8 @@ class Item(ModelBase, DataAssociatorMixin):
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        data=fields.JSON(allow_none=True, strict=False)
+        data=fields.JSON(allow_none=True, strict=False),
+        ignore=("locator_id",)
     )
 
     def __init__(self=None, sample_id=None, object_type_id=None):
@@ -753,6 +788,24 @@ class Operation(ModelBase, DataAssociatorMixin):
                 if ft.routing is not None:
                     routing_dict[ft.routing] = fv.sid
         return routing_dict
+
+    @property
+    def successors(self):
+        successors = []
+        if self.outputs:
+            for output in self.outputs:
+                for s in output.successors:
+                    successors.append(s.operation)
+        return successors
+
+    @property
+    def predecessors(self):
+        predecessors = []
+        if self.inputs:
+            for inputs in self.inputs:
+                for s in inputs.predecessors:
+                    predecessors.append(s.operation)
+        return predecessors
 
     def init_field_values(self):
         """
@@ -1103,10 +1156,34 @@ class OperationType(ModelBase, HasCodeMixin):
         user=HasOne("User")
     )
 
+    @classmethod
+    def interface(cls, session):
+        # get model interface from Base class
+        model_interface = super(OperationType, cls).interface(session)
+
+        def find_deployed_by_name(name):
+            ots = model_interface.where({"deployed": True, "name": name})
+            if len(ots) == 0:
+                return None
+            if len(ots) > 1:
+                raise Exception("More than one OperationType found.")
+            return ots[0]
+
+        def where_deployed(params):
+            params = dict(params)
+            params.update({"deployed": True})
+            return model_interface.where(params)
+
+        # override the old find method
+        model_interface.find_deployed_by_name = find_deployed_by_name
+        model_interface.where_deployed = where_deployed
+
+        return model_interface
+
     def get_field_type(self, model_name, parent_class):
         return self.code(model_name)
 
-    def instance(self, xpos=None, ypos=None):
+    def instance(self, xpos=0, ypos=0):
         operation = Operation(operation_type_id=self.id,
                               status='planning', x=xpos, y=ypos)
         operation.connect_to_session(self.session)
@@ -1119,6 +1196,12 @@ class OperationType(ModelBase, HasCodeMixin):
             fts = filter_list(self.field_types, role=role, name=name)
             if len(fts) > 0:
                 return fts[0]
+
+    def output(self, name):
+        return self.field_type(name, "output")
+
+    def input(self, name):
+        return self.field_type(name, "input")
 
     def save(self):
         """Saves the Operation Type to the Aquarium server. Requires
@@ -1248,12 +1331,17 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         return das
 
     @classmethod
-    def find(cls, session, model_id):
-        """
-        Override find for plans, because generic method is too minimal.
-        """
-        interface = cls.interface(session)
-        return interface.get('plans/{}.json'.format(model_id))
+    def interface(cls, session):
+        # get model interface from Base class
+        model_interface = super(Plan, cls).interface(session)
+
+        # make a special find method for plans, as generic method is too minimal.
+        new_find = lambda model_id: model_interface.get('plans/{}.json'.format(model_id))
+
+        # override the old find method
+        model_interface.find = new_find
+
+        return model_interface
 
     def to_save_json(self):
         """
@@ -1269,7 +1357,11 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
             },
             'wires': {"source", "destination"}
         })
-        json_data['layout'] = json.loads(json_data['layout'])
+        # del json_data['layout']
+        if json_data['layout'] is not None:
+            json_data['layout'] = json.loads(json_data['layout'])
+        else:
+            del json_data['layout']
 
         for wire in self.wires:
             wire.dump()
@@ -1347,6 +1439,10 @@ class PlanAssociation(ModelBase):
         operation=HasOne("Operation")
     )
 
+    def __init__(self, plan_id=None, operation_id=None):
+        self.plan_id = plan_id
+        self.operation_id = operation_id
+        super().__init__(**vars(self))
 
 @add_schema
 class Sample(ModelBase):
@@ -1378,7 +1474,7 @@ class Sample(ModelBase):
         self.description = description
         super().__init__(**vars(self))
         if properties is not None:
-            self.initialize_field_values(properties, self.sample_type)
+            self.update_properties(properties)
 
     @property
     def identifier(self):
@@ -1388,14 +1484,12 @@ class Sample(ModelBase):
     def field_value(self, name):
         for field_value in self.field_values:
             if field_value.name == name:
+                if field_value.field_type is None:
+                    field_value.field_type = self.sample_type.field_type(field_value.name)
                 return field_value
         return None
 
-    @property
-    def field_names(self):
-        return [fv.name for fv in self.field_values]
-
-    def _fv_dict(self, expected_keys):
+    def _prop_dict(self, expected_keys):
         d = {k: None for k in expected_keys}
         fvs = self.field_values
         if fvs is not None:
@@ -1417,30 +1511,45 @@ class Sample(ModelBase):
                         d[fv.name] = [d[fv.name]] + [v]
         return d
 
+    def _fv_dict(self):
+        d = {}
+        if self.field_values is not None:
+            for fv in self.field_values:
+                if fv.field_type is None:
+                    fv.field_type = self.sample_type.field_type(fv.name) # corrects wierdness with field_types being absent
+                d[fv.name] = fv
+        fv_dict = {}
+        for ft in self.sample_type.field_types:
+            fv_dict[ft.name] = d.get(ft.name, None)
+        return fv_dict
+
     def empty_properties(self):
         return {ft.name: None for ft in self.sample_type.field_types}
 
-    def initialize_field_values(self, prop_dict, sample_type):
-        fts = sample_type.field_types
-        ft_names = [ft.name for ft in fts]
-        ft_dict = dict(zip(ft_names, fts))
-        fvs = []
-        for prop, val in prop_dict.items():
-            if val is not None:
-                ft = ft_dict[prop]
-                fv = ft.initialize_field_value()
-                if ft.ftype == 'sample':
-                    fv.set_value(sample=val)
-                else:
-                    fv.set_value(value=val)
-                fvs.append(fv)
-        self.field_values = fvs
-        return fvs
+    # TODO: somehow do some kind of type checking for field_types. Note the field_values do not have field_types for some reason unless they are a sample field value
+    def _set_field_value(self, field_value, value):
+        ft = field_value.field_type
+        if ft is None:
+            ft = self.sample_type.field_type(field_value.name)
+        if ft.ftype == 'sample':
+            field_value.set_value(sample=value)
+        else:
+            field_value.set_value(value=value)
+
+    def update_properties(self, prop_dict):
+        for k, v in prop_dict.items():
+            fv = self._fv_dict()[k]
+            if fv is None:
+                fv = self.sample_type.field_type(k).initialize_field_value()
+                if self.field_values is None:
+                    self.field_values = []
+                self.field_values.append(fv)
+            self._set_field_value(fv, v)
 
     @property
     def properties(self):
         fv_keys = [ft.name for ft in self.sample_type.field_types]
-        return self._fv_dict(fv_keys)
+        return self._prop_dict(fv_keys)
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
@@ -1460,13 +1569,19 @@ class SampleType(ModelBase):
                              "parent_class": self.__class__.__name__})
     )
 
+    def field_type(self, name):
+        """Return the field_type by name"""
+        for ft in self.field_types:
+            if ft.name == name:
+                return ft
+
     def save(self):
         """Saves the Sample Type to the Aquarium server. Requires
         this Sample Type to be connected to a session."""
         return self.reload(self.session.utils.create_sample_type(self))
 
 
-# TODO: save upload to Aquarium (safe files only)
+# TODO: expiring_url is never updated...
 @add_schema
 class Upload(ModelBase):
     """
@@ -1496,9 +1611,8 @@ class Upload(ModelBase):
         return http.get("krill/uploads?job={}".format(self.job_id))['uploads']
 
     def temp_url(self):
-        uploads = self._get_uploads_from_job()
-        _u_arr = [upload for upload in uploads if upload['id'] == self.id]
-        return _u_arr[0]['url']
+        data = self.session.Upload.where({"id": self.id}, methods=["expiring_url"])[0].raw
+        return data['expiring_url']
 
     @staticmethod
     def _download_file_from_url(url, outpath):
@@ -1591,6 +1705,9 @@ class User(ModelBase):
         ignore=("password_digest", "remember_token", "key")
     )
 
+    def __init__(self):
+        super().__init__(**vars(self))
+
 
 @add_schema
 class UserBudgetAssociation(ModelBase):
@@ -1600,6 +1717,8 @@ class UserBudgetAssociation(ModelBase):
         user=HasOne("User")
     )
 
+    def __init__(self):
+        super().__init__(**vars(self))
 
 @add_schema
 class Wire(ModelBase):
@@ -1614,10 +1733,14 @@ class Wire(ModelBase):
         self.source = source
         self.destination = destination
         self.active = True
+        self.id=None
         super().__init__(**vars(self))
 
     def to_save_json(self):
         return self.dump(include={'source', 'destination'})
+
+    def delete(self):
+        return self.session.utils.delete_wire(self)
 
     def show(self, pre=""):
         """Show the wire nicely"""

@@ -178,6 +178,7 @@ def test_set_sample_and_item_no_aft():
     """Set value should find the second AllowableFieldType"""
     fake_fv = FieldValue.load({
         "id": 200,
+        "name": "My input",
         "child_item_id": None,
         "allowable_field_type_id": None,
         "allowable_field_type": None,
@@ -194,11 +195,11 @@ def test_set_sample_and_item_no_aft():
     })
     fake_item = Item.load({
         "id": 55,
-        "object_type": {"id": 44}
+        "object_type": {"id": 44, "name": "ot"}
     })
     fake_sample = Sample.load({
         "id": 3,
-        'sample_type': {'id': 2}
+        'sample_type': {'id': 2, "name": "mysampletype"}
     })
 
     with pytest.raises(AquariumModelError):
