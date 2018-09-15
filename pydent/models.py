@@ -695,6 +695,9 @@ class Item(ModelBase, DataAssociatorMixin):
         """A synonym for `make`"""
         return self.make()
 
+    def is_deleted(self):
+        return self.location == 'deleted'
+
 
 @add_schema
 class Job(ModelBase):
