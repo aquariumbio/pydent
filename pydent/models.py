@@ -1557,6 +1557,12 @@ class Sample(ModelBase):
         result = self.session.utils.create_samples([self])
         return self.reload(result['samples'][0])
 
+    def available_items(self, object_type_name=None):
+        if object_type_name is None:
+            return [i for i in self.items if i.location != 'deleted']
+        else:
+            return [i for i in self.items if i.location != 'deleted' and i.object_type.name == object_type_name]
+
 
 @add_schema
 class SampleType(ModelBase):
