@@ -17,6 +17,7 @@ install_requires = [
     'tqdm==4.23.4'
 ]
 
+
 def parse_version_file():
     here = os.path.abspath(os.path.dirname(__file__))
     ver_dict = {}
@@ -29,6 +30,7 @@ def parse_version_file():
                 val = re.sub("[\'\"]", "", val)
                 ver_dict[key] = val
     return ver_dict
+
 
 def readme():
     """print long description"""
@@ -54,22 +56,22 @@ ver = parse_version_file()
 
 # setup
 setup(
-        title=ver['title'],
-        name='pydent',
-        version=ver['version'],
-        packages=["pydent", "pydent.marshaller", "pydent.utils"],
-        long_description=readme(),
-        url=ver['url'],
-        license='',
-        author=ver['author'],
-        author_email=ver['author_email'],
-        keywords='aquarium api',
-        description=ver['description'],
-        install_requires=install_requires,
-        python_requires='>=3.4',
-        tests_require=tests_require,
-        classifiers=[],
-        cmdclass={
+    title=ver['title'],
+    name='pydent',
+    version=ver['version'],
+    packages=["pydent", "pydent.marshaller", "pydent.utils"],
+    long_description=readme(),
+    url=ver['url'],
+    license='',
+    author=ver['author'],
+    author_email=ver['author_email'],
+    keywords='aquarium api',
+    description=ver['description'],
+    install_requires=install_requires,
+    python_requires='>=3.4',
+    tests_require=tests_require,
+    classifiers=[],
+    cmdclass={
             'verify': VerifyVersionCommand,
-        }
+    }
 )
