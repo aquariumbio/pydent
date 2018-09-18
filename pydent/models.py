@@ -704,6 +704,11 @@ class Job(ModelBase):
         operations=HasManyThrough("Operation", "JobAssociation")
     )
 
+    def __init__(self, state=None, pc=0):
+        self.state = state
+        self.pc = pc
+        super().__init__(**vars(self))
+
     @property
     def uploads(self):
         http = self.session._AqSession__aqhttp
