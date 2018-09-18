@@ -701,18 +701,26 @@ class Job(ModelBase):
     """A Job model"""
     fields = dict(
         job_associations=HasMany("JobAssociation", "Job"),
-        operations=HasManyThrough("Operation", "JobAssociation")
+        operations=HasManyThrough("Operation", "JobAssociation"),
+        state=fields.JSON(allow_none=True, strict=False)
     )
 
-    def __init__(self, state=None, pc=0):
-        self.state = state
-        self.pc = pc
-        super().__init__(**vars(self))
+    @property
+    def is_complete(self):
+        return self.pc == -2
 
     @property
     def uploads(self):
         http = self.session._AqSession__aqhttp
         return http.get("krill/uploads?job={}".format(self.id))['uploads']
+
+    @property
+    def start_time(self):
+        return self.state[0]['time']
+
+    @property
+    def end_time(self):
+        return self.state[-2]['time']
 
 
 @add_schema
