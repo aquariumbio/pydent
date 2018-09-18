@@ -14,5 +14,4 @@ def test_collection_matrix():
                      'sample_id': None,
                      'updated_at': '2018-07-03T14:40:38-07:00'})
     expected_matrix = [[23853, 23853, 23853, 23846, 23846, 23846], [-1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1]]
-    assert c.data['matrix'] == expected_matrix
     assert c.matrix == expected_matrix
