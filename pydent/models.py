@@ -292,12 +292,26 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
     fields = dict(
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        data=fields.JSON(allow_none=True, strict=False)
+        parts=HasManyThrough("Item", "PartAssociation")
     )
 
     @property
     def matrix(self):
-        return self.data['matrix']
+        """
+        Returns the matrix of Samples for this Collection.
+
+        (Consider using samples of parts directly.)
+        """
+        # TODO: to be implemented
+        return None
+
+    @property
+    def part(self, row, col):
+        """
+        Returns the part at (row, col) of this Collection (zero-based.
+        """
+        # TODO: to be implemented
+        return None
 
 
 @add_schema
@@ -1265,6 +1279,26 @@ class OperationType(ModelBase, HasCodeMixin):
         """Saves the Operation Type to the Aquarium server. Requires
         this Operation Type to be connected to a session."""
         return self.reload(self.session.utils.create_operation_type(self))
+
+
+@add_schema
+class PartAssociation(ModelBase):
+    """
+    Represents a PartAssociation linking a part to a collection.
+
+    Aquarium definition has the collection as an Item. Not sure why this isn't a Collection.
+    """
+    fields = dict(
+        part=HasOne('Item'),
+        collection=HasOne('Item')
+    )
+
+    def __init__(self, part_id, collection_id, row, column):
+        self.part_id = part_id
+        self.collection_id = collection_id
+        self.row = row
+        self.column = column
+        super().__init__(**vars(self))
 
 
 @add_schema
