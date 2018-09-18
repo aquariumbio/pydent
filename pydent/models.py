@@ -293,6 +293,7 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
         parts=HasManyThrough("Item", "PartAssociation")
+        # TODO: do we need to have the association to use row,col?
     )
 
     @property
