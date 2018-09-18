@@ -715,14 +715,25 @@ class Item(ModelBase, DataAssociatorMixin):
         """
         Returns the collection of which this Item is a part.
 
-        Returns the collection object if the Item is a part, otherwise 
+        Returns the collection object if the Item is a part, otherwise
         returns None.
         """
         if not self.is_part:
             return None
 
-        # TODO: to be implemented
-        return None
+        # TODO: to be tested
+        assoc_list = self.session.PartAssociation.where({'part_id': self.id})
+        if not assoc_list:
+            return
+
+        if len(assoc_list) != 1:
+            return None
+
+        part_assoc = next(iter(assoc_list))
+        if not part_assoc:
+            return None
+
+        return self.session.Collection.find(part_assoc.collection_id)
 
     def as_collection(self):
         """
@@ -734,8 +745,7 @@ class Item(ModelBase, DataAssociatorMixin):
         if not self.is_collection:
             return None
 
-        # TODO: to be implemented
-        return None
+        return self.session.Collection.find(self.id)
 
     @property
     def is_part(self):
