@@ -292,8 +292,7 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
     fields = dict(
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        parts=HasManyThrough("Item", "PartAssociation")
-        # TODO: do we need to have the association to use row,col?
+        part_associations=HasMany('PartAssociation', 'Collection')
     )
 
     @property
@@ -309,7 +308,7 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
     @property
     def part(self, row, col):
         """
-        Returns the part at (row, col) of this Collection (zero-based.
+        Returns the part Item at (row, col) of this Collection (zero-based).
         """
         # TODO: to be implemented
         return None
