@@ -90,6 +90,7 @@ __all__ = [
     "ObjectType",
     "Operation",
     "OperationType",
+    "PartAssociation",
     "Plan",
     "PlanAssociation",
     "Sample",
@@ -292,7 +293,8 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
     fields = dict(
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        parts=HasManyThrough("Item", "PartAssociation")
+        part_associations=HasMany("PartAssociation", "Collection"),
+        parts=HasManyThrough("Item", "PartAssociation", ref="part_id")
         # TODO: do we need to have the association to use row,col?
     )
 
@@ -303,7 +305,7 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
 
         (Consider using samples of parts directly.)
         """
-        # TODO: to be implemented
+        # TODO: to be implementedh
         return None
 
     @property
@@ -1291,7 +1293,6 @@ class OperationType(ModelBase, HasCodeMixin):
         this Operation Type to be connected to a session."""
         return self.reload(self.session.utils.create_operation_type(self))
 
-
 @add_schema
 class PartAssociation(ModelBase):
     """
@@ -1300,11 +1301,11 @@ class PartAssociation(ModelBase):
     Aquarium definition has the collection as an Item. Not sure why this isn't a Collection.
     """
     fields = dict(
-        part=HasOne('Item'),
-        collection=HasOne('Item')
+        part=HasOne('Item', ref="part_id"),
+        collection=HasOne('Collection')
     )
 
-    def __init__(self, part_id, collection_id, row, column):
+    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
         self.part_id = part_id
         self.collection_id = collection_id
         self.row = row
