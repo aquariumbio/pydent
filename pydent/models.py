@@ -854,8 +854,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         field_values=Many("FieldValue",
                           callback_args=lambda self: {
                               "parent_id": self.id,
-                              "parent_class": self.__class__.__name__},
-                          callback_kwargs={"methods": ["dimensions"]}),
+                              "parent_class": self.__class__.__name__}),
         # field_values=HasManyGeneric("FieldValue"),
         data_associations=HasManyGeneric("DataAssociation"),
         operation_type=HasOne("OperationType"),
