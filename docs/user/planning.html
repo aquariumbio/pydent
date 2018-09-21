@@ -13,7 +13,6 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Trident Examples" href="examples.html" />
@@ -90,13 +89,13 @@
             
   <div class="section" id="planning-using-trident-s-designer">
 <h1>Planning using Trident’s Designer<a class="headerlink" href="#planning-using-trident-s-designer" title="Permalink to this headline">¶</a></h1>
-<p>Trident provides a class to help with creating Aquarium plans, called the “designer”</p>
+<p>Trident provides a class to help with creating Aquarium plans, called the “planner”</p>
 <p>Features: topological sorting, plan optimizer, drawing</p>
 <p>You can draw existing plans (colors represent Operation statuses, legend to come…):</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 
-<span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">designer</span>
-<span class="n">canvas</span> <span class="o">=</span> <span class="n">designer</span><span class="o">.</span><span class="n">Canvas</span><span class="p">(</span><span class="n">mysession</span><span class="p">,</span> <span class="n">plan_id</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">planner</span>
+<span class="n">canvas</span> <span class="o">=</span> <span class="n">planner</span><span class="o">.</span><span class="n">Planner</span><span class="p">(</span><span class="n">mysession</span><span class="p">,</span> <span class="n">plan_id</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
 <span class="n">canvas</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -105,11 +104,11 @@
 <img alt="../_images/AquariumPlanExample1.png" src="../_images/AquariumPlanExample1.png" />
 <p>Example of planning a large PCR in a IPython jupyter notebook.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-<span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">designer</span>
+<span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">planner</span>
 <span class="kn">from</span> <span class="nn">mysession</span> <span class="k">import</span> <span class="n">production</span>
 
 <span class="n">sample_range</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">25589</span><span class="p">,</span> <span class="mi">25604</span><span class="p">))</span>
-<span class="n">canvas</span> <span class="o">=</span> <span class="n">designer</span><span class="o">.</span><span class="n">Canvas</span><span class="p">(</span><span class="n">production</span><span class="p">)</span>
+<span class="n">canvas</span> <span class="o">=</span> <span class="n">planner</span><span class="o">.</span><span class="n">Planner</span><span class="p">(</span><span class="n">production</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">set_primer</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">field_value</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
     <span class="n">canvas</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">field_value</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
@@ -214,7 +213,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
     </div>
   </body>
 </html>
