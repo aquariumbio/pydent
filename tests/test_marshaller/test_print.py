@@ -8,7 +8,7 @@ def author():
     class Author(MarshallerBase):
         fields = dict(
             books=fields.Relation(
-                "Book", many=True, callback="get_books", params=())
+                "Book", many=True, callback="get_books", callback_args=())
         )
 
         def __init__(self, x=None):
@@ -56,7 +56,7 @@ def test_marshallerbase_print():
     class Author(MarshallerBase):
         fields = dict(
             books=fields.Relation("Book", many=True,
-                                  callback="get_books", params=())
+                                  callback="get_books", callback_args=())
         )
 
         def __init__(self, x=None):

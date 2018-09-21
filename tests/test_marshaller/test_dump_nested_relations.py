@@ -10,7 +10,7 @@ def author():
     class Author(MarshallerBase):
         fields = dict(
             books=fields.Relation("Book", many=True, callback="get_books",
-                                  params=()),
+                                  callback_args=()),
             publisher=fields.Relation("Publisher", None, None, many=False),
         )
 
@@ -20,7 +20,7 @@ def author():
     @add_schema
     class Publisher(MarshallerBase):
         fields = dict(
-            meta=fields.Relation("PublisherMeta", callback=None, params=None)
+            meta=fields.Relation("PublisherMeta", callback=None, callback_args=None)
         )
 
     @add_schema
@@ -34,8 +34,8 @@ def author():
     @add_schema
     class Book(MarshallerBase):
         fields = dict(
-            author=fields.Relation("Author", callback="get_author", params=()),
-            meta=fields.Relation("BookMetaData", callback=None, params=None)
+            author=fields.Relation("Author", callback="get_author", callback_args=()),
+            meta=fields.Relation("BookMetaData", callback=None, callback_args=None)
         )
 
     author_data = {

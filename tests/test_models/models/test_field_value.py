@@ -194,11 +194,11 @@ def test_set_sample_and_item_no_aft():
     })
     fake_item = Item.load({
         "id": 55,
-        "object_type": {"id": 44}
+        "object_type": {"id": 44, "name": "MySampleType"}
     })
     fake_sample = Sample.load({
         "id": 3,
-        'sample_type': {'id': 2}
+        'sample_type': {'id': 2, "name": "MySampleType2"}
     })
 
     with pytest.raises(AquariumModelError):

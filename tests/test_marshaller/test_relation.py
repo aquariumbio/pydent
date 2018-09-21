@@ -80,7 +80,7 @@ def test_basic_callback():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation(
-                model_name, callback="test_callback", params=())
+                model_name, callback="test_callback", callback_args=())
         )
 
         def test_callback(self, model_name):
@@ -102,7 +102,7 @@ def test_callback_with_params():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation(
-                model_name, callback="test_callback", params=(1, 2, 3))
+                model_name, callback="test_callback", callback_args=(1, 2, 3))
         )
 
         def test_callback(self, model_name, x, y, z):
@@ -129,7 +129,7 @@ def test_callback_with_lambda():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation(model_name, callback="test_callback",
-                                       params=lambda self: (self.x, self.y))
+                                       callback_args=lambda self: (self.x, self.y))
         )
 
         def test_callback(self, model_name, _xy):
@@ -156,7 +156,7 @@ def test_alternative_callback():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation(
-                model_name, callback=alternative_callback, params=())
+                model_name, callback=alternative_callback, callback_args=())
         )
 
     m = MyModel.load({"x": 4, "y": 5})
@@ -185,7 +185,7 @@ def test_callback_with_lambda_with_alternative_callback():
         fields = dict(
             myrelation=fields.Relation(model_name,
                                        callback=alternative_callback,
-                                       params=lambda self: (self.x, self.y))
+                                       callback_args=lambda self: (self.x, self.y))
         )
 
         def test_callback(self, model_name, _xy):
@@ -205,7 +205,7 @@ def test_raises_MarshallerCallbackNotFoundError():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation("lkjlfj", callback="callback",
-                                       params=lambda self: (self.x, self.y))
+                                       callback_args=lambda self: (self.x, self.y))
         )
 
     m = MyModel.load({"x": 4, "y": 5})
@@ -225,7 +225,7 @@ def test_deserialize_relationship():
     class Author(MarshallerBase):
         fields = dict(
             books=fields.Relation(
-                "Book", many=True, callback="get_books", params=())
+                "Book", many=True, callback="get_books", callback_args=())
         )
 
         def get_books(self):
@@ -234,7 +234,7 @@ def test_deserialize_relationship():
     @add_schema
     class Book(MarshallerBase):
         fields = dict(
-            author=fields.Relation("Author", callback="get_author", params=())
+            author=fields.Relation("Author", callback="get_author", callback_args=())
         )
 
         def get_author(self):
@@ -265,7 +265,7 @@ def test_dump_relations():
     class Author(MarshallerBase):
         fields = dict(
             books=fields.Relation(
-                "Book", many=True, callback="get_books", params=()),
+                "Book", many=True, callback="get_books", callback_args=()),
             publisher=fields.Relation("Publisher", None, None, many=False),
         )
 
@@ -279,7 +279,7 @@ def test_dump_relations():
     @add_schema
     class Book(MarshallerBase):
         fields = dict(
-            author=fields.Relation("Author", callback="get_author", params=())
+            author=fields.Relation("Author", callback="get_author", callback_args=())
         )
 
         def get_author(self):
@@ -333,7 +333,7 @@ def test_dump_relations_with_only():
     class Author(MarshallerBase):
         fields = dict(
             books=fields.Relation(
-                "Book", many=True, callback="get_books", params=()),
+                "Book", many=True, callback="get_books", callback_args=()),
             publisher=fields.Relation("Publisher", None, None, many=False),
         )
 
@@ -347,7 +347,7 @@ def test_dump_relations_with_only():
     @add_schema
     class Book(MarshallerBase):
         fields = dict(
-            author=fields.Relation("Author", callback="get_author", params=())
+            author=fields.Relation("Author", callback="get_author", callback_args=())
         )
 
         def get_author(self):
@@ -387,7 +387,7 @@ def test_dump_relations_with_only():
 #     class MyModel(MarshallerBase):
 #         fields = dict(
 #             myrelation=fields.Relation(model_name, callback="test_callback",
-#                                 params=lambda self: (self.x, self.y))
+#                                 callback_args=lambda self: (self.x, self.y))
 #         )
 #
 #         def test_callback(self, model_name, _xy):
@@ -407,7 +407,7 @@ def test_raise_return_none():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation(model_name, callback="test_callback",
-                                       params=lambda self: (self.x, self.y))
+                                       callback_args=lambda self: (self.x, self.y))
         )
 
         def test_callback(self, model_name, _xy):
@@ -424,7 +424,7 @@ def test_preferentially_reload_relationships_if_none():
     class MyModel(MarshallerBase):
         fields = dict(
             myrelation=fields.Relation("lkjlj", callback="test_callback",
-                                       params=lambda self: (self.x, self.y))
+                                       callback_args=lambda self: (self.x, self.y))
         )
 
         def test_callback(self, model_name, _xy):
@@ -441,3 +441,39 @@ def test_preferentially_reload_relationships_if_none():
     mymodel.x = 5
     mymodel.myrelation = None
     assert mymodel.myrelation == 25
+
+
+def test_callback_with_kwargs():
+
+    model_name = "AnyModelName"
+
+    @add_schema
+    class MyModel(MarshallerBase):
+        fields = dict(
+            myrelation=fields.Relation(
+                model_name, callback="test_callback", callback_args=(1, 2, 3), callback_kwargs={"multiply": 100})
+        )
+
+        def test_callback(self, model_name, x, y, z, multiply=1.):
+            return (x + y + z) * multiply
+
+    m = MyModel.load({})
+    assert m.myrelation == 600
+
+
+def test_callback_with_kwargs_with_callable():
+
+    model_name = "AnyModelName"
+
+    @add_schema
+    class MyModel(MarshallerBase):
+        fields = dict(
+            myrelation=fields.Relation(
+                model_name, callback="test_callback", callback_args=(1, 2, 3), callback_kwargs={"multiply": lambda x: x.m})
+        )
+
+        def test_callback(self, model_name, x, y, z, multiply=1.):
+            return (x + y + z) * multiply
+
+    m = MyModel.load({"m": 5})
+    assert m.myrelation == 30

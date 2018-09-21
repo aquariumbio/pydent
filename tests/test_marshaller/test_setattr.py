@@ -10,7 +10,7 @@ def test_setattr():
         fields = dict(
             myrelation=fields.Relation("SomeModel",
                                        callback="test_callback",
-                                       params=[])
+                                       callback_args=[])
         )
 
         def __init__(self, other_id=None):
