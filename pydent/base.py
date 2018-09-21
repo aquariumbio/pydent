@@ -233,13 +233,17 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         """Finds models using a model interface and a set of parameters. Used to
         find models in model relationships."""
         self._check_for_session()
-        if isinstance(args, dict):
-            if len(args) == 1 and list(args.values())[0] is None:
+        query_arg = args[0]
+
+        if isinstance(query_arg, dict):
+            if len(query_arg) == 1 and list(query_arg.values())[0] is None:
+                return None
+            if None in query_arg.values():
                 return None
         model = ModelRegistry.get_model(model_name)
         if kwargs is None:
             kwargs = {}
-        return model.where(self.session, *args, **kwargs)
+        return model.where(self.session, query_arg, *args[1:], **kwargs)
 
     # def patch(self, json_data):
     #     """Make a patch request to self using json_data. Reload model instance with new data"""

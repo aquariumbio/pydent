@@ -141,15 +141,6 @@ def test_load_canvas(session):
     assert canvas.plan is not None
     assert canvas.plan.operations is not None
 
-
-def test_layout(session):
-    pass
-
-
-def test_add_op(session):
-    canvas = designer.Canvas(session, plan_id=23055)
-    canvas.plan.validate(True)
-
     # # data = canvas.plan.to_save_json()
     #
     # op = canvas.get_operation(113772)
