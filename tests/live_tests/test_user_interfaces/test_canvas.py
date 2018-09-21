@@ -158,25 +158,18 @@ def test_load_canvas(session):
     assert canvas.plan is not None
     assert canvas.plan.operations is not None
 
-    # # data = canvas.plan.to_save_json()
-    #
-    # op = canvas.get_operation(113772)
-    #
-    # op2 = canvas.create_operation_by_name("Fragment Analyzing")
-    # # canvas.quick_wire_ops(op, op2)
-    # # data = canvas.plan.to_save_json()
-    # # import json
-    # # with open('temp.json', 'w') as f:
-    # #     json.dump(data, f)
-    # canvas.save()
 
-    # for op in canvas.plan.operations:
+def test_proper_setting_of_object_types(session):
 
-    # for n in list(nx.topological_sort(G))[::-1]:
-    #     op = G.nodes[n]['operation']
-    #     op.y = y
-    #     y += 75
-    # canvas.save()
+    canvas = Canvas(session)
+    yeast = session.Sample.where({"sample_type_id": session.SampleType.find_by_name("Yeast Strain").id}, opts={"limit": 10})[-1]
 
-    # canvas.draw()/
-    # print(canvas.url)
+    streak = canvas.create_operation_by_name("Streak Plate", category="Yeast")
+    glycerol = canvas.create_operation_by_name("Yeast Glycerol Stock", category="Yeast")
+    canvas.set_field_value(glycerol.inputs[0], sample=yeast)
+    canvas.set_field_value(streak.inputs[0], sample=yeast)
+    mating = canvas.create_operation_by_name("Yeast Mating")
+    canvas.add_wire(streak.outputs[0], mating.inputs[0])
+    canvas.add_wire(glycerol.outputs[0], mating.inputs[1])
+    assert mating.inputs[0].allowable_field_type.object_type.name == "Divided Yeast Plate"
+    assert mating.inputs[1].allowable_field_type.object_type.name == "Yeast Glycerol Stock"
