@@ -1726,6 +1726,7 @@ class Upload(ModelBase):
     fields = dict(
         job=HasOne("Job")
     )
+    methods = ['size', 'name', 'job']
 
     def __init__(self, job_id=None, file=None):
         """
