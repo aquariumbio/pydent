@@ -8,6 +8,4 @@ def test_part_association_exists(session):
     assert isinstance(part_association.collection, models.Collection)
     assert isinstance(part_association.part, models.Item)
     assert len(part_association.collection.parts) > 0
-    assert part_association.collection.dimensions
-    print(part_association.collection.dimensions)
     assert isinstance(part_association.collection.parts[0], models.Item)

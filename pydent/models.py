@@ -309,13 +309,18 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
         # TODO: to be implementedh
         return None
 
-    @property
     def part(self, row, col):
         """
         Returns the part Item at (row, col) of this Collection (zero-based).
         """
-        # TODO: to be implemented
-        return None
+        parts = [assoc.part for assoc in self.part_associations
+                 if assoc.row == row and assoc.column == col]
+
+        print(parts)
+        if not parts:
+            return None
+
+        return next(iter(parts))
 
 
 @add_schema
@@ -1305,6 +1310,7 @@ class OperationType(ModelBase, HasCodeMixin):
         """Saves the Operation Type to the Aquarium server. Requires
         this Operation Type to be connected to a session."""
         return self.reload(self.session.utils.create_operation_type(self))
+
 
 @add_schema
 class PartAssociation(ModelBase):
