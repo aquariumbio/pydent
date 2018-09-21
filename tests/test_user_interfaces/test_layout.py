@@ -1,4 +1,4 @@
-from pydent.designer import Canvas, CanvasLayout
+from pydent.user_interfaces.designer import Canvas, CanvasLayout
 
 
 def test_add_operation_by_name(session):

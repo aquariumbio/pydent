@@ -1,5 +1,5 @@
 import pytest
-from pydent.designer import Canvas, CanvasException
+from pydent.user_interfaces.designer import Canvas, CanvasException
 
 
 def test_canvas_create(session):
