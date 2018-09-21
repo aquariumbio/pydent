@@ -714,6 +714,7 @@ class Item(ModelBase, DataAssociatorMixin):
         data=fields.JSON(allow_none=True, strict=False),
         ignore=("locator_id",)
     )
+    methods = ['is_part']
 
     def __init__(self=None, sample_id=None, object_type_id=None):
         self.sample_id = sample_id
@@ -733,6 +734,7 @@ class Item(ModelBase, DataAssociatorMixin):
     def is_deleted(self):
         return self.location == 'deleted'
 
+    @property
     def containing_collection(self):
         """
         Returns the collection of which this Item is a part.
@@ -770,22 +772,14 @@ class Item(ModelBase, DataAssociatorMixin):
         return self.session.Collection.find(self.id)
 
     @property
-    def is_part(self):
-        """
-        Returns True if this Item is a part of a collection.
-        """
-        # TODO: to be implemented
-        return False
-
-    @property
     def is_collection(self):
         """
-        Returns True if this Item is a collection.
+        Returns True if this Item is a collection in a PartAssociation.
 
-        Note: have to query for the Collection object.
+        Note: this is not how Aquarium does this test in the `collection?` method.
         """
-        # TODO: to be implemented
-        return False
+        assoc_list = self.session.PartAssociation.where({'collection_id': self.id})
+        return bool(assoc_list)
 
 
 @add_schema
