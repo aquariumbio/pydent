@@ -54,7 +54,7 @@ SampleType:
     @add_schema
     class SampleType(Base):
         samples = Many("Sample",
-            params={"sample_type_id": lambda self: self.id})
+            callback_args={"sample_type_id": lambda self: self.id})
 """
 
 import warnings
@@ -270,8 +270,8 @@ class Code(ModelBase):
     fields = dict(
         user=HasOne("User"),
         operation_type=One(
-            "OperationType", callback="get_parent", params=None),
-        library=One("Library", callback="get_parent", params=None)
+            "OperationType", callback="get_parent", callback_args=None),
+        library=One("Library", callback="get_parent", callback_args=None)
     )
 
     def get_parent(self, parent_class, *args):
@@ -727,7 +727,7 @@ class Library(ModelBase, HasCodeMixin):
     """A Library model"""
     fields = dict(
         codes=HasManyGeneric("Code"),
-        source=One("Code", callback="get_code_callback", params="source")
+        source=One("Code", callback="get_code_callback", callback_args="source")
     )
 
 
@@ -753,7 +753,12 @@ class ObjectType(ModelBase):
 class Operation(ModelBase, DataAssociatorMixin):
     """A Operation model"""
     fields = dict(
-        field_values=HasManyGeneric("FieldValue"),
+        field_values=Many("FieldValue",
+                         callback_args=lambda self: {
+                             "parent_id": self.id,
+                             "parent_class": self.__class__.__name__},
+                          callback_kwargs={"methods": ["dimensions"]}),
+        # field_values=HasManyGeneric("FieldValue"),
         data_associations=HasManyGeneric("DataAssociation"),
         operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
@@ -939,6 +944,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         :rtype: FieldValue
         """
         # get the field value
+        fvs = self.field_values
         field_value = self.field_value(name, role)
 
         # get the field type
@@ -1145,17 +1151,17 @@ class OperationType(ModelBase, HasCodeMixin):
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
         field_types=Many("FieldType",
-                         params=lambda self: {
+                         callback_args=lambda self: {
                              "parent_id": self.id,
                              "parent_class": self.__class__.__name__}),
         codes=HasManyGeneric("Code"),
-        protocol=One("Code", callback="get_code_callback", params="protocol"),
+        protocol=One("Code", callback="get_code_callback", callback_args="protocol"),
         cost_model=One("Code", callback="get_code_callback",
-                       params="cost_model"),
+                       callback_args="cost_model"),
         documentation=One("Code", callback="get_code_callback",
-                          params="documentation"),
+                          callback_args="documentation"),
         precondition=One("Code", callback="get_code_callback",
-                         params="precondition"),
+                         callback_args="precondition"),
         user=HasOne("User")
     )
 
@@ -1221,7 +1227,7 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         data_associations=HasManyGeneric("DataAssociation"),
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
-        wires=Many("Wire", callback="get_wires", params=None),
+        wires=Many("Wire", callback="get_wires", callback_args=None),
         layout=fields.JSON(allow_none=True)
     )
 
@@ -1454,7 +1460,10 @@ class Sample(ModelBase):
         # sample relationships
         sample_type=HasOne("SampleType"),
         items=HasMany("Item", ref="sample_id"),
-        field_values=HasMany("FieldValue", ref="parent_id"),
+        field_values=Many("FieldValue",
+                         callback_args=lambda self: {
+                             "parent_id": self.id,
+                             "parent_class": self.__class__.__name__})
     )
 
     def __init__(self, name=None, project=None, description=None, sample_type_id=None, properties=None):
@@ -1573,7 +1582,7 @@ class SampleType(ModelBase):
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
         field_types=Many("FieldType",
-                         params=lambda self: {
+                         callback_args=lambda self: {
                              "parent_id": self.id,
                              "parent_class": self.__class__.__name__})
     )

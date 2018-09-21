@@ -270,18 +270,30 @@ class MarshallerBase(object):
                 raise MarshallerCallbackNotFoundError(error)
 
         # get params; pass in self if param is callable
-        fxn_params = self._get_callback_params(field)
+        fxn_args = self._get_callback_args(field)
+        fxn_kwargs = self._get_callback_kwargs(field)
         schema_model_name = field.nested
-        return callback(schema_model_name, *fxn_params)
+        return callback(schema_model_name, *fxn_args, **fxn_kwargs)
 
-    def _get_callback_params(self, field):
+    def _get_callback_args(self, field):
         fxn_params = []
-        for param in field.params:
+        for param in field.callback_args:
             if callable(param):
                 fxn_params.append(param(self))
             else:
                 fxn_params.append(param)
         return fxn_params
+
+    def _get_callback_kwargs(self, field):
+        if field.callback_kwargs is None:
+            return {}
+        kwargs = {}
+        for k, v in field.callback_kwargs.items():
+            if callable(v):
+                kwargs[k] = v(self)
+            else:
+                kwargs[k] = v
+        return kwargs
 
     def __getstate__(self):
         """Override for pickling objects"""

@@ -229,15 +229,17 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         model = ModelRegistry.get_model(model_name)
         return model.find(self.session, model_id)
 
-    def where_callback(self, model_name, params):
+    def where_callback(self, model_name, *args, **kwargs):
         """Finds models using a model interface and a set of parameters. Used to
         find models in model relationships."""
         self._check_for_session()
-        if isinstance(params, dict):
-            if len(params) == 1 and list(params.values())[0] is None:
+        if isinstance(args, dict):
+            if len(args) == 1 and list(args.values())[0] is None:
                 return None
         model = ModelRegistry.get_model(model_name)
-        return model.where(self.session, params)
+        if kwargs is None:
+            kwargs = {}
+        return model.where(self.session, *args, **kwargs)
 
     # def patch(self, json_data):
     #     """Make a patch request to self using json_data. Reload model instance with new data"""

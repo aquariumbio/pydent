@@ -61,29 +61,32 @@ class Relation(fields.Nested):
     which passes in the model instance.
     """
 
-    def __init__(self, model, callback, params, *args, allow_none=True, **kwargs):
+    def __init__(self, model, callback, callback_args, *field_args, allow_none=True, callback_kwargs=None, **field_kwargs):
         """
         Relation initializer.
 
         :param model: target model
         :type model: basestring
-        :param args: positional parameters
-        :type args:
+        :param field_args: positional parameters
+        :type field_args:
         :param callback: function to use in Base to find model
         :type callback: basestring or callable
-        :param params: tuple or list of variables (or callables) to use to
+        :param callback_args: tuple or list of variables (or callables) to use to
                        search for the model. If param is a callable, the model
                        instance will be passed in.
-        :type params: tuple or list
-        :param kwargs: rest of the parameters
-        :type kwargs:
+        :type callback_args: tuple or list
+        :param field_kwargs: rest of the parameters
+        :type field_kwargs:
         """
-        super().__init__(model, *args, allow_none=allow_none, **kwargs)
+        super().__init__(model, *field_args, allow_none=allow_none, **field_kwargs)
         self.callback = callback
         # force params to be an iterable
-        if not isinstance(params, (list, tuple)):
-            params = (params,)
-        self.params = params
+        if not isinstance(callback_args, (list, tuple)):
+            callback_args = (callback_args,)
+        self.callback_args = callback_args
+        if callback_kwargs is None:
+            callback_kwargs = {}
+        self.callback_kwargs = callback_kwargs
 
     @property
     def model(self):
@@ -112,7 +115,7 @@ class Relation(fields.Nested):
     def __repr__(self):
         return "<{} (model={}, callback={}, params={})>".format(
             self.__class__.__name__,
-            self.nested, self.callback, self.params)
+            self.nested, self.callback, self.callback_args)
 
 
 fields.Relation = Relation
