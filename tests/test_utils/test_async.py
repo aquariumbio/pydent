@@ -2,6 +2,7 @@ from pydent.utils.async_requests import make_async
 import time
 import random
 
+
 def test_async_basic():
     """Expect array to be return in correct order"""
     @make_async(3)

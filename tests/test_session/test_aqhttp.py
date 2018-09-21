@@ -2,7 +2,7 @@ import json
 import os
 
 import pytest
-import requests
+# import requests
 
 from pydent.exceptions import (TridentJSONDataIncomplete, TridentLoginError,
                                TridentTimeoutError, TridentRequestError)
@@ -161,7 +161,8 @@ def test_aqhttp_post(monkeypatch, aqhttp):
 
     # test post
     json_result = aqhttp.post(
-        request_path, json_data=fake_json, timeout=request_timeout, **extra_kwargs)
+        request_path, json_data=fake_json, timeout=request_timeout,
+        **extra_kwargs)
     assert json_result == fake_json
 
 
@@ -234,6 +235,7 @@ def test_aqhttp_get(monkeypatch, aqhttp):
         request_path, timeout=request_timeout, **extra_kwargs)
     assert isinstance(json_result, dict) and not json_result
 
+
 def test_authentication_error_via_reroute(monkeypatch, aqhttp):
     class mock_request(object):
 
@@ -241,7 +243,8 @@ def test_authentication_error_via_reroute(monkeypatch, aqhttp):
         def request(method, path, timeout=None, **kwargs):
             fake_requests_response = requests.Response()
             fake_requests_response.json = lambda: json.loads("not a json")
-            fake_requests_response.url = url_build(aqhttp.aquarium_url, "signin")
+            fake_requests_response.url = url_build(
+                aqhttp.aquarium_url, "signin")
             return fake_requests_response
 
     monkeypatch.setattr('pydent.aqhttp.requests', mock_request)

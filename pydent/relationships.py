@@ -60,7 +60,8 @@ class Many(fields.Relation):
 
 class HasMixin:
     """
-    Mixin for adding the 'set_ref' method. 'set_ref' builds a 'ref' and 'attr' attributes
+    Mixin for adding the 'set_ref' method. 'set_ref' builds a 'ref' and 'attr'
+    attributes
     """
 
     def set_ref(self, model=None, ref=None, attr=None):
@@ -106,8 +107,8 @@ class HasMixin:
 class HasOne(HasMixin, One):
     def __init__(self, model, attr=None, ref=None, **kwargs):
         """
-        HasOne initializer. Uses the "get_one_generic" callback and automatically
-        assigns attribute as in the following:
+        HasOne initializer. Uses the "get_one_generic" callback and
+        automatically assigns attribute as in the following:
 
         .. code-block:: python
 
@@ -175,8 +176,9 @@ class HasMany(HasMixin, Many):
         :type ref: str
         """
         if ref_model is None and ref is None:
-            raise MarshallerRelationshipError("'{}' needs a 'ref_model' or 'ref' parameters to initialize".format(
-                self.__class__.__name__))
+            msg = "'{}' needs a 'ref_model' or 'ref' parameters to initialize"
+            raise MarshallerRelationshipError(
+                msg.format(self.__class__.__name__))
         self.set_ref(model=ref_model, attr=attr, ref=ref)
 
         def params(slf): return {self.ref: getattr(slf, self.attr)}

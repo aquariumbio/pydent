@@ -172,7 +172,8 @@ class DataAssociatorMixin:
         """
         Adds a data association with the key and value to this object.
         """
-        return self.session.utils.create_data_association(self, key, value, upload=upload)
+        return self.session.utils.create_data_association(
+            self, key, value, upload=upload)
 
     def associate_file(self, key, value, file, job_id=None):
         """
@@ -300,7 +301,6 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
         return self.data['matrix']
 
 
-
 @add_schema
 class DataAssociation(ModelBase):
     """A DataAssociation model"""
@@ -312,7 +312,6 @@ class DataAssociation(ModelBase):
     @property
     def value(self):
         return self.object.get(self.key, None)
-
 
     def delete(self):
         return self.session.utils.delete_data_association(self)
@@ -429,7 +428,8 @@ class FieldValue(ModelBase, FieldMixin):
         successors=HasManyThrough("Operation", "Wire"),
         sid=fields.Function(lambda fv: fv.sid, allow_none=True),
         child_sample_name=fields.Function(lambda fv: fv.sid, allow_none=True),
-        allowable_child_types=fields.Function(lambda fv: fv.allowable_child_types, allow_none=True),
+        allowable_child_types=fields.Function(
+            lambda fv: fv.allowable_child_types, allow_none=True),
         ignore=('object_type',),
     )
 
@@ -545,11 +545,13 @@ class FieldValue(ModelBase, FieldMixin):
     def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
         if row is not None:
             if not self.field_type.part:
-                raise AquariumModelError("Cannot set row of a non-part for {} {}".format(self.role, self.name))
+                raise AquariumModelError(
+                    "Cannot set row of a non-part for {} {}".format(self.role, self.name))
             self.row = row
         if column is not None:
             if not self.field_type.part:
-                raise AquariumModelError("Cannot set column of a non-part for {} {}".format(self.role, self.name))
+                raise AquariumModelError(
+                    "Cannot set column of a non-part for {} {}".format(self.role, self.name))
             self.column = column
         if item and container and item.object_type_id != container.id:
             raise AquariumModelError(
@@ -560,7 +562,7 @@ class FieldValue(ModelBase, FieldMixin):
             if choices is not None:
                 if value not in choices and str(value) not in choices:
                     raise AquariumModelError("Value \'{}\' not in list of field "
-                                                 "type choices \'{}\'".format(value, choices))
+                                             "type choices \'{}\'".format(value, choices))
             self.value = value
         if item is not None:
             self.item = item
@@ -1341,7 +1343,8 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         model_interface = super(Plan, cls).interface(session)
 
         # make a special find method for plans, as generic method is too minimal.
-        new_find = lambda model_id: model_interface.get('plans/{}.json'.format(model_id))
+        def new_find(model_id): return model_interface.get(
+            'plans/{}.json'.format(model_id))
 
         # override the old find method
         model_interface.find = new_find
@@ -1449,6 +1452,7 @@ class PlanAssociation(ModelBase):
         self.operation_id = operation_id
         super().__init__(**vars(self))
 
+
 @add_schema
 class Sample(ModelBase):
     """A Sample model"""
@@ -1490,7 +1494,8 @@ class Sample(ModelBase):
         for field_value in self.field_values:
             if field_value.name == name:
                 if field_value.field_type is None:
-                    field_value.field_type = self.sample_type.field_type(field_value.name)
+                    field_value.field_type = self.sample_type.field_type(
+                        field_value.name)
                 return field_value
         return None
 
@@ -1521,7 +1526,8 @@ class Sample(ModelBase):
         if self.field_values is not None:
             for fv in self.field_values:
                 if fv.field_type is None:
-                    fv.field_type = self.sample_type.field_type(fv.name) # corrects wierdness with field_types being absent
+                    # corrects wierdness with field_types being absent
+                    fv.field_type = self.sample_type.field_type(fv.name)
                 d[fv.name] = fv
         fv_dict = {}
         for ft in self.sample_type.field_types:
@@ -1616,7 +1622,8 @@ class Upload(ModelBase):
         return http.get("krill/uploads?job={}".format(self.job_id))['uploads']
 
     def temp_url(self):
-        data = self.session.Upload.where({"id": self.id}, methods=["expiring_url"])[0].raw
+        data = self.session.Upload.where(
+            {"id": self.id}, methods=["expiring_url"])[0].raw
         return data['expiring_url']
 
     @staticmethod
@@ -1699,6 +1706,7 @@ class Upload(ModelBase):
     def save(self):
         return self.session.utils.create_upload(self)
 
+
 @add_schema
 class User(ModelBase):
     """A User model"""
@@ -1725,6 +1733,7 @@ class UserBudgetAssociation(ModelBase):
     def __init__(self):
         super().__init__(**vars(self))
 
+
 @add_schema
 class Wire(ModelBase):
     """A Wire model"""
@@ -1738,7 +1747,7 @@ class Wire(ModelBase):
         self.source = source
         self.destination = destination
         self.active = True
-        self.id=None
+        self.id = None
         super().__init__(**vars(self))
 
     def to_save_json(self):
