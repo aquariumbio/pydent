@@ -1,5 +1,5 @@
 """
-CanvasLayout
+PlannerLayout
 """
 
 import networkx as nx
@@ -7,7 +7,7 @@ from collections import OrderedDict
 from pydent.utils import make_async
 
 
-class CanvasLayout(object):
+class PlannerLayout(object):
 
     TOP_RIGHT = (100, 100)
     BOX_DELTAX = 170
@@ -174,10 +174,10 @@ class CanvasLayout(object):
         :return: layout
         :rtype: layout
         """
-        layouts = self.layout.get_independent_layouts()
+        layouts = self.get_independent_layouts()
         if len(layouts) == 1:
-            self.layout.move(100, 100)
-            return self.layout
+            self.move(100, 100)
+            return self
 
         # make grid assignments
         assignments = []
@@ -192,9 +192,9 @@ class CanvasLayout(object):
 
         # find cell height and width
         if borderx is None:
-            borderx = self.layout.BOX_DELTAX * 2
+            borderx = self.BOX_DELTAX * 2
         if bordery is None:
-            bordery = self.layout.BOX_DELTAY * 2
+            bordery = self.BOX_DELTAY * 2
         grid_cell_height = 0
         grid_cell_width = 0
         for layout in layouts:
@@ -209,8 +209,8 @@ class CanvasLayout(object):
             if axis == 0:
                 r, c = c, r
             layout.center(c * grid_cell_width, r * grid_cell_height)
-        self.layout.move(100, 100)
-        return self.layout
+        self.move(100, 100)
+        return self
 
     # TODO: minimize crossings
     def _topo_sort_helper(self):
@@ -403,7 +403,7 @@ class CanvasLayout(object):
         Align this layout'x midpoint x-coordinate with the midpoint x-coordinate of another layout
 
         :param other_layout: the other canvas layout
-        :type other_layout: CanvasLayout
+        :type other_layout: PlannerLayout
         :return: None
         :rtype: None
         """
@@ -421,7 +421,7 @@ class CanvasLayout(object):
         Align this layout'x midpoint y-coordinate with the midpoint y-coordinate of another layout
 
         :param other_layout: the other canvas layout
-        :type other_layout: CanvasLayout
+        :type other_layout: PlannerLayout
         :return: None
         :rtype: None
         """

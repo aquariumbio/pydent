@@ -15,4 +15,5 @@ Submodules
 
 """
 
-from .canvas import Canvas, CanvasLayout, CanvasException
+from pydent.planner.planner import Planner, PlannerException
+from pydent.planner.layout import PlannerLayout

@@ -67,7 +67,6 @@ from pydent.marshaller import add_schema, fields
 from pydent.relationships import (One, Many, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric)
 from pydent.utils import magiclist, filter_list
-from pydent.utils.plan_validator import PlanValidator
 from pydent.utils.async_requests import make_async
 import json
 
@@ -1335,27 +1334,7 @@ class PartAssociation(ModelBase):
 
 
 @add_schema
-class PartAssociation(ModelBase):
-    """
-    Represents a PartAssociation linking a part to a collection.
-
-    Aquarium definition has the collection as an Item. Not sure why this isn't a Collection.
-    """
-    fields = dict(
-        part=HasOne('Item', ref="part_id"),
-        collection=HasOne('Collection')
-    )
-
-    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
-        self.part_id = part_id
-        self.collection_id = collection_id
-        self.row = row
-        self.column = column
-        super().__init__(**vars(self))
-
-
-@add_schema
-class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
+class Plan(ModelBase, DataAssociatorMixin):
     """
     A Plan model
     """

@@ -1,8 +1,8 @@
-from pydent.user_interfaces.designer import Canvas, CanvasLayout
+from pydent.planner import Planner, PlannerLayout
 
 
 def test_add_operation_by_name(session):
-    canvas = Canvas(session, plan_id=121080)
+    canvas = Planner(session, plan_id=121080)
     canvas.create_operation_by_name("Yeast Transformation")
 
 
@@ -33,7 +33,7 @@ class TestCanvasLayout:
             self.__class__.rid += 1
 
     def test_layout(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
         canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                   "Plate Transformed Cells", "Check Plate",
                                   category="Cloning")
@@ -45,7 +45,7 @@ class TestCanvasLayout:
         op3 = self.FakeOp(0, 700)
         ops = [op1, op2, op3]
 
-        layout = CanvasLayout()
+        layout = PlannerLayout()
         for op in ops:
             layout._add_operation(op)
 
@@ -60,7 +60,7 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        layout = CanvasLayout()
+        layout = PlannerLayout()
         for op in ops:
             layout._add_operation(op)
 
@@ -75,7 +75,7 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        layout = CanvasLayout()
+        layout = PlannerLayout()
         for op in ops:
             layout._add_operation(op)
 
@@ -88,7 +88,7 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        layout = CanvasLayout()
+        layout = PlannerLayout()
         for op in ops:
             layout._add_operation(op)
 
@@ -102,7 +102,7 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        layout = CanvasLayout()
+        layout = PlannerLayout()
         for op in ops:
             layout._add_operation(op)
 
@@ -116,7 +116,7 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        layout = CanvasLayout()
+        layout = PlannerLayout()
         for op in ops:
             layout._add_operation(op)
 
@@ -132,7 +132,7 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        layout = CanvasLayout()
+        layout = PlannerLayout()
         for op in ops:
             layout._add_operation(op)
 
@@ -148,7 +148,7 @@ class TestCanvasLayout:
         op3 = self.FakeOp(300, 700)
         ops = [op1, op2, op3]
 
-        layout = CanvasLayout()
+        layout = PlannerLayout()
         for op in ops:
             layout._add_operation(op)
 
@@ -163,7 +163,7 @@ class TestCanvasLayout:
         assert op3.y == 750
 
     def test_collect_successors(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate", category="Cloning")
@@ -172,7 +172,7 @@ class TestCanvasLayout:
         assert s == ["r{}".format(ops[1].rid)]
 
     def test_collect_predecessors(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate", category="Cloning")
@@ -181,7 +181,7 @@ class TestCanvasLayout:
         assert s == ["r{}".format(ops[0].rid)]
 
     def test_align_x_with_predecessors(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
 
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
@@ -204,7 +204,7 @@ class TestCanvasLayout:
         assert new_op_layout.midpoint()[0] == ops[-1].x
 
     def test_successor_layout(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
 
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
@@ -220,7 +220,7 @@ class TestCanvasLayout:
         assert len(successor_layout) == 3
 
     def test_predecessor_layout(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
 
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
@@ -236,7 +236,7 @@ class TestCanvasLayout:
         assert len(predecessor_layout) == 1
 
     def test_align_midpoints(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
 
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
@@ -255,7 +255,7 @@ class TestCanvasLayout:
         assert successors.midpoint()[0] == layout.midpoint()[0]
 
     def test_topo_sort_chain(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
 
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
@@ -270,7 +270,7 @@ class TestCanvasLayout:
         assert len(set([op.x for op in ops])) == 1
 
     def test_topo_sort(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
 
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
@@ -294,7 +294,7 @@ class TestCanvasLayout:
         )[0] == canvas.layout.ops_to_layout(pcr).midpoint()[0]
 
     def test_topo_sort_with_independent_subgraphs(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
 
         ops1 = canvas.quick_create_chain(
             "Assemble Plasmid", "Transform Cells", "Plate Transformed Cells",
@@ -313,7 +313,7 @@ class TestCanvasLayout:
         assert ops2[0].x + canvas.layout.BOX_DELTAX == ops1[0].x
 
     def test_subgraph(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
@@ -324,7 +324,7 @@ class TestCanvasLayout:
         canvas.layout.topo_sort()
 
     def test_leaves(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
@@ -336,7 +336,7 @@ class TestCanvasLayout:
         assert len(canvas.layout.leaves()) == 2
 
     def test_roots(self, session):
-        canvas = Canvas(session)
+        canvas = Planner(session)
         ops = canvas.quick_create_chain("Assemble Plasmid",
                                         "Transform Cells",
                                         "Plate Transformed Cells",
