@@ -17,7 +17,6 @@ Submodules
 
 import pprint as pprint_module
 
-from pydent.utils.magiclist import MagicList, magiclist
 from pydent.utils.async_requests import make_async
 
 

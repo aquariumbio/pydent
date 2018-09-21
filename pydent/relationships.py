@@ -6,7 +6,6 @@ import inflection
 from pydent.base import ModelBase
 from pydent.marshaller import fields
 from pydent.marshaller.exceptions import MarshallerRelationshipError
-from pydent.utils import MagicList
 
 
 class One(fields.Relation):
@@ -54,7 +53,7 @@ class Many(fields.Relation):
         """
         if callback is None:
             callback = ModelBase.where_callback.__name__
-        super().__init__(model, *args, default=MagicList,
+        super().__init__(model, *args, default=list,
                          many=True, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 

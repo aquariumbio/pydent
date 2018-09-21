@@ -66,7 +66,7 @@ from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema, fields
 from pydent.relationships import (One, Many, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric)
-from pydent.utils import magiclist, filter_list
+from pydent.utils import filter_list
 from pydent.utils.async_requests import make_async
 import json
 
@@ -329,6 +329,7 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
             return None
 
         return next(iter(parts))
+
 
 @add_schema
 class DataAssociation(ModelBase):
@@ -848,10 +849,10 @@ class Operation(ModelBase, DataAssociatorMixin):
     """A Operation model"""
     fields = dict(
         field_values=Many("FieldValue",
-                         callback_args=lambda self: {
-                             "parent_id": self.id,
-                             "parent_class": self.__class__.__name__},
-                        ),
+                          callback_args=lambda self: {
+                              "parent_id": self.id,
+                              "parent_class": self.__class__.__name__},
+                          ),
         # field_values=HasManyGeneric("FieldValue"),
         data_associations=HasManyGeneric("DataAssociation"),
         operation_type=HasOne("OperationType"),
@@ -1226,12 +1227,10 @@ class Operation(ModelBase, DataAssociatorMixin):
             field_value.show(pre=pre + "  ")
 
     @property
-    @magiclist
     def inputs(self):
         return [fv for fv in self.field_values if fv.role == 'input']
 
     @property
-    @magiclist
     def outputs(self):
         return [fv for fv in self.field_values if fv.role == 'output']
 
@@ -1410,7 +1409,6 @@ class Plan(ModelBase, DataAssociatorMixin):
 
     # This is not being deserialized properly
     @property
-    @magiclist
     def all_wires(self):
         wires = []
         if self.operations:

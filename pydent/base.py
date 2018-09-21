@@ -40,7 +40,6 @@ relationships - models relationships are stored
 
 from pydent.exceptions import TridentModelNotFoundError, AquariumModelError
 from pydent.marshaller import MarshallerBase
-from pydent.utils import magiclist
 from inflection import underscore
 
 
@@ -145,7 +144,6 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         return model
 
     @classmethod
-    @magiclist
     def load(cls, *args, **kwargs):
         """Create a new model instance from loaded attributes"""
         inst = super().load(*args, **kwargs)
