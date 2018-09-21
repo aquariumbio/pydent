@@ -72,11 +72,7 @@ def asyncfunc(fxn, arg_list, kwargs=None, chunk_size=1, progress_bar=True, desc=
     if kwargs is None:
         kwargs = {}
     # finish loop
-    try:
-        loop = asyncio.get_event_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
+    loop = asyncio.get_event_loop()
     if desc is None:
         desc = desc
     results = loop.run_until_complete(exec_async_fxn(fxn, arg_list, kwargs=kwargs, desc=desc, progress_bar=progress_bar, chunk_size=chunk_size))
