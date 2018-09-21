@@ -15,15 +15,14 @@ class PlannerLayout(object):
     BOX_WIDTH = 100
     BOX_HEIGHT = 70
     STATUS_COLORS = {
-            "waiting": "orange",
-            "error": "red",
-            "pending": "yellow",
-            "running": "green",
-            "delayed": "magenta",
-            "done": "black",
-            "planning": "grey"
-        }
-
+        "waiting": "orange",
+        "error": "red",
+        "pending": "yellow",
+        "running": "green",
+        "delayed": "magenta",
+        "done": "black",
+        "planning": "grey"
+    }
 
     def __init__(self, G=None):
         if G is None:
@@ -250,10 +249,11 @@ class PlannerLayout(object):
                 preds = list(self.predecessors(op_id))
                 if len(preds) > 0:
                     x, _ = self.subgraph(preds).midpoint()
-                    pred_avg_x.append((x,op_id))
+                    pred_avg_x.append((x, op_id))
                 else:
                     pred_avg_x.append((x+1, op_id))
-            sorted_op_ids = [op_id for _, op_id in sorted(pred_avg_x, key=lambda x: x[0])]
+            sorted_op_ids = [op_id for _, op_id in sorted(
+                pred_avg_x, key=lambda x: x[0])]
 
             x = _x
             # sorted_op_ids = sorted(op_ids)
@@ -409,16 +409,13 @@ class PlannerLayout(object):
         """
         if len(other_layout.G) == 0:
             return
-        otherx, othery = other_layout.midpoint()
-        x_arr1 = [op.x for op in other_layout.operations]
-        x_arr2 = [op.x for op in self.operations]
-        x, y = self.midpoint()
-        deltax = otherx - x
-        self.translate(otherx - x, 0)
+        other_x, _ = other_layout.midpoint()
+        x, _ = self.midpoint()
+        self.translate(other_x - x, 0)
 
     def align_y_midpoints(self, other_layout):
         """
-        Align this layout'x midpoint y-coordinate with the midpoint y-coordinate of another layout
+        Align this midpoint y-coordinates of this layout with another layout
 
         :param other_layout: the other canvas layout
         :type other_layout: PlannerLayout
@@ -427,8 +424,8 @@ class PlannerLayout(object):
         """
         if len(other_layout.G) == 0:
             return
-        otherx, othery = other_layout.midpoint()
-        self.y = othery
+        _, other_y = other_layout.midpoint()
+        self.y = other_y
 
     def align_x_of_ops(self, ops1, ops2):
         """
@@ -525,7 +522,8 @@ class PlannerLayout(object):
             op = self.G.node[n]['operation']
             pos[n] = (op.x, -op.y)
 
-        node_color = [self.STATUS_COLORS.get(op.status, "rosybrown") for op in self.operations]
+        node_color = [self.STATUS_COLORS.get(
+            op.status, "rosybrown") for op in self.operations]
 
         return nx.draw(self.G, pos=pos, node_color=node_color)
 

@@ -183,7 +183,7 @@ class Planner(object):
                 outputs = [source]
             else:
                 raise PlannerException("Canvas attempted to find matching allowable_field_types for"
-                                      " an output FieldValue but found an input FieldValue")
+                                       " an output FieldValue but found an input FieldValue")
         elif isinstance(source, Operation):
             outputs = [
                 fv for fv in source.outputs if fv.field_type.ftype == 'sample']
@@ -199,7 +199,7 @@ class Planner(object):
                 inputs = [destination]
             else:
                 raise PlannerException("Canvas attempted to find matching allowable_field_types for"
-                                      " an input FieldValue but found an output FieldValue")
+                                       " an input FieldValue but found an output FieldValue")
         elif isinstance(destination, Operation):
             inputs = [
                 fv for fv in destination.inputs if fv.field_type.ftype == 'sample']
@@ -215,7 +215,6 @@ class Planner(object):
         matching_inputs = []
         matching_outputs = []
         for output in outputs:
-            opart = output.field_type.part is True
             for input in inputs:
                 io_matching_afts = cls._find_matching_afts(output, input)
                 if len(io_matching_afts) > 0:
@@ -370,12 +369,13 @@ class Planner(object):
                 selected_sample = samples[1]
 
             # filter afts by sample_type_id
-            afts = [aft for aft in afts if aft[0].sample_type_id == selected_sample.sample_type_id]
+            afts = [aft for aft in afts if aft[0].sample_type_id ==
+                    selected_sample.sample_type_id]
             selected_aft = afts[0]
 
             if len(afts) == 0:
                 raise PlannerException("No allowable_field_types were found for FieldValues {} & {} for"
-                                      " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name))
+                                       " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name))
 
             self.set_field_value(src_fv, sample=selected_sample)
             self.set_field_value(dest_fv, sample=selected_sample)
@@ -384,12 +384,13 @@ class Planner(object):
             assert selected_aft[0].sample_type_id == src_fv.sample.sample_type_id
             assert selected_aft[0].sample_type_id == dest_fv.sample.sample_type_id
 
-
             # set the sample (and allowable_field_type)
             if src_fv.sample is not None and (dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
-                self.set_field_value(dest_fv, sample=src_fv.sample, container=selected_aft[0].object_type)
+                self.set_field_value(
+                    dest_fv, sample=src_fv.sample, container=selected_aft[0].object_type)
             elif dest_fv.sample is not None and (src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
-                self.set_field_value(src_fv, sample=dest_fv.sample, container=selected_aft[0].object_type)
+                self.set_field_value(
+                    src_fv, sample=dest_fv.sample, container=selected_aft[0].object_type)
 
         self.set_field_value(src_fv, container=selected_aft[0].object_type)
         self.set_field_value(dest_fv, container=selected_aft[0].object_type)
@@ -522,10 +523,13 @@ class Planner(object):
         """
         print("Optimizing Plan")
         if operations is None:
-            operations = [op for op in self.plan.operations if op.status == 'planning']
+            operations = [
+                op for op in self.plan.operations if op.status == 'planning']
         if ignore is not None:
-            operations = [op for op in operations if op.operation_type.name not in ignore]
-        groups = {k: v for k, v in self._group_ops_by_hashes(operations).items() if len(v) > 1}
+            operations = [
+                op for op in operations if op.operation_type.name not in ignore]
+        groups = {k: v for k, v in self._group_ops_by_hashes(
+            operations).items() if len(v) > 1}
 
         num_inputs_rewired = 0
         num_outputs_rewired = 0
