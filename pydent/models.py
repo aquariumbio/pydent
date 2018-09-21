@@ -173,7 +173,8 @@ class DataAssociatorMixin:
         """
         Adds a data association with the key and value to this object.
         """
-        return self.session.utils.create_data_association(self, key, value, upload=upload)
+        return self.session.utils.create_data_association(
+            self, key, value, upload=upload)
 
     def associate_file(self, key, value, file, job_id=None):
         """
@@ -330,7 +331,6 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
 
         return next(iter(parts))
 
-
 @add_schema
 class DataAssociation(ModelBase):
     """A DataAssociation model"""
@@ -342,9 +342,6 @@ class DataAssociation(ModelBase):
     @property
     def value(self):
         return self.object.get(self.key, None)
-
-    def delete(self):
-        return self.session.utils.delete_data_association(self)
 
     def delete(self):
         return self.session.utils.delete_data_association(self)
