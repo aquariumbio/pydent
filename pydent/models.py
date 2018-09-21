@@ -67,6 +67,7 @@ from pydent.marshaller import add_schema, fields
 from pydent.relationships import (One, Many, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric)
 from pydent.utils import filter_list
+from pydent.utils.plan_validator import PlanValidator
 from pydent.utils.async_requests import make_async
 import json
 
@@ -1333,7 +1334,7 @@ class PartAssociation(ModelBase):
 
 
 @add_schema
-class Plan(ModelBase, DataAssociatorMixin):
+class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
     """
     A Plan model
     """
