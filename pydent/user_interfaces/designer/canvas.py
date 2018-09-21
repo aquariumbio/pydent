@@ -15,24 +15,29 @@ class CanvasException(Exception):
 
 
 def verify_plan_models(fxn):
-    """Will do a check to verify if any FieldValues or Operations passed as arguments
-    exist in the plan."""
+    """
+    Returns a function that verifies that all FieldValues or Operations passed
+    as arguments exist in the plan.
+    """
 
     @wraps(fxn)
     def wrapper(self, *args, **kwargs):
         if not issubclass(self.__class__, Canvas):
-            raise CanvasException("Cannot apply 'verify_plan_models' to a non-Canvas instance.")
+            raise CanvasException(
+                "Cannot apply 'verify_plan_models' to a non-Canvas instance.")
         for arg in args:
             if issubclass(arg.__class__, FieldValue):
                 fv = arg
                 if not self._contains_op(fv.operation):
                     fviden = "{} {}".format(fv.role, fv.name)
-                    raise CanvasException("FieldValue \"{}\" not found in Canvas.".format(fviden))
+                    raise CanvasException(
+                        "FieldValue \"{}\" not found in Canvas.".format(fviden))
             elif issubclass(arg.__class__, Operation):
                 op = arg
                 if not self._contains_op(op):
                     opiden = "{}".format(op.operation_type.name)
-                    raise CanvasException("Operation \"{}\" not found in Canvas.".format(opiden))
+                    raise CanvasException(
+                        "Operation \"{}\" not found in Canvas.".format(opiden))
         return fxn(self, *args, **kwargs)
 
     return wrapper
@@ -44,24 +49,24 @@ class PlanOptimizer(object):
     def _op_to_hash(op):
         ot_id = op.operation_type.id
 
-        ftids = []
-
+        field_type_ids = []
         for ft in op.operation_type.field_types:
             if ft.ftype == "sample":
                 fv = op.field_value(ft.name, ft.role)
 
-                # none valued Samples are never equivaent
+                # none valued Samples are never equivalent
                 sid = str(uuid4())
                 if fv.sample is not None:
                     sid = "{}{}".format(fv.role, fv.sample.id)
 
-                itemid = "none"
+                item_id = "none"
                 if fv.item is not None:
-                    itemid = "{}{}".format(fv.role, fv.item.id)
+                    item_id = "{}{}".format(fv.role, fv.item.id)
 
-                ftids.append("{}:{}:{}:{}".format(ft.name, ft.role, sid, itemid))
-        ftids = sorted(ftids)
-        return "{}_{}".format(ot_id, "#".join(ftids))
+                field_type_ids.append("{}:{}:{}:{}".format(
+                    ft.name, ft.role, sid, item_id))
+        field_type_ids = sorted(field_type_ids)
+        return "{}_{}".format(ot_id, "#".join(field_type_ids))
 
     @classmethod
     def _group_ops_by_hashes(cls, ops):
@@ -80,8 +85,10 @@ class PlanOptimizer(object):
         """
         print("Optimizing Plan")
         if operations is None:
-            operations = [op for op in self.plan.operations if op.status == 'planning']
-        groups = {k: v for k, v in self._group_ops_by_hashes(operations).items() if len(v) > 1}
+            operations = [
+                op for op in self.plan.operations if op.status == 'planning']
+        groups = {k: v for k, v in self._group_ops_by_hashes(
+            operations).items() if len(v) > 1}
 
         num_inputs_rewired = 0
         num_outputs_rewired = 0
@@ -124,7 +131,8 @@ class Canvas(PlanOptimizer):
         if self.plan_id is not None:
             self.plan = session.Plan.find(plan_id)
             if self.plan is None:
-                raise CanvasException("Could not find plan with id={}".format(plan_id))
+                raise CanvasException(
+                    "Could not find plan with id={}".format(plan_id))
         else:
             self.plan = session.Plan.new()
         self.session = session
@@ -167,9 +175,11 @@ class Canvas(PlanOptimizer):
             query['category'] = category
         ots = self.session.OperationType.where(query)
         if len(ots) > 1:
-            raise CanvasException("Found more than one OperationType for query \"{}\"".format(query))
+            raise CanvasException(
+                "Found more than one OperationType for query \"{}\"".format(query))
         if ots is None or len(ots) == 0:
-            raise CanvasException("Could not find deployed OperationType \"{}\"".format(operation_type_name))
+            raise CanvasException(
+                "Could not find deployed OperationType \"{}\"".format(operation_type_name))
         return self.create_operation_by_type(ots[0])
 
     @staticmethod
@@ -245,7 +255,9 @@ class Canvas(PlanOptimizer):
 
     @classmethod
     def _resolve_source_to_outputs(cls, source):
-        """Resolves a FieldValue or Operation to its sample output FieldValues"""
+        """
+        Resolves a FieldValue or Operation to its sample output FieldValues
+        """
         if isinstance(source, FieldValue):
             if source.role == "output":
                 outputs = [source]
@@ -253,12 +265,15 @@ class Canvas(PlanOptimizer):
                 raise CanvasException("Canvas attempted to find matching allowable_field_types for"
                                       " an output FieldValue but found an input FieldValue")
         elif isinstance(source, Operation):
-            outputs = [fv for fv in source.outputs if fv.field_type.ftype == 'sample']
+            outputs = [
+                fv for fv in source.outputs if fv.field_type.ftype == 'sample']
         return outputs
 
     @classmethod
     def _resolve_destination_to_inputs(cls, destination):
-        """Resolves a FieldValue or Operation to its sample input FieldValues"""
+        """
+        Resolves a FieldValue or Operation to its sample input FieldValues
+        """
         if isinstance(destination, FieldValue):
             if destination.role == "input":
                 inputs = [destination]
@@ -266,7 +281,8 @@ class Canvas(PlanOptimizer):
                 raise CanvasException("Canvas attempted to find matching allowable_field_types for"
                                       " an input FieldValue but found an output FieldValue")
         elif isinstance(destination, Operation):
-            inputs = [fv for fv in destination.inputs if fv.field_type.ftype == 'sample']
+            inputs = [
+                fv for fv in destination.inputs if fv.field_type.ftype == 'sample']
         return inputs
 
     @classmethod
@@ -374,20 +390,21 @@ class Canvas(PlanOptimizer):
 
     @verify_plan_models
     def quick_wire(self, source, destination, strict=True):
-        afts, minputs, moutputs = self._collect_matching_afts(source, destination)
+        afts, model_inputs, model_outputs = self._collect_matching_afts(
+            source, destination)
 
-        # TODO: only if matching FVs are ambiquous raise Exception
-        if (len(minputs) > 1 or len(moutputs) > 1) and strict:
+        # TODO: only if matching FVs are ambiguous raise Exception
+        if (len(model_inputs) > 1 or len(model_outputs) > 1) and strict:
             raise CanvasException(
                 "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}".format(
-                    ', '.join([fv.name for fv in minputs]),
-                    minputs[0].operation.operation_type.name,
-                    ', '.join([fv.name for fv in moutputs]),
-                    moutputs[0].operation.operation_type.name))
+                    ', '.join([fv.name for fv in model_inputs]),
+                    model_inputs[0].operation.operation_type.name,
+                    ', '.join([fv.name for fv in model_outputs]),
+                    model_outputs[0].operation.operation_type.name))
         elif len(afts) == 0:
             raise CanvasException(
                 "Cannot quick wire. No available field types found between {} and {}".format(source.operation_type.name,
-                                                                    destination.operation_type.name))
+                                                                                             destination.operation_type.name))
         for aft1, aft2 in afts:
             o = source.output(aft1.field_type.name)
             i = destination.input(aft2.field_type.name)
@@ -419,7 +436,8 @@ class Canvas(PlanOptimizer):
                 selected_sample = samples[1]
 
             # filter afts by sample_type_id
-            afts = [aft for aft in afts if aft[0].sample_type_id == selected_sample.sample_type_id]
+            afts = [aft for aft in afts if aft[0].sample_type_id ==
+                    selected_sample.sample_type_id]
 
             if len(afts) == 0:
                 raise CanvasException("No allowable_field_types were found for FieldValues {} & {} for"
@@ -463,7 +481,8 @@ class Canvas(PlanOptimizer):
     def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
         routing = field_value.field_type.routing
         fvs = self.get_routing_dict(field_value.operation)[routing]
-        field_value.set_value(sample=sample, item=item, container=container, value=value, row=None, column=None)
+        field_value.set_value(
+            sample=sample, item=item, container=container, value=value, row=None, column=None)
         # cls._json_update(field_value)
         if field_value.field_type.ftype == 'sample':
             for fv in fvs:
@@ -520,7 +539,6 @@ class Canvas(PlanOptimizer):
         y -= height
         y -= layout.BOX_DELTAY
         self.annotate(markdown, x, y, width, height)
-
 
     # @staticmethod
     # def _id_getter(model):
