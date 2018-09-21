@@ -1,7 +1,7 @@
 Planning using Trident's Designer
 =================================
 
-Trident provides a class to help with creating Aquarium plans, called the "designer"
+Trident provides a class to help with creating Aquarium plans, called the "planner"
 
 Features: topological sorting, plan optimizer, drawing
 
@@ -11,8 +11,8 @@ You can draw existing plans (colors represent Operation statuses, legend to come
 
     %matplotlib inline
 
-    from pydent import designer
-    canvas = designer.Canvas(mysession, plan_id=12345)
+    from pydent import planner
+    canvas = planner.Planner(mysession, plan_id=12345)
     canvas.layout.draw()
 
 .. image:: CanvasDrawExample1.png
@@ -26,11 +26,11 @@ Example of planning a large PCR in a IPython jupyter notebook.
 .. code::
 
     %matplotlib inline
-    from pydent import designer
+    from pydent import planner
     from mysession import production
 
     sample_range = list(range(25589, 25604))
-    canvas = designer.Canvas(production)
+    canvas = planner.Planner(production)
 
     def set_primer(canvas, field_value, sample):
         canvas.set_field_value(field_value, sample=sample)
