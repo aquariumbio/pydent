@@ -530,7 +530,7 @@ class Planner(object):
         num_inputs_rewired = 0
         num_outputs_rewired = 0
         ops_to_remove = []
-        for _, gops in groups.items():
+        for gops in groups.values():
             op = gops[0]
             other_ops = gops[1:]
             for other_op in other_ops:
