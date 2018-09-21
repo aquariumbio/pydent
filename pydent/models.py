@@ -297,6 +297,7 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
         parts=HasManyThrough("Item", "PartAssociation", ref="part_id")
         # TODO: do we need to have the association to use row,col?
     )
+    methods=["dimensions"]
 
     @property
     def matrix(self):

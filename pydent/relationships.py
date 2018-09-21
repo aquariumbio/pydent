@@ -15,7 +15,7 @@ class One(fields.Relation):
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
-    def __init__(self, model, *args, callback=None, callback_args=None, **kwargs):
+    def __init__(self, model, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
         """
         One initializer. Uses "find" callback by default.
 
@@ -30,7 +30,7 @@ class One(fields.Relation):
         """
         if callback is None:
             callback = ModelBase.find_callback.__name__
-        super().__init__(model, *args, callback=callback, callback_args=callback_args, **kwargs)
+        super().__init__(model, *args, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 
 class Many(fields.Relation):
@@ -39,7 +39,7 @@ class Many(fields.Relation):
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
-    def __init__(self, model, *args, callback=None, callback_args=None, **kwargs):
+    def __init__(self, model, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
         """
         Many initializer. Uses "where" callback by default.
 
@@ -55,7 +55,7 @@ class Many(fields.Relation):
         if callback is None:
             callback = ModelBase.where_callback.__name__
         super().__init__(model, *args, default=MagicList,
-                         many=True, callback=callback, callback_args=callback_args, **kwargs)
+                         many=True, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 
 class HasMixin:
@@ -104,7 +104,7 @@ class HasMixin:
 
 
 class HasOne(HasMixin, One):
-    def __init__(self, model, attr=None, ref=None, **kwargs):
+    def __init__(self, model, attr=None, ref=None, callback_kwargs=None, **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and automatically
         assigns attribute as in the following:
@@ -119,7 +119,7 @@ class HasOne(HasMixin, One):
         :type attr: basestring
         """
         self.set_ref(model=model, attr=attr, ref=ref)
-        super().__init__(model, callback_args=(lambda slf: getattr(slf, self.ref)), **kwargs)
+        super().__init__(model, callback_args=(lambda slf: getattr(slf, self.ref)), callback_kwargs=callback_kwargs, **kwargs)
 
     def __repr__(self):
         return "<HasOne (model={}, callback_args=lambda self: self.{})>".format(self.model, self.ref)
@@ -131,7 +131,7 @@ class HasManyThrough(HasMixin, Many):
     Establishes a Many-to-Many relationship with another model
     """
 
-    def __init__(self, model, through, attr="id", ref=None, **kwargs):
+    def __init__(self, model, through, attr="id", ref=None, callback_kwargs=None, **kwargs):
         self.set_ref(model=model, attr=attr, ref=ref)
 
         # e.g. PlanAssociation >> plan_associations
@@ -144,7 +144,7 @@ class HasManyThrough(HasMixin, Many):
             if through_model is None:
                 return None
             return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
-        super().__init__(model, callback_args=callback_args, **kwargs)
+        super().__init__(model, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 
 class HasMany(HasMixin, Many):
@@ -152,7 +152,7 @@ class HasMany(HasMixin, Many):
     A relationship that establishes a One-to-Many relationship with another model.
     """
 
-    def __init__(self, model, ref_model=None, attr=None, ref=None, **kwargs):
+    def __init__(self, model, ref_model=None, attr=None, ref=None, callback_kwargs=None, **kwargs):
         """
         HasMany relationship initializer
 
@@ -180,7 +180,7 @@ class HasMany(HasMixin, Many):
         self.set_ref(model=ref_model, attr=attr, ref=ref)
 
         def callback_args(slf): return {self.ref: getattr(slf, self.attr)}
-        super().__init__(model, callback_args=callback_args, **kwargs)
+        super().__init__(model, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 
 class HasManyGeneric(HasMany):
@@ -189,5 +189,5 @@ class HasManyGeneric(HasMany):
     to find other models.
     """
 
-    def __init__(self, model, **kwargs):
-        super().__init__(model, ref="parent_id", attr="id", **kwargs)
+    def __init__(self, model, callback_kwargs=None, **kwargs):
+        super().__init__(model, ref="parent_id", attr="id", callback_kwargs=callback_kwargs, **kwargs)

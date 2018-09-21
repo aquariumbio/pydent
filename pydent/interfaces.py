@@ -321,6 +321,7 @@ class ModelInterface(SessionInterface):
         Attaches raw json and this session instance to the models it retrieves.
         """
         data_dict = {'model': self.model_name}
+        data_dict = self._merge_methods(data_dict)
         data_dict.update(data)
 
         try:
@@ -363,6 +364,13 @@ class ModelInterface(SessionInterface):
                 return None
             raise err
         return self.load(response)
+
+    def _merge_methods(self, query):
+        if hasattr(self.model, 'methods'):
+            new_query = dict(query)
+            new_query.update({"methods": self.model.methods})
+            return new_query
+        return query
 
     def find(self, model_id):
         """
