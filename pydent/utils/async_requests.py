@@ -37,6 +37,7 @@ async def exec_async_fxn(fxn, arg_list, kwargs, chunk_size=1, desc='', progress_
     :rtype: list
     """
     # run asynchronously
+
     loop = asyncio.get_event_loop()
     partial_fxn = partial(with_index(fxn), **kwargs)
     futures = [
@@ -71,7 +72,11 @@ def asyncfunc(fxn, arg_list, kwargs=None, chunk_size=1, progress_bar=True, desc=
     if kwargs is None:
         kwargs = {}
     # finish loop
-    loop = asyncio.get_event_loop()
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
     if desc is None:
         desc = desc
     results = loop.run_until_complete(exec_async_fxn(fxn, arg_list, kwargs=kwargs, desc=desc, progress_bar=progress_bar, chunk_size=chunk_size))
