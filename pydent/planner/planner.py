@@ -11,7 +11,7 @@ from pydent.models import FieldValue, Operation
 
 
 class PlannerException(Exception):
-    """Generic Canvas Exception"""
+    """Generic planner Exception"""
 
 
 def plan_verification_wrapper(fxn):
@@ -24,20 +24,20 @@ def plan_verification_wrapper(fxn):
     def wrapper(self, *args, **kwargs):
         if not issubclass(self.__class__, Planner):
             raise PlannerException(
-                "Cannot apply 'verify_plan_models' to a non-Canvas instance.")
+                "Cannot apply 'verify_plan_models' to a non-planner instance.")
         for arg in args:
             if issubclass(arg.__class__, FieldValue):
                 fv = arg
                 if not self._contains_op(fv.operation):
-                    fviden = "{} {}".format(fv.role, fv.name)
-                    raise PlannerException(
-                        "FieldValue \"{}\" not found in Canvas.".format(fviden))
+                    fv_ref = "{} {}".format(fv.role, fv.name)
+                    msg = "FieldValue \"{}\" not found in planner."
+                    raise PlannerException(msg.format(fv_ref))
             elif issubclass(arg.__class__, Operation):
                 op = arg
                 if not self._contains_op(op):
-                    opiden = "{}".format(op.operation_type.name)
-                    raise PlannerException(
-                        "Operation \"{}\" not found in Canvas.".format(opiden))
+                    op_ref = "{}".format(op.operation_type.name)
+                    msg = "Operation \"{}\" not found in planner."
+                    raise PlannerException(msg.format(op_ref))
         return fxn(self, *args, **kwargs)
 
     return wrapper
@@ -95,11 +95,11 @@ class Planner(object):
             query['category'] = category
         ots = self.session.OperationType.where(query)
         if len(ots) > 1:
-            raise PlannerException(
-                "Found more than one OperationType for query \"{}\"".format(query))
+            msg = "Found more than one OperationType for query \"{}\""
+            raise PlannerException(msg.format(query))
         if ots is None or len(ots) == 0:
-            raise PlannerException(
-                "Could not find deployed OperationType \"{}\"".format(operation_type_name))
+            msg = "Could not find deployed OperationType \"{}\""
+            raise PlannerException(msg.format(operation_type_name))
         return self.create_operation_by_type(ots[0])
 
     @staticmethod
@@ -119,7 +119,8 @@ class Planner(object):
     @plan_verification_wrapper
     def get_wire(self, fv1, fv2):
         for wire in self.plan.wires:
-            if self.models_are_equal(wire.source, fv1) and self.models_are_equal(wire.destination, fv2):
+            if (self.models_are_equal(wire.source, fv1)
+                    and self.models_are_equal(wire.destination, fv2)):
                 return wire
 
     @plan_verification_wrapper
@@ -182,8 +183,10 @@ class Planner(object):
             if source.role == "output":
                 outputs = [source]
             else:
-                raise PlannerException("Canvas attempted to find matching allowable_field_types for"
-                                       " an output FieldValue but found an input FieldValue")
+                msg = "Planner attempted to find matching" \
+                    " allowable_field_types for an output FieldValue but" \
+                    " found an input FieldValue"
+                raise PlannerException(msg)
         elif isinstance(source, Operation):
             outputs = [
                 fv for fv in source.outputs if fv.field_type.ftype == 'sample']
@@ -198,11 +201,13 @@ class Planner(object):
             if destination.role == "input":
                 inputs = [destination]
             else:
-                raise PlannerException("Canvas attempted to find matching allowable_field_types for"
-                                       " an input FieldValue but found an output FieldValue")
+                msg = "Planner attempted to find matching" \
+                    " allowable_field_types for" \
+                    " an input FieldValue but found an output FieldValue"
+                raise PlannerException(msg)
         elif isinstance(destination, Operation):
-            inputs = [
-                fv for fv in destination.inputs if fv.field_type.ftype == 'sample']
+            inputs = [fv for fv in destination.inputs
+                      if fv.field_type.ftype == 'sample']
         return inputs
 
     @classmethod
@@ -244,7 +249,8 @@ class Planner(object):
                 in_object_type_id = input_aft.object_type_id
                 out_sample_type_id = output_aft.sample_type_id
                 in_sample_type_id = input_aft.sample_type_id
-                if out_object_type_id == in_object_type_id and out_sample_type_id == in_sample_type_id:
+                if (out_object_type_id == in_object_type_id
+                        and out_sample_type_id == in_sample_type_id):
                     afts.append((output_aft, input_aft))
         return afts
 
@@ -263,10 +269,8 @@ class Planner(object):
         if op in self.plan.operations:
             return True
         else:
-            if op.id is not None and op.id in [x.id for x in self.plan.operations]:
-                return True
-            else:
-                return False
+            plan_operation_ids = [x.id for x in self.plan.operations]
+            return op.id is not None and op.id in plan_operation_ids
 
     @plan_verification_wrapper
     def _resolve_op(self, op, category=None):
@@ -279,8 +283,9 @@ class Planner(object):
 
     def quick_create_chain(self, *op_or_otnames, category=None):
         """
-        Creates a chain of operations by *guessing* wires between operations based on the
-        AllowableFieldTypes between the inputs and outputs of each operation type.
+        Creates a chain of operations by *guessing* wires between operations
+        based on the AllowableFieldTypes between the inputs and outputs of each
+        operation type.
         Sample inputs and outputs will be set along the wire if possible.
 
         e.g.
@@ -288,27 +293,29 @@ class Planner(object):
         .. code::
 
             # create four new operations based on their OperationType names
-            canvas.quick_create_chain("Make PCR Fragment", "Run Gel",
+            planner.quick_create_chain("Make PCR Fragment", "Run Gel",
                                       "Extract Gel Slice", "Purify Gel Slice")
 
             # create four new operations based on their OperationType names by
             # finding OperationTypes only in the "Cloning" category
-            canvas.quick_create_chain("Make PCR Fragment", "Run Gel",
-                                      "Extract Gel Slice", "Purify Gel Slice", category="Cloning")
+            planner.quick_create_chain("Make PCR Fragment", "Run Gel",
+                                      "Extract Gel Slice", "Purify Gel Slice",
+                                      category="Cloning")
 
             # create four new operations based on their OperationType names by
             # finding OperationTypes only in the "Cloning" category,
             # except find "Make PCR Fragment" in the "Cloning Sandbox" category
-            canvas.quick_create_chain(("Make PCR Fragment", "Cloning Sandbox"), "Run Gel",
-                                      "Extract Gel Slice", "Purify Gel Slice", category="Cloning")
+            planner.quick_create_chain(("Make PCR Fragment", "Cloning Sandbox"),
+                                       "Run Gel", "Extract Gel Slice",
+                                       "Purify Gel Slice", category="Cloning")
 
             # create and wire new operations to an existing operations while
             # routing samples
-            pcr_op = canvas.create_operation_by_name("Make PCR Fragment")
-            canvas.set_field_value(pcr_op.outputs[0], sample=my_sample)
-            new_ops = canvas.quick_create_chain(pcr_op, "Run Gel")
+            pcr_op = planner.create_operation_by_name("Make PCR Fragment")
+            planner.set_field_value(pcr_op.outputs[0], sample=my_sample)
+            new_ops = planner.quick_create_chain(pcr_op, "Run Gel")
             run_gel = new_ops[1]
-            canvas.quick_create_chain("Pour Gel", run_gel)
+            planner.quick_create_chain("Pour Gel", run_gel)
         """
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
         pairs = arr_to_pairs(ops)
@@ -451,9 +458,9 @@ class Planner(object):
 
     def replan(self):
         """Replan"""
-        canvas = self.__class__(self.session)
-        canvas.plan = self.plan.replan()
-        return canvas
+        planner = self.__class__(self.session)
+        planner.plan = self.plan.replan()
+        return planner
 
     def annotate(self, markdown, x, y, width, height):
         annotation = {
@@ -518,7 +525,7 @@ class Planner(object):
     def optimize_plan(self, operations=None, ignore=None):
         """
         Optimizes a plan by removing redundent operations.
-        :param canvas:
+        :param planner:
         :return:
         """
         print("Optimizing Plan")
