@@ -482,7 +482,7 @@ class Planner(object):
         x += layout.BOX_WIDTH/2
         # x -= width/2
         y -= height
-        y -= layout.BOX_DELTAY
+        y -= layout.BOX_DELTA_Y
         self.annotate(markdown, x, y, width, height)
 
     @property

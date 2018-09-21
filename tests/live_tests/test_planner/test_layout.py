@@ -309,8 +309,8 @@ class TestCanvasLayout:
         print([op.x for op in ops1])
         print([op.x for op in ops2])
         print([op.x for op in ops3])
-        assert ops3[0].x + canvas.layout.BOX_DELTAX == ops2[0].x
-        assert ops2[0].x + canvas.layout.BOX_DELTAX == ops1[0].x
+        assert ops3[0].x + canvas.layout.BOX_DELTA_X == ops2[0].x
+        assert ops2[0].x + canvas.layout.BOX_DELTA_X == ops1[0].x
 
     def test_subgraph(self, session):
         canvas = Planner(session)
