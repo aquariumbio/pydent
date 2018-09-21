@@ -39,7 +39,7 @@ jobs:
             mkdir -p ~/pytest_results
             python3 -m venv venv
             . venv/bin/activate
-            pytest tests --ignore tests/archived
+            pytest tests --ignore tests/live_tests
 
       - store_artifacts:
           path: test-reports
@@ -78,7 +78,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pytest tests --ignore tests/archived
+            pytest tests --ignore tests/live_tests
 
       - store_artifacts:
           path: test-reports

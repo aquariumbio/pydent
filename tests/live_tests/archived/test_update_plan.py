@@ -64,7 +64,7 @@ def add_wire(plan, fv1, fv2):
 def remove_wire(fv1, fv2):
     pass
 
-def test_update_a_plan(session):
-    plan = session.Plan.find(121081)
-    new_operation(plan, "Yeast Transformation")
-    plan.to_save_json()
+# def test_update_a_plan(session):
+#     plan = session.Plan.find(121081)
+#     new_operation(plan, "Yeast Transformation")
+#     plan.to_save_json()
