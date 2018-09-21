@@ -15,7 +15,7 @@ class One(fields.Relation):
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
-    def __init__(self, model, *args, callback=None, params=None, **kwargs):
+    def __init__(self, model, *args, callback=None, callback_args=None, **kwargs):
         """
         One initializer. Uses "find" callback by default.
 
@@ -30,7 +30,7 @@ class One(fields.Relation):
         """
         if callback is None:
             callback = ModelBase.find_callback.__name__
-        super().__init__(model, *args, callback=callback, params=params, **kwargs)
+        super().__init__(model, *args, callback=callback, callback_args=callback_args, **kwargs)
 
 
 class Many(fields.Relation):
@@ -39,7 +39,7 @@ class Many(fields.Relation):
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
-    def __init__(self, model, *args, callback=None, params=None, **kwargs):
+    def __init__(self, model, *args, callback=None, callback_args=None, **kwargs):
         """
         Many initializer. Uses "where" callback by default.
 
@@ -55,7 +55,7 @@ class Many(fields.Relation):
         if callback is None:
             callback = ModelBase.where_callback.__name__
         super().__init__(model, *args, default=MagicList,
-                         many=True, callback=callback, params=params, **kwargs)
+                         many=True, callback=callback, callback_args=callback_args, **kwargs)
 
 
 class HasMixin:
@@ -119,10 +119,10 @@ class HasOne(HasMixin, One):
         :type attr: basestring
         """
         self.set_ref(model=model, attr=attr, ref=ref)
-        super().__init__(model, params=(lambda slf: getattr(slf, self.ref)), **kwargs)
+        super().__init__(model, callback_args=(lambda slf: getattr(slf, self.ref)), **kwargs)
 
     def __repr__(self):
-        return "<HasOne (model={}, params=lambda self: self.{})>".format(self.model, self.ref)
+        return "<HasOne (model={}, callback_args=lambda self: self.{})>".format(self.model, self.ref)
 
 
 class HasManyThrough(HasMixin, Many):
@@ -139,12 +139,12 @@ class HasManyThrough(HasMixin, Many):
             inflection.underscore(through))
 
         # e.g. {"id": x.operation_id for x in self.plan_associations
-        def params(slf):
+        def callback_args(slf):
             through_model = getattr(slf, through_model_attr)
             if through_model is None:
                 return None
             return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
-        super().__init__(model, params=params, **kwargs)
+        super().__init__(model, callback_args=callback_args, **kwargs)
 
 
 class HasMany(HasMixin, Many):
@@ -179,8 +179,8 @@ class HasMany(HasMixin, Many):
                 self.__class__.__name__))
         self.set_ref(model=ref_model, attr=attr, ref=ref)
 
-        def params(slf): return {self.ref: getattr(slf, self.attr)}
-        super().__init__(model, params=params, **kwargs)
+        def callback_args(slf): return {self.ref: getattr(slf, self.attr)}
+        super().__init__(model, callback_args=callback_args, **kwargs)
 
 
 class HasManyGeneric(HasMany):
