@@ -90,6 +90,7 @@ __all__ = [
     "ObjectType",
     "Operation",
     "OperationType",
+    "PartAssociation",
     "Plan",
     "PlanAssociation",
     "Sample",
@@ -292,13 +293,28 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
     fields = dict(
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        data=fields.JSON(allow_none=True, strict=False)
+        part_associations=HasMany("PartAssociation", "Collection"),
+        parts=HasManyThrough("Item", "PartAssociation", ref="part_id")
+        # TODO: do we need to have the association to use row,col?
     )
 
     @property
     def matrix(self):
-        return self.data['matrix']
+        """
+        Returns the matrix of Samples for this Collection.
 
+        (Consider using samples of parts directly.)
+        """
+        # TODO: to be implementedh
+        return None
+
+    @property
+    def part(self, row, col):
+        """
+        Returns the part Item at (row, col) of this Collection (zero-based).
+        """
+        # TODO: to be implemented
+        return None
 
 
 @add_schema
@@ -1217,6 +1233,26 @@ class OperationType(ModelBase, HasCodeMixin):
         """Saves the Operation Type to the Aquarium server. Requires
         this Operation Type to be connected to a session."""
         return self.reload(self.session.utils.create_operation_type(self))
+
+
+@add_schema
+class PartAssociation(ModelBase):
+    """
+    Represents a PartAssociation linking a part to a collection.
+
+    Aquarium definition has the collection as an Item. Not sure why this isn't a Collection.
+    """
+    fields = dict(
+        part=HasOne('Item', ref="part_id"),
+        collection=HasOne('Collection')
+    )
+
+    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
+        self.part_id = part_id
+        self.collection_id = collection_id
+        self.row = row
+        self.column = column
+        super().__init__(**vars(self))
 
 
 @add_schema

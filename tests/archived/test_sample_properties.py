@@ -79,6 +79,7 @@ def test_create_with_sample_property_raises_exception(session):
             }
         )
 
+
 def test_create_with_integer_property_raises_exception(session):
 
     yeast_strain = session.SampleType.find_by_name("Yeast Strain")
@@ -90,6 +91,7 @@ def test_create_with_integer_property_raises_exception(session):
                 'QC_length': parent
             }
         )
+
 
 def test_create_raises_exception_when_property_is_not_found(session):
 
@@ -112,6 +114,7 @@ def test_create_raises_exception_with_wrong_choice(session):
             }
         )
 
+
 def test_create_with_choice(session):
     yeast_strain = session.SampleType.find_by_name("Yeast Strain")
     yeast = session.Sample.new(
@@ -121,6 +124,7 @@ def test_create_with_choice(session):
             }
         )
     assert yeast.properties["Mating Type"] == "MATa"
+
 
 def test_update_properties(session):
 
