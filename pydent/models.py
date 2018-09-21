@@ -295,9 +295,8 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
         data_associations=HasManyGeneric("DataAssociation"),
         part_associations=HasMany("PartAssociation", "Collection"),
         parts=HasManyThrough("Item", "PartAssociation", ref="part_id")
-        # TODO: do we need to have the association to use row,col?
     )
-    methods=["dimensions"]
+    methods = ["dimensions"]
 
     @property
     def matrix(self):
@@ -306,8 +305,18 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
 
         (Consider using samples of parts directly.)
         """
-        # TODO: to be implementedh
-        return None
+        num_row, num_col = self.dimensions
+        sample_matrix = list()
+        for row in range(num_row):
+            row_list = list()
+            for col in range(num_col):
+                sample_id = None
+                part = self.part(row, col)
+                if part:
+                    sample_id = part.sample.id
+                row_list.append(sample_id)
+            sample_matrix.append(row_list)
+        return sample_matrix
 
     def part(self, row, col):
         """
@@ -316,7 +325,6 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
         parts = [assoc.part for assoc in self.part_associations
                  if assoc.row == row and assoc.column == col]
 
-        print(parts)
         if not parts:
             return None
 
@@ -337,7 +345,6 @@ class DataAssociation(ModelBase):
 
     def delete(self):
         return self.session.utils.delete_data_association(self)
-
 
     def delete(self):
         return self.session.utils.delete_data_association(self)
@@ -571,11 +578,13 @@ class FieldValue(ModelBase, FieldMixin):
     def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
         if row is not None:
             if not self.field_type.part:
-                raise AquariumModelError("Cannot set row of a non-part for {} {}".format(self.role, self.name))
+                raise AquariumModelError(
+                    "Cannot set row of a non-part for {} {}".format(self.role, self.name))
             self.row = row
         if column is not None:
             if not self.field_type.part:
-                raise AquariumModelError("Cannot set column of a non-part for {} {}".format(self.role, self.name))
+                raise AquariumModelError(
+                    "Cannot set column of a non-part for {} {}".format(self.role, self.name))
             self.column = column
         if item and container and item.object_type_id != container.id:
             raise AquariumModelError(
@@ -586,7 +595,7 @@ class FieldValue(ModelBase, FieldMixin):
             if choices is not None:
                 if value not in choices and str(value) not in choices:
                     raise AquariumModelError("Value \'{}\' not in list of field "
-                                                 "type choices \'{}\'".format(value, choices))
+                                             "type choices \'{}\'".format(value, choices))
             self.value = value
         if item is not None:
             self.item = item
@@ -820,7 +829,8 @@ class Library(ModelBase, HasCodeMixin):
     """A Library model"""
     fields = dict(
         codes=HasManyGeneric("Code"),
-        source=One("Code", callback="get_code_callback", callback_args="source")
+        source=One("Code", callback="get_code_callback",
+                   callback_args="source")
     )
 
 
@@ -848,9 +858,9 @@ class Operation(ModelBase, DataAssociatorMixin):
     """A Operation model"""
     fields = dict(
         field_values=Many("FieldValue",
-                         callback_args=lambda self: {
-                             "parent_id": self.id,
-                             "parent_class": self.__class__.__name__},
+                          callback_args=lambda self: {
+                              "parent_id": self.id,
+                              "parent_class": self.__class__.__name__},
                           callback_kwargs={"methods": ["dimensions"]}),
         # field_values=HasManyGeneric("FieldValue"),
         data_associations=HasManyGeneric("DataAssociation"),
@@ -1249,7 +1259,8 @@ class OperationType(ModelBase, HasCodeMixin):
                              "parent_id": self.id,
                              "parent_class": self.__class__.__name__}),
         codes=HasManyGeneric("Code"),
-        protocol=One("Code", callback="get_code_callback", callback_args="protocol"),
+        protocol=One("Code", callback="get_code_callback",
+                     callback_args="protocol"),
         cost_model=One("Code", callback="get_code_callback",
                        callback_args="cost_model"),
         documentation=One("Code", callback="get_code_callback",
@@ -1479,7 +1490,8 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         model_interface = super(Plan, cls).interface(session)
 
         # make a special find method for plans, as generic method is too minimal.
-        new_find = lambda model_id: model_interface.get('plans/{}.json'.format(model_id))
+        def new_find(model_id): return model_interface.get(
+            'plans/{}.json'.format(model_id))
 
         # override the old find method
         model_interface.find = new_find
@@ -1596,9 +1608,9 @@ class Sample(ModelBase):
         sample_type=HasOne("SampleType"),
         items=HasMany("Item", ref="sample_id"),
         field_values=Many("FieldValue",
-                         callback_args=lambda self: {
-                             "parent_id": self.id,
-                             "parent_class": self.__class__.__name__})
+                          callback_args=lambda self: {
+                              "parent_id": self.id,
+                              "parent_class": self.__class__.__name__})
     )
 
     def __init__(self, name=None, project=None, description=None, sample_type_id=None, properties=None):
@@ -1891,7 +1903,7 @@ class Wire(ModelBase):
         self.source = source
         self.destination = destination
         self.active = True
-        self.id=None
+        self.id = None
         super().__init__(**vars(self))
 
     def to_save_json(self):
