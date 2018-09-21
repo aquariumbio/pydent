@@ -1,5 +1,6 @@
 from pydent import models
 
+
 def test_part_association_exists(session):
     pas = session.PartAssociation.where({}, opts={"limit": 50})
     part_association = pas[-1]
