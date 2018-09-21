@@ -1,6 +1,10 @@
 from pydent import AqSession
 import os
+
+
+# TODO: write upload test
 def test_upload():
+    raise NotImplementedError("This test is not implemented. We need to write the upload test!")
     session = AqSession("vrana", "Mountain5", "http://52.27.43.242")
     here = os.path.dirname(os.path.abspath(__file__))
     p = session.Plan.find(18260)
