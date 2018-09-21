@@ -6,7 +6,8 @@ from requests.exceptions import RequestException, ConnectTimeout
 
 
 class TridentRequestError(IOError):
-    """There was an ambiguous exception that occured handling your request."""
+    """There was an ambiguous exception that occurred handling your request."""
+
 
 
 class AquariumError(IOError):
@@ -31,4 +32,4 @@ class TridentModelNotFoundError(AttributeError):
 
 
 class AquariumModelError(Exception):
-    """An error occured with this Aquarium model"""
+    """An error occurred with this Aquarium model"""

@@ -25,7 +25,9 @@ def test_access_models_interface(fake_session):
 
 
 def test_access_utils_interface(fake_session):
-    """Test accesibility of create interface"""
+    """
+    Test accessibility of create interface
+    """
 
     # create interface
     assert isinstance(fake_session.utils, UtilityInterface)

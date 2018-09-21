@@ -6,9 +6,11 @@ from pydent.exceptions import TridentRequestError
 
 
 def test_where_queries_should_return_empty_array(monkeypatch, mock_login_post):
-    """Empty where queries should return empty arrays.
+    """
+    Empty where queries should return empty arrays.
 
-    Here, we replaces AqHTTP.post with a mock post that returns an empty array"""
+    Here, we replaces AqHTTP.post with a mock post that returns an empty array.
+    """
 
     # Create a mock session
     monkeypatch.setattr(requests, "post", mock_login_post)
@@ -29,7 +31,8 @@ def test_find_query_returns_none(monkeypatch, mock_login_post):
     """Empty find queries should return None.
 
     Here, we replace the AqHTTP.post with a mock post, that has an error
-    code 422 (which is thrown by Aquarium in cases where it cannot find the model).
+    code 422 (which is thrown by Aquarium in cases where it cannot find the
+    model).
     """
 
     class MockResponse:
