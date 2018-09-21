@@ -93,7 +93,7 @@ class PlanOptimizer(object):
         num_inputs_rewired = 0
         num_outputs_rewired = 0
         ops_to_remove = []
-        for k, gops in groups.items():
+        for _, gops in groups.items():
             op = gops[0]
             other_ops = gops[1:]
             for other_op in other_ops:
@@ -295,7 +295,6 @@ class Canvas(PlanOptimizer):
         matching_inputs = []
         matching_outputs = []
         for output in outputs:
-            opart = output.field_type.part == True
             for input in inputs:
                 io_matching_afts = cls._find_matching_afts(output, input)
                 if len(io_matching_afts) > 0:
