@@ -141,6 +141,61 @@ def test_load_canvas(session):
     assert canvas.plan is not None
     assert canvas.plan.operations is not None
 
+
+def test_proper_setting_of_object_types(session):
+
+    canvas = designer.Canvas(session)
+    yeast = session.Sample.where({"sample_type_id": session.SampleType.find_by_name("Yeast Strain").id}, opts={"limit": 10})[-1]
+
+    streak = canvas.create_operation_by_name("Streak Plate", category="Yeast")
+    glycerol = canvas.create_operation_by_name("Yeast Glycerol Stock", category="Yeast")
+    canvas.set_field_value(glycerol.inputs[0], sample=yeast)
+    canvas.set_field_value(streak.inputs[0], sample=yeast)
+    mating = canvas.create_operation_by_name("Yeast Mating")
+    canvas.add_wire(streak.outputs[0], mating.inputs[0])
+    canvas.add_wire(glycerol.outputs[0], mating.inputs[1])
+    assert mating.inputs[0].allowable_field_type.object_type.name == "Divided Yeast Plate"
+    assert mating.inputs[1].allowable_field_type.object_type.name == "Yeast Glycerol Stock"
+
+def test_add_(session):
+    from pydent import AqSession
+    from pydent.utils import make_async
+
+    production = AqSession("vrana", "Mountain5", "http://52.27.43.242/")
+
+    guide_names = [
+        "pMOD-LTR2-Bleo-pGRR-W8W20-RGR-W5",
+        "pMOD-LTR2-Bleo-pGRR-W20W8-RGR-W5",
+        "pMOD-LTR3-HygMX-pGRR-RGR-W36"
+    ]
+
+    find_by_name = lambda x: production.Sample.find_by_name(x)
+
+    guides = [find_by_name(x) for x in guide_names]
+
+    canvas = designer.Canvas(production, plan_id=25630)
+
+
+    # preload
+    @make_async(3)
+    def foo(ops):
+        for op in ops:
+            op.operation_type
+
+    plasmid_digests = canvas.find_operations_by_name("Plasmid Digest")
+
+    for guide in guides:
+        print(guide.name)
+        op = canvas.create_operation_by_name("Make Overnight Suspension")
+        glycerol_stocks = guide.available_items(object_type_name="Plasmid Glycerol Stock")
+        canvas.set_field_value(op.inputs[0], sample=guide, item=glycerol_stocks[-1],
+                               container=glycerol_stocks[-1].object_type)
+        miniprep = canvas.quick_create_chain(op, "Make Miniprep")[-1]
+        for plasmid_digest in plasmid_digests:
+            if plasmid_digest.inputs[0].sample.id == guide.id:
+                canvas.add_wire(miniprep.outputs[0], plasmid_digest.inputs[0])
+
+
     # # data = canvas.plan.to_save_json()
     #
     # op = canvas.get_operation(113772)

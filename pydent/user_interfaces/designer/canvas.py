@@ -72,7 +72,7 @@ class PlanOptimizer(object):
             hashgroup[h].append(op)
         return hashgroup
 
-    def optimize_plan(self, operations=None):
+    def optimize_plan(self, operations=None, ignore=None):
         """
         Optimizes a plan by removing redundent operations.
         :param canvas:
@@ -81,6 +81,8 @@ class PlanOptimizer(object):
         print("Optimizing Plan")
         if operations is None:
             operations = [op for op in self.plan.operations if op.status == 'planning']
+        if ignore is not None:
+            operations = [op for op in operations if op.operation_type.name not in ignore]
         groups = {k: v for k, v in self._group_ops_by_hashes(operations).items() if len(v) > 1}
 
         num_inputs_rewired = 0
@@ -279,7 +281,7 @@ class Canvas(PlanOptimizer):
         matching_inputs = []
         matching_outputs = []
         for output in outputs:
-            opart = output.field_type.part == True
+            opart = output.field_type.part is True
             for input in inputs:
                 io_matching_afts = cls._find_matching_afts(output, input)
                 if len(io_matching_afts) > 0:
@@ -296,8 +298,8 @@ class Canvas(PlanOptimizer):
         afts = []
         output_afts = output.field_type.allowable_field_types
         input_afts = input.field_type.allowable_field_types
-        input_part = input.field_type.part == True
-        output_part = input.field_type.part == True
+        input_part = input.field_type.part is True
+        output_part = input.field_type.part is True
         if input_part != output_part:
             return []
         for input_aft in input_afts:
@@ -322,7 +324,13 @@ class Canvas(PlanOptimizer):
         return self.quick_wire_by_name(otname1, otname2)
 
     def _contains_op(self, op):
-        return op in self.plan.operations
+        if op in self.plan.operations:
+            return True
+        else:
+            if op.id is not None and op.id in [x.id for x in self.plan.operations]:
+                return True
+            else:
+                return False
 
     @verify_plan_models
     def _resolve_op(self, op, category=None):
@@ -401,6 +409,8 @@ class Canvas(PlanOptimizer):
         op2 = self.find_operations_by_name(otname2)[-1]
         return self.quick_wire(op1, op2)
 
+    # TODO: resolve afts if already set...
+    # TODO: clean up _set_wire
     def _set_wire(self, src_fv, dest_fv, preference="source"):
 
         # resolve sample
@@ -408,6 +418,8 @@ class Canvas(PlanOptimizer):
         samples = [s for s in samples if s is not None]
 
         afts = self._collect_matching_afts(src_fv, dest_fv)[0]
+        selected_aft = afts[0]
+        assert selected_aft[0].object_type_id == selected_aft[1].object_type_id
 
         if len(afts) == 0:
             raise CanvasException("Cannot wire \"{}\" to \"{}\". No allowable field types match."
@@ -420,6 +432,8 @@ class Canvas(PlanOptimizer):
 
             # filter afts by sample_type_id
             afts = [aft for aft in afts if aft[0].sample_type_id == selected_sample.sample_type_id]
+            selected_aft = afts[0]
+
 
             if len(afts) == 0:
                 raise CanvasException("No allowable_field_types were found for FieldValues {} & {} for"
@@ -428,16 +442,19 @@ class Canvas(PlanOptimizer):
             self.set_field_value(src_fv, sample=selected_sample)
             self.set_field_value(dest_fv, sample=selected_sample)
 
+            assert selected_aft[0].sample_type_id == selected_aft[1].sample_type_id
+            assert selected_aft[0].sample_type_id == src_fv.sample.sample_type_id
+            assert selected_aft[0].sample_type_id == dest_fv.sample.sample_type_id
+
+
             # set the sample (and allowable_field_type)
             if src_fv.sample is not None and (dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
-                self.set_field_value(dest_fv, sample=src_fv.sample)
-            if dest_fv.sample is not None and (src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
-                self.set_field_value(src_fv, sample=dest_fv.sample)
-        else:
-            # no samples set, so just set the allowable_field_type
-            aft = afts[0]
-            src_fv.allowable_field_type_id = aft[0].id
-            dest_fv.allowable_field_type_id = aft[1].id
+                self.set_field_value(dest_fv, sample=src_fv.sample, container=selected_aft[0].object_type)
+            elif dest_fv.sample is not None and (src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
+                self.set_field_value(src_fv, sample=dest_fv.sample, container=selected_aft[0].object_type)
+
+        self.set_field_value(src_fv, container=selected_aft[0].object_type)
+        self.set_field_value(dest_fv, container=selected_aft[0].object_type)
 
     @verify_plan_models
     def add_wire(self, fv1, fv2):

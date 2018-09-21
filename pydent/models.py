@@ -297,7 +297,7 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
         parts=HasManyThrough("Item", "PartAssociation", ref="part_id")
         # TODO: do we need to have the association to use row,col?
     )
-    methods=["dimensions"]
+    methods = ["dimensions"]
 
     @property
     def matrix(self):
@@ -775,7 +775,7 @@ class Operation(ModelBase, DataAssociatorMixin):
                          callback_args=lambda self: {
                              "parent_id": self.id,
                              "parent_class": self.__class__.__name__},
-                          callback_kwargs={"methods": ["dimensions"]}),
+                        ),
         # field_values=HasManyGeneric("FieldValue"),
         data_associations=HasManyGeneric("DataAssociation"),
         operation_type=HasOne("OperationType"),
