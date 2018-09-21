@@ -749,6 +749,7 @@ class ObjectType(ModelBase):
         return self.reload(self.session.utils.create_object_type(self))
 
 
+# TODO: field_values should recognize parent_class (maybe where should ignore None field_values...)
 @add_schema
 class Operation(ModelBase, DataAssociatorMixin):
     """A Operation model"""

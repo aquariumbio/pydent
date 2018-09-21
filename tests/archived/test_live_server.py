@@ -17,6 +17,7 @@ def test_login_with_requests(config):
     user = s.post(config['aquarium_url'] + "/json", json={"model": "User", "id": 66}).json()
     print(user)
 
+
 def test_login(session, config):
     """Test actually logging into the Aquarium server detailed in the config."""
     # current = session.current_user
