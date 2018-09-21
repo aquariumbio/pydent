@@ -330,6 +330,9 @@ class DataAssociation(ModelBase):
     def value(self):
         return self.object.get(self.key, None)
 
+    def delete(self):
+        return self.session.utils.delete_data_association(self)
+
 
     def delete(self):
         return self.session.utils.delete_data_association(self)
@@ -446,7 +449,8 @@ class FieldValue(ModelBase, FieldMixin):
         successors=HasManyThrough("Operation", "Wire"),
         sid=fields.Function(lambda fv: fv.sid, allow_none=True),
         child_sample_name=fields.Function(lambda fv: fv.sid, allow_none=True),
-        allowable_child_types=fields.Function(lambda fv: fv.allowable_child_types, allow_none=True),
+        allowable_child_types=fields.Function(
+            lambda fv: fv.allowable_child_types, allow_none=True),
         ignore=('object_type',),
     )
 
@@ -715,19 +719,86 @@ class Item(ModelBase, DataAssociatorMixin):
     def is_deleted(self):
         return self.location == 'deleted'
 
+    def containing_collection(self):
+        """
+        Returns the collection of which this Item is a part.
+
+        Returns the collection object if the Item is a part, otherwise
+        returns None.
+        """
+        if not self.is_part:
+            return None
+
+        # TODO: to be tested
+        assoc_list = self.session.PartAssociation.where({'part_id': self.id})
+        if not assoc_list:
+            return
+
+        if len(assoc_list) != 1:
+            return None
+
+        part_assoc = next(iter(assoc_list))
+        if not part_assoc:
+            return None
+
+        return self.session.Collection.find(part_assoc.collection_id)
+
+    def as_collection(self):
+        """
+        Returns the Collection object with the ID of this Item, which must be a
+        collection.
+
+        Returns None if this Item is not a collection.
+        """
+        if not self.is_collection:
+            return None
+
+        return self.session.Collection.find(self.id)
+
+    @property
+    def is_part(self):
+        """
+        Returns True if this Item is a part of a collection.
+        """
+        # TODO: to be implemented
+        return False
+
+    @property
+    def is_collection(self):
+        """
+        Returns True if this Item is a collection.
+
+        Note: have to query for the Collection object.
+        """
+        # TODO: to be implemented
+        return False
+
 
 @add_schema
 class Job(ModelBase):
     """A Job model"""
     fields = dict(
         job_associations=HasMany("JobAssociation", "Job"),
-        operations=HasManyThrough("Operation", "JobAssociation")
+        operations=HasManyThrough("Operation", "JobAssociation"),
+        state=fields.JSON(allow_none=True, strict=False)
     )
+
+    @property
+    def is_complete(self):
+        return self.pc == -2
 
     @property
     def uploads(self):
         http = self.session._AqSession__aqhttp
         return http.get("krill/uploads?job={}".format(self.id))['uploads']
+
+    @property
+    def start_time(self):
+        return self.state[0]['time']
+
+    @property
+    def end_time(self):
+        return self.state[-2]['time']
 
 
 @add_schema
@@ -1235,6 +1306,25 @@ class OperationType(ModelBase, HasCodeMixin):
         this Operation Type to be connected to a session."""
         return self.reload(self.session.utils.create_operation_type(self))
 
+@add_schema
+class PartAssociation(ModelBase):
+    """
+    Represents a PartAssociation linking a part to a collection.
+
+    Aquarium definition has the collection as an Item. Not sure why this isn't a Collection.
+    """
+    fields = dict(
+        part=HasOne('Item', ref="part_id"),
+        collection=HasOne('Collection')
+    )
+
+    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
+        self.part_id = part_id
+        self.collection_id = collection_id
+        self.row = row
+        self.column = column
+        super().__init__(**vars(self))
+
 
 @add_schema
 class PartAssociation(ModelBase):
@@ -1491,6 +1581,7 @@ class PlanAssociation(ModelBase):
         self.operation_id = operation_id
         super().__init__(**vars(self))
 
+
 @add_schema
 class Sample(ModelBase):
     """A Sample model"""
@@ -1535,7 +1626,8 @@ class Sample(ModelBase):
         for field_value in self.field_values:
             if field_value.name == name:
                 if field_value.field_type is None:
-                    field_value.field_type = self.sample_type.field_type(field_value.name)
+                    field_value.field_type = self.sample_type.field_type(
+                        field_value.name)
                 return field_value
         return None
 
@@ -1566,7 +1658,8 @@ class Sample(ModelBase):
         if self.field_values is not None:
             for fv in self.field_values:
                 if fv.field_type is None:
-                    fv.field_type = self.sample_type.field_type(fv.name) # corrects wierdness with field_types being absent
+                    # corrects wierdness with field_types being absent
+                    fv.field_type = self.sample_type.field_type(fv.name)
                 d[fv.name] = fv
         fv_dict = {}
         for ft in self.sample_type.field_types:
@@ -1667,7 +1760,8 @@ class Upload(ModelBase):
         return http.get("krill/uploads?job={}".format(self.job_id))['uploads']
 
     def temp_url(self):
-        data = self.session.Upload.where({"id": self.id}, methods=["expiring_url"])[0].raw
+        data = self.session.Upload.where(
+            {"id": self.id}, methods=["expiring_url"])[0].raw
         return data['expiring_url']
 
     @staticmethod
@@ -1750,6 +1844,7 @@ class Upload(ModelBase):
     def save(self):
         return self.session.utils.create_upload(self)
 
+
 @add_schema
 class User(ModelBase):
     """A User model"""
@@ -1775,6 +1870,7 @@ class UserBudgetAssociation(ModelBase):
 
     def __init__(self):
         super().__init__(**vars(self))
+
 
 @add_schema
 class Wire(ModelBase):

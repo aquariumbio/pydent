@@ -63,7 +63,8 @@ def test_init_sample_with_properties(session):
         project="trident",
         sample_type_id=session.SampleType.find_by_name("Yeast Strain").id,
         properties={
-            "Integrant": session.Sample.find_by_name("DummyPlasmid")
+            "Integrant": session.Sample.find_by_name("DummyPlasmid"),
+            "QC_length": 1313
         }
     )
 

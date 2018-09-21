@@ -178,6 +178,7 @@ def test_set_sample_and_item_no_aft():
     """Set value should find the second AllowableFieldType"""
     fake_fv = FieldValue.load({
         "id": 200,
+        "name": "My input",
         "child_item_id": None,
         "allowable_field_type_id": None,
         "allowable_field_type": None,

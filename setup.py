@@ -74,5 +74,5 @@ setup(
         classifiers=[],
         cmdclass={
             'verify': VerifyVersionCommand,
-        }
+    }
 )
