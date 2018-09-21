@@ -433,12 +433,13 @@ class Canvas(PlanOptimizer):
         samples = [s for s in samples if s is not None]
 
         afts = self._collect_matching_afts(src_fv, dest_fv)[0]
-        selected_aft = afts[0]
-        assert selected_aft[0].object_type_id == selected_aft[1].object_type_id
 
         if len(afts) == 0:
             raise CanvasException("Cannot wire \"{}\" to \"{}\". No allowable field types match."
                                   .format(src_fv.name, dest_fv.name))
+
+        selected_aft = afts[0]
+        assert selected_aft[0].object_type_id == selected_aft[1].object_type_id
 
         if len(samples) > 0:
             selected_sample = samples[0]
