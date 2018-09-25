@@ -95,10 +95,10 @@ class Planner(object):
             query['category'] = category
         ots = self.session.OperationType.where(query)
         if len(ots) > 1:
-            msg = "Found more than one OperationType for query \"{}\""
+            msg = "Found more than one OperationType for query \"{}\". Have you tried specifying the category?"
             raise PlannerException(msg.format(query))
         if ots is None or len(ots) == 0:
-            msg = "Could not find deployed OperationType \"{}\""
+            msg = "Could not find deployed OperationType \"{}\"."
             raise PlannerException(msg.format(operation_type_name))
         return self.create_operation_by_type(ots[0])
 

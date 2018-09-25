@@ -232,6 +232,12 @@ class DataAssociatorMixin:
         return val
 
 
+class NamedMixin:
+
+    def __str__(self):
+        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
+
+
 # Models
 
 @add_schema
@@ -256,6 +262,13 @@ class AllowableFieldType(ModelBase):
         self.object_type = self.set_model_attribute(object_type)
         self.sample_type = self.set_model_attribute(sample_type)
         super().__init__(**vars(self))
+
+    def __str__(self):
+        return "<{} sample_type={} object_type={}>".format(
+            self.__class__.__name__,
+            self.sample_type,
+            self.object_type
+        )
 
 
 @add_schema
@@ -572,6 +585,7 @@ class FieldValue(ModelBase, FieldMixin):
         elif self.value:
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
+    # TODO: have field_value resolve the ids when it is dumped? Or how does this work?
     # TODO: object_type isn't a real attribute, its just for AFT
     def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
         if row is not None:
@@ -835,13 +849,16 @@ class Membership(ModelBase):
 
 
 @add_schema
-class ObjectType(ModelBase):
+class ObjectType(ModelBase, NamedMixin):
     """A ObjectType model"""
 
     def save(self):
         """Saves the Object Type to the Aquarium server. Requires
         this Object Type to be connected to a session."""
         return self.reload(self.session.utils.create_object_type(self))
+
+    def __str__(self):
+        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
 
 
 # TODO: field_values should recognize parent_class (maybe where should ignore None field_values...)
@@ -1312,6 +1329,9 @@ class OperationType(ModelBase, HasCodeMixin):
         this Operation Type to be connected to a session."""
         return self.reload(self.session.utils.create_operation_type(self))
 
+    def __str__(self):
+        return "<{} id='{}' name='{}' category='{}'>".format(self.__class__.__name__, self.id, self.name, self.category)
+
 
 @add_schema
 class PartAssociation(ModelBase):
@@ -1570,7 +1590,7 @@ class PlanAssociation(ModelBase):
 
 
 @add_schema
-class Sample(ModelBase):
+class Sample(ModelBase, NamedMixin):
     """A Sample model"""
     fields = dict(
         # sample relationships
@@ -1693,9 +1713,12 @@ class Sample(ModelBase):
         else:
             return [i for i in self.items if i.location != 'deleted' and i.object_type.name == object_type_name]
 
+    def __str__(self):
+        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
+
 
 @add_schema
-class SampleType(ModelBase):
+class SampleType(ModelBase, NamedMixin):
     """A SampleType model"""
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
@@ -1704,6 +1727,25 @@ class SampleType(ModelBase):
                              "parent_id": self.id,
                              "parent_class": self.__class__.__name__})
     )
+
+    @property
+    def properties(self):
+        props = {}
+        for ft in self.field_types:
+            if ft.ftype == 'sample':
+                props[ft.name] = [str(aft) for aft in ft.allowable_field_types]
+            else:
+                props[ft.name] = ft.ftype
+        return props
+
+    def new_sample(self, name, description, project, **properties):
+        return self.session.Sample.new(
+            sample_type_id=self.id,
+            name=name,
+            description=description,
+            project=project,
+            properties=properties
+        )
 
     def field_type(self, name):
         """Return the field_type by name"""
@@ -1716,6 +1758,8 @@ class SampleType(ModelBase):
         this Sample Type to be connected to a session."""
         return self.reload(self.session.utils.create_sample_type(self))
 
+    def __str__(self):
+        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
 
 # TODO: expiring_url is never updated...
 @add_schema
