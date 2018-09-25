@@ -173,3 +173,39 @@ def test_proper_setting_of_object_types(session):
     canvas.add_wire(glycerol.outputs[0], mating.inputs[1])
     assert mating.inputs[0].allowable_field_type.object_type.name == "Divided Yeast Plate"
     assert mating.inputs[1].allowable_field_type.object_type.name == "Yeast Glycerol Stock"
+
+
+def test_annotate(session):
+
+    canvas = Planner(session)
+
+    a = canvas.annotate("This is my annotation", 10, 20, 110, 100)
+
+    assert a['x'] == 10
+    assert a['y'] == 20
+    anchor = a['anchor']
+    assert anchor['x'] == 110
+    assert anchor['y'] == 100
+
+
+def test_annotate_layout(session):
+
+    canvas = Planner(session)
+
+    ops = canvas.quick_create_chain("Make PCR Fragment", "Run Gel", category="Cloning")
+    canvas.layout.topo_sort()
+    canvas.layout.move(100, 200)
+
+    a = canvas.annotate_above_layout("This is an annotation", 100, 50)
+
+    anchor = a['anchor']
+    xmidpoint = a['x'] + anchor['x']/2
+    ybottom = a['y'] + anchor['y']
+
+    assert xmidpoint == 100 + canvas.layout.BOX_WIDTH/2
+    assert ybottom == 200 - canvas.layout.BOX_DELTA_Y/2
+
+    canvas.plan.name = "annotation test"
+    canvas.create()
+    print(canvas.url)
+

@@ -4,6 +4,7 @@ Planner
 
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs
+from pydent.utils import make_async
 from uuid import uuid4
 from functools import wraps
 
@@ -435,6 +436,53 @@ class Planner(object):
                 # cls._json_update(fv)
 
     @staticmethod
+    @make_async
+    def _filter_by_lambdas(models, lambda_arr):
+        """Filters models by a array of lambdas."""
+        arr = models[:]
+        _arr = []
+        while arr:
+            m = arr.pop()
+            for fxn in lambda_arr:
+                try:
+                    if fxn(m):
+                        _arr.append(m)
+                except TypeError or ValueError:
+                    continue
+        return _arr
+
+    @plan_verification_wrapper
+    def set_to_available_item(self, fv, recent=True, lambda_arr=None):
+        """
+        Sets the item of the field value to the next available item. Setting recent=False will select
+        the oldest item.
+
+        :param fv: The field value to set.
+        :type fv: FieldValue
+        :param recent: whether to select the most recent item (recent=True is default)
+        :type recent: bool
+        :param lambda_arr: array of lambda to filter items by. E.g. 'lambda_arr=[lambda x: x.get("concentration") > 10]'
+        :type lambda_arr: list
+        :return: the selected item
+        :rtype: Item
+        """
+        sample = fv.sample
+        item = None
+        if sample is not None:
+            allowable_field_type = fv.allowable_field_type
+            available_items = sample.available_items(object_type_id=allowable_field_type.object_type_id)
+            available_items = sorted(available_items, key=lambda x: x.created_at)
+            if lambda_arr is not None:
+                available_items = self._filter_by_lambdas(available_items, lambda_arr)
+            if recent:
+                item = available_items[-1]
+            else:
+                item = available_items[0]
+        if item is not None:
+            fv.set_value(item=item)
+        return item
+
+    @staticmethod
     def _json_update(model, **params):
         """Temporary method to update"""
         aqhttp = model.session._AqSession__aqhttp
@@ -453,37 +501,76 @@ class Planner(object):
         cls._json_update(pa)
 
     def find_operations_by_name(self, operation_type_name):
+        """
+        Find operations by their operation_type_name
+
+        :param operation_type_name: The operation type name
+        :type operation_type_name: basestring
+        :return: list of operations
+        :rtype: list
+        """
         return [op for op in self.plan.operations if
                 op.operation_type.name == operation_type_name]
 
     def replan(self):
-        """Replan"""
+        """Replan the plan, by 'copying' the plan using the Aquarium server."""
         planner = self.__class__(self.session)
         planner.plan = self.plan.replan()
         return planner
 
     def annotate(self, markdown, x, y, width, height):
+        """
+        Annotates the plan with Markdown text.
+
+        :param markdown: text to annotate (in markdown format)
+        :type markdown: basestring
+        :param x: x-position
+        :type x: int
+        :param y: y-position
+        :type y: int
+        :param width: width of the text box
+        :type width: int
+        :param height: height of the text box
+        :type height: int
+        :return: None
+        :rtype: None
+        """
         annotation = {
             "anchor": {"x": width, "y": height},
             "x": x,
             "y": y,
             "markdown": markdown
         }
+        markdown += "\n<!-- annotated by pydent.planner -->"
         self.plan.layout.setdefault('text_boxes', [])
         if self.plan.layout['text_boxes'] is None:
             self.plan.layout['text_boxes'] = []
         if annotation not in self.plan.layout['text_boxes']:
             self.plan.layout['text_boxes'].append(annotation)
+        return annotation
+
+    def annotate_operations(self, ops, markdown, width, height):
+        """Annotates above the operations. Estimates the x-midpoint and y and makes a
+        text annotation at that location."""
+        layout = self.layout.ops_to_layout(ops)
+        return self.annotate_above_layout(markdown, width, height, layout=layout)
 
     def annotate_above_layout(self, markdown, width, height, layout=None):
+        """Annotates text directly above a layout"""
         if layout is None:
             layout = self.layout
-        x, y = layout.midpoint()
-        x += layout.BOX_WIDTH/2
-        # x -= width/2
+
+        x = layout.midpoint()[0] + layout.BOX_WIDTH/2  # adjust so x is midpoint of 'box' on screen
+        y = layout.y
+
+        # center the annotation
+        x -= width/2
         y -= height
-        y -= layout.BOX_DELTA_Y
-        self.annotate(markdown, x, y, width, height)
+
+        # give some space between annotation and operation
+        y -= layout.BOX_DELTA_Y/2
+
+        return self.annotate(markdown, x, y, width, height)
 
     @property
     def layout(self):

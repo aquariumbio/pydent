@@ -14,7 +14,7 @@ class PlannerLayout(object):
     TOP_RIGHT = (100, 100)
     BOX_DELTA_X = 170
     BOX_DELTA_Y = 70
-    BOX_WIDTH = 100
+    BOX_WIDTH = 150
     BOX_HEIGHT = 70
     STATUS_COLORS = {
         "waiting": "orange",

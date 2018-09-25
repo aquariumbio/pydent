@@ -1707,14 +1707,19 @@ class Sample(ModelBase, NamedMixin):
         result = self.session.utils.create_samples([self])
         return self.reload(result['samples'][0])
 
-    def available_items(self, object_type_name=None):
-        if object_type_name is None:
+    def available_items(self, object_type_name=None, object_type_id=None):
+        query = {"name": object_type_name, "id": object_type_id}
+        query = {k: v for k, v in query.items() if v is not None}
+        if query == {}:
             return [i for i in self.items if i.location != 'deleted']
         else:
-            return [i for i in self.items if i.location != 'deleted' and i.object_type.name == object_type_name]
+            object_types = self.session.ObjectType.where(query)
+            object_type = object_types[0]
+            return [i for i in self.items if i.location != 'deleted' and
+                    i.object_type_id == object_type.id]
 
     def __str__(self):
-        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
+        return "<{} id='{}' name='{}' sample_type={}>".format(self.__class__.__name__, self.id, self.name, self.sample_type)
 
 
 @add_schema
@@ -1738,7 +1743,9 @@ class SampleType(ModelBase, NamedMixin):
                 props[ft.name] = ft.ftype
         return props
 
-    def new_sample(self, name, description, project, **properties):
+    def new_sample(self, name, description, project, properties=None):
+        if properties is None:
+            properties = dict()
         return self.session.Sample.new(
             sample_type_id=self.id,
             name=name,
