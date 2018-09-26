@@ -51,6 +51,7 @@ deploy:
 	python setup.py sdist
 	python setup.py bdist_wheel
 
+
 lock:
 	pipenv lock
 	pipenv lock -r > requirements.txt
