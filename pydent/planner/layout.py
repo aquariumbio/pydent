@@ -36,8 +36,8 @@ class PlannerLayout(object):
     @classmethod
     def from_plan(cls, plan: Plan):
         """Creates a layout from a :class:`pydent.models.Plan` instance"""
-        layout = cls(nx.DiGraph())
-        edges = []
+        G = nx.DiGraph()
+        layout = cls(G)
 
         @make_async(10, progress_bar=False)
         def add_wires(wires):
@@ -45,7 +45,7 @@ class PlannerLayout(object):
                 from_id = _id_getter(wire.source.operation)
                 to_id = _id_getter(wire.destination.operation)
                 if from_id is not None and to_id is not None:
-                    edges.append((from_id, to_id))
+                    G.add_edge(from_id, to_id, wire=wire)
             return wires
 
         @make_async(10, progress_bar=False)
@@ -54,9 +54,8 @@ class PlannerLayout(object):
                 layout._add_operation(op)
             return ops
 
-        add_wires(plan.wires)
         add_ops(plan.operations)
-        layout.G.add_edges_from(edges)
+        add_wires(plan.wires)
 
         # fix operation coordinates if None
         for op in layout.operations:
