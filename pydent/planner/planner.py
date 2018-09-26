@@ -490,15 +490,13 @@ class Planner(object):
                 fv.set_value(sample=sample)
                 # cls._json_update(fv)
 
-    def set_field_value_and_propogate(self, field_value, sample=None, setter=None):
+    def set_field_value_and_propogate(self, field_value, sample=None):
         routing_graph = self._routing_graph()
         routing_id = self._routing_id(field_value)
         subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
-        if setter is None:
-            setter = self.set_field_value
         for node in subgraph:
             n = routing_graph.node[node]
-            setter(n['fv'], sample=sample)
+            self.set_field_value(n['fv'], sample=sample)
 
     @staticmethod
     @make_async
