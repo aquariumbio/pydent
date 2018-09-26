@@ -4,6 +4,7 @@ PlannerLayout
 
 import networkx as nx
 from collections import OrderedDict
+from pydent.planner.utils import _id_getter, get_subgraphs
 from pydent.utils import make_async
 from pydent.models import Operation, Plan
 from typing import Iterable, Tuple
@@ -41,8 +42,8 @@ class PlannerLayout(object):
         @make_async(10, progress_bar=False)
         def add_wires(wires):
             for wire in wires:
-                from_id = layout._id_getter(wire.source.operation)
-                to_id = layout._id_getter(wire.destination.operation)
+                from_id = _id_getter(wire.source.operation)
+                to_id = _id_getter(wire.destination.operation)
                 if from_id is not None and to_id is not None:
                     edges.append((from_id, to_id))
             return wires
@@ -66,13 +67,6 @@ class PlannerLayout(object):
 
         return layout
 
-    @staticmethod
-    def _id_getter(model):
-        id = model.id
-        if id is None:
-            id = "r{}".format(model.rid)
-        return id
-
     @property
     def nodes(self):
         return self.G.nodes
@@ -91,7 +85,7 @@ class PlannerLayout(object):
         :return: None
         :rtype: None
         """
-        return self.G.add_node(self._id_getter(operation), operation=operation)
+        return self.G.add_node(_id_getter(operation), operation=operation)
 
     def subgraph(self, nodes):
         """Returns a subgraph layout from a list of node_ids"""
@@ -103,7 +97,7 @@ class PlannerLayout(object):
 
     def ops_to_nodes(self, ops):
         """Returns node_ids for each operation"""
-        return [self._id_getter(op) for op in ops]
+        return [_id_getter(op) for op in ops]
 
     def ops_to_layout(self, ops):
         """Returns a sub-layout containing only the operations"""
@@ -116,17 +110,9 @@ class PlannerLayout(object):
         :return: list of PlannerLayout
         :rtype: list
         """
-        node_list = list(self.G.nodes)
-        subgraphs = []
-        while len(node_list) > 0:
-            node = node_list[-1]
-            subgraph = nx.bfs_tree(self.G.to_undirected(), node)
-            for n in subgraph.nodes:
-                node_list.remove(n)
-            nxsubgraph = self.G.subgraph(subgraph.nodes)
-            sublayout = self.__class__(G=nxsubgraph)
-            subgraphs.append(sublayout)
-        return subgraphs
+        subgraphs = get_subgraphs(self.G)
+        sublayouts = [self.__class__(G=g) for g in subgraphs]
+        return sublayouts
 
     def _topological_sort(self):
         subgraphs = self.get_independent_layouts()

@@ -2,8 +2,9 @@
 Planner
 """
 
+from networkx import nx
 from pydent.planner.layout import PlannerLayout
-from pydent.planner.utils import arr_to_pairs
+from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
 from pydent.utils import make_async
 from uuid import uuid4
 from functools import wraps
@@ -325,7 +326,7 @@ class Planner(object):
         return ops
 
     @plan_verification_wrapper
-    def quick_wire(self, source, destination, strict=True):
+    def quick_wire(self, source, destination, strict=False):
         afts, model_inputs, model_outputs = self._collect_matching_afts(
             source, destination)
 
@@ -337,16 +338,17 @@ class Planner(object):
                     model_inputs[0].operation.operation_type.name,
                     ', '.join([fv.name for fv in model_outputs]),
                     model_outputs[0].operation.operation_type.name))
+        elif len(afts) > 0:
+            for aft1, aft2 in afts:
+                o = source.output(aft1.field_type.name)
+                i = destination.input(aft2.field_type.name)
+                o.allowable_field_type_id = aft1.id
+                i.allowable_fiFeld_type_id = aft2.id
+                return self.add_wire(o, i)
         elif len(afts) == 0:
             raise PlannerException(
                 "Cannot quick wire. No available field types found between {} and {}".format(source.operation_type.name,
                                                                                              destination.operation_type.name))
-        for aft1, aft2 in afts:
-            o = source.output(aft1.field_type.name)
-            i = destination.input(aft2.field_type.name)
-            o.allowable_field_type_id = aft1.id
-            i.allowable_field_type_id = aft2.id
-            return self.add_wire(o, i)
 
     def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""
@@ -356,20 +358,30 @@ class Planner(object):
 
     # TODO: resolve afts if already set...
     # TODO: clean up _set_wire
-    def _set_wire(self, src_fv, dest_fv, preference="source"):
+    def _set_wire(self, src_fv, dest_fv, preference="source", setter=None):
 
-        # resolve sample
-        samples = [src_fv.sample, dest_fv.sample]
-        samples = [s for s in samples if s is not None]
+        if len(self.get_incoming_wires(dest_fv)) > 0:
+            raise PlannerException("Cannot wire because \"{}\" already has an incoming wire and inputs"
+                                   " can only have one incoming wire. Please remove wire"
+                                   " using 'canvas.remove_wire(src_fv, dest_fv)' before setting.".format(dest_fv.name))
 
+        # first collect any matching allowable field types between the field values
         afts = self._collect_matching_afts(src_fv, dest_fv)[0]
 
         if len(afts) == 0:
             raise PlannerException("Cannot wire \"{}\" to \"{}\". No allowable field types match."
                                    .format(src_fv.name, dest_fv.name))
 
+        # select the first aft
         selected_aft = afts[0]
         assert selected_aft[0].object_type_id == selected_aft[1].object_type_id
+
+        # resolve sample
+        samples = [src_fv.sample, dest_fv.sample]
+        samples = [s for s in samples if s is not None]
+
+        if setter is None:
+            setter = self.set_field_value
 
         if len(samples) > 0:
             selected_sample = samples[0]
@@ -385,8 +397,8 @@ class Planner(object):
                 raise PlannerException("No allowable_field_types were found for FieldValues {} & {} for"
                                        " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name))
 
-            self.set_field_value(src_fv, sample=selected_sample)
-            self.set_field_value(dest_fv, sample=selected_sample)
+            setter(src_fv, sample=selected_sample)
+            setter(dest_fv, sample=selected_sample)
 
             assert selected_aft[0].sample_type_id == selected_aft[1].sample_type_id
             assert selected_aft[0].sample_type_id == src_fv.sample.sample_type_id
@@ -394,14 +406,14 @@ class Planner(object):
 
             # set the sample (and allowable_field_type)
             if src_fv.sample is not None and (dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
-                self.set_field_value(
+                setter(
                     dest_fv, sample=src_fv.sample, container=selected_aft[0].object_type)
             elif dest_fv.sample is not None and (src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
-                self.set_field_value(
+                setter(
                     src_fv, sample=dest_fv.sample, container=selected_aft[0].object_type)
 
-        self.set_field_value(src_fv, container=selected_aft[0].object_type)
-        self.set_field_value(dest_fv, container=selected_aft[0].object_type)
+        setter(src_fv, container=selected_aft[0].object_type)
+        setter(dest_fv, container=selected_aft[0].object_type)
 
     @plan_verification_wrapper
     def add_wire(self, fv1, fv2):
@@ -414,6 +426,10 @@ class Planner(object):
         return wire
 
     @staticmethod
+    def _routing_id(fv):
+        return "{}_{}".format(_id_getter(fv.operation), fv.field_type.routing)
+
+    @staticmethod
     def get_routing_dict(op):
         routing_dict = {}
         for fv in op.field_values:
@@ -423,6 +439,45 @@ class Planner(object):
             routing_dict[fv.field_type.routing] = routing_fvs
         return routing_dict
 
+    def _routing_graph(self):
+        """Get sample routing graph. A property of a valid plan is that any two routing nodes
+        that are connected by an edge must have the same sample. Edges are treated as 'sample wires'"""
+        G = nx.DiGraph()
+
+        for op in self.plan.operations:
+            for fv in op.field_values:
+                G.add_node(self._routing_id(fv), fv=fv)
+
+        for w in self.plan.wires:
+            src_id = self._routing_id(w.source)
+            dest_id = self._routing_id(w.destination)
+
+            G.add_node(src_id, fv=w.source)
+            G.add_node(dest_id, fv=w.destination)
+
+            G.add_edge(src_id, dest_id, wire=w)
+        return G
+
+    def _cache(self):
+        @make_async(10, progress_bar=False)
+        def _cache_ops(ops):
+            for op in ops:
+                for fv in op.field_values:
+                    fv.sample
+                    fv.allowable_field_type
+                    fv.field_type
+            return ops
+        _cache_ops(self.plan.operations)
+
+    # TODO: verify all routing graphs have the same sample
+    # TODO: verify all leaves have an item or a wire
+    def validate(self):
+        routing_subgraphs = self._routing_graph()
+        for rsg in routing_subgraphs:
+            for n in rsg.nodes:
+                n.field_value
+
+    # TODO: Support for row and column
     @plan_verification_wrapper
     def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
         routing = field_value.field_type.routing
@@ -434,6 +489,16 @@ class Planner(object):
             for fv in fvs:
                 fv.set_value(sample=sample)
                 # cls._json_update(fv)
+
+    def set_field_value_and_propogate(self, field_value, sample=None, setter=None):
+        routing_graph = self._routing_graph()
+        routing_id = self._routing_id(field_value)
+        subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
+        if setter is None:
+            setter = self.set_field_value
+        for node in subgraph:
+            n = routing_graph.node[node]
+            setter(n['fv'], sample=sample)
 
     @staticmethod
     @make_async
@@ -481,6 +546,58 @@ class Planner(object):
         if item is not None:
             fv.set_value(item=item)
         return item
+
+    @plan_verification_wrapper
+    def set_inputs_with_sample(self, operation, sample, routing=None, setter=None):
+        """Map the sample field values to the operation inputs. Optionally, a routing dictionary may
+        be passed to indicate the mapping between the sample field values and operation inputs.
+
+        For example, the following would map the "Integrant" sample field value to the "Template"
+        operation input, and so on...:
+
+        .. code:: python
+
+            routing={
+                "Integrant": "Template",
+                "QC_Primer1": "Forward Primer",
+                "QC_Primer2": "Reverse Primer"
+            }
+        """
+        if routing is None:
+            routing = {ft.name: ft.name for ft in sample.sample_type.field_types}
+
+        if setter is None:
+            setter = self.set_field_value
+        for sfv, ofv in routing.items():
+            operation_input = operation.input(ofv)
+            sample_property = sample.properties.get(sfv, None)
+            # set operation input to the property sample
+            if operation_input is not None and sample_property is not None:
+                setter(operation_input, sample=sample_property)
+
+    @plan_verification_wrapper
+    def set_output(self, fv, sample=None, routing=None, setter=None):
+        """
+        Sets the output of the field value to the sample. If the field_value names between the Sample and
+        the field_value's operation inputs, these will be set as well. Optionally, a routing dictionary may
+        be passed to indicate the mapping between the sample field values and the operation field values.
+
+        :param fv: the output field value
+        :type fv:
+        :param sample:
+        :type sample:
+        :param routing:
+        :type routing:
+        :return:
+        :rtype:
+        """
+        if fv.role != "output":
+            raise Exception("Cannot output. FieldValue {} is a/an {}.".format(fv.name, fv.role))
+        if setter is None:
+            setter = self.set_field_value
+        setter(fv, sample=sample)
+        op = fv.operation
+        self.set_inputs_with_sample(op, sample, routing=routing, setter=setter)
 
     @staticmethod
     def _json_update(model, **params):
@@ -609,6 +726,10 @@ class Planner(object):
             hashgroup[h].append(op)
         return hashgroup
 
+    def ipython_link(self):
+        from IPython.display import display, HTML
+        return display(HTML("<a href=\"{url}\">{url}</a>".format(url=self.url)))
+
     def optimize_plan(self, operations=None, ignore=None):
         """
         Optimizes a plan by removing redundent operations.
@@ -656,3 +777,49 @@ class Planner(object):
         print("\t{} operations removed".format(len(ops_to_remove)))
         print("\t{} input wires re-wired".format(num_inputs_rewired))
         print("\t{} output wires re-wired".format(num_outputs_rewired))
+
+    def roots(self):
+        """Get field values that have no predecessors (i.e. are 'roots')"""
+        roots = []
+        for subgraph in get_subgraphs(self._routing_graph()):
+            for n in subgraph:
+                node = subgraph.node[n]
+                if len(list(subgraph.predecessors(n))) == 0:
+                    root = node['fv']
+                    roots.append(root)
+        return roots
+
+    def validate(self):
+        """
+        Validates sample routes in the plan.
+
+        :return: dictionary of each sample route and validation errors
+        :rtype: dict
+        """
+        routes = {}
+        for subgraph in get_subgraphs(self._routing_graph()):
+            values = []
+            reasons = []
+            root = None
+            for n in subgraph:
+                node = subgraph.node[n]
+                fv = node['fv']
+                value = fv.sample
+                if value is None:
+                    reasons.append("{} {} for {} has no sample defined".format(fv.role, fv.name, fv.operation.operation_type.name))
+                else:
+                    values.append(value)
+                if len(list(subgraph.predecessors(n))) == 0:
+                    root = fv
+            if root.item is None and root.role == "input":
+                reasons.append("{} {} for {} has no item defined".format(fv.role, fv.name, fv.operation.operation_type.name))
+            values = list(set(values))
+            if len(values) > 1:
+                reasons.append("different samples defined in route ({})".format(values))
+            root_id = "{} for {} ({})".format(root.name, root.operation.operation_type.name, self._routing_id(root))
+            routes[root_id] = {
+                "root_field_value": root,
+                "errors": reasons,
+                "valid": len(reasons) == 0
+            }
+        return routes

@@ -1,6 +1,6 @@
 import pytest
 from pydent.planner import Planner, PlannerException
-
+from pydent.planner.utils import get_subgraphs
 
 def test_canvas_create(session):
     canvas = Planner(session)
@@ -126,6 +126,15 @@ def test_quick_chain_to_existing_operation(session):
     assert len(canvas.plan.wires) == 1
 
 
+def test_quick_chain_to_existing_operation_too_many_times(session):
+    canvas = Planner(session)
+    op = canvas.create_operation_by_name("Yeast Transformation")
+    op1 = canvas.quick_create_chain(op, "Check Yeast Plate")[-1]
+    with pytest.raises(PlannerException):
+        canvas.quick_create_chain(op, op1)
+    assert len(canvas.plan.wires) == 1
+
+
 def test_canvas_chaining(session):
     canvas = Planner(session)
     ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
@@ -209,3 +218,16 @@ def test_annotate_layout(session):
     canvas.create()
     print(canvas.url)
 
+
+def test_routing_graph(session):
+
+    canvas = Planner(session)
+    ops = canvas.quick_create_chain("Rehydrate Primer",
+                                    "Make PCR Fragment",
+                                    "Run Gel",
+                                    "Extract Gel Slice",
+                                    "Purify Gel Slice",
+                                    "Assemble Plasmid", category="Cloning")
+
+    routing_graph = canvas._routing_graph()
+    print(get_subgraphs(routing_graph))
