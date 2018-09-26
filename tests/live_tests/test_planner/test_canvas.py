@@ -231,3 +231,10 @@ def test_routing_graph(session):
 
     routing_graph = canvas._routing_graph()
     print(get_subgraphs(routing_graph))
+
+
+def test_quick_wire_to_input_array(session):
+
+    canvas = Planner(session)
+    ops = canvas.quick_create_chain("Purify Gel Slice", "Assemble Plasmid", category="Cloning")
+    canvas.quick_create_chain("Purify Gel Slice", ops[-1], category="Cloning")

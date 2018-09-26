@@ -325,6 +325,7 @@ class Planner(object):
             self.quick_wire(op1, op2)
         return ops
 
+    # TODO: way to select preference for afts in quick_wire?
     @plan_verification_wrapper
     def quick_wire(self, source, destination, strict=False):
         afts, model_inputs, model_outputs = self._collect_matching_afts(
@@ -342,8 +343,13 @@ class Planner(object):
             for aft1, aft2 in afts:
                 o = source.output(aft1.field_type.name)
                 i = destination.input(aft2.field_type.name)
+
+                # TODO: quick_wire should try different inputs until an empty one is found?
+                # create a new input if the input is an array and there are no more empty inputs
+                if len(self.get_incoming_wires(i)) > 0 and i.array:
+                    i = i.operation.add_to_field_value_array(aft2.field_type.name, "input")
                 o.allowable_field_type_id = aft1.id
-                i.allowable_fiFeld_type_id = aft2.id
+                i.allowable_field_type_id = aft2.id
                 return self.add_wire(o, i)
         elif len(afts) == 0:
             raise PlannerException(
