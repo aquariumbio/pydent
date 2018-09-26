@@ -827,3 +827,19 @@ class Planner(object):
                 "valid": len(reasons) == 0
             }
         return routes
+
+    # TODO: implement individual wires and things
+    def draw(self):
+        layout = self.layout
+        edge_colors = []
+        for s, e, d in layout.G.edges(data=True):
+            color = "black"
+            wire = d['wire']
+            if wire.source.sample is None:
+                color = "orange"
+            elif wire.destination.sample is None:
+                color = "orange"
+            elif wire.destination.sample != wire.source.sample:
+                color = "red"
+            edge_colors.append(color)
+        nx.draw(self.layout.G, edge_colors=edge_colors, pos=self.layout.pos())

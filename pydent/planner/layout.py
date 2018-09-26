@@ -512,16 +512,20 @@ class PlannerLayout(object):
     def height(self):
         return self.bounds()[1][1] - self.bounds()[0][1]
 
-    def draw(self):
+    def pos(self):
         pos = {}
         for n in self.nodes:
             op = self.G.node[n]['operation']
             pos[n] = (op.x, -op.y)
+        return pos
 
+    def _status_colors(self):
         node_color = [self.STATUS_COLORS.get(
             op.status, "rosybrown") for op in self.operations]
+        return node_color
 
-        return nx.draw(self.G, pos=pos, node_color=node_color)
+    def draw(self):
+        return nx.draw(self.G, pos=self.pos(), node_color=self._status_colors())
 
     def __len__(self):
         return len(self.G)
