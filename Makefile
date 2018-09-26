@@ -8,7 +8,7 @@ init:
 
 
 test:
-	pipenv run tox
+	pipenv run pytest
 
 
 pylint:
