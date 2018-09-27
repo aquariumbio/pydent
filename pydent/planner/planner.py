@@ -348,8 +348,6 @@ class Planner(object):
                 # create a new input if the input is an array and there are no more empty inputs
                 if len(self.get_incoming_wires(i)) > 0 and i.array:
                     i = i.operation.add_to_field_value_array(aft2.field_type.name, "input")
-                o.allowable_field_type_id = aft1.id
-                i.allowable_field_type_id = aft2.id
                 return self.add_wire(o, i)
         elif len(afts) == 0:
             raise PlannerException(
@@ -372,15 +370,22 @@ class Planner(object):
                                    " using 'canvas.remove_wire(src_fv, dest_fv)' before setting.".format(dest_fv.name))
 
         # first collect any matching allowable field types between the field values
-        afts = self._collect_matching_afts(src_fv, dest_fv)[0]
+        aft_pairs = self._collect_matching_afts(src_fv, dest_fv)[0]
 
-        if len(afts) == 0:
+        if len(aft_pairs) == 0:
             raise PlannerException("Cannot wire \"{}\" to \"{}\". No allowable field types match."
                                    .format(src_fv.name, dest_fv.name))
 
         # select the first aft
-        selected_aft = afts[0]
-        assert selected_aft[0].object_type_id == selected_aft[1].object_type_id
+        default_aft_ids = [src_fv.allowable_field_type_id, dest_fv.allowable_field_type_id]
+        pref_index = 0
+        if preference == "destination":
+            pref_index = 1
+        selected_aft_pair = aft_pairs[0]
+        for pair in aft_pairs:
+            if pair[pref_index].id == default_aft_ids[pref_index]:
+                selected_aft_pair = pair
+        assert selected_aft_pair[0].object_type_id == selected_aft_pair[1].object_type_id
 
         # resolve sample
         samples = [src_fv.sample, dest_fv.sample]
@@ -390,36 +395,34 @@ class Planner(object):
             setter = self.set_field_value
 
         if len(samples) > 0:
-            selected_sample = samples[0]
-            if preference == "destination":
-                selected_sample = samples[1]
+            selected_sample = samples[pref_index]
 
             # filter afts by sample_type_id
-            afts = [aft for aft in afts if aft[0].sample_type_id ==
+            aft_pairs = [aft for aft in aft_pairs if aft[0].sample_type_id ==
                     selected_sample.sample_type_id]
-            selected_aft = afts[0]
+            selected_aft_pair = aft_pairs[0]
 
-            if len(afts) == 0:
+            if len(aft_pairs) == 0:
                 raise PlannerException("No allowable_field_types were found for FieldValues {} & {} for"
                                        " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name))
 
             setter(src_fv, sample=selected_sample)
             setter(dest_fv, sample=selected_sample)
 
-            assert selected_aft[0].sample_type_id == selected_aft[1].sample_type_id
-            assert selected_aft[0].sample_type_id == src_fv.sample.sample_type_id
-            assert selected_aft[0].sample_type_id == dest_fv.sample.sample_type_id
+            assert selected_aft_pair[0].sample_type_id == selected_aft_pair[1].sample_type_id
+            assert selected_aft_pair[0].sample_type_id == src_fv.sample.sample_type_id
+            assert selected_aft_pair[0].sample_type_id == dest_fv.sample.sample_type_id
 
             # set the sample (and allowable_field_type)
             if src_fv.sample is not None and (dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
                 setter(
-                    dest_fv, sample=src_fv.sample, container=selected_aft[0].object_type)
+                    dest_fv, sample=src_fv.sample, container=selected_aft_pair[0].object_type)
             elif dest_fv.sample is not None and (src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
                 setter(
-                    src_fv, sample=dest_fv.sample, container=selected_aft[0].object_type)
+                    src_fv, sample=dest_fv.sample, container=selected_aft_pair[0].object_type)
 
-        setter(src_fv, container=selected_aft[0].object_type)
-        setter(dest_fv, container=selected_aft[0].object_type)
+        setter(src_fv, container=selected_aft_pair[0].object_type)
+        setter(dest_fv, container=selected_aft_pair[0].object_type)
 
     @plan_verification_wrapper
     def add_wire(self, fv1, fv2):
@@ -809,13 +812,13 @@ class Planner(object):
                 node = subgraph.node[n]
                 fv = node['fv']
                 value = fv.sample
-                if value is None:
+                if value is None and fv.field_type.ftype == 'sample':
                     reasons.append("{} {} for {} has no sample defined".format(fv.role, fv.name, fv.operation.operation_type.name))
                 else:
                     values.append(value)
                 if len(list(subgraph.predecessors(n))) == 0:
                     root = fv
-            if root.item is None and root.role == "input":
+            if root.item is None and root.role == "input" and root.field_type.ftype == 'sample':
                 reasons.append("{} {} for {} has no item defined".format(fv.role, fv.name, fv.operation.operation_type.name))
             values = list(set(values))
             if len(values) > 1:

@@ -238,3 +238,22 @@ def test_quick_wire_to_input_array(session):
     canvas = Planner(session)
     ops = canvas.quick_create_chain("Purify Gel Slice", "Assemble Plasmid", category="Cloning")
     canvas.quick_create_chain("Purify Gel Slice", ops[-1], category="Cloning")
+
+
+# TODO: this test is not finished..
+def test_set_output_and_propogate(session):
+
+    canvas = Planner(session)
+    ops = canvas.quick_create_chain("Rehydrate Primer",
+                                        "Make PCR Fragment",
+                                        "Run Gel",
+                                        "Extract Gel Slice",
+                                        "Purify Gel Slice",
+                                        "Assemble Plasmid", category="Cloning")
+
+    example_fragment = session.Sample.find_by_name("SV40-dCas9-split")
+    canvas.set_output(ops[1].outputs[0], sample=example_fragment, setter=canvas.set_field_value_and_propogate)
+
+    canvas.validate()
+
+def test_preference(session):
