@@ -255,5 +255,3 @@ def test_set_output_and_propogate(session):
     canvas.set_output(ops[1].outputs[0], sample=example_fragment, setter=canvas.set_field_value_and_propogate)
 
     canvas.validate()
-
-def test_preference(session):

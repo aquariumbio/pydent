@@ -214,6 +214,15 @@ class Planner(object):
 
     @classmethod
     def _collect_matching_afts(cls, source, destination):
+        """
+
+        :param source: a field value or operation source
+        :type source: FieldValue|Operation
+        :param destination: a field value or operation destination
+        :type destination: FieldValue|Operation
+        :return: tuple of matching allowable_field_type (aft) pairs, matching field_value inputs and matching field_value outputs
+        :rtype: tuple
+        """
         """Find matching AllowableFieldTypes"""
         inputs = cls._resolve_destination_to_inputs(destination)
         outputs = cls._resolve_source_to_outputs(source)
@@ -328,6 +337,17 @@ class Planner(object):
     # TODO: way to select preference for afts in quick_wire?
     @plan_verification_wrapper
     def quick_wire(self, source, destination, strict=False):
+        """
+
+        :param source: field_value or operation source
+        :type source: FieldValue|Operation
+        :param destination: field_value or operation destination
+        :type destination: FieldValue|Operation
+        :param strict: will raise error if there is is ambiguous wiring between the source and destination
+        :type strict: bool
+        :return: created wire
+        :rtype: Wire
+        """
         afts, model_inputs, model_outputs = self._collect_matching_afts(
             source, destination)
 
