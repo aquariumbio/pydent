@@ -655,9 +655,10 @@ class FieldValue(ModelBase, FieldMixin):
                 raise AquariumModelError(msg.format(
                     self.role, self.name, sid, oid, ', '.join(aft_list)))
             if len(afts) > 1:
-                msg = "More than one AllowableFieldType found that matches {}"
-                warnings.warn(msg.format(
-                    self.dumps(only=('name', 'role', 'id'), partial=True)))
+                pass
+                # msg = "More than one AllowableFieldType found that matches {}"
+                # warnings.warn(msg.format(
+                #     self.dumps(only=('name', 'role', 'id'), partial=True)))
             elif len(afts) == 1:
                 self.set_allowable_field_type(afts[0])
             else:

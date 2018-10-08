@@ -201,7 +201,7 @@ class Planner(object):
         """
         if isinstance(destination, FieldValue):
             if destination.role == "input":
-                inputs = [destination]
+                return [destination]
             else:
                 msg = "Planner attempted to find matching" \
                     " allowable_field_types for" \
@@ -210,7 +210,9 @@ class Planner(object):
         elif isinstance(destination, Operation):
             inputs = [fv for fv in destination.inputs
                       if fv.field_type.ftype == 'sample']
-        return inputs
+            return inputs
+        else:
+            raise PlannerException("Cannot resolve inputs, type must be a FieldValue or Operation, not a \"{}\"".format(type(destination)))
 
     @classmethod
     def _collect_matching_afts(cls, source, destination):
@@ -329,6 +331,8 @@ class Planner(object):
             planner.quick_create_chain("Pour Gel", run_gel)
         """
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
+        if any([op for op in ops if op is None]):
+            raise Exception("Could not find some operations: {}".format(ops))
         pairs = arr_to_pairs(ops)
         for op1, op2 in pairs:
             self.quick_wire(op1, op2)
@@ -361,18 +365,22 @@ class Planner(object):
                     model_outputs[0].operation.operation_type.name))
         elif len(afts) > 0:
             for aft1, aft2 in afts:
-                o = source.output(aft1.field_type.name)
-                i = destination.input(aft2.field_type.name)
 
-                # TODO: quick_wire should try different inputs until an empty one is found?
-                # create a new input if the input is an array and there are no more empty inputs
-                if len(self.get_incoming_wires(i)) > 0 and i.array:
-                    i = i.operation.add_to_field_value_array(aft2.field_type.name, "input")
+                input_ft = aft2.field_type
+                output_ft = aft1.field_type
+
+                i = destination.input(input_ft.name)
+                o = source.output(output_ft.name)
+                if input_ft.array:
+                    if len(self.get_incoming_wires(i)) == 0:
+                        i = o.operation.add_to_field_value_array(input_ft.name, "input")
                 return self.add_wire(o, i)
         elif len(afts) == 0:
-            raise PlannerException(
-                "Cannot quick wire. No available field types found between {} and {}".format(source.operation_type.name,
-                                                                                             destination.operation_type.name))
+            "Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
+                ', '.join([fv.name for fv in model_inputs]),
+                model_inputs[0].operation.operation_type.name,
+                ', '.join([fv.name for fv in model_outputs]),
+                model_outputs[0].operation.operation_type.name)
 
     def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""
