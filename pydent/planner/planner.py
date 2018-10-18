@@ -515,6 +515,7 @@ class Planner(object):
                 n.field_value
 
     # TODO: Support for row and column
+    # TODO: routing dict does not work with input arrays (it groups them ALL together)
     @plan_verification_wrapper
     def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
         routing = field_value.field_type.routing
