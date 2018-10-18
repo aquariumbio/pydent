@@ -1,3 +1,5 @@
+import pytest
+
 import requests
 
 from pydent import AqSession
@@ -56,3 +58,17 @@ def test_find_query_returns_none(monkeypatch, mock_login_post):
     sample = session.SampleType.find(2342342)
 
     assert sample is None
+
+
+def find_with_none_raises_value_error(fake_session):
+    invalid_ids = [None, '1']
+    for invalid_id in invalid_ids:
+        with pytest.raises(ValueError):
+            fake_session.Sample.find(invalid_id)
+
+
+def find_by_name_with_invalid_raises_value_error(fake_session):
+    invalid_names = [None, 1]
+    for invalid_name in invalid_names:
+        with pytest.raises(ValueError):
+            fake_session.Sample.find_by_name(invalid_name)
