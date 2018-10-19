@@ -369,12 +369,12 @@ class Planner(object):
                 input_ft = aft2.field_type
                 output_ft = aft1.field_type
 
-                i = destination.input(input_ft.name)
-                o = source.output(output_ft.name)
+                input_fv = destination.input(input_ft.name)
+                output_fv = source.output(output_ft.name)
                 if input_ft.array:
-                    if len(self.get_incoming_wires(i)) == 0:
-                        i = o.operation.add_to_field_value_array(input_ft.name, "input")
-                return self.add_wire(o, i)
+                    if len(self.get_incoming_wires(input_fv)) == 0:
+                        input_fv = destination.add_to_field_value_array(input_ft.name, "input")
+                return self.add_wire(output_fv, input_fv)
         elif len(afts) == 0:
             "Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
                 ', '.join([fv.name for fv in model_inputs]),
