@@ -2,7 +2,7 @@ import re
 from difflib import get_close_matches
 
 from pydent import models
-
+from pydent import ModelRegistry
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -12,8 +12,23 @@ class BrowserException(Exception):
 
 class Browser(object):
 
+    model_name = 'Sample'
+
     def __init__(self, session):
         self.session = session
+        self.list_models = self.sample_list
+
+    def change_model(self, model_name):
+        ModelRegistry.get_model(model_name)
+        self.model_name = model_name
+        if model_name == "Sample":
+            self.list_models = self.sample_list
+        else:
+            self.list_models = self._generic_list_models
+
+    @property
+    def interface(self):
+        return self.session.model_interface(self.model_name)
 
     @property
     def item(self):
@@ -23,6 +38,10 @@ class Browser(object):
     def sample_type(self):
         return self.session.SampleType
 
+    def _generic_list_models(self, opts=None, **query):
+        models = self.session.model_interface(self.model_name).where(query, opts=opts)
+        return ['{}: {}'.format(m.id, m.name) for m in models]
+
     def sample_list(self, sample_type_id=None):
         path = 'sample_list'
         if sample_type_id is not None:
@@ -30,16 +49,16 @@ class Browser(object):
         return self.session.utils.aqhttp.get(path)
 
     def find(self, model_id):
-        return self.session.Sample.find(model_id)
+        return self.interface.find(model_id)
 
     def find_by_name(self, model_name):
-        return self.session.Sample.find_by_name(model_name)
+        return self.interface.find_by_name(model_name)
 
     def where(self, query):
-        return self.session.Sample.where(query)
+        return self.interface.where(query)
 
     def find_by_sample_type_name(self, name):
-        return self.session.Sample.where({"sample_type_id": self.session.SampleType.find_by_name(name).id})
+        return self.interface.where({"sample_type_id": self.session.SampleType.find_by_name(name).id})
 
     def _search_helper(self, pattern, filter_fxn, sample_type=None, **query):
         sample_type_id = None
@@ -52,16 +71,16 @@ class Browser(object):
         if sample_type_id is not None:
             query.update({'sample_type_id': sample_type_id})
 
-        sample_list = self.sample_list(sample_type_id)
-        matches = filter_fxn(pattern, sample_list)
+        model_list = self.list_models(sample_type_id)
+        matches = filter_fxn(pattern, model_list)
 
         if not matches:
             return []
 
         if query:
             query.update({"id": matches})
-            return self.session.Sample.where(query)
-        return self.session.Sample.find(matches)
+            return self.interface.where(query)
+        return self.interface.find(matches)
 
     def search(self, pattern, ignore_case=True, sample_type=None, **query):
         """
@@ -170,7 +189,7 @@ class Browser(object):
             filtered_sample_ids += sample_ids
         if filtered_sample_ids == []:
             return []
-        return self.session.Sample.find(filtered_sample_ids)
+        return self.interface.find(filtered_sample_ids)
 
     def new_sample(self, sample_type):
         return self.session.SampleType.find_by_name(sample_type).new_sample
