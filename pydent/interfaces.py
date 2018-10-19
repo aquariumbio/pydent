@@ -378,16 +378,16 @@ class ModelInterface(SessionInterface):
         """
         Finds model by id
         """
-        if not isinstance(model_id, int):
-            raise ValueError("'find' requires an integer, not a '{}'".format(type(model_id)))
+        if model_id is None:
+            raise ValueError("model_id in 'find' cannot be None")
         return self._post_json({"id": model_id}, )
 
     def find_by_name(self, name):
         """
         Finds model by name
         """
-        if not isinstance(name, str):
-            raise ValueError("'find' requires a string, not a '{}'".format(type(name)))
+        if name is None:
+            raise ValueError("name in 'find_by_name' cannot be None")
         return self._post_json({"method": "find_by_name", "arguments": [name]})
 
     def array_query(self, method, args, rest, opts=None):
