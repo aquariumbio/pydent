@@ -149,27 +149,30 @@ class Browser(object):
         """
         return self._search_helper(pattern, get_close_matches, sample_type=sample_type, **query)
 
-    def list_sample_field_values(self, samples, **query):
+    def list_field_values(self, model_ids, **query):
         """
         Lists sample field values
-        :param samples:
-        :type samples:
+        :param models:
+        :type models:
         :param query:
         :type query:
         :return:
         :rtype:
         """
-        query.update({"parent_class": "Sample", "parent_id": [s.id for s in samples]})
+        query.update({"parent_class": self.model_name, "parent_id": model_ids})
         return self.session.FieldValue.where(query)
 
-    def _group_by_sample_type(self, samples):
+    def _group_by_attribute(self, models, attribute):
         d = {}
-        for s in samples:
-            arr = d.setdefault(s.sample_type_id, [])
+        for s in models:
+            arr = d.setdefault(getattr(s, attribute), [])
             arr.append(s)
         return d
 
-    def filter_samples_by_property(self, samples, properties):
+    def filter_by_data_associations(self, models, associations):
+        raise NotImplementedError()
+
+    def filter_by_field_value_properties(self, samples, properties):
         """
         Filters a list of samples by their FieldValue properties. e.g. {"T Anneal": 64}.
 
@@ -187,17 +190,27 @@ class Browser(object):
         :return:
         :rtype:
         """
-        by_stid = self._group_by_sample_type(samples)
 
-        filtered_sample_ids = []
+        # TODO: handle metatypes better
+        metatype_attribute = "sample_type_id"
+        metatype_name = "SampleType"
 
-        for stid in by_stid:
-            samps = by_stid[stid]
-            sample_ids = [s.id for s in samps]
+        if self.model_name == "Operation":
+            metatype_attribute = "operation_type_id"
+            metatype_name = "OperationType"
 
-            st = self.session.SampleType.find(stid)
+        grouped = self._group_by_attribute(samples, metatype_attribute)
+
+        filtered_model_ids = []
+
+        for attrid in grouped:
+            models = grouped[attrid]
+            model_ids = [s.id for s in models]
+
+            metatype = self.session.model_interface(metatype_name).find(attrid)
+
             for prop_name in properties:
-                field_type = st.field_type(prop_name)  # necessary since FieldValues are missing field_type_ids
+                field_type = metatype.field_type(prop_name)  # necessary since FieldValues are missing field_type_ids
                 if field_type:
                     fv_query = {"name": prop_name}
                     value = properties[prop_name]
@@ -206,13 +219,13 @@ class Browser(object):
                             fv_query.update({'child_sample_id': value.id})
                         else:
                             fv_query.update({'value': value})
-                    fvs = self.sample_field_values(sample_ids, **fv_query)
+                    fvs = self.list_field_values(model_ids, **fv_query)
                     fv_parent_sample_ids = set([fv.parent_id for fv in fvs])
-                    sample_ids = list(set(sample_ids).intersection(fv_parent_sample_ids))
-            filtered_sample_ids += sample_ids
-        if filtered_sample_ids == []:
+                    model_ids = list(set(model_ids).intersection(fv_parent_sample_ids))
+            filtered_model_ids += model_ids
+        if filtered_model_ids == []:
             return []
-        return self.interface.find(filtered_sample_ids)
+        return self.interface.find(filtered_model_ids)
 
     def new_sample(self, sample_type):
         return self.session.SampleType.find_by_name(sample_type).new_sample
