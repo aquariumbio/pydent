@@ -1,6 +1,13 @@
 import re
 from difflib import get_close_matches
+
 from pydent import models
+
+
+# TODO: browser documentation
+# TODO: examples in sphinx
+class BrowserException(Exception):
+    """Generic browser exception"""
 
 
 class Browser(object):
@@ -71,6 +78,7 @@ class Browser(object):
         :return: list of samples
         :rtype: list
         """
+
         def regex_filter(pattern, sample_list):
             matches = []
             for name in sample_list:
@@ -163,3 +171,56 @@ class Browser(object):
         if filtered_sample_ids == []:
             return []
         return self.session.Sample.find(filtered_sample_ids)
+
+    def new_sample(self, sample_type):
+        return self.session.SampleType.find_by_name(sample_type).new_sample
+
+    @staticmethod
+    def __json_update(model, **params):
+        """This update method is fairly dangerous. Be careful!"""
+
+        aqhttp = model.session._AqSession__aqhttp
+        data = {"model": {"model": model.__class__.__name__}}
+        data.update(model.dump(**params))
+        #         return aqhttp.put("{}")
+        return aqhttp.post('json/save', json_data=data)
+
+    # TODO: This method is slow, but 'PUT' sample.json does not work...
+    @classmethod
+    def update_sample(cls, sample):
+        cls.__json_update(sample, include={"field_values": "sample", "sample_type": []})
+        for fv in sample.field_values:
+            cls.__json_update(fv, include={"sample"})
+
+    #         return cls.__json_update(sample, include={"field_values": "sample"})
+
+    def new_sample(self, sample_type):
+        return self.session.SampleType.find_by_name(sample_type).new_sample
+
+    def save_sample(self, sample, overwrite=False, strict=False):
+        """
+
+        :param sample: new Aquarium sample
+        :type sample: Sample
+        :param overwrite: whether to overwrite existing sample (if it exists) properties with the new sample properties
+        :type overwrite: bool
+        :param strict: If False, an exception will be raised if the sample with the same sample name exists
+        :type strict: bool
+        :return: saved Aquarium sample
+        :rtype: Sample
+        """
+        if not strict:
+            existing = self.find_by_name(sample.name)
+            if existing:
+                if existing.sample_type_id != sample.sample_type_id:
+                    raise BrowserException(
+                        "There is an existing sample with nme \"{}\", but it is a \"{}\" sample_type, not a \"{}\"".format(
+                            sample.name,
+                            existing.sample_type.name,
+                            sample.sample_type.name
+                        ))
+                if overwrite:
+                    existing.update_properties(sample.properties)
+                    self.update_sample(existing)
+                return existing
+        return sample.save()
