@@ -859,7 +859,9 @@ class ObjectType(ModelBase, NamedMixin):
         return self.reload(self.session.utils.create_object_type(self))
 
     def __str__(self):
-        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
+        name = self.__dict__.get('name', None)
+        id = self.__dict__.get('id', None)
+        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, id, name)
 
 
 # TODO: field_values should recognize parent_class (maybe where should ignore None field_values...)
