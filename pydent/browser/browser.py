@@ -13,18 +13,20 @@ class BrowserException(Exception):
 class Browser(object):
 
     model_name = 'Sample'
+    cache = {}
 
     def __init__(self, session):
         self.session = session
-        self.list_models = self.sample_list
+        self._list_models_fxn = self.sample_list
+        self.use_cache = False
 
-    def change_model(self, model_name):
+    def set_model(self, model_name):
         ModelRegistry.get_model(model_name)
         self.model_name = model_name
         if model_name == "Sample":
-            self.list_models = self.sample_list
+            self._list_models_fxn = self.sample_list
         else:
-            self.list_models = self._generic_list_models
+            self._list_models_fxn = self._generic_list_models
 
     @property
     def interface(self):
@@ -47,6 +49,24 @@ class Browser(object):
         if sample_type_id is not None:
             path += "/" + str(sample_type_id)
         return self.session.utils.aqhttp.get(path)
+
+    def reset_cache(self):
+        self.cache = {}
+
+    def list_models(self, *args, **kwargs):
+        get_models = lambda: self._list_models_fxn(*args, **kwargs)
+        model_list = []
+        if self.use_cache:
+            models_cache = self.cache.get('models', {})
+            if self.model_name in models_cache:
+                models_list = models_cache[self.model_name]
+            else:
+                models_list = get_models()
+        else:
+            model_list = get_models()
+        self.cache.setdefault('models', {})
+        self.cache['models'][self.model_name] = model_list[:]
+        return model_list
 
     def find(self, model_id):
         return self.interface.find(model_id)
