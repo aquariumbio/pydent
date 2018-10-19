@@ -48,9 +48,10 @@ def test_raises_exception_with_wrong_choice():
 
 def test_constructor_with_container():
     # TODO what's the test here? there are no assertions
-    FieldValue(container=ObjectType.load({'id': 5}))
-    FieldValue(container=ObjectType.load({'id': 5}),
+    fv = FieldValue(container=ObjectType.load({'id': 5}))
+    fv_with_container = FieldValue(container=ObjectType.load({'id': 5}),
                item=Item.load({'id': 4, 'object_type_id': 5}))
+    assert fv_with_container.object_type.id == 5
     with pytest.raises(AquariumModelError):
         FieldValue(container=ObjectType.load(
             {'id': 5}), item=Item.load({'id': 4, 'object_type_id': 4}))

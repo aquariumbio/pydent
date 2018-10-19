@@ -338,6 +338,16 @@ class Planner(object):
             self.quick_wire(op1, op2)
         return ops
 
+    def _select_empty_input_array(self, op, fvname):
+        field_type = op.operation_type.field_type(fvname, 'input')
+        if field_type.array:
+            existing_fvs = op.input_array(fvname)
+            for fv in existing_fvs:
+                if fv.sample is None and not self.get_incoming_wires(fv):
+                    return fv
+            fv = op.add_to_field_value_array(field_type.name, "input")
+            return fv
+
     # TODO: way to select preference for afts in quick_wire?
     @plan_verification_wrapper
     def quick_wire(self, source, destination, strict=False):
@@ -369,12 +379,14 @@ class Planner(object):
                 input_ft = aft2.field_type
                 output_ft = aft1.field_type
 
-                input_fv = destination.input(input_ft.name)
-                output_fv = source.output(output_ft.name)
+                # input_fv = None
                 if input_ft.array:
-                    if len(self.get_incoming_wires(input_fv)) == 0:
-                        input_fv = destination.add_to_field_value_array(input_ft.name, "input")
+                    input_fv = self._select_empty_input_array(destination, input_ft.name)
+                else:
+                    input_fv = destination.input(input_ft.name)
+                output_fv = source.output(output_ft.name)
                 return self.add_wire(output_fv, input_fv)
+
         elif len(afts) == 0:
             "Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
                 ', '.join([fv.name for fv in model_inputs]),
@@ -462,9 +474,16 @@ class Planner(object):
             self.plan.wire(fv1, fv2)
         return wire
 
-    @staticmethod
-    def _routing_id(fv):
-        return "{}_{}".format(_id_getter(fv.operation), fv.field_type.routing)
+    @classmethod
+    def _routing_id(cls, fv):
+        routing_id = "{}_{}".format(_id_getter(fv.operation), fv.field_type.routing)
+        if fv.field_type.array and fv.role == "input":
+            other_fvs = fv.operation.input_array(fv.name)
+            for pos, other_fv in enumerate(other_fvs):
+                if cls.models_are_equal(other_fv, fv):
+                    routing_id += str(pos)
+                    return routing_id
+        return routing_id
 
     @staticmethod
     def get_routing_dict(op):
@@ -518,15 +537,36 @@ class Planner(object):
     # TODO: routing dict does not work with input arrays (it groups them ALL together)
     @plan_verification_wrapper
     def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
-        routing = field_value.field_type.routing
-        fvs = self.get_routing_dict(field_value.operation)[routing]
         field_value.set_value(
             sample=sample, item=item, container=container, value=value, row=None, column=None)
-        # cls._json_update(field_value)
-        if field_value.field_type.ftype == 'sample':
-            for fv in fvs:
-                fv.set_value(sample=sample)
-                # cls._json_update(fv)
+        if not field_value.field_type.array:
+            routing = field_value.field_type.routing
+            fvs = self.get_routing_dict(field_value.operation)[routing]
+            if field_value.field_type.ftype == 'sample':
+                for fv in fvs:
+                    fv.set_value(sample=sample)
+        return field_value
+
+    def set_input_field_value_array(self, op, field_value_name, sample=None, item=None, container=None):
+        """
+        Finds the first 'empty' (no incoming wires and no sample set) field value and set the field value.
+        If there are no empty field values in the array, create a new field value and set that one.
+
+        :param op: operation
+        :type op: Operation
+        :param field_value_name: field value name
+        :type field_value_name: basestring
+        :param sample: the sample to set
+        :type sample: Sample
+        :param item: the item to set
+        :type item: Item
+        :param container: the container type to set
+        :type container: ObjectType
+        :return: the set field value
+        :rtype: FieldValue
+        """
+        input_fv = self._select_empty_input_array(op, field_value_name)
+        return self.set_field_value(input_fv, sample=sample, item=item, container=container)
 
     def set_field_value_and_propogate(self, field_value, sample=None):
         routing_graph = self._routing_graph()
@@ -534,7 +574,9 @@ class Planner(object):
         subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
         for node in subgraph:
             n = routing_graph.node[node]
-            self.set_field_value(n['fv'], sample=sample)
+            fv = n['fv']
+            self.set_field_value(fv, sample=sample)
+        return field_value
 
     @staticmethod
     @make_async

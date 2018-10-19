@@ -234,10 +234,65 @@ def test_routing_graph(session):
 
 
 def test_quick_wire_to_input_array(session):
-
     canvas = Planner(session)
     ops = canvas.quick_create_chain("Purify Gel Slice", "Assemble Plasmid", category="Cloning")
     canvas.quick_create_chain("Purify Gel Slice", ops[-1], category="Cloning")
+
+def test_quick_wire_to_input_array_and_then_set_sample(session):
+    canvas = Planner(session)
+
+    frags = session.Sample.where({'sample_type_id': session.SampleType.find_by_name("Fragment").id}, opts={'limit': 10})
+
+    purify1 = canvas.create_operation_by_name("Purify Gel Slice", category="Cloning")
+    purify2 = canvas.create_operation_by_name("Purify Gel Slice", category="Cloning")
+
+    assemble = canvas.create_operation_by_name("Assemble Plasmid", category="Cloning")
+
+    canvas.quick_wire(purify1, assemble)
+    canvas.quick_wire(purify2, assemble)
+
+    canvas.set_field_value_and_propogate(purify1.inputs[0], sample=frags[0])
+
+    input_array = assemble.input_array("Fragment")
+
+    print("purify1: " + str(purify1.rid))
+    print("purify2: " + str(purify2.rid))
+
+    for i in input_array:
+        print(i.operation.operation_type.name + " " + i.name + " " + str(i.sample) + " " + str(canvas.get_incoming_wires(i)[0].source.operation.rid))
+
+    print("ljljklj")
+    print(purify2.outputs[0].sample)
+
+    assert assemble.input_array("Fragment")[0].sample == frags[0], "Setting a wire should propogate to a field value"
+    assert assemble.input_array("Fragment")[1].sample is None, "Setting a wire should not propogate sample to other field" \
+                                                               "values in the input array."
+
+
+def test_quick_wire_to_input_array_with_set_sample(session):
+    canvas = Planner(session)
+
+    frags = session.Sample.where({'sample_type_id': session.SampleType.find_by_name("Fragment").id}, opts={'limit': 10})
+
+    purify1 = canvas.create_operation_by_name("Purify Gel Slice", category="Cloning")
+    purify2 = canvas.create_operation_by_name("Purify Gel Slice", category="Cloning")
+
+    canvas.set_field_value(purify1.inputs[0], sample=frags[0])
+    canvas.set_field_value(purify2.inputs[0], sample=frags[1])
+
+    assemble = canvas.create_operation_by_name("Assemble Plasmid", category="Cloning")
+
+    canvas.quick_wire(purify1, assemble)
+    canvas.quick_wire(purify2, assemble)
+
+    canvas.quick_create_chain("Purify Gel Slice", assemble, category="Cloning")
+
+    input_array = assemble.input_array("Fragment")
+
+    assert len(input_array) == 3, "There should be 3 field values"
+    assert input_array[0].sample == frags[0]
+    assert input_array[1].sample == frags[1]
+    assert input_array[2].sample is None
 
 
 # TODO: this test is not finished..
@@ -255,3 +310,24 @@ def test_set_output_and_propogate(session):
     canvas.set_output(ops[1].outputs[0], sample=example_fragment, setter=canvas.set_field_value_and_propogate)
 
     canvas.validate()
+
+
+def test_set_input_array(session):
+
+    canvas = Planner(session)
+
+    op = canvas.create_operation_by_name("Assemble Plasmid", category="Cloning")
+
+    frags = session.Sample.where({'sample_type_id': session.SampleType.find_by_name("Fragment").id}, opts={'limit': 10})
+
+    canvas.set_input_field_value_array(op, "Fragment", sample=frags[0])
+    canvas.set_input_field_value_array(op, "Fragment", sample=frags[1])
+
+    input_array = op.input_array("Fragment")
+
+    assert len(op.input_array("Fragment")) == 2, "There should be exactly 2 field values in the input array"
+    assert input_array[0] != input_array[1], "Input array field values should be different"
+
+    assert len(op.input_array("Fragment")) == 2
+    assert op.input_array("Fragment")[0].sample == frags[0], "Input array 0 should have fragment 0"
+    assert op.input_array("Fragment")[1].sample == frags[1], "Input array 1 should have fragment 1"
