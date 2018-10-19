@@ -20,6 +20,9 @@ class Browser(object):
         self._list_models_fxn = self.sample_list
         self.use_cache = False
 
+    # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
+    # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
+
     def set_model(self, model_name):
         ModelRegistry.get_model(model_name)
         self.model_name = model_name
