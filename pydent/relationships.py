@@ -137,12 +137,14 @@ class HasManyThrough(HasMixin, Many):
         # e.g. PlanAssociation >> plan_associations
         through_model_attr = inflection.pluralize(
             inflection.underscore(through))
-
+        self.through_model = through
+        self.through_model_attr = through_model_attr
         # e.g. {"id": x.operation_id for x in self.plan_associations
         def callback_args(slf):
             through_model = getattr(slf, through_model_attr)
             if through_model is None:
                 return None
+            slf.session.model_interface(through_model_attr).where({self.ref})
             return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
         super().__init__(model, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 

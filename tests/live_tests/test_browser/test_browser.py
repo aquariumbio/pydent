@@ -1,7 +1,7 @@
 import re
 
 import pytest
-from pydent import models
+from pydent import models as pydent_models
 from pydent.browser import Browser
 from pydent.exceptions import TridentModelNotFoundError
 
@@ -81,7 +81,7 @@ def test_set_model(session):
     op_types = browser.search(".*Fragment.*")
 
     for op_type in op_types:
-        assert isinstance(op_type, models.OperationType)
+        assert isinstance(op_type, pydent_models.OperationType)
 
 
 def test_filter_by_sample_properties(session):
@@ -145,6 +145,90 @@ def test_update_model(session):
     browser = Browser(session)
     raise NotImplementedError
 
-def test_cache(session):
+
+def test_cache_with_many(session):
     browser = Browser(session)
-    samples = browser.search()
+    samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
+    assert 'items' not in samples[0].__dict__, "Items should not have been loaded into the sample yet."
+    browser._cache_has_many_or_has_one(samples, 'items')
+    assert 'items' in samples[0].__dict__
+    assert len(samples[0].__dict__['items']) > 0, "Items should have been found."
+
+
+def test_cache_with_one(session):
+    browser = Browser(session)
+    samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
+    assert 'sample_type' not in samples[0].__dict__, "SampleType should not have been loaded into the sample yet."
+    sample_types = browser._cache_has_many_or_has_one(samples, 'sample_type')
+    assert 'sample_type' in samples[0].__dict__, "SampleType should have been loaded"
+    assert samples[0].__dict__['sample_type'].id, session.SampleType.find_by_name("Fragment").id
+    assert isinstance(sample_types[0], pydent_models.SampleType)
+
+
+def test_cache_with_many_through_for_jobs_and_operations(session):
+    browser = Browser(session)
+    jobs = session.Job.last(50)
+
+    for j in jobs:
+        assert not 'operations' in j.__dict__
+
+    operations = browser._cache_has_many_through(jobs, 'operations')
+    assert len(operations) > 0
+    assert not all([m.__dict__['operations'] is None for m in jobs])
+
+    for model in jobs:
+        assert 'operations' in model.__dict__
+        other_models = model.__dict__['operations']
+        if other_models is not None:
+            for other_model in other_models:
+                assert isinstance(other_model, pydent_models.Operation)
+
+
+def test_cache_with_many_through_for_collections_and_parts(session):
+    browser = Browser(session)
+    collections = session.Collection.last(50)
+
+    for c in collections:
+        assert not 'parts' in c.__dict__
+
+    parts = browser._cache_has_many_through(collections, 'parts')
+    assert len(parts) > 0
+    assert not all([m.__dict__['parts'] is None for m in collections])
+
+    for model in collections:
+        assert 'parts' in model.__dict__
+        other_models = model.__dict__['parts']
+        if other_models is not None:
+            for other_model in other_models:
+                assert isinstance(other_model, pydent_models.Item)
+
+
+def test_cache_relationship(session):
+    """Should be able to parse HasOne, HasMany, and HasManyThrough without specifying the type of relationship."""
+    browser = Browser(session)
+
+    collections = session.Collection.last(50)
+    parts = browser.cache_relationship(collections, 'parts')
+    assert len(parts) > 0
+    for model in collections:
+        assert 'parts' in model.__dict__
+        other_models = model.__dict__['parts']
+        if other_models is not None:
+            for other_model in other_models:
+                assert isinstance(other_model, pydent_models.Item)
+
+    jobs = session.Job.last(50)
+    operations = browser._cache_has_many_through(jobs, 'operations')
+    assert len(operations) > 0
+    for model in jobs:
+        assert 'operations' in model.__dict__
+        other_models = model.__dict__['operations']
+        if other_models is not None:
+            for other_model in other_models:
+                assert isinstance(other_model, pydent_models.Operation)
+
+    samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
+    assert 'sample_type' not in samples[0].__dict__, "SampleType should not have been loaded into the sample yet."
+    sample_types = browser._cache_has_many_or_has_one(samples, 'sample_type')
+    assert len(sample_types) > 0
+    assert samples[0].__dict__['sample_type'].id, session.SampleType.find_by_name("Fragment").id

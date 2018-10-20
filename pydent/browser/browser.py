@@ -1,8 +1,9 @@
 import re
 from difflib import get_close_matches
 
-from pydent import models
 from pydent import ModelRegistry
+from pydent import models
+
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -278,3 +279,86 @@ class Browser(object):
                     self.update_sample(existing)
                 return existing
         return sample.save()
+
+    def _cache_has_many_or_has_one(self, models, relationship_name):
+        """Performs exactly 1 query to fullfill some relationship for a list of models"""
+        if not models:
+            return []
+
+        relation = models[0].relationships[relationship_name]
+
+        ref = relation.ref  # sample_id
+        attr = relation.attr  # id
+        model_class2 = relation.model
+        many = relation.many
+
+        models1 = models
+        if many:
+            models2_query = {ref: [getattr(s, attr) for s in models1]}
+        else:
+            models2_query = {attr: [getattr(s, ref) for s in models1]}
+        models2 = self.session.model_interface(model_class2).where(models2_query)
+
+        if not models2:
+            return []
+
+        if many:
+            model1_attr_dict = {m1.id: list() for m1 in models1}
+            for m2 in models2:
+                m1id = getattr(m2, ref)
+                model1_attr_dict[m1id].append(m2)
+        else:
+            model2_dict = {getattr(m2, attr): m2 for m2 in models2}
+            model1_attr_dict = {m1.id: None for m1 in models1}
+            for m1 in models1:
+                m1id = getattr(m1, attr)
+                model1_attr_dict[m1id] = model2_dict[getattr(m1, ref)]
+
+        for m1 in models1:
+            found_models = model1_attr_dict[getattr(m1, attr)]
+            m1.__dict__.update({relationship_name: found_models})
+
+        return models2
+
+    def _cache_has_many_through(self, models, relationship_name):
+        """Performs exactly 2 queries to establish a HasManyThrough relationship"""
+        relation = models[0].relationships[relationship_name]
+        association_relation = models[0].relationships[relation.through_model_attr]
+        attr = relation.attr
+        ref = association_relation.ref
+
+        # find other key
+        association_class = ModelRegistry.get_model(association_relation.nested)
+        association_relationships = association_class.get_schema_class().relationships
+        other_ref = None
+        for r in association_relationships:
+            ar = association_relationships[r]
+            if ar.nested == relation.nested:
+                other_ref = r
+
+        associations = self._cache_has_many_or_has_one(models, relation.through_model_attr)
+        self._cache_has_many_or_has_one(associations, other_ref)
+
+        associations_by_mid = {}
+        for a in associations:
+            associations_by_mid.setdefault(getattr(a, ref), []).append(a)
+
+        all_models = []
+        for m in models:
+            mid = getattr(m, attr)
+            if mid in associations_by_mid:
+                associations = associations_by_mid[mid]
+                _models = [getattr(a, other_ref) for a in associations]
+                m.__dict__.update({relationship_name: _models})
+                all_models += _models
+            else:
+                m.__dict__.update({relationship_name: None})
+        return list(set(all_models))
+
+    def cache_relationship(self, models, relationship):
+        assert len(set([m.__class__.__name__ for m in models])) == 1, "Models must be all of the same BaseModel"
+        relation = models[0].relationships[relationship]
+        if hasattr(relation, 'through_model_attr'):
+            return self._cache_has_many_through(models, relationship)
+        else:
+            return self._cache_has_many_or_has_one(models, relationship)
