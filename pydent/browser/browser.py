@@ -12,13 +12,12 @@ class BrowserException(Exception):
 
 class Browser(object):
 
-    model_name = 'Sample'
-    cache = {}
-
     def __init__(self, session):
         self.session = session
         self._list_models_fxn = self.sample_list
         self.use_cache = False
+        self.model_name = 'Sample'
+        self.cache = {}
 
     # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
     # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
