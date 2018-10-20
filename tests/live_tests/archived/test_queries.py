@@ -87,9 +87,16 @@ def test_one_default(session):
 def test_one_with_query(session):
 
     last = session.Sample.one(sample_type_id=1)
-    assert last.sample_type_id == 1
+    assert last.sample_type_id == 1, "Sample should have a sample_type_id of 1"
 
 
 def test_one_returns_none(session):
     last = session.Sample.one(nonexistant=1)
-    assert last is None
+    assert last is None, "should be None"
+
+
+def test_first_and_last_returns_emtpy(session):
+    last = session.Sample.first(5, nonexistant=1)
+    first = session.Sample.first(5, nonexistant=1)
+    assert last == [], "should be empty"
+    assert first == [], "should be empty"
