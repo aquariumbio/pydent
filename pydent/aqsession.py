@@ -18,6 +18,12 @@ Interfaces are accessed by:
 (3) session.update - access the update interface
 """
 
+import inspect
+import timeit
+from decimal import Decimal
+
+from requests.exceptions import ReadTimeout
+
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
 from pydent.interfaces import ModelInterface, UtilityInterface
@@ -128,6 +134,23 @@ class AqSession(object):
     def utils(self):
         """Instantiates a utility interface"""
         return UtilityInterface(self.__aqhttp, self)
+
+    def ping(self, num=5):
+        """Performs a number of simple requests (pings) to estimate the speed of the server.
+        Displays a message about the average time each ping took."""
+        try:
+            ping_function = lambda: self.User.find(1)
+            ping_function_source = inspect.getsource(ping_function).strip()
+            secs = timeit.timeit(ping_function, number=num)
+            print("{} pings (using the function '{}')".format(num, ping_function_source))
+            print("{} seconds per ping".format('%.2E' % Decimal(secs / num)))
+            return secs
+        except ReadTimeout as e:
+            print("Error: {}".format(e))
+            print(
+                "Aquarium ({}) looks like its down. The function '{}' raised a {} exception, but should not have.".format(
+                    self.url, ping_function_source, ReadTimeout))
+            return None
 
     def __repr__(self):
         return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__,
