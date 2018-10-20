@@ -461,7 +461,7 @@ class ModelInterface(SessionInterface):
 
     def one(self, first=False, offset=-1, **query):
         """
-        Return one model. Returns the last model by default.
+        Return one model. Returns the last model by default. Returns None if no model is found.
 
         :param first: whether to return the first model (default: False
         :type first: bool
