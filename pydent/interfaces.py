@@ -433,6 +433,46 @@ class ModelInterface(SessionInterface):
         options.update(opts)
         return self.array_query("where", criteria, rest, options)
 
+    def last(self, num=None, **query):
+        """
+        Find the last added models
+
+        :param num: number of models to return
+        :type num: int
+        :return: models
+        :rtype: list
+        """
+        if num is None:
+            num = 1
+        return self.where(query, opts={"limit": num, "reverse": True})
+
+    def first(self, num=None, **query):
+        """
+        Find the first added models
+
+        :param num: number of models to return
+        :type num: int
+        :return: models
+        :rtype: list
+        """
+        if num is None:
+            num = 1
+        return self.where(query, opts={"limit": num, "reverse": False})
+
+    def one(self, first=False, offset=-1, **query):
+        """
+        Return one model. Returns the last model by default.
+
+        :param first: whether to return the first model (default: False
+        :type first: bool
+        :return: model
+        :rtype: ModelBase
+        """
+        models = self.where(query, opts={"limit": 1, "offset": offset, "reverse": not first})
+        if len(models) == 0:
+            return None
+        return models[0]
+
     # TODO: implement 'patch' or 'update'? Would this be too dangerous?
     # def patch(self, model_id, json_data):
     #     """

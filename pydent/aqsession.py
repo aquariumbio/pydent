@@ -135,6 +135,7 @@ class AqSession(object):
         """Instantiates a utility interface"""
         return UtilityInterface(self.__aqhttp, self)
 
+    # TODO: put 'ping' in documentation
     def ping(self, num=5):
         """Performs a number of simple requests (pings) to estimate the speed of the server.
         Displays a message about the average time each ping took."""

@@ -144,3 +144,7 @@ def test_save_sample(session):
 def test_update_model(session):
     browser = Browser(session)
     raise NotImplementedError
+
+def test_cache(session):
+    browser = Browser(session)
+    samples = browser.search()
