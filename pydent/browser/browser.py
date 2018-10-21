@@ -2,8 +2,9 @@ import re
 from difflib import get_close_matches
 
 from pydent import ModelRegistry
-from pydent import models
-from pydent.utils import make_async
+from pydent import models as pydent_models
+from pydent.utils import logger
+import logging
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -12,13 +13,23 @@ class BrowserException(Exception):
 
 
 class Browser(object):
-
+    
     def __init__(self, session):
         self.session = session
         self._list_models_fxn = self.sample_list
         self.use_cache = False
         self.model_name = 'Sample'
         self.cache = {}
+        self._logger, self._channel_handler = logger.new("Browser@{}".format(session.url))
+
+    def set_verbose(self, verbose):
+        if verbose:
+            self._channel_handler.setLevel(logging.INFO)
+        else:
+            self._channel_handler.setLevel(logging.ERROR)
+
+    def _info(self, msg):
+        self._logger.info(msg)
 
     # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
     # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
@@ -86,7 +97,7 @@ class Browser(object):
     def _search_helper(self, pattern, filter_fxn, sample_type=None, **query):
         sample_type_id = None
         if sample_type is not None:
-            if isinstance(sample_type, models.SampleType):
+            if isinstance(sample_type, pydent_models.SampleType):
                 sample_type_id = sample_type.id
             else:
                 sample_type_id = self.session.SampleType.find_by_name(sample_type).id
@@ -95,6 +106,7 @@ class Browser(object):
             query.update({'sample_type_id': sample_type_id})
 
         model_list = self.list_models(sample_type_id)
+        self._info("found {} total models of type {}".format(len(model_list), self.model_name))
         matches = filter_fxn(pattern, model_list)
 
         if not matches:
@@ -102,8 +114,11 @@ class Browser(object):
 
         if query:
             query.update({"id": matches})
-            return self.interface.where(query)
-        return self.interface.find(matches)
+            filtered = self.interface.where(query)
+        else:
+            filtered = self.interface.find(matches)
+        self._info("filtered to {} total models of type {}".format(len(filtered), self.model_name))
+        return filtered
 
     def search(self, pattern, ignore_case=True, sample_type=None, **query):
         """
