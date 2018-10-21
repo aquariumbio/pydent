@@ -131,20 +131,23 @@ class HasManyThrough(HasMixin, Many):
     Establishes a Many-to-Many relationship with another model
     """
 
-    def __init__(self, model, through, attr="id", ref=None, callback_kwargs=None, **kwargs):
+    def __init__(self, model, through, attr="id", ref=None, additional_args=None, callback_kwargs=None, **kwargs):
         self.set_ref(model=model, attr=attr, ref=ref)
 
         # e.g. PlanAssociation >> plan_associations
         through_model_attr = inflection.pluralize(
             inflection.underscore(through))
-        self.through_model = through
         self.through_model_attr = through_model_attr
-        # e.g. {"id": x.operation_id for x in self.plan_associations
+
+        if additional_args is None:
+            additional_args = {}
+
         def callback_args(slf):
             through_model = getattr(slf, through_model_attr)
             if through_model is None:
                 return None
-            slf.session.model_interface(through_model_attr).where({self.ref})
+            query = {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
+            query.update(additional_args)
             return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
         super().__init__(model, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
@@ -154,7 +157,7 @@ class HasMany(HasMixin, Many):
     A relationship that establishes a One-to-Many relationship with another model.
     """
 
-    def __init__(self, model, ref_model=None, attr=None, ref=None, callback_kwargs=None, **kwargs):
+    def __init__(self, model, ref_model=None, attr=None, ref=None,  additional_args=None, callback_kwargs=None, **kwargs):
         """
         HasMany relationship initializer
 
@@ -182,7 +185,13 @@ class HasMany(HasMixin, Many):
                 msg.format(self.__class__.__name__))
         self.set_ref(model=ref_model, attr=attr, ref=ref)
 
-        def callback_args(slf): return {self.ref: getattr(slf, self.attr)}
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            query = {self.ref: getattr(slf, self.attr)}
+            query.update(additional_args)
+            return query
         super().__init__(model, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 
@@ -192,5 +201,5 @@ class HasManyGeneric(HasMany):
     to find other models.
     """
 
-    def __init__(self, model, callback_kwargs=None, **kwargs):
-        super().__init__(model, ref="parent_id", attr="id", callback_kwargs=callback_kwargs, **kwargs)
+    def __init__(self, model,  additional_args=None, callback_kwargs=None, **kwargs):
+        super().__init__(model, ref="parent_id", attr="id",  additional_args=additional_args, callback_kwargs=callback_kwargs, **kwargs)

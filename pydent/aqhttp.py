@@ -20,7 +20,7 @@ from pydent.utils import url_build, logger
 import logging
 
 
-class AqHTTP(object):
+class AqHTTP(logger.Loggable, object):
     """
     Defines a session/connection to Aquarium.
     Makes HTTP requests to Aquarium and returns JSON.
@@ -48,19 +48,8 @@ class AqHTTP(object):
         self._requests_session = None
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
-        self._logger, self._log_handler = logger.new("AqHTTP@{}".format(aquarium_url))
+        self.init_logger("AqHTTP@{}".format(aquarium_url))
 
-    def set_verbose(self, verbose):
-        if verbose:
-            self._log_handler.setLevel(logging.INFO)
-        else:
-            self._log_handler.setLevel(logging.ERROR)
-
-    def _info(self, msg):
-        self._logger.info(msg)
-
-    def _error(self, msg):
-        self._logger.error(msg)
 
     def _format_request_info(self, request):
         return "REQUEST  {method} {url} \nBODY  {body}".format(**dict(request.__dict__))
@@ -161,7 +150,7 @@ class AqHTTP(object):
         if result.status_code >= 400:
             request_info = self._format_request_info(result.request)
             request_status = self._format_request_status(result)
-            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, request_info]))
+            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, request_info]), result)
 
         return self._response_to_json(result)
 

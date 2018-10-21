@@ -3,9 +3,10 @@ Planner
 """
 
 from networkx import nx
+from pydent.browser import Browser
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
-from pydent.utils import make_async
+from pydent.utils import make_async, logger
 from uuid import uuid4
 from functools import wraps
 
@@ -49,15 +50,28 @@ class Planner(object):
     """A user-interface for making experimental plans and layouts."""
 
     def __init__(self, session, plan_id=None):
+        self.session = session
+        self.browser = Browser(session)
         self.plan_id = plan_id
         if self.plan_id is not None:
             self.plan = session.Plan.find(plan_id)
             if self.plan is None:
                 raise PlannerException(
                     "Could not find plan with id={}".format(plan_id))
+
+            # TODO: preload?
+            operations = self.browser.retrieve([self.plan], 'operations')
+            self.browser.retrieve(operations, 'operation_type')
+            self.browser.retrieve(operations, 'field_values')
         else:
             self.plan = session.Plan.new()
-        self.session = session
+        self._logger, self._log_handler = logger.new("Planner@plan_rid={}".format(self.plan.rid))
+
+    def set_verbose(self, verbose):
+
+
+    def _info(self, msg):
+        print(msg)
 
     @property
     def name(self):
@@ -814,7 +828,7 @@ class Planner(object):
         :param planner:
         :return:
         """
-        print("Optimizing Plan")
+        self._info("Optimizing Plan")
         if operations is None:
             operations = [
                 op for op in self.plan.operations if op.status == 'planning']
@@ -852,9 +866,9 @@ class Planner(object):
                     ops_to_remove.append(other_op)
         for op in ops_to_remove:
             self.plan.operations.remove(op)
-        print("\t{} operations removed".format(len(ops_to_remove)))
-        print("\t{} input wires re-wired".format(num_inputs_rewired))
-        print("\t{} output wires re-wired".format(num_outputs_rewired))
+        self._info("\t{} operations removed".format(len(ops_to_remove)))
+        self._info("\t{} input wires re-wired".format(num_inputs_rewired))
+        self._info("\t{} output wires re-wired".format(num_outputs_rewired))
 
     def roots(self):
         """Get field values that have no predecessors (i.e. are 'roots')"""

@@ -1,10 +1,11 @@
+import logging
 import re
 from difflib import get_close_matches
 
 from pydent import ModelRegistry
 from pydent import models as pydent_models
 from pydent.utils import logger
-import logging
+
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -12,24 +13,15 @@ class BrowserException(Exception):
     """Generic browser exception"""
 
 
-class Browser(object):
-    
+class Browser(logger.Loggable, object):
+
     def __init__(self, session):
         self.session = session
         self._list_models_fxn = self.sample_list
         self.use_cache = False
         self.model_name = 'Sample'
         self.cache = {}
-        self._logger, self._channel_handler = logger.new("Browser@{}".format(session.url))
-
-    def set_verbose(self, verbose):
-        if verbose:
-            self._channel_handler.setLevel(logging.INFO)
-        else:
-            self._channel_handler.setLevel(logging.ERROR)
-
-    def _info(self, msg):
-        self._logger.info(msg)
+        self.init_logger("Browser@{}".format(session.url))
 
     # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
     # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
@@ -295,6 +287,20 @@ class Browser(object):
                 return existing
         return sample.save()
 
+    @staticmethod
+    def collect_callback_args(models, relationship_name):
+        """Combines all of the callback args into a single query"""
+        args = {}
+        for s in models:
+            relation = s.relationships[relationship_name]
+            callback_args = s._get_callback_args(relation)
+            for cba in callback_args:
+                for k in cba:
+                    args.setdefault(k, [])
+                    if cba[k] not in args[k]:
+                        args[k].append(cba[k])
+        return args
+
     def _retrieve_has_many_or_has_one(self, models, relationship_name):
         """Performs exactly 1 query to fullfill some relationship for a list of models"""
         if not models:
@@ -310,10 +316,12 @@ class Browser(object):
         models1 = models
         if many:
             models2_query = {ref: [getattr(s, attr) for s in models1]}
+            # self._info("querying {cls2} using {cls1}.{attr} << {cls2}.{ref}".format(cls1='model', cls2=model_class2, attr=attr, ref=ref))
         else:
             models2_query = {attr: [getattr(s, ref) for s in models1]}
+            # self._info("querying {cls2} using {cls1}.{ref} <> {cls2}.{attr}".format(cls1='model', cls2=model_class2, attr=attr, ref=ref))
         models2 = self.session.model_interface(model_class2).where(models2_query)
-
+        # self._info("{} {} models retrieved".format(len(models2), model_class2))
         if not models2:
             return []
 
@@ -370,7 +378,7 @@ class Browser(object):
                 m.__dict__.update({relationship_name: None})
         return list(set(all_models))
 
-    def retrieve(self, models, relationship):
+    def retrieve(self, models, relationship_name):
         """
         Retrieves a model relationship for the list of models. Compared to a `for` loop,
         `retrieve` is >10X faster for most queries.
@@ -396,14 +404,68 @@ class Browser(object):
 
         :param models: list of models to retrieve the attribute
         :type models: list
-        :param relationship: name of the attribute to retrieve
-        :type relationship: basestring
+        :param relationship_name: name of the attribute to retrieve
+        :type relationship_name: basestring
         :return: list of models retrieved
         :rtype: list
         """
         assert len(set([m.__class__.__name__ for m in models])) == 1, "Models must be all of the same BaseModel"
-        relation = models[0].relationships[relationship]
+        relation = models[0].relationships[relationship_name]
+        accepted_types = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric"]
+        # TODO: add relationship handler for Many and One
+        if relation.__class__.__name__ not in accepted_types:
+            raise BrowserException(
+                "retrieve is not supported for the \"{}\" relationship".format(relation.__class__.__name__))
         if hasattr(relation, 'through_model_attr'):
-            return self._retrieve_has_many_through(models, relationship)
+            return self._retrieve_has_many_through(models, relationship_name)
         else:
-            return self._retrieve_has_many_or_has_one(models, relationship)
+            return self._retrieve_has_many_or_has_one(models, relationship_name)
+
+    def recursive_retrieve(self, models, relations):
+        """
+        Retrieve recursively from an iterable. The relations_dict iterable may be
+        either a list or a dictionary. For example, the following will collect all of the field_values
+        and their incoming and outgoing wires, the connecting field_values, and finally those FieldValues'
+        operations.
+
+        .. code-block::
+
+            relation_dict = {
+                "field_values": {
+                    "wires_as_dest": {
+                        "source": "operation",
+                        "destination": "operation"
+                    },
+                    "wires_as_source": {
+                        "source": "operation",
+                        "destination": "operation"
+                    },
+                }
+            }
+            browser.retrieve(operations, relation_dict)
+
+
+        :param models: models to retrieve from
+        :type models: list
+        :param relations: the relation to retrieve. This may either be a string (by attribute name), a list, or a dict.
+        :type relations: list|dict|basestring
+        :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
+        :rtype: dictionary
+        """
+        if isinstance(relations, str):
+            return {relations: self.retrieve(models, relations)}
+        else:
+            models_by_attr = {}
+            for relation_name in relations:
+                models_by_attr.setdefault(relation_name, [])
+                new_models = self.retrieve(models, relation_name)
+                models_by_attr[relation_name] += new_models
+                if isinstance(relations, dict):
+                    _models_by_attr = self.recursive_retrieve(new_models, dict(relations).pop(relation_name))
+                    for attr in _models_by_attr:
+                        _models = _models_by_attr[attr]
+                        if attr in models_by_attr:
+                            models_by_attr[attr] += _models
+                        else:
+                            models_by_attr[attr] = _models_by_attr[attr]
+            return models_by_attr

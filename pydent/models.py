@@ -869,12 +869,9 @@ class ObjectType(ModelBase, NamedMixin):
 class Operation(ModelBase, DataAssociatorMixin):
     """A Operation model"""
     fields = dict(
-        field_values=Many("FieldValue",
-                          callback_args=lambda self: {
-                              "parent_id": self.id,
-                              "parent_class": self.__class__.__name__},
-                          ),
-        # field_values=HasManyGeneric("FieldValue"),
+        field_values=HasMany("FieldValue",
+                             ref="parent_id",
+                             additional_args={"parent_class": "Operation"}),
         data_associations=HasManyGeneric("DataAssociation"),
         operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
@@ -1264,10 +1261,7 @@ class OperationType(ModelBase, HasCodeMixin):
     """
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
-        field_types=Many("FieldType",
-                         callback_args=lambda self: {
-                             "parent_id": self.id,
-                             "parent_class": self.__class__.__name__}),
+        field_types=HasMany("FieldType", ref="parent_id", additional_args={"parent_class": "OperationType"}),
         codes=HasManyGeneric("Code"),
         protocol=One("Code", callback="get_code_callback",
                      callback_args="protocol"),
@@ -1599,10 +1593,9 @@ class Sample(ModelBase, NamedMixin):
         # sample relationships
         sample_type=HasOne("SampleType"),
         items=HasMany("Item", ref="sample_id"),
-        field_values=Many("FieldValue",
-                          callback_args=lambda self: {
-                              "parent_id": self.id,
-                              "parent_class": self.__class__.__name__})
+        field_values=HasMany("FieldValue",
+                             ref="parent_id",
+                             additional_args={"parent_class": "Sample"})
     )
 
     def __init__(self, name=None, project=None, description=None, sample_type_id=None, properties=None):
@@ -1730,10 +1723,7 @@ class SampleType(ModelBase, NamedMixin):
     """A SampleType model"""
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
-        field_types=Many("FieldType",
-                         callback_args=lambda self: {
-                             "parent_id": self.id,
-                             "parent_class": self.__class__.__name__})
+        field_types=HasMany("FieldType", ref="parent_id", additional_args={"parent_class": "SampleType"})
     )
 
     @property

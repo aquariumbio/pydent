@@ -146,16 +146,26 @@ def test_update_model(session):
     raise NotImplementedError
 
 
-def test_cache_with_many(session):
+def test_retrieve_with_many(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
+
     assert 'items' not in samples[0].__dict__, "Items should not have been loaded into the sample yet."
     browser._retrieve_has_many_or_has_one(samples, 'items')
     assert 'items' in samples[0].__dict__
     assert len(samples[0].__dict__['items']) > 0, "Items should have been found."
 
 
-def test_cache_with_one(session):
+def test_retrieve_with_many_field_values(session):
+    session.set_verbose(True)
+    browser = Browser(session)
+    samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
+    assert len(samples[0].field_values) > 0
+    assert 'items' not in samples[0].__dict__, "Items should not have been loaded into the sample yet."
+    browser._retrieve_has_many_or_has_one(samples, 'field_values')
+
+
+def test_retrieve_with_one(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
     assert 'sample_type' not in samples[0].__dict__, "SampleType should not have been loaded into the sample yet."
@@ -165,7 +175,7 @@ def test_cache_with_one(session):
     assert isinstance(sample_types[0], pydent_models.SampleType)
 
 
-def test_cache_with_many_through_for_jobs_and_operations(session):
+def test_retrieve_with_many_through_for_jobs_and_operations(session):
     browser = Browser(session)
     jobs = session.Job.last(50)
 
@@ -184,7 +194,7 @@ def test_cache_with_many_through_for_jobs_and_operations(session):
                 assert isinstance(other_model, pydent_models.Operation)
 
 
-def test_cache_with_many_through_for_collections_and_parts(session):
+def test_retrieve_with_many_through_for_collections_and_parts(session):
     browser = Browser(session)
     collections = session.Collection.last(50)
 
@@ -203,7 +213,7 @@ def test_cache_with_many_through_for_collections_and_parts(session):
                 assert isinstance(other_model, pydent_models.Item)
 
 
-def test_cache_relationship(session):
+def test_retrieve(session):
     """Should be able to parse HasOne, HasMany, and HasManyThrough without specifying the type of relationship."""
     browser = Browser(session)
 
@@ -232,3 +242,33 @@ def test_cache_relationship(session):
     sample_types = browser._retrieve_has_many_or_has_one(samples, 'sample_type')
     assert len(sample_types) > 0
     assert samples[0].__dict__['sample_type'].id, session.SampleType.find_by_name("Fragment").id
+
+
+def test_recursive_retrieve(session):
+
+    browser = Browser(session)
+    d = {
+        "field_values": {
+            "wires_as_dest": {
+                "source": "operation",
+                "destination": "operation"
+            },
+            "wires_as_source": {
+                "source": "operation",
+                "destination": "operation"
+            },
+        }
+    }
+
+    ops = browser.session.Operation.last(10)
+    r = browser.recursive_retrieve(ops, d)
+
+    assert len(r['field_values']) > 0
+    assert len(r['wires_as_dest']) > 0
+    assert len(r['wires_as_source']) > 0
+    assert len(r['source']) > 0
+    assert len(r['destination']) > 0
+    assert len(r['operation']) > 0
+    assert 'field_values' in ops[0].__dict__
+    assert 'wires_as_dest' in ops[0].field_values[0].__dict__
+    assert 'wires_as_source' in ops[0].field_values[0].__dict__
