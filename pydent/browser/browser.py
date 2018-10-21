@@ -3,7 +3,7 @@ from difflib import get_close_matches
 
 from pydent import ModelRegistry
 from pydent import models
-
+from pydent.utils import make_async
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -280,7 +280,7 @@ class Browser(object):
                 return existing
         return sample.save()
 
-    def _cache_has_many_or_has_one(self, models, relationship_name):
+    def _retrieve_has_many_or_has_one(self, models, relationship_name):
         """Performs exactly 1 query to fullfill some relationship for a list of models"""
         if not models:
             return []
@@ -320,7 +320,7 @@ class Browser(object):
 
         return models2
 
-    def _cache_has_many_through(self, models, relationship_name):
+    def _retrieve_has_many_through(self, models, relationship_name):
         """Performs exactly 2 queries to establish a HasManyThrough relationship"""
         relation = models[0].relationships[relationship_name]
         association_relation = models[0].relationships[relation.through_model_attr]
@@ -336,8 +336,8 @@ class Browser(object):
             if ar.nested == relation.nested:
                 other_ref = r
 
-        associations = self._cache_has_many_or_has_one(models, relation.through_model_attr)
-        self._cache_has_many_or_has_one(associations, other_ref)
+        associations = self._retrieve_has_many_or_has_one(models, relation.through_model_attr)
+        self._retrieve_has_many_or_has_one(associations, other_ref)
 
         associations_by_mid = {}
         for a in associations:
@@ -355,10 +355,40 @@ class Browser(object):
                 m.__dict__.update({relationship_name: None})
         return list(set(all_models))
 
-    def cache_relationship(self, models, relationship):
+    def retrieve(self, models, relationship):
+        """
+        Retrieves a model relationship for the list of models. Compared to a `for` loop,
+        `retrieve` is >10X faster for most queries.
+
+        .. code-block:: python
+
+            # FAST code example
+            samples = browser.search(".*mCherry.*")
+            items = browser.retrieve(samples, 'items')
+            for s in samples:
+                sample_items = s.items
+                # do something with items
+
+
+        .. code-block:: python
+
+            # very SLOW code example. DO NOT USE.
+            samples = browser.search(".*mCherry.*")
+            for s in samples:
+                sample_items = s.items
+                # do something with itmes
+
+
+        :param models: list of models to retrieve the attribute
+        :type models: list
+        :param relationship: name of the attribute to retrieve
+        :type relationship: basestring
+        :return: list of models retrieved
+        :rtype: list
+        """
         assert len(set([m.__class__.__name__ for m in models])) == 1, "Models must be all of the same BaseModel"
         relation = models[0].relationships[relationship]
         if hasattr(relation, 'through_model_attr'):
-            return self._cache_has_many_through(models, relationship)
+            return self._retrieve_has_many_through(models, relationship)
         else:
-            return self._cache_has_many_or_has_one(models, relationship)
+            return self._retrieve_has_many_or_has_one(models, relationship)

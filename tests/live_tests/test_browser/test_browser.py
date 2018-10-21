@@ -150,7 +150,7 @@ def test_cache_with_many(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
     assert 'items' not in samples[0].__dict__, "Items should not have been loaded into the sample yet."
-    browser._cache_has_many_or_has_one(samples, 'items')
+    browser._retrieve_has_many_or_has_one(samples, 'items')
     assert 'items' in samples[0].__dict__
     assert len(samples[0].__dict__['items']) > 0, "Items should have been found."
 
@@ -159,7 +159,7 @@ def test_cache_with_one(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
     assert 'sample_type' not in samples[0].__dict__, "SampleType should not have been loaded into the sample yet."
-    sample_types = browser._cache_has_many_or_has_one(samples, 'sample_type')
+    sample_types = browser._retrieve_has_many_or_has_one(samples, 'sample_type')
     assert 'sample_type' in samples[0].__dict__, "SampleType should have been loaded"
     assert samples[0].__dict__['sample_type'].id, session.SampleType.find_by_name("Fragment").id
     assert isinstance(sample_types[0], pydent_models.SampleType)
@@ -172,7 +172,7 @@ def test_cache_with_many_through_for_jobs_and_operations(session):
     for j in jobs:
         assert not 'operations' in j.__dict__
 
-    operations = browser._cache_has_many_through(jobs, 'operations')
+    operations = browser._retrieve_has_many_through(jobs, 'operations')
     assert len(operations) > 0
     assert not all([m.__dict__['operations'] is None for m in jobs])
 
@@ -191,7 +191,7 @@ def test_cache_with_many_through_for_collections_and_parts(session):
     for c in collections:
         assert not 'parts' in c.__dict__
 
-    parts = browser._cache_has_many_through(collections, 'parts')
+    parts = browser._retrieve_has_many_through(collections, 'parts')
     assert len(parts) > 0
     assert not all([m.__dict__['parts'] is None for m in collections])
 
@@ -208,7 +208,7 @@ def test_cache_relationship(session):
     browser = Browser(session)
 
     collections = session.Collection.last(50)
-    parts = browser.cache_relationship(collections, 'parts')
+    parts = browser.retrieve(collections, 'parts')
     assert len(parts) > 0
     for model in collections:
         assert 'parts' in model.__dict__
@@ -218,7 +218,7 @@ def test_cache_relationship(session):
                 assert isinstance(other_model, pydent_models.Item)
 
     jobs = session.Job.last(50)
-    operations = browser._cache_has_many_through(jobs, 'operations')
+    operations = browser._retrieve_has_many_through(jobs, 'operations')
     assert len(operations) > 0
     for model in jobs:
         assert 'operations' in model.__dict__
@@ -229,6 +229,6 @@ def test_cache_relationship(session):
 
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
     assert 'sample_type' not in samples[0].__dict__, "SampleType should not have been loaded into the sample yet."
-    sample_types = browser._cache_has_many_or_has_one(samples, 'sample_type')
+    sample_types = browser._retrieve_has_many_or_has_one(samples, 'sample_type')
     assert len(sample_types) > 0
     assert samples[0].__dict__['sample_type'].id, session.SampleType.find_by_name("Fragment").id
