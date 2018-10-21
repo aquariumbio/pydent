@@ -88,10 +88,10 @@ def test_filter_by_sample_properties(session):
     browser = Browser(session)
     primers = browser.search(".*gfp.*", sample_type="Primer")
 
-    filtered_primers = browser.filter_by_field_value_properties(primers, {"T Anneal": 64})
+    filtered_primers = browser.filter_by_properties(primers, {"T Anneal": 64})
 
     assert len(filtered_primers) > 0
-
+    assert len(primers) > len(filtered_primers)
     for primer in filtered_primers:
         assert primer.properties["T Anneal"] == '64'
 
@@ -100,7 +100,7 @@ def test_filter_by_sample_properties_with_inequality(session):
     browser = Browser(session)
     primers = browser.search(".*gfp.*", sample_type="Primer")
 
-    filtered_primers = browser.filter_by_field_value_properties(primers, {"T Anneal": 'value > 64'})
+    filtered_primers = browser.filter_by_properties(primers, "value > 64")
 
     assert len(filtered_primers) > 0
 
@@ -156,13 +156,27 @@ def test_retrieve_with_many(session):
     assert len(samples[0].__dict__['items']) > 0, "Items should have been found."
 
 
+def test_retrieve_query_with_field_values(session):
+    """The retrieve helper method should use the relationship definition
+    of the callback_args to query FieldValues based on their parent_id
+    AND parent_class."""
+    browser = Browser(session)
+    sample = session.Sample.one()
+    relation = sample.relationships['field_values']
+    query = browser._collect_callback_args([sample], relation)
+    assert query == {
+        'parent_class': ['Sample'],
+        'parent_id': [sample.id]
+    }
+
+
 def test_retrieve_with_many_field_values(session):
-    session.set_verbose(True)
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
     assert len(samples[0].field_values) > 0
     assert 'items' not in samples[0].__dict__, "Items should not have been loaded into the sample yet."
-    browser._retrieve_has_many_or_has_one(samples, 'field_values')
+    field_values = browser._retrieve_has_many_or_has_one(samples, 'field_values')
+    assert len(field_values) > 0
 
 
 def test_retrieve_with_one(session):
@@ -180,7 +194,7 @@ def test_retrieve_with_many_through_for_jobs_and_operations(session):
     jobs = session.Job.last(50)
 
     for j in jobs:
-        assert not 'operations' in j.__dict__
+        assert 'operations' not in j.__dict__
 
     operations = browser._retrieve_has_many_through(jobs, 'operations')
     assert len(operations) > 0

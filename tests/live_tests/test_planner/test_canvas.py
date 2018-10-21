@@ -331,3 +331,9 @@ def test_set_input_array(session):
     assert len(op.input_array("Fragment")) == 2
     assert op.input_array("Fragment")[0].sample == frags[0], "Input array 0 should have fragment 0"
     assert op.input_array("Fragment")[1].sample == frags[1], "Input array 1 should have fragment 1"
+
+
+def test_cached(session):
+    session.set_verbose(True)
+    canvas = Planner(session, plan_id=136974)
+    canvas._routing_graph()

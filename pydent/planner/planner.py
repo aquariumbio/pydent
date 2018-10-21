@@ -46,7 +46,7 @@ def plan_verification_wrapper(fxn):
     return wrapper
 
 
-class Planner(object):
+class Planner(logger.Loggable, object):
     """A user-interface for making experimental plans and layouts."""
 
     def __init__(self, session, plan_id=None):
@@ -60,18 +60,27 @@ class Planner(object):
                     "Could not find plan with id={}".format(plan_id))
 
             # TODO: preload?
-            operations = self.browser.retrieve([self.plan], 'operations')
-            self.browser.retrieve(operations, 'operation_type')
-            self.browser.retrieve(operations, 'field_values')
+            results = self.browser.recursive_retrieve([self.plan], {
+                "operations": {
+                    "field_values": {
+                        "wires_as_dest": ["source", "destination"],
+                        "wires_as_source": ["source", "destination"],
+                        "sample": [],
+                        "item": [],
+                        "operation": [],
+                        "field_type": []
+                    },
+                    "operation_type": {
+                        "field_types": {
+                            "allowable_field_types": ["sample_type", "object_type"]
+                        }
+                    }
+                }
+            })
+            wires = results['wires_as_dest'] + results['wires_as_source']
         else:
             self.plan = session.Plan.new()
-        self._logger, self._log_handler = logger.new("Planner@plan_rid={}".format(self.plan.rid))
-
-    def set_verbose(self, verbose):
-
-
-    def _info(self, msg):
-        print(msg)
+        self.init_logger("Planner@plan_rid={}".format(self.plan.rid))
 
     @property
     def name(self):
@@ -527,17 +536,6 @@ class Planner(object):
 
             G.add_edge(src_id, dest_id, wire=w)
         return G
-
-    def _cache(self):
-        @make_async(10, progress_bar=False)
-        def _cache_ops(ops):
-            for op in ops:
-                for fv in op.field_values:
-                    fv.sample
-                    fv.allowable_field_type
-                    fv.field_type
-            return ops
-        _cache_ops(self.plan.operations)
 
     # TODO: verify all routing graphs have the same sample
     # TODO: verify all leaves have an item or a wire

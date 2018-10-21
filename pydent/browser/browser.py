@@ -1,4 +1,3 @@
-import logging
 import re
 from difflib import get_close_matches
 
@@ -6,6 +5,7 @@ from pydent import ModelRegistry
 from pydent import models as pydent_models
 from pydent.utils import logger
 
+from collections import OrderedDict
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -20,7 +20,8 @@ class Browser(logger.Loggable, object):
         self._list_models_fxn = self.sample_list
         self.use_cache = False
         self.model_name = 'Sample'
-        self.cache = {}
+        self.model_list_cache = {}
+        self.model_cache = {}
         self.init_logger("Browser@{}".format(session.url))
 
     # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
@@ -57,21 +58,21 @@ class Browser(logger.Loggable, object):
         return self.session.utils.aqhttp.get(path)
 
     def reset_cache(self):
-        self.cache = {}
+        self.model_list_cache = {}
 
     def list_models(self, *args, **kwargs):
         get_models = lambda: self._list_models_fxn(*args, **kwargs)
         model_list = []
         if self.use_cache:
-            models_cache = self.cache.get('models', {})
+            models_cache = self.model_list_cache.get('models', {})
             if self.model_name in models_cache:
                 models_list = models_cache[self.model_name]
             else:
                 models_list = get_models()
         else:
             model_list = get_models()
-        self.cache.setdefault('models', {})
-        self.cache['models'][self.model_name] = model_list[:]
+        self.model_list_cache.setdefault('models', {})
+        self.model_list_cache['models'][self.model_name] = model_list[:]
         return model_list
 
     def find(self, model_id):
@@ -82,6 +83,73 @@ class Browser(logger.Loggable, object):
 
     def where(self, query):
         return self.interface.where(query)
+
+    @staticmethod
+    def _match_query(query, model_dict):
+        """
+        Matches a query against a model dictionary
+
+        :param query: query dictionary
+        :type query: dict
+        :param model_dict: model dictionary (e.g. model.__dict__)
+        :type model_dict: dict
+        :return: whether the model matches the query
+        :rtype: bool
+        """
+        for query_key in query:
+            if query_key not in model_dict:
+                return False
+            query_val = query[query_key]
+            model_val = model_dict[query_key]
+            if isinstance(query_val, list):
+                if model_val not in query_val:
+                    return False
+            elif model_val != query_val:
+                return False
+        return {k: model_dict[k] for k in query}
+
+    @classmethod
+    def _find_matches(cls, query, models):
+        found = []
+        found_queries = []
+        for m in models:
+            match = cls._match_query(query, m.__dict__)
+            if match:
+                found.append(m)
+                found_queries.append(match)
+        return found, found_queries
+
+    def _update_model_cache_helper(self, modelname, modeldict):
+        self.model_cache.setdefault(modelname, {})
+        self.model_cache[modelname].update(modeldict)
+
+    def _update_model_cache(self, models):
+        grouped_by_type = {}
+        for model in models:
+            classname = model.__class__.__name__
+            arr = grouped_by_type.setdefault(classname, [])
+            arr.append(model)
+
+        for clstype in grouped_by_type:
+            self._update_model_cache_helper(clstype, {m.id: m for m in grouped_by_type[clstype]})
+
+    def cached_where(self, model, query, primary_key='id'):
+        cached_models = self.model_cache[model]
+        found, found_queries = self._find_matches(query, cached_models)
+        found_dict = {f.id: f for f in found}
+        remaining_query = dict(query)
+        if primary_key in query:
+            found_ids = [q[primary_key] for q in found_queries]
+            remaining_ids = list(set(query['id']).difference(set(found_ids)))
+            remaining_query[primary_key] = remaining_ids
+        server_models = self.session.model_interface(model).where(query)
+
+        models_dict = OrderedDict({s.id: s for s in server_models})
+        models_dict.update(found_dict)
+
+        self._update_model_cache_helper(model, models_dict)
+
+        return list(models_dict.values())
 
     def find_by_sample_type_name(self, name):
         return self.interface.where({"sample_type_id": self.session.SampleType.find_by_name(name).id})
@@ -179,7 +247,7 @@ class Browser(logger.Loggable, object):
     def filter_by_data_associations(self, models, associations):
         raise NotImplementedError()
 
-    def filter_by_field_value_properties(self, samples, properties):
+    def filter_by_properties(self, samples, properties):
         """
         Filters a list of samples by their FieldValue properties. e.g. {"T Anneal": 64}.
 
@@ -199,6 +267,8 @@ class Browser(logger.Loggable, object):
         """
 
         # TODO: handle metatypes better
+        if self.model_name not in ["Operation", "Sample"]:
+            raise BrowserException("Cannot filter_by_properties, model must be either a Operation or Sample")
         metatype_attribute = "sample_type_id"
         metatype_name = "SampleType"
 
@@ -215,7 +285,6 @@ class Browser(logger.Loggable, object):
             model_ids = [s.id for s in models]
 
             metatype = self.session.model_interface(metatype_name).find(attrid)
-
             for prop_name in properties:
                 field_type = metatype.field_type(prop_name)  # necessary since FieldValues are missing field_type_ids
                 if field_type:
@@ -279,7 +348,7 @@ class Browser(logger.Loggable, object):
                         "There is an existing sample with nme \"{}\", but it is a \"{}\" sample_type, not a \"{}\"".format(
                             sample.name,
                             existing.sample_type.name,
-                            sample.sample_type.name
+                            sample.sample_type.namezf
                         ))
                 if overwrite:
                     existing.update_properties(sample.properties)
@@ -288,24 +357,27 @@ class Browser(logger.Loggable, object):
         return sample.save()
 
     @staticmethod
-    def collect_callback_args(models, relationship_name):
+    def _collect_callback_args(models, relation):
         """Combines all of the callback args into a single query"""
         args = {}
         for s in models:
-            relation = s.relationships[relationship_name]
             callback_args = s._get_callback_args(relation)
-            for cba in callback_args:
-                for k in cba:
-                    args.setdefault(k, [])
-                    if cba[k] not in args[k]:
-                        args[k].append(cba[k])
+            if not relation.many:
+                args.setdefault(relation.attr, [])
+                args[relation.attr] += callback_args
+            else:
+                for cba in callback_args:
+                    for k in cba:
+                        args.setdefault(k, [])
+                        if cba[k] not in args[k]:
+                            args[k].append(cba[k])
         return args
 
     def _retrieve_has_many_or_has_one(self, models, relationship_name):
         """Performs exactly 1 query to fullfill some relationship for a list of models"""
         if not models:
             return []
-
+        models = models[:]
         relation = models[0].relationships[relationship_name]
 
         ref = relation.ref  # sample_id
@@ -313,35 +385,66 @@ class Browser(logger.Loggable, object):
         model_class2 = relation.model
         many = relation.many
 
-        models1 = models
-        if many:
-            models2_query = {ref: [getattr(s, attr) for s in models1]}
-            # self._info("querying {cls2} using {cls1}.{attr} << {cls2}.{ref}".format(cls1='model', cls2=model_class2, attr=attr, ref=ref))
-        else:
-            models2_query = {attr: [getattr(s, ref) for s in models1]}
-            # self._info("querying {cls2} using {cls1}.{ref} <> {cls2}.{attr}".format(cls1='model', cls2=model_class2, attr=attr, ref=ref))
-        models2 = self.session.model_interface(model_class2).where(models2_query)
+        retrieve_query = self._collect_callback_args(models, relation)
+        # if many:
+        #     model_attributes = [getattr(s, attr) for s in models]
+        #     model_attributes = [x for x in model_attributes if x is not None]
+        #     retrieve_query = {ref: model_attributes}
+        # else:
+        #     model_references = [getattr(s, ref) for s in models]
+        #     model_references = [x for x in model_references if x is not None]
+        #     retrieve_query = {attr: model_references}
+        retrieved_models = self.session.model_interface(model_class2).where(retrieve_query)
+        self._info("retrieved {l} {cls} models using query {query}".format(
+            l=len(retrieved_models),
+            cls=model_class2,
+            query=self._pprint_data(retrieve_query)
+        ))
+
         # self._info("{} {} models retrieved".format(len(models2), model_class2))
-        if not models2:
+        if not retrieved_models:
             return []
 
         if many:
-            model1_attr_dict = {m1.id: list() for m1 in models1}
-            for m2 in models2:
-                m1id = getattr(m2, ref)
-                model1_attr_dict[m1id].append(m2)
+            model_dict = {m1.id: list() for m1 in models}
+            for model in retrieved_models:
+                model_ref = getattr(model, ref)
+                if model_ref is None:
+                    self._error("ref: {ref} {model_ref}, attr: {attr} {m1ref}".format(ref=ref, attr=attr, model_ref=model_ref))
+                model_dict[model_ref].append(model)
         else:
-            model2_dict = {getattr(m2, attr): m2 for m2 in models2}
-            model1_attr_dict = {m1.id: None for m1 in models1}
-            for m1 in models1:
-                m1id = getattr(m1, attr)
-                model1_attr_dict[m1id] = model2_dict[getattr(m1, ref)]
+            retrieved_dict = {getattr(m2, attr): m2 for m2 in retrieved_models}
+            model_dict = {m1.id: None for m1 in models}
+            missing_models = []
+            for model in models:
+                model_attr = getattr(model, attr)
+                model_ref = getattr(model, ref)
+                if model_ref is not None:
+                    if model_attr is None:
+                        self._error(
+                            "{m1}  ref: {attr}={model_attr}, attr: {ref}={model_ref}".format(m1=model, ref=ref, attr=attr, model_attr=model_attr,
+                                                                                         model_ref=model_ref))
+                    if model_ref not in retrieved_dict:
+                        missing_models.append(model_ref)
+                    else:
+                        model_dict[model_attr] = retrieved_dict[model_ref]
+            if missing_models:
+                self._error("INCONSISTENT AQUARIUM DATABASE - There where {l} missing {cls} models "
+                            "from the Aquarium database, which were ignored by trident. "
+                            "This happens when models are deleted from Aquarium which "
+                            "results in an inconsistent server database. Trident was unable "
+                            "resolve the following relationships which returned no models from the server: "
+                            "{cls}.where({attr}={missing})".format(
+                                l=len(missing_models),
+                                cls=model_class2,
+                                missing=missing_models,
+                                attr=attr
+                ))
+        for model in models:
+            found_models = model_dict[getattr(model, attr)]
+            model.__dict__.update({relationship_name: found_models})
 
-        for m1 in models1:
-            found_models = model1_attr_dict[getattr(m1, attr)]
-            m1.__dict__.update({relationship_name: found_models})
-
-        return models2
+        return retrieved_models
 
     def _retrieve_has_many_through(self, models, relationship_name):
         """Performs exactly 2 queries to establish a HasManyThrough relationship"""
@@ -409,6 +512,7 @@ class Browser(logger.Loggable, object):
         :return: list of models retrieved
         :rtype: list
         """
+        self._info('retrieving "{}"'.format(relationship_name))
         assert len(set([m.__class__.__name__ for m in models])) == 1, "Models must be all of the same BaseModel"
         relation = models[0].relationships[relationship_name]
         accepted_types = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric"]
@@ -416,14 +520,17 @@ class Browser(logger.Loggable, object):
         if relation.__class__.__name__ not in accepted_types:
             raise BrowserException(
                 "retrieve is not supported for the \"{}\" relationship".format(relation.__class__.__name__))
+        self._info('{}: {}'.format(relationship_name, relation))
         if hasattr(relation, 'through_model_attr'):
-            return self._retrieve_has_many_through(models, relationship_name)
+            found_models = self._retrieve_has_many_through(models, relationship_name)
         else:
-            return self._retrieve_has_many_or_has_one(models, relationship_name)
+            found_models = self._retrieve_has_many_or_has_one(models, relationship_name)
+        self._info('retrieved {} for "{}"'.format(len(found_models), relationship_name))
+        return found_models
 
     def recursive_retrieve(self, models, relations):
         """
-        Retrieve recursively from an iterable. The relations_dict iterable may be
+        Efficiently retrieve a model relationship recursively from an iterable. The relations_dict iterable may be
         either a list or a dictionary. For example, the following will collect all of the field_values
         and their incoming and outgoing wires, the connecting field_values, and finally those FieldValues'
         operations.
@@ -452,7 +559,9 @@ class Browser(logger.Loggable, object):
         :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
         :rtype: dictionary
         """
+        self._info("recursively retrieving {}".format(relations))
         if isinstance(relations, str):
+            self._info('retrieving "{}"'.format(relations))
             return {relations: self.retrieve(models, relations)}
         else:
             models_by_attr = {}
@@ -469,3 +578,40 @@ class Browser(logger.Loggable, object):
                         else:
                             models_by_attr[attr] = _models_by_attr[attr]
             return models_by_attr
+
+    def samples_to_rows(self, samples, sample_resolver=None):
+        """
+        Return row of dictionaries containing sample information and their properties. Can be
+        imported into a pandas DataFrame:
+
+        .. code-block:: python
+
+            import pandas
+
+            df = pandas.DataFrame(samples_to_rows(samples))
+
+
+        :param samples: samples, all of same sample type
+        :type samples: list
+        :param sample_resolver: callable to resolve a sample object if the field value property contains a sample.
+        Defaults to return the sample anme
+        :type sample_resolver: callable
+        :return: list of dictionaries containing sample info and properties
+        :rtype: list
+        """
+        assert len(set([s.sample_type_id for s in samples])) == 1, "Samples be the of the same SampleType"
+        sample_type = samples[0].sample_type
+
+        if sample_resolver is None:
+            def default_resolver(sample):
+                if isinstance(sample, pydent_models.Sample):
+                    return sample.name
+                return sample
+            sample_resolver = default_resolver
+        rows = []
+        for s in samples:
+            row = {sample_type.name: s.name, 'Description': s.description, 'Project': s.project}
+            props = {k: sample_resolver(v) for k, v in s.properties.items()}
+            row.update(props)
+            rows.append(row)
+        return rows

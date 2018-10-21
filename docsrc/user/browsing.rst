@@ -44,13 +44,24 @@ Similarly, the browser can also find approximately close matches for a given str
     [s.name for s in close_matches]
     # ['pMOD8A-RGR-W8', 'pMOD8-pGALz4-RGR-W8', 'pMOD8-pGALZ4-URGR-W8']
 
-Once found, list of samples can also be filtered by their sample properties:
+Once found, list of samples can also be filtered by their sample properties.
+For example, we can find all of the primers containing "mcherry" that have a
+*T Anneal* greater than 64:
 
-.. code::
+.. code-block::
 
-    samples = browser.search(".*mCherry.*", sample_type="Fragment")
+    primers = browser.search(".*mcherry.*", sample_type="Primer")
+    browser.filter_by_field_value_properties(primers, "name = 'T Anneal' AND value > 64")
 
-    filtered_samples = browser.filter_by_sam
+As you can see, there is a SQL-like style to the query. This same style can be applied directly
+to where statements as well:
+
+.. code-block::
+
+    session.FieldValue.where("name = 'T Anneal' AND value > 64")
+
+Browser Scope
+-------------
 
 The model scope of the browser can also be changed so that many of the methods
 used in Sample, can be applied to other models (such as Operations or OperationTypes).
