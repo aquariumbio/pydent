@@ -61,3 +61,7 @@ lock:
 
 hooks: .git/hooks
 	cp scripts/* .git/hooks
+
+
+klocs:
+	find . -name '*.py' | xargs wc -l
