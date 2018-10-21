@@ -16,7 +16,8 @@ import requests
 
 from pydent.exceptions import (TridentRequestError, TridentLoginError,
                                TridentTimeoutError, TridentJSONDataIncomplete)
-from pydent.utils import url_build
+from pydent.utils import url_build, logger
+import logging
 
 
 class AqHTTP(object):
@@ -47,6 +48,25 @@ class AqHTTP(object):
         self._requests_session = None
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
+        self._logger, self._log_handler = logger.new("AqHTTP@{}".format(aquarium_url))
+
+    def set_verbose(self, verbose):
+        if verbose:
+            self._log_handler.setLevel(logging.INFO)
+        else:
+            self._log_handler.setLevel(logging.ERROR)
+
+    def _info(self, msg):
+        self._logger.info(msg)
+
+    def _error(self, msg):
+        self._logger.error(msg)
+
+    def _format_request_info(self, request):
+        return "REQUEST  {method} {url} \nBODY  {body}".format(**dict(request.__dict__))
+
+    def _format_request_status(self, response):
+        return "STATUS  {} {}".format(response.status_code, response.reason)
 
     @property
     def url(self):
@@ -127,15 +147,7 @@ class AqHTTP(object):
         if not allow_none and 'json' in kwargs:
             self._disallow_null_in_json(kwargs['json'])
 
-        # serialize request
-        url = url_build(self.aquarium_url, path)
-        body = {}
-        if 'json' in kwargs:
-            body = kwargs['json']
-
-        key = self._serialize_request(url, method, body)
         result = None
-
         if result is None:
             result = requests.request(
                 method,
@@ -144,6 +156,12 @@ class AqHTTP(object):
                 timeout=timeout,
                 cookies=self.cookies,
                 **kwargs)
+
+        self._info(self._format_request_info(result.request))
+        if result.status_code >= 400:
+            request_info = self._format_request_info(result.request)
+            request_status = self._format_request_status(result)
+            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, request_info]))
 
         return self._response_to_json(result)
 
@@ -163,6 +181,7 @@ class AqHTTP(object):
         except json.JSONDecodeError:
             msg = "Response is not JSON formatted"
             msg += "\nMessage:\n" + result.text
+            self._error(self._format_request_info(result.request))
             raise TridentRequestError(msg, result)
         if result_json and 'errors' in result_json:
             errors = result_json['errors']

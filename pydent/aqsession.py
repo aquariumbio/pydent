@@ -66,6 +66,9 @@ class AqSession(object):
         for model_name in allmodels:
             self._register_interface(model_name)
 
+    def set_verbose(self, verbose):
+        self.__aqhttp.set_verbose(verbose)
+
     def _register_interface(self, model_name):
         # get model class f(e.g. "Sample")
         model = ModelRegistry.get_model(model_name)
