@@ -69,6 +69,10 @@ class AqSession(object):
     def set_verbose(self, verbose):
         self.__aqhttp.set_verbose(verbose)
 
+    def _log_to_aqhttp(self, msg):
+        """Sends a log message to the aqhttp's logger"""
+        self.__aqhttp._info(msg)
+
     def _register_interface(self, model_name):
         # get model class f(e.g. "Sample")
         model = ModelRegistry.get_model(model_name)
