@@ -50,9 +50,10 @@ class AqHTTP(logger.Loggable, object):
         self._login(login, password)
         self.init_logger("AqHTTP@{}".format(aquarium_url))
 
-
-    def _format_request_info(self, request):
-        return "REQUEST  {method} {url} \nBODY  {body}".format(**dict(request.__dict__))
+    def _format_response_info(self, response):
+        info = dict(response.request.__dict__)
+        info.update({"seconds": response.elapsed.total_seconds()})
+        return "REQUEST (t={seconds}s)  {method} {url} \nBODY  {body}".format(**info)
 
     def _format_request_status(self, response):
         return "STATUS  {} {}".format(response.status_code, response.reason)
@@ -136,9 +137,9 @@ class AqHTTP(logger.Loggable, object):
         if not allow_none and 'json' in kwargs:
             self._disallow_null_in_json(kwargs['json'])
 
-        result = None
-        if result is None:
-            result = requests.request(
+        response = None
+        if response is None:
+            response = requests.request(
                 method,
                 url_build(
                     self.aquarium_url, path),
@@ -146,39 +147,39 @@ class AqHTTP(logger.Loggable, object):
                 cookies=self.cookies,
                 **kwargs)
 
-        self._info(self._format_request_info(result.request))
-        if result.status_code >= 400:
-            request_info = self._format_request_info(result.request)
-            request_status = self._format_request_status(result)
-            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, request_info]), result)
+        self._info(self._format_response_info(response))
+        if response.status_code >= 400:
+            request_info = self._format_response_info(response)
+            request_status = self._format_request_status(response)
+            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, request_info]), response)
 
-        return self._response_to_json(result)
+        return self._response_to_json(response)
 
-    def _response_to_json(self, result):
+    def _response_to_json(self, response):
         """
         Turns :class:`requests.Request` instance into a json.
         Raises TridentRequestError if an error occurs.
         """
 
-        if result.url == url_build(self.aquarium_url, "signin"):
+        if response.url == url_build(self.aquarium_url, "signin"):
             msg = "There was an error with authenticating the request. Aquarium " + \
             "re-routed to the sign-in page."
-            raise TridentRequestError(msg, result)
+            raise TridentRequestError(msg, response)
 
         try:
-            result_json = result.json()
+            response_json = response.json()
         except json.JSONDecodeError:
             msg = "Response is not JSON formatted"
-            msg += "\nMessage:\n" + result.text
-            self._error(self._format_request_info(result.request))
-            raise TridentRequestError(msg, result)
-        if result_json and 'errors' in result_json:
-            errors = result_json['errors']
+            msg += "\nMessage:\n" + response.text
+            self._error(self._format_response_info(response))
+            raise TridentRequestError(msg, response)
+        if response_json and 'errors' in response_json:
+            errors = response_json['errors']
             if isinstance(errors, list):
                 errors = "\n".join(errors)
             msg = "Error response:\n{}".format(errors)
-            raise TridentRequestError(msg, result)
-        return result_json
+            raise TridentRequestError(msg, response)
+        return response_json
 
     @staticmethod
     def _disallow_null_in_json(json_data):
