@@ -964,9 +964,9 @@ class Operation(ModelBase, DataAssociatorMixin):
                 return fvs[0]
 
             msg = "More than one FieldValue found for the field value"
-            msg += " of operation {}(id={}).{}.{}"
+            msg += " of operation {}.(id={}).{}.{}. Are you sure you didn't mean to call 'field_value_array'?"
             raise AquariumModelError(
-                msg.format(self.operation_type.name, self.id, role, name))
+                msg.format(self.operation_type, self.id, role, name))
 
     def set_field_value_array(self, name, role, values):
         """
@@ -1416,6 +1416,8 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
 
     def wire(self, src, dest):
         wire = Wire(source=src, destination=dest)
+        src.append_to_many("wires_as_source", wire)
+        dest.append_to_many("wires_as_dest", wire)
         self.append_to_many("wires", wire)
 
     def add_wires(self, pairs):
