@@ -84,12 +84,14 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     """
 
     _global_record_id = 0
+    PRIMARY_KEY = 'id'
+    GLOBAL_KEY = 'rid'
 
     def __init__(self, **model_args):
         self._session = None
         self._rid = None
         self._new_record_id()
-        model_args['rid'] = self.rid
+        model_args[ModelBase.GLOBAL_KEY] = self.rid
         vars(self).update(model_args)
         data = {k: v for k, v in model_args.items() if not k == '_session'}
         self._track_data(data)
@@ -106,6 +108,14 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     @property
     def rid(self):
         return self._rid
+
+    def _primary_key(self):
+        if hasattr(self, ModelBase.PRIMARY_KEY):
+            pk = getattr(self, ModelBase.PRIMARY_KEY)
+            if pk is not None:
+                return pk
+        else:
+            return self.rid
 
     def _track_data(self, data):
         if self.model_schema:
@@ -137,7 +147,9 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
                 setattr(self, name, val)
                 val.append(model)
 
-    def set_model_attribute(self, model, attr="id"):
+    def set_model_attribute(self, model, attr=None):
+        if attr is None:
+            attr = ModelBase.PRIMARY_KEY
         model_name = underscore(model.__class__.__name__)
         if hasattr(model, attr):
             setattr(self, model_name + "_" + attr, getattr(model, attr))
