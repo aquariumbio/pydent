@@ -5,7 +5,6 @@ from pydent import ModelRegistry
 from pydent import models as pydent_models
 from pydent.utils import logger
 
-from collections import OrderedDict
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -331,8 +330,9 @@ class Browser(logger.Loggable, object):
             return []
         return self.interface().find(filtered_model_ids)
 
-    def new_sample(self, sample_type):
-        return self.interface('SampleType').find_by_name(sample_type).new_sample
+    def new_sample(self, sample_type, name, description, project, properties=None):
+        return self.interface('SampleType').find_by_name(sample_type).new_sample(name, description, project,
+                                                                                 properties=properties)
 
     @staticmethod
     def __json_update(model, **params):
@@ -353,8 +353,6 @@ class Browser(logger.Loggable, object):
 
     #         return cls.__json_update(sample, include={"field_values": "sample"})
 
-    def new_sample(self, sample_type):
-        return self.interface('SampleType').find_by_name(sample_type).new_sample
 
     def save_sample(self, sample, overwrite=False, strict=False):
         """
@@ -397,18 +395,25 @@ class Browser(logger.Loggable, object):
                 for cba in callback_args:
                     for k in cba:
                         args.setdefault(k, [])
-                        if cba[k] not in args[k]:
-                            if cba[k] is not None:
-                                args[k].append(cba[k])
+                        arg_arr = args[k]
+                        val = cba[k]
+                        if val is not None:
+                            if isinstance(val, list):
+                                for v in val:
+                                    if v not in arg_arr:
+                                        arg_arr.append(v)
+                            else:
+                                arg_arr.append(val)
         return args
 
     # TODO: handle not-yet existant samples using rid
-    def _retrieve_has_many_or_has_one(self, models, relationship_name):
+    def _retrieve_has_many_or_has_one(self, models, relationship_name, relation=None):
         """Performs exactly 1 query to fullfill some relationship for a list of models"""
         if not models:
             return []
         models = models[:]
-        relation = models[0].relationships[relationship_name]
+        if relation is None:
+            relation = models[0].relationships[relationship_name]
 
         ref = relation.ref  # sample_id
         attr = relation.attr  # id
@@ -416,14 +421,6 @@ class Browser(logger.Loggable, object):
         many = relation.many
 
         retrieve_query = self._collect_callback_args(models, relation)
-        # if many:
-        #     model_attributes = [getattr(s, attr) for s in models]
-        #     model_attributes = [x for x in model_attributes if x is not None]
-        #     retrieve_query = {ref: model_attributes}
-        # else:
-        #     model_references = [getattr(s, ref) for s in models]
-        #     model_references = [x for x in model_references if x is not None]
-        #     retrieve_query = {attr: model_references}
         retrieved_models = self.where(model_class2, retrieve_query)
         self._info("RETRIEVE retrieved {l} {cls} models using query {query}".format(
             l=len(retrieved_models),
@@ -431,7 +428,6 @@ class Browser(logger.Loggable, object):
             query=self._pprint_data(retrieve_query)
         ))
 
-        # self._info("{} {} models retrieved".format(len(models2), model_class2))
         if not retrieved_models:
             return []
 
@@ -440,7 +436,8 @@ class Browser(logger.Loggable, object):
             for model in retrieved_models:
                 model_ref = getattr(model, ref)
                 if model_ref is None:
-                    self._error("RETRIEVE ref: {ref} {model_ref}, attr: {attr}".format(ref=ref, attr=attr, model_ref=model_ref))
+                    self._error(
+                        "RETRIEVE ref: {ref} {model_ref}, attr: {attr}".format(ref=ref, attr=attr, model_ref=model_ref))
                 model_dict[model_ref].append(model)
         else:
             retrieved_dict = {getattr(m2, attr): m2 for m2 in retrieved_models}
@@ -452,8 +449,9 @@ class Browser(logger.Loggable, object):
                 if model_ref is not None:
                     if model_attr is None:
                         self._error(
-                            "attr: {attr}={model_attr}, ref: {ref}={model_ref}".format(m1=model, ref=ref, attr=attr, model_attr=model_attr,
-                                                                                         model_ref=model_ref))
+                            "attr: {attr}={model_attr}, ref: {ref}={model_ref}".format(m1=model, ref=ref, attr=attr,
+                                                                                       model_attr=model_attr,
+                                                                                       model_ref=model_ref))
                     if model_ref not in retrieved_dict:
                         missing_models.append(model_ref)
                     else:
@@ -465,10 +463,10 @@ class Browser(logger.Loggable, object):
                             "results in an inconsistent server database. Trident was unable "
                             "resolve the following relationships which returned no models from the server: "
                             "{cls}.where({attr}={missing})".format(
-                                l=len(missing_models),
-                                cls=model_class2,
-                                missing=missing_models,
-                                attr=attr
+                    l=len(missing_models),
+                    cls=model_class2,
+                    missing=missing_models,
+                    attr=attr
                 ))
         for model in models:
             found_models = model_dict[getattr(model, attr)]
@@ -511,7 +509,7 @@ class Browser(logger.Loggable, object):
                 m.__dict__.update({relationship_name: None})
         return list(set(all_models))
 
-    def retrieve(self, models, relationship_name):
+    def retrieve(self, models, relationship_name, relation=None):
         """
         Retrieves a model relationship for the list of models. Compared to a `for` loop,
         `retrieve` is >10X faster for most queries.
@@ -547,7 +545,13 @@ class Browser(logger.Loggable, object):
         self._info('RETRIEVE retrieving "{}"'.format(relationship_name))
         model_classes = set([m.__class__.__name__ for m in models])
         assert len(model_classes) == 1, "Models must be all of the same BaseModel, but found {}".format(model_classes)
-        relation = models[0].relationships[relationship_name]
+        if relation is None:
+            relation = models[0].relationships[relationship_name]
+        else:
+            if relationship_name in models[0].relationships:
+                raise BrowserException(
+                    'Cannot add new relationship "{}" because it already exists in the model definition'.format(
+                        relationship_name))
         accepted_types = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric"]
         # TODO: add relationship handler for Many and One
         if relation.__class__.__name__ not in accepted_types:
@@ -557,7 +561,7 @@ class Browser(logger.Loggable, object):
         if hasattr(relation, 'through_model_attr'):
             found_models = self._retrieve_has_many_through(models, relationship_name)
         else:
-            found_models = self._retrieve_has_many_or_has_one(models, relationship_name)
+            found_models = self._retrieve_has_many_or_has_one(models, relationship_name, relation)
         self._info('RETRIEVE retrieved {} for "{}"'.format(len(found_models), relationship_name))
         return found_models
 
@@ -632,14 +636,22 @@ class Browser(logger.Loggable, object):
         :return: list of dictionaries containing sample info and properties
         :rtype: list
         """
+
         assert len(set([s.sample_type_id for s in samples])) == 1, "Samples be the of the same SampleType"
         sample_type = samples[0].sample_type
 
+        self.recursive_retrieve(samples, {
+            "field_values": "sample",
+            "sample_type": {
+                "field_types"
+            }
+        })
         if sample_resolver is None:
             def default_resolver(sample):
                 if isinstance(sample, pydent_models.Sample):
                     return sample.name
                 return sample
+
             sample_resolver = default_resolver
         rows = []
         for s in samples:
