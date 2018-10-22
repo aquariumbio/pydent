@@ -1,5 +1,5 @@
-Browsing using Trident
-======================
+Sample Browsing using Trident
+=============================
 
 Trident provides a browser class to help browse through Inventory.
 Samples can be searched via regular expressions, close-matches, or by sample properties.
@@ -75,10 +75,18 @@ The following example finds protocols that look similar to "Fragment Analyzing"
     # ['Fragment Analyzing', 'Fragment Analyzing (EL)', 'Fragment Analyzing']
 
 
-Making fast queries
--------------------
+Relationship Browsing
+---------------------
 
-Complex model relationships can be queried very quickly. The following example retrieves
+
+The browser provides methods to making efficient server queries using its defined
+model relationships. Whereas typically, the user would have to write a series
+of efficient server queries, cache the results and merge the models, the browser
+provides all of this logic in the convinient 'retrieve' and 'recursive_retrieve' methods.
+Using the browser.retrieve or browser.recursive_retrieve results in massive speed improvements
+for most trident scripts (>10X, depending on size of query)
+
+The following example retrieves
 any data_association attached to an item whose sample has a name that matched 'mcherry'.
 
 .. code-block::
@@ -104,6 +112,10 @@ they may be accessed later:
     browser.retrieve(samples, 'items')
 
     samples[0].items  # already cached from 'retrieve'
+
+TODO: RECURSIVE RETRIEVE EXAMPLE
+
+TODO: CACHE EXPLANATION
 
 Avoid using too many queries (N+1 problem)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
