@@ -54,33 +54,35 @@ class Planner(logger.Loggable, object):
         self.browser = Browser(session)
         self.plan_id = plan_id
         if self.plan_id is not None:
-            self.plan = session.Plan.find(plan_id)
+            self.plan = self.browser.find('Plan', self.plan_id)
             if self.plan is None:
                 raise PlannerException(
                     "Could not find plan with id={}".format(plan_id))
-
-            # TODO: preload?
-            results = self.browser.recursive_retrieve([self.plan], {
-                "operations": {
-                    "field_values": {
-                        "wires_as_dest": ["source", "destination"],
-                        "wires_as_source": ["source", "destination"],
-                        "sample": [],
-                        "item": [],
-                        "operation": [],
-                        "field_type": []
-                    },
-                    "operation_type": {
-                        "field_types": {
-                            "allowable_field_types": ["sample_type", "object_type"]
-                        }
-                    }
-                }
-            })
-            wires = results['wires_as_dest'] + results['wires_as_source']
+            self.cache()
         else:
             self.plan = session.Plan.new()
         self.init_logger("Planner@plan_rid={}".format(self.plan.rid))
+
+    def cache(self):
+        # ots = self.browser.where('OperationType', {'deployed': True})
+        # self.browser.retrieve(ots, 'field_types')
+        results = self.browser.recursive_retrieve([self.plan], {
+            "operations": {
+                "field_values": {
+                    "wires_as_dest": ["source", "destination"],
+                    "wires_as_source": ["source", "destination"],
+                    "sample": [],
+                    "item": [],
+                    "operation": [],
+                    "field_type": []
+                },
+                "operation_type": {
+                    "field_types": []
+                }
+            }
+        })
+        wires = results['wires_as_dest'] + results['wires_as_source']
+        self.plan.wires = wires
 
     @property
     def name(self):
@@ -107,10 +109,11 @@ class Planner(logger.Loggable, object):
         op = ot.instance()
         op.status = status
         self.plan.add_operation(op)
+        self._info("{} created".format(ot.name))
         return op
 
     def create_operation_by_id(self, ot_id):
-        ot = self.session.OperationType.find(ot_id)
+        ot = self.browser.find('OperationType', ot_id)
         return self.create_operation_by_type(ot)
 
     def create_operation_by_name(self, operation_type_name, category=None):
@@ -118,7 +121,7 @@ class Planner(logger.Loggable, object):
         query = {"deployed": True, "name": operation_type_name}
         if category is not None:
             query['category'] = category
-        ots = self.session.OperationType.where(query)
+        ots = self.browser.where('OperationType', query)
         if len(ots) > 1:
             msg = "Found more than one OperationType for query \"{}\". Have you tried specifying the category?"
             raise PlannerException(msg.format(query))
@@ -146,6 +149,7 @@ class Planner(logger.Loggable, object):
         for wire in self.plan.wires:
             if (self.models_are_equal(wire.source, fv1)
                     and self.models_are_equal(wire.destination, fv2)):
+                self._info("found wire from {} to {}".format(fv1.name, fv2.name))
                 return wire
 
     @plan_verification_wrapper
@@ -157,7 +161,11 @@ class Planner(logger.Loggable, object):
         :return:
         """
         wire = self.get_wire(fv1, fv2)
-        self.plan.wires.remove(wire)
+        if wire:
+            self._info("removing wire from {} to {}".format(fv1.name, fv2.name))
+            fv1.wires_as_source.remove(wire)
+            fv2.wires_as_dest.remove(wire)
+            self.plan.wires.remove(wire)
 
     @plan_verification_wrapper
     def get_outgoing_wires(self, fv):
@@ -313,7 +321,6 @@ class Planner(logger.Loggable, object):
         if isinstance(op, tuple):
             op = self.create_operation_by_name(op[0], category=op[1])
         if isinstance(op, str):
-            # print("Creating operation \"{}\"".format(op))
             op = self.create_operation_by_name(op, category=category)
         return op
 
@@ -353,7 +360,15 @@ class Planner(logger.Loggable, object):
             run_gel = new_ops[1]
             planner.quick_create_chain("Pour Gel", run_gel)
         """
+        self._info("QUICK CREATE CHAIN {}".format(op_or_otnames))
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
+        self.browser.recursive_retrieve(
+            ops, {
+                'operation_type': {
+                    "field_types": "allowable_field_types"
+                }
+            }
+        )
         if any([op for op in ops if op is None]):
             raise Exception("Could not find some operations: {}".format(ops))
         pairs = arr_to_pairs(ops)
@@ -411,11 +426,11 @@ class Planner(logger.Loggable, object):
                 return self.add_wire(output_fv, input_fv)
 
         elif len(afts) == 0:
-            "Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
+            raise PlannerException("Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
                 ', '.join([fv.name for fv in model_inputs]),
                 model_inputs[0].operation.operation_type.name,
                 ', '.join([fv.name for fv in model_outputs]),
-                model_outputs[0].operation.operation_type.name)
+                model_outputs[0].operation.operation_type.name))
 
     def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""
@@ -491,10 +506,11 @@ class Planner(logger.Loggable, object):
     def add_wire(self, fv1, fv2):
         """Note that fv2.operation will not inherit parent_id of fv1"""
         wire = self.get_wire(fv1, fv2)
-        self._set_wire(fv1, fv2)
         if wire is None:
             # wire does not exist, so create it
+            self._set_wire(fv1, fv2)
             self.plan.wire(fv1, fv2)
+            self._info("wired {} to {}".format(fv1.name, fv2.name))
         return wire
 
     @classmethod
@@ -522,7 +538,6 @@ class Planner(logger.Loggable, object):
         """Get sample routing graph. A property of a valid plan is that any two routing nodes
         that are connected by an edge must have the same sample. Edges are treated as 'sample wires'"""
         G = nx.DiGraph()
-
         for op in self.plan.operations:
             for fv in op.field_values:
                 G.add_node(self._routing_id(fv), fv=fv)
@@ -549,6 +564,7 @@ class Planner(logger.Loggable, object):
     # TODO: routing dict does not work with input arrays (it groups them ALL together)
     @plan_verification_wrapper
     def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
+        self._info("setting field_value {}".format(field_value.name))
         field_value.set_value(
             sample=sample, item=item, container=container, value=value, row=None, column=None)
         if not field_value.field_type.array:
@@ -581,6 +597,8 @@ class Planner(logger.Loggable, object):
         return self.set_field_value(input_fv, sample=sample, item=item, container=container)
 
     def set_field_value_and_propogate(self, field_value, sample=None):
+        # ots = self.browser.where('OperationType', {"id": [op.operation_type_id for op in self.plan.operations]})
+        # self.browser.retrieve(ots, 'field_types')
         routing_graph = self._routing_graph()
         routing_id = self._routing_id(field_value)
         subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
