@@ -144,6 +144,31 @@ as in the following example:
         for i in s.items:
             data += i.data_associations
 
+The Browser Cache
+~~~~~~~~~~~~~~~~~
+
+By default, the browser caches query results and retrieves them in later operations.
+
+TODO: This section is not finished...
+
+Logging Requests
+----------------
+
+If you want to see what the browser is doing, you can turn on verbose mode:
+
+.. code-block::
+
+    browser.set_verbose(True)
+
+If you want to see information for each of the requests you are making, you may also turn
+on verbose mode for the session object. This is very useful for parsing
+slow python code.
+
+.. code-block::
+
+    session.set_verbose(True)
+
+
 Asynchrounous Requests
 ----------------------
 
