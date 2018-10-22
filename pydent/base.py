@@ -225,6 +225,8 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         if model_id is None:
             return None
         model = ModelRegistry.get_model(model_name)
+        self.session._log_to_aqhttp(
+            "CALLBACK '{clsname}' made a FIND request for '{model}'".format(clsname=self.__class__.__name__, model=model_name))
         return model.find(self.session, model_id)
 
     def where_callback(self, model_name, *args, **kwargs):
@@ -241,6 +243,7 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         model = ModelRegistry.get_model(model_name)
         if kwargs is None:
             kwargs = {}
+        self.session._log_to_aqhttp("CALLBACK '{clsname}' made a WHERE request for '{model}'".format(clsname=self.__class__.__name__, model=model_name))
         return model.where(self.session, query_arg, *args[1:], **kwargs)
 
     # def patch(self, json_data):
