@@ -34,9 +34,10 @@ def test_add_wire(session):
 
 
 def test_add_wire_sets_sample_from_destination(session):
+    session.set_verbose(True)
     canvas = Planner(session)
     assert len(canvas.plan.wires) == 0
-    p = canvas.session.SampleType.find_by_name("Primer").samples[0]
+    p = session.Sample.one(sample_type_id=session.SampleType.find_by_name("Primer").id)
     destination = canvas.create_operation_by_name(
         "Make PCR Fragment", category="Cloning")
     source = canvas.create_operation_by_name(
@@ -46,10 +47,12 @@ def test_add_wire_sets_sample_from_destination(session):
     assert source.outputs[0].sample == p
 
 
+
 def test_add_wire_sets_sample_from_source(session):
+    session.set_verbose(True)
     canvas = Planner(session)
     assert len(canvas.plan.wires) == 0
-    p = canvas.session.SampleType.find_by_name("Primer").samples[0]
+    p = session.Sample.one(sample_type_id=session.SampleType.find_by_name("Primer").id)
     destination = canvas.create_operation_by_name(
         "Make PCR Fragment", category="Cloning")
     source = canvas.create_operation_by_name(
@@ -131,12 +134,13 @@ def test_quick_chain_to_existing_operation_too_many_times(session):
     op = canvas.create_operation_by_name("Yeast Transformation")
     op1 = canvas.quick_create_chain(op, "Check Yeast Plate")[-1]
     with pytest.raises(PlannerException):
-        canvas.quick_create_chain(op, op1)
+        canvas.quick_create_chain("Yeast Transformation", op1)
     assert len(canvas.plan.wires) == 1
 
 
 def test_canvas_chaining(session):
     canvas = Planner(session)
+    canvas.browser.set_verbose(True)
     ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                     "Plate Transformed Cells", "Check Plate",
                                     category="Cloning")
@@ -297,7 +301,7 @@ def test_quick_wire_to_input_array_with_set_sample(session):
 
 # TODO: this test is not finished..
 def test_set_output_and_propogate(session):
-
+    session.set_verbose(True)
     canvas = Planner(session)
     ops = canvas.quick_create_chain("Rehydrate Primer",
                                         "Make PCR Fragment",
@@ -336,4 +340,5 @@ def test_set_input_array(session):
 def test_cached(session):
     session.set_verbose(True)
     canvas = Planner(session, plan_id=136974)
-    canvas._routing_graph()
+
+    canvas.validate()

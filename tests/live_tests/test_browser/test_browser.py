@@ -68,6 +68,81 @@ def test_cache(session):
     raise NotImplementedError("I don't know how to test this...")
 
 
+def test_cache_where(session):
+    browser = Browser(session)
+    primers = browser.cached_where("Sample", {"sample_type_id": 1})
+
+    p = primers[-1]
+    p.__dict__['foo'] = 'bar'
+
+    cached_primers = browser.cached_where("Sample", {"sample_type_id": 1, "id": p.id})
+    cached_primers2 = browser.cached_where("Sample", {"sample_type_id": [1,2], "id": [p.id]})
+    empty = browser.cached_where("Sample", {"sample_type_id": 2, "id": p.id})
+
+    assert empty == [], 'should not return any primers since query does not match'
+    assert len(cached_primers) == 1, 'should return exactly 1 primer'
+    assert cached_primers2 == cached_primers, 'should be equivalent as these are equivalent queries'
+    assert 'foo' in cached_primers[0].__dict__, 'should containg the "foo" attribute that was initially cached'
+    assert cached_primers[0].__dict__['foo'] == 'bar', 'should return the very same models that was initially cached'
+    assert len(browser.model_cache['Sample']) > 1
+
+
+def test_cache_find(session):
+    browser = Browser(session)
+    primers = browser.cached_where("Sample", {"sample_type_id": 1})
+
+    p = primers[-1]
+    p.__dict__['foo'] = 'bar'
+
+    cached_primer = browser.cached_find("Sample", p.id)
+    cached_primers = browser.cached_find("Sample", [p.id])
+    empty = browser.cached_find("Sample", 100000)
+
+    assert empty is None, 'should not return any primers since query does not match'
+    assert cached_primer == p
+    assert len(cached_primers) == 1
+    assert cached_primer == cached_primers[0]
+
+
+def test_recursive_cache(session):
+
+    browser = Browser(session)
+    samples = browser.interface('Sample').where({'sample_type_id': 1})
+
+    # should preload SampleType into cache
+    st = browser.find('SampleType', 1)
+    assert browser.model_cache['SampleType'][st.id] == st
+
+    # should retrieve the exact model that was preloaded
+    browser.retrieve(samples, 'sample_type')
+    assert samples[0].sample_type is st
+
+    # affecting sample_types from these models should refer to the same sample type
+    assert samples[0].sample_type is samples[1].sample_type
+
+
+def test_recursive_cache_plan(session):
+
+    browser = Browser(session)
+
+    ops = session.Operation.last(50)
+    browser.set_verbose(True)
+    browser.recursive_retrieve(ops, {
+        "operation_type": {
+            "field_types": {
+                "allowable_field_types": "field_type"
+            }
+        },
+        "field_values": "field_type"
+    })
+
+    op = ops[-10]
+
+    ft = op.operation_type.field_types[0]
+    fv = op.field_value(ft.name, ft.role)
+
+    assert ft.rid is fv.field_type.rid
+
 def test_set_model_error(session):
     browser = Browser(session)
 
