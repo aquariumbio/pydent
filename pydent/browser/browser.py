@@ -40,7 +40,7 @@ class Browser(logger.Loggable, object):
         return self.session.model_interface(model_class)
 
     def _generic_list_models(self, **query):
-        models = self.where(self.model_name, query)
+        models = self.where(query, self.model_name)
         return ['{}: {}'.format(m.id, m.name) for m in models]
 
     def sample_list(self, sample_type_id=None):
@@ -69,15 +69,37 @@ class Browser(logger.Loggable, object):
         self.model_list_cache['models'][self.model_name] = model_list[:]
         return model_list
 
-    def find(self, model_class, model_id):
+    def one(self, model_class=None, sample_type=None):
+        pass
+
+    def last(self, num, model_class=None):
+        pass
+
+    def first(self, num, model_class=None):
+        pass
+
+    def find(self, model_id, model_class=None):
+        if model_class is None:
+            model_class = self.model_name
         if self.use_cache:
             return self.cached_find(model_class, model_id)
         return self.interface(model_class).find(model_id)
 
-    def where(self, model_class, query, primary_key='id'):
+    def where(self, query, model_class=None, primary_key='id', sample_type=None):
+        if model_class is None:
+            model_class = self.model_name
+        if sample_type is not None:
+            sample_type_id = self.find_by_name(sample_type, 'SampleType').id
+            query.update({"sample_type_id": sample_type_id})
         if self.use_cache:
             return self.cached_where(model_class, query, primary_key=primary_key)
         return self.interface(model_class).where(query)
+
+    def find_by_name(self, name, model_class=None, primary_key='id'):
+        models = self.where({'name': name}, model_class, primary_key=primary_key)
+        if not models:
+            return None
+        return models[0]
 
     # def find(self, model_id):
     #     return self.interface.find(model_id)
@@ -184,7 +206,7 @@ class Browser(logger.Loggable, object):
             if isinstance(sample_type, pydent_models.SampleType):
                 sample_type_id = sample_type.id
             else:
-                sample_type_id = self.where("SampleType", {'name': sample_type})[0].id
+                sample_type_id = self.where({'name': sample_type}, 'SampleType')[0].id
 
         if sample_type_id is not None:
             query.update({'sample_type_id': sample_type_id})
@@ -198,7 +220,7 @@ class Browser(logger.Loggable, object):
 
         if query:
             query.update({"id": matches})
-            filtered = self.where(self.model_name, query)
+            filtered = self.where(query, self.model_name)
         else:
             filtered = self.interface().find(matches)
         self._info("SEARCH filtered to {} total models of type {}".format(len(filtered), self.model_name))
@@ -263,7 +285,7 @@ class Browser(logger.Loggable, object):
         :rtype:
         """
         query.update({"parent_class": self.model_name, "parent_id": model_ids})
-        return self.where("FieldValue", query)
+        return self.where(query, "FieldValue")
 
     def _group_by_attribute(self, models, attribute):
         d = {}
@@ -311,7 +333,7 @@ class Browser(logger.Loggable, object):
         for attrid in grouped:
             models = grouped[attrid]
             model_ids = [s.id for s in models]
-            metatype = self.find(metatype_name, attrid)
+            metatype = self.find(attrid, metatype_name)
             for prop_name in properties:
                 field_type = metatype.field_type(prop_name)  # necessary since FieldValues are missing field_type_ids
                 if field_type:
@@ -331,9 +353,9 @@ class Browser(logger.Loggable, object):
         return self.interface().find(filtered_model_ids)
 
     def new_sample(self, sample_type, name, description, project, properties=None):
-        st = self.where("SampleType", {"name": sample_type}, primary_key='name')[0]
+        st = self.find_by_name(sample_type, "SampleType", primary_key='name')
         if st.__dict__.get('field_types', None) is None:
-            fts = self.where("FieldType", {"parent_class": "SampleType", "parent_id": st.id})
+            fts = self.where({"parent_class": "SampleType", "parent_id": st.id}, "FieldType")
             st.field_types = fts
         return st.new_sample(name, description, project, properties=properties)
 
@@ -430,7 +452,7 @@ class Browser(logger.Loggable, object):
         # todo: how to handle when model_attr is absent?, or just raise error?
 
         retrieve_query = self._collect_callback_args(models, relation)
-        retrieved_models = self.where(model_class2, retrieve_query)
+        retrieved_models = self.where(retrieve_query, model_class2)
         self._info("RETRIEVE retrieved {l} {cls} models using query {query}".format(
             l=len(retrieved_models),
             cls=model_class2,

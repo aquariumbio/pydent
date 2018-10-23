@@ -54,7 +54,7 @@ class Planner(logger.Loggable, object):
         self.browser = Browser(session)
         self.plan_id = plan_id
         if self.plan_id is not None:
-            self.plan = self.browser.find('Plan', self.plan_id)
+            self.plan = self.browser.find(self.plan_id, 'Plan')
             if self.plan is None:
                 raise PlannerException(
                     "Could not find plan with id={}".format(plan_id))

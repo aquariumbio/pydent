@@ -110,7 +110,7 @@ def test_recursive_cache(session):
     samples = browser.interface('Sample').where({'sample_type_id': 1})
 
     # should preload SampleType into cache
-    st = browser.find('SampleType', 1)
+    st = browser.find(1, 'SampleType')
     assert browser.model_cache['SampleType'][st.id] == st
 
     # should retrieve the exact model that was preloaded
