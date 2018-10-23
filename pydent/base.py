@@ -110,12 +110,13 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         return self._rid
 
     def _primary_key(self):
+        """Returns the primary key (e.g. 'id') or the rid if id does not exist or is None"""
         if hasattr(self, ModelBase.PRIMARY_KEY):
             pk = getattr(self, ModelBase.PRIMARY_KEY)
             if pk is not None:
                 return pk
         else:
-            return self.rid
+            return 'r{}'.format(self.rid)
 
     def _track_data(self, data):
         if self.model_schema:
