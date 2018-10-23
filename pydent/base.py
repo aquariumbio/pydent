@@ -256,7 +256,11 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         model = ModelRegistry.get_model(model_name)
         if kwargs is None:
             kwargs = {}
-        self.session._log_to_aqhttp("CALLBACK '{clsname}' made a WHERE request for '{model}'".format(clsname=self.__class__.__name__, model=model_name))
+        self.session._log_to_aqhttp("CALLBACK '{clsname}(rid={rid})' made a WHERE request for '{model}'".format(
+            clsname=self.__class__.__name__,
+            rid=self.rid,
+            model=model_name)
+        )
         return model.where(self.session, query_arg, *args[1:], **kwargs)
 
     # def patch(self, json_data):
