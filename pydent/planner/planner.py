@@ -113,7 +113,8 @@ class Planner(logger.Loggable, object):
         return op
 
     def create_operation_by_id(self, ot_id):
-        ot = self.browser.find('OperationType', ot_id)
+        # ot = self.browser.find('OperationType', ot_id)
+        ot = self.session.OperationType.find(ot_id)
         return self.create_operation_by_type(ot)
 
     def create_operation_by_name(self, operation_type_name, category=None):
@@ -121,7 +122,7 @@ class Planner(logger.Loggable, object):
         query = {"deployed": True, "name": operation_type_name}
         if category is not None:
             query['category'] = category
-        ots = self.browser.where('OperationType', query)
+        ots = self.session.OperationType.where(query)
         if len(ots) > 1:
             msg = "Found more than one OperationType for query \"{}\". Have you tried specifying the category?"
             raise PlannerException(msg.format(query))
@@ -362,13 +363,13 @@ class Planner(logger.Loggable, object):
         """
         self._info("QUICK CREATE CHAIN {}".format(op_or_otnames))
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
-        self.browser.recursive_retrieve(
-            ops, {
-                'operation_type': {
-                    "field_types": "allowable_field_types"
-                }
-            }
-        )
+        # self.browser.recursive_retrieve(
+        #     ops, {
+        #         'operation_type': {
+        #             "field_types": "allowable_field_types"
+        #         }
+        #     }
+        # )
         if any([op for op in ops if op is None]):
             raise Exception("Could not find some operations: {}".format(ops))
         pairs = arr_to_pairs(ops)
