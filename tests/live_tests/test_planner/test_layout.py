@@ -1,5 +1,5 @@
 from pydent.planner import Planner, PlannerLayout
-
+from pydent import ModelBase
 
 def test_add_operation_by_name(session):
     canvas = Planner(session, plan_id=121080)
@@ -23,7 +23,7 @@ def test_find_operations_of_type(session):
 
 
 class TestCanvasLayout:
-    class FakeOp():
+    class FakeOp(ModelBase):
         rid = 0
 
         def __init__(self, x, y):
@@ -176,7 +176,6 @@ class TestCanvasLayout:
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate", category="Cloning")
-        print(canvas.layout.ops_to_nodes(ops))
         s = canvas.layout.collect_predecessors(["r{}".format(ops[1].rid)])
         assert s == ["r{}".format(ops[0].rid)]
 
@@ -186,12 +185,14 @@ class TestCanvasLayout:
         ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate", category="Cloning")
-
+        new_ops = canvas.find_operations_by_name("E Coli Lysate")
+        print(len(new_ops))
         for _ in range(3):
+            print('created')
             canvas.quick_create_chain(
                 ops[-1], "E Coli Lysate", category="Cloning")
-
         new_ops = canvas.find_operations_by_name("E Coli Lysate")
+        print(len(new_ops))
         new_ops[0].x = 0
         new_ops[1].x = 100
         new_ops[2].x = 150
@@ -199,9 +200,15 @@ class TestCanvasLayout:
         ops_layout = canvas.layout.ops_to_layout(ops)
         new_op_layout = canvas.layout.ops_to_layout(new_ops)
 
-        assert new_op_layout.midpoint()[0] != ops[-1].x
-        new_op_layout.align_x_midpoints(ops_layout)
-        assert new_op_layout.midpoint()[0] == ops[-1].x
+        midpoint = new_op_layout.midpoint()
+        assert midpoint[0] == 75, "should be midpoint between 0 and 150"
+        assert midpoint[0] != ops_layout.midpoint()[0]
+        new_op_layout.align_x_midpoints_to(ops_layout)
+        for op in new_op_layout.operations:
+            print(op.rid)
+            print(op.x)
+        print()
+        assert new_op_layout.midpoint()[0] == ops_layout.midpoint()[0]
 
     def test_successor_layout(self, session):
         canvas = Planner(session)
@@ -250,7 +257,7 @@ class TestCanvasLayout:
         layout = canvas.layout.ops_to_layout(ops)
         successors = canvas.layout.successor_layout(layout)
         ops[-1].x = 400
-        successors.align_x_midpoints(layout)
+        successors.align_x_midpoints_to(layout)
 
         assert successors.midpoint()[0] == layout.midpoint()[0]
 

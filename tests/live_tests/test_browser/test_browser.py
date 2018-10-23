@@ -361,3 +361,76 @@ def test_recursive_retrieve(session):
     assert 'field_values' in ops[0].__dict__
     assert 'wires_as_dest' in ops[0].field_values[0].__dict__
     assert 'wires_as_source' in ops[0].field_values[0].__dict__
+
+
+def test_retrieve_fidelity(session):
+    """Retrieve should never change the model definition"""
+
+    items = session.Sample.last(10)
+    fvs = []
+    for i in items:
+        for _fv in i.field_values:
+            fvs.append(_fv.id)
+
+    fvs2 = []
+    browser = Browser(session)
+    browser.retrieve(items, 'field_values')
+    for i in items:
+        for _fv in i.field_values:
+            fvs2.append(_fv.id)
+
+    assert fvs == fvs2
+
+
+# TODO: do we want retrieve to force a new query?, if its new, it is just ignored for now...
+def test_retrieve_with_new_operations(session):
+    """We expect when we create new models for the model relationships to be maintained"""
+
+    ots = [session.OperationType.find_by_name(x) for x in ["Make PCR Fragment", "Check Plate", "Make Miniprep"]]
+    ops = [ot.instance() for ot in ots]
+
+    ots_arr1 = []
+    for op in ops:
+        ots_arr1.append(op.operation_type.id)
+
+    browser = Browser(session)
+    browser.retrieve(ops, 'operation_type')
+
+    ots_arr2 = []
+    for op in ops:
+        ots_arr2.append(op.operation_type.id)
+
+    assert ots_arr1 == ots_arr2
+
+def test_retrieve_with_new_samples(session):
+    """We expect when we create new models for the model relationships to be maintained"""
+
+    samp1 = session.SampleType.find_by_name("Primer").new_sample(
+        '', '', '', properties={
+            "Anneal Sequence": "AGTAGTATGA"
+        }
+    )
+    samp2 = session.SampleType.find_by_name("Fragment").new_sample(
+        '', '', '', properties={
+            "Length": 100,
+            "Forward Primer": samp1
+        }
+    )
+
+    fvs = []
+    samples = [samp1, samp2]
+    for s in samples:
+        fvs += s.field_values
+
+    browser = Browser(session)
+    browser.retrieve(samples, 'field_values')
+
+    fvs2 = []
+    samples = [samp1, samp2]
+    for s in samples:
+        fvs2 += s.field_values
+
+    assert fvs == fvs2
+
+
+
