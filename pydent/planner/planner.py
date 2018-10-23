@@ -98,6 +98,14 @@ class Planner(logger.Loggable, object):
 
     def create(self):
         """Create the plan on Aquarium"""
+        if self.plan.id:
+            raise PlannerException("Cannot create plan since it already exists on the server (plan_id={})"
+                                   " Did you mean .{save}() push an update to the server plan? You"
+                                   " can also create a copy of the new plan by calling .{replan}().".format(
+                plan_id=self.plan.id,
+                save=self.save.__name__,
+                replan=self.replan.__name__
+            ))
         self.plan.create()
 
     def save(self):
@@ -804,26 +812,43 @@ class Planner(logger.Loggable, object):
         return PlannerLayout.from_plan(self.plan)
 
     @staticmethod
-    def _op_to_hash(op):
+    def _fv_to_hash(fv, ft):
+        # none valued Samples are never equivalent
+        sid = str(uuid4())
+        if fv.sample is not None:
+            sid = "{}{}".format(fv.role, fv.sample.id)
+
+        item_id = "none"
+        if fv.item is not None:
+            item_id = "{}{}".format(fv.role, fv.item.id)
+        fvhash = "{}:{}:{}:{}".format(
+                        ft.name, ft.role, sid, item_id)
+        if ft.part:
+            fvhash += "r{row}:c{column}".format(
+                row=fv.row,
+                column=fv.column,
+            )
+        return fvhash
+
+    @classmethod
+    def _fv_array_to_hash(cls, fv_array, ft):
+        return "*".join([cls._fv_to_hash(fv, ft) for fv in fv_array])
+
+    @classmethod
+    def _op_to_hash(cls, op):
         """Turns a operation into a hash using the operation_type_id, item_id, and sample_id"""
         ot_id = op.operation_type.id
 
         field_type_ids = []
         for ft in op.operation_type.field_types:
             if ft.ftype == "sample":
-                fv = op.field_value(ft.name, ft.role)
+                if not ft.array:
+                    fv = op.field_value(ft.name, ft.role)
+                    field_type_ids.append(cls._fv_to_hash(fv, ft))
+                else:
+                    fv_array = op.field_value_array(ft.name, ft.role)
+                    field_type_ids.append(cls._fv_array_to_hash(fv_array, ft))
 
-                # none valued Samples are never equivalent
-                sid = str(uuid4())
-                if fv.sample is not None:
-                    sid = "{}{}".format(fv.role, fv.sample.id)
-
-                item_id = "none"
-                if fv.item is not None:
-                    item_id = "{}{}".format(fv.role, fv.item.id)
-
-                field_type_ids.append("{}:{}:{}:{}".format(
-                    ft.name, ft.role, sid, item_id))
         field_type_ids = sorted(field_type_ids)
         return "{}_{}".format(ot_id, "#".join(field_type_ids))
 
@@ -846,7 +871,10 @@ class Planner(logger.Loggable, object):
         :param planner:
         :return:
         """
-        self._info("Optimizing Plan")
+        self._info("Optimizing plan...")
+        if operations is not None:
+            self._info("   only_operations={}".format([op.id for op in operations]))
+        self._info("   ignore_types={}".format(ignore))
         if operations is None:
             operations = [
                 op for op in self.plan.operations if op.status == 'planning']
@@ -871,15 +899,15 @@ class Planner(logger.Loggable, object):
                         in_wires = self.get_incoming_wires(i)
                         for w in in_wires:
                             if w.source.operation.status == "planning":
-                                self.add_wire(w.source, op.input(i.name))
                                 self.remove_wire(w.source, w.destination)
+                                self.add_wire(w.source, op.input(i.name))
                                 num_inputs_rewired += 1
                     for o in other_op.outputs:
                         out_wires = self.get_outgoing_wires(o)
                         for w in out_wires:
                             if w.destination.operation.status == "planning":
-                                self.add_wire(op.output(o.name), w.destination)
                                 self.remove_wire(w.source, w.destination)
+                                self.add_wire(op.output(o.name), w.destination)
                                 num_outputs_rewired += 1
                     ops_to_remove.append(other_op)
         for op in ops_to_remove:
