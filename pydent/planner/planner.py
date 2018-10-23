@@ -405,6 +405,7 @@ class Planner(logger.Loggable, object):
             source, destination)
 
         # TODO: only if matching FVs are ambiguous raise Exception
+        # TODO: automatically wire to empty FV if they are equivalent
         if (len(model_inputs) > 1 or len(model_outputs) > 1) and strict:
             raise PlannerException(
                 "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}".format(

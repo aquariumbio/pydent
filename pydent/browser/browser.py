@@ -370,14 +370,21 @@ class Browser(logger.Loggable, object):
         return aqhttp.post('json/save', json_data=data)
 
     # TODO: This method is slow, but 'PUT' sample.json does not work...
-    @classmethod
-    def update_sample(cls, sample):
-        cls.__json_update(sample, include={"field_values": "sample", "sample_type": []})
+    def update_sample(self, sample):
+        self.__json_update(sample, include={"field_values": "sample", "sample_type": []})
         for fv in sample.field_values:
-            cls.__json_update(fv, include={"sample"})
+            self._info("  updating '{}'".format(fv.name))
+            self.__json_update(fv, include={"sample"})
 
     #         return cls.__json_update(sample, include={"field_values": "sample"})
 
+    # TODO: save samples in order of FieldValues
+    def save_samples(self, samples, project=None, overwrite_server=False, strict=False):
+        for s in samples:
+            if project is not None:
+                s.project = project
+            self.save_sample(s, overwrite_server=overwrite_server, strict=strict)
+        return samples
 
     def save_sample(self, sample, overwrite_server=False, strict=False):
         """
@@ -391,9 +398,11 @@ class Browser(logger.Loggable, object):
         :return: saved Aquarium sample
         :rtype: Sample
         """
+        self._info("SAVE attempting to save sample '{}' (overwrite={}, strict={})".format(sample.name, overwrite_server, strict))
         if not strict:
             existing = self.interface("Sample").find_by_name(sample.name)
             if existing:
+                self._info("SAVE found existing sample '{}'".format(sample.name))
                 if existing.sample_type_id != sample.sample_type_id:
                     raise BrowserException(
                         "There is an existing sample with name \"{}\", but it is a \"{}\" sample_type, not a \"{}\"".format(
@@ -402,9 +411,11 @@ class Browser(logger.Loggable, object):
                             sample.sample_type.name
                         ))
                 if overwrite_server:
+                    self._info("SAVE overwriting sample '{}' on server".format(sample.name))
                     existing.update_properties(sample.properties)
                     self.update_sample(existing)
                 return existing
+        self._info("SAVE saving sample '{}'".format(sample.name))
         sample.save()
         self._update_model_cache([sample])
         return sample
