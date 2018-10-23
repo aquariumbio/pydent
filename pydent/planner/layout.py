@@ -254,7 +254,7 @@ class PlannerLayout(object):
                 x += delta_x
             layer = self.subgraph(op_ids)
             predecessor_layout = self.predecessor_layout(layer)
-            layer.align_x_midpoints(predecessor_layout)
+            layer.align_x_midpoints_to(predecessor_layout)
             y += delta_y
 
         # readjust
@@ -392,7 +392,7 @@ class PlannerLayout(object):
     def ops_to_roots(self):
         return self.nodes_to_ops(self.roots())
 
-    def align_x_midpoints(self, other_layout):
+    def align_x_midpoints_to(self, other_layout):
         """
         Align the midpoint x-coordinate of this layout with that of another.
 
@@ -405,9 +405,10 @@ class PlannerLayout(object):
             return
         other_x, _ = other_layout.midpoint()
         x, _ = self.midpoint()
-        self.translate(other_x - x, 0)
+        deltax = other_x - x
+        self.translate(deltax, 0)
 
-    def align_y_midpoints(self, other_layout):
+    def align_y_midpoints_to(self, other_layout):
         """
         Align this midpoint y-coordinates of this layout with another layout
 
@@ -435,7 +436,7 @@ class PlannerLayout(object):
         """
         layout1 = self.ops_to_layout(ops1)
         layout2 = self.ops_to_layout(ops2)
-        return layout1.align_x_midpoints(layout2)
+        return layout1.align_x_midpoints_to(layout2)
 
     @property
     def xy(self):
@@ -496,6 +497,7 @@ class PlannerLayout(object):
         for op in self.operations:
             op.x += delta_x
             op.y += delta_y
+        return self.operations
 
     def move(self, x, y):
         self.x = x
