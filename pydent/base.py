@@ -239,7 +239,10 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
             return None
         model = ModelRegistry.get_model(model_name)
         self.session._log_to_aqhttp(
-            "CALLBACK '{clsname}' made a FIND request for '{model}'".format(clsname=self.__class__.__name__, model=model_name))
+            "CALLBACK '{clsname}(rid={rid})' made a FIND request for '{model}'".format(
+                clsname=self.__class__.__name__,
+                rid=self.rid,
+                model=model_name))
         return model.find(self.session, model_id)
 
     def where_callback(self, model_name, *args, **kwargs):

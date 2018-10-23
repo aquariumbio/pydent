@@ -74,9 +74,9 @@ class Browser(logger.Loggable, object):
             return self.cached_find(model_class, model_id)
         return self.interface(model_class).find(model_id)
 
-    def where(self, model_class, query):
+    def where(self, model_class, query, primary_key='id'):
         if self.use_cache:
-            return self.cached_where(model_class, query)
+            return self.cached_where(model_class, query, primary_key=primary_key)
         return self.interface(model_class).where(query)
 
     # def find(self, model_id):
@@ -153,19 +153,23 @@ class Browser(logger.Loggable, object):
         self._update_model_cache_helper(model_class, {found_model.id: found_model})
         return found_model
 
-    def cached_where(self, model, query):
+    def cached_where(self, model, query, primary_key='id'):
         cached_models = self.model_cache.get(model, {})
         found, found_queries = self._find_matches(query, list(cached_models.values()))
         found_dict = {f.id: f for f in found}
         remaining_query = dict(query)
-        if 'id' in query:
-            found_ids = [q['id'] for q in found_queries]
-            query_id_list = query['id']
+        if primary_key in query:
+            found_ids = [q[primary_key] for q in found_queries]
+            query_id_list = query[primary_key]
             if isinstance(query_id_list, str) or isinstance(query_id_list, int):
                 query_id_list = [query_id_list]
             remaining_ids = list(set(query_id_list).difference(set(found_ids)))
-            remaining_query['id'] = remaining_ids
+            remaining_query[primary_key] = remaining_ids
         self._info("CACHE found {} {} models in cache".format(len(found_dict), model))
+
+        # TODO: this code may be sketchy... here {'id': []}, really means we found all of the models..
+        if primary_key in remaining_query and not remaining_query[primary_key]:
+            return list(found_dict.values())
         server_models = self.interface(model).where(remaining_query)
 
         models_dict = {s.id: s for s in server_models}
@@ -327,8 +331,10 @@ class Browser(logger.Loggable, object):
         return self.interface().find(filtered_model_ids)
 
     def new_sample(self, sample_type, name, description, project, properties=None):
-        st = self.where("SampleType", {"name": sample_type})[0]
-        self.where("FieldType", {"parent_class": "SampleType", "parent_id": st.id})
+        st = self.where("SampleType", {"name": sample_type}, primary_key='name')[0]
+        if st.__dict__.get('field_types', None) is None:
+            fts = self.where("FieldType", {"parent_class": "SampleType", "parent_id": st.id})
+            st.field_types = fts
         return st.new_sample(name, description, project, properties=properties)
 
     @staticmethod
