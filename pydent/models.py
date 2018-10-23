@@ -1600,7 +1600,7 @@ class Sample(ModelBase, NamedMixin):
                              additional_args={"parent_class": "Sample"})
     )
 
-    def __init__(self, name=None, project=None, description=None, sample_type_id=None, properties=None):
+    def __init__(self, name=None, project=None, description=None, sample_type=None, sample_type_id=None, properties=None):
         """
 
         :param name:
@@ -1617,6 +1617,9 @@ class Sample(ModelBase, NamedMixin):
         self.name = name
         self.project = project
         self.sample_type_id = sample_type_id
+        if sample_type:
+            self.sample_type = sample_type
+            self.sample_type_id = sample_type.id
         self.description = description
         super().__init__(**vars(self))
         if properties is not None:
@@ -1741,13 +1744,14 @@ class SampleType(ModelBase, NamedMixin):
     def new_sample(self, name, description, project, properties=None):
         if properties is None:
             properties = dict()
-        return self.session.Sample.new(
-            sample_type_id=self.id,
+        sample = self.session.Sample.new(
             name=name,
+            sample_type=self,
             description=description,
             project=project,
             properties=properties
         )
+        return sample
 
     def field_type(self, name):
         """Return the field_type by name"""

@@ -4,7 +4,7 @@ from difflib import get_close_matches
 from pydent import ModelRegistry
 from pydent import models as pydent_models
 from pydent.utils import logger
-
+import pandas as pd
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -39,8 +39,8 @@ class Browser(logger.Loggable, object):
             model_class = self.model_name
         return self.session.model_interface(model_class)
 
-    def _generic_list_models(self, opts=None, **query):
-        models = self.interface(self.model_name).where(query, opts=opts)
+    def _generic_list_models(self, **query):
+        models = self.where(self.model_name, query)
         return ['{}: {}'.format(m.id, m.name) for m in models]
 
     def sample_list(self, sample_type_id=None):
@@ -174,16 +174,13 @@ class Browser(logger.Loggable, object):
 
         return list(models_dict.values())
 
-    def find_by_sample_type_name(self, name):
-        return self.interface().where({"sample_type_id": self.interface('SampleType').find_by_name(name).id})
-
     def _search_helper(self, pattern, filter_fxn, sample_type=None, **query):
         sample_type_id = None
         if sample_type is not None:
             if isinstance(sample_type, pydent_models.SampleType):
                 sample_type_id = sample_type.id
             else:
-                sample_type_id = self.interface('SampleType').find_by_name(sample_type).id
+                sample_type_id = self.where("SampleType", {'name': sample_type})[0].id
 
         if sample_type_id is not None:
             query.update({'sample_type_id': sample_type_id})
@@ -197,7 +194,7 @@ class Browser(logger.Loggable, object):
 
         if query:
             query.update({"id": matches})
-            filtered = self.interface().where(query)
+            filtered = self.where(self.model_name, query)
         else:
             filtered = self.interface().find(matches)
         self._info("SEARCH filtered to {} total models of type {}".format(len(filtered), self.model_name))
@@ -262,7 +259,7 @@ class Browser(logger.Loggable, object):
         :rtype:
         """
         query.update({"parent_class": self.model_name, "parent_id": model_ids})
-        return self.interface('FieldValue').where(query)
+        return self.where("FieldValue", query)
 
     def _group_by_attribute(self, models, attribute):
         d = {}
@@ -310,8 +307,7 @@ class Browser(logger.Loggable, object):
         for attrid in grouped:
             models = grouped[attrid]
             model_ids = [s.id for s in models]
-
-            metatype = self.interface(metatype_name).find(attrid)
+            metatype = self.find(metatype_name, attrid)
             for prop_name in properties:
                 field_type = metatype.field_type(prop_name)  # necessary since FieldValues are missing field_type_ids
                 if field_type:
@@ -331,8 +327,9 @@ class Browser(logger.Loggable, object):
         return self.interface().find(filtered_model_ids)
 
     def new_sample(self, sample_type, name, description, project, properties=None):
-        return self.interface('SampleType').find_by_name(sample_type).new_sample(name, description, project,
-                                                                                 properties=properties)
+        st = self.where("SampleType", {"name": sample_type})[0]
+        self.where("FieldType", {"parent_class": "SampleType", "parent_id": st.id})
+        return st.new_sample(name, description, project, properties=properties)
 
     @staticmethod
     def __json_update(model, **params):
@@ -354,33 +351,35 @@ class Browser(logger.Loggable, object):
     #         return cls.__json_update(sample, include={"field_values": "sample"})
 
 
-    def save_sample(self, sample, overwrite=False, strict=False):
+    def save_sample(self, sample, overwrite_server=False, strict=False):
         """
 
         :param sample: new Aquarium sample
         :type sample: Sample
-        :param overwrite: whether to overwrite existing sample (if it exists) properties with the new sample properties
-        :type overwrite: bool
+        :param overwrite_server: whether to overwrite existing sample (if it exists) properties with the new sample properties
+        :type overwrite_server: bool
         :param strict: If False, an exception will be raised if the sample with the same sample name exists
         :type strict: bool
         :return: saved Aquarium sample
         :rtype: Sample
         """
         if not strict:
-            existing = self.find_by_name(sample.name)
+            existing = self.interface("Sample").find_by_name(sample.name)
             if existing:
                 if existing.sample_type_id != sample.sample_type_id:
                     raise BrowserException(
-                        "There is an existing sample with nme \"{}\", but it is a \"{}\" sample_type, not a \"{}\"".format(
+                        "There is an existing sample with name \"{}\", but it is a \"{}\" sample_type, not a \"{}\"".format(
                             sample.name,
                             existing.sample_type.name,
-                            sample.sample_type.namezf
+                            sample.sample_type.name
                         ))
-                if overwrite:
+                if overwrite_server:
                     existing.update_properties(sample.properties)
                     self.update_sample(existing)
                 return existing
-        return sample.save()
+        sample.save()
+        self._update_model_cache([sample])
+        return sample
 
     @staticmethod
     def _collect_callback_args(models, relation):
@@ -420,6 +419,10 @@ class Browser(logger.Loggable, object):
         model_class2 = relation.model
         many = relation.many
 
+        # todo: collect existing fullfilled relationship
+        # todo: partition, then collect callback
+        # todo: how to handle when model_attr is absent?, or just raise error?
+
         retrieve_query = self._collect_callback_args(models, relation)
         retrieved_models = self.where(model_class2, retrieve_query)
         self._info("RETRIEVE retrieved {l} {cls} models using query {query}".format(
@@ -435,10 +438,11 @@ class Browser(logger.Loggable, object):
             model_dict = {m1.id: list() for m1 in models}
             for model in retrieved_models:
                 model_ref = getattr(model, ref)
-                if model_ref is None:
+                if model_ref is not None:
+                    model_dict[model_ref].append(model)
+                else:
                     self._error(
                         "RETRIEVE ref: {ref} {model_ref}, attr: {attr}".format(ref=ref, attr=attr, model_ref=model_ref))
-                model_dict[model_ref].append(model)
         else:
             retrieved_dict = {getattr(m2, attr): m2 for m2 in retrieved_models}
             model_dict = {m1.id: None for m1 in models}
@@ -447,15 +451,15 @@ class Browser(logger.Loggable, object):
                 model_attr = getattr(model, attr)
                 model_ref = getattr(model, ref)
                 if model_ref is not None:
-                    if model_attr is None:
+                    if model_attr is not None:
+                        model_dict[model_attr] = retrieved_dict[model_ref]
+                    else:
                         self._error(
                             "attr: {attr}={model_attr}, ref: {ref}={model_ref}".format(m1=model, ref=ref, attr=attr,
                                                                                        model_attr=model_attr,
                                                                                        model_ref=model_ref))
                     if model_ref not in retrieved_dict:
                         missing_models.append(model_ref)
-                    else:
-                        model_dict[model_attr] = retrieved_dict[model_ref]
             if missing_models:
                 self._error("INCONSISTENT AQUARIUM DATABASE - There where {l} missing {cls} models "
                             "from the Aquarium database, which were ignored by trident. "
@@ -616,6 +620,20 @@ class Browser(logger.Loggable, object):
                             models_by_attr[attr] = _models_by_attr[attr]
             return models_by_attr
 
+    def samples_to_df(self, samples):
+        df = pd.DataFrame(self.samples_to_rows(samples))
+        df.drop_duplicates(inplace=True)
+        st = samples[0].sample_type
+        columns = [st.name, 'Description', 'Project'] + [ft.name for ft in st.field_types]
+        df = df[columns]
+        df = df.set_index(st.name)
+        return df
+
+    def export_samples_to_csv(self, samples, out):
+        df = self.samples_to_df(samples)
+        df.to_csv(out)
+        return df
+
     def samples_to_rows(self, samples, sample_resolver=None):
         """
         Return row of dictionaries containing sample information and their properties. Can be
@@ -640,12 +658,12 @@ class Browser(logger.Loggable, object):
         assert len(set([s.sample_type_id for s in samples])) == 1, "Samples be the of the same SampleType"
         sample_type = samples[0].sample_type
 
-        self.recursive_retrieve(samples, {
-            "field_values": "sample",
-            "sample_type": {
-                "field_types"
-            }
-        })
+        # self.recursive_retrieve(samples, {
+        #     "field_values": "sample",
+        #     "sample_type": {
+        #         "field_types"
+        #     }
+        # })
         if sample_resolver is None:
             def default_resolver(sample):
                 if isinstance(sample, pydent_models.Sample):
