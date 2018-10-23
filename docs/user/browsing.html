@@ -110,16 +110,46 @@ Samples can be searched via regular expressions, close-matches, or by sample pro
 As of 10/2018, these types of searching capabilities are not implemented in the
 Aquarium Sample Browser GUI and can only be accessed through Trident.</p>
 <p>A new Browser can be initialized by passing in a AqSession object:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span>
+<span class="kn">from</span> <span class="nn">pydent.browser</span> <span class="k">import</span> <span class="n">Browser</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s1">&#39;http://123.23.4.3&#39;</span><span class="p">)</span>
+<span class="n">browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="section" id="basic-browsing">
 <h2>Basic Browsing<a class="headerlink" href="#basic-browsing" title="Permalink to this headline">¶</a></h2>
 <p>Basic regular expression searches of samples by using the ‘search’ method:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform a regex search of samples containing &#39;gfp&#39;</span>
+<span class="n">gfp_samples</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;.*GFP.*&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Additional flags can be passed into the regex search to narrow the search:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform a regex search of samples containing &#39;pGFP&#39;, without ignoring case</span>
+<span class="n">GFP_sample</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;.*GFP.*&quot;</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># perform a regex search of all Plasmids containing &#39;pGFP&#39;, without ignoring case</span>
+<span class="n">gfp_fragments</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;.*GFP.*&quot;</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="s1">&#39;Plasmid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Similarly, the browser can also find approximately close matches for a given string:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">close_matches</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">close_matches</span><span class="p">(</span><span class="s2">&quot;pMOD8-pGRR-W8&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">close_matches</span><span class="p">]</span>
+<span class="c1"># [&#39;pMOD8A-RGR-W8&#39;, &#39;pMOD8-pGALz4-RGR-W8&#39;, &#39;pMOD8-pGALZ4-URGR-W8&#39;]</span>
+</pre></div>
+</div>
 <p>Once found, list of samples can also be filtered by their sample properties.
 For example, we can find all of the primers containing “mcherry” that have a
 <em>T Anneal</em> greater than 64:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">primers</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;.*mcherry.*&quot;</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="s2">&quot;Primer&quot;</span><span class="p">)</span>
+<span class="n">browser</span><span class="o">.</span><span class="n">filter_by_field_value_properties</span><span class="p">(</span><span class="n">primers</span><span class="p">,</span> <span class="s2">&quot;name = &#39;T Anneal&#39; AND value &gt; 64&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>As you can see, there is a SQL-like style to the query. This same style can be applied directly
 to where statements as well:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">FieldValue</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;name = &#39;T Anneal&#39; AND value &gt; 64&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="browser-scope">
 <h2>Browser Scope<a class="headerlink" href="#browser-scope" title="Permalink to this headline">¶</a></h2>
@@ -143,8 +173,27 @@ Using the browser.retrieve or browser.recursive_retrieve results in massive spee
 for most trident scripts (&gt;10X, depending on size of query)</p>
 <p>The following example retrieves
 any data_association attached to an item whose sample has a name that matched ‘mcherry’.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">samples</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;.*mCherry.*&quot;</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="s2">&quot;Fragment&quot;</span><span class="p">)</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">)</span>
+<span class="n">data_associations</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="s1">&#39;data_associations&#39;</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">searched:</span>
+<span class="sd">    123 samples</span>
+<span class="sd">    871 items</span>
+<span class="sd">    477 data associations</span>
+<span class="sd">    8.9 seconds using 5 queries</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
 <p>The ‘retrieve’ function will also automatically cache the results into the model so
 they may be accessed later:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">samples</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;.*mCherry.*&quot;</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="s2">&quot;Fragment&quot;</span><span class="p">)</span>
+<span class="n">browser</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">)</span>
+
+<span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span>  <span class="c1"># already cached from &#39;retrieve&#39;</span>
+</pre></div>
+</div>
 <p>TODO: RECURSIVE RETRIEVE EXAMPLE</p>
 <p>TODO: CACHE EXPLANATION</p>
 <div class="section" id="avoid-using-too-many-queries-n-1-problem">
@@ -159,8 +208,26 @@ Aquarium slowdowns for everyone using that server.</p>
 the following code retrieves all items from a list of samples, and then retrieves all data
 associated with those items. When this example was run, 100 samples, 871 items, and 471 data_associations
 were retrieved in just 4 seconds:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># GOOD CODE (exactly 3 requests to server)</span>
+<span class="c1">## 20 samples: completes in 0.8 seconds for 20 samples on AWS</span>
+<span class="c1">## 100 samples: completes in 3.9 seconds for 100 samples on AWS</span>
+
+<span class="n">items</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">)</span> <span class="c1"># 1 request to server</span>
+<span class="n">data_associations</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="s1">&#39;data_associations&#39;</span><span class="p">)</span>  <span class="c1"># 2 requests to server</span>
+</pre></div>
+</div>
 <p>Using a series of nested for loops that makes queries is an example of <strong>exceptionally bad</strong> code,
 as in the following example:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># BAD CODE (makes N^3 requests to server)</span>
+<span class="c1">## 20 samples: completes in &gt;12 seconds for 20 samples on AWS</span>
+<span class="c1">## 100 samples: completes &gt; 60 seconds</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="n">i</span><span class="o">.</span><span class="n">data_associations</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="the-browser-cache">
 <h3>The Browser Cache<a class="headerlink" href="#the-browser-cache" title="Permalink to this headline">¶</a></h3>
@@ -171,9 +238,15 @@ as in the following example:</p>
 <div class="section" id="logging-requests">
 <h2>Logging Requests<a class="headerlink" href="#logging-requests" title="Permalink to this headline">¶</a></h2>
 <p>If you want to see what the browser is doing, you can turn on verbose mode:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">browser</span><span class="o">.</span><span class="n">set_verbose</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>If you want to see information for each of the requests you are making, you may also turn
 on verbose mode for the session object. This is very useful for parsing
 slow python code.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">set_verbose</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="asynchrounous-requests">
 <h2>Asynchrounous Requests<a class="headerlink" href="#asynchrounous-requests" title="Permalink to this headline">¶</a></h2>
@@ -192,6 +265,16 @@ into chunks of size 50. This outperforms (only slightly) an equivalent
 non-asynchronous method. While the performance improvement is slight in this example,
 longer running processes can have great improvements by running them asynchrounously.
 You may have to experiment with the ‘chunk_size’ to get the best performance.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">make_async</span>
+
+<span class="nd">@make_async</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_samples_async</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_samples</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Note that it is not currently possible to use a async method nested within a async method.
 An exception will be raised if this occurs. The planner, for example, already uses async methods.</p>
 </div>

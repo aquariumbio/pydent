@@ -8,7 +8,7 @@ Aquarium Sample Browser GUI and can only be accessed through Trident.
 
 A new Browser can be initialized by passing in a AqSession object:
 
-.. code-block::
+.. code::
 
     from pydent import AqSession
     from pydent.browser import Browser
@@ -21,14 +21,14 @@ Basic Browsing
 
 Basic regular expression searches of samples by using the 'search' method:
 
-.. code-block::
+.. code::
 
     # perform a regex search of samples containing 'gfp'
     gfp_samples = browser.search(".*GFP.*")
 
 Additional flags can be passed into the regex search to narrow the search:
 
-.. code-block::
+.. code::
 
     # perform a regex search of samples containing 'pGFP', without ignoring case
     GFP_sample = browser.search(".*GFP.*", ignore_case=False)
@@ -38,7 +38,7 @@ Additional flags can be passed into the regex search to narrow the search:
 
 Similarly, the browser can also find approximately close matches for a given string:
 
-.. code-block::
+.. code::
 
     close_matches = browser.close_matches("pMOD8-pGRR-W8")
     [s.name for s in close_matches]
@@ -48,7 +48,7 @@ Once found, list of samples can also be filtered by their sample properties.
 For example, we can find all of the primers containing "mcherry" that have a
 *T Anneal* greater than 64:
 
-.. code-block::
+.. code::
 
     primers = browser.search(".*mcherry.*", sample_type="Primer")
     browser.filter_by_field_value_properties(primers, "name = 'T Anneal' AND value > 64")
@@ -56,7 +56,7 @@ For example, we can find all of the primers containing "mcherry" that have a
 As you can see, there is a SQL-like style to the query. This same style can be applied directly
 to where statements as well:
 
-.. code-block::
+.. code::
 
     session.FieldValue.where("name = 'T Anneal' AND value > 64")
 
@@ -89,7 +89,7 @@ for most trident scripts (>10X, depending on size of query)
 The following example retrieves
 any data_association attached to an item whose sample has a name that matched 'mcherry'.
 
-.. code-block::
+.. code::
 
     samples = browser.search(".*mCherry.*", sample_type="Fragment")
     items = browser.retrieve(samples, 'items')
@@ -106,7 +106,7 @@ any data_association attached to an item whose sample has a name that matched 'm
 The 'retrieve' function will also automatically cache the results into the model so
 they may be accessed later:
 
-.. code-block::
+.. code::
 
     samples = browser.search(".*mCherry.*", sample_type="Fragment")
     browser.retrieve(samples, 'items')
@@ -133,7 +133,7 @@ the following code retrieves all items from a list of samples, and then retrieve
 associated with those items. When this example was run, 100 samples, 871 items, and 471 data_associations
 were retrieved in just 4 seconds:
 
-.. code-block::
+.. code::
 
     # GOOD CODE (exactly 3 requests to server)
     ## 20 samples: completes in 0.8 seconds for 20 samples on AWS
@@ -145,7 +145,7 @@ were retrieved in just 4 seconds:
 Using a series of nested for loops that makes queries is an example of **exceptionally bad** code,
 as in the following example:
 
-.. code-block::
+.. code::
 
     # BAD CODE (makes N^3 requests to server)
     ## 20 samples: completes in >12 seconds for 20 samples on AWS
@@ -168,7 +168,7 @@ Logging Requests
 
 If you want to see what the browser is doing, you can turn on verbose mode:
 
-.. code-block::
+.. code::
 
     browser.set_verbose(True)
 
@@ -176,7 +176,7 @@ If you want to see information for each of the requests you are making, you may 
 on verbose mode for the session object. This is very useful for parsing
 slow python code.
 
-.. code-block::
+.. code::
 
     session.set_verbose(True)
 
@@ -203,7 +203,7 @@ non-asynchronous method. While the performance improvement is slight in this exa
 longer running processes can have great improvements by running them asynchrounously.
 You may have to experiment with the 'chunk_size' to get the best performance.
 
-.. code-block::
+.. code::
 
     from pydent.utils import make_async
 
