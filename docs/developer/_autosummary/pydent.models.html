@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.models &#8212; Trident 0.0.33 documentation</title>
+    <title>pydent.models &#8212; Trident 0.0.34a documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.33 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -41,7 +41,7 @@
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
         <h1>Trident</h1>
-        <h2>0.0.33</h2>
+        <h2>0.0.34a</h2>
     </a>
 </p>
 
@@ -49,7 +49,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version <b>0.0.33</b>.
+    for version <b>0.0.34a</b>.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -198,40 +198,43 @@ SampleType:</p>
 <tr class="row-even"><td><a class="reference internal" href="#pydent.models.Membership" title="pydent.models.Membership"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Membership</span></code></a>(**model_args)</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.ObjectType" title="pydent.models.ObjectType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectType</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">NamedMixin</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.ObjectType" title="pydent.models.ObjectType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectType</span></code></a>(**model_args)</td>
 <td>A ObjectType model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Operation</span></code></a>([operation_type_id,&nbsp;status,&nbsp;x,&nbsp;y])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Operation</span></code></a>([operation_type_id,&nbsp;status,&nbsp;x,&nbsp;y])</td>
 <td>A Operation model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OperationType</span></code></a>(**model_args)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OperationType</span></code></a>(**model_args)</td>
 <td>Represents an OperationType, which is the definition of a protocol in Aquarium.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.PartAssociation" title="pydent.models.PartAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PartAssociation</span></code></a>([part_id,&nbsp;collection_id,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PartAssociation" title="pydent.models.PartAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PartAssociation</span></code></a>([part_id,&nbsp;collection_id,&nbsp;…])</td>
 <td>Represents a PartAssociation linking a part to a collection.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plan</span></code></a>([name,&nbsp;status,&nbsp;source,&nbsp;destination])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plan</span></code></a>([name,&nbsp;status,&nbsp;source,&nbsp;destination])</td>
 <td>A Plan model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.PlanAssociation" title="pydent.models.PlanAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></a>([plan_id,&nbsp;operation_id])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PlanAssociation" title="pydent.models.PlanAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></a>([plan_id,&nbsp;operation_id])</td>
 <td>A PlanAssociation model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a>([name,&nbsp;project,&nbsp;description,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a>([name,&nbsp;project,&nbsp;description,&nbsp;…])</td>
 <td>A Sample model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleType</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleType</span></code></a>(**model_args)</td>
 <td>A SampleType model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></a>([job_id,&nbsp;file])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></a>([job_id,&nbsp;file])</td>
 <td>An Upload model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a>()</td>
 <td>A User model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.UserBudgetAssociation" title="pydent.models.UserBudgetAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UserBudgetAssociation</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.UserBudgetAssociation" title="pydent.models.UserBudgetAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UserBudgetAssociation</span></code></a>()</td>
 <td>An association model between a User and a Budget</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Wire" title="pydent.models.Wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wire</span></code></a>([source,&nbsp;destination])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Wire" title="pydent.models.Wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wire</span></code></a>([source,&nbsp;destination])</td>
 <td>A Wire model</td>
 </tr>
 </tbody>
@@ -269,6 +272,12 @@ SampleType:</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Account._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -554,6 +563,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.AllowableFieldType._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.AllowableFieldType._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -833,6 +848,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Budget._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -1118,6 +1139,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Code._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Code._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -1397,6 +1424,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -1753,6 +1786,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.DataAssociation._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.DataAssociation._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -2032,6 +2071,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldType._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -2357,6 +2402,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.FieldValue._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.FieldValue._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -2677,6 +2728,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Group._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Group._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -2956,6 +3013,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Invoice._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -3239,6 +3302,12 @@ An Item is a physical object in the lab.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -3618,6 +3687,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Job._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Job._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -3900,6 +3975,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.JobAssociation._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.JobAssociation._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -4179,6 +4260,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Library._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -4483,6 +4570,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Membership._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Membership._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -4732,7 +4825,7 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.ObjectType">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">ObjectType</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#ObjectType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.ObjectType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.NamedMixin</span></code></p>
 <p>A ObjectType model</p>
 <dl class="method">
 <dt id="pydent.models.ObjectType._check_for_session">
@@ -4762,6 +4855,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.ObjectType._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -5051,6 +5150,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -5705,6 +5810,12 @@ Aquarium.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.OperationType._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.OperationType._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -6015,6 +6126,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.PartAssociation._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.PartAssociation._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -6294,6 +6411,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -6883,6 +7006,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.PlanAssociation._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.PlanAssociation._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -7131,8 +7260,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Sample">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>name=None</em>, <em>project=None</em>, <em>description=None</em>, <em>sample_type_id=None</em>, <em>properties=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>name=None</em>, <em>project=None</em>, <em>description=None</em>, <em>sample_type=None</em>, <em>sample_type_id=None</em>, <em>properties=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.NamedMixin</span></code></p>
 <p>A Sample model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -7177,6 +7306,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Sample._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -7442,7 +7577,7 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.SampleType">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">SampleType</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#SampleType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.SampleType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.NamedMixin</span></code></p>
 <p>A SampleType model</p>
 <dl class="method">
 <dt id="pydent.models.SampleType._check_for_session">
@@ -7472,6 +7607,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.SampleType._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -7832,6 +7973,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Upload._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Upload._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -8161,6 +8308,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.User._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.User._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -8440,6 +8593,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.UserBudgetAssociation._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
 </dd></dl>
 
 <dl class="method">
@@ -8725,6 +8884,12 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Wire._primary_key">
+<code class="descname">_primary_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Wire._relations_to_json">
 <code class="descname">_relations_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire._relations_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump relations to a dictionary.
@@ -9000,7 +9165,7 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.33 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

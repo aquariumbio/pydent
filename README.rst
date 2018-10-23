@@ -6,18 +6,6 @@ Trident: Aquarium API Scripting
 
 Trident is the python API scripting for Aquarium.
 
-1. `Installation <docsrc/user/installation.rst>`__ - how to install
-   pydent
-2. `Examples <docsrc/user/examples.rst>`__ - example usages
-3. `Contributing <docsrc/developer/contributing.rst>`__ - contributing
-   and developer notes
-4. `API Notes <docsrc/developer/api_notes.rst>`__ - notes on
-   pydent/Aquarium models
-5. `Tests <docsrc/developer/tests.rst>`__ - testing notes
-
-Note: the initial version is tagged as ``v0.0.1-initial``, but is no
-longer being developed.
-
 Documentation
 -------------
 

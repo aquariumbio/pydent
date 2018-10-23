@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.aqhttp &#8212; Trident 0.0.33 documentation</title>
+    <title>pydent.aqhttp &#8212; Trident 0.0.34a documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="../api_reference.html" title="API Reference"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.33 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -41,7 +41,7 @@
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
         <h1>Trident</h1>
-        <h2>0.0.33</h2>
+        <h2>0.0.34a</h2>
     </a>
 </p>
 
@@ -49,7 +49,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version <b>0.0.33</b>.
+    for version <b>0.0.34a</b>.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -112,7 +112,7 @@ Users should only access these methods indirectly through a <code class="docutil
 <dl class="class">
 <dt id="pydent.aqhttp.AqHTTP">
 <em class="property">class </em><code class="descclassname">pydent.aqhttp.</code><code class="descname">AqHTTP</code><span class="sig-paren">(</span><em>login</em>, <em>password</em>, <em>aquarium_url</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.utils.logger.Loggable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Defines a session/connection to Aquarium.
 Makes HTTP requests to Aquarium and returns JSON.</p>
 <p>This class should be obscured from Trident user so that users cannot make
@@ -148,7 +148,7 @@ json data being sent contains a null value</p>
 
 <dl class="method">
 <dt id="pydent.aqhttp.AqHTTP._response_to_json">
-<code class="descname">_response_to_json</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP._response_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP._response_to_json" title="Permalink to this definition">¶</a></dt>
+<code class="descname">_response_to_json</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP._response_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP._response_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turns <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Request</span></code> instance into a json.
 Raises TridentRequestError if an error occurs.</p>
 </dd></dl>
@@ -299,7 +299,7 @@ contains a None or null value (default: True)</li>
         <li class="right" >
           <a href="../api_reference.html" title="API Reference"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.33 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

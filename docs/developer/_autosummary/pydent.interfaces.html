@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.interfaces &#8212; Trident 0.0.33 documentation</title>
+    <title>pydent.interfaces &#8212; Trident 0.0.34a documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pydent.exceptions.html" title="pydent.exceptions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.33 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -41,7 +41,7 @@
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
         <h1>Trident</h1>
-        <h2>0.0.33</h2>
+        <h2>0.0.34a</h2>
     </a>
 </p>
 
@@ -49,7 +49,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version <b>0.0.33</b>.
+    for version <b>0.0.34a</b>.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -173,9 +173,45 @@ Attaches raw json and this session instance to the models it retrieves.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.interfaces.ModelInterface.first">
+<code class="descname">first</code><span class="sig-paren">(</span><em>num=None</em>, <em>**query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.first" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the first added models</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>num</strong> (<em>int</em>) – number of models to return</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">models</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.interfaces.ModelInterface.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Makes a generic get request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.ModelInterface.last">
+<code class="descname">last</code><span class="sig-paren">(</span><em>num=None</em>, <em>**query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.last" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the last added models</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>num</strong> (<em>int</em>) – number of models to return</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">models</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -199,9 +235,27 @@ If data is a list, will return a list of model instances.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.interfaces.ModelInterface.one">
+<code class="descname">one</code><span class="sig-paren">(</span><em>first=False</em>, <em>offset=-1</em>, <em>**query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return one model. Returns the last model by default. Returns None if no model is found.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>first</strong> (<em>bool</em>) – whether to return the first model (default: False</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.interfaces.ModelInterface.where">
 <code class="descname">where</code><span class="sig-paren">(</span><em>criteria</em>, <em>methods=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.where" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds models based on criteria</p>
+<dd><p>Finds models based on some criteria</p>
 </dd></dl>
 
 </dd></dl>
@@ -350,7 +404,7 @@ http requests.</p>
         <li class="right" >
           <a href="pydent.exceptions.html" title="pydent.exceptions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.33 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

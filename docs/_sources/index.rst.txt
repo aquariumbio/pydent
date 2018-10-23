@@ -145,6 +145,7 @@ Check out the table of contents below (and to the left).
 
    user/installation
    user/planning
+   user/browsing
    user/examples
    developer/api_reference
    developer/api_notes

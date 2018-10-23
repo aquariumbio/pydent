@@ -1,0 +1,229 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Sample Browsing using Trident &#8212; Trident 0.0.34a documentation</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Trident Examples" href="examples.html" />
+    <link rel="prev" title="Planning using Trident’s Designer" href="planning.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Trident Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="planning.html" title="Planning using Trident’s Designer"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.34a documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
+    <a href="../index.html">
+        <h1>Trident</h1>
+        <h2>0.0.34a</h2>
+    </a>
+</p>
+
+<p>
+    Trident is a python scripting API wrapper for Aquarium. With Trident,
+    you can create python scripts and apps that mine data, create samples,
+    submit laboratory protocols, and more. You are looking at documentation
+    for version <b>0.0.34a</b>.
+</p>
+<div>
+    <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
+    <a href="https://badge.fury.io/py/pydent"><img src="https://badge.fury.io/py/pydent.svg" alt="PyPI version" height="18"></a>
+</div>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Sample Browsing using Trident</a><ul>
+<li><a class="reference internal" href="#basic-browsing">Basic Browsing</a></li>
+<li><a class="reference internal" href="#browser-scope">Browser Scope</a></li>
+<li><a class="reference internal" href="#relationship-browsing">Relationship Browsing</a><ul>
+<li><a class="reference internal" href="#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li><a class="reference internal" href="#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#logging-requests">Logging Requests</a></li>
+<li><a class="reference internal" href="#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="planning.html"
+                        title="previous chapter">Planning using Trident’s Designer</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Trident Examples</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user/browsing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sample-browsing-using-trident">
+<h1>Sample Browsing using Trident<a class="headerlink" href="#sample-browsing-using-trident" title="Permalink to this headline">¶</a></h1>
+<p>Trident provides a browser class to help browse through Inventory.
+Samples can be searched via regular expressions, close-matches, or by sample properties.
+As of 10/2018, these types of searching capabilities are not implemented in the
+Aquarium Sample Browser GUI and can only be accessed through Trident.</p>
+<p>A new Browser can be initialized by passing in a AqSession object:</p>
+<div class="section" id="basic-browsing">
+<h2>Basic Browsing<a class="headerlink" href="#basic-browsing" title="Permalink to this headline">¶</a></h2>
+<p>Basic regular expression searches of samples by using the ‘search’ method:</p>
+<p>Additional flags can be passed into the regex search to narrow the search:</p>
+<p>Similarly, the browser can also find approximately close matches for a given string:</p>
+<p>Once found, list of samples can also be filtered by their sample properties.
+For example, we can find all of the primers containing “mcherry” that have a
+<em>T Anneal</em> greater than 64:</p>
+<p>As you can see, there is a SQL-like style to the query. This same style can be applied directly
+to where statements as well:</p>
+</div>
+<div class="section" id="browser-scope">
+<h2>Browser Scope<a class="headerlink" href="#browser-scope" title="Permalink to this headline">¶</a></h2>
+<p>The model scope of the browser can also be changed so that many of the methods
+used in Sample, can be applied to other models (such as Operations or OperationTypes).
+The following example finds protocols that look similar to “Fragment Analyzing”</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">browser</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="s2">&quot;OperationType&quot;</span><span class="p">)</span>
+<span class="n">ots</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">close_matches</span><span class="p">(</span><span class="s2">&quot;Fragment Analyzing&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="n">ot</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">ot</span> <span class="ow">in</span> <span class="n">ots</span><span class="p">]</span>
+<span class="c1"># [&#39;Fragment Analyzing&#39;, &#39;Fragment Analyzing (EL)&#39;, &#39;Fragment Analyzing&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="relationship-browsing">
+<h2>Relationship Browsing<a class="headerlink" href="#relationship-browsing" title="Permalink to this headline">¶</a></h2>
+<p>The browser provides methods to making efficient server queries using its defined
+model relationships. Whereas typically, the user would have to write a series
+of efficient server queries, cache the results and merge the models, the browser
+provides all of this logic in the convinient ‘retrieve’ and ‘recursive_retrieve’ methods.
+Using the browser.retrieve or browser.recursive_retrieve results in massive speed improvements
+for most trident scripts (&gt;10X, depending on size of query)</p>
+<p>The following example retrieves
+any data_association attached to an item whose sample has a name that matched ‘mcherry’.</p>
+<p>The ‘retrieve’ function will also automatically cache the results into the model so
+they may be accessed later:</p>
+<p>TODO: RECURSIVE RETRIEVE EXAMPLE</p>
+<p>TODO: CACHE EXPLANATION</p>
+<div class="section" id="avoid-using-too-many-queries-n-1-problem">
+<h3>Avoid using too many queries (N+1 problem)<a class="headerlink" href="#avoid-using-too-many-queries-n-1-problem" title="Permalink to this headline">¶</a></h3>
+<p>TLDR; <strong>AVOID FOR LOOPS</strong> <em>Use browser.retrieve whenever possible to
+avoid making unnecessary requests</em></p>
+<p>With the ease of making query requests in trident, it can be
+easy to forget that each query puts a load on the online Aquarium server.
+Poorly written Python code that makes many trident queries can translate into global
+Aquarium slowdowns for everyone using that server.</p>
+<p>Generally, you should write your code to minimize the number of queries made. For example,
+the following code retrieves all items from a list of samples, and then retrieves all data
+associated with those items. When this example was run, 100 samples, 871 items, and 471 data_associations
+were retrieved in just 4 seconds:</p>
+<p>Using a series of nested for loops that makes queries is an example of <strong>exceptionally bad</strong> code,
+as in the following example:</p>
+</div>
+<div class="section" id="the-browser-cache">
+<h3>The Browser Cache<a class="headerlink" href="#the-browser-cache" title="Permalink to this headline">¶</a></h3>
+<p>By default, the browser caches query results and retrieves them in later operations.</p>
+<p>TODO: This section is not finished…</p>
+</div>
+</div>
+<div class="section" id="logging-requests">
+<h2>Logging Requests<a class="headerlink" href="#logging-requests" title="Permalink to this headline">¶</a></h2>
+<p>If you want to see what the browser is doing, you can turn on verbose mode:</p>
+<p>If you want to see information for each of the requests you are making, you may also turn
+on verbose mode for the session object. This is very useful for parsing
+slow python code.</p>
+</div>
+<div class="section" id="asynchrounous-requests">
+<h2>Asynchrounous Requests<a class="headerlink" href="#asynchrounous-requests" title="Permalink to this headline">¶</a></h2>
+<p>As long as you are being mindful of the number of requests you are making,
+trident provides methods for making parallel requests to speed up
+your trident scripts.</p>
+<p>The ‘make_async’ decorator located in ‘pydent.utils’ can make any function
+asynchrounous, provided they use a list as its first argument and returns
+a list.</p>
+<p>‘make_async’ takes in a ‘chunk_size’ argument, which will divide the first argument
+(a list) into a number of chunks of size ‘chunk_size’ and run
+each chunk simulatenously. The value that is returned is the concatenation of all of
+the lists returned by each chunk once all chunks have been completed.</p>
+<p>For example, the following gets samples based on their id and will split the ids
+into chunks of size 50. This outperforms (only slightly) an equivalent
+non-asynchronous method. While the performance improvement is slight in this example,
+longer running processes can have great improvements by running them asynchrounously.
+You may have to experiment with the ‘chunk_size’ to get the best performance.</p>
+<p>Note that it is not currently possible to use a async method nested within a async method.
+An exception will be raised if this occurs. The planner, for example, already uses async methods.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Trident Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="planning.html" title="Planning using Trident’s Designer"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Trident 0.0.34a documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, University of Washington.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>
