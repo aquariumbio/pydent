@@ -655,7 +655,7 @@ class Browser(logger.Loggable, object):
                 raise BrowserException(
                     'Cannot add new relationship "{}" because it already exists in the model definition'.format(
                         relationship_name))
-        accepted_types = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric", "HasOneFromMany"]
+        accepted_types = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric"]
         # TODO: add relationship handler for Many and One
         if relation.__class__.__name__ not in accepted_types:
             raise BrowserException(
