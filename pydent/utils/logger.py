@@ -46,10 +46,19 @@ def condense_long_lists(d, max_list_len=20):
     return str(d)
 
 
-class Loggable:
+class Loggable():
 
     def init_logger(self, name):
-        self._logger, self._log_handler = new_logger(name)
+        self._logger_name = name
+        new_logger(name)
+
+    @property
+    def _logger(self):
+        return logging.getLogger(self._logger_name)
+
+    @property
+    def _log_handler(self):
+        return self._logger.handlers[0]
 
     def set_verbose(self, verbose):
         if verbose:
