@@ -5,6 +5,8 @@ from pydent import models as pydent_models
 from pydent.browser import Browser
 from pydent.exceptions import TridentModelNotFoundError
 import random
+import uuid
+
 
 def test_search(session):
     browser = Browser(session)
@@ -206,11 +208,6 @@ def test_save_sample_exists(session):
     raise NotImplementedError
 
 
-def test_update_sample(session):
-    browser = Browser(session)
-    raise NotImplementedError
-
-
 def test_save_sample(session):
     browser = Browser(session)
     raise NotImplementedError
@@ -250,6 +247,19 @@ def test_update_model_with_sample(session):
     assert from_server.properties["Forward Primer"].id == example_primer.id
     assert from_browser.properties["Forward Primer"].id == example_primer.id
     assert from_browser.properties["Forward Primer"].rid == example_primer.rid
+
+
+def test_update_model_description(session):
+
+    browser = Browser(session)
+    example_fragment = browser.find(19698)
+    browser = Browser(session)
+    d = str(uuid.uuid4())
+    example_fragment.description = d
+    browser.update_sample(example_fragment)
+
+    found = session.Sample.find(example_fragment.id)
+    assert found.description == d
 
 
 def test_retrieve_with_many(session):
