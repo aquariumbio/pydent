@@ -15,6 +15,8 @@ class BrowserException(Exception):
 
 class Browser(logger.Loggable, object):
 
+    # TODO: ability to block model callbacks to enforce cache
+
     def __init__(self, session):
         self.session = session
         self._list_models_fxn = self.sample_list
