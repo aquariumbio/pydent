@@ -76,8 +76,10 @@ class Browser(logger.Loggable, object):
         query = dict(kwargs)
         if sample_type is not None:
             query.update({"sample_type_id": self.find_by_name(sample_type, "SampleType").id})
-        models = self.interface(model_class).one(**query)
-        return self._update_model_cache_from_list(model_class, models)
+        model = self.interface(model_class).one(**query)
+        if model is None:
+            return None
+        return self._update_model_cache_from_list(model_class, [model])[0]
 
     def last(self, num, model_class=None, sample_type=None, **kwargs):
         if model_class is None:

@@ -4,7 +4,7 @@ import pytest
 from pydent import models as pydent_models
 from pydent.browser import Browser
 from pydent.exceptions import TridentModelNotFoundError
-
+import random
 
 def test_search(session):
     browser = Browser(session)
@@ -216,9 +216,40 @@ def test_save_sample(session):
     raise NotImplementedError
 
 
-def test_update_model(session):
+def test_update_model_with_value(session):
     browser = Browser(session)
-    raise NotImplementedError
+    example_fragment = browser.find(19698)
+    browser = Browser(session)
+    l = random.randint(0, 5000)
+
+    example_fragment.update_properties({"Length": l})
+
+    browser.update_sample(example_fragment)
+
+    from_server = session.Sample.find(example_fragment.id)
+    from_browser = browser.find(example_fragment.id)
+
+    assert from_server.properties["Length"] == str(l)
+    assert from_browser.properties["Length"] == str(l)
+
+
+def test_update_model_with_sample(session):
+    browser = Browser(session)
+    example_fragment = browser.find(19698)
+    browser = Browser(session)
+    l = random.randint(0, 5000)
+
+    example_primer = browser.one(sample_type="Primer")
+    example_fragment.update_properties({"Forward Primer": example_primer})
+
+    browser.update_sample(example_fragment)
+
+    from_server = session.Sample.find(example_fragment.id)
+    from_browser = browser.find(example_fragment.id)
+
+    assert from_server.properties["Forward Primer"].id == example_primer.id
+    assert from_browser.properties["Forward Primer"].id == example_primer.id
+    assert from_browser.properties["Forward Primer"].rid == example_primer.rid
 
 
 def test_retrieve_with_many(session):
