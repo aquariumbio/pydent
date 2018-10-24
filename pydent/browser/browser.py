@@ -290,6 +290,32 @@ class Browser(logger.Loggable, object):
 
         return self._search_helper(pattern, regex_filter, sample_type=sample_type, **query)
 
+    def search_description(self, pattern, samples=None, sample_type=None, ignore_case=True):
+        """
+        Search samples by their description.
+
+        :param pattern: regex pattern
+        :type pattern: basestring
+        :param samples: samples to search. If left blank, a search to find samples will be performed
+        :type samples: list
+        :param sample_type: restrict to a particular sample type
+        :type sample_type: name
+        :param ignore_case: ignore case for regular pattern search (default True)
+        :type ignore_case: bool
+        :return: list of samples
+        :rtype: list
+        """
+        matches = []
+        args = []
+        if samples is None:
+            samples = self.search(".*", sample_type=sample_type)
+        if ignore_case:
+            args.append(re.IGNORECASE)
+        for sample in samples:
+            if re.search(pattern, sample.description, *args):
+                matches.append(sample)
+        return samples
+
     def close_matches(self, pattern, sample_type=None, **query):
         """
         Finds samples whose names closely match the pattern
