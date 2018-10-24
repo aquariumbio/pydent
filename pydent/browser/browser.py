@@ -5,6 +5,7 @@ from pydent import ModelRegistry
 from pydent import models as pydent_models
 from pydent.utils import logger
 import pandas as pd
+from collections import OrderedDict
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -69,14 +70,32 @@ class Browser(logger.Loggable, object):
         self.model_list_cache['models'][self.model_name] = model_list[:]
         return model_list
 
-    def one(self, model_class=None, sample_type=None):
-        pass
+    def one(self, model_class=None, sample_type=None, **kwargs):
+        if model_class is None:
+            model_class = self.model_name
+        query = dict(kwargs)
+        if sample_type is not None:
+            query.update({"sample_type_id": self.find_by_name(sample_type, "SampleType").id})
+        models = self.interface(model_class).one(**query)
+        return self._update_model_cache_from_list(model_class, models)
 
-    def last(self, num, model_class=None):
-        pass
+    def last(self, num, model_class=None, sample_type=None, **kwargs):
+        if model_class is None:
+            model_class = self.model_name
+        query = dict(kwargs)
+        if sample_type is not None:
+            query.update({"sample_type_id": self.find_by_name(sample_type, "SampleType").id})
+        models = self.interface(model_class).last(num, **query)
+        return self._update_model_cache_from_list(model_class, models)
 
-    def first(self, num, model_class=None):
-        pass
+    def first(self, num, model_class=None, sample_type=None, **kwargs):
+        if model_class is None:
+            model_class = self.model_name
+        query = dict(kwargs)
+        if sample_type is not None:
+            query.update({"sample_type_id": self.find_by_name(sample_type, "SampleType").id})
+        models = self.interface(model_class).first(num, **query)
+        return self._update_model_cache_from_list(model_class, models)
 
     def find(self, model_id, model_class=None):
         if model_class is None:
@@ -85,14 +104,14 @@ class Browser(logger.Loggable, object):
             return self.cached_find(model_class, model_id)
         return self.interface(model_class).find(model_id)
 
-    def where(self, query, model_class=None, primary_key='id', sample_type=None):
+    def where(self, query, model_class=None, primary_key='id', sample_type=None, **kwargs):
         if model_class is None:
             model_class = self.model_name
         if sample_type is not None:
             sample_type_id = self.find_by_name(sample_type, 'SampleType').id
             query.update({"sample_type_id": sample_type_id})
         if self.use_cache:
-            return self.cached_where(model_class, query, primary_key=primary_key)
+            return self.cached_where(model_class, query, primary_key=primary_key, **kwargs)
         return self.interface(model_class).where(query)
 
     def find_by_name(self, name, model_class=None, primary_key='id'):
@@ -145,10 +164,23 @@ class Browser(logger.Loggable, object):
                 found_queries.append(match)
         return found, found_queries
 
+    # TODO: do we really want to simply overwrite the dictionary or update the models?
     def _update_model_cache_helper(self, modelname, modeldict):
         self._info("CACHE updated cached with {} {} models".format(len(modeldict), modelname))
         self.model_cache.setdefault(modelname, {})
-        self.model_cache[modelname].update(dict(modeldict))
+
+        model_cache_dict = self.model_cache[modelname]
+        for mid in modeldict:
+            model = modeldict[mid]
+            if mid in model_cache_dict:
+                cached_model = model_cache_dict[mid]
+                vars(cached_model).update(vars(model))
+            else:
+                model_cache_dict[mid] = model
+        return [model_cache_dict[mid] for mid in modeldict]
+
+    def _update_model_cache_from_list(self, model_name, models):
+        return self._update_model_cache_helper(model_name, {m.id: m for m in models})
 
     def _update_model_cache(self, models):
         grouped_by_type = {}
@@ -172,8 +204,7 @@ class Browser(logger.Loggable, object):
             self._info("CACHE found {} model with id={} in cache".format(model_class, id))
         if found_model is None:
             return None
-        self._update_model_cache_helper(model_class, {found_model.id: found_model})
-        return found_model
+        return self._update_model_cache_helper(model_class, {found_model.id: found_model})[0]
 
     def cached_where(self, model, query, primary_key='id'):
         cached_models = self.model_cache.get(model, {})
@@ -194,11 +225,9 @@ class Browser(logger.Loggable, object):
             return list(found_dict.values())
         server_models = self.interface(model).where(remaining_query)
 
-        models_dict = {s.id: s for s in server_models}
+        models_dict = OrderedDict({s.id: s for s in server_models})
         models_dict.update(found_dict)
-        self._update_model_cache_helper(model, models_dict)
-
-        return list(models_dict.values())
+        return self._update_model_cache_helper(model, models_dict)
 
     def _search_helper(self, pattern, filter_fxn, sample_type=None, **query):
         sample_type_id = None
@@ -426,7 +455,7 @@ class Browser(logger.Loggable, object):
         args = {}
         for s in models:
             callback_args = s._get_callback_args(relation)
-            if not relation.many:
+            if relation.QUERY_TYPE == 'by_id':
                 args.setdefault(relation.attr, [])
                 args[relation.attr] += [x for x in callback_args if x is not None]
             else:
@@ -456,7 +485,6 @@ class Browser(logger.Loggable, object):
         ref = relation.ref  # sample_id
         attr = relation.attr  # id
         model_class2 = relation.model
-        many = relation.many
 
         # todo: collect existing fullfilled relationship
         # todo: partition, then collect callback
@@ -473,7 +501,7 @@ class Browser(logger.Loggable, object):
         if not retrieved_models:
             return []
 
-        if many:
+        if relation.QUERY_TYPE == 'query':
             model_dict = {m1.id: list() for m1 in models}
             for model in retrieved_models:
                 model_ref = getattr(model, ref)
@@ -482,7 +510,7 @@ class Browser(logger.Loggable, object):
                 else:
                     self._error(
                         "RETRIEVE ref: {ref} {model_ref}, attr: {attr}".format(ref=ref, attr=attr, model_ref=model_ref))
-        else:
+        elif relation.QUERY_TYPE == 'by_id':
             retrieved_dict = {getattr(m2, attr): m2 for m2 in retrieved_models}
             model_dict = {m1.id: None for m1 in models}
             missing_models = []
@@ -511,6 +539,8 @@ class Browser(logger.Loggable, object):
                     missing=missing_models,
                     attr=attr
                 ))
+        else:
+            raise BrowserException("QUERY_TYPE '{}' for relation '{}' not recognized.".format(relation.QUERY_TYPE, relationship_name))
         for model in models:
             found_models = model_dict[getattr(model, attr)]
             model.__dict__.update({relationship_name: found_models})
@@ -595,7 +625,7 @@ class Browser(logger.Loggable, object):
                 raise BrowserException(
                     'Cannot add new relationship "{}" because it already exists in the model definition'.format(
                         relationship_name))
-        accepted_types = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric"]
+        accepted_types = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric", "HasOneFromMany"]
         # TODO: add relationship handler for Many and One
         if relation.__class__.__name__ not in accepted_types:
             raise BrowserException(

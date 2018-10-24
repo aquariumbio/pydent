@@ -333,6 +333,16 @@ def test_retrieve(session):
     assert samples[0].__dict__['sample_type'].id, session.SampleType.find_by_name("Fragment").id
 
 
+def test_retrieve_with_HasOneFromMany(session):
+
+    browser = Browser(session)
+
+    ots = browser.last(10, 'OperationType')
+    assert len(ots) == 10
+    browser.retrieve(ots, 'protocol')
+    assert 'protocol' in ots[0].__dict__
+
+
 def test_recursive_retrieve(session):
 
     browser = Browser(session)

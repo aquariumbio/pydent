@@ -234,6 +234,7 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     @classmethod
     def one(cls, session, query, **kwargs):
         interface = cls.interface(session)
+        query = dict(query)
         query.update(kwargs)
         return interface.one(**query)
 

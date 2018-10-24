@@ -14,6 +14,8 @@ class One(fields.Relation):
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
+    QUERY_TYPE = 'by_id'
+
     def __init__(self, model, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
         """
         One initializer. Uses "find" callback by default.
@@ -37,6 +39,8 @@ class Many(fields.Relation):
     Defines a many relationship with another model.
     Subclass of :class:`pydent.marshaller.Relation`.
     """
+
+    QUERY_TYPE = 'query'
 
     def __init__(self, model, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
         """
@@ -196,6 +200,8 @@ class HasMany(HasMixin, Many):
 
 
 class HasOneFromMany(HasMixin, One):
+
+    QUERY_TYPE = "query"
 
     def __init__(self, model, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
                  callback_kwargs=None, **kwargs):
