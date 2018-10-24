@@ -231,6 +231,17 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         interface = cls.interface(session)
         return interface.where(params)
 
+    @classmethod
+    def one(cls, session, query, **kwargs):
+        interface = cls.interface(session)
+        query.update(kwargs)
+        return interface.one(**query)
+
+    def one_callback(self, model_name, *args, **kwargs):
+        self._check_for_session()
+        model = ModelRegistry.get_model(model_name)
+        return model.one(self.session, *args, **kwargs)
+
     def find_callback(self, model_name, model_id):
         """Finds a model using the model interface and model_id. Used to find
         models in model relationships."""

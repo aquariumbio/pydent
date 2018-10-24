@@ -57,19 +57,21 @@ SampleType:
             callback_args={"sample_type_id": lambda self: self.id})
 """
 
-import warnings
-import shutil
-import requests
+import json
 import os
+import shutil
+
+import requests
+
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema, fields
 from pydent.relationships import (One, Many, HasOne, HasMany,
-                                  HasManyThrough, HasManyGeneric)
+                                  HasManyThrough, HasManyGeneric,
+                                  HasOneFromMany)
 from pydent.utils import filter_list
-from pydent.utils.plan_validator import PlanValidator
 from pydent.utils.async_requests import make_async
-import json
+from pydent.utils.plan_validator import PlanValidator
 
 __all__ = [
     "Account",
@@ -100,49 +102,6 @@ __all__ = [
     "UserBudgetAssociation",
     "Wire"
 ]
-
-
-# Mix-ins
-
-class HasCodeMixin:
-    """Access to latest code for OperationType, Library, etc."""
-
-    def code(self, name):
-        """
-        Returns the code from an OperationType or Library
-
-        :param name: accessor name for the code.
-            "source" for Library or "protocol", "precondition", "cost_model",
-            or "documentation" for OperationType
-        :type name: str
-        :return: the code model
-        :rtype: Code
-        """
-        if self.codes is None:
-            return None
-        codes = [c for c in self.codes if c.name == name]
-        codes = [c for c in codes if not hasattr(
-            c, "child_id") or c.child_id is None]
-        if len(codes) > 0:
-            return codes[-1]
-
-    def get_code_callback(self, model_name, name):
-        self.code_ = """
-        Callback for returning code members for OperationType or Library
-
-        :param model_name: the model_name, expected "Code"
-        :type model_name: str
-        :param name: accessor name for the code.
-            "source" for Library or "protocol", "precondition", "cost_model",
-            or "documentation" for OperationType
-        :type name: str
-        :return: the code model
-        :rtype: Code
-        """
-        if model_name is not "Code":
-            raise AquariumModelError(
-                "Model name must be {}, not {}".format("Code", model_name))
-        return self.code(name)
 
 
 class FieldMixin:
@@ -832,12 +791,15 @@ class JobAssociation(ModelBase):
 
 
 @add_schema
-class Library(ModelBase, HasCodeMixin):
+class Library(ModelBase):
     """A Library model"""
     fields = dict(
         codes=HasManyGeneric("Code"),
-        source=One("Code", callback="get_code_callback",
-                   callback_args="source")
+        source=HasOneFromMany("Code", ref="parent_id",
+                                  additional_args={
+                                      "parent_class": "Library",
+                                      "name": "source"
+                                  }),
     )
 
 
@@ -1255,7 +1217,7 @@ class Operation(ModelBase, DataAssociatorMixin):
 
 # TODO: Refactor OperationType and Library code relationships to use ONE
 @add_schema
-class OperationType(ModelBase, HasCodeMixin):
+class OperationType(ModelBase):
     """
     Represents an OperationType, which is the definition of a protocol in
     Aquarium.
@@ -1264,14 +1226,26 @@ class OperationType(ModelBase, HasCodeMixin):
         operations=HasMany("Operation", "OperationType"),
         field_types=HasMany("FieldType", ref="parent_id", additional_args={"parent_class": "OperationType"}),
         codes=HasManyGeneric("Code"),
-        protocol=One("Code", callback="get_code_callback",
-                     callback_args="protocol"),
-        cost_model=One("Code", callback="get_code_callback",
-                       callback_args="cost_model"),
-        documentation=One("Code", callback="get_code_callback",
-                          callback_args="documentation"),
-        precondition=One("Code", callback="get_code_callback",
-                         callback_args="precondition"),
+        cost_model=HasOneFromMany("Code", ref="parent_id",
+                                  additional_args={
+                                      "parent_class": "OperationType",
+                                      "name": "cost_model"
+                                  }),
+        documentation=HasOneFromMany("Code", ref="parent_id",
+                                     additional_args={
+                                         "parent_class": "OperationType",
+                                         "name": "documentation"
+                                     }),
+        precondition=HasOneFromMany("Code", ref="parent_id",
+                                    additional_args={
+                                        "parent_class": "OperationType",
+                                        "name": "precondition"
+                                    }),
+        protocol=HasOneFromMany("Code", ref="parent_id",
+                                additional_args={
+                                    "parent_class": "OperationType",
+                                    "name": "protocol"
+                                }),
         user=HasOne("User")
     )
 
@@ -1601,7 +1575,8 @@ class Sample(ModelBase, NamedMixin):
                              additional_args={"parent_class": "Sample"})
     )
 
-    def __init__(self, name=None, project=None, description=None, sample_type=None, sample_type_id=None, properties=None):
+    def __init__(self, name=None, project=None, description=None, sample_type=None, sample_type_id=None,
+                 properties=None):
         """
 
         :param name:
@@ -1721,7 +1696,8 @@ class Sample(ModelBase, NamedMixin):
                     i.object_type_id == object_type.id]
 
     def __str__(self):
-        return "<{} id='{}' name='{}' sample_type={}>".format(self.__class__.__name__, self.id, self.name, self.sample_type)
+        return "<{} id='{}' name='{}' sample_type={}>".format(self.__class__.__name__, self.id, self.name,
+                                                              self.sample_type)
 
 
 @add_schema
@@ -1767,6 +1743,7 @@ class SampleType(ModelBase, NamedMixin):
 
     def __str__(self):
         return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
+
 
 # TODO: expiring_url is never updated...
 @add_schema

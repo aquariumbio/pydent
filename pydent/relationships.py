@@ -104,7 +104,7 @@ class HasMixin:
 
 
 class HasOne(HasMixin, One):
-    def __init__(self, model, attr=None, ref=None, callback_kwargs=None, **kwargs):
+    def __init__(self, model, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and
         automatically assigns attribute as in the following:
@@ -119,7 +119,7 @@ class HasOne(HasMixin, One):
         :type attr: basestring
         """
         self.set_ref(model=model, attr=attr, ref=ref)
-        super().__init__(model, callback_args=(lambda slf: getattr(slf, self.ref)), callback_kwargs=callback_kwargs, **kwargs)
+        super().__init__(model, callback=callback, callback_args=(lambda slf: getattr(slf, self.ref)), callback_kwargs=callback_kwargs, **kwargs)
 
     def __repr__(self):
         return "<HasOne (model={}, callback_args=lambda self: self.{})>".format(self.model, self.ref)
@@ -131,7 +131,7 @@ class HasManyThrough(HasMixin, Many):
     Establishes a Many-to-Many relationship with another model
     """
 
-    def __init__(self, model, through, attr="id", ref=None, additional_args=None, callback_kwargs=None, **kwargs):
+    def __init__(self, model, through, attr="id", ref=None, additional_args=None, callback=None, callback_kwargs=None, **kwargs):
         self.set_ref(model=model, attr=attr, ref=ref)
 
         # e.g. PlanAssociation >> plan_associations
@@ -149,7 +149,7 @@ class HasManyThrough(HasMixin, Many):
             query = {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
             query.update(additional_args)
             return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
-        super().__init__(model, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
+        super().__init__(model, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 
 class HasMany(HasMixin, Many):
@@ -157,7 +157,7 @@ class HasMany(HasMixin, Many):
     A relationship that establishes a One-to-Many relationship with another model.
     """
 
-    def __init__(self, model, ref_model=None, attr=None, ref=None,  additional_args=None, callback_kwargs=None, **kwargs):
+    def __init__(self, model, ref_model=None, attr=None, ref=None,  additional_args=None, callback=None, callback_kwargs=None, **kwargs):
         """
         HasMany relationship initializer
 
@@ -192,7 +192,54 @@ class HasMany(HasMixin, Many):
             query = {self.ref: getattr(slf, self.attr)}
             query.update(additional_args)
             return query
-        super().__init__(model, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
+        super().__init__(model, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
+
+
+class HasOneFromMany(HasMixin, One):
+
+    def __init__(self, model, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
+                 callback_kwargs=None, **kwargs):
+        """
+        HasOneFromMany relationship initializer, which is intended to return a single model from
+        a Many query
+
+        :param model: Model class name for this relationship
+        :type model: str
+        :param ref_model: Reference model name of the model owning this relationships.
+
+        .. code-block:: python
+
+            @add_schema
+            class Author(ModelBase):
+                fields=dict(books=HasMany("Book", "Author"))  # search for books using 'author_id'
+
+        :type ref_model: str
+        :param attr: Attribute name to use with reference model (default='id').
+                     For example "Author" => 'author_id'
+        :type attr: str
+        :param ref: The reference to use to find models. If none, a reference is
+                    built from the 'ref_model' and 'attr' parameters
+        :type ref: str
+        """
+        if ref_model is None and ref is None:
+            msg = "'{}' needs a 'ref_model' or 'ref' parameters to initialize"
+            raise MarshallerRelationshipError(
+                msg.format(self.__class__.__name__))
+        self.set_ref(model=ref_model, attr=attr, ref=ref)
+
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            query = {self.ref: getattr(slf, self.attr)}
+            query.update(additional_args)
+            return query
+
+        if callback is None:
+            callback = ModelBase.one_callback.__name__
+
+        super().__init__(model, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)
 
 
 class HasManyGeneric(HasMany):
@@ -201,5 +248,5 @@ class HasManyGeneric(HasMany):
     to find other models.
     """
 
-    def __init__(self, model,  additional_args=None, callback_kwargs=None, **kwargs):
-        super().__init__(model, ref="parent_id", attr="id",  additional_args=additional_args, callback_kwargs=callback_kwargs, **kwargs)
+    def __init__(self, model,  additional_args=None, callback=None, callback_kwargs=None, **kwargs):
+        super().__init__(model, ref="parent_id", attr="id", callback=callback, additional_args=additional_args, callback_kwargs=callback_kwargs, **kwargs)
