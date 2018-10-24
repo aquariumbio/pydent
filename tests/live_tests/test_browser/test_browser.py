@@ -482,5 +482,27 @@ def test_retrieve_with_new_samples(session):
 
     assert fvs == fvs2
 
+def test_operation_type_retrieve(session):
+
+    ots = session.OperationType.last(10)
+
+    browser = Browser(session)
+
+    accessors = ['protocol', 'precondition']
+    for accessor in accessors:
+        browser.retrieve(ots, accessor)
+        for ot in ots:
+            assert accessor in ot.__dict__
+            assert isinstance(getattr(ot, accessor), pydent_models.Code)
 
 
+def test_library_retrieve(session):
+
+    libs = session.Library.last(10)
+
+    browser = Browser(session)
+
+    browser.retrieve(libs, 'source')
+    for lib in libs:
+        assert 'source' in lib.__dict__
+        assert isinstance(lib.source, pydent_models.Code)

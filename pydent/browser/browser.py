@@ -499,7 +499,7 @@ class Browser(logger.Loggable, object):
                                 for v in val:
                                     if v not in arg_arr:
                                         arg_arr.append(v)
-                            else:
+                            elif val not in arg_arr:
                                 arg_arr.append(val)
         return args
 

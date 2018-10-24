@@ -800,6 +800,13 @@ class Library(ModelBase):
                                   }),
     )
 
+    def code(self, accessor):
+        """Reminant from previous API"""
+        # raise DeprecationWarning("This method is depreciated. Use '.source' directly")
+        if accessor == "source":
+            return self.source
+        return None
+
 
 @add_schema
 class Membership(ModelBase):
@@ -1246,6 +1253,13 @@ class OperationType(ModelBase):
                                 }),
         user=HasOne("User")
     )
+
+    def code(self, accessor):
+        # raise DeprecationWarning("This method is depreciated. Call code directly using 'protocol', 'cost_model',"
+        #                          " 'documentation', or 'precondition'.")
+        if accessor in ["protocol", 'precondition', 'documentation', 'cost_model']:
+            return getattr(self, accessor)
+        return None
 
     @classmethod
     def interface(cls, session):
