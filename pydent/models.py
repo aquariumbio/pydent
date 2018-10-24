@@ -1253,6 +1253,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         return [fv for fv in self.field_values if fv.role == 'output']
 
 
+# TODO: Refactor OperationType and Library code relationships to use ONE
 @add_schema
 class OperationType(ModelBase, HasCodeMixin):
     """

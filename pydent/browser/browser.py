@@ -206,12 +206,12 @@ class Browser(logger.Loggable, object):
             if isinstance(sample_type, pydent_models.SampleType):
                 sample_type_id = sample_type.id
             else:
-                sample_type_id = self.where({'name': sample_type}, 'SampleType')[0].id
+                sample_type_id = self.find_by_name(sample_type, 'SampleType').id
 
         if sample_type_id is not None:
             query.update({'sample_type_id': sample_type_id})
 
-        model_list = self.list_models(sample_type_id)
+        model_list = self.list_models()
         self._info("SEARCH found {} total models of type {}".format(len(model_list), self.model_name))
         matches = filter_fxn(pattern, model_list)
 
