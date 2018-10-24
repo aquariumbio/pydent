@@ -246,7 +246,6 @@ def test_update_model_with_sample(session):
 
     assert from_server.properties["Forward Primer"].id == example_primer.id
     assert from_browser.properties["Forward Primer"].id == example_primer.id
-    assert from_browser.properties["Forward Primer"].rid == example_primer.rid
 
 
 def test_update_model_description(session):

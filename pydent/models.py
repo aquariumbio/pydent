@@ -326,7 +326,7 @@ class FieldType(ModelBase, FieldMixin):
     fields = dict(
         allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
         operation_type=HasOneFromMany("OperationType", ref="id", attr="parent_id", additional_args={"parent_class": "OperationType"}),
-        sample_type=HasOneFromMany("OperationType", ref="id", attr="parent_id", additional_args={"parent_class": "SampleType"})
+        sample_type=HasOneFromMany("SampleType", ref="id", attr="parent_id", additional_args={"parent_class": "SampleType"})
     )
 
     def __init__(self, name=None, ftype=None, array=None, choices=None,
