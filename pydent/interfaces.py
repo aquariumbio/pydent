@@ -169,6 +169,9 @@ class UtilityInterface(SessionInterface):
     def delete_wire(self, wire):
         self.aqhttp.delete('wires/{}'.format(wire.id))
 
+    def deleted_field_value(self, field_value):
+        self.aqhttp.delete('field_values/{}'.format(field_value.id))
+
     def replan(self, plan_id):
         """
         Copies a plan

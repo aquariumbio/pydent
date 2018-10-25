@@ -1617,11 +1617,15 @@ class Sample(ModelBase, NamedMixin):
     def field_value(self, name):
         for field_value in self.field_values:
             if field_value.name == name:
-                if field_value.field_type is None:
-                    field_value.field_type = self.sample_type.field_type(
-                        field_value.name)
                 return field_value
         return None
+
+    def field_value_array(self, name):
+        field_values = []
+        for field_value in self.field_values:
+            if field_value.name == name:
+                field_values.append(field_value)
+        return field_values
 
     def _prop_dict(self, expected_keys):
         d = {k: None for k in expected_keys}
@@ -1690,30 +1694,68 @@ class Sample(ModelBase, NamedMixin):
         return field_type
 
     def update_properties(self, prop_dict):
+        fv_dict = self._fv_dict()
         for k, v in prop_dict.items():
-            fv = self._fv_dict()[k]
+            fv = fv_dict.get(k)
             if fv is None:
+                # then create a new field value
                 fv = self.sample_type.field_type(k).initialize_field_value()
                 if self.field_values is None:
                     self.field_values = []
                 self.field_values.append(fv)
+            if isinstance(fv, list):
+                # then this is an array
+                if isinstance(v, list):
+                    if len(v) >= len(fv):
+                        # then update existing field_values
+                        # create new field_values if necessary
+                        for new_value, old_fv in zip(v, fv):
+                            self._set_field_value(fv, new_value)
+                        diff = len(v) - len(fv)
+                        for i in range(diff):
+                            new_fv = self.sample_type.field_type(k).initialize_field_value()
+                            self._set_field_value(new_fv, v[i+len(fv)+1])
+                    else:
+                        pass
+                        # then field_values need to be deleted
+                else:
+                    raise AquariumModelError("Cannot update. The FieldValue '{}' is part of an array and "
+                                             "the properties expected a list, but it "
+                                             "instead received a '{}'".format(k, type(v)))
             self._set_field_value(fv, v)
+
+    def _fv_dict(self):
+        """
+        Returns field_values grouped by their field_type name. If the field_type is an array,
+        then the value will be a list of FieldValues (or empty list). Otherwise the value will be a FieldValue or None.
+
+        :return: dictionary of field_values
+        :rtype: dict
+        """
+        properties = {}
+        field_values_by_name = {}
+        if self.field_values:
+            field_values_by_name = dict((k, list(v)) for k, v in groupby(self.field_values, lambda x: x.name))
+        for ft in self.sample_type.field_types:
+            if ft.array:
+                val = field_values_by_name.get(ft.name, [])
+            else:
+                val = field_values_by_name.get(ft.name, [None])[0]
+            properties[ft.name] = val
+        return properties
 
     @property
     def properties(self):
-        properties = {}
-        field_values_by_name = dict((k, list(v)) for k, v in groupby(self.field_values, lambda x: x.name))
-        for ft in self.sample_type.field_types:
-            if ft.array:
-                fvs = list(field_values_by_name.get(ft.name, []))
-                properties[ft.name] = [self._get_field_value(fv) for fv in fvs]
+        fv_dict = self._fv_dict()
+        for name in fv_dict:
+            fvs = fv_dict[name]
+            if isinstance(fvs, list):
+                fv_dict[name] = [self._get_field_value(fv) for fv in fvs]
+            elif isinstance(fvs, FieldValue):
+                fv_dict[name] = self._get_field_value(fvs)
             else:
-                fv = list(field_values_by_name.get(ft.name, [None]))[0]
-                if fv is None:
-                    properties[ft.name] = None
-                else:
-                    properties[ft.name] = self._get_field_value(fv)
-        return properties
+                fv_dict[name] = None
+        return fv_dict
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
