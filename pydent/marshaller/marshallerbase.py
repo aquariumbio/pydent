@@ -303,6 +303,7 @@ class MarshallerBase(object):
         """Override for unpickling objects"""
         self.__dict__.update(state)
 
+    # TODO: why does this pass exceptions?
     def __getattribute__(self, name):
         """Override attribute accessor to attempt to fullfill relationships.
 
@@ -352,6 +353,7 @@ class MarshallerBase(object):
                 self.__class__.__name__, item,
                 ', '.join(relationships.keys())))
 
+    # TODO: why does this pass an AttributreError exception?
     def _relations_to_json(self):
         """
         Dump relations to a dictionary.

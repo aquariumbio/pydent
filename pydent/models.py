@@ -63,6 +63,8 @@ import shutil
 
 import requests
 
+from itertools import groupby
+
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema, fields
@@ -909,12 +911,6 @@ class Operation(ModelBase, DataAssociatorMixin):
 
     def field_value_array(self, name, role):
         """Returns :class:`FieldValue` array with name and role."""
-        ft = self.operation_type.field_type(name, role)
-        if not ft.array:
-            msg = "FieldValue is not an array for the field value of operation"
-            msg += " {}(id={}).{}.{}"
-            raise AquariumModelError(
-                msg.format(self.operation_type.name, self.id, role, name))
         return filter_list(self.field_values, name=name, role=role)
 
     def field_value(self, name, role):
@@ -1663,17 +1659,35 @@ class Sample(ModelBase, NamedMixin):
         return fv_dict
 
     def empty_properties(self):
-        return {ft.name: None for ft in self.sample_type.field_types}
+        empty_properties = {}
+        for ft in self.sample_type.field_types:
+            val = None
+            if ft.array:
+                val = []
+            empty_properties[ft.name] = val
+        return empty_properties
 
     # TODO: somehow do some kind of type checking for field_types. Note the field_values do not have field_types for some reason unless they are a sample field value
     def _set_field_value(self, field_value, value):
-        ft = field_value.field_type
-        if ft is None:
-            ft = self.sample_type.field_type(field_value.name)
+        ft = self._get_field_type(field_value)
         if ft.ftype == 'sample':
             field_value.set_value(sample=value)
         else:
             field_value.set_value(value=value)
+
+    def _get_field_value(self, field_value):
+        ft = self._get_field_type(field_value)
+        if ft.ftype == 'sample':
+            return field_value.sample
+        else:
+            return field_value.value
+
+    def _get_field_type(self, field_value):
+        field_type = field_value.field_type
+        if field_type is None:
+            field_type = self.sample_type.field_type(field_value.name)
+            field_value.field_type = field_type
+        return field_type
 
     def update_properties(self, prop_dict):
         for k, v in prop_dict.items():
@@ -1687,8 +1701,19 @@ class Sample(ModelBase, NamedMixin):
 
     @property
     def properties(self):
-        fv_keys = [ft.name for ft in self.sample_type.field_types]
-        return self._prop_dict(fv_keys)
+        properties = {}
+        field_values_by_name = dict((k, list(v)) for k, v in groupby(self.field_values, lambda x: x.name))
+        for ft in self.sample_type.field_types:
+            if ft.array:
+                fvs = list(field_values_by_name.get(ft.name, []))
+                properties[ft.name] = [self._get_field_value(fv) for fv in fvs]
+            else:
+                fv = list(field_values_by_name.get(ft.name, [None]))[0]
+                if fv is None:
+                    properties[ft.name] = None
+                else:
+                    properties[ft.name] = self._get_field_value(fv)
+        return properties
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
