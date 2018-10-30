@@ -55,9 +55,12 @@ class AqHTTP(logger.Loggable, object):
             info = dict(response.request.__dict__)
             info.update({"seconds": response.elapsed.total_seconds()})
             return "REQUEST (t={seconds}s)  {method} {url} \nBODY  {body}".format(**info)
+        return "NO RESPONSE"
 
     def _format_request_status(self, response):
-        return "STATUS  {} {}".format(response.status_code, response.reason)
+        if response:
+            return "STATUS  {} {}".format(response.status_code, response.reason)
+        return "NO RESPONSE"
 
     @property
     def url(self):
