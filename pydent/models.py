@@ -1734,7 +1734,9 @@ class Sample(ModelBase, NamedMixin):
         ft = self.sample_type.field_type(name)
         if ft.array:
             update_hash = self._update_field_value_array(fvs, ft, values)
-            self.field_values = update_hash['update'] + update_hash['add']
+            other_fvs = [fv for fv in self.field_values if fv.name != ft.name]
+            self.field_values = other_fvs + update_hash['add'] + update_hash['update']
+            # self.field_values = update_hash['update'] + update_hash['add']
             return update_hash
         else:
             raise AquariumModelError("Cannot update FieldValue array. FieldType \"{}\" is not an array.".format(name))

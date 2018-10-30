@@ -148,14 +148,18 @@ def test_update_properties_using_array(session, num_field_values):
 
     # fake_sample.field_value_array
     sample.update_properties({
-        "Fragment Mix Array": [sample] * num_field_values
+        "Fragment Mix Array": [sample] * num_field_values,
+        "Length": 1000
     })
-    assert len(sample.field_values) == num_field_values
+    assert len(sample.field_value_array("Fragment Mix Array")) == num_field_values
+    assert len(sample.properties["Fragment Mix Array"]) == num_field_values
+    print(sample.properties)
+    assert sample.properties["Length"] == 1000
 
     # reset field values
     sample.update_properties({
         "Fragment Mix Array": [sample] * (10-num_field_values)
     })
-    assert len(sample.field_values) == 10-num_field_values
+    assert len(sample.field_value_array("Fragment Mix Array")) == 10-num_field_values
 
 
