@@ -6,3 +6,4 @@ __url__ = 'http://klavinslab.org/trident'
 __version__ = '0.0.34a'
 __author__ = 'Justin Vrana, Eric Klavins, Ben Keller'
 __author_email__ = "jvrana@uw.edu"
+__pypi__ = "https://pypi.org/project/pydent/"

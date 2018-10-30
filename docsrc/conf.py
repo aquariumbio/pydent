@@ -75,7 +75,7 @@ author = pydent.__author__
 #
 # The short X.Y version.
 version = pydent.__version__
-webpage = "http://www.github.com/klavinslab/trident"
+gitpage = "http://www.github.com/klavinslab/trident"
 # The full version, including alpha/beta/rc tags.
 release = pydent.__version__
 
@@ -98,7 +98,7 @@ pygments_style = 'sphinx'
 todo_include_todos = False
 
 
-html_context = {'version': version}
+html_context = {'version': version, 'github': pydent.__url__, 'pypi': pydent.__pypi__}
 
 # -- Options for HTML output ----------------------------------------------
 
