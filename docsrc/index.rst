@@ -31,6 +31,7 @@ User guide
    :maxdepth: 3
 
    self
+   intro
    overview
    quickstart
    browsing
