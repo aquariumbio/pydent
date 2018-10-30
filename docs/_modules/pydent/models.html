@@ -6,15 +6,27 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  
+  <!-- Licensed under the Apache 2.0 License -->
+  <link rel="stylesheet" type="text/css" href="../../_static/fonts/open-sans/stylesheet.css" />
+  <!-- Licensed under the SIL Open Font License -->
+  <link rel="stylesheet" type="text/css" href="../../_static/fonts/source-serif-pro/source-serif-pro.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
     <title>pydent.models &#8212; Trident 0.0.34a documentation</title>
-    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+  
+   
+
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,43 +41,73 @@
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
-    <a href="../../index.html">
-        <h1>Trident</h1>
-        <h2>0.0.34a</h2>
-    </a>
-</p>
+    <div class="container-wrapper">
 
-<p>
-    Trident is a python scripting API wrapper for Aquarium. With Trident,
-    you can create python scripts and apps that mine data, create samples,
-    submit laboratory protocols, and more. You are looking at documentation
-    for version <b>0.0.34a</b>.
-</p>
-<div>
-    <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
-    <a href="https://badge.fury.io/py/pydent"><img src="https://badge.fury.io/py/pydent.svg" alt="PyPI version" height="18"></a>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
+      <div id="mobile-toggle">
+        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+      </div>
+  <div id="left-column">
+    <div class="sphinxsidebar"><div>
+    <div>
+        <a href="" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    </div>
+    <div>
+        <a href="../../index.html">
+            <h1 align="center">Trident</h1>
+        </a>
+        <p class="sidebar-subtitle">Version: 0.0.34a</p>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <h2>Table Of Contents</h2>
+  </div>
+  <div class="sidebar-toc">
+    
+    
+      <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Trident Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../browsing.html">Model browsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_notes.html">Developer Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/api_reference.html">API Reference</a></li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+    
+  </div>
+</div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <div id="main-search">
+      <form class="form-inline" action="../../search.html" method="GET" role="form">
+        <div class="input-group">
+          <input name="q" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+        <div id="right-column">
+          
+          <div role="navigation" aria-label="breadcrumbs navigation">
+            <ol class="breadcrumb">
+              <li><a href="../../index.html">Docs</a></li>
+              
+                <li><a href="../index.html">Module code</a></li>
+              
+              <li>pydent.models</li>
+            </ol>
+          </div>
+          
+          <div class="document clearer body">
             
   <h1>Source code for pydent.models</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Aquarium models</span>
@@ -127,19 +169,23 @@
 <span class="sd">            callback_args={&quot;sample_type_id&quot;: lambda self: self.id})</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">groupby</span>
+
 <span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
 <span class="kn">from</span> <span class="nn">pydent.exceptions</span> <span class="k">import</span> <span class="n">AquariumModelError</span>
 <span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">add_schema</span><span class="p">,</span> <span class="n">fields</span>
 <span class="kn">from</span> <span class="nn">pydent.relationships</span> <span class="k">import</span> <span class="p">(</span><span class="n">One</span><span class="p">,</span> <span class="n">Many</span><span class="p">,</span> <span class="n">HasOne</span><span class="p">,</span> <span class="n">HasMany</span><span class="p">,</span>
-                                  <span class="n">HasManyThrough</span><span class="p">,</span> <span class="n">HasManyGeneric</span><span class="p">)</span>
+                                  <span class="n">HasManyThrough</span><span class="p">,</span> <span class="n">HasManyGeneric</span><span class="p">,</span>
+                                  <span class="n">HasOneFromMany</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">filter_list</span>
-<span class="kn">from</span> <span class="nn">pydent.utils.plan_validator</span> <span class="k">import</span> <span class="n">PlanValidator</span>
 <span class="kn">from</span> <span class="nn">pydent.utils.async_requests</span> <span class="k">import</span> <span class="n">make_async</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pydent.utils.plan_validator</span> <span class="k">import</span> <span class="n">PlanValidator</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;Account&quot;</span><span class="p">,</span>
@@ -170,49 +216,6 @@
     <span class="s2">&quot;UserBudgetAssociation&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Wire&quot;</span>
 <span class="p">]</span>
-
-
-<span class="c1"># Mix-ins</span>
-
-<span class="k">class</span> <span class="nc">HasCodeMixin</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Access to latest code for OperationType, Library, etc.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the code from an OperationType or Library</span>
-
-<span class="sd">        :param name: accessor name for the code.</span>
-<span class="sd">            &quot;source&quot; for Library or &quot;protocol&quot;, &quot;precondition&quot;, &quot;cost_model&quot;,</span>
-<span class="sd">            or &quot;documentation&quot; for OperationType</span>
-<span class="sd">        :type name: str</span>
-<span class="sd">        :return: the code model</span>
-<span class="sd">        :rtype: Code</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">codes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">codes</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">codes</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
-        <span class="n">codes</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">codes</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span>
-            <span class="n">c</span><span class="p">,</span> <span class="s2">&quot;child_id&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">c</span><span class="o">.</span><span class="n">child_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">codes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">codes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">get_code_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">code_</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        Callback for returning code members for OperationType or Library</span>
-
-<span class="s2">        :param model_name: the model_name, expected &quot;Code&quot;</span>
-<span class="s2">        :type model_name: str</span>
-<span class="s2">        :param name: accessor name for the code.</span>
-<span class="s2">            &quot;source&quot; for Library or &quot;protocol&quot;, &quot;precondition&quot;, &quot;cost_model&quot;,</span>
-<span class="s2">            or &quot;documentation&quot; for OperationType</span>
-<span class="s2">        :type name: str</span>
-<span class="s2">        :return: the code model</span>
-<span class="s2">        :rtype: Code</span>
-<span class="s2">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s2">&quot;Code&quot;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
-                <span class="s2">&quot;Model name must be </span><span class="si">{}</span><span class="s2">, not </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">FieldMixin</span><span class="p">:</span>
@@ -436,10 +439,8 @@
     <span class="sd">&quot;&quot;&quot;A FieldType model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">allowable_field_types</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;AllowableFieldType&quot;</span><span class="p">,</span> <span class="s2">&quot;FieldType&quot;</span><span class="p">),</span>
-        <span class="n">operation_type</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span>
-            <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;find_field_parent&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">),</span>
-        <span class="n">sample_type</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span>
-            <span class="s2">&quot;SampleType&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;find_field_parent&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">)</span>
+        <span class="n">operation_type</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;OperationType&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">}),</span>
+        <span class="n">sample_type</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;SampleType&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;SampleType&quot;</span><span class="p">})</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -902,13 +903,23 @@
 
 
 <div class="viewcode-block" id="Library"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Library">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Library</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">HasCodeMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Library</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Library model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">codes</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">),</span>
-        <span class="n">source</span><span class="o">=</span><span class="n">One</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_code_callback&quot;</span><span class="p">,</span>
-                   <span class="n">callback_args</span><span class="o">=</span><span class="s2">&quot;source&quot;</span><span class="p">)</span>
-    <span class="p">)</span></div>
+        <span class="n">source</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
+                                  <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
+                                      <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;Library&quot;</span><span class="p">,</span>
+                                      <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span>
+                                  <span class="p">}),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="Library.code"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Library.code">[docs]</a>    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reminant from previous API&quot;&quot;&quot;</span>
+        <span class="c1"># raise DeprecationWarning(&quot;This method is depreciated. Use &#39;.source&#39; directly&quot;)</span>
+        <span class="k">if</span> <span class="n">accessor</span> <span class="o">==</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
 <div class="viewcode-block" id="Membership"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Membership">[docs]</a><span class="nd">@add_schema</span>
@@ -1012,12 +1023,6 @@
 
 <div class="viewcode-block" id="Operation.field_value_array"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation.field_value_array">[docs]</a>    <span class="k">def</span> <span class="nf">field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns :class:`FieldValue` array with name and role.&quot;&quot;&quot;</span>
-        <span class="n">ft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">ft</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;FieldValue is not an array for the field value of operation&quot;</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">(id=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
-                <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Operation.field_value"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation.field_value">[docs]</a>    <span class="k">def</span> <span class="nf">field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
@@ -1323,8 +1328,9 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">fv</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;output&#39;</span><span class="p">]</span></div>
 
 
+<span class="c1"># TODO: Refactor OperationType and Library code relationships to use ONE</span>
 <div class="viewcode-block" id="OperationType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.OperationType">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">OperationType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">HasCodeMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">OperationType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents an OperationType, which is the definition of a protocol in</span>
 <span class="sd">    Aquarium.</span>
@@ -1333,16 +1339,35 @@
         <span class="n">operations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Operation&quot;</span><span class="p">,</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">),</span>
         <span class="n">field_types</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;FieldType&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">}),</span>
         <span class="n">codes</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">),</span>
-        <span class="n">protocol</span><span class="o">=</span><span class="n">One</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_code_callback&quot;</span><span class="p">,</span>
-                     <span class="n">callback_args</span><span class="o">=</span><span class="s2">&quot;protocol&quot;</span><span class="p">),</span>
-        <span class="n">cost_model</span><span class="o">=</span><span class="n">One</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_code_callback&quot;</span><span class="p">,</span>
-                       <span class="n">callback_args</span><span class="o">=</span><span class="s2">&quot;cost_model&quot;</span><span class="p">),</span>
-        <span class="n">documentation</span><span class="o">=</span><span class="n">One</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_code_callback&quot;</span><span class="p">,</span>
-                          <span class="n">callback_args</span><span class="o">=</span><span class="s2">&quot;documentation&quot;</span><span class="p">),</span>
-        <span class="n">precondition</span><span class="o">=</span><span class="n">One</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_code_callback&quot;</span><span class="p">,</span>
-                         <span class="n">callback_args</span><span class="o">=</span><span class="s2">&quot;precondition&quot;</span><span class="p">),</span>
+        <span class="n">cost_model</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
+                                  <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
+                                      <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span>
+                                      <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;cost_model&quot;</span>
+                                  <span class="p">}),</span>
+        <span class="n">documentation</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
+                                     <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
+                                         <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span>
+                                         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;documentation&quot;</span>
+                                     <span class="p">}),</span>
+        <span class="n">precondition</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
+                                    <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
+                                        <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span>
+                                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;precondition&quot;</span>
+                                    <span class="p">}),</span>
+        <span class="n">protocol</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
+                                <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
+                                    <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;protocol&quot;</span>
+                                <span class="p">}),</span>
         <span class="n">user</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">)</span>
     <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="p">):</span>
+        <span class="c1"># raise DeprecationWarning(&quot;This method is depreciated. Call code directly using &#39;protocol&#39;, &#39;cost_model&#39;,&quot;</span>
+        <span class="c1">#                          &quot; &#39;documentation&#39;, or &#39;precondition&#39;.&quot;)</span>
+        <span class="k">if</span> <span class="n">accessor</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;protocol&quot;</span><span class="p">,</span> <span class="s1">&#39;precondition&#39;</span><span class="p">,</span> <span class="s1">&#39;documentation&#39;</span><span class="p">,</span> <span class="s1">&#39;cost_model&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="OperationType.interface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.OperationType.interface">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
@@ -1670,7 +1695,8 @@
                              <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample&quot;</span><span class="p">})</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :param name:</span>
@@ -1703,11 +1729,15 @@
     <span class="k">def</span> <span class="nf">field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span>
-                        <span class="n">field_value</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">field_value</span>
         <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">field_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">field_values</span>
 
     <span class="k">def</span> <span class="nf">_prop_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_keys</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">expected_keys</span><span class="p">}</span>
@@ -1745,32 +1775,99 @@
         <span class="k">return</span> <span class="n">fv_dict</span>
 
     <span class="k">def</span> <span class="nf">empty_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_types</span><span class="p">}</span>
+        <span class="n">empty_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_types</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">empty_properties</span><span class="p">[</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">return</span> <span class="n">empty_properties</span>
 
     <span class="c1"># TODO: somehow do some kind of type checking for field_types. Note the field_values do not have field_types for some reason unless they are a sample field value</span>
     <span class="k">def</span> <span class="nf">_set_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_value</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="n">ft</span> <span class="o">=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span>
-        <span class="k">if</span> <span class="n">ft</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">field_value</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">ft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_type</span><span class="p">(</span><span class="n">field_value</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">ftype</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">:</span>
             <span class="n">field_value</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">field_value</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_get_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_value</span><span class="p">):</span>
+        <span class="n">ft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_type</span><span class="p">(</span><span class="n">field_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">ftype</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">field_value</span><span class="o">.</span><span class="n">sample</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">field_value</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_get_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_value</span><span class="p">):</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span>
+        <span class="k">if</span> <span class="n">field_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">field_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">field_value</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span> <span class="o">=</span> <span class="n">field_type</span>
+        <span class="k">return</span> <span class="n">field_type</span>
+
     <span class="k">def</span> <span class="nf">update_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_dict</span><span class="p">):</span>
+        <span class="n">fv_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fv_dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">prop_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">fv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fv_dict</span><span class="p">()[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">fv</span> <span class="o">=</span> <span class="n">fv_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">fv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># then create a new field value</span>
                 <span class="n">fv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">initialize_field_value</span><span class="p">()</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fv</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="c1"># then this is an array</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fv</span><span class="p">):</span>
+                        <span class="c1"># then update existing field_values</span>
+                        <span class="c1"># create new field_values if necessary</span>
+                        <span class="k">for</span> <span class="n">new_value</span><span class="p">,</span> <span class="n">old_fv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_set_field_value</span><span class="p">(</span><span class="n">fv</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span>
+                        <span class="n">diff</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">diff</span><span class="p">):</span>
+                            <span class="n">new_fv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">initialize_field_value</span><span class="p">()</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_set_field_value</span><span class="p">(</span><span class="n">new_fv</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                        <span class="c1"># then field_values need to be deleted</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot update. The FieldValue &#39;</span><span class="si">{}</span><span class="s2">&#39; is part of an array and &quot;</span>
+                                             <span class="s2">&quot;the properties expected a list, but it &quot;</span>
+                                             <span class="s2">&quot;instead received a &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_field_value</span><span class="p">(</span><span class="n">fv</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Sample._fv_dict"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Sample._fv_dict">[docs]</a>    <span class="k">def</span> <span class="nf">_fv_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns field_values grouped by their field_type name. If the field_type is an array,</span>
+<span class="sd">        then the value will be a list of FieldValues (or empty list). Otherwise the value will be a FieldValue or None.</span>
+
+<span class="sd">        :return: dictionary of field_values</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">field_values_by_name</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+            <span class="n">field_values_by_name</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_types</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">field_values_by_name</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">field_values_by_name</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">return</span> <span class="n">properties</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">fv_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_types</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prop_dict</span><span class="p">(</span><span class="n">fv_keys</span><span class="p">)</span>
+        <span class="n">fv_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fv_dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">fv_dict</span><span class="p">:</span>
+            <span class="n">fvs</span> <span class="o">=</span> <span class="n">fv_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fvs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">fv_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_field_value</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">fvs</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fvs</span><span class="p">,</span> <span class="n">FieldValue</span><span class="p">):</span>
+                <span class="n">fv_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_value</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fv_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">fv_dict</span>
 
 <div class="viewcode-block" id="Sample.save"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Sample.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Saves the Sample to the Aquarium server. Requires</span>
@@ -1790,7 +1887,8 @@
                     <span class="n">i</span><span class="o">.</span><span class="n">object_type_id</span> <span class="o">==</span> <span class="n">object_type</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2"> id=&#39;</span><span class="si">{}</span><span class="s2">&#39; name=&#39;</span><span class="si">{}</span><span class="s2">&#39; sample_type=</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2"> id=&#39;</span><span class="si">{}</span><span class="s2">&#39; name=&#39;</span><span class="si">{}</span><span class="s2">&#39; sample_type=</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                              <span class="bp">self</span><span class="o">.</span><span class="n">sample_type</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SampleType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.SampleType">[docs]</a><span class="nd">@add_schema</span>
@@ -1836,6 +1934,7 @@
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2"> id=&#39;</span><span class="si">{}</span><span class="s2">&#39; name=&#39;</span><span class="si">{}</span><span class="s2">&#39;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
 
 <span class="c1"># TODO: expiring_url is never updated...</span>
 <div class="viewcode-block" id="Upload"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Upload">[docs]</a><span class="nd">@add_schema</span>
@@ -2010,9 +2109,9 @@
 </pre></div>
 
           </div>
+            
         </div>
-      </div>
-      <div class="clearer"></div>
+        <div class="clearfix"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -2027,9 +2126,14 @@
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
-    </div>
+<script type="text/javascript">
+  $("#mobile-toggle a").click(function () {
+    $("#left-column").toggle();
+  });
+</script>
+<script type="text/javascript" src="../../_static/js/bootstrap.js"></script>
+  <div class="footer">
+    &copy; Copyright 2017, University of Washington. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
   </body>
 </html>

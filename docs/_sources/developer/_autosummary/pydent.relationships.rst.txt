@@ -18,6 +18,7 @@ pydent.relationships
       HasManyThrough
       HasMixin
       HasOne
+      HasOneFromMany
       Many
       One
    

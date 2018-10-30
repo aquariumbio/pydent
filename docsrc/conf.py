@@ -75,6 +75,7 @@ author = pydent.__author__
 #
 # The short X.Y version.
 version = pydent.__version__
+webpage = "http://www.github.com/klavinslab/trident"
 # The full version, including alpha/beta/rc tags.
 release = pydent.__version__
 
@@ -104,8 +105,19 @@ html_context = {'version': version}
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinxdoc'
-# html_theme = 'sphinx_rtd_theme'
+import guzzle_sphinx_theme
+
+html_theme_path = guzzle_sphinx_theme.html_theme_path()
+html_theme = 'guzzle_sphinx_theme'
+
+# Register the theme as an extension to generate a sitemap.xml
+extensions.append("guzzle_sphinx_theme")
+
+# Guzzle theme options (see theme.conf for more information)
+html_theme_options = {
+    # Set the name of the project to appear in the sidebar
+    "project_nav_name": "Python BenchlingAPI",
+}
 
 
 
@@ -115,9 +127,13 @@ html_theme = 'sphinxdoc'
 html_static_path = ['_static']
 
 # html side bars
+# html_sidebars = {
+#     'index':    ['sidebar.html', 'globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
+#     '**':       ['sidebar.html', 'localtoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html']
+# }
 html_sidebars = {
-    'index':    ['sidebar.html', 'globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
-    '**':       ['sidebar.html', 'localtoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html']
+    'index':    ['sidebar.html', 'globaltoc.html', 'searchbox.html'],
+    '**':       ['sidebar.html', 'globaltoc.html', 'searchbox.html']
 }
 
 # -- Options for HTMLHelp output ------------------------------------------

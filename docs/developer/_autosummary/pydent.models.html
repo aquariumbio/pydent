@@ -6,8 +6,17 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  
+  <!-- Licensed under the Apache 2.0 License -->
+  <link rel="stylesheet" type="text/css" href="../../_static/fonts/open-sans/stylesheet.css" />
+  <!-- Licensed under the SIL Open Font License -->
+  <link rel="stylesheet" type="text/css" href="../../_static/fonts/source-serif-pro/source-serif-pro.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
     <title>pydent.models &#8212; Trident 0.0.34a documentation</title>
-    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
@@ -16,7 +25,10 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.relationships" href="pydent.relationships.html" />
-    <link rel="prev" title="pydent.interfaces" href="pydent.interfaces.html" /> 
+    <link rel="prev" title="pydent.interfaces" href="pydent.interfaces.html" />
+  
+   
+
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -37,56 +49,76 @@
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
-    <a href="../../index.html">
-        <h1>Trident</h1>
-        <h2>0.0.34a</h2>
-    </a>
-</p>
+    <div class="container-wrapper">
 
-<p>
-    Trident is a python scripting API wrapper for Aquarium. With Trident,
-    you can create python scripts and apps that mine data, create samples,
-    submit laboratory protocols, and more. You are looking at documentation
-    for version <b>0.0.34a</b>.
-</p>
-<div>
-    <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
-    <a href="https://badge.fury.io/py/pydent"><img src="https://badge.fury.io/py/pydent.svg" alt="PyPI version" height="18"></a>
-</div>
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="pydent.interfaces.html"
-                        title="previous chapter">pydent.interfaces</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="pydent.relationships.html"
-                        title="next chapter">pydent.relationships</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/developer/_autosummary/pydent.models.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
+      <div id="mobile-toggle">
+        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+      </div>
+  <div id="left-column">
+    <div class="sphinxsidebar"><div>
+    <div>
+        <a href="" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    </div>
+    <div>
+        <a href="../../index.html">
+            <h1 align="center">Trident</h1>
+        </a>
+        <p class="sidebar-subtitle">Version: 0.0.34a</p>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <h2>Table Of Contents</h2>
+  </div>
+  <div class="sidebar-toc">
+    
+    
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Trident Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../browsing.html">Model browsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_notes.html">Developer Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tests.html">Tests</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+    
+  </div>
+</div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <div id="main-search">
+      <form class="form-inline" action="../../search.html" method="GET" role="form">
+        <div class="input-group">
+          <input name="q" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+        <div id="right-column">
+          
+          <div role="navigation" aria-label="breadcrumbs navigation">
+            <ol class="breadcrumb">
+              <li><a href="../../index.html">Docs</a></li>
+              
+                <li><a href="../api_reference.html">API Reference</a></li>
+              
+              <li>pydent.models</li>
+            </ol>
+          </div>
+          
+          <div class="document clearer body">
             
   <div class="section" id="module-pydent.models">
 <span id="pydent-models"></span><h1>pydent.models<a class="headerlink" href="#module-pydent.models" title="Permalink to this headline">¶</a></h1>
@@ -177,64 +209,61 @@ SampleType:</p>
 <tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Group" title="pydent.models.Group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code></a>(**model_args)</td>
 <td>A Group model</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasCodeMixin</span></code></td>
-<td>Access to latest code for OperationType, Library, etc.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Invoice" title="pydent.models.Invoice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Invoice</span></code></a>(**model_args)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Invoice" title="pydent.models.Invoice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Invoice</span></code></a>(**model_args)</td>
 <td>A Invoice model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Item</span></code></a>([sample_id,&nbsp;object_type_id])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Item</span></code></a>([sample_id,&nbsp;object_type_id])</td>
 <td>Defines a proxy object for an Item model in Aquarium.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Job" title="pydent.models.Job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Job</span></code></a>(**model_args)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Job" title="pydent.models.Job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Job</span></code></a>(**model_args)</td>
 <td>A Job model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.JobAssociation" title="pydent.models.JobAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JobAssociation</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.JobAssociation" title="pydent.models.JobAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JobAssociation</span></code></a>(**model_args)</td>
 <td>A JobAssociation model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Library" title="pydent.models.Library"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Library</span></code></a>(**model_args)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Library" title="pydent.models.Library"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Library</span></code></a>(**model_args)</td>
 <td>A Library model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Membership" title="pydent.models.Membership"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Membership</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Membership" title="pydent.models.Membership"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Membership</span></code></a>(**model_args)</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">NamedMixin</span></code></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">NamedMixin</span></code></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.ObjectType" title="pydent.models.ObjectType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectType</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.ObjectType" title="pydent.models.ObjectType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectType</span></code></a>(**model_args)</td>
 <td>A ObjectType model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Operation</span></code></a>([operation_type_id,&nbsp;status,&nbsp;x,&nbsp;y])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Operation</span></code></a>([operation_type_id,&nbsp;status,&nbsp;x,&nbsp;y])</td>
 <td>A Operation model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OperationType</span></code></a>(**model_args)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OperationType</span></code></a>(**model_args)</td>
 <td>Represents an OperationType, which is the definition of a protocol in Aquarium.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PartAssociation" title="pydent.models.PartAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PartAssociation</span></code></a>([part_id,&nbsp;collection_id,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.PartAssociation" title="pydent.models.PartAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PartAssociation</span></code></a>([part_id,&nbsp;collection_id,&nbsp;…])</td>
 <td>Represents a PartAssociation linking a part to a collection.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plan</span></code></a>([name,&nbsp;status,&nbsp;source,&nbsp;destination])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plan</span></code></a>([name,&nbsp;status,&nbsp;source,&nbsp;destination])</td>
 <td>A Plan model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PlanAssociation" title="pydent.models.PlanAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></a>([plan_id,&nbsp;operation_id])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.PlanAssociation" title="pydent.models.PlanAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></a>([plan_id,&nbsp;operation_id])</td>
 <td>A PlanAssociation model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a>([name,&nbsp;project,&nbsp;description,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a>([name,&nbsp;project,&nbsp;description,&nbsp;…])</td>
 <td>A Sample model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleType</span></code></a>(**model_args)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleType</span></code></a>(**model_args)</td>
 <td>A SampleType model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></a>([job_id,&nbsp;file])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></a>([job_id,&nbsp;file])</td>
 <td>An Upload model</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a>()</td>
 <td>A User model</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.UserBudgetAssociation" title="pydent.models.UserBudgetAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UserBudgetAssociation</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.UserBudgetAssociation" title="pydent.models.UserBudgetAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UserBudgetAssociation</span></code></a>()</td>
 <td>An association model between a User and a Budget</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Wire" title="pydent.models.Wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wire</span></code></a>([source,&nbsp;destination])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Wire" title="pydent.models.Wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wire</span></code></a>([source,&nbsp;destination])</td>
 <td>A Wire model</td>
 </tr>
 </tbody>
@@ -4230,7 +4259,7 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.Library">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Library</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Library" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.HasCodeMixin</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Library model</p>
 <dl class="method">
 <dt id="pydent.models.Library._check_for_session">
@@ -4323,22 +4352,8 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 
 <dl class="method">
 <dt id="pydent.models.Library.code">
-<code class="descname">code</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.code" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the code from an OperationType or Library</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) – accessor name for the code.
-“source” for Library or “protocol”, “precondition”, “cost_model”,
-or “documentation” for OperationType</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the code model</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pydent.models.Code" title="pydent.models.Code">Code</a></td>
-</tr>
-</tbody>
-</table>
+<code class="descname">code</code><span class="sig-paren">(</span><em>accessor</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Library.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Library.code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reminant from previous API</p>
 </dd></dl>
 
 <dl class="method">
@@ -5776,7 +5791,7 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.OperationType">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">OperationType</code><span class="sig-paren">(</span><em>**model_args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#OperationType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.HasCodeMixin</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>Represents an OperationType, which is the definition of a protocol in
 Aquarium.</p>
 <dl class="method">
@@ -5863,26 +5878,6 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.OperationType.code">
-<code class="descname">code</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.code" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the code from an OperationType or Library</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) – accessor name for the code.
-“source” for Library or “protocol”, “precondition”, “cost_model”,
-or “documentation” for OperationType</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the code model</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pydent.models.Code" title="pydent.models.Code">Code</a></td>
 </tr>
 </tbody>
 </table>
@@ -7303,6 +7298,23 @@ find models in model relationships.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model that satisfies the relationship</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">MarshallerBase</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Sample._fv_dict">
+<code class="descname">_fv_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample._fv_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample._fv_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns field_values grouped by their field_type name. If the field_type is an array,
+then the value will be a list of FieldValues (or empty list). Otherwise the value will be a FieldValue or None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary of field_values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -9146,9 +9158,21 @@ find models in model relationships.</p>
 
 
           </div>
-        </div>
+            
+  <div class="footer-relations">
+    
+      <div class="pull-left">
+        <a class="btn btn-default" href="pydent.interfaces.html" title="previous chapter (use the left arrow)">pydent.interfaces</a>
       </div>
-      <div class="clearer"></div>
+    
+      <div class="pull-right">
+        <a class="btn btn-default" href="pydent.relationships.html" title="next chapter (use the right arrow)">pydent.relationships</a>
+      </div>
+    </div>
+    <div class="clearer"></div>
+  
+        </div>
+        <div class="clearfix"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -9169,9 +9193,14 @@ find models in model relationships.</p>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
-    </div>
+<script type="text/javascript">
+  $("#mobile-toggle a").click(function () {
+    $("#left-column").toggle();
+  });
+</script>
+<script type="text/javascript" src="../../_static/js/bootstrap.js"></script>
+  <div class="footer">
+    &copy; Copyright 2017, University of Washington. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
   </body>
 </html>

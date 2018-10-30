@@ -24,7 +24,6 @@ pydent.models
       FieldType
       FieldValue
       Group
-      HasCodeMixin
       Invoice
       Item
       Job
