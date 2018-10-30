@@ -140,3 +140,5 @@ def test_update_properties(session):
     assert yeast.properties["Parent"] == parent
     assert yeast.properties["QC_length"] == 100
 
+def test_updat
+
