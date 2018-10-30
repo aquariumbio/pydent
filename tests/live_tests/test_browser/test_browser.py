@@ -509,6 +509,7 @@ def test_library_retrieve(session):
         assert isinstance(lib.source, pydent_models.Code)
 
 
+# TODO: test update sample with field value array
 def test_update_sample_with_field_value(session):
 
     browser = Browser(session)
