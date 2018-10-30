@@ -482,6 +482,7 @@ def test_retrieve_with_new_samples(session):
 
     assert fvs == fvs2
 
+
 def test_operation_type_retrieve(session):
 
     ots = session.OperationType.last(10)
@@ -506,3 +507,12 @@ def test_library_retrieve(session):
     for lib in libs:
         assert 'source' in lib.__dict__
         assert isinstance(lib.source, pydent_models.Code)
+
+
+def test_update_sample_with_field_value(session):
+
+    browser = Browser(session)
+
+    new_sample = browser.new_sample("Fragment", str(uuid.uuid4()), '', '')
+    browser.save_sample(new_sample)
+

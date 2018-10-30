@@ -275,7 +275,7 @@ def fake_sample(fake_session):
     return fake_session.Sample.load(sample_data)
 
 
-@pytest.mark.parametrize("num_field_values", list(range(10)))
+@pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
 def test_update_properties_of_field_value_array(fake_sample, num_field_values):
     # fake_sample.field_value_array
     fake_sample.set_field_value_array('Fragment Mix Array', [fake_sample] * num_field_values)
@@ -284,3 +284,18 @@ def test_update_properties_of_field_value_array(fake_sample, num_field_values):
     # reset field values
     fake_sample.set_field_value_array('Fragment Mix Array', [fake_sample] * (10-num_field_values))
     assert len(fake_sample.field_values) == 10-num_field_values
+
+@pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
+def test_update_properties_using_array(fake_sample, num_field_values):
+    # fake_sample.field_value_array
+    fake_sample.update_properties({
+        "Fragment Mix Array": [fake_sample] * num_field_values
+    })
+    assert len(fake_sample.field_values) == num_field_values
+
+    # reset field values
+    fake_sample.update_properties({
+        "Fragment Mix Array": [fake_sample] * (10-num_field_values)
+    })
+    assert len(fake_sample.field_values) == 10-num_field_values
+
