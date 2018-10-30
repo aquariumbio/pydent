@@ -35,22 +35,43 @@ Loggin in
 
 .. code:: python
 
-    from pydent import AqSession, models
+    from pydent import AqSession
 
-    nursery = AqSession("username", "password", "url")
-    production = AqSession("username", "password", "url2")
+    session = AqSession("username", "password", "url")
 
-And, to login interactively
+You can maintain multiple sessions by intantiating a new session:
 
 .. code:: python
 
-    nursery = AqSession.interactive()
-    # enters interactive shell
+    session2 = AqSession("username", "password", "url2")
 
-Making a query
---------------
+Logging and verbose mode
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Find Sample with id==1
+To see details on all requests Trident is making, you can set
+verbose mode on:
+
+.. code:: python
+
+    session.set_verbose(True)
+
+Available Models
+----------------
+
+We can first see all of the available models using:
+
+.. testcode:: python
+
+    print(session.models)
+
+.. testoutput::
+
+    ['Account', 'AllowableFieldType', 'Budget', 'Code', 'Collection', 'DataAssociation', 'FieldType', 'FieldValue', 'Group', 'Invoice', 'Item', 'Job', 'JobAssociation', 'Library', 'Membership', 'ObjectType', 'Operation', 'OperationType', 'PartAssociation', 'Plan', 'PlanAssociation', 'Sample', 'SampleType', 'Upload', 'User', 'UserBudgetAssociation', 'Wire']
+
+For more information about these models, visit the :doc:`developer/api_reference.rst`
+
+First, we can find a Sample with id=1 using **find**, which returns a single
+model (or None):
 
 .. testcode::
 
@@ -61,8 +82,8 @@ Find Sample with id==1
 
     1
 
-Find SampleTypes with name=="Primer"
-
+We may also find some models by name using the **find_by_name** method,
+which returns a single model (or None):
 
 .. testcode::
 
@@ -73,9 +94,8 @@ Find SampleTypes with name=="Primer"
 
     Primer
 
-
-Find OperationType where name="Transfer to 96 Well Plate". The method
-will return an array where the conditions are true.
+We can also perform more explicit queries using **where**, which returns
+an array of models (or an empty array):
 
 .. testcode::
 
@@ -85,7 +105,6 @@ will return an array where the conditions are true.
 .. testoutput::
 
     Order Primer
-
 
 You can use where with more specific conditions
 
@@ -102,14 +121,15 @@ You can use where with SQL-like queries as well
 
 .. testcode::
 
-    mysample = session.SampleType.where("id=1")[0]
+    mysample = session.Sample.where("id>10 AND sample_type_id<10")[0]
     print(mysample.name)
 
 .. testoutput::
 
-    Primer
+    Sample
 
-Here's an example of finding all Jobs created in the last 24 hours
+We can also query models by querying their creation (**created_at**) or
+update (**updated_at**) times:
 
 .. testcode::
 
@@ -123,16 +143,6 @@ Here's an example of finding all Jobs created in the last 24 hours
 .. testoutput::
 
     jobs found
-
-Use session.models to list all available models in Aquarium.
-
-.. testcode::
-
-    print(session.models)
-
-.. testoutput::
-
-    ['Account', 'AllowableFieldType', 'Budget', 'Code', 'Collection', 'DataAssociation', 'FieldType', 'FieldValue', 'Group', 'Invoice', 'Item', 'Job', 'JobAssociation', 'Library', 'Membership', 'ObjectType', 'Operation', 'OperationType', 'Plan', 'PlanAssociation', 'Sample', 'SampleType', 'Upload', 'User', 'UserBudgetAssociation', 'Wire']
 
 
 Creating a Sample
@@ -204,12 +214,12 @@ You can increase the timeout
 .. testcode::
 
     session.set_timeout(10)  # we set timeout to 10s
-    session.Sample.find(1)
-    print("Great!")
+    sample = session.Sample.find(1)
+    print(isinstance(sample, models.Sample))
 
 .. testoutput::
 
-    Great!
+    True
 
 
 Deserializing
