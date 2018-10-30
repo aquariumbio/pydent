@@ -170,7 +170,6 @@ def fake_sample(fake_session):
     }
     return fake_session.Sample.load(sample_data)
 
-
 @pytest.mark.parametrize("num_field_values", list(range(1)))
 def test_update_properties_of_field_value_array(fake_sample, num_field_values):
     fake_sample.set_field_value_array('Fragment Mix Array', [fake_sample]*num_field_values)

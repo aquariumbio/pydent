@@ -931,6 +931,7 @@ class Operation(ModelBase, DataAssociatorMixin):
             raise AquariumModelError(
                 msg.format(self.operation_type, self.id, role, name))
 
+    # TODO: automatically expand or contract field_values based on len(values)
     def set_field_value_array(self, name, role, values):
         """
         Sets :class:`FieldValue` array using values. Values should be a list of
@@ -1729,6 +1730,8 @@ class Sample(ModelBase, NamedMixin):
         }
 
     def set_field_value_array(self, name, values):
+        if not 'field_values' in self.__dict__:
+            self.field_values = []
         fvs = self.field_value_array(name)
         ft = self.sample_type.field_type(name)
         if ft.array:
