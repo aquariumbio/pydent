@@ -140,5 +140,22 @@ def test_update_properties(session):
     assert yeast.properties["Parent"] == parent
     assert yeast.properties["QC_length"] == 100
 
-def test_updat
+
+@pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
+def test_update_properties_using_array(session, num_field_values):
+
+    sample = session.Sample.one(sample_type_id=session.SampleType.find_by_name("Fragment").id)
+
+    # fake_sample.field_value_array
+    sample.update_properties({
+        "Fragment Mix Array": [sample] * num_field_values
+    })
+    assert len(sample.field_values) == num_field_values
+
+    # reset field values
+    sample.update_properties({
+        "Fragment Mix Array": [sample] * (10-num_field_values)
+    })
+    assert len(sample.field_values) == 10-num_field_values
+
 
