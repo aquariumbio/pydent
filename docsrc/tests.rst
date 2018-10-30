@@ -21,8 +21,7 @@ To run doctests located in `user/examples`.
 
     make doctest
 
-
-Test Coverage
+Test coverage
 -------------
 
 Covering all of the models and endpoints for Trident is very difficult.
@@ -36,12 +35,15 @@ For testing of specific Aquarium models, tests are found in
 to *intercept* requests and return expected information.
 Writing these tests take a long time and so not all model tests are comprehensive.
 
-Note JV 12/13/17: There are likely several better options
-for running http request tests:
-* HTTPretty https://github.com/gabrielfalcao/HTTPretty - convient methods to
-intercept requests, similar to Ruby's FakeWeb
-* VCRpy https://github.com/kevin1024/vcrpy - which has the capacity to *record*
-requests and intercept http requests to the recorded version of the requests.
+Request recording
+~~~~~~~~~~~~~~~~~
+
+By default, live requests are recorded automatically via
+`VCRpy <https://vcrpy.readthedocs.io/en/latest/installation.html>`_
+
+Information about each request is stored in a **fixtures/vcr_cassettes/*.yaml**
+and retrieved on a as-needed basis.
+
 
 Testing with live and fake connections
 --------------------------------------

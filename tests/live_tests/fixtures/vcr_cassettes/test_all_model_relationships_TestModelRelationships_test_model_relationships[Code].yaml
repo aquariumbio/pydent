@@ -1,0 +1,319 @@
+interactions:
+- request:
+    body: '{"model": "Code", "id": 76858}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['30']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":76858,"name":"protocol","content":"# Creator: Xavaar\r\n#
+        Last updated: 7/1/2018\r\n\r\n# Title: Gel Lesson for SynBio4Beginners\r\n#
+        Purpose: To walk students through the steps of Gel electrophoresis and teach
+        them the purpose of each step.\r\n\r\nneeds \"SynBio4Beginners/General\"\r\n\r\nclass
+        Protocol\r\n    \r\n    #ignore variables called ''nada'' they are imaginary\r\n\r\n    $debug
+        = true #DO NOT TURN THIS OFF UNLESS YOU WANT INIFITNITE LOOPS, ONLY TURN On
+        FOR THE DEPLOYED VERYSION!\r\n    $correctAnswers = true\r\n    \r\n    def
+        main\r\n        \r\n\r\n        operations.retrieve.make\r\n        \r\n        \r\n        #
+        Order of Operation -START\r\n        \r\n        # Student enters their name,
+        actually unecesary but fun\r\n        studentName = introduce \r\n        \r\n        #
+        Introduces the lesson and tells the student to grap their PCR product from
+        the fridege\r\n        intro(studentName)\r\n        \r\n        # Tells student
+        to get loading dye and mix it with PCR product\r\n        step1\r\n        \r\n        #
+        Tells student to go learn how to load a gel with the TA\r\n        step2\r\n        \r\n        miniLecture1(studentName)\r\n        \r\n        quizA2
+        = miniLecture2\r\n        \r\n        answer = miniLecture3 \r\n        \r\n        miniLecture4(answer)
+        \r\n        \r\n        miniLecture5\r\n        \r\n        nada = miniLecture6\r\n        \r\n        nada
+        = miniLecture7\r\n        \r\n        miniLecture8(studentName)\r\n        \r\n        gelReadPractice1\r\n        \r\n        gelReadPractice2\r\n        \r\n        #
+        Cut out the gel \r\n        \r\n        #purify the gel and explain the process\r\n        \r\n        #
+        Order of Operation -END-\r\n    \r\n        \r\n        operations.store\r\n        \r\n        return
+        {}\r\n    \r\n    end\r\n    \r\n    def introduce\r\n       studentName =
+        show do\r\n            title\"...\"\r\n            get \"text\", var: :a_studentName,
+        label:\"Wait, what''s your name?\", default:\"Mark Cuban\"\r\n        end\r\n        \r\n        studentName
+        = studentName[:a_studentName]\r\n        \r\n    return studentName\r\n    \r\n    end\r\n        \r\n        \r\n    def
+        intro studentName\r\n        show do \r\n          title \"Week 2 - Intro:
+        Gel Electrophoresis\"\r\n          note \"Ok #{studentName} Last week we amplified
+        a specific section of DNA, a fragment, via PCR. That took about 3 hours, after
+        it was done we put it in the fridge for you. Now your going to take the product
+        of that reaction and first seperate the DNA that we want from all the other
+        stuff and  also verify that fragment is same length as we expect it to be.
+        We do both these things with a process called Gel Electrophoresis. First \r\n          go
+        grab the PCR tube with your initial on it from the fridge.\"\r\n          check
+        \"I got it.\"\r\n        end\r\n    end\r\n    \r\n    def step1\r\n        show
+        do\r\n            title \"Week 2 - Step 1\" \r\n            note \"Great,
+        put your PCR tube in a small tube holder and grab the 6x purple loading dye
+        from the --place--\"\r\n            check \"Set the red pipet to 10 uL\"\r\n            check
+        \"Pipet 10 uL of loading dye into the PCR tube\"\r\n            warning \"Mix
+        the dye thoughouly with the PCR product by pipeting up and down to the first
+        first stop\"\r\n            \r\n        end\r\n    end\r\n    \r\n    def
+        step2\r\n        show do\r\n            title \"Week 2 - Step 2\"\r\n            note\"Next
+        your going to load the PCR product into a gel. The dye is added just so you
+        can see the liquid while your loading it, that''s why its called loading dye.
+        Your TA will demonstrate how to load the gel by adding a ladder to the first
+        lane. Now go find your TA and don''t worry I''ll explain what a ladder is
+        in a minute.\"\r\n            note \"Load lane X ( how to automate this?)\"\r\n            check
+        \"I''m back, I loaded the gel\"\r\n        end\r\n    end\r\n    \r\n    def
+        miniLecture1(studentName)\r\n     \r\n        n = 0\r\n        while n \u003c
+        5\r\n             \r\n            quizA1 = show do \r\n                title
+        \"Minilecture\"\r\n                note \"Alright #{studentName} the gel has
+        to run for about half an hour so we have time talk about what that really
+        means. \r\n                First lets review what you know about PCR...\"\r\n                select
+        [\"Agarose\",\"DNA\",\"RNA\",\"Ligase\",\"dNTPs\",\"dextrose\",\"DNA polymerase\",\"RNA
+        polymerase\",\"inducers\",\"tris-EDTA\",\"helicase\",\"DMSO\",\"primers\",\"promoters\"],
+        var: \"a_miniLec1A1\" , label: \"Select the 4 things you need in order to
+        run a PCR\" , default: 1\r\n                select [\"Agarose\",\"DNA\",\"RNA\",\"Ligase\",\"dNTPs\",\"dextrose\",\"DNA
+        polymerase\",\"RNA polymerase\",\"inducers\",\"tris-EDTA\",\"helicase\",\"DMSO\",\"primers\",\"promoters\"],
+        var: \"a_miniLec1A2\", label: \"\" , default: nil\r\n                select
+        [\"Agarose\",\"DNA\",\"RNA\",\"Ligase\",\"dNTPs\",\"dextrose\",\"DNA polymerase\",\"RNA
+        polymerase\",\"inducers\",\"tris-EDTA\",\"helicase\",\"DMSO\",\"primers\",\"promoters\"],
+        var: \"a_miniLec1A3\", label: \"\", default: nil\r\n                select
+        [\"Agarose\",\"DNA\",\"RNA\",\"Ligase\",\"dNTPs\",\"dextrose\",\"DNA polymerase\",\"RNA
+        polymerase\",\"inducers\",\"tris-EDTA\",\"helicase\",\"DMSO\",\"primers\",\"promoters\"],
+        var: \"a_miniLec1A4\", label: \"\", default: nil\r\n            end\r\n            \r\n             #
+        These two lines make a new array (list) of the answers from the Quiz.\r\n            quizA1_answers=[]\r\n            quizA1_answers.push(quizA1[:a_miniLec1A1],quizA1[:a_miniLec1A2],
+        quizA1[:a_miniLec1A3], quizA1[:a_miniLec1A4])\r\n            \r\n            if
+        $correctAnswers == true\r\n                quizA1_answers=[\"DNA\",\"dNTPs\",\"DNA
+        polymerase\",\"primers\"]\r\n            end\r\n            \r\n            #This
+        next line checks if the answers include the following four. Order should not
+        matter. \r\n            if quizA1_answers.include?(\"DNA\" \u0026\u0026 \"dNTPs\"
+        \u0026\u0026 \"DNA polymerase\" \u0026\u0026 \"primers\") \r\n                \r\n                show
+        do \r\n                    note \"Well done! You got it.\"\r\n                end\r\n                \r\n                break\r\n            end\r\n            \r\n            show
+        do\r\n                    title\"Try again\"\r\n                    note \"mmm...that
+        wasn''t the correct combination of reagents\"\r\n            end\r\n                \r\n            n
+        = n + 1\r\n        end\r\n        \r\n        if n == 5\r\n            show
+        do\r\n                note \"Please ask your TA for clarification before going
+        to the next step\"\r\n                check \"I get it now\"\r\n            end\r\n        end\r\n    end\r\n    \r\n    def
+        miniLecture2\r\n        \r\n        n = 0\r\n        while n \u003c 5\r\n        \r\n           quizA2
+        = show do\r\n                title \"Minilecture\"\r\n                note
+        \"Cool, you know what reagents go into a PCR now tell me what each one does...\"\r\n                select
+        [\"DNA\",\"dNTPs\",\"DNA polymerase\",\"primers\"], var: :a_miniLec2A1, label:
+        \"This is what we''re are trying to make more copies of\", default: nil\r\n                select
+        [\"DNA\",\"dNTPs\",\"DNA polymerase\",\"primers\"], var: :a_miniLec2A2, label:
+        \"This is what those copies are built out (aka. building blocks) of\", default:
+        nil\r\n                select [\"DNA\",\"dNTPs\",\"DNA polymerase\",\"primers\"],
+        var: :a_miniLec2A3, label: \"This is what builds those copies\", default:
+        nil\r\n                select [\"DNA\",\"dNTPs\",\"DNA polymerase\",\"primers\"],
+        var: :a_miniLec2A4, label: \"This is what guides the things that builds the
+        copies\", default: nil\r\n            end\r\n            \r\n            ##
+        These two lines make a new array (list) of the answers from the Quiz.\r\n            quizA2_answers=[]\r\n            quizA2_answers.push(quizA2[:a_miniLec2A1],quizA2[:a_miniLec2A2],
+        quizA2[:a_miniLec2A3], quizA2[:a_miniLec2A4])\r\n            \r\n            if
+        $correctAnswers == true\r\n                quizA2_answers = [\"DNA\",\"dNTPs\",\"DNA
+        polymerase\",\"primers\"]\r\n            end\r\n            \r\n            #
+        This checks that each key equals the correct answer to its question\r\n            if
+        quizA2_answers == [\"DNA\",\"dNTPs\",\"DNA polymerase\",\"primers\"]\r\n               \r\n                show
+        do\r\n                  note \"Well done! You got it.\"\r\n                end\r\n                \r\n                break\r\n                \r\n            end\r\n            \r\n            show
+        do\r\n             title\"Try again\"\r\n             note \"mmm...that wasn''t
+        the correct combination of reagents\"\r\n            end\r\n                \r\n            n
+        = n + 1\r\n        end\r\n        \r\n        if n == 5\r\n            show
+        do\r\n                note \"Please ask your TA for clarification before going
+        to the next step\"\r\n                check \"I get it now\"\r\n            end\r\n        end\r\n        \r\n    end\r\n    \r\n    def
+        miniLecture3\r\n        \r\n        answer = nil\r\n        while true\r\n           answer
+        = show do\r\n                title \"Minilecture\"\r\n                note
+        \"Yep you got it. Here''s a question though... \"\r\n                select
+        [\"Yeah\", \"No\", \"...Maybe\"], var: :a_miniLec3A1, label: \"Do you think
+        perfect copies of that section of DNA we wanted are the only things left at
+        the end of the reaction?\", default: 3 \r\n            end\r\n            \r\n            if
+        $correctAnswers == true\r\n                answer[:a_miniLec3A1] = \"...Maybe\"\r\n            end\r\n            \r\n                answer
+        = answer[:a_miniLec3A1]\r\n        \r\n            if answer == nil #ask andrew
+        why nil doesn''t work here\r\n                show do\r\n                    note
+        \"Please enter an answer\"\r\n                end\r\n            end\r\n            \r\n            if
+        $debug == true\r\n                break\r\n            end\r\n            \r\n        end\r\n        \r\n        return
+        answer\r\n        \r\n    end\r\n    \r\n    def miniLecture4(answer)\r\n        \r\n        if
+        answer == \"Yeah\"\r\n            show do \r\n                title \"Minilecture\"\r\n                note
+        \"Not quite but I like your confidence. There''s actually some other stuff
+        in there too. First theres the original DNA that we started with, then theres
+        a bunch of left over primers, and finally since primers may not have bound
+        correctly or missed there targets we might have ended up with other random
+        bits of DNA in there too.  To seperate the one piece of DNA we want from all
+        the other stuff or just make sure the PCR worked at al we use Gel Electrophoresis\"\r\n            end\r\n        end\r\n        \r\n        if
+        answer == \"No\"\r\n            show do \r\n                title \"Minilecture\"\r\n                note
+        \"That''s right. There''s actually some other stuff in there too. First theres
+        the original DNA that we started with, then theres a bunch of left over primers,
+        and finally since primers may not have bound correctly or missed there targets
+        we might have ended up with other random bits of DNA in there too.  To seperate
+        the one piece of DNA we want from all the other stuff or just make sure the
+        PCR worked at al we use Gel Electrophoresis\"\r\n            end\r\n        end\r\n    \r\n        if
+        answer == \"...Maybe\"\r\n             show do \r\n                title \"Minilecture\"\r\n                note
+        \"True wisdom is knowing what you don''t know said Confucius\"\r\n                note
+        \"There''s actually some other stuff in there too. First theres the original
+        DNA that we started with, then theres a bunch of left over primers, and finally
+        since primers may not have bound correctly or missed there targets we might
+        have ended up with other random bits of DNA in there too.  To seperate the
+        one piece of DNA we want from all the other stuff or just make sure the PCR
+        worked at al we use Gel Electrophoresis\"\r\n             end\r\n        end\r\n\r\n         if
+        answer == nil\r\n             show do\r\n                 note \"debug\"\r\n             end\r\n        end\r\n    end\r\n    \r\n    def
+        miniLecture5\r\n        show do\r\n            title \"Minilecture - How does
+        Gel Electrophoresis work?\"\r\n            note \"You just loaded the product
+        of your PCR into a well on a gel. Then you began to run current through it.  It
+        was very important to make sure that the wells were on the side of the box
+        with the black electrode this is because DNA is a negatively charged molecule
+        and it will be attracted through the gel to the positively charged red electrode.
+        . Shorter, lighter, molecules of DNA will move more quickly through the gel
+        than larger ones. Therefore if we run electricity through the gel for a set
+        amount of time DNA will seperate itself by length. Also we put the gel in
+        backwards the DNA would just run out the back of the gel straight to the red
+        electrode\"\r\n            note\"put an image here\"\r\n        end\r\n    end\r\n    \r\n    def
+        miniLecture6\r\n        nada = show do\r\n            title\"Minilecture\"\r\n            note\"put
+        an image of a gel here\"\r\n            note\"Here is an example what a gel
+        looks like as you can see there are bands which each correspond to a different
+        length of DNA and glow under a blacklight...\"\r\n            select [\"Well
+        kind of, its just I didn''t realize that DNA glows green under a black light....why
+        don''t I glow green?\"], var: :nada, label: \"What''s that I see you have
+        a question?\", default: nil\r\n        end\r\n    end\r\n\r\n    def miniLecture7\r\n        nada
+        = show do\r\n            title \"Minilecture\"\r\n            note \"Very
+        astute. You do not glow green because DNA does not glow green. When we made
+        the gel ee added a flourescent dye which binds to DNA, if we didn''t do this
+        the DNA would still seperate in to bands but we would have no idea where they
+        are because we could see them. There are several types of dyes used by different
+        labs but generally they are all at least somewhat toxic because y''know they
+        bind to DNA. \"\r\n            warning \"This means you should always where
+        gloves if you are working with gels\"\r\n            select [\"Ok cool, but
+        I still don''t understand how we actually know how long the pieces of DNA
+        in these bands are because theres nothing to compare them to. All we can say
+        is that some are shorter and some are longer\"], var: :nada, label: \"Oh?
+        you have another question?\", default: nil\r\n        end\r\n    end\r\n    \r\n    def
+        miniLecture8(studentName)\r\n        show do\r\n            title \"Minilecture\"\r\n            note
+        \"Great question #{studentName}! Thats why we use the ladder. They ladder
+        is a mixture of many fragments of DNA of known lenth.\"\r\n            note
+        \"Show an image here which explains how we always know that for example the
+        third band is 1500 bp or whatever on a 10 kb ladder\"\r\n            note
+        \"See how it kinda looks like a ladder once its been run...thats why its called
+        a ladder...\"\r\n            note \"Ready for some practice reading gels?\"\r\n            check
+        \"yup\"\r\n        end\r\n    end\r\n    \r\n    def gelReadPractice1\r\n        while
+        true\r\n            gelRP1answers = show do\r\n                title \"Practice
+        Reading Gels\"\r\n                note \"put image of a gel ladder key her\"\r\n                note
+        \"put image of a gel next to the other image (make sure the ladder corresponds
+        to the key) *Three bands are circled in        different colors*\"\r\n                note
+        \"Tell me the length of these bands.\"\r\n                \r\n                #
+        The ABC thing is for reasons inquire in person...\r\n                select
+        [\"A\",\"B\",\"C\"], var: :a_gelRP1A1, label: \"The band circled in Red is
+        A , B , or C\", default: nil #B is correct\r\n                select [\"A\",\"B\",\"C\"],
+        var: :a_gelRP1A2, label: \"The band circled in Blue is A, B, or C\", default:
+        nil  #B is correct\r\n                select [\"A\",\"B\",\"C\"], var: :a_gelRP1A3,
+        label: \"The band circled in Yellow is A, B, or C\", default: nil #C is correct\r\n            end\r\n            \r\n            gelRP1answers
+        = gelRP1answers[:a_gelRP1A1],gelRP1answers[:a_gelRP1A2],gelRP1answers[:a_gelRP1A3]\r\n            \r\n            if
+        $correctAnswers == true\r\n                gelRP1answers = \"B\" \"B\" \"C\"\r\n            end\r\n            \r\n            if
+        gelRP1answers == \"B\" \"B\" \"C\"\r\n                show do\r\n                    note
+        \"That''s Right!\"\r\n                end\r\n                \r\n                break\r\n                \r\n            else\r\n                show
+        do\r\n                    note \"That''s not correct, try again\"\r\n                end\r\n            end\r\n            \r\n            if
+        $debug ==true\r\n                break\r\n            end\r\n        end\r\n    end\r\n        \r\n        #
+        This stuff was because we were trying not to do the ABC thing, if Andrew bothers
+        someone about the source code we may get a better solution\r\n        # AHu,
+        testing here\r\n        # show do\r\n        #     note(\"choices: #{gelRP1answers[:choices]}\")\r\n        #
+        end\r\n        \r\n        # gelRP1answers = [gelRP1answers[:a_gelRP1A1],gelRP1answers[:a_gelRP1A2],gelRP1answers[:a_gelRP1A3]]\r\n    \r\n    def
+        gelReadPractice2\r\n        while true\r\n            gelRP2answers = show
+        do\r\n                title \"Practice Reading Gels again\"\r\n                note
+        \"put image of a gel ladder key her\"\r\n                note \"put image
+        of a gel next to the other image (make sure the ladder corresponds to the
+        key) *Three bands are circled in different colors, this time the bands should
+        not directly align with the ladder bands but instead be imbetween*\"\r\n                note
+        \"Now, tell me the length of these bands. Tts a tiny bit trickier this time...\"\r\n                \r\n                #
+        The ABC thing is for reasons inquire in person...\r\n                select
+        [\"A\",\"B\",\"C\"], var: :a_gelRP2A1, label: \"The band circled in Red is
+        A , B , or C\", default: nil #A is correct\r\n                select [\"A\",\"B\",\"C\"],
+        var: :a_gelRP2A2, label: \"The band circled in Blue is A, B, or C\", default:
+        nil  #C is correct\r\n                select [\"A\",\"B\",\"C\"], var: :a_gelRP2A3,
+        label: \"The band circled in Yellow is A, B, or C\", default: nil #B is correct\r\n            end\r\n            \r\n            gelRP2answers
+        = gelRP2answers[:a_gelRP2A1],gelRP2answers[:a_gelRP2A2],gelRP2answers[:a_gelRP2A3]\r\n            \r\n            if
+        $correctAnswers == true\r\n                gelRP2answers = \"A\" \"C\" \"B\"\r\n            end\r\n            \r\n            if
+        gelRP2answers == \"A\" \"C\" \"B\"\r\n                show do\r\n                    note
+        \"That''s Right!\"\r\n                end\r\n                \r\n                break\r\n                \r\n            else\r\n                show
+        do\r\n                    note \"That''s not correct, try again\"\r\n                end\r\n            end\r\n            \r\n            if
+        $debug ==true\r\n                break\r\n            end\r\n        end\r\n    end\r\n\r\n    def
+        afterGelPractice\r\n        show do\r\n            title \"Next Steps\"\r\n            note
+        \"It seems like you understand how gels read gels. Now that you''ve isolated
+        the strand of DNA you want using gel electrophoresis lets get it back out
+        of the gel. \"\r\n        end\r\n    end\r\n    \r\n    def cut gel\r\n         show
+        do\r\n             title \"Cutting the Gel\"\r\n             note \r\n        end\r\n    end\r\n\r\n\r\n    \r\n    \r\nend","parent_id":1341,"parent_class":"OperationType","created_at":"2018-07-02T16:59:21.000-07:00","updated_at":"2018-07-02T16:59:21.000-07:00","user_id":211}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:49:54 GMT']
+      ETag: [W/"04a4b19e3811fa274c4b7c208c2372e2"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=RhYIoEgDijxVBzsiiJlaJifHRFf2MNg1tQMgBNAi3S40cVbhgrU1B0W04Y6SQErSs%2FKny1quS5BKT8OYBqqzww%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=U0NmL2pEWWlPK05LdXRHWW9LYjVocmF6VER1ZGlqaGhvQ2dWNHpkRVJSK1RJdVB1ODltYjV1ZnYrbkI3amppak50M1VyV1dRSUpnYTdvMDBkOFQrRUR1ZEhrWGwvMysyQnl3amhwek1LeVNJcDByRERsUVZoOU9hYmM5S0VhTjJnSFlzMXV4dUdvQ2x0Q2Ryc1pWaVh4MThza3NXa0FoY1RYQURWcE55QWk0YnkyZmlEc1FYcld0V3NDVlpCajJZdjBzNms2aVl3eFRIbXJZbEllTWw4LzdVM0VCeUZxTDFCR2Jmem5yZkVlZWt5cFo2T0NkcHVZVXZFQTR4dlg5d1dIYkhhUzFJamF4REZ2UXJZSXFoMU00SS83TTYzaHFlWjZZTTk3Rk94Rk1JS25Gb3dvU1FLMGlBTkxlb3lyenU2UDdVYjliVHY3eEtMdW50cWNGRFNEaHhIbWZUYXlGbnJFdzJTdkNMWDdHaGR1STlrbzZnc3lncnl1L3ZtcUlvenFqdkNQdjdkNUtLOWxMaS8yTUFQQkl2QmwzZ0V3ZmFvcFZObDIxOGowWT0tLTNTSTJldmhnQ2xqY3g2bW9GY2t6NFE9PQ%3D%3D--3f94b58c5821a5e463626ea666afefc20c67dd98;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [fcd62cd0-8e1d-4e2c-90c7-834cd5950a3e]
+      X-Runtime: ['0.005729']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "User", "id": 211}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['28']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":211,"name":"Xavaar","login":"xavaarq","created_at":"2018-06-20T10:48:13.000-07:00","updated_at":"2018-06-20T10:48:13.000-07:00","password_digest":"$2a$10$W.GOWpPFPKanb9rfG490pOluGQMn6s9LpV13v08yXK3kV0xoOu0P6","remember_token":"tXC0hkM8n7_kHszYJ9itNA","admin":false,"key":null,"groups":[{"id":236,"name":"xavaarq","description":"A
+        group containing only user Xavaar","created_at":"2018-06-20T10:48:13.000-07:00","updated_at":"2018-06-20T10:48:13.000-07:00"},{"id":1,"name":"admin","description":"These
+        users can use administrative functions (make users, etc)","created_at":"2013-11-15T13:37:36.000-08:00","updated_at":"2013-11-15T13:37:36.000-08:00"}]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:49:54 GMT']
+      ETag: [W/"344959b2c49f900a046c8beee33974bc"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=cAXy%2FbgsrISFJ%2BJiR8W5iOveFYwvOqcbrIdhrIMzJygCYqy8cpoTv5WUOM5dHKl8f%2Bv2EIOkNL5Ty4IwVbtJxQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=ejlQay84OFNvKy9ZT1dqREc2LzlHc1RwdXpiZzBOajdZZXh4amVCTUE3SnhZS3BkUVlKM1IvMlVpd04rOG9BZWVjSW1EWExYcHhzQ3BNaHNUdFFiMEttNU5ta1VJUDFQejAzbnhyZDJ6THJLcFRZN2xuYjhoNk1LR2o1RE4xV0tkK1Fmd3Y3aWtMZmZKMmFDZEFWWGc2amorWk0xSzBHT1gxZG5EeFJrMVAzRktoWFVCbmdROEcyQSs3Ym81V21EUU9hT2RDQjE5UEZma2NVY3JpRUtqRkU3WFpSSm1qb2lDa1pKVlh0OWdkMndaZGlQdjh3bnlleDNpLys3bEdtWjIzdWd2SlhzY2l0bmo2ejQ1TGZFMUwzcis5MUpYVVMwRTJRZHJxVHB2R2xYUHg0U1NHbERTZnRFbi84TEVqcTRSdk4wY2c2TGFWM0JCUFhxbWx5bHRSbkxBQkZXZzBIQlVvMzZJU1lnTlBjVjZXd2RGbW9qMzF0bnRBM1l1aFlVSmx0aFJSdzZqSmYram9DbVZZZ1M5dkxjZGlPSVQxSlEreThjMVRDY21FTT0tLTB3WTJHbmM5cEc5bnhYV3c5T2lkVEE9PQ%3D%3D--85c57c9899a6bafe512d4e523bb9625898a06233;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [e0882e06-a541-42ce-8375-ee58fd25030a]
+      X-Runtime: ['0.007545']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "id": 1341}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['38']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":1341,"name":"Xavaar - Gel Lesson","category":"SynBio4Beginners","deployed":true,"on_the_fly":null,"created_at":"2018-06-27T14:20:33.000-07:00","updated_at":"2018-06-30T21:59:13.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:49:54 GMT']
+      ETag: [W/"2f12332c270010f6b4f6ecdac97226b0"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=C5LwO31BJM6PA4NOFgjP4Q0Vi1j1KDlwynFAWm7m6w559a56t%2Feb9Z%2BwWeIM0d8VmSBoxFm2qtU1PaPGuG6F4w%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=ODVOMnRmeWZjenRXL3pIVFBhV1YrS2xmenpFSWVNRXlZZU40dWUwUlFlYUs5dUpZNXpSdnI3M3JpdjU4c1R5NmdTVEovNVN5Vnprek15QmhKNkJBWG5OdUFMd3Q5T3V6MnVIMW1YUVBiUmxuSXowb21PM1pyOFZST1owRlNQUjZ3bU13RFo4TmpONEVCVXFUNm9XZVIvcjdOSm5GZlJNdkk1aS9YSXU4dEsvUmhINDBiTEk2WHpSU1FOZEwzS2d1U2FjQWhNR0NGMmRyNDRqUnVVS2o5R3ViS3FsWnJ3R0ZjVEU5MFlpMDgzOXZ5M1dITEZGMUdUblRPdEJ5L0pPd2ljOXlPMnVyVVpPUTJGaldxNlJuR3Vnd0JMWUVCT0Rrc2JNbUFWb1pSQ081eTh1b2duOXlxNDA3Sm1zOWI3Ulg1UkhjRUNxTVBmRFlZR281am1UcTAvcm51NStNMnZ6R3BoaTErR2ZKM3UvSUZlYnVFYTJ0Uk9iQ2ZuT253NFBOYjlFUCtBK1JHbElqSnBFSjF2N1NGdnhEK3BFNVV0eEN0MnhXcW1CTkV2RT0tLU1hOElYL0tZcnZVak04bDhYWUg0amc9PQ%3D%3D--a8d40d16c4231ed78c8fbb49e26ec8d90deab979;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [aed5e13a-d8b9-4222-a8b8-6602c19c52af]
+      X-Runtime: ['0.003318']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

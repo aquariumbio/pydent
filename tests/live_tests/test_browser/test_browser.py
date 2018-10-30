@@ -182,7 +182,7 @@ def test_filter_by_sample_properties_with_inequality(session):
     assert len(filtered_primers) > 0
 
     for primer in filtered_primers:
-        assert int(primer.properties["T Anneal"]) > 64
+        assert float(primer.properties["T Anneal"]) > 64
 
 
 def test_filter_operation_by_field_values(session):
@@ -346,7 +346,7 @@ def test_retrieve(session):
     """Should be able to parse HasOne, HasMany, and HasManyThrough without specifying the type of relationship."""
     browser = Browser(session)
 
-    collections = session.Collection.last(50)
+    collections = session.Collection.first(100) + session.Collection.last(100)
     parts = browser.retrieve(collections, 'parts')
     assert len(parts) > 0
     for model in collections:

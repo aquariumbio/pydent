@@ -1,0 +1,542 @@
+interactions:
+- request:
+    body: '{"model": "Plan", "id": 121080}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['31']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":121080,"user_id":66,"created_at":"2018-08-13T14:41:06.000-07:00","updated_at":"2018-08-13T14:41:06.000-07:00","budget_id":null,"name":"MyPlan","status":"planning","cost_limit":null,"folder":null,"layout":"{\"id\":0,\"children\":null,\"documentation\":\"No
+        documentation ofr this module\",\"height\":60,\"input\":null,\"output\":null,\"name\":\"no_name\",\"parent_id\":-1,\"width\":160,\"wires\":null}"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:26 GMT']
+      ETag: [W/"aff5481baa733f0f52ced33918cba7d3"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=qJKNnOeIlj5xd0XEemCh3H45m2BJE3%2F%2BeO3u%2B1LqkNba9dPdLT4pBWHEn2hgubEo6gx4%2FOWN7FuHoQ1nhGL%2BOw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=Zk5ZK3BLSG1KUVJsNkMwemNmd1EvblYxTGVPRzNaTFd3bm9GQjdKR1JjNzZYRFltenVTWkFxOTl3MWlNRXl3ZmYzZU9qYjFreGRJNFh4dlJLY0NhSHhxaEhmN1FmZkhpd01xQ0ZsRW9LZk1WM2ExMHJUemtiQ2tVREFtaUgraGhJcENDdGFTWVY3T0UyTWl3UTllUUNUR2RISHVScmF4Y3B4NHJLQkIxTEd3QzBXaTBycDljbmNFUCt0SFFPeWxuYlFpL0gvRGZUN2pLaFpnZkZ5RVpRZVMyQTdjMHB0azNQenF6aTZGSEsvSkMxRkdKZ1B6RDRSYzVHNy9pa1FuZEFoVkRLdjNZTUgyQUtzQ1BXV09pQUZ1TmhCZ245czA5NU5JTWJCY3VTWCtpV0duNkZ6QS9UOUxjMWMrYUFhY0xJRGxzdjE3dUFraDg5dHY3RzkyL0tESmp0K016YUgwcGtWRUR5TmlXcVFvMUpiYUtTb3pDaFlid3ZuSlVQOGw1RmNDTzVzRXlaYXNBZ0VzS0NtUFZhT3FGN1RQcmNaalBTVnEwY2R1TzRwMD0tLWVzRUdnS0YyNVlYMjBFei9kZDIrT1E9PQ%3D%3D--52f3ebb80d4e9d021c759540e82865beb7f08738;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [9bf2b61a-456d-4662-9a9b-3aa107a9bc11]
+      X-Runtime: ['0.003448']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "PlanAssociation", "method": "where", "arguments": {"plan_id":
+      [121080]}, "options": {"offset": -1, "limit": -1, "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['141']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":149204,"plan_id":121080,"operation_id":208012,"created_at":"2018-08-13T14:41:06.000-07:00","updated_at":"2018-08-13T14:41:06.000-07:00"},{"id":158261,"plan_id":121080,"operation_id":217248,"created_at":"2018-08-16T18:49:15.000-07:00","updated_at":"2018-08-16T18:49:15.000-07:00"},{"id":158262,"plan_id":121080,"operation_id":217249,"created_at":"2018-08-16T18:52:12.000-07:00","updated_at":"2018-08-16T18:52:12.000-07:00"},{"id":158263,"plan_id":121080,"operation_id":217250,"created_at":"2018-08-16T18:52:47.000-07:00","updated_at":"2018-08-16T18:52:47.000-07:00"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:26 GMT']
+      ETag: [W/"8f0b961f891c524467e809373007880f"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=wasaw1bCpmsJi%2FqKx0KyvUVJsRkWMIkjYsmJqId1kmGzzESCnHQZUBk4ICbdm6JJ0XxShbquGoadhWo0Uf38jA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=d0tzYnV6THZxOEhNd28vcVNtVDZnZmNlc0V4L3NxNXhtRmgwekk2RmVmSGZrTVhWZDV0V1NRbjh2WjRwaU05WFVic1RMRXlZelFEbW1hSThna3VVSmtzU1BVWW9HK1J1b0VvZDdiSUtSaEdhOUNCWXo0L1NLdmgvWTViK0NsTzBMa2haUkJ4bGRDV1dmYmp6M1B4WVAxTXpDUmRnRTE2Nm8rcW1lT0t1Yk9YbmtWWXo4Wko3UXRycCtHNUIvb1VJejFWV1g1eWVFQ1RqVjFkM2xoOUVTS3hRaG4zbmt0cTJtV2JOeTZRZmVMcGVqOWVrSGlsNXk0aEVKL0M1eWZ1clc3eGZsVGhCN29TOUNYWWwrWWFKbXdudkc5b1dyK3FzYjVxNmpLL2xEU29XNTdhb21GVWZ1MXZXSEJEVzRDOWNkSjBQRUNsR093TnJHNFhmRk1DTTlHZGNZQkhkZkhXSjI2L3c1RE44TGE0NkJJaHVHRjJVOHRpRHVrQjFNbkFTZWhadmp1eWJ0OEpUOE9JdmIwd2xYZStUNmwycXZEbEd1T2ExOVM3RUxtST0tLUx5YUkwQXczbitUZk5EMUxqY1ZVOVE9PQ%3D%3D--f9b93dc8172d0132996bc86e7c2c61487aee82be;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [864192d5-1f3d-410b-a7a5-cd8942ba9189]
+      X-Runtime: ['0.004044']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "Operation", "method": "where", "arguments": {"id": [217248,
+      217249, 217250, 208012]}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['154']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":208012,"operation_type_id":332,"status":"planning","user_id":66,"created_at":"2018-08-13T14:41:06.000-07:00","updated_at":"2018-08-13T14:41:06.000-07:00","x":null,"y":null,"parent_id":null},{"id":217248,"operation_type_id":978,"status":null,"user_id":null,"created_at":"2018-08-16T18:49:15.000-07:00","updated_at":"2018-08-16T18:49:15.000-07:00","x":null,"y":null,"parent_id":null},{"id":217249,"operation_type_id":978,"status":null,"user_id":null,"created_at":"2018-08-16T18:52:12.000-07:00","updated_at":"2018-08-16T18:52:12.000-07:00","x":null,"y":null,"parent_id":null},{"id":217250,"operation_type_id":978,"status":"planning","user_id":66,"created_at":"2018-08-16T18:52:47.000-07:00","updated_at":"2018-08-16T18:52:47.000-07:00","x":null,"y":null,"parent_id":null}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:26 GMT']
+      ETag: [W/"4b904feae986c2a2854b85458db33908"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=gUyaB5zfOdlv57fkAjmFiongBqoOlcOiQbV7hRFxNMnzK8RGVmmG4n9UbUgY4JV%2BHdXlNqILUAe%2B%2BZgZx%2FlaJA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=eXBIWklobDlrNzYvZkxLSWM2blpQaHFvdUtQdS9YWGh0OFMraytNckJjbzQ2Y1VXRmhsVWFVdWZuRnZCd2FKckFzT3Q0Z0c2VHFBak54WlR5QTNtVEh2NWEvZHpTSTZWRU9UNlhlS2VicEE3WThrUTNVRzd3K3NBQ2M1RGRoeEQzOWYyYkdiOGpuSHlvRnEyN2Vpd0dIcnlqSWFsY0lNdGcvWU5TVGJSNVB4cC9oMEl0MEZyYkZOVUNPTkQ0RVZvSzVmdlUzK0ZmbWhjOEFyTnFCMVVEbFJzbzJES25UYjRaRFZvWmpLNHF2alliaWNTQXZvazdkeXhEcmdMbTgzdzVpOGE2UnZHWUVQdDJpQTZnbkpucFhFY1hxbGlwNC9xVDk0aHhNa2JjLytyeVNzWmdRUjYweGNiVmNxRUo4U1VaTk10QU4vbi9jOFBuRXZNaTlGVklwK1JkR1BLUTE0YUxMUVB6NlVNais2bFozV0pMSENjTEgvN3FjcGY3TWJyU08vSEVQZFVPNEZHdnp3QWw3WHBFS3NMYmh2R251eW5WR0ZxWCtpcUhuMD0tLUJwcUF5ZnZlVW4xV2hTYWFwcDUzYnc9PQ%3D%3D--040366628a1783aa2d1f91bab14bcb28caf93a54;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [a194215d-4ad4-4fae-b9fa-f2378381e11f]
+      X-Runtime: ['0.004148']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldValue", "method": "where", "arguments": {"parent_id": [217250,
+      217248, 208012, 217249], "parent_class": ["Operation"]}, "options": {"offset":
+      -1, "limit": -1, "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['193']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":755911,"parent_id":208012,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-13T14:41:06.000-07:00","updated_at":"2018-08-13T14:41:06.000-07:00","name":"Gel","parent_class":"Operation","role":"input","field_type_id":1821,"row":null,"column":null,"allowable_field_type_id":4404},{"id":755912,"parent_id":208012,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-13T14:41:06.000-07:00","updated_at":"2018-08-13T14:41:06.000-07:00","name":"Fragment","parent_class":"Operation","role":"output","field_type_id":1822,"row":null,"column":null,"allowable_field_type_id":1950},{"id":780210,"parent_id":217250,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-16T18:52:47.000-07:00","updated_at":"2018-08-16T18:52:47.000-07:00","name":"Genetic
+        Material","parent_class":"Operation","role":"input","field_type_id":6615,"row":null,"column":null,"allowable_field_type_id":3817},{"id":780211,"parent_id":217250,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-16T18:52:47.000-07:00","updated_at":"2018-08-16T18:52:47.000-07:00","name":"Parent","parent_class":"Operation","role":"input","field_type_id":6616,"row":null,"column":null,"allowable_field_type_id":3819},{"id":780212,"parent_id":217250,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-16T18:52:47.000-07:00","updated_at":"2018-08-16T18:52:47.000-07:00","name":"Transformation","parent_class":"Operation","role":"output","field_type_id":6617,"row":null,"column":null,"allowable_field_type_id":3820}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:26 GMT']
+      ETag: [W/"b24b548b95099b364388009b73421801"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=qSFm%2F1WFK5ohH9qYME3XctA1Jztn2sMr3Upnxow1D%2F7bRji%2BnzOUoTGsADQqlMeGRADEp8tEUI4iBoRaWr1hEw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=bFRmME1yT3hqRHJ3aXlBVmdjbDhZbk9nNnVDeXBvajdNV3h3aWRacjEyZDdtQnhYcFRXb2RzUUhHdDhjTVFqa01OZCtId1NUYmJ2UWFFNFJ4NFZYNERBRHJwenp0QkFSYnFHRFI1Nzg1NHdCeW5nMldvQWxJcmF5bWFJM0FYT2FSc1UwSnFjSm93a2M2a2RrWjJCeU5GdHBFS3VzTkxDdXNZeVVhNXZyTk1EVURYcWtZaFdURE56MHVGN091OG81VEVIZG44TFQxN2dDZVMvMEF2c1duY3RNWDlCWlBNTitna3Jsb09sQ3FSSGlNckl4SS9SOWRHT3gzbXZ3RGtFVGVjblo4SkFBQTV0Ui9IUnk2bDRyMDlocS9MQ1NvZ00yT3RqMUYvcXc4TS9WbHlwSzZEZVFQQ0lEWm9uUzYxM2RFR3lLUGNqYW1FaGhqMG5URGw5akozV2M3d0o0QU5FRlgycENXczVnS1hDbmtEb28vQTUzc2hmd2VUS3o3ZDcvNnUwWVJ2Qm8zTTQvTTJ1aEtOYk5yWjZRRWhaeWR2NGNFazF2TzhmL1FXRT0tLWZCQlFsc2NpakdpcjNQeTRTSDFQK1E9PQ%3D%3D--b7e38f3f7c67e021c6ff102f35109875c73860c4;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [bd317c89-31bc-4c24-a4a8-4197c388e6aa]
+      X-Runtime: ['0.004571']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "Wire", "method": "where", "arguments": {"to_id": [755911, 755912,
+      780210, 780211, 780212]}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['160']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:26 GMT']
+      ETag: [W/"d751713988987e9331980363e24189ce"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=hdaJPJfhX9lQohRhocufrvHu1n%2FINEM%2BYWHp9EFbZnn3sdd9XVfg4kARzs27Eo9aZds142Sq0JueLQpol9MIlA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=ZjNEOXBBTXI2N2ZFT09XQmdzNG1VQTB4WmxON1U1Qnprb3puQ2JOMDRLVVNIVEwwelNmejNNYTB2M05Qc1AyU3RWN3pDUXJuaW9ySGEyZXlsQVkzUmE4N2JBb1V0MVRqcmlXNXlEdXZFbGNpR1pqalVUdFZlU3JzanNGVkQ3cVB5dXJwTHBJbmIxN1dqQkV1V0p2bXRpODVJSDd0YWxoQldhd3cvVnRWdGtxWCtVWklMSTFPWkcybm1jTTVkb1dQSzd5TzQ4MnB6OFNNN2lIYjJTa29jYmk0NjBIdUU2U0dRTXkxOXFQOE9HR0s5SXVJSEZZTVkyajdFemVvaXhMeUJ4WmMzSXFiak9rRmJIT3M3bDdPeHlUdzN6cDdRVDNRNVJEWkgwdTZxL0JXZHp2MUZhQnE1bmtKYlZpYUdISEdhM0I0ZHJuUEx5S1V3dmQ2U0I1Ly9SSDBEVm5qVXhERnhkWHVSeHV2d3I2SCtIbFZJb3gyUHRZWENUNldrdkJtZitVSHNzT04xUUdEeVhCckZWcGFKMEFUTGpMR3duOHU0MVYzYXlmNmhDUT0tLUJlN0t3TTdKeDNPWTI0dmNDbXhRU2c9PQ%3D%3D--16af530cbe53c3785b8ffd45c81cfe7d8605e8fb;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [d3abcec7-754a-40be-88c9-b1441d8a7ebf]
+      X-Runtime: ['0.006975']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "Wire", "method": "where", "arguments": {"from_id": [755911,
+      755912, 780210, 780211, 780212]}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['162']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:27 GMT']
+      ETag: [W/"d751713988987e9331980363e24189ce"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=0ke0wG2MeRNAdxmMwGVsvi4CqhnoOFYNSxByUenn8cqgIOqBpzrGKFDEwyDavHxKujdJhUSmxai0XJHNP2%2BfJw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=dDU3amJ4MlJNV1k1bzR2ZktBbWVCTzBLdlVRSGJiT1AxcWtQcDJRbWVTcjZmQkJPcVYyRFNUa0NUUXU1WXBGanZkZ3NTZHZwTUFoUE1VcGZpaExKV3lHQUhoNVRQekhZcmo1bnFoNjBRTzl3MXBDNkdNbDNKWldyVzFxR2k0UkR6NzVPQXNxWXBucDgyUW5DTHlWbW5MdjJ0WFY4MFhVMTJ1TE5sQWhDdWh2WkFlN2MyRjNTOVdPdnB5c0poZ2NXa2c5TVpIZ2kvaThsSkZMTkROWFZWVG9KT2JaQ0x5eklkWExDUUtvZHpBOFUrdFlEVkthSDVESXFxREV4bytXazA3a0VOcjJWbFV5WjlBbzBxVCt5NnFtbFVSbk1iREUvVDdEU3JzNGNqbVJRajJqVk5NWDBYZ1dyY0Z6ZUpIRUNqL25Yc2ZqMkduR0poSGYwV3pXM0YxN2dhSTJiUVBVOENUdWNGQk9UL2tFQlYrcVgvOTI1cVNSOVZIMktDWlRMQVFzSTlUenJuNnhrMDBMbVkrYk5TaXRtRFpNSEtSZHRLcSsyL2JDa2ZKOD0tLVFHb3JpcmtKSXdab2hKU1k0bGg1SVE9PQ%3D%3D--04fbbd4029124a87107dbca393a0c4f7ee83ca2f;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [33f18f6c-dcca-40a1-8a0e-00d8a022db64]
+      X-Runtime: ['0.007158']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"id": [6615, 6616,
+      6617, 1821, 1822]}, "options": {"offset": -1, "limit": -1, "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['152']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":1821,"parent_id":332,"name":"Gel","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-03-31T15:32:33.000-07:00","updated_at":"2018-02-21T16:57:37.000-08:00","parent_class":"OperationType","role":"input","part":false,"routing":"F","preferred_operation_type_id":null,"preferred_field_type_id":5424,"allowable_field_types":[{"id":4404,"field_type_id":1821,"sample_type_id":4,"object_type_id":292,"created_at":"2018-02-21T16:55:40.000-08:00","updated_at":"2018-02-21T16:55:40.000-08:00","sample_type":{"id":4,"name":"Fragment","description":"A
+        linear double stranded piece of DNA from PCR or Restriction Digest","created_at":"2013-10-16T14:33:41.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":292,"name":"Gel
+        Slice","description":"Gel Slice cut from a gel lane after gel was run. Often
+        placed in a 1.5 mL tube.","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-01-10T15:30:06.000-08:00","updated_at":"2014-01-14T15:24:23.000-08:00","unit":"Fragment","cost":10.0,"release_method":"dispose","release_description":"","sample_type_id":4,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":1822,"parent_id":332,"name":"Fragment","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-03-31T15:32:33.000-07:00","updated_at":"2017-03-31T15:32:33.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"F","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":1950,"field_type_id":1822,"sample_type_id":4,"object_type_id":295,"created_at":"2017-03-31T15:32:33.000-07:00","updated_at":"2017-05-06T13:15:53.000-07:00","sample_type":{"id":4,"name":"Fragment","description":"A
+        linear double stranded piece of DNA from PCR or Restriction Digest","created_at":"2013-10-16T14:33:41.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":295,"name":"Fragment
+        Stock","description":"Fragment stock in 1.5 mL tube, usually stored in M20
+        fridge.","min":0,"max":1000,"handler":"sample_container","safety":"No safety
+        information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-01-12T16:12:01.000-08:00","updated_at":"2014-01-12T16:12:01.000-08:00","unit":"Fragment","cost":50.0,"release_method":"return","release_description":"","sample_type_id":4,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":6615,"parent_id":978,"name":"Genetic
+        Material","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"I","preferred_operation_type_id":332,"preferred_field_type_id":1822,"allowable_field_types":[{"id":3817,"field_type_id":6615,"sample_type_id":2,"object_type_id":721,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-05T16:20:09.000-07:00","sample_type":{"id":2,"name":"Plasmid","description":"A
+        circular piece of double stranded DNA","created_at":"2013-10-15T09:59:25.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":721,"name":"0.6mL
+        tube of Digested Plasmid","description":"The DNA fragments produced from a
+        Plasmid Digest","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-10-05T13:30:19.000-07:00","updated_at":"2017-10-05T13:30:19.000-07:00","unit":"Plasmid","cost":0.01,"release_method":"return","release_description":"","sample_type_id":2,"image":"","prefix":"M20","rows":null,"columns":null}},{"id":3839,"field_type_id":6615,"sample_type_id":2,"object_type_id":208,"created_at":"2017-10-05T15:12:34.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","sample_type":{"id":2,"name":"Plasmid","description":"A
+        circular piece of double stranded DNA","created_at":"2013-10-15T09:59:25.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":208,"name":"Plasmid
+        Stock","description":"A 1.5 mL tube containing purified plasmid DNA","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"concentration:","vendor":"No
+        vendor information","created_at":"2013-10-15T10:01:41.000-07:00","updated_at":"2014-05-09T16:10:47.000-07:00","unit":"Plasmid","cost":2.0,"release_method":"return","release_description":"","sample_type_id":2,"image":"","prefix":"M20","rows":null,"columns":null}},{"id":3840,"field_type_id":6615,"sample_type_id":4,"object_type_id":295,"created_at":"2017-10-05T15:12:34.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","sample_type":{"id":4,"name":"Fragment","description":"A
+        linear double stranded piece of DNA from PCR or Restriction Digest","created_at":"2013-10-16T14:33:41.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":295,"name":"Fragment
+        Stock","description":"Fragment stock in 1.5 mL tube, usually stored in M20
+        fridge.","min":0,"max":1000,"handler":"sample_container","safety":"No safety
+        information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-01-12T16:12:01.000-08:00","updated_at":"2014-01-12T16:12:01.000-08:00","unit":"Fragment","cost":50.0,"release_method":"return","release_description":"","sample_type_id":4,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":6616,"parent_id":978,"name":"Parent","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"PS","preferred_operation_type_id":163,"preferred_field_type_id":1100,"allowable_field_types":[{"id":3819,"field_type_id":6616,"sample_type_id":5,"object_type_id":457,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":457,"name":"Yeast
+        Competent Cell","description":"Yeast comp cells managed by the M80C wizard
+        (otherwise same as Yeast Competent Aliquot)","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2015-03-02T10:58:46.000-08:00","updated_at":"2015-03-02T10:59:38.000-08:00","unit":"aliquot","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"M80C","rows":null,"columns":null}}]},{"id":6617,"parent_id":978,"name":"Transformation","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"T","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3820,"field_type_id":6617,"sample_type_id":5,"object_type_id":529,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":529,"name":"Yeast
+        Overnight for Antibiotic Plate","description":"An overnight from Plasmid Digest
+        and Yeast Transformation to be plated to an antibiotic plate","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-03-02T11:01:14.000-08:00","updated_at":"2017-03-02T11:01:14.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}},{"id":3821,"field_type_id":6617,"sample_type_id":5,"object_type_id":350,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:27 GMT']
+      ETag: [W/"d7da3a9ee990a30643dfce2d197eb127"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=2VrNbDfKZWxqfSOoDVU8TNSbRqMqC%2FhrF0A%2BQqgxm5%2BrPZMt%2FXzaV3rO%2BQQXjCy4QK6lP4aVa87oDN3efrn1cg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=N2YySFlTT1hhN1loSWQwSlpLWXlDc2IvVnluT3RkK0lVcjFKbHczQTV1dmc2MGJFU3pheDhhME1GMTN1aFN2TW4rRFVHUURucisxbUljUkloVzlWc3YrOUYzY2U3SzRxeEV5b2c0THhJblF3WWo5cjg5SDV5VU9ZVkt6TnVBeU1mNGo3QkZPdkNKMGtuaVZxWUcwZGJCcjZra3o3alpIRlVhUUlGeVpneDZxcnpVaUpoK3RTTUhSWHJXd3ZSU0N1cW1DQWNZdW96b2drWnNZNTFoWldnK1dJdmVWd3BPMHVPUVAyQnQyUEF4NzR1cWxQc1ozdEpwell5QVVIWUZUTUhnSEljU21FZjR2THdOZzVldXR3VHVuSW1DSXJQRnJSaXNGQnRTTUNuUkxPbnU0S2puTU9WYUkyRTEzOHM5ZWVqNHVqbkFGSWRUeC95Vzd1Sm5MbFdmMTRGUHlGSEVnQ0Z4RkZybFRZYTVjNWpBakNwaWdscmc4ZnowMm9RRDhmbkhDWFBGQTVrNlBpcllKQzZHbmFHVG5mcWthUkdCZ3VmbmtlUEJpL2V6Yz0tLTVTSnlDeVFnclpnSDY4RERuV3piWnc9PQ%3D%3D--ec733d35115f750a41c33962521140b04c5467ac;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [59ff7f7d-336f-4ebb-ae61-3cac2a186cda]
+      X-Runtime: ['0.030939']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "where", "arguments": {"id": [978,
+      332]}, "options": {"offset": -1, "limit": -1, "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['136']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":332,"name":"Purify Gel Slice","category":"Cloning","deployed":true,"on_the_fly":false,"created_at":"2017-03-31T15:32:33.000-07:00","updated_at":"2017-05-06T14:03:11.000-07:00"},{"id":978,"name":"Yeast
+        Transformation","category":"Yeast","deployed":true,"on_the_fly":false,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2018-06-21T14:36:43.000-07:00"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:27 GMT']
+      ETag: [W/"3a99a20c03a244bda3b132aa5e19535a"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=rI%2B5hict6Wc2kEntvYMqpoWKIVlra64hHq8LQfEgj4be6OfH7ZtWXCYjk0GnWjpSEb%2FCxcf1PYTh4%2BjdJ6jhaw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=clJPSFpyQzFENGJRT2R0R3g4L1BFWHUxME1KRVUzYm1CTGhyZG8xRFhsTXBoZU1xaVU4bTVUSWZWVE1ocVA4dDdvemM0NFFnUTVJb0Y0Z0o3UDlGT3Ayb1JBU0dlQnFVcUFhRHpocE9NUUpmcHlNYkh5T1NUTnZpTHpCNTFDYTNXTFRYWUpWYXZrNHFJYmoyd0Zpb0diTmx3TTJaRlJBa0hiQmpsRm11Ynl0K3hwOEo4NnZHU0NIbGJmSzhteXJ1UzQxZTdmU3dHbXY2VmhqZTlFMGhlZVJWazlsN2RkUFJ6emdhelpWaHFPbTREbXJJNDhTd04za3JDKys0TUxTWEkrNnI3c0VKMzdQZUJlTzFnWjFtQjZXclZ0NU1sRURQVXdWM20xVVhkVmVGRWdiSFVzVFZCb0FPRWJFTUJtdzg3eHp5eFhiTXBYbEJOMFJTejBGbTA4Tms5L3laOE5qWUVIaGxMK0pacGtVNjhVVGtoM1Exa0ZRR1F0V1BmL0tuQmpYUXArMXdkZG9YTkVTWEdUc3hSSHpCOTBNMjM2Q3JSNkdHb3FmYXUycz0tLXpFRFNhU3ZvRERYSENpazJKMlZzc3c9PQ%3D%3D--f113c431d1de956076a95aeb73b4c39dc5fbadb3;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [f0ef3030-1661-4628-a77d-613e78cd498f]
+      X-Runtime: ['0.004671']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": [332,
+      978], "parent_class": ["OperationType"]}, "options": {"offset": -1, "limit":
+      -1, "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['174']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":1821,"parent_id":332,"name":"Gel","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-03-31T15:32:33.000-07:00","updated_at":"2018-02-21T16:57:37.000-08:00","parent_class":"OperationType","role":"input","part":false,"routing":"F","preferred_operation_type_id":null,"preferred_field_type_id":5424,"allowable_field_types":[{"id":4404,"field_type_id":1821,"sample_type_id":4,"object_type_id":292,"created_at":"2018-02-21T16:55:40.000-08:00","updated_at":"2018-02-21T16:55:40.000-08:00","sample_type":{"id":4,"name":"Fragment","description":"A
+        linear double stranded piece of DNA from PCR or Restriction Digest","created_at":"2013-10-16T14:33:41.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":292,"name":"Gel
+        Slice","description":"Gel Slice cut from a gel lane after gel was run. Often
+        placed in a 1.5 mL tube.","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-01-10T15:30:06.000-08:00","updated_at":"2014-01-14T15:24:23.000-08:00","unit":"Fragment","cost":10.0,"release_method":"dispose","release_description":"","sample_type_id":4,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":1822,"parent_id":332,"name":"Fragment","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-03-31T15:32:33.000-07:00","updated_at":"2017-03-31T15:32:33.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"F","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":1950,"field_type_id":1822,"sample_type_id":4,"object_type_id":295,"created_at":"2017-03-31T15:32:33.000-07:00","updated_at":"2017-05-06T13:15:53.000-07:00","sample_type":{"id":4,"name":"Fragment","description":"A
+        linear double stranded piece of DNA from PCR or Restriction Digest","created_at":"2013-10-16T14:33:41.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":295,"name":"Fragment
+        Stock","description":"Fragment stock in 1.5 mL tube, usually stored in M20
+        fridge.","min":0,"max":1000,"handler":"sample_container","safety":"No safety
+        information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-01-12T16:12:01.000-08:00","updated_at":"2014-01-12T16:12:01.000-08:00","unit":"Fragment","cost":50.0,"release_method":"return","release_description":"","sample_type_id":4,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":6615,"parent_id":978,"name":"Genetic
+        Material","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"I","preferred_operation_type_id":332,"preferred_field_type_id":1822,"allowable_field_types":[{"id":3817,"field_type_id":6615,"sample_type_id":2,"object_type_id":721,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-05T16:20:09.000-07:00","sample_type":{"id":2,"name":"Plasmid","description":"A
+        circular piece of double stranded DNA","created_at":"2013-10-15T09:59:25.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":721,"name":"0.6mL
+        tube of Digested Plasmid","description":"The DNA fragments produced from a
+        Plasmid Digest","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-10-05T13:30:19.000-07:00","updated_at":"2017-10-05T13:30:19.000-07:00","unit":"Plasmid","cost":0.01,"release_method":"return","release_description":"","sample_type_id":2,"image":"","prefix":"M20","rows":null,"columns":null}},{"id":3839,"field_type_id":6615,"sample_type_id":2,"object_type_id":208,"created_at":"2017-10-05T15:12:34.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","sample_type":{"id":2,"name":"Plasmid","description":"A
+        circular piece of double stranded DNA","created_at":"2013-10-15T09:59:25.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":208,"name":"Plasmid
+        Stock","description":"A 1.5 mL tube containing purified plasmid DNA","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"concentration:","vendor":"No
+        vendor information","created_at":"2013-10-15T10:01:41.000-07:00","updated_at":"2014-05-09T16:10:47.000-07:00","unit":"Plasmid","cost":2.0,"release_method":"return","release_description":"","sample_type_id":2,"image":"","prefix":"M20","rows":null,"columns":null}},{"id":3840,"field_type_id":6615,"sample_type_id":4,"object_type_id":295,"created_at":"2017-10-05T15:12:34.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","sample_type":{"id":4,"name":"Fragment","description":"A
+        linear double stranded piece of DNA from PCR or Restriction Digest","created_at":"2013-10-16T14:33:41.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":295,"name":"Fragment
+        Stock","description":"Fragment stock in 1.5 mL tube, usually stored in M20
+        fridge.","min":0,"max":1000,"handler":"sample_container","safety":"No safety
+        information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-01-12T16:12:01.000-08:00","updated_at":"2014-01-12T16:12:01.000-08:00","unit":"Fragment","cost":50.0,"release_method":"return","release_description":"","sample_type_id":4,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":6616,"parent_id":978,"name":"Parent","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"PS","preferred_operation_type_id":163,"preferred_field_type_id":1100,"allowable_field_types":[{"id":3819,"field_type_id":6616,"sample_type_id":5,"object_type_id":457,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":457,"name":"Yeast
+        Competent Cell","description":"Yeast comp cells managed by the M80C wizard
+        (otherwise same as Yeast Competent Aliquot)","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2015-03-02T10:58:46.000-08:00","updated_at":"2015-03-02T10:59:38.000-08:00","unit":"aliquot","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"M80C","rows":null,"columns":null}}]},{"id":6617,"parent_id":978,"name":"Transformation","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"T","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3820,"field_type_id":6617,"sample_type_id":5,"object_type_id":529,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":529,"name":"Yeast
+        Overnight for Antibiotic Plate","description":"An overnight from Plasmid Digest
+        and Yeast Transformation to be plated to an antibiotic plate","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-03-02T11:01:14.000-08:00","updated_at":"2017-03-02T11:01:14.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}},{"id":3821,"field_type_id":6617,"sample_type_id":5,"object_type_id":350,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:27 GMT']
+      ETag: [W/"d7da3a9ee990a30643dfce2d197eb127"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=BknTfbuLN6WTK9LLOhVsaxIrZY7A%2FcGr9UTseHcJ8LJ0Lo08cT2InoOYCGcgzHyfhh6GEmxjUg4KCA%2FkoYGeXw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=NTFMMzVuSWhQdTRJdjU5QkZjbnpqT3cyc2VtUDVWTnFsb3hPZXp5elE1enU1bEs4STdITzdUdnkybE9DdXlyeFQzUWJ5dWJud0FENGdmcWh0dFUyWG9WWk1MaDBVRVlOR1o5cVduRklRYTlwL1FaMmdqZTkzZ1k2RitiQ3c5OGVuWFk1cUlRelJhQ3JxT1FxTzZSdlYxL3E0N3NwVXlBcFl4VXp1SlpPWENQQkVHTmFOQ1QxMHZ2eWhVWDNza2o1WU1HK1lVZHh4TUkwT3RndG5QT2R0cVNpQlFxRlNWektKb3Y5QnM1Ymo4VVNtYWRhVzFGZ0I2bDRUcDlSK2k5ZVFmcEZKKzMxZmJ1NGRQaVpXRHBEKzEwN0t6Q3VOSDI2dEt2SEV6WHYyeHJpcGFkWVhCZmNiK0NUeUEvU3ltSTlkSVFtRHlSSHN4ZG9XRWhCNlVDTG1objE5WUhadHhKSmFVQ2tPelplc3B5enk0UXFYTWlNUy9uUnh3RnFsMlBwdnJOZldpVEI4ZHJXdCtSRHEyb1d5bkNSamJsaTdXNVYzaGlDYWNwQjR5OD0tLWZuWk5VOUxJT2NRZ0NjUnRXNTdESUE9PQ%3D%3D--174200934b2beea98c1d15f673517cc5e80542ec;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [63a4e8ea-344c-4ec9-b9e1-ef353bd07d83]
+      X-Runtime: ['0.030117']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "where", "arguments": {"deployed":
+      true, "name": "Yeast Transformation"}, "options": {"offset": -1, "limit": -1,
+      "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['168']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":978,"name":"Yeast Transformation","category":"Yeast","deployed":true,"on_the_fly":false,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2018-06-21T14:36:43.000-07:00"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:27 GMT']
+      ETag: [W/"40feb740456a3751158da2a6ee1fbead"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=Vs9TPFvGJBYiTmFRQIqUQWLGPmFb25d0KU9vgRxChc0kqA19kXCbLTL9u%2F1aU4S19vPd%2FfdFBNHWA4wdysrrIA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=c0Z5VXQxb1ZmWFhMYldrZ1FzVno0Q2lWVkV6Z1hnVjBkcFV5WVBCK2tjZGxmemJEL0VrWVgzZE9CWThQS1R4cVlaYXZpRTZJYnp0aVJmRkttZU1jcUJMd2hwV0hrV29PWEFXZmRSYmc3QkVJSTc4RWhvUkZFYW5WWk1sY2paeFdwMXVsNlE1clRFRVNiSGs0ZVpUbTNBeitoRTh4NllvOFRuV1VIRXNuVWdySHFNZnR2cnVUNmd3cmc0bEUwd2RvdWpUUGpMWmpPR1QwZTN2UWVHbkVzWjIvUGFTblVNcW1KTXVpOTViam9vaVh3V1JZTjBDSEhJOG9rV2EwY1FkVVZWSVA4eXdsNkpyZzU5T0ZWQ3lLeENRUzBZRVBGV1Q5N3VOT1JQdStHK3drVjlkb3pPM0hVVm9iMjFEak81V1I4TCtHSVZoMm9VL3lXSEhrTmhQWkttdlQ0QnBkekcxZjBPT0F5eHJqOUk2RTk1Ymp1TjFYTWZkZTdYOW1BeVYzK3RFakVETktNYTE5SGRUcWw4SUo3R1V3QXpaT3dPQzgzcDhxNk14djdzcz0tLXBzTTJjRE9tRjBBR0JHaVk0Tzg1U3c9PQ%3D%3D--a4b2647b2aaf59a709576b6d1055f69f66cf3b85;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [7f54efba-1383-48d3-8a98-5b4a8b149a47]
+      X-Runtime: ['0.004583']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 978,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":6615,"parent_id":978,"name":"Genetic Material","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"I","preferred_operation_type_id":332,"preferred_field_type_id":1822,"allowable_field_types":[{"id":3817,"field_type_id":6615,"sample_type_id":2,"object_type_id":721,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-05T16:20:09.000-07:00","sample_type":{"id":2,"name":"Plasmid","description":"A
+        circular piece of double stranded DNA","created_at":"2013-10-15T09:59:25.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":721,"name":"0.6mL
+        tube of Digested Plasmid","description":"The DNA fragments produced from a
+        Plasmid Digest","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-10-05T13:30:19.000-07:00","updated_at":"2017-10-05T13:30:19.000-07:00","unit":"Plasmid","cost":0.01,"release_method":"return","release_description":"","sample_type_id":2,"image":"","prefix":"M20","rows":null,"columns":null}},{"id":3839,"field_type_id":6615,"sample_type_id":2,"object_type_id":208,"created_at":"2017-10-05T15:12:34.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","sample_type":{"id":2,"name":"Plasmid","description":"A
+        circular piece of double stranded DNA","created_at":"2013-10-15T09:59:25.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":208,"name":"Plasmid
+        Stock","description":"A 1.5 mL tube containing purified plasmid DNA","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"concentration:","vendor":"No
+        vendor information","created_at":"2013-10-15T10:01:41.000-07:00","updated_at":"2014-05-09T16:10:47.000-07:00","unit":"Plasmid","cost":2.0,"release_method":"return","release_description":"","sample_type_id":2,"image":"","prefix":"M20","rows":null,"columns":null}},{"id":3840,"field_type_id":6615,"sample_type_id":4,"object_type_id":295,"created_at":"2017-10-05T15:12:34.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","sample_type":{"id":4,"name":"Fragment","description":"A
+        linear double stranded piece of DNA from PCR or Restriction Digest","created_at":"2013-10-16T14:33:41.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":295,"name":"Fragment
+        Stock","description":"Fragment stock in 1.5 mL tube, usually stored in M20
+        fridge.","min":0,"max":1000,"handler":"sample_container","safety":"No safety
+        information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-01-12T16:12:01.000-08:00","updated_at":"2014-01-12T16:12:01.000-08:00","unit":"Fragment","cost":50.0,"release_method":"return","release_description":"","sample_type_id":4,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":6616,"parent_id":978,"name":"Parent","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"PS","preferred_operation_type_id":163,"preferred_field_type_id":1100,"allowable_field_types":[{"id":3819,"field_type_id":6616,"sample_type_id":5,"object_type_id":457,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":457,"name":"Yeast
+        Competent Cell","description":"Yeast comp cells managed by the M80C wizard
+        (otherwise same as Yeast Competent Aliquot)","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2015-03-02T10:58:46.000-08:00","updated_at":"2015-03-02T10:59:38.000-08:00","unit":"aliquot","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"M80C","rows":null,"columns":null}}]},{"id":6617,"parent_id":978,"name":"Transformation","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"T","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3820,"field_type_id":6617,"sample_type_id":5,"object_type_id":529,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":529,"name":"Yeast
+        Overnight for Antibiotic Plate","description":"An overnight from Plasmid Digest
+        and Yeast Transformation to be plated to an antibiotic plate","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-03-02T11:01:14.000-08:00","updated_at":"2017-03-02T11:01:14.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}},{"id":3821,"field_type_id":6617,"sample_type_id":5,"object_type_id":350,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:27 GMT']
+      ETag: [W/"12f3746fceac51bb6c74d2f31ed3aee7"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=i561GWiaz70nVNvJifFhIgIB%2BAy07d7paLpWAEvNpdT5%2BetYoixwhjfnAWWTKHHWljQbkBhzTUyX9rWcnUXLOQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=d1RUNWJmNUZDTzRzcUhUaTgyaytWU2dZRy9TT2ZqQXNsRVVPNG5lQ0VXcDVSdUcxMnAwYjVZZzRPdVJjOXJjeSt3MkNUb0pzdHhLVEgvWVZEeE14ejRWMGYyNVFDQ2Q2b2tuQVMzOGtNTm0xazMreFZSdm1BckM0dmNNaGpZcU1qU0dNNG5Kc2gwUVJoaXphemY0QklUUmF2bGM3MmtVNTFYT0xrWUdGdnJZWTZ4N2wzcWw1NWx2NjJRVEYrd2UyTTY0cEJES2NYdkIyZlZLZkFicysvZXlNRExOZEE4azVFTlVlVVR5Mkx3MWoyN3BaN0g2bVVqZHRZZ29ydmRTSUpDcGlnbHdwR0NqTys2Wkg1QTNyb0h6WDhEdkQ2Q1drb3lKdkZTK3NCUTdscG1kNFc0M0RVQzFmdEZaODE1Z2t5K0hTL1VBK3I5R1RpaXY4ZDIxbm5ZY1JOZVhYTFY4eE01V05oK3JaRElITm5vd0E2Wk10MDRONHpyWW9vQkdOeFpHOFYxUHlIT1pzUDJMajNRYU0xVjVPbURCZjcyRU1RbjlHZnJjR3pUTT0tLUhtNU1XMFVDc2R1WlF2aGVoZXhFVnc9PQ%3D%3D--739eac9e8015a7e52d2c2c1d8b60b491553d2e32;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [a2416828-caf7-4bd6-9a56-0cf7ecfb348c]
+      X-Runtime: ['0.022790']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldValue", "method": "where", "arguments": {"parent_id": [208012,
+      217248, 217249, 217250], "parent_class": ["Operation"]}, "options": {"offset":
+      -1, "limit": -1, "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['193']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=qROvqL6QHjth7lL0FSM7g%2Bj3F%2BMMegmYoHGGYxih4QP0z7%2FdZsqRSU10kDcpK7eUykyfNM9ChqC4ZzEHjtz1mw%3D%3D;
+          _aquarium_NURSERY_production_session=ZlFVaUhKZkdXKzJDcjVzYjBGUmtqRUtjZVl3cDhNaW5lNHhKY2llZ0Iyd0hBWlppOTN2ai90WVB5bE5OM2taVEJZTGhCZ2JVV2dtNGt6QnJCVGlocFFBQ3N2clFGQ1FJemFVNW9CN05mSmgvK2J5dmw1emRENzZoMkprREVDaURGQ0ttRXU5UHczUnpoSzZZYTFKVVRPZ3RrNTlzeDFlVUhFN3JFaTg4TXFHUkdkZFVRN3YwSEhGSUR5K1VmMWlMNTY0RHVVeE00VXN1VFQrTmo3TFlGM3hrZ2JrZW15YndscEowL2phbWxIUFJPZVVTZytYb1FBUEZoSHpsWFRGY01lMVM0WGpQbUpWNGY3YnVFT1Zjd2hzczluNjlmeXZHS3NGdmZzU010VDE5czlzaVA0UTJoV283VEhMR0cvNG5pQ3diMDBMTDlwUExkRU4wUkN3dlNQZ1hPRXQ2Nm5uYkZpSmpXSXlIczZacVV3bG0zT2xPcEorNjlDbDNVcWwxREsvS1E2a21Pczl6R0o4MXF3OVpSMlloSnF1VGtyZEo2VzNRYzVYczFRTT0tLU1lNkhUU2E4bS81dVNVb1NUeHZQNVE9PQ%3D%3D--6cbc57f39a615213fbf08aa9dc1938b774216434;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":755911,"parent_id":208012,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-13T14:41:06.000-07:00","updated_at":"2018-08-13T14:41:06.000-07:00","name":"Gel","parent_class":"Operation","role":"input","field_type_id":1821,"row":null,"column":null,"allowable_field_type_id":4404},{"id":755912,"parent_id":208012,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-13T14:41:06.000-07:00","updated_at":"2018-08-13T14:41:06.000-07:00","name":"Fragment","parent_class":"Operation","role":"output","field_type_id":1822,"row":null,"column":null,"allowable_field_type_id":1950},{"id":780210,"parent_id":217250,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-16T18:52:47.000-07:00","updated_at":"2018-08-16T18:52:47.000-07:00","name":"Genetic
+        Material","parent_class":"Operation","role":"input","field_type_id":6615,"row":null,"column":null,"allowable_field_type_id":3817},{"id":780211,"parent_id":217250,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-16T18:52:47.000-07:00","updated_at":"2018-08-16T18:52:47.000-07:00","name":"Parent","parent_class":"Operation","role":"input","field_type_id":6616,"row":null,"column":null,"allowable_field_type_id":3819},{"id":780212,"parent_id":217250,"value":null,"child_sample_id":null,"child_item_id":null,"created_at":"2018-08-16T18:52:47.000-07:00","updated_at":"2018-08-16T18:52:47.000-07:00","name":"Transformation","parent_class":"Operation","role":"output","field_type_id":6617,"row":null,"column":null,"allowable_field_type_id":3820}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:53:06 GMT']
+      ETag: [W/"b24b548b95099b364388009b73421801"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=TivNcF5zCUPbcpwdE75eKfEEaIig3vUUlZjx%2BfUe%2BrkT990FhimGMffoXt4vttI%2B07%2FgX2PmeiyNjkadY2PuIQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=M0tSR0NNaVlNL2JMLzJtSGRxaEVSNWVOd2RQUmNmZkFCNTdNTTBjb1N5Z3UrSXl3UThwU1lsYU9QZUlxMEo5MUhNUTRIUnI3c016Y2ZmYUlseWt3VTc5a0RHdzZ3ZlB4am9xWVAwQW0wcHdacFZoR08zSzYzMjJacVByeURyMityZ0wxZW1OQXVGdFQwcEJZRThLT2ZNbkVTRFFORzJuWkNUa0Fibm9uTmEwc1ZGdW5Pa1g1SEo5eEFhUGhyYWpCWGh3YlNKMEMweFgzUHZlT1dzOVJNM25vWlBqOXhwVGt0THBtVzVRdUYwdmpRc29yU1JnZHJDQTROSWk1T2xyRm1TREF5YkFHd2VJZ0NmcFJQSmhjVmJ4Vkw1SlhiTlg2YXZMQkRWdTBFRVJYNTFHeHN0S2lCNlR6T3dxc3cyd3JYSWkvYmtlaktFUXhSb01PdHc0ZGZ4VXE5YzlpUUs5TDVXTVZzUTVsRFVRNjZoYy9UTzlVQU8rUVI5Tm5CT3dpeExGTmtIRE5qTTk3VmNDWG5NNUo0dDd1ejd5M0NSdFBqVHFPdi9kWWtTYz0tLUNFSFByZkFrNFQ5dDVzTmtpMnZBQ2c9PQ%3D%3D--ff32cd221305dd426f38dd4069186827b9074e32;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [c7e77d16-a6c5-403b-8206-48ff46099e56]
+      X-Runtime: ['0.005622']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

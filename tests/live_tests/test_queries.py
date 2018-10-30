@@ -5,13 +5,13 @@ from pydent import models
 
 def test_return_none(session):
     """Find should return None if not model found"""
-    s = session.Sample.find(str(uuid4()))
+    s = session.Sample.find(23489759837458723497502987)
     assert s is None
 
 
 def test_where_returns_empty_array(session):
     """Where queries should return an empty array if no models are found (not None)"""
-    x = session.Operation.where({"id": str(uuid4())})
+    x = session.Operation.where({"id": 293847901823458971263465})
     assert x == []
 
 

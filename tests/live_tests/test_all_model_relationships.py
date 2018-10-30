@@ -21,8 +21,9 @@ class TestModelRelationships:
     This code isn't ideal, but may be useful in conjunction with request vcr.
     """
 
-    @pytest.fixture(params=ModelRegistry.models.values())
-    def model_relationships(self, session, request):
+    # @pytest.fixture(params=ModelRegistry.models.values())
+    @pytest.mark.parametrize('model_class', ModelRegistry.models.values())
+    def test_model_relationships(self, session, request, model_class):
         """
         Tries to access nested relationships in an a model
 
@@ -34,9 +35,7 @@ class TestModelRelationships:
         :rtype: None
         """
 
-        # TODO: This code is sloppy...
         # Try to find a live model
-        model_class = request.param
         model_class_name = model_class.__name__  # e.g. "FieldType"
         model_instance = None
         for iden in [1, 100, 1000, 5000, 10000, 54069, 130000, 200000, 76858][::-1]:
@@ -77,10 +76,3 @@ class TestModelRelationships:
                 nested_model = ModelRegistry.get_model(relationship.nested)
                 if val is not None:
                     assert isinstance(val, nested_model)
-
-    def test_model_relationships(self, model_relationships):
-        """
-        Test all relationship access for all models.
-        This is not a permanent test nor a comprehensive test.
-        """
-        pass
