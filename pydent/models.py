@@ -1694,7 +1694,7 @@ class Sample(ModelBase, NamedMixin):
         field_type = None
         if field_value:
             field_type = field_value.field_type
-        if field_value is None or field_type is None:
+        if field_type is None:
             field_type = self.sample_type.field_type(field_value.name)
             field_value.field_type = field_type
         return field_type
@@ -1756,8 +1756,9 @@ class Sample(ModelBase, NamedMixin):
                 fv = self.sample_type.field_type(k).initialize_field_value()
                 if self.field_values is None:
                     self.field_values = []
+                self._set_field_value(fv, v)
                 self.field_values.append(fv)
-            if isinstance(fv, list):
+            elif isinstance(fv, list):
                 if isinstance(v, list):
                     self.set_field_value_array(k, v)
                 # # then this is an array
@@ -1778,7 +1779,8 @@ class Sample(ModelBase, NamedMixin):
                     raise AquariumModelError("Cannot update. The FieldValue '{}' is part of an array and "
                                              "the properties expected a list, but it "
                                              "instead received a '{}'".format(k, type(v)))
-            self._set_field_value(fv, v)
+            else:
+                self._set_field_value(fv, v)
         return self
 
     def _fv_dict(self):
@@ -1796,8 +1798,12 @@ class Sample(ModelBase, NamedMixin):
         for ft in self.sample_type.field_types:
             if ft.array:
                 val = field_values_by_name.get(ft.name, [])
+                for fv in val:
+                    fv.field_type = ft
             else:
                 val = field_values_by_name.get(ft.name, [None])[0]
+                if val:
+                    val.field_type = ft
             properties[ft.name] = val
         return properties
 

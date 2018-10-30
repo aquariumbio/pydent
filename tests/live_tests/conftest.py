@@ -10,6 +10,8 @@ from pydent import AqSession
 # Requests Recording
 ####################
 
+# TODO: ignore header...
+
 def hash_response(r):
     """Hashes a request into a unique name"""
     return "{}:{}:{}".format(r.method, r.uri, r.body)
