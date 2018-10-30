@@ -51,9 +51,10 @@ class AqHTTP(logger.Loggable, object):
         self.init_logger("AqHTTP@{}".format(aquarium_url))
 
     def _format_response_info(self, response):
-        info = dict(response.request.__dict__)
-        info.update({"seconds": response.elapsed.total_seconds()})
-        return "REQUEST (t={seconds}s)  {method} {url} \nBODY  {body}".format(**info)
+        if response:
+            info = dict(response.request.__dict__)
+            info.update({"seconds": response.elapsed.total_seconds()})
+            return "REQUEST (t={seconds}s)  {method} {url} \nBODY  {body}".format(**info)
 
     def _format_request_status(self, response):
         return "STATUS  {} {}".format(response.status_code, response.reason)
