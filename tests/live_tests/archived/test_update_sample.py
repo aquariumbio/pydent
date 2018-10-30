@@ -1,1 +1,0 @@
-def test_sample_update()

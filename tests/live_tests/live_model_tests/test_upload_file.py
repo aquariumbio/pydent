@@ -1,7 +1,6 @@
 from pydent.models import Upload
 import os
 import pytest
-import requests
 
 pytestmark = pytest.mark.skip("These tests utilize a live session with alot of requests."
                               "In the future, we may want to utilize something like pyvrc to avoid"

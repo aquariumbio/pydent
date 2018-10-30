@@ -1671,29 +1671,82 @@ class Sample(ModelBase, NamedMixin):
             empty_properties[ft.name] = val
         return empty_properties
 
+    @staticmethod
+    def _field_type_value_accessor(field_type):
+        if field_type.ftype == 'sample':
+            return 'sample'
+        return 'value'
+
+    @classmethod
+    def set_field_value_helper(cls, field_type, field_value, value):
+        field_value.set_value(**{cls._field_type_value_accessor(field_type): value})
+        return field_value
+
     # TODO: somehow do some kind of type checking for field_types. Note the field_values do not have field_types for some reason unless they are a sample field value
     def _set_field_value(self, field_value, value):
         ft = self._get_field_type(field_value)
-        if ft.ftype == 'sample':
-            field_value.set_value(sample=value)
-        else:
-            field_value.set_value(value=value)
+        return self.set_field_value_helper(ft, field_value, value)
 
     def _get_field_value(self, field_value):
         ft = self._get_field_type(field_value)
-        if ft.ftype == 'sample':
-            return field_value.sample
-        else:
-            return field_value.value
+        return getattr(field_value, self._field_type_value_accessor(ft))
 
     def _get_field_type(self, field_value):
-        field_type = field_value.field_type
-        if field_type is None:
+        field_type = None
+        if field_value:
+            field_type = field_value.field_type
+        if field_value is None or field_type is None:
             field_type = self.sample_type.field_type(field_value.name)
             field_value.field_type = field_type
         return field_type
 
+    @classmethod
+    def _update_field_value_array(cls, old_field_values, field_type, values):
+        s1 = set(range(len(old_field_values)))
+        s2 = set(range(len(values)))
+
+        add_indices = sorted(s2.difference(s1))
+        del_indices = sorted(s1.difference(s2))
+        update_indices = sorted(s1.intersection(s2))
+
+        new_fvs = []
+        for x in add_indices:
+            new_fv = field_type.initialize_field_value()
+            cls.set_field_value_helper(field_type, new_fv, values[x])
+            new_fvs.append(new_fv)
+
+        updated_fvs = []
+        for x in update_indices:
+            cls.set_field_value_helper(field_type, old_field_values[x], values[x])
+            updated_fvs.append(old_field_values[x])
+
+        deleted_fvs = [old_field_values[x] for x in del_indices]
+
+        return {
+            'add': new_fvs,
+            'delete': deleted_fvs,
+            'update': updated_fvs
+        }
+
+    def set_field_value_array(self, name, values):
+        fvs = self.field_value_array(name)
+        ft = self.sample_type.field_type(name)
+        if ft.array:
+            update_hash = self._update_field_value_array(fvs, ft, values)
+            self.field_values = update_hash['update'] + update_hash['add']
+            return update_hash
+        else:
+            raise AquariumModelError("Cannot update FieldValue array. FieldType \"{}\" is not an array.".format(name))
+
     def update_properties(self, prop_dict):
+        """
+        Update the FieldValues properties for this sample.
+
+        :param prop_dict: values to update
+        :type prop_dict: dict
+        :return: self
+        :rtype: Sample
+        """
         fv_dict = self._fv_dict()
         for k, v in prop_dict.items():
             fv = fv_dict.get(k)
@@ -1704,25 +1757,28 @@ class Sample(ModelBase, NamedMixin):
                     self.field_values = []
                 self.field_values.append(fv)
             if isinstance(fv, list):
-                # then this is an array
                 if isinstance(v, list):
-                    if len(v) >= len(fv):
-                        # then update existing field_values
-                        # create new field_values if necessary
-                        for new_value, old_fv in zip(v, fv):
-                            self._set_field_value(fv, new_value)
-                        diff = len(v) - len(fv)
-                        for i in range(diff):
-                            new_fv = self.sample_type.field_type(k).initialize_field_value()
-                            self._set_field_value(new_fv, v[i+len(fv)+1])
-                    else:
-                        pass
-                        # then field_values need to be deleted
+                    self.set_field_value_array(k, v)
+                # # then this is an array
+                # if isinstance(v, list):
+                #     if len(v) >= len(fv):
+                #         # then update existing field_values
+                #         # create new field_values if necessary
+                #         for new_value, old_fv in zip(v, fv):
+                #             self._set_field_value(fv, new_value)
+                #         diff = len(v) - len(fv)
+                #         for i in range(diff):
+                #             new_fv = self.sample_type.field_type(k).initialize_field_value()
+                #             self._set_field_value(new_fv, v[i+len(fv)+1])
+                #     else:
+                #         pass
+                #         # then field_values need to be deleted
                 else:
                     raise AquariumModelError("Cannot update. The FieldValue '{}' is part of an array and "
                                              "the properties expected a list, but it "
                                              "instead received a '{}'".format(k, type(v)))
             self._set_field_value(fv, v)
+        return self
 
     def _fv_dict(self):
         """

@@ -14,8 +14,8 @@ def test_login_with_requests(config):
             }
     })
 
-    user = s.post(config['aquarium_url'] + "/json", json={"model": "User", "id": 66}).json()
-    print(user)
+    user = s.post(config['aquarium_url'] + "/json", json={"model": "User", "id": 1}).json()
+    assert user
 
 
 def test_login(session, config):

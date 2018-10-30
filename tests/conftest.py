@@ -22,16 +22,6 @@ def config():
 
 
 @pytest.fixture(scope="session")
-def session():
-    """
-    Returns a live aquarium connection.
-    """
-    session = AqSession(**config())
-    # session.set_timeout(30)
-    return session
-
-
-@pytest.fixture(scope="session")
 def mock_login_post():
     """
     A fake cookie to fake a logged in account
@@ -70,6 +60,36 @@ def fake_session(monkeypatch, mock_login_post):
     session = AqSession("username", "password", aquarium_url)
     return session
 
+
+@pytest.fixture(scope="function")
+def fake_response():
+
+    class FakeRequest(object):
+        def __init__(self, status_code=200, url="myfakeurl.com", method="post"):
+            self.status_code = status_code
+            self.url = url
+            self.method = method
+            self.body = {}
+
+    class FakeResponse(requests.Response):
+
+        def __init__(self, method, url, body, status_code):
+            self.status_code = status_code
+            self.request = FakeRequest(status_code=status_code, url=url, method=method)
+            self.body = body
+
+        def json(self):
+            return json.load(self.body)
+
+    def make_response(method, url, body, status_code):
+        response = requests.Response()
+        response.body = body
+        response.json = lambda: body
+        response.status_code = status_code
+        response.request = FakeRequest(status_code=status_code, url=url, method=method)
+        return response
+
+    return make_response
 
 # # Uncomment the following code to turn off requests
 # import pytest

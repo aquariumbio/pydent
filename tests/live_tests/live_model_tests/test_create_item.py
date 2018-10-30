@@ -8,4 +8,4 @@ def test_make_item(session):
     i = models.Item(sample_id=s.id, object_type_id=ot.id)
     i.connect_to_session(session)
     i.make()
-    i.print()
+
