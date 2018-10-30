@@ -17,13 +17,13 @@ You can draw existing plans (colors represent Operation statuses, legend to come
 
 .. image:: _static/CanvasDrawExample1.png
     :width: 50 %
-    :align: center
+    :align: left
 
 In Aquarium, this plan will look like:
 
 .. image:: _static/AquariumPlanExample1.png
     :width: 50 %
-    :align: center
+    :align: left
 
 Example of planning a large PCR in a IPython jupyter notebook.
 
