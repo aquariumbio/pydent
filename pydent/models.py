@@ -1654,9 +1654,7 @@ class Sample(ModelBase, NamedMixin):
         d = {}
         if self.field_values is not None:
             for fv in self.field_values:
-                if fv.field_type is None:
-                    # corrects wierdness with field_types being absent
-                    fv.field_type = self.sample_type.field_type(fv.name)
+                self._get_field_type(fv)
                 d[fv.name] = fv
         fv_dict = {}
         for ft in self.sample_type.field_types:

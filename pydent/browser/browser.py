@@ -430,10 +430,25 @@ class Browser(logger.Loggable, object):
 
     # TODO: This method is slow, but 'PUT' sample.json does not work...
     def update_sample(self, sample):
+        if not hasattr(sample, 'id') or sample.id is None:
+            raise BrowserException("Cannot update sample. Please save sample first using `save_save()`")
         self.__json_update(sample, include={"field_values": "sample", "sample_type": []})
-        for fv in sample.field_values:
-            self._info("  updating '{}'".format(fv.name))
-            self.__json_update(fv, include={"sample"})
+
+        fv_dict = sample._fv_dict()
+        for fvname, field_value in fv_dict:
+            if isinstance(field_value, list):
+                old_field_values = self.session.Sample.find(sample.id).field_value_array(fvname)
+                new_field_values = sample.field_value_array(fvname)
+                change_dict = sample._update_field_value_array(old_field_values, new_field_values)
+                self._info("   updating array '{}'".format(fvname))
+                for fv in change_dict['add'] + change_dict['update']:
+                    self.__json_update(fv, include={"sample"})
+                for fv in change_dict['delete']:
+                    self._info("  deleting {}".format(fv))
+                    self.session.utils.deleted_field_value(fv)
+            else:
+                self._info("  updating '{}'".format(field_value.name))
+                self.__json_update(field_value, include={"sample"})
 
     #         return cls.__json_update(sample, include={"field_values": "sample"})
 
@@ -472,7 +487,7 @@ class Browser(logger.Loggable, object):
                 if overwrite_server:
                     self._info("SAVE overwriting sample '{}' on server".format(sample.name))
                     existing.update_properties(sample.properties)
-                    self.update_sample(existing)
+                    self.update_sfample(existing)
                 return existing
         self._info("SAVE saving sample '{}'".format(sample.name))
         sample.save()
