@@ -1,0 +1,479 @@
+interactions:
+- request:
+    body: '{"model": "OperationType", "method": "where", "arguments": {"deployed":
+      true, "name": "Yeast Transformation"}, "options": {"offset": -1, "limit": -1,
+      "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['168']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":978,"name":"Yeast Transformation","category":"Yeast","deployed":true,"on_the_fly":false,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2018-06-21T14:36:43.000-07:00"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"40feb740456a3751158da2a6ee1fbead"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=c10yPmJENder3E8r9ztfv896FvwjZLh095x1Q1k4U7YBOmx%2FqPKK7LtvlYft4k9LW0%2F1YI%2F6K9EI0Jbfj7A9Ww%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=WnV4SmJ1Z0Z2RENOZTlGYUJQZHVOOVlaMG1USEV2OGhQMU5ZY1ZXbEJtQXBNMUREWlp5SDI4QVRVa1B6MEJMWTFIVWFSS3FoQXhxcjdaNExmVTJqZFI5TmI2RVVzVlFUbHQ3cDZrSXo5ZENMUVpOaFJwNWVScDJFTXlqcTRiZ1JXVXVPKytVRkpPSG4zTkdjZlhMSWVqVjF6VHY0bW5vbmY1Qy9vOHErN1ovRUllYUowb0NhaTBRWGtGaFdnR3Z3VDU2bjIwTHUwRjJHd2tPVGY3UTllSXM4R3gvT2ZXQkxKVEt6ei8rN3VWMmtocXNqY0dDZWZXUklqeGpUNUJoUi9PZit6eDk1OXpLMjYyWjlqUitJelRraUpYdmJxblR4YlRDR3U2Rm12cDdXc3VJdWVRNDNXNk1aZHBZTzh4eG91UFN4bHJoMGJBRTVJOEd1WDJZcTV0UmNVcGhJR3NiMkZPWEZxQUFBVGdCUHZ4OVBtUWZNK3o3SXJhbFhWbEpUTlpDam1ObG9JUDZza05LZ1ZUbjVlSVdhOHJ6RUZVU0EwUFF1MWhVQ3M0ND0tLTB6c0VqUjZjRnJjMkZncTFtK09vdmc9PQ%3D%3D--a88e6a12d820bbe2a51cffdeac0863f34764586c;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [8df23256-9246-4282-a3dd-453d269a2ee1]
+      X-Runtime: ['0.004010']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 978,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":6615,"parent_id":978,"name":"Genetic Material","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"I","preferred_operation_type_id":332,"preferred_field_type_id":1822,"allowable_field_types":[{"id":3817,"field_type_id":6615,"sample_type_id":2,"object_type_id":721,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-05T16:20:09.000-07:00","sample_type":{"id":2,"name":"Plasmid","description":"A
+        circular piece of double stranded DNA","created_at":"2013-10-15T09:59:25.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":721,"name":"0.6mL
+        tube of Digested Plasmid","description":"The DNA fragments produced from a
+        Plasmid Digest","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-10-05T13:30:19.000-07:00","updated_at":"2017-10-05T13:30:19.000-07:00","unit":"Plasmid","cost":0.01,"release_method":"return","release_description":"","sample_type_id":2,"image":"","prefix":"M20","rows":null,"columns":null}},{"id":3839,"field_type_id":6615,"sample_type_id":2,"object_type_id":208,"created_at":"2017-10-05T15:12:34.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","sample_type":{"id":2,"name":"Plasmid","description":"A
+        circular piece of double stranded DNA","created_at":"2013-10-15T09:59:25.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":208,"name":"Plasmid
+        Stock","description":"A 1.5 mL tube containing purified plasmid DNA","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"concentration:","vendor":"No
+        vendor information","created_at":"2013-10-15T10:01:41.000-07:00","updated_at":"2014-05-09T16:10:47.000-07:00","unit":"Plasmid","cost":2.0,"release_method":"return","release_description":"","sample_type_id":2,"image":"","prefix":"M20","rows":null,"columns":null}},{"id":3840,"field_type_id":6615,"sample_type_id":4,"object_type_id":295,"created_at":"2017-10-05T15:12:34.000-07:00","updated_at":"2017-10-05T15:12:34.000-07:00","sample_type":{"id":4,"name":"Fragment","description":"A
+        linear double stranded piece of DNA from PCR or Restriction Digest","created_at":"2013-10-16T14:33:41.000-07:00","updated_at":"2015-11-29T07:55:20.000-08:00"},"object_type":{"id":295,"name":"Fragment
+        Stock","description":"Fragment stock in 1.5 mL tube, usually stored in M20
+        fridge.","min":0,"max":1000,"handler":"sample_container","safety":"No safety
+        information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-01-12T16:12:01.000-08:00","updated_at":"2014-01-12T16:12:01.000-08:00","unit":"Fragment","cost":50.0,"release_method":"return","release_description":"","sample_type_id":4,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":6616,"parent_id":978,"name":"Parent","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"PS","preferred_operation_type_id":163,"preferred_field_type_id":1100,"allowable_field_types":[{"id":3819,"field_type_id":6616,"sample_type_id":5,"object_type_id":457,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":457,"name":"Yeast
+        Competent Cell","description":"Yeast comp cells managed by the M80C wizard
+        (otherwise same as Yeast Competent Aliquot)","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2015-03-02T10:58:46.000-08:00","updated_at":"2015-03-02T10:59:38.000-08:00","unit":"aliquot","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"M80C","rows":null,"columns":null}}]},{"id":6617,"parent_id":978,"name":"Transformation","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"T","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3820,"field_type_id":6617,"sample_type_id":5,"object_type_id":529,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":529,"name":"Yeast
+        Overnight for Antibiotic Plate","description":"An overnight from Plasmid Digest
+        and Yeast Transformation to be plated to an antibiotic plate","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-03-02T11:01:14.000-08:00","updated_at":"2017-03-02T11:01:14.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}},{"id":3821,"field_type_id":6617,"sample_type_id":5,"object_type_id":350,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"12f3746fceac51bb6c74d2f31ed3aee7"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=oXLTWgg%2B8xUOlvhwcb5QQAjsiPtr6jy8GQ7Lgx0EC2nTFY0bwohMLh4lItxrZ0C0nNlrZ8d0rxnmQigfy4xlhA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=Nlh0WWE4MmVPZzlhT3piL2s1eHVXeGtFS0kwWGxNaXQvU0ozckFyMTlhVitSVFZ3cVQrUjNXSGlLdDRSNkt2NzJhQ2p0UWVIeG1uVk9Wa1kzOVJUY0twOGEyNSttanoyUU41UWFLSyt1ZnlPcmdDYUw4TWkzMWh0K2Y2NTgzSGdhVU9xOHEzSWxOY09sdEI3Zmo3ek5ianlQQW44Mjk2cWRGL0NCenV1S01xUm9EMTNxbmNtS2FJSlkvY1JPSzB5MkJrdG15Z2EwcmRBOC9TVmVzNy9JbS9kY3ZuSGZ2U3ErUU8xRGo2NWYxcmFmOWZpeWJZYVdYK3BURnNKZWpFN1R2QlEwUGJ5Uit1UzZBOGIwUTY3cElLeFk4QVNldXh6MUN3bUJMNk5JUWpFbXk0VkxKeWNrVDQ0YjhvRFErdFBwUHhUTUFsVFN0WkdUT2lENTBGZW9jWTJZTXRLeHhWd1NYM1YzRkoyWXM3U0VpanlmNjFRTmt4Q0FVL3BDWDcySUw4NmJWSGVnYXd0MEkxcTFOc2lOQ3pUTHpETllHSWcwVFRuZTZJelFOYz0tLW14ZVVwb0MwNk1uQ2JrTnVYSG9MZ1E9PQ%3D%3D--60a770f15bebaac146086691ddef15398836a8be;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [236005f3-624d-481f-926e-0d27682625a2]
+      X-Runtime: ['0.020205']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "where", "arguments": {"deployed":
+      true, "name": "Check Yeast Plate"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":798,"name":"Check Yeast Plate","category":"Yeast","deployed":true,"on_the_fly":false,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2018-06-21T14:36:42.000-07:00"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"cafd6f85130671c969ac20689e8686cf"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=CdnVVwTzobjfEMk9%2FOIUapVd8dj3BLqufUiqWTUIShd7vosWzkUeg8%2BjE5HmOwSeAWgSRFuaKQuCBEnF44Ak%2Bg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=RGY2NVVCM3Znb0xaZVlDZGFteFBXc0M2dmFRcnpXbjY2Z3dSZkxnRjRyaFllbzhETkplQlpLUGRRcGh5cUtrWStvL2FSclJvSmQrZ3BuN1pGWDRTS1FoL3ZhZGQ4QXhuVXBsUjdudVRNaHltMDdkc0orS0F0K2NsNTNLVkE5VUJtY1QwbTdGRmM5QjFBVTF6UHNsVVBtdExvYWorM3dkSjY3RG9SajgxUkE2eFFpdWg5VXF4NmxRUDhXZlZDMGhjV0pXOWRSYmV3R3VWRngydkxvL01RaXRYeDFaTmtEOUVVTnRYSGpmaVNKMlJTZWM0cXNUTkVISmtUSnRYOFhKRnJBTk9FS1JJRDJpeHR5RGhOUzhSUTE1OTVCRkJWbjkwRVM3VmxkSVZKSWZZaDQvQnNQY3lnWGUxbUFvQ2FXL3lVMDlYS2JuQ0d4U2NqcTlqemFGVE9PT2J3VmQycXBXeFlmL3lWNEVTaWh3ZTlmZ0RLR3IvS0E0S2kvc2RUMzM4cll2RUJ3YlQ5bm43MGJ4MkdyQmsrdDQvSmg2a09hTUJYSHg3WGlEczZ3UT0tLU1HVWxYeE8yMmk1aFF6V2RrS1hkM1E9PQ%3D%3D--c99c49942c82569fca33a219d9958379a742c3be;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [ce46ecca-8f84-4edd-be4a-82e8daac0166]
+      X-Runtime: ['0.004047']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 798,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2956,"parent_id":798,"name":"Plate","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2017-08-08T21:59:55.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3223,"field_type_id":2956,"sample_type_id":5,"object_type_id":350,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2017-08-08T21:59:55.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]},{"id":2957,"parent_id":798,"name":"Plate","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2017-08-08T21:59:55.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3224,"field_type_id":2957,"sample_type_id":5,"object_type_id":350,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2017-10-31T12:46:57.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"bcf49474a9e6ea0a9ff38ad4bea7af71"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=vIV%2Bg0dlW92fUhEdVTo%2BuP%2BnIqw22xBoc9ZUTc6WbYnO4iDCjdPk5o%2Fhy7FP4y5Ma5LBMJpFg82MmrfRGB4DZA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=b3NzV0R4azM2U2hzVzNlVjB3bVY3V0d1MFFaLzUwd09EdE56dGZxRS85QlNpaWN0WExjNE1VREtlNnlpbEg2MEMrWWt1ZlVYVE1aSXNTWEF4d2hOV3dvNWhLZlBZS3pWa0h1QjZRdDBPK2YzQ1dkNVZCYzZqOWhsTlBUYWZPdmRBWHEyaExKRkNEOEdyTTdFS0Q0c3lhbDQ3eGxtSzUwYy9ZVGlkNUdsVWllbVdDOTZPbGJsM2hlNEZKTW03M1N0VXcydzVoT0pUOFEwM20xZHM4Q29pd2tyeS94cHJEZ2V3ZkZaa2xybXF5a0g4dnpFZy90QkZma003OTZsSC9IVmJpaXRSUGFESnVMQm5PeTNsdk9IOUhGVzkvSDI4OW43WDBsK0NhdEpuQ3VuVURTdXJ5V054MktlZGxHSDRYNTZhMXRZdkJlaFk2RDg4eHN1bGgvRkdIRXpKeWRZbExnYjJVNkJ2Wks2Y0pUUGh1bUVwTis3V1hmQys4WDRIT2hOVWQwUUIvdUlSRFpnMHdRSHZNSWYyeS9tcWMybEdKM1RKQkgwaWtnellRWT0tLS9oV3E2d1RabmV4TlNPK0V5ZjZvblE9PQ%3D%3D--04614a3463c661654881b2875b23db99105cbc1b;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [7b078d51-eff9-46e5-ae4e-0ab8d321d0f6]
+      X-Runtime: ['0.011245']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "where", "arguments": {"deployed":
+      true, "name": "Yeast Overnight Suspension"}, "options": {"offset": -1, "limit":
+      -1, "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['174']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":793,"name":"Yeast Overnight Suspension","category":"Yeast","deployed":true,"on_the_fly":false,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2018-06-21T14:36:43.000-07:00"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"1bbace03c683c980086189027562525c"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=jjhzwpahL9ghir%2BWTbSjdBiVAZozKmV8408JLB%2BCutz8Xy2DXBeQ4zE5ZTpXbbOAjKDiBp%2B09tkcA%2BqwyQrUMQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=Y0MxUlliK2xzbGFaMDhWWjV2bUFyd00vbjZSU0hqUzJab2phQTYzSzZidWI4dHpHdHZicXRZVy93eTBwWU5WdTkwcytydUNDOXV3Um1oMHMra1lJU21ORFNVNk9sSDJlR1IzdHZrd3gvSzBmUkhvNkJHNXdwTkM5Y205Z2Rta2taSDNncERXYTNUcmxybXBqUlpIQ0hJU0ZtTGk5WFNDNHd3R0plMExWbWFtMWZjVk5ETFhubXhTdzdTWXg0YW9iRUxnN0tYbWV4VW1MQXMrb1FoOFkzSEdMODNpdFRyUVdqcXFJK0t6dTZ0MWpsYjNtaVNzRWM4YTBxZEJtWGNKUHM4SnJyL2RxN3VYcmNRQUQvcEN0ZkErZy9vNElCUkIyeXhJOW5QM3BtZy9yYnhxUTFLak5JbDlKcXYreno4M2dKUU9XMG1iYmJtWGVoQ1IwQXo0SVlyS0trenJSZXFGVFlzNmt1RDV0ekxkZjhDWXdvdXpKNzVqWU1HdGlKN1V3dTNHcHZXdzZqR3N2SFBnRFh1dE42emZ0YmJDRFFScGdOVU5wTGxZRC9JWT0tLVdnQVg4L1liUkNmS0RIL3Z1Vm53R1E9PQ%3D%3D--697f6ea1adf5eda81da847ea18a86a57b5b94086;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [fea142a5-93bd-4553-ab65-46c4835b23a1]
+      X-Runtime: ['0.004090']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 793,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2942,"parent_id":793,"name":"Yeast Strain","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"YS","preferred_operation_type_id":156,"preferred_field_type_id":1124,"allowable_field_types":[{"id":3206,"field_type_id":2942,"sample_type_id":5,"object_type_id":677,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":677,"name":"Checked
+        Yeast Plate","description":"A plate that has gone through the checked plate
+        protocol; nonzero colony count guaranteed ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-07T20:20:03.000-07:00","updated_at":"2017-10-31T12:47:28.000-07:00","unit":"a","cost":0.01,"release_method":"return","release_description":"","sample_type_id":1,"image":"","prefix":"","rows":null,"columns":null}},{"id":3207,"field_type_id":2942,"sample_type_id":5,"object_type_id":214,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":214,"name":"Yeast
+        Glycerol Stock","description":"A 1.8mL culture of half saturated yeast overnight
+        and half 50% glycerol stored in the -80C freezer","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2013-10-16T15:07:47.000-07:00","updated_at":"2014-08-12T18:35:37.000-07:00","unit":"Yeast
+        Strain","cost":5.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"M80","rows":null,"columns":null}},{"id":3208,"field_type_id":2942,"sample_type_id":5,"object_type_id":347,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":347,"name":"Yeast
+        Overnight Suspension","description":"Yeast Overnight Suspension","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:02:38.000-08:00","updated_at":"2017-10-31T20:19:36.000-07:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"query","release_description":"","sample_type_id":1,"image":"","prefix":"DFO","rows":null,"columns":null}},{"id":4446,"field_type_id":2942,"sample_type_id":5,"object_type_id":350,"created_at":"2018-03-05T16:27:29.000-08:00","updated_at":"2018-03-05T16:27:29.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]},{"id":2943,"parent_id":793,"name":"Overnight","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"YS","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3209,"field_type_id":2943,"sample_type_id":5,"object_type_id":347,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":347,"name":"Yeast
+        Overnight Suspension","description":"Yeast Overnight Suspension","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:02:38.000-08:00","updated_at":"2017-10-31T20:19:36.000-07:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"query","release_description":"","sample_type_id":1,"image":"","prefix":"DFO","rows":null,"columns":null}},{"id":4334,"field_type_id":2943,"sample_type_id":5,"object_type_id":529,"created_at":"2018-02-01T19:45:50.000-08:00","updated_at":"2018-02-01T19:45:50.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":529,"name":"Yeast
+        Overnight for Antibiotic Plate","description":"An overnight from Plasmid Digest
+        and Yeast Transformation to be plated to an antibiotic plate","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-03-02T11:01:14.000-08:00","updated_at":"2017-03-02T11:01:14.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":12064,"parent_id":793,"name":"Type
+        of Media","ftype":"string","choices":"YPAD,SC","array":null,"required":null,"created_at":"2018-03-05T20:28:35.000-08:00","updated_at":"2018-03-05T20:28:35.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":15885,"parent_id":793,"name":"Require
+        QC?","ftype":"string","choices":"Yes,No","array":null,"required":null,"created_at":"2018-09-07T15:50:45.000-07:00","updated_at":"2018-09-07T16:06:30.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"91eb2030c58928c5742ae054f9aba6a0"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=A5ZdgUvfuMbAEF9z3tI%2F%2F7TG0ko023v%2FXtxh4uFwrl1x8QPAgWkH%2FdCjhd%2FECy8LIPMx1phF6FqhkIJ%2BN%2FjAsA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=b3VwLytwakNRRWx5RzBTeTYvYlFjMUMxOUd1d3VCdk1IN0cxaEhPelM2Smo1Y3RvM0N2T1U3YitYNFcwbWlOL0M3NkVSNDM4UWhHM0FPRGZsSUhsYU11bDkyVStGcWdHS3ZST1FKL2lqVnkxTjdPMWh1bHBqVm42Ky9NdndwMVVramNoZkFJVjYwM2phZ1BiZWYxM0VoUkdqbFN6T2puWTdhNmpGOGtnMUFhdTAyNWtoSW1rZ3lvUjRhRm1BWFVaVThoVWhTODBDUVp3eXQ4RG1GTk9nemVmZzZpa0ovaC9mVStVcExuVjMwbGVRNWE1YWh3eGJac1p0eWtyekxoVmpHT3haWVdkZ2ZHUWZRV3lsRWZiVUlPa0tMcWh4VVFaY0U0K3RMV3VJWTEzVitxM3haSmJSMWNUemNCL0Z4SklhNnhXWnQ1dnZGbnFSVkNZS1FxRlFhR3UrUjhXeVE4ZUlGUzFBUGpmWDQ3a2NoeERaNWFWUW5qYklLRnpXUmliem50bmQ2dGVRdGxPemNIVFNtU0VMNTlwN0VRZEptdExCOS9JYklyZ3pTVT0tLWh1M21rQW1GcWJxa05ReUJYb3J0Smc9PQ%3D%3D--657d7b470bd97095cbca4f654ab1bee2f945e478;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [7a702cdf-9b9d-42de-8128-f9f1ec0cc362]
+      X-Runtime: ['0.019991']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "id": 2956}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['34']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":2956,"parent_id":798,"name":"Plate","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2017-08-08T21:59:55.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3223,"field_type_id":2956,"sample_type_id":5,"object_type_id":350,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2017-08-08T21:59:55.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"332a08c35b6c980adbf058e7d826745c"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=ndeBgxl9LtJfI%2FGCpqgmXAohZHNLFcuyEVX0oq4PoWvvsN%2FC08uR6U%2BQKy68cTaonhSH7%2BeLWBfuGRc%2BeIfPhg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=TkRBbitoY0tYSk5hL2JqTDhmZzVNQ0F6ZjR6UEh1emI2ZXh4VTBlUmR1WTFvdm1kUUxMTCt4RTlteFl5cDFjWXI5aENySG5ZaGgvQmFBSUs2VUg3cFlXL3lqM2NpcXZFUmlSSHNqc25tY3hXT3BHSVFVdndMY2E1YnVtNXlxU0FCNmFtRUVLZUlqUHhFdUE2NXA1WkFZbURaTXBkbEFQaCtTRksvY0NucUxpZEljc3Z5S3FxcHIzRk9kdlhXNGRPa3FlWWRQKzFNVStkUkF3SThVcEh5ZVR4V0tKWFFra0NhamtGMkJydGtKaUZHdUt1ZmRacE1ZaituRlhaVTd4QnVFTUNKdmtkelhqc3JBcWptaEhIVlRqcE1HN3M5eEpwcFZ1bTh2ak13Mjc3YzU1dTRiQVF0OTdnY2EvbXBMQmxqV01VL2tNUFFjWGQvMDZBcTNDeE9zQWRqOEo5WU1OK1gyS0JrV3JHUG5Pb0owWk9nZUdJeWpDN1p4Y3ZPWElHdGR5Ny9JRUo2RUtEZGdaUERPREhxd1NydDZ1WTV3emJXOVBwVW9lMjN2UT0tLVJ2RkZibmV1cFY2eXY5L2R4QWc4V3c9PQ%3D%3D--dcf8a5393e64844416b4a492bd4964111bb7f8c8;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [bdbb62fd-2a4b-40dc-96b1-f2388db9b6be]
+      X-Runtime: ['0.007110']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "id": 6617}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['34']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":6617,"parent_id":978,"name":"Transformation","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"T","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3820,"field_type_id":6617,"sample_type_id":5,"object_type_id":529,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":529,"name":"Yeast
+        Overnight for Antibiotic Plate","description":"An overnight from Plasmid Digest
+        and Yeast Transformation to be plated to an antibiotic plate","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-03-02T11:01:14.000-08:00","updated_at":"2017-03-02T11:01:14.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}},{"id":3821,"field_type_id":6617,"sample_type_id":5,"object_type_id":350,"created_at":"2017-10-03T12:04:10.000-07:00","updated_at":"2017-10-03T12:04:10.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"39d2dc44719bf72fb6f94fa4d6e3f7c7"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=QjVyBitOO%2BDEjYDOzW4TXrgh1KAle1PIOe43t0roUKcwUixH4fiE29Q%2BWmLXtwOqLBQ3PInlwG3GotQrnGA%2BSg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=UXA0cmY3dGh2dE80UUtmdnEwbkE0U2R3TjduQm51YklrRy9Zem56RDJkR1FuK0VidjFTM2dZRis0SDFpUnRMZ2FHQ0h4bHZRU0xEUHkyVGF4QWVHK21SQlQyMDQzNVo0VkhxSTN2dWlEc3FaYlAwV0VsQmFQZ3JLZWd1ZldYVVA2R0s3U3lWTTc1Ukl1Y3RaRFRFbnlaYklhdUlESWdYQjI3REdhQ0dQZXBNVlB0aEFuYWZOcTJ2blpNRlk0ejBMelBXTmtUWFEzWWhNWlR3V21WQi9JYzBNMlN3U3plLy9qRzVmaHBobXgvdmtQTktLUWNBcHF3d3dOR3YzQkJJQzU1Z3h1cDN4VmFXVjkzeEd3aGR1N2Q1SXZURUNEYlZQY2dpbmtZRmJVWnhnZ0F6UDFnRjVKdDRLTFg1MnRJYm8zcUhPT3paV3BWaXlKZWN2UFRrY3Y3L0pkWWxBTStjakRSV0NXUS9QWDJQbHU1di9KcXNBRmI3MHU1cHJXdXVOUU4rZm1VRHp1Wk00ajRoN3lMRW1xOGxjTGQ3dWM4QlZvR0R0MEU2NTg0WT0tLXZ2WTVvTU4xV0Z4Rk03M2hnbURWRnc9PQ%3D%3D--bfb41ef7c0028245c118254fe5b9dd5a526b2fac;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [8a8cd557-4c1c-4204-9ffc-d4ce0069aff1]
+      X-Runtime: ['0.009351']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "id": 2942}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['34']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":2942,"parent_id":793,"name":"Yeast Strain","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","parent_class":"OperationType","role":"input","part":false,"routing":"YS","preferred_operation_type_id":156,"preferred_field_type_id":1124,"allowable_field_types":[{"id":3206,"field_type_id":2942,"sample_type_id":5,"object_type_id":677,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":677,"name":"Checked
+        Yeast Plate","description":"A plate that has gone through the checked plate
+        protocol; nonzero colony count guaranteed ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-07T20:20:03.000-07:00","updated_at":"2017-10-31T12:47:28.000-07:00","unit":"a","cost":0.01,"release_method":"return","release_description":"","sample_type_id":1,"image":"","prefix":"","rows":null,"columns":null}},{"id":3207,"field_type_id":2942,"sample_type_id":5,"object_type_id":214,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":214,"name":"Yeast
+        Glycerol Stock","description":"A 1.8mL culture of half saturated yeast overnight
+        and half 50% glycerol stored in the -80C freezer","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2013-10-16T15:07:47.000-07:00","updated_at":"2014-08-12T18:35:37.000-07:00","unit":"Yeast
+        Strain","cost":5.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"M80","rows":null,"columns":null}},{"id":3208,"field_type_id":2942,"sample_type_id":5,"object_type_id":347,"created_at":"2017-08-08T21:59:54.000-07:00","updated_at":"2017-08-08T21:59:54.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":347,"name":"Yeast
+        Overnight Suspension","description":"Yeast Overnight Suspension","min":0,"max":1000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:02:38.000-08:00","updated_at":"2017-10-31T20:19:36.000-07:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"query","release_description":"","sample_type_id":1,"image":"","prefix":"DFO","rows":null,"columns":null}},{"id":4446,"field_type_id":2942,"sample_type_id":5,"object_type_id":350,"created_at":"2018-03-05T16:27:29.000-08:00","updated_at":"2018-03-05T16:27:29.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:09 GMT']
+      ETag: [W/"556d714318a09ab8de593fee35b12a8e"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=crGoLGMymHKMlKDAzYwFHUAGJDO%2F38xa6ta7gkQw%2BgQA1vZtqYQnSZwnemzXVRXp1DPHrxNBX%2F8VmlgekriU6Q%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=bUx6enJsMUI5WHJTUzVaWEd4L3FGWlQ4QzFDS1ZYMXQxNTNhenBPVVlhL1pkYmlZRDd2Tit4cHFianI1WjYyOTlFb05kMHlCbFpHRW15bndhbkorMU9pSkw1Z0N3LzlrV3YyTUJRTjZOOUVUeGdlUHNVSERzMHhpNE01VWpnaWxGemhCY0t4QkgrREhKZHJFbDB2NUtvVkJqZXZ0Y25UTGhMYzYyazZ0ZkdFTWI2SWVwZiszMFRYdFllbFE4WGdvcTVpWWpoTlNCV2xzVTZpc3hLU0xyWk5qM0VjN1Y5K05VWGZNaGxhdzU3dW9LOFFZL1lscmUvbmprZng1QTlKakNTOStNaEFDTWltQ2FIOEZZWVJXMmdLSXZ0QXl1K3FzTGwwK0dMUWZLTlQrSlB0bzIwVlQzNktEb3VVejUxaW9xQWpBNC92Wk5jV3ZnaS9ibFMrTnpUWVRZdVlRRUxLbGNzNzJ2RHIxOHVBaXFweitkSk9CcU45cHgxSnV5a2QvTmRzM05JbzVGOXB3QWhzbWY1RVZOcVgvNS9qWXZ0RzlVbUFndXJNM1hXdz0tLTRwUll2cU1uWVpuK0xxVDlnbHNFeWc9PQ%3D%3D--55ffea1d69698fe526e05149917e5f03c34ec6d0;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [d367124e-fa47-4287-8da5-73f381d2ddc3]
+      X-Runtime: ['0.012882']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "id": 2957}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['34']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=umPbHW0fso9WcORAc4C18Zlz19rdlIfL%2BIEIvlKzwXfIBIVcp6kNtEbDPuxpWaUFDUY0RnEKFG4HzesihDuvmg%3D%3D;
+          _aquarium_NURSERY_production_session=QWo4RXFtdHl3ZW9MZXlINnRQeWlMT3AvYjh3dXdjYVl5SEhLUUV4YzNiRFNpdTJ5eUxoOEEzbEJ6Y2Z5Y1VSaDExY0NUMkwzVzl3djBTR1VkRE5aUkpNN3V4SXBDdmxsQWdOWGdjZi9haVhlSDNIbnFDenNwc09EeWNrVGFwRmFKQStQQmRtNnBBa2F6ZGU2ak5hODNtcG1FNFVVbzZJaUtVdmhYS01DTUpUSkZRS3dEZ2V1NnZEN215ZlRTMlpRdjcyV0psVG5KZWNrcStXYlVndjc2QWxRWGRGdG03TStxaXk4U2YrbWhGTWhlQmJTenBxZXdrZVJyNWFoY0l0bTNOMzdXNE91S1hacnBNM2ZTM2ovTDBybWNEd1Y2SUZteTlFN3RBOFZXQzgxTGV0Q1JkYTZqQzUzVGFtUlhLZnJZdlc3TFFOQ2NDODZzVkplcnNDZmhKemtqMFR4MVRQdm1sOVBVZDNZOUtXNXA5QVlRR0xQbUFnb1lvQ0p5Ykd0WmpjR00raUdkWVgyb0xmQ0tabGtRNFlRREo5VWM2NjdoNzVPUzdkVnVrcz0tLVF1MC9nUUd0aTR3cDh5RzVjY0w0V3c9PQ%3D%3D--dea828ec76aaf29ebae0d8f2fe3b730c03573696;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":2957,"parent_id":798,"name":"Plate","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2017-08-08T21:59:55.000-07:00","parent_class":"OperationType","role":"output","part":false,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3224,"field_type_id":2957,"sample_type_id":5,"object_type_id":350,"created_at":"2017-08-08T21:59:55.000-07:00","updated_at":"2017-10-31T12:46:57.000-07:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":350,"name":"Yeast
+        Plate","description":"Yeast Plate","min":0,"max":100000,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-02-13T14:04:32.000-08:00","updated_at":"2015-03-02T10:44:55.000-08:00","unit":"Yeast
+        Strain","cost":1.0,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"DFP","rows":null,"columns":null}}]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 30 Oct 2018 06:52:10 GMT']
+      ETag: [W/"3c81b3a6ce0e9f338a234e0058df5adc"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=tmj%2FWr7ZzSOcb1%2F14vowfXZZDqEXTkdyHFaWuyVMl7jED6EbdG9yGIzchVn4IyCJ4mztPbvQ1NfjGnUn88T5VQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=VnJidmE5cFV4RzZ5RjlxMkViUmtkYTJwZG0rWDFPaGdqWGl1Q3Zsb0V2d0hSYkpmN2tiQU9TTHB2TC9jZ3B1dUZnMXBiYnVpTnJSWkV1dzJNeXFKUWxyaEh6UWV5OTZPcG1xYjYzRWsvRCtNYURTNk5ERjdLQXJ0NWJmYTlhdmhCb1F2blQzS2lFRFRZc21YVnVnRHlITzBmNWJLQjlHTnEvWEJLU3FwQkxSTUR5TmwwNXZKOTl2NzdjNWE5c2FsU3FoVHRpalJGeDMyb3h1ZHF0TnpFelZCOWtGaEJRbUZUYkU5TTVtMnpBZjZNVVlwN2pMYUlSWDJpQ0FraTcwRkNPVWdiMG5zcDJ2cGp3dSszSEZqR0tQbTBnWE1paFN6T1hha1prMjRqTlo1cHBoMnlJblY2Uk1IUndZaEhoOFQxa0tvNW1DeHVpYWlzczJQVjNuWlpxc0Zydm42NExKQUZLSzVqTHVDdzVtekpNbUNuS3FjQ2Z4ZDFVNlN1alBHUHhva1czTVZIeXpmSWpDV3hXMVhnT0ZJci9uZS9ZZS9FdDBxdDMxNHJqVT0tLXZ2ZUM4T0piS1FVRUV6bkRBa09vY2c9PQ%3D%3D--5b4d8dca6399aa544ddb27db68e7e12346108e5d;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [39fc1311-f5cd-45c1-8cb3-bdd46b3b7d63]
+      X-Runtime: ['0.007706']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1
