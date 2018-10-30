@@ -2,16 +2,17 @@
 Planner
 """
 
+from functools import wraps
+from uuid import uuid4
+
 from networkx import nx
 from pydent.browser import Browser
+from pydent.models import FieldValue, Operation
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
-from pydent.utils import make_async, logger
-from uuid import uuid4
-from functools import wraps
+from pydent.utils import filter_list, make_async, logger
 
-from pydent.models import FieldValue, Operation
-
+import random
 
 class PlannerException(Exception):
     """Generic planner Exception"""
@@ -48,6 +49,23 @@ def plan_verification_wrapper(fxn):
 
 class Planner(logger.Loggable, object):
     """A user-interface for making experimental plans and layouts."""
+
+    class ITEM_SELECTION_PREFERENCE:
+
+        ANY = "ANY"  # pick the first item that matches the set field_value
+        RESTRICT = "RESTRICT"  # restrict to the currently set allowable_field_type
+        PREFERRED = "PREFERRED"  # (default) pick the item that matches the currently set allowable_field_type, else
+        # pick ANY item that matches the set field_value
+        _DEFAULT = PREFERRED
+        _CHOICES = [ANY, RESTRICT, PREFERRED]
+
+    class ITEM_ORDER_PREFERENCE:
+
+        FIRST = "FIRST" # select first item
+        LAST = "LAST" # select last item
+        RANDOM = "RANDOM" # select random item
+        _DEFAULT = LAST
+        _CHOICES = [FIRST, LAST, RANDOM]
 
     def __init__(self, session, plan_id=None):
         self.session = session
@@ -226,8 +244,8 @@ class Planner(logger.Loggable, object):
                 outputs = [source]
             else:
                 msg = "Planner attempted to find matching" \
-                    " allowable_field_types for an output FieldValue but" \
-                    " found an input FieldValue"
+                      " allowable_field_types for an output FieldValue but" \
+                      " found an input FieldValue"
                 raise PlannerException(msg)
         elif isinstance(source, Operation):
             outputs = [
@@ -244,15 +262,16 @@ class Planner(logger.Loggable, object):
                 return [destination]
             else:
                 msg = "Planner attempted to find matching" \
-                    " allowable_field_types for" \
-                    " an input FieldValue but found an output FieldValue"
+                      " allowable_field_types for" \
+                      " an input FieldValue but found an output FieldValue"
                 raise PlannerException(msg)
         elif isinstance(destination, Operation):
             inputs = [fv for fv in destination.inputs
                       if fv.field_type.ftype == 'sample']
             return inputs
         else:
-            raise PlannerException("Cannot resolve inputs, type must be a FieldValue or Operation, not a \"{}\"".format(type(destination)))
+            raise PlannerException(
+                "Cannot resolve inputs, type must be a FieldValue or Operation, not a \"{}\"".format(type(destination)))
 
     @classmethod
     def _collect_matching_afts(cls, source, destination):
@@ -386,6 +405,16 @@ class Planner(logger.Loggable, object):
         return ops
 
     def _select_empty_input_array(self, op, fvname):
+        """
+        Selects the first 'empty' (i.e. field_values with no Sample set)
+        field value in the :class:`FieldValue` array.
+        Returns None if the FieldType is not an array. If there are no current
+        'empty' field values, a new one is instantiated and returned.
+
+        :param op: Operation
+        :param fvname: FieldType/FieldValue name of the array
+        :return:
+        """
         field_type = op.operation_type.field_type(fvname, 'input')
         if field_type.array:
             existing_fvs = op.input_array(fvname)
@@ -436,11 +465,12 @@ class Planner(logger.Loggable, object):
                 return self.add_wire(output_fv, input_fv)
 
         elif len(afts) == 0:
-            raise PlannerException("Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
-                ', '.join([fv.name for fv in model_inputs]),
-                model_inputs[0].operation.operation_type.name,
-                ', '.join([fv.name for fv in model_outputs]),
-                model_outputs[0].operation.operation_type.name))
+            raise PlannerException(
+                "Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
+                    ', '.join([fv.name for fv in model_inputs]),
+                    model_inputs[0].operation.operation_type.name,
+                    ', '.join([fv.name for fv in model_outputs]),
+                    model_outputs[0].operation.operation_type.name))
 
     def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""
@@ -487,7 +517,7 @@ class Planner(logger.Loggable, object):
 
             # filter afts by sample_type_id
             aft_pairs = [aft for aft in aft_pairs if aft[0].sample_type_id ==
-                    selected_sample.sample_type_id]
+                         selected_sample.sample_type_id]
             selected_aft_pair = aft_pairs[0]
 
             if len(aft_pairs) == 0:
@@ -634,8 +664,61 @@ class Planner(logger.Loggable, object):
                     continue
         return _arr
 
+    def _item_preference_query(self, sample, field_value, item_preference):
+        if item_preference not in self.ITEM_SELECTION_PREFERENCE._CHOICES:
+            raise PlannerException("Item selection preference \"{}\" not recognized"
+                                   " Please select from one of {}".format(item_preference, ','.join(
+                self.ITEM_SELECTION_PREFERENCE._CHOICES)))
+        query = {"sample_id": sample.id}
+
+        # restrict allowable_field_types based on preference
+        afts = list(field_value.field_type.allowable_field_types)
+
+        if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT:
+            afts = [field_value.allowable_field_type]
+        elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
+            afts = [aft for aft in field_value.field_types if aft.sample]
+        if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
+            afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id==sample.sample_type_id)
+
+        query.update({"object_type_id": [aft.object_type_id for aft in afts]})
+        return query
+
     @plan_verification_wrapper
-    def set_to_available_item(self, fv, recent=True, lambda_arr=None):
+    def get_available_items(self, field_value, item_preference):
+        sample = field_value.sample
+        if not sample:
+            return []
+
+        if item_preference not in self.ITEM_SELECTION_PREFERENCE._CHOICES:
+            raise PlannerException("Item selection preference \"{}\" not recognized"
+                                   " Please select from one of {}".format(item_preference, ','.join(
+                self.ITEM_SELECTION_PREFERENCE._CHOICES)))
+        query = {"sample_id": sample.id}
+
+        # restrict allowable_field_types based on preference
+        afts = list(field_value.field_type.allowable_field_types)
+
+        if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT:
+            afts = [field_value.allowable_field_type]
+        elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
+            afts = filter_list(afts, sample_type_id=sample.sample_type_id)
+
+        if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
+            afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id == sample.sample_type_id)
+
+        if not afts:
+            return []
+
+        query.update({"object_type_id": [aft.object_type_id for aft in afts]})
+
+        available_items = self.browser.where(query, "Item")
+        available_items = [i for i in available_items if i.location != 'deleted']
+        return available_items
+
+    @plan_verification_wrapper
+    def set_to_available_item(self, fv, order_preference=ITEM_ORDER_PREFERENCE._DEFAULT, filter_func=None,
+                              item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT):
         """
         Sets the item of the field value to the next available item. Setting recent=False will select
         the oldest item.
@@ -644,24 +727,45 @@ class Planner(logger.Loggable, object):
         :type fv: FieldValue
         :param recent: whether to select the most recent item (recent=True is default)
         :type recent: bool
-        :param lambda_arr: array of lambda to filter items by. E.g. 'lambda_arr=[lambda x: x.get("concentration") > 10]'
-        :type lambda_arr: list
-        :return: the selected item
-        :rtype: Item
+        :param filter_func: array of lambda to filter items by. E.g. 'lambda_arr=[lambda x: x.get("concentration") > 10]'
+        :type filter_func: list
+        :param order_preference: The item order preference. Select from "LAST" (default), "FIRST", or "RANDOM". Selections
+                                also available in :class:`Planner.ITEM_ORDER_PREFERENCE`. Random will choose a random item
+                                from the available items found after all preferences and filters
+        :type order_preference: basestring
+        :param item_preference: The item selection preference. Select from items in :class:`Planner.ITEM_SELECTION_PREFERENCE`
+                                If "PREFERRED" (default), will select item that matches the allowable_field_value that is
+                                already set for the field_value, else select any item that matches the :class:`Sample` set :class:`FieldValue`. If
+                                "RESTRICT", will restrict selected item only to those that matches the current allowable_field_value
+                                that is set for the :class:`FieldValue`. If "ANY", will select any items that matches the :class:`Sample`.
+                                set for the field_value
+        :type item_preference: basestring
+        :return: The selected item (or None if no item set)
+        :rtype: Item or None
         """
         sample = fv.sample
         item = None
+
         if sample is not None:
-            allowable_field_type = fv.allowable_field_type
-            available_items = sample.available_items(object_type_id=allowable_field_type.object_type_id)
+            available_items = self.get_available_items(fv, item_preference)
+            if filter_func is not None:
+                if not isinstance(filter_func, list):
+                    filter_func = [filter_func]
+                available_items = self._filter_by_lambdas(available_items, filter_func)
+
+            if not available_items:
+                return None
+
             available_items = sorted(available_items, key=lambda x: x.created_at)
-            if lambda_arr is not None:
-                available_items = self._filter_by_lambdas(available_items, lambda_arr)
-            if recent:
-                item = available_items[-1]
-            else:
-                item = available_items[0]
-        if item is not None:
+
+            selection_index = -1
+            if order_preference == self.ITEM_ORDER_PREFERENCE.FIRST:
+                selection_index = 0
+            elif order_preference == self.ITEM_ORDER_PREFERENCE.LAST:
+                selection_index = -1
+            elif order_preference == self.ITEM_ORDER_PREFERENCE.RANDOM:
+                selection_index = random.randint(0, len(available_items)-1)
+            item = available_items[selection_index]
             fv.set_value(item=item)
         return item
 
@@ -795,15 +899,15 @@ class Planner(logger.Loggable, object):
         if layout is None:
             layout = self.layout
 
-        x = layout.midpoint()[0] + layout.BOX_WIDTH/2  # adjust so x is midpoint of 'box' on screen
+        x = layout.midpoint()[0] + layout.BOX_WIDTH / 2  # adjust so x is midpoint of 'box' on screen
         y = layout.y
 
         # center the annotation
-        x -= width/2
+        x -= width / 2
         y -= height
 
         # give some space between annotation and operation
-        y -= layout.BOX_DELTA_Y/2
+        y -= layout.BOX_DELTA_Y / 2
 
         return self.annotate(markdown, x, y, width, height)
 
@@ -822,7 +926,7 @@ class Planner(logger.Loggable, object):
         if fv.item is not None:
             item_id = "{}{}".format(fv.role, fv.item.id)
         fvhash = "{}:{}:{}:{}".format(
-                        ft.name, ft.role, sid, item_id)
+            ft.name, ft.role, sid, item_id)
         if ft.part:
             fvhash += "r{row}:c{column}".format(
                 row=fv.row,
@@ -944,13 +1048,15 @@ class Planner(logger.Loggable, object):
                 fv = node['fv']
                 value = fv.sample
                 if value is None and fv.field_type.ftype == 'sample':
-                    reasons.append("{} {} for {} has no sample defined".format(fv.role, fv.name, fv.operation.operation_type.name))
+                    reasons.append(
+                        "{} {} for {} has no sample defined".format(fv.role, fv.name, fv.operation.operation_type.name))
                 else:
                     values.append(value)
                 if len(list(subgraph.predecessors(n))) == 0:
                     root = fv
             if root.item is None and root.role == "input" and root.field_type.ftype == 'sample':
-                reasons.append("{} {} for {} has no item defined".format(fv.role, fv.name, fv.operation.operation_type.name))
+                reasons.append(
+                    "{} {} for {} has no item defined".format(fv.role, fv.name, fv.operation.operation_type.name))
             values = list(set(values))
             if len(values) > 1:
                 reasons.append("different samples defined in route ({})".format(values))
