@@ -302,6 +302,12 @@ class UtilityInterface(SessionInterface):
         upload.reload(result)
         return upload
 
+    def __json_update(self, model, **params):
+        """This update method is fairly dangerous. Be careful!"""
+        data = {"model": {"model": model.__class__.__name__}}
+        data.update(model.dump(**params))
+        return self.aqhttp.post('json/save', json_data=data)
+
 
 class ModelInterface(SessionInterface):
     """
