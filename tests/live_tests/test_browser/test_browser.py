@@ -173,6 +173,36 @@ def test_filter_by_sample_properties(session):
         assert primer.properties["T Anneal"] == '64'
 
 
+def test_filter_by_sample_properties_array(session, example_fragment):
+
+    browser = Browser(session)
+
+    from copy import deepcopy
+
+    example_fragment_copy = browser.new_sample("Fragment", '', '', '', properties=example_fragment.properties)
+    example_fragment_copy.id = 12321512
+    example_fragment
+
+        # example_fragment_copy.field_values.append(new_fv)
+
+    frags_to_search = [example_fragment, example_fragment_copy]
+
+    browser._update_model_cache(frags_to_search)
+    browser._update_model_cache(example_fragment.field_values)
+    browser._update_model_cache(example_fragment_copy.field_values)
+    fragments = example_fragment.properties['Fragment Mix Array']
+
+    find_one = browser.filter_by_properties(frags_to_search, {
+        "Fragment Mix Array": fragments
+    })
+    assert len(find_one) == 2
+
+    find_none = browser.filter_by_properties(frags_to_search, {
+        "Fragment Mix Array": fragments[:-1]
+    })
+
+    assert len(find_none) == 0
+
 def test_filter_by_sample_properties_with_inequality(session):
     browser = Browser(session)
     primers = browser.search(".*gfp.*", sample_type="Primer")

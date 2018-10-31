@@ -335,13 +335,7 @@ class Browser(logger.Loggable, object):
 
     def list_field_values(self, model_ids, **query):
         """
-        Lists sample field values
-        :param models:
-        :type models:
-        :param query:
-        :type query:
-        :return:
-        :rtype:
+        Lists sample field values. May supply an additional query to filter :class:`FieldValue`s.
         """
         query.update({"parent_class": self.model_name, "parent_id": model_ids})
         return self.where(query, "FieldValue")
@@ -356,6 +350,8 @@ class Browser(logger.Loggable, object):
     def filter_by_data_associations(self, models, associations):
         raise NotImplementedError()
 
+    # TODO: fix filter by properties method
+    # TODO: find any matching samples?
     def filter_by_properties(self, samples, properties):
         """
         Filters a list of samples by their FieldValue properties. e.g. {"T Anneal": 64}.
@@ -375,41 +371,84 @@ class Browser(logger.Loggable, object):
         :rtype:
         """
 
-        # TODO: handle metatypes better
-        if self.model_name not in ["Operation", "Sample"]:
-            raise BrowserException("Cannot filter_by_properties, model must be either a Operation or Sample")
-        metatype_attribute = "sample_type_id"
-        metatype_name = "SampleType"
+        def to_pk(value):
+            if issubclass(value.__class__, pydent_models.ModelBase):
+                return value._primary_key
+            return value
 
-        if self.model_name == "Operation":
-            metatype_attribute = "operation_type_id"
-            metatype_name = "OperationType"
+        def to_iden(value):
+            if isinstance(value, list):
+                return [to_pk(v) for v in value]
+            return to_pk(value)
 
-        grouped = self._group_by_attribute(samples, metatype_attribute)
+        def value_equal(v1, v2):
+            return to_iden(v1) == to_iden(v2)
 
-        filtered_model_ids = []
+        filtered_samples = []
+        for sample in samples:
+            sample_props = sample.properties
+            self._info(sample_props)
+            self._info([(to_iden(sample_props.get(k, None)), to_iden(v)) for k, v in properties.items()])
+            if all([value_equal(sample_props.get(k, None), v) for k, v in properties.items()]):
+                filtered_samples.append(sample)
+        return filtered_samples
 
-        for attrid in grouped:
-            models = grouped[attrid]
-            model_ids = [s.id for s in models]
-            metatype = self.find(attrid, metatype_name)
-            for prop_name in properties:
-                field_type = metatype.field_type(prop_name)  # necessary since FieldValues are missing field_type_ids
-                if field_type:
-                    fv_query = {"name": prop_name}
-                    value = properties[prop_name]
-                    if value:
-                        if field_type.ftype == 'sample':
-                            fv_query.update({'child_sample_id': value.id})
-                        else:
-                            fv_query.update({'value': value})
-                    fvs = self.list_field_values(model_ids, **fv_query)
-                    fv_parent_sample_ids = set([fv.parent_id for fv in fvs])
-                    model_ids = list(set(model_ids).intersection(fv_parent_sample_ids))
-            filtered_model_ids += model_ids
-        if filtered_model_ids == []:
-            return []
-        return self.interface().find(filtered_model_ids)
+
+        # # TODO: handle metatypes better
+        # if self.model_name not in ["Operation", "Sample"]:
+        #     raise BrowserException("Cannot filter_by_properties, model must be either a Operation or Sample")
+        # metatype_attribute = "sample_type_id"
+        # metatype_name = "SampleType"
+        #
+        # if self.model_name == "Operation":
+        #     metatype_attribute = "operation_type_id"
+        #     metatype_name = "OperationType"
+        #
+        # grouped = self._group_by_attribute(samples, metatype_attribute)
+        #
+        # filtered_model_ids = []
+        #
+        # array_properties = {}
+        #
+        # for attrid in grouped:
+        #     models = grouped[attrid]
+        #     model_ids = [s.id for s in models]
+        #     metatype = self.find(attrid, metatype_name)
+        #     for prop_name in properties:
+        #         field_type = metatype.field_type(prop_name)  # necessary since FieldValues are missing field_type_ids
+        #         if field_type:
+        #             fv_query = {"name": prop_name}
+        #             if field_type.array:
+        #                 values = properties[prop_name]
+        #                 array_properties[prop_name] = list(values)
+        #             else:
+        #                 values = [properties[prop_name]]
+        #             for value in values:
+        #                 if model_ids:
+        #                     if value:
+        #                         if field_type.ftype == 'sample':
+        #                             fv_query.update({'child_sample_id': value.id})
+        #                         else:
+        #                             fv_query.update({'value': value})
+        #                     fvs = self.list_field_values(model_ids, **fv_query)
+        #                     fv_parent_sample_ids = set([fv.parent_id for fv in fvs])
+        #                     model_ids = list(set(model_ids).intersection(fv_parent_sample_ids))
+        #     filtered_model_ids += model_ids
+        # if filtered_model_ids == []:
+        #     return []
+        #
+        # # filter samples by len of properties
+        # samples = self.find(filtered_model_ids)
+        # if array_properties:
+        #     filtered_samples = []
+        #     self.retrieve(samples, 'field_values')
+        #     for sample in samples:
+        #         if all([len(sample.field_value_array(k)) == len(v) for k, v in array_properties.items()]):
+        #             filtered_samples.append(sample)
+        #     return filtered_samples
+        # else:
+        #     return samples
+        # # return self.interface().find(filtered_model_ids)
 
     def new_sample(self, sample_type, name, description, project, properties=None):
         st = self.find_by_name(sample_type, "SampleType", primary_key='name')
@@ -418,15 +457,9 @@ class Browser(logger.Loggable, object):
             st.field_types = fts
         return st.new_sample(name, description, project, properties=properties)
 
-    @staticmethod
-    def __json_update(model, **params):
+    def __json_update(self, model, **params):
         """This update method is fairly dangerous. Be careful!"""
-
-        aqhttp = model.session._AqSession__aqhttp
-        data = {"model": {"model": model.__class__.__name__}}
-        data.update(model.dump(**params))
-        #         return aqhttp.put("{}")
-        return aqhttp.post('json/save', json_data=data)
+        return self.session.utils.aqhttp._AqHTTP__json_update(model, **params)
 
     # TODO: This method is slow, but 'PUT' sample.json does not work...
     def update_sample(self, sample):
