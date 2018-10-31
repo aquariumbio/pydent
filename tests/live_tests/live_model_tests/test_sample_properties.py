@@ -144,22 +144,32 @@ def test_update_properties(session):
 @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
 def test_update_properties_using_array(session, num_field_values):
 
-    sample = session.Sample.one(sample_type_id=session.SampleType.find_by_name("Fragment").id)
+    fragment_type = session.SampleType.find_by_name("Fragment")
+    sample = session.Sample.one(sample_type_id=fragment_type.id)
+
+    if num_field_values == 0:
+        fragments = []
+    else:
+        fragments = session.Sample.last(num_field_values, sample_type_id=fragment_type.id)
 
     # fake_sample.field_value_array
     sample.update_properties({
-        "Fragment Mix Array": [sample] * num_field_values,
+        "Fragment Mix Array": fragments,
         "Length": 1000
     })
-    assert len(sample.field_value_array("Fragment Mix Array")) == num_field_values
-    assert len(sample.properties["Fragment Mix Array"]) == num_field_values
-    print(sample.properties)
+
+    assert len(sample.field_value_array("Fragment Mix Array")) == len(fragments)
+    assert set([s.id for s in sample.properties['Fragment Mix Array']]) == set([s.id for s in fragments])
     assert sample.properties["Length"] == 1000
 
-    # reset field values
+    new_set_fragments = session.Sample.last(10-num_field_values, sample_type_id=fragment_type.id)
+
+    # fake_sample.field_value_array
     sample.update_properties({
-        "Fragment Mix Array": [sample] * (10-num_field_values)
+        "Fragment Mix Array": new_set_fragments,
+        "Length": 1100
     })
-    assert len(sample.field_value_array("Fragment Mix Array")) == 10-num_field_values
 
-
+    assert len(sample.field_value_array("Fragment Mix Array")) == len(new_set_fragments)
+    assert set([s.id for s in sample.properties['Fragment Mix Array']]) == set([s.id for s in new_set_fragments])
+    assert sample.properties["Length"] == 1100

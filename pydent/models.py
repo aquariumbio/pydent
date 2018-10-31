@@ -638,13 +638,15 @@ class FieldValue(ModelBase, FieldMixin):
     # TODO: rename set_operation, or re-implement?
     def set_as_operation_field_value(self, operation):
         self.parent_class = "Operation"
-        self.parent_id = operation.id
+        if hasattr(operation, 'id'):
+            self.parent_id = operation.id
         self.operation = operation
 
     # TODO: rename set_sample, or re-implement?
     def set_as_sample_field_value(self, sample):
         self.parent_class = "Sample"
-        self.parent_id = sample.id
+        if hasattr(sample, 'id'):
+            self.parent_id = sample.id
         self.sample = sample
 
     def set_field_type(self, field_type):
@@ -1762,8 +1764,6 @@ class Sample(ModelBase, NamedMixin):
             update_hash = self._update_field_value_array(fvs, ft, values)
             other_fvs = [fv for fv in self.field_values if fv.name != ft.name]
             self.field_values = other_fvs + update_hash['add'] + update_hash['update']
-            for fv in self.field_values:
-                fv.set_as_sample_field_value(self)
             # self.field_values = update_hash['update'] + update_hash['add']
             return update_hash
         else:
@@ -1789,12 +1789,13 @@ class Sample(ModelBase, NamedMixin):
         :return: self
         :rtype: Sample
         """
+        properties = self.properties
         fv_dict = self._fv_dict()
         for k, v in prop_dict.items():
             fv = fv_dict.get(k)
             if fv is None:
                 # then create a new field value
-                fv = self.initialize_field_value(k, v)
+                self.initialize_field_value(k, v)
             elif isinstance(fv, list):
                 if isinstance(v, list):
                     self.set_field_value_array(k, v)

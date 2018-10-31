@@ -779,10 +779,17 @@ class Browser(logger.Loggable, object):
 
     def samples_to_df(self, samples):
         df = pd.DataFrame(self.samples_to_rows(samples))
-        df.drop_duplicates(inplace=True)
         st = samples[0].sample_type
         columns = [st.name, 'Description', 'Project'] + [ft.name for ft in st.field_types]
         df = df[columns]
+        # pd.DataFrame(df['Fragments'].values.tolist())
+        for ft in st.field_types:
+            if ft.array:
+                df2 = pd.DataFrame(df[ft.name].values.tolist())
+                df2.columns = [ft.name] * len(df2.columns)
+                del df[ft.name]
+                df = df.join(df2)
+        df.drop_duplicates(inplace=True)
         df = df.set_index(st.name)
         return df
 
@@ -825,6 +832,14 @@ class Browser(logger.Loggable, object):
             def default_resolver(sample):
                 if isinstance(sample, pydent_models.Sample):
                     return sample.name
+                if isinstance(sample, list):
+                    resolved_samples = []
+                    for s in sample:
+                        if isinstance(s, pydent_models.Sample):
+                            resolved_samples.append(s.name)
+                        else:
+                            resolved_samples.append(s)
+                    sample = resolved_samples
                 return sample
 
             sample_resolver = default_resolver
