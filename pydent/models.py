@@ -1411,15 +1411,18 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
     # This is not being deserialized properly
     @property
     def all_wires(self):
-        wires = []
+        wires = {}
         if self.operations:
             for operation in self.operations:
                 for field_value in operation.field_values:
+                    field_value_wires = []
                     if field_value.outgoing_wires:
-                        wires += field_value.outgoing_wires
+                        field_value_wires += field_value.outgoing_wires
                     if field_value.incoming_wires:
-                        wires += field_value.incoming_wires
-        return wires
+                        field_value_wires += field_value.incoming_wires
+                    for wire in field_value_wires:
+                        wires[wire.id] = wire
+        return sorted(wires.values(), key=lambda w: w.id)
 
     def create(self):
         """
