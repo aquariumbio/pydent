@@ -2,17 +2,18 @@
 Planner
 """
 
+import random
 from functools import wraps
 from uuid import uuid4
 
 from networkx import nx
+
 from pydent.browser import Browser
 from pydent.models import FieldValue, Operation
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
 from pydent.utils import filter_list, make_async, logger
 
-import random
 
 class PlannerException(Exception):
     """Generic planner Exception"""
@@ -61,9 +62,9 @@ class Planner(logger.Loggable, object):
 
     class ITEM_ORDER_PREFERENCE:
 
-        FIRST = "FIRST" # select first item
-        LAST = "LAST" # select last item
-        RANDOM = "RANDOM" # select random item
+        FIRST = "FIRST"  # select first item
+        LAST = "LAST"  # select last item
+        RANDOM = "RANDOM"  # select random item
         _DEFAULT = LAST
         _CHOICES = [FIRST, LAST, RANDOM]
 
@@ -594,7 +595,8 @@ class Planner(logger.Loggable, object):
     # TODO: routing dict does not work with input arrays (it groups them ALL together)
     @plan_verification_wrapper
     def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
-        self._info("setting field_value {}".format(field_value.name))
+        self._info(
+            "setting field_value {} to {} - {} - {} - {}".format(field_value.name, sample, item, container, value))
         field_value.set_value(
             sample=sample, item=item, container=container, value=value, row=None, column=None)
         if not field_value.field_type.array:
@@ -669,7 +671,7 @@ class Planner(logger.Loggable, object):
         elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
             afts = [aft for aft in field_value.field_types if aft.sample]
         if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
-            afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id==sample.sample_type_id)
+            afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id == sample.sample_type_id)
 
         query.update({"object_type_id": [aft.object_type_id for aft in afts]})
         return query
@@ -754,7 +756,7 @@ class Planner(logger.Loggable, object):
             elif order_preference == self.ITEM_ORDER_PREFERENCE.LAST:
                 selection_index = -1
             elif order_preference == self.ITEM_ORDER_PREFERENCE.RANDOM:
-                selection_index = random.randint(0, len(available_items)-1)
+                selection_index = random.randint(0, len(available_items) - 1)
             item = available_items[selection_index]
             fv.set_value(item=item)
         return item
@@ -1033,6 +1035,15 @@ class Planner(logger.Loggable, object):
         :return: dictionary of each sample route and validation errors
         :rtype: dict
         """
+
+        def fv_info(fv):
+            return "{role} {name} for {ot} {opid}".format(
+                role=fv.role,
+                name=fv.name,
+                ot=fv.operation.operation_type.name,
+                opid=fv.operation.id
+            )
+
         routes = {}
         for subgraph in get_subgraphs(self._routing_graph()):
             values = []
@@ -1044,14 +1055,26 @@ class Planner(logger.Loggable, object):
                 value = fv.sample
                 if value is None and fv.field_type.ftype == 'sample':
                     reasons.append(
-                        "{} {} for {} has no sample defined".format(fv.role, fv.name, fv.operation.operation_type.name))
+                        "{} has no sample defined".format(fv_info(fv)))
                 else:
+                    if fv.item:
+                        item = fv.item
+                        collection = item.as_collection()
+                        if collection:
+                            item = collection.part(fv.row, fv.column)
+                        if item.sample_id != fv.sample.id:
+                            reasons.append(
+                                "{} has sample_id={} but generated item has sample_id={}".format(
+                                    fv_info(fv),
+                                    fv.sample.id, item.sample_id
+                                )
+                            )
                     values.append(value)
                 if len(list(subgraph.predecessors(n))) == 0:
                     root = fv
             if root.item is None and root.role == "input" and root.field_type.ftype == 'sample':
                 reasons.append(
-                    "{} {} for {} has no item defined".format(fv.role, fv.name, fv.operation.operation_type.name))
+                    "{} has no item defined".format(fv_info(fv)))
             values = list(set(values))
             if len(values) > 1:
                 reasons.append("different samples defined in route ({})".format(values))
@@ -1061,7 +1084,9 @@ class Planner(logger.Loggable, object):
                 "errors": reasons,
                 "valid": len(reasons) == 0
             }
-        return routes
+        errors = {k: v for k, v in routes.items() if v['valid'] != True}
+        return errors
+        # return routes
 
     # TODO: implement individual wires and things
     def draw(self):
