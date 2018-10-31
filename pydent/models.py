@@ -544,6 +544,18 @@ class FieldValue(ModelBase, FieldMixin):
         elif self.value:
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
+    def reset(self):
+        """Resets the inputs of the """
+        self.value = None
+        self.allowable_field_type_id = None
+        self.allowable_field_type = None
+        self.child_item_id = None
+        self.item = None
+        self.child_sample_id = None
+        self.sample = None
+        self.row = None
+        self.column = None
+
     # TODO: have field_value resolve the ids when it is dumped? Or how does this work?
     # TODO: object_type isn't a real attribute, its just for AFT
     def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
@@ -1618,6 +1630,7 @@ class Sample(ModelBase, NamedMixin):
     def field_value(self, name):
         for field_value in self.field_values:
             if field_value.name == name:
+                self._get_field_type(field_value)
                 return field_value
         return None
 
@@ -1625,6 +1638,7 @@ class Sample(ModelBase, NamedMixin):
         field_values = []
         for field_value in self.field_values:
             if field_value.name == name:
+                self._get_field_type(field_value)
                 field_values.append(field_value)
         return field_values
 
@@ -1678,6 +1692,9 @@ class Sample(ModelBase, NamedMixin):
 
     @classmethod
     def set_field_value_helper(cls, field_type, field_value, value):
+        if value is None:
+            field_value.reset()
+            return field_value
         field_value.set_value(**{cls._field_type_value_accessor(field_type): value})
         return field_value
 
@@ -1809,6 +1826,7 @@ class Sample(ModelBase, NamedMixin):
             properties[ft.name] = val
         return properties
 
+    # TODO: put properties in a Mixin, along with all field_value methods?
     @property
     def properties(self):
         fv_dict = self._fv_dict()
