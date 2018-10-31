@@ -113,7 +113,7 @@ def test_canvas_quick_create_chain(session):
                               "Check Yeast Plate",
                               "Yeast Overnight Suspension")
     assert len(canvas.plan.operations) == 3
-    assert len(canvas.plan.wires) == 2
+    assert len(canvas.plan.wires) == 2, "There should be two operations"
 
 
 def test_chain_run_gel(session):

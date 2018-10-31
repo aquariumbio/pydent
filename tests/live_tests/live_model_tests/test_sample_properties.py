@@ -143,6 +143,7 @@ def test_update_properties(session):
 
 @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
 def test_update_properties_using_array(session, num_field_values):
+    """Test updating a sample properties array"""
 
     fragment_type = session.SampleType.find_by_name("Fragment")
     sample = session.Sample.one(sample_type_id=fragment_type.id)
