@@ -459,7 +459,7 @@ class Browser(logger.Loggable, object):
 
     def __json_update(self, model, **params):
         """This update method is fairly dangerous. Be careful!"""
-        return self.session.utils.aqhttp._AqHTTP__json_update(model, **params)
+        return self.session.utils._UtilityInterface__json_update(model, **params)
 
     # TODO: This method is slow, but 'PUT' sample.json does not work...
     def update_sample(self, sample):
@@ -468,17 +468,27 @@ class Browser(logger.Loggable, object):
         self.__json_update(sample, include={"field_values": "sample", "sample_type": []})
 
         fv_dict = sample._fv_dict()
-        for fvname, field_value in fv_dict:
+
+        for fv in sample.field_values:
+            if not fv.parent_id:
+                raise BrowserException("Field values must have a parent_id in order to update. Could"
+                                       " not find a parent_id for \"{}\".".format(fv.name))
+
+        for fvname, field_value in fv_dict.items():
             if isinstance(field_value, list):
                 old_field_values = self.session.Sample.find(sample.id).field_value_array(fvname)
                 new_field_values = sample.field_value_array(fvname)
-                change_dict = sample._update_field_value_array(old_field_values, new_field_values)
+                new_values = [sample._get_field_value_value(fv) for fv in new_field_values]
+                field_type = sample._get_field_type(new_field_values[0])
+
+                change_dict = sample._update_field_value_array(old_field_values, field_type, new_values)
                 self._info("   updating array '{}'".format(fvname))
                 for fv in change_dict['add'] + change_dict['update']:
-                    self.__json_update(fv, include={"sample"})
+                    self._info("   updating '{}' {} to {}".format(fvname, fv._primary_key, fv.child_sample_id))
+                    # self.__json_update(fv, include={"sample"})
                 for fv in change_dict['delete']:
                     self._info("  deleting {}".format(fv))
-                    self.session.utils.deleted_field_value(fv)
+                    # self.session.utils.delete_field_value(fv)
             else:
                 self._info("  updating '{}'".format(field_value.name))
                 self.__json_update(field_value, include={"sample"})

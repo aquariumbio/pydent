@@ -545,7 +545,7 @@ class FieldValue(ModelBase, FieldMixin):
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
     def reset(self):
-        """Resets the inputs of the """
+        """Resets the inputs of the field_value"""
         self.value = None
         self.allowable_field_type_id = None
         self.allowable_field_type = None
@@ -635,10 +635,17 @@ class FieldValue(ModelBase, FieldMixin):
                     msg.format(self.role, self.name))
         return self
 
-    def set_operation(self, operation):
+    # TODO: rename set_operation, or re-implement?
+    def set_as_operation_field_value(self, operation):
         self.parent_class = "Operation"
         self.parent_id = operation.id
         self.operation = operation
+
+    # TODO: rename set_sample, or re-implement?
+    def set_as_sample_field_value(self, sample):
+        self.parent_class = "Sample"
+        self.parent_id = sample.id
+        self.sample = sample
 
     def set_field_type(self, field_type):
         """
@@ -977,6 +984,7 @@ class Operation(ModelBase, DataAssociatorMixin):
             fv.set_value(**val)
         return field_values
 
+    # TODO: add initialize_field_value to Operation
     def add_to_field_value_array(self, name, role, sample=None, item=None,
                                  value=None, container=None):
         """
@@ -1002,7 +1010,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         fv = field_type.initialize_field_value()
         fv.set_value(sample=sample, item=item,
                      value=value, container=container)
-        fv.operation = self
+        fv.set_as_operation_field_value(self)
         if self.field_values is None:
             self.field_values = []
         self.field_values.append(fv)
@@ -1047,7 +1055,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         # initialize the field value from the field type
         if not field_value:
             field_value = field_type.initialize_field_value(field_value)
-            field_value.set_operation(self)
+            field_value.set_as_operation_field_value(self)
             if self.field_values is None:
                 self.field_values = []
             self.field_values.append(field_value)
@@ -1703,7 +1711,7 @@ class Sample(ModelBase, NamedMixin):
         ft = self._get_field_type(field_value)
         return self.set_field_value_helper(ft, field_value, value)
 
-    def _get_field_value(self, field_value):
+    def _get_field_value_value(self, field_value):
         ft = self._get_field_type(field_value)
         return getattr(field_value, self._field_type_value_accessor(ft))
 
@@ -1716,6 +1724,7 @@ class Sample(ModelBase, NamedMixin):
             field_value.field_type = field_type
         return field_type
 
+    # TODO: refactor to use initialize_field_value
     @classmethod
     def _update_field_value_array(cls, old_field_values, field_type, values):
         s1 = set(range(len(old_field_values)))
@@ -1753,10 +1762,23 @@ class Sample(ModelBase, NamedMixin):
             update_hash = self._update_field_value_array(fvs, ft, values)
             other_fvs = [fv for fv in self.field_values if fv.name != ft.name]
             self.field_values = other_fvs + update_hash['add'] + update_hash['update']
+            for fv in self.field_values:
+                fv.set_as_sample_field_value(self)
             # self.field_values = update_hash['update'] + update_hash['add']
             return update_hash
         else:
             raise AquariumModelError("Cannot update FieldValue array. FieldType \"{}\" is not an array.".format(name))
+
+    def initialize_field_value(self, name, val=None):
+        ft = self.sample_type.field_type(name)
+        fv = ft.initialize_field_value()
+        fv.set_as_sample_field_value(self)
+        if self.field_values is None:
+            self.field_values = []
+        self.field_values.append(fv)
+        if val:
+            self._set_field_value(fv, val)
+        return fv
 
     def update_properties(self, prop_dict):
         """
@@ -1772,28 +1794,10 @@ class Sample(ModelBase, NamedMixin):
             fv = fv_dict.get(k)
             if fv is None:
                 # then create a new field value
-                fv = self.sample_type.field_type(k).initialize_field_value()
-                if self.field_values is None:
-                    self.field_values = []
-                self._set_field_value(fv, v)
-                self.field_values.append(fv)
+                fv = self.initialize_field_value(k, v)
             elif isinstance(fv, list):
                 if isinstance(v, list):
                     self.set_field_value_array(k, v)
-                # # then this is an array
-                # if isinstance(v, list):
-                #     if len(v) >= len(fv):
-                #         # then update existing field_values
-                #         # create new field_values if necessary
-                #         for new_value, old_fv in zip(v, fv):
-                #             self._set_field_value(fv, new_value)
-                #         diff = len(v) - len(fv)
-                #         for i in range(diff):
-                #             new_fv = self.sample_type.field_type(k).initialize_field_value()
-                #             self._set_field_value(new_fv, v[i+len(fv)+1])
-                #     else:
-                #         pass
-                #         # then field_values need to be deleted
                 else:
                     raise AquariumModelError("Cannot update. The FieldValue '{}' is part of an array and "
                                              "the properties expected a list, but it "
@@ -1833,9 +1837,9 @@ class Sample(ModelBase, NamedMixin):
         for name in fv_dict:
             fvs = fv_dict[name]
             if isinstance(fvs, list):
-                fv_dict[name] = [self._get_field_value(fv) for fv in fvs]
+                fv_dict[name] = [self._get_field_value_value(fv) for fv in fvs]
             elif isinstance(fvs, FieldValue):
-                fv_dict[name] = self._get_field_value(fvs)
+                fv_dict[name] = self._get_field_value_value(fvs)
             else:
                 fv_dict[name] = None
         return fv_dict
