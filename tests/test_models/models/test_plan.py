@@ -68,6 +68,11 @@ def test_add_wire():
     assert len(p.wires) == 1
 
 
+def test_count_wires(example_plan):
+    """Test whether the wire collection collects the appropriate number of wires"""
+    assert len(example_plan.wires) == 80, "There should be exactly 80 wires in this plan."
+
+
 # TODO: make this a deterministic test
 """def test_new_plan(session):
 
