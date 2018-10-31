@@ -7,7 +7,8 @@ from setuptools.command.install import install
 
 tests_require = [
     'pytest',
-    'pytest-cov'
+    'pytest-cov',
+    'vcrpy'
 ]
 
 install_requires = [

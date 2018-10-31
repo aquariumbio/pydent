@@ -69,10 +69,10 @@ class Planner(logger.Loggable, object):
 
     def __init__(self, session, plan_id=None):
         self.session = session
-        self.browser = Browser(session)
+        self._browser = Browser(session)
         self.plan_id = plan_id
         if self.plan_id is not None:
-            self.plan = self.browser.find(self.plan_id, 'Plan')
+            self.plan = self._browser.find(self.plan_id, 'Plan')
             if self.plan is None:
                 raise PlannerException(
                     "Could not find plan with id={}".format(plan_id))
@@ -84,7 +84,7 @@ class Planner(logger.Loggable, object):
     def cache(self):
         # ots = self.browser.where('OperationType', {'deployed': True})
         # self.browser.retrieve(ots, 'field_types')
-        results = self.browser.recursive_retrieve([self.plan], {
+        results = self._browser.recursive_retrieve([self.plan], {
             "operations": {
                 "field_values": {
                     "wires_as_dest": ["source", "destination"],
@@ -160,10 +160,8 @@ class Planner(logger.Loggable, object):
     @staticmethod
     def models_are_equal(model1, model2):
         if model1.id is None and model2.id is None:
-            if model1.rid == model2.rid:
+            if model1._primary_key == model2._primary_key:
                 return True
-        elif model1.id == model2.id:
-            return True
         return False
 
     def get_operation(self, id):
@@ -592,14 +590,6 @@ class Planner(logger.Loggable, object):
             G.add_edge(src_id, dest_id, wire=w)
         return G
 
-    # TODO: verify all routing graphs have the same sample
-    # TODO: verify all leaves have an item or a wire
-    def validate(self):
-        routing_subgraphs = self._routing_graph()
-        for rsg in routing_subgraphs:
-            for n in rsg.nodes:
-                n.field_value
-
     # TODO: Support for row and column
     # TODO: routing dict does not work with input arrays (it groups them ALL together)
     @plan_verification_wrapper
@@ -712,7 +702,7 @@ class Planner(logger.Loggable, object):
 
         query.update({"object_type_id": [aft.object_type_id for aft in afts]})
 
-        available_items = self.browser.where(query, "Item")
+        available_items = self.session.Item.where(query)
         available_items = [i for i in available_items if i.location != 'deleted']
         return available_items
 
@@ -850,6 +840,11 @@ class Planner(logger.Loggable, object):
         """
         return [op for op in self.plan.operations if
                 op.operation_type.name == operation_type_name]
+
+    def find_operation(self, opid):
+        for op in self.plan.operations:
+            if op._primary_key == opid:
+                return op
 
     def replan(self):
         """Replan the plan, by 'copying' the plan using the Aquarium server."""

@@ -109,6 +109,7 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     def rid(self):
         return self._rid
 
+    @property
     def _primary_key(self):
         """Returns the primary key (e.g. 'id') or the rid if id does not exist or is None"""
         if hasattr(self, ModelBase.PRIMARY_KEY):
