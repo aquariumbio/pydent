@@ -284,7 +284,7 @@
     <span class="k">def</span> <span class="nf">delete_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wire</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;wires/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">deleted_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">delete_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;field_values/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_value</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
 
 <div class="viewcode-block" id="UtilityInterface.replan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.replan">[docs]</a>    <span class="k">def</span> <span class="nf">replan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan_id</span><span class="p">):</span>
@@ -415,7 +415,13 @@
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="s2">&quot;krill/upload?job=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">upload</span><span class="o">.</span><span class="n">job_id</span><span class="p">),</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
         <span class="n">upload</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">upload</span></div>
+        <span class="k">return</span> <span class="n">upload</span>
+
+    <span class="k">def</span> <span class="nf">__json_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This update method is fairly dangerous. Be careful!&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}}</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;json/save&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ModelInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface">[docs]</a><span class="k">class</span> <span class="nc">ModelInterface</span><span class="p">(</span><span class="n">SessionInterface</span><span class="p">):</span>
