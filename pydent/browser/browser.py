@@ -562,7 +562,7 @@ class Browser(logger.Loggable, object):
         return args
 
     # TODO: handle not-yet existant samples using rid
-    def _retrieve_has_many_or_has_one(self, models, relationship_name, relation=None):
+    def _retrieve_has_many_or_has_one(self, models, relationship_name, relation=None, strict=False):
         """Performs exactly 1 query to fullfill some relationship for a list of models"""
         if not models:
             return []
@@ -594,7 +594,10 @@ class Browser(logger.Loggable, object):
             for model in retrieved_models:
                 model_ref = getattr(model, ref)
                 if model_ref is not None:
-                    model_dict[model_ref].append(model)
+                    if not strict:
+                        model_dict.setdefault(model_ref, []).append(model)
+                    else:
+                        model_dict[model_ref].append(model)
                 else:
                     self._error(
                         "RETRIEVE ref: {ref} {model_ref}, attr: {attr}".format(ref=ref, attr=attr, model_ref=model_ref))
@@ -670,7 +673,7 @@ class Browser(logger.Loggable, object):
                 m.__dict__.update({relationship_name: None})
         return list(set(all_models))
 
-    def retrieve(self, models, relationship_name, relation=None):
+    def retrieve(self, models, relationship_name, relation=None, strict=True):
         """
         Retrieves a model relationship for the list of models. Compared to a `for` loop,
         `retrieve` is >10X faster for most queries.
@@ -722,11 +725,11 @@ class Browser(logger.Loggable, object):
         if hasattr(relation, 'through_model_attr'):
             found_models = self._retrieve_has_many_through(models, relationship_name)
         else:
-            found_models = self._retrieve_has_many_or_has_one(models, relationship_name, relation)
+            found_models = self._retrieve_has_many_or_has_one(models, relationship_name, relation, strict=strict)
         self._info('RETRIEVE retrieved {} for "{}"'.format(len(found_models), relationship_name))
         return found_models
 
-    def recursive_retrieve(self, models, relations):
+    def recursive_retrieve(self, models, relations, strict=False):
         """
         Efficiently retrieve a model relationship recursively from an iterable. The relations_dict iterable may be
         either a list or a dictionary. For example, the following will collect all of the field_values
@@ -760,7 +763,7 @@ class Browser(logger.Loggable, object):
         self._info("RETRIEVE recursively retrieving {}".format(relations))
         if isinstance(relations, str):
             self._info('RETRIEVE retrieving "{}"'.format(relations))
-            return {relations: self.retrieve(models, relations)}
+            return {relations: self.retrieve(models, relations, strict=strict)}
         else:
             models_by_attr = {}
             for relation_name in relations:
