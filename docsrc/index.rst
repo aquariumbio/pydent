@@ -16,11 +16,32 @@ There is also a Javascript version of Trident available to that group.
 Links:
 ~~~~~~
 
-* `Trident's Github <https://github.com/klavinslab/trident>`_
-* `Trident PyPi repo <https://pypi.org/project/pydent/>`_
-* `Aquarium Github <https://github.com/klavinslab/aquarium>`_
-* `Klavin's Lab <https://www.klavinslab.org>`_
-* `UW BIOFAB <http://www.uwbiofab.org>`_
+* |tridentgithub|
+* |tridentpypi|
+* |aquarium|
+* |klavinslab|
+* |uwbiofab|
+
+.. |tridentgithub| raw:: html
+
+   <a href="https://www.klavinslab.org" target="_blank">Trident's Github page</a>
+
+.. |tridentpypi| raw:: html
+
+   <a href="https://pypi.org/project/pydent/" target="_blank">Trident's PyPi repo</a>
+
+.. |aquarium| raw:: html
+
+   <a href="https://github.com/klavinslab/aquarium" target="_blank">Aquarium's Github page</a>
+
+.. |klavinslab| raw:: html
+
+   <a href="http://www.klavinslab.org" target="_blank">Klavin's Lab</a>
+
+.. |uwbiofab| raw:: html
+
+   <a href="http://www.uwbiofab.org" target="_blank">UW BIOFAB</a>
+
 
 Read the **publication**:
 
