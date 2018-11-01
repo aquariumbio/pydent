@@ -8,6 +8,11 @@ from pydent.exceptions import TridentRequestError
 #                               "In the future, we may want to utilize something like pyvrc to avoid"
 #                               "sending live requests to Aquarium.")
 
+relationship_pairs = []
+for model in ModelRegistry.models.values():
+    for attr, relationship in model.get_relationships().items():
+        relationship_pairs.append((model, attr, relationship))
+
 
 class TestModelRelationships:
     """
@@ -22,57 +27,42 @@ class TestModelRelationships:
     """
 
     # @pytest.fixture(params=ModelRegistry.models.values())
-    @pytest.mark.parametrize('model_class', ModelRegistry.models.values())
-    def test_model_relationships(self, session, request, model_class):
+    @pytest.mark.parametrize('model_class,attr,relationship', relationship_pairs)
+    def test_model_relationships(self, session, model_class, attr, relationship):
         """
         Tries to access nested relationships in an a model
-
-        :param session: pytest fixture that has returned a live trident session
-        :type session: AqSession
-        :param request: parameter from the fixture
-        :type request: dict
-        :return: None
-        :rtype: None
         """
-
-        # Try to find a live model
-        model_class_name = model_class.__name__  # e.g. "FieldType"
-        model_instance = None
-        for iden in [1, 100, 1000, 5000, 10000, 54069, 130000, 200000, 76858][::-1]:
-            try:
-                print("Finding '{}' model with {}".format(model_class_name,
-                                                          iden))
-                interface = getattr(session, model_class_name)
-
-                model_instance = interface.find(iden)
-            except TridentRequestError as e:
-                print(e)
-            if model_instance:
-                break
-        if model_instance is None:
-            raise Exception("Could not find a {}".format(model_class))
-
-        # Get the model class
-        print(model_instance)
-        pprint(model_instance.raw)
-
-        # Discover and access model relationships
+        interface = session.model_interface(model_class.__name__)
         relationships = model_class.get_relationships()
 
         print("\nRelationships:")
         pprint(relationships)
-        for attr, relationship in relationships.items():
-            print("\tGetting attribute '{}'".format(attr))
-            val = getattr(model_instance, attr)
-            nested_model = ModelRegistry.get_model(relationship.nested)
-            print('model: {}, attr: {}, val: {}'.format(nested_model,
-                                                        attr,
-                                                        val))
-            if relationship.many:
-                if val is not None:
-                    if len(val) > 0:
-                        assert isinstance(val[0], nested_model)
-            else:
+
+        num_models = 1
+        tries = 3
+        curr = 0
+        num_model_increase = 10
+        while curr < tries and num_models:
+            print(curr)
+            curr += 1
+
+            models = interface.last(num_models)
+            print(len(models))
+            for model_instance in models:
+                val = getattr(model_instance, attr)
                 nested_model = ModelRegistry.get_model(relationship.nested)
-                if val is not None:
-                    assert isinstance(val, nested_model)
+                if relationship.many:
+                    if val:
+                        assert isinstance(val[0], nested_model), "Value should be a {}, not a {}".format(nested_model, type(val[0]))
+                        num_models = 0
+                    else:
+                        num_models += num_model_increase
+                else:
+                    nested_model = ModelRegistry.get_model(relationship.nested)
+                    if val is not None:
+                        assert isinstance(val, nested_model), "Value should be a {}, not a {}".format(nested_model, type(val[0]))
+                        num_models = 0
+                    else:
+                        num_models += num_model_increase
+        if num_models > 0:
+            raise Exception("{} is missing an example of the relationship for '{}'".format(model_class, attr))
