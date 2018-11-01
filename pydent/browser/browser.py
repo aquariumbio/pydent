@@ -704,6 +704,10 @@ class Browser(logger.Loggable, object):
         :type models: list
         :param relationship_name: name of the attribute to retrieve
         :type relationship_name: basestring
+        :param relation: the relation to retrieve (operational)
+        :type relation: pydent.relationships.Relation
+        :param strict: wither to ignore database inconsistencies
+        :type bool
         :return: list of models retrieved
         :rtype: list
         """
@@ -760,6 +764,8 @@ class Browser(logger.Loggable, object):
         :type models: list
         :param relations: the relation to retrieve. This may either be a string (by attribute name), a list, or a dict.
         :type relations: list|dict|basestring
+        :param strict: wither to ignore database inconsistencies
+        :type bool
         :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
         :rtype: dictionary
         """
