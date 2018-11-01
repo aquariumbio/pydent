@@ -60,10 +60,9 @@ SampleType:
 import json
 import os
 import shutil
+from itertools import groupby
 
 import requests
-
-from itertools import groupby
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
@@ -327,8 +326,10 @@ class FieldType(ModelBase, FieldMixin):
     """A FieldType model"""
     fields = dict(
         allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
-        operation_type=HasOneFromMany("OperationType", ref="id", attr="parent_id", additional_args={"parent_class": "OperationType"}),
-        sample_type=HasOneFromMany("SampleType", ref="id", attr="parent_id", additional_args={"parent_class": "SampleType"})
+        operation_type=HasOne(
+            "OperationType", callback="find_field_parent", ref="parent_id"),
+        sample_type=HasOne(
+            "SampleType", callback="find_field_parent", ref="parent_id"),
     )
 
     def __init__(self, name=None, ftype=None, array=None, choices=None,
@@ -428,7 +429,6 @@ class FieldValue(ModelBase, FieldMixin):
             "Sample", callback="find_field_parent", ref="parent_id"),
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
-        successors=HasManyThrough("Operation", "Wire"),
         sid=fields.Function(lambda fv: fv.sid, allow_none=True),
         child_sample_name=fields.Function(lambda fv: fv.sid, allow_none=True),
         allowable_child_types=fields.Function(
@@ -814,10 +814,10 @@ class Library(ModelBase):
     fields = dict(
         codes=HasManyGeneric("Code"),
         source=HasOneFromMany("Code", ref="parent_id",
-                                  additional_args={
-                                      "parent_class": "Library",
-                                      "name": "source"
-                                  }),
+                              additional_args={
+                                  "parent_class": "Library",
+                                  "name": "source"
+                              }),
     )
 
     def code(self, accessor):
@@ -1266,8 +1266,7 @@ class OperationType(ModelBase):
                                 additional_args={
                                     "parent_class": "OperationType",
                                     "name": "protocol"
-                                }),
-        user=HasOne("User")
+                                })
     )
 
     def code(self, accessor):
