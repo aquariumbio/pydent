@@ -50,8 +50,8 @@ Developer
 Reproducibility
 ---------------
 
-Scientific Throughput
----------------------
+Experimental Throughput
+-----------------------
 
 Human-less Science
 ------------------

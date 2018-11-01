@@ -19,6 +19,7 @@ Links:
 * |tridentgithub|
 * |tridentpypi|
 * |aquarium|
+* aquarium docker hub
 * |klavinslab|
 * |uwbiofab|
 
