@@ -790,6 +790,14 @@ class Browser(logger.Loggable, object):
             return models_by_attr
 
     def samples_to_df(self, samples):
+        """
+        Returns a pandas data frame representing the samples
+
+        :param samples: list of samples
+        :type samples: list
+        :return: the samples dataframe
+        :rtype: pandas.DataFrame
+        """
         df = pd.DataFrame(self.samples_to_rows(samples))
         st = samples[0].sample_type
         columns = [st.name, 'Description', 'Project'] + [ft.name for ft in st.field_types]
@@ -806,6 +814,16 @@ class Browser(logger.Loggable, object):
         return df
 
     def export_samples_to_csv(self, samples, out):
+        """
+        Exports the samples to a csv (for Aquarium import)
+
+        :param samples: list of samples
+        :type samples: list
+        :param out: output path of csv file
+        :type out: basestring
+        :return: pandas dataframe used for the csv
+        :rtype: pandas.DataFrame
+        """
         df = self.samples_to_df(samples)
         df.to_csv(out)
         return df
