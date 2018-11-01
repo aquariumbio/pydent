@@ -496,14 +496,14 @@ class Browser(logger.Loggable, object):
     #         return cls.__json_update(sample, include={"field_values": "sample"})
 
     # TODO: save samples in order of FieldValues
-    def save_samples(self, samples, project=None, overwrite_server=False, strict=False):
+    def save_samples(self, samples, project=None, overwrite_server=False, strict=True):
         for s in samples:
             if project is not None:
                 s.project = project
             self.save_sample(s, overwrite_server=overwrite_server, strict=strict)
         return samples
 
-    def save_sample(self, sample, overwrite_server=False, strict=False):
+    def save_sample(self, sample, overwrite_server=False, strict=True):
         """
 
         :param sample: new Aquarium sample
@@ -562,7 +562,7 @@ class Browser(logger.Loggable, object):
         return args
 
     # TODO: handle not-yet existant samples using rid
-    def _retrieve_has_many_or_has_one(self, models, relationship_name, relation=None, strict=False):
+    def _retrieve_has_many_or_has_one(self, models, relationship_name, relation=None, strict=True):
         """Performs exactly 1 query to fullfill some relationship for a list of models"""
         if not models:
             return []
@@ -610,7 +610,10 @@ class Browser(logger.Loggable, object):
                 model_ref = getattr(model, ref)
                 if model_ref is not None:
                     if model_attr is not None:
-                        model_dict[model_attr] = retrieved_dict[model_ref]
+                        if model_ref not in retrieved_dict:
+                            self._info(strict)
+                        else:
+                            model_dict[model_attr] = retrieved_dict[model_ref]
                     else:
                         self._error(
                             "attr: {attr}={model_attr}, ref: {ref}={model_ref}".format(m1=model, ref=ref, attr=attr,
@@ -638,7 +641,7 @@ class Browser(logger.Loggable, object):
 
         return retrieved_models
 
-    def _retrieve_has_many_through(self, models, relationship_name):
+    def _retrieve_has_many_through(self, models, relationship_name, strict=True):
         """Performs exactly 2 queries to establish a HasManyThrough relationship"""
         relation = models[0].relationships[relationship_name]
         association_relation = models[0].relationships[relation.through_model_attr]
@@ -654,8 +657,8 @@ class Browser(logger.Loggable, object):
             if ar.nested == relation.nested:
                 other_ref = r
 
-        associations = self._retrieve_has_many_or_has_one(models, relation.through_model_attr)
-        self._retrieve_has_many_or_has_one(associations, other_ref)
+        associations = self._retrieve_has_many_or_has_one(models, relation.through_model_attr, strict=strict)
+        self._retrieve_has_many_or_has_one(associations, other_ref, strict=strict)
 
         associations_by_mid = {}
         for a in associations:
@@ -723,13 +726,13 @@ class Browser(logger.Loggable, object):
                 "retrieve is not supported for the \"{}\" relationship".format(relation.__class__.__name__))
         self._info('RETRIEVE {}: {}'.format(relationship_name, relation))
         if hasattr(relation, 'through_model_attr'):
-            found_models = self._retrieve_has_many_through(models, relationship_name)
+            found_models = self._retrieve_has_many_through(models, relationship_name, strict=strict)
         else:
             found_models = self._retrieve_has_many_or_has_one(models, relationship_name, relation, strict=strict)
         self._info('RETRIEVE retrieved {} for "{}"'.format(len(found_models), relationship_name))
         return found_models
 
-    def recursive_retrieve(self, models, relations, strict=False):
+    def recursive_retrieve(self, models, relations, strict=True):
         """
         Efficiently retrieve a model relationship recursively from an iterable. The relations_dict iterable may be
         either a list or a dictionary. For example, the following will collect all of the field_values
@@ -771,7 +774,7 @@ class Browser(logger.Loggable, object):
                 new_models = self.retrieve(models, relation_name)
                 models_by_attr[relation_name] += new_models
                 if isinstance(relations, dict):
-                    _models_by_attr = self.recursive_retrieve(new_models, dict(relations).pop(relation_name))
+                    _models_by_attr = self.recursive_retrieve(new_models, dict(relations).pop(relation_name), strict=strict)
                     for attr in _models_by_attr:
                         _models = _models_by_attr[attr]
                         if attr in models_by_attr:
