@@ -5,7 +5,7 @@ import inflection
 
 from pydent.base import ModelBase
 from pydent.marshaller import fields
-from pydent.marshaller.exceptions import MarshallerRelationshipError
+from pydent.marshaller.exceptions import FieldValidationError
 
 
 class One(fields.Relation):
@@ -57,7 +57,7 @@ class Many(fields.Relation):
         """
         if callback is None:
             callback = ModelBase.where_callback.__name__
-        super().__init__(model, *args, default=list,
+        super().__init__(model, *args,
                          many=True, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 
@@ -99,10 +99,10 @@ class HasMixin:
             self.ref = ref
         else:
             if not self.attr:
-                raise MarshallerRelationshipError(
+                raise FieldValidationError(
                     "'attr' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(self.__class__))
             if not model:
-                raise MarshallerRelationshipError(
+                raise FieldValidationError(
                     "'model' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(self.__class__))
             self.ref = "{}_{}".format(inflection.underscore(model), self.attr)
 
@@ -185,7 +185,7 @@ class HasMany(HasMixin, Many):
         """
         if ref_model is None and ref is None:
             msg = "'{}' needs a 'ref_model' or 'ref' parameters to initialize"
-            raise MarshallerRelationshipError(
+            raise FieldValidationError(
                 msg.format(self.__class__.__name__))
         self.set_ref(model=ref_model, attr=attr, ref=ref)
 
@@ -229,7 +229,7 @@ class HasOneFromMany(HasMixin, One):
         """
         if ref_model is None and ref is None:
             msg = "'{}' needs a 'ref_model' or 'ref' parameters to initialize"
-            raise MarshallerRelationshipError(
+            raise FieldValidationError(
                 msg.format(self.__class__.__name__))
         self.set_ref(model=ref_model, attr=attr, ref=ref)
 

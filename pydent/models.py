@@ -420,7 +420,7 @@ class FieldValue(ModelBase, FieldMixin):
         # FieldValue relationships
         field_type=HasOne("FieldType"),
         allowable_field_type=HasOne("AllowableFieldType"),
-        array=fields.Function(lambda fv: fv.array),
+        array=fields.Callback(lambda fv: fv.array),
         item=HasOne("Item", ref="child_item_id"),
         sample=HasOne("Sample", ref="child_sample_id"),
         operation=HasOne(
@@ -429,9 +429,9 @@ class FieldValue(ModelBase, FieldMixin):
             "Sample", callback="find_field_parent", ref="parent_id"),
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
-        sid=fields.Function(lambda fv: fv.sid, allow_none=True),
-        child_sample_name=fields.Function(lambda fv: fv.sid, allow_none=True),
-        allowable_child_types=fields.Function(
+        sid=fields.Callback(lambda fv: fv.sid, allow_none=True),
+        child_sample_name=fields.Callback(lambda fv: fv.sid, allow_none=True),
+        allowable_child_types=fields.Callback(
             lambda fv: fv.allowable_child_types, allow_none=True),
         ignore=('object_type',),
     )
@@ -863,7 +863,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
         jobs=HasManyThrough("Job", "JobAssociation"),
-        routing=fields.Function(lambda op: op.routing, allow_none=True),
+        routing=fields.Callback(lambda op: op.routing, allow_none=True),
         plan_associations=HasMany("PlanAssociation", "Operation"),
         plans=HasManyThrough("Plan", "PlanAssociation")
     )
