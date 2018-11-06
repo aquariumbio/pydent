@@ -38,42 +38,12 @@ relationships - models relationships are stored
 
 """
 
-from pydent.exceptions import TridentModelNotFoundError, AquariumModelError
-from pydent.marshaller import MarshallerBase
+from pydent.exceptions import AquariumModelError
+from pydent.marshaller import SchemaModel, ModelRegistry
 from inflection import underscore
 
 
-class ModelRegistry(type):
-    """Stores a list of models that can be accessed by name."""
-    models = {}
-
-    def __init__(cls, name, bases, selfdict):
-        """Saves model to the registry"""
-        super().__init__(name, bases, selfdict)
-        if not name == "ModelBase":
-            ModelRegistry.models[name] = cls
-
-    @staticmethod
-    def get_model(model_name):
-        """Gets model by model_name"""
-        if model_name not in ModelRegistry.models:
-            raise TridentModelNotFoundError(
-                "Model \"{}\" not found in ModelRegistry.".format(model_name))
-        else:
-            return ModelRegistry.models[model_name]
-
-    def __getattr__(cls, item):
-        """
-        Special warning for attribute errors.
-        Its likely that user may have wanted to use a model interface instead of
-        the Base class.
-        """
-        raise AttributeError("'{0}' has no attribute '{1}'. Method may be a ModelInterface method."
-                             " Did you mean '<yoursession>.{0}.{1}'?"
-                             .format(cls.__name__, item))
-
-
-class ModelBase(MarshallerBase, metaclass=ModelRegistry):
+class ModelBase(SchemaModel):
     """
     Base class for Aquarium models.
     Subclass of :class:`pydent.marshaller.MarshallerBase`
@@ -292,7 +262,7 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     def __getattribute__(self, name):
         """Override getattribute to automatically connect sessions"""
         res = super().__getattribute__(name)
-        if isinstance(res, list) or isinstance(res, MarshallerBase):
+        if isinstance(res, list) or isinstance(res, SchemaModel):
             relationships = object.__getattribute__(
                 self, "get_relationships")()
             if name in relationships:
