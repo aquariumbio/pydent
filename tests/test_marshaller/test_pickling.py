@@ -5,11 +5,11 @@ Tests for pickling and unpickling of marshallerbase models
 import os
 import pickle
 
-from pydent.marshaller import MarshallerBase, add_schema, fields
+from pydent.marshaller import SchemaModel, add_schema, fields
 
 
 @add_schema
-class MyModel(MarshallerBase):
+class MyModel(SchemaModel):
     fields = dict(
         myrelation=fields.Relation("Anymodelname", callback="test_callback",
                                    callback_args=lambda self: (self.x, self.y))

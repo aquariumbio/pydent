@@ -420,7 +420,7 @@ class FieldValue(ModelBase, FieldMixin):
         # FieldValue relationships
         field_type=HasOne("FieldType"),
         allowable_field_type=HasOne("AllowableFieldType"),
-        array=fields.Callback(lambda fv: fv.array),
+        array=fields.Callback(lambda fv: fv.array, callback_args=(fields.Callback.ARGS.SELF,)),
         item=HasOne("Item", ref="child_item_id"),
         sample=HasOne("Sample", ref="child_sample_id"),
         operation=HasOne(
@@ -429,10 +429,10 @@ class FieldValue(ModelBase, FieldMixin):
             "Sample", callback="find_field_parent", ref="parent_id"),
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
-        sid=fields.Callback(lambda fv: fv.sid, allow_none=True),
-        child_sample_name=fields.Callback(lambda fv: fv.sid, allow_none=True),
+        sid=fields.Callback(lambda fv: fv.sid, callback_args=(fields.Callback.ARGS.SELF,)),
+        child_sample_name=fields.Callback(lambda fv: fv.sid, callback_args=(fields.Callback.ARGS.SELF,)),
         allowable_child_types=fields.Callback(
-            lambda fv: fv.allowable_child_types, allow_none=True),
+            lambda fv: fv.allowable_child_types, callback_args=(fields.Callback.ARGS.SELF,)),
         ignore=('object_type',),
     )
 
@@ -701,7 +701,7 @@ class Item(ModelBase, DataAssociatorMixin):
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        data=fields.JSON(allow_none=True, strict=False),
+        data=fields.JSON(),
         ignore=("locator_id",)
     )
     methods = ['is_part']
@@ -778,7 +778,7 @@ class Job(ModelBase):
     fields = dict(
         job_associations=HasMany("JobAssociation", "Job"),
         operations=HasManyThrough("Operation", "JobAssociation"),
-        state=fields.JSON(allow_none=True, strict=False)
+        state=fields.JSON()
     )
 
     @property
@@ -863,7 +863,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
         jobs=HasManyThrough("Job", "JobAssociation"),
-        routing=fields.Callback(lambda op: op.routing, allow_none=True),
+        routing=fields.Callback(lambda op: op.routing, callback_args=(fields.Callback.ARGS.SELF,)),
         plan_associations=HasMany("PlanAssociation", "Operation"),
         plans=HasManyThrough("Plan", "PlanAssociation")
     )
@@ -1361,8 +1361,8 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         data_associations=HasManyGeneric("DataAssociation"),
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
-        wires=Many("Wire", callback="get_wires", callback_args=None),
-        layout=fields.JSON(allow_none=True)
+        wires=Many("Wire", callback="get_wires"),
+        layout=fields.JSON()
     )
 
     def __init__(self, name=None, status=None, source=None, destination=None):
@@ -2058,8 +2058,8 @@ class Wire(ModelBase):
     """A Wire model"""
     fields = dict(
         # load_only=False, will force dumping of FieldValues here...
-        source=HasOne("FieldValue", ref="from_id", dump_to="from"),
-        destination=HasOne("FieldValue", ref="to_id", dump_to="to")
+        source=HasOne("FieldValue", ref="from_id"),
+        destination=HasOne("FieldValue", ref="to_id")
     )
 
     def __init__(self, source=None, destination=None):
