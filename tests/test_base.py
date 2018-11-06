@@ -10,12 +10,12 @@ from pydent.exceptions import TridentModelNotFoundError
 from pydent.marshaller import add_schema, fields
 
 
-def test_model_base():
-    """
-    Upon instantiation, .session should be None
-    """
-    m = ModelBase()
-    assert m.session is None
+# def test_model_base():
+#     """
+#     Upon instantiation, .session should be None
+#     """
+#     m = ModelBase()
+#     assert m.session is None
 
 
 def test_record_id():

@@ -1,7 +1,6 @@
 import pytest
-from marshmallow import fields
 
-from pydent.marshaller.schema import add_schema, MODEL_SCHEMA, META
+from pydent.marshaller import add_schema, fields
 
 
 # TESTING SCHEMA

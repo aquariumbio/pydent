@@ -17,7 +17,6 @@ import requests
 from pydent.exceptions import (TridentRequestError, TridentLoginError,
                                TridentTimeoutError, TridentJSONDataIncomplete)
 from pydent.utils import url_build, logger
-import logging
 
 
 class AqHTTP(logger.Loggable, object):

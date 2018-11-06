@@ -63,8 +63,7 @@ class ModelBase(SchemaModel):
         self._new_record_id()
         model_args[ModelBase.GLOBAL_KEY] = self.rid
         vars(self).update(model_args)
-        data = {k: v for k, v in model_args.items() if not k == '_session'}
-        self._track_data(data)
+        super().__init__()
 
     def _new_record_id(self):
         self._rid = ModelBase.new_record_id()
@@ -87,13 +86,6 @@ class ModelBase(SchemaModel):
             if pk:
                 return pk
         return 'r{}'.format(self.rid)
-
-    def _track_data(self, data):
-        if self.model_schema:
-            schema = self.model_schema()
-            schema.load_missing(data.keys())
-            schema.save_extra_fields(self)
-            schema.validate(data)
 
     def append_to_many(self, name, model):
         """
@@ -127,15 +119,16 @@ class ModelBase(SchemaModel):
         return model
 
     @classmethod
-    def load(cls, *args, **kwargs):
+    def load(cls, data, many=False):
         """Create a new model instance from loaded attributes"""
-        inst = super().load(*args, **kwargs)
-        if isinstance(inst, list):
-            for _inst in inst:
-                _inst._new_record_id()
-        else:
-            inst._new_record_id()
-        return inst
+        if many:
+            models = [super().load(d) for d in data]
+            for m in models:
+                m.__init__()
+            return models
+        model = super().load(data)
+        model.__init__()
+        return model
 
     def dump(self, *args, **kwargs):
         d = super().dump(*args, **kwargs)
@@ -259,16 +252,16 @@ class ModelBase(SchemaModel):
     #     json_data = self.dump(**kwargs)
     #     return self.patch(json_data=json_data)
 
-    def __getattribute__(self, name):
-        """Override getattribute to automatically connect sessions"""
-        res = super().__getattribute__(name)
-        if isinstance(res, list) or isinstance(res, SchemaModel):
-            relationships = object.__getattribute__(
-                self, "get_relationships")()
-            if name in relationships:
-                session = object.__getattribute__(self, 'session')
-                if isinstance(res, list):
-                    [m.connect_to_session(session) for m in res]
-                else:
-                    res.connect_to_session(session)
-        return res
+    # def __getattribute__(self, name):
+    #     """Override getattribute to automatically connect sessions"""
+    #     res = super().__getattribute__(name)
+    #     if isinstance(res, list) or isinstance(res, SchemaModel):
+    #         relationships = object.__getattribute__(
+    #             self, "get_relationships")()
+    #         if name in relationships:
+    #             session = object.__getattribute__(self, 'session')
+    #             if isinstance(res, list):
+    #                 [m.connect_to_session(session) for m in res]
+    #             else:
+    #                 res.connect_to_session(session)
+    #     return res

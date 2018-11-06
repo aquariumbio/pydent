@@ -5,10 +5,10 @@ import inflection
 
 from pydent.base import ModelBase
 from pydent.marshaller import fields
-from pydent.marshaller.exceptions import FieldValidationError
+from pydent.marshaller import FieldValidationError
 
 
-class One(fields.Relation):
+class One(fields.Relationship):
     """
     Defines a single relationship with another model.
     Subclass of :class:`pydent.marshaller.Relation`.
@@ -34,7 +34,7 @@ class One(fields.Relation):
         super().__init__(model, *args, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
 
 
-class Many(fields.Relation):
+class Many(fields.Relationship):
     """
     Defines a many relationship with another model.
     Subclass of :class:`pydent.marshaller.Relation`.
