@@ -11,7 +11,9 @@ def test_attribute_missing():
         fields = dict(books=HasMany("Book", ref="book_id", callback="foo"))
 
         def __init__(self):
-            self.books = None
+            super().__init__(
+                books=None
+            )
 
         def foo(self, *args):
             print(args)
@@ -29,29 +31,20 @@ def test_nested_dump_relations():
     ot = OperationType(name="MyOT")
     aft = AllowableFieldType(object_type=ObjectType(id=1, name="MyOBJ"),
                              sample_type=SampleType(id=2, name="MYSAMPLETYPE"))
-    ot.field_types = [FieldType(name="MyFV", allowable_field_types=[aft])]
-    ot.operations = []
-    #
-    # # dump with 'field_types' and 'allowable_field_types'
-    # expected = ot.dump()
-    # ft = ot.field_types[0]
-    # ft_data = ft.dump()
-    # aft = ft.allowable_field_types[0]
-    # ft_data['allowable_field_types'] = [aft.dump()]
-    # expected['field_types'] = [ft_data]
-    # #
-    # assert expected == ot.dump(
-    #   relations={'field_types': ['allowable_field_types']})
-    #
-    # # also dump with object_type
-    # expected['field_types'][0]['allowable_field_types'][0]['object_type'] = aft.object_type.dump()
-    print()
-    # pprint(ot.dump(relations={'field_types': {'allowable_field_types': 'object_type'}}))
-    ot.dump(relations={'field_types': ['allowable_field_types']})
-    # schema = ot.create_schema_instance(dump_relations={'field_types': {'allowable_field_types': 'object_type'}})
-    print()
-    print()
-    pprint(ot.dump(relations={'field_types': {
-           'allowable_field_types': 'object_type'}}))
-    # pprint(expected)
-    # assert expected == ot.dump(relations={'field_types': {'allowable_field_types': 'object_type'}})
+    assert isinstance(aft.object_type, ObjectType)
+    assert isinstance(aft.sample_type, SampleType)
+
+    assert aft.object_type.id == 1
+    assert aft.sample_type.id == 2
+
+    assert aft.object_type_id == 1
+    assert aft.sample_type_id == 2
+
+    data = aft.dump()
+    data.pop('rid')
+
+    assert data == {
+        "object_type_id": 1,
+        "sample_type_id": 2,
+        'field_type_id': None
+    }

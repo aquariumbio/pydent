@@ -1,7 +1,7 @@
 import pytest
-from marshmallow import pprint
-from pydent import models, ModelRegistry
-from pydent.exceptions import TridentRequestError
+from pydent.marshaller import ModelRegistry
+# from pydent import models
+# from pydent.exceptions import TridentRequestError
 
 # # skip tests
 # pytestmark = pytest.mark.skip("These tests utilize a live session with alot of requests."
@@ -36,7 +36,6 @@ class TestModelRelationships:
         relationships = model_class.get_relationships()
 
         print("\nRelationships:")
-        pprint(relationships)
 
         num_models = 1
         tries = 3
@@ -58,9 +57,8 @@ class TestModelRelationships:
                     else:
                         num_models += num_model_increase
                 else:
-                    nested_model = ModelRegistry.get_model(relationship.nested)
                     if val is not None:
-                        assert isinstance(val, nested_model), "Value should be a {}, not a {}".format(nested_model, type(val[0]))
+                        assert isinstance(val, nested_model), "Value should be a {}, not a {}".format(nested_model, val)
                         num_models = 0
                     else:
                         num_models += num_model_increase

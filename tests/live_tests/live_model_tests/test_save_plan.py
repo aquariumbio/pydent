@@ -1,5 +1,4 @@
 from pydent import models
-from marshmallow import pprint
 
 
 def test_submit_order_primer(session):
@@ -43,8 +42,6 @@ def test_plan_with_parameter(session):
 
     # add the operation to the plan
     p.add_operation(order_primer)
-
-    pprint(p.to_save_json())
 
     # save the plan
     p.create()

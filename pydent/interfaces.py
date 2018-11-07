@@ -354,10 +354,8 @@ class ModelInterface(SessionInterface):
         Model instances will be of class defined by self.model.
         If data is a list, will return a list of model instances.
         """
-        many = isinstance(post_response, list)
-        models = self.model.load(post_response, many=many)
-        if many:
-            assert len(post_response) == len(models)
+        models = self.model.load(post_response)
+        if isinstance(models, list):
             for model in models:
                 model.connect_to_session(self.session)
         else:

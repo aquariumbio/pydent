@@ -4,11 +4,26 @@
 import inflection
 
 from pydent.base import ModelBase
+from pydent.marshaller import ModelValidationError
 from pydent.marshaller import fields
-from pydent.marshaller import FieldValidationError
 
 
-class One(fields.Relationship):
+class FieldValidationError(ModelValidationError):
+    pass
+
+
+class BaseRelationship(fields.Relationship):
+    """
+    BaseRelationship field
+    """
+
+    def __init__(self, nested, callback, callback_args=None, callback_kwargs=None, many=None):
+        super().__init__(nested, callback, callback_args, callback_kwargs, cache=True, data_key=None, many=many)
+        pass
+
+
+
+class One(BaseRelationship):
     """
     Defines a single relationship with another model.
     Subclass of :class:`pydent.marshaller.Relation`.
@@ -16,12 +31,12 @@ class One(fields.Relationship):
 
     QUERY_TYPE = 'by_id'
 
-    def __init__(self, model, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
+    def __init__(self, nested, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
         """
         One initializer. Uses "find" callback by default.
 
-        :param model: target model
-        :type model: basestring
+        :param nested: target model
+        :type nested: basestring
         :param args: other args for fields.Nested relationship
         :type args: ...
         :param attr: attribute to use to find model
@@ -31,10 +46,10 @@ class One(fields.Relationship):
         """
         if callback is None:
             callback = ModelBase.find_callback.__name__
-        super().__init__(model, *args, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
+        super().__init__(nested, callback, callback_args=callback_args, callback_kwargs=callback_kwargs, many=False)
 
 
-class Many(fields.Relationship):
+class Many(BaseRelationship):
     """
     Defines a many relationship with another model.
     Subclass of :class:`pydent.marshaller.Relation`.
@@ -42,12 +57,12 @@ class Many(fields.Relationship):
 
     QUERY_TYPE = 'query'
 
-    def __init__(self, model, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
+    def __init__(self, nested, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
         """
         Many initializer. Uses "where" callback by default.
 
-        :param model: target model
-        :type model: basestring
+        :param nested: target model
+        :type nested: basestring
         :param args: other args for fields.Nested relationship
         :type args: ...
         :param attr: attribute to use to find model
@@ -57,8 +72,9 @@ class Many(fields.Relationship):
         """
         if callback is None:
             callback = ModelBase.where_callback.__name__
-        super().__init__(model, *args,
-                         many=True, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
+        super().__init__(nested, *args,
+                         many=True, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)
 
 
 class HasMixin:
@@ -67,7 +83,7 @@ class HasMixin:
     attributes
     """
 
-    def set_ref(self, model=None, ref=None, attr=None):
+    def set_ref(self, nested=None, ref=None, attr=None):
         """
         Sets the 'ref' and 'attr' attributes. These attributes are used to
         defined parameters for
@@ -101,14 +117,14 @@ class HasMixin:
             if not self.attr:
                 raise FieldValidationError(
                     "'attr' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(self.__class__))
-            if not model:
+            if not nested:
                 raise FieldValidationError(
                     "'model' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(self.__class__))
-            self.ref = "{}_{}".format(inflection.underscore(model), self.attr)
+            self.ref = "{}_{}".format(inflection.underscore(nested), self.attr)
 
 
 class HasOne(HasMixin, One):
-    def __init__(self, model, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs):
+    def __init__(self, nested, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs):
         """
         HasOne initializer. Uses the "get_one_generic" callback and
         automatically assigns attribute as in the following:
@@ -117,16 +133,24 @@ class HasOne(HasMixin, One):
 
             model="SampleType", attr="id" # equiv. to 'lambda self: self.sample_type_id.'
 
-        :param model: model name of the target model
-        :type model: basestring
+        :param nested: model name of the target model
+        :type nested: basestring
         :param attr: attribute to append underscored model name
         :type attr: basestring
         """
-        self.set_ref(model=model, attr=attr, ref=ref)
-        super().__init__(model, callback=callback, callback_args=(lambda slf: getattr(slf, self.ref)), callback_kwargs=callback_kwargs, **kwargs)
+        self.set_ref(nested=nested, attr=attr, ref=ref)
+
+        super().__init__(nested, many=False, callback=callback, callback_args=(lambda slf: getattr(slf, self.ref)),
+                         callback_kwargs=callback_kwargs, **kwargs)
 
     def __repr__(self):
         return "<HasOne (model={}, callback_args=lambda self: self.{})>".format(self.model, self.ref)
+
+    def deserialize(self, owner, val):
+        val = super().deserialize(owner, val)
+        if val:
+            setattr(owner, self.ref, getattr(val, self.attr))
+        return val
 
 
 class HasManyThrough(HasMixin, Many):
@@ -135,8 +159,9 @@ class HasManyThrough(HasMixin, Many):
     Establishes a Many-to-Many relationship with another model
     """
 
-    def __init__(self, model, through, attr="id", ref=None, additional_args=None, callback=None, callback_kwargs=None, **kwargs):
-        self.set_ref(model=model, attr=attr, ref=ref)
+    def __init__(self, nested, through, attr="id", ref=None, additional_args=None, callback=None, callback_kwargs=None,
+                 **kwargs):
+        self.set_ref(nested=nested, attr=attr, ref=ref)
 
         # e.g. PlanAssociation >> plan_associations
         through_model_attr = inflection.pluralize(
@@ -153,7 +178,9 @@ class HasManyThrough(HasMixin, Many):
             query = {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
             query.update(additional_args)
             return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
-        super().__init__(model, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
+
+        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)
 
 
 class HasMany(HasMixin, Many):
@@ -161,12 +188,13 @@ class HasMany(HasMixin, Many):
     A relationship that establishes a One-to-Many relationship with another model.
     """
 
-    def __init__(self, model, ref_model=None, attr=None, ref=None,  additional_args=None, callback=None, callback_kwargs=None, **kwargs):
+    def __init__(self, nested, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
+                 callback_kwargs=None, **kwargs):
         """
         HasMany relationship initializer
 
-        :param model: Model class name for this relationship
-        :type model: str
+        :param nested: Model class name for this relationship
+        :type nested: str
         :param ref_model: Reference model name of the model owning this relationships.
 
         .. code-block:: python
@@ -187,7 +215,7 @@ class HasMany(HasMixin, Many):
             msg = "'{}' needs a 'ref_model' or 'ref' parameters to initialize"
             raise FieldValidationError(
                 msg.format(self.__class__.__name__))
-        self.set_ref(model=ref_model, attr=attr, ref=ref)
+        self.set_ref(nested=ref_model, attr=attr, ref=ref)
 
         if additional_args is None:
             additional_args = {}
@@ -196,21 +224,22 @@ class HasMany(HasMixin, Many):
             query = {self.ref: getattr(slf, self.attr)}
             query.update(additional_args)
             return query
-        super().__init__(model, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs, **kwargs)
+
+        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)
 
 
 class HasOneFromMany(HasMixin, One):
-
     QUERY_TYPE = "query"
 
-    def __init__(self, model, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
+    def __init__(self, nested, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
                  callback_kwargs=None, **kwargs):
         """
         HasOneFromMany relationship initializer, which is intended to return a single model from
         a Many query
 
-        :param model: Model class name for this relationship
-        :type model: str
+        :param nested: Model class name for this relationship
+        :type nested: str
         :param ref_model: Reference model name of the model owning this relationships.
 
         .. code-block:: python
@@ -231,7 +260,7 @@ class HasOneFromMany(HasMixin, One):
             msg = "'{}' needs a 'ref_model' or 'ref' parameters to initialize"
             raise FieldValidationError(
                 msg.format(self.__class__.__name__))
-        self.set_ref(model=ref_model, attr=attr, ref=ref)
+        self.set_ref(nested=ref_model, attr=attr, ref=ref)
 
         if additional_args is None:
             additional_args = {}
@@ -244,7 +273,7 @@ class HasOneFromMany(HasMixin, One):
         if callback is None:
             callback = ModelBase.one_callback.__name__
 
-        super().__init__(model, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
                          **kwargs)
 
 
@@ -254,5 +283,6 @@ class HasManyGeneric(HasMany):
     to find other models.
     """
 
-    def __init__(self, model,  additional_args=None, callback=None, callback_kwargs=None, **kwargs):
-        super().__init__(model, ref="parent_id", attr="id", callback=callback, additional_args=additional_args, callback_kwargs=callback_kwargs, **kwargs)
+    def __init__(self, nested, additional_args=None, callback=None, callback_kwargs=None, **kwargs):
+        super().__init__(nested, ref="parent_id", attr="id", callback=callback, additional_args=additional_args,
+                         callback_kwargs=callback_kwargs, **kwargs)

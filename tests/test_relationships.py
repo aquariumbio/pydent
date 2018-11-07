@@ -23,7 +23,7 @@ def test_one():
     one = One("ModelName", callback="mycallback", callback_args=(1, 2, 3))
     assert one.nested == "ModelName"
     assert one.callback == "mycallback"
-    assert one.callback_args == (1, 2, 3)
+    assert one.callback_args == ("ModelName", 1, 2, 3)
     assert not one.many
 
 
@@ -38,7 +38,7 @@ def test_many():
     many = Many("ModelName", callback="mycallback", callback_args=(1, 2, 3))
     assert many.nested == "ModelName"
     assert many.callback == "mycallback"
-    assert many.callback_args == (1, 2, 3)
+    assert many.callback_args == ("ModelName", 1, 2, 3)
     assert many.many
 
     # default attributes
@@ -64,12 +64,12 @@ def test_has_many():
     # has_many tries to return lambda x: {"ref_model_id": x.id}
     hasmany = HasMany("ModelName", RefModel.__name__)
     assert hasmany.nested == "ModelName"
-    assert hasmany.callback_args[0](RefModel) == {"ref_model_id": 4}
+    assert hasmany.callback_args[1](RefModel) == {"ref_model_id": 4}
 
     # has_many tries to return lambda x: {"ref_model_name": x.name}
     hasmany = HasMany("ModelName", RefModel.__name__,
-                      attr="name", through=None)
-    assert hasmany.callback_args[0](RefModel) == {"ref_model_name": "myname"}
+                      attr="name")
+    assert hasmany.callback_args[1](RefModel) == {"ref_model_name": "myname"}
 
 
 def test_has_one():
@@ -89,11 +89,11 @@ def test_has_one():
     # has_many tries to return lambda x: x.my_model_id
     hasone = HasOne("MyModel")
     assert hasone.nested == "MyModel"
-    assert hasone.callback_args[0](MyModel) == 4
+    assert hasone.callback_args[1](MyModel) == 4
 
     # has_many tries to return lambda x: x.my_model_name
     hasone = HasOne("MyModel", attr="name")
-    assert hasone.callback_args[0](MyModel) == "myname"
+    assert hasone.callback_args[1](MyModel) == "myname"
 
 
 def test_has_one_with_ref():
@@ -114,7 +114,7 @@ def test_has_one_with_ref():
     hasone = HasOne("MyModel", ref="parent_id")
     assert hasone.ref == "parent_id"
     assert hasone.nested == "MyModel"
-    assert hasone.callback_args[0](MyModel) == 4
+    assert hasone.callback_args[1](MyModel) == 4
 
 
 def test_has_many_generic():
@@ -136,7 +136,7 @@ def test_has_many_generic():
     assert hasmanygeneric.nested == "MyModel"
 
     def expected_fxn(model): return {"parent_id": model.id}
-    fxn = hasmanygeneric.callback_args[0]
+    fxn = hasmanygeneric.callback_args[1]
     assert expected_fxn(mymodel) == fxn(mymodel)
     assert fxn(mymodel) == {"parent_id": 4}
 
@@ -189,6 +189,6 @@ def test_has_many_through():
 
     def expected_fxn(model): return {
         "id": [x.my_model_id for x in model.through_models]}
-    fxn = hasmanythrough.callback_args[0]
+    fxn = hasmanythrough.callback_args[1]
     assert fxn(this_model) == expected_fxn(this_model)
     assert fxn(this_model) == {"id": [4]}
