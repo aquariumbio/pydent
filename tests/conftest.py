@@ -6,7 +6,6 @@ import requests
 
 from pydent.aqsession import AqSession
 
-
 # TODO: use os.environ by default, fall back to config.json.secret
 @pytest.fixture(scope="session")
 def config():

@@ -40,7 +40,9 @@ relationships - models relationships are stored
 
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import SchemaModel, ModelRegistry
+from pydent.marshaller import fields
 from inflection import underscore
+import itertools
 
 
 class ModelBase(SchemaModel):
@@ -52,27 +54,29 @@ class ModelBase(SchemaModel):
     - contains a reference to the :class:`pydent.session.aqsession.AqSession`
       instance that loaded this model
     """
-
-    _global_record_id = 0
     PRIMARY_KEY = 'id'
     GLOBAL_KEY = 'rid'
+    counter = itertools.count()
 
-    def __init__(self, **model_args):
+    def __init__(self, **data):
+        super().__init__(data)
+        self._rid = next(self.counter)
+        self.add_data({"rid": self._rid})
         self._session = None
-        self._rid = None
-        self._new_record_id()
-        model_args[ModelBase.GLOBAL_KEY] = self.rid
-        vars(self).update(model_args)
-        super().__init__()
 
-    def _new_record_id(self):
-        self._rid = ModelBase.new_record_id()
+    # def __init__(self, **kwargs):
+    #     self.add_data(kwargs)
 
-    @staticmethod
-    def new_record_id():
-        oid = ModelBase._global_record_id
-        ModelBase._global_record_id += 1
-        return oid
+    # def setup(self):
+    #     self._session = None
+    #
+    # @classmethod
+    # def model_factory(cls, data):
+    #     instance = cls._set_data(data)
+
+    # def __init__(self, **model_args):
+    #     model_args.update({"rid": self._rid})
+    #     super().__init__(model_args)
 
     @property
     def rid(self):
@@ -119,22 +123,19 @@ class ModelBase(SchemaModel):
         return model
 
     @classmethod
-    def load(cls, data, many=False):
+    def load(cls, data):
         """Create a new model instance from loaded attributes"""
-        if many:
-            models = [super().load(d) for d in data]
-            for m in models:
-                m.__init__()
+        if isinstance(data, list):
+            models = []
+            for d in data:
+                model = cls.__new__(cls)
+                ModelBase.__init__(model, **d)
+                models.append(model)
             return models
-        model = super().load(data)
-        model.__init__()
+        else:
+            model = cls.__new__(cls)
+            ModelBase.__init__(model, **data)
         return model
-
-    def dump(self, *args, **kwargs):
-        d = super().dump(*args, **kwargs)
-        if d is not None:
-            d['rid'] = self._rid
-        return d
 
     def reload(self, data):
         """
@@ -149,6 +150,10 @@ class ModelBase(SchemaModel):
         temp_model.connect_to_session(self.session)
         vars(self).update(vars(temp_model))
         return self
+
+    @classmethod
+    def get_relationships(cls):
+        return cls._model_schema.grouped_fields[fields.Relationship.__name__]
 
     @property
     def session(self):
@@ -240,6 +245,12 @@ class ModelBase(SchemaModel):
             model=model_name)
         )
         return model.where(self.session, query_arg, *args[1:], **kwargs)
+
+    def print(self):
+        data = self.dump()
+        relationships = self.get_relationships()
+        data.update(relationships)
+        print(data)
 
     # def patch(self, json_data):
     #     """Make a patch request to self using json_data. Reload model instance with new data"""

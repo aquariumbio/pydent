@@ -7,7 +7,7 @@ Trident models inherit the ModelBase class and have a model schema
 By default, Trident models capture ALL JSON attribute/values and sets
 the attributes of the resultant object.
 
-.. code-block:: python
+. code-block:: python
 
     u = User.load({"id": 1, "login": "John"})
     u.login    # => "John"
@@ -17,7 +17,7 @@ Fields and field options are added as class variables in the model class
 definition.
 The various field options and their default values are listed below.
 
-.. code-block:: python
+. code-block:: python
 
         load_all = True     # load all data attributes defined for a model
         strict = True       # throw error during marshalling
@@ -32,7 +32,7 @@ possess a single SampleType while a SampleType may possess several Samples).
 These relationships can be specified in the class definition along with the
 field options above, as in:
 
-.. code-block:: python
+. code-block:: python
 
     @add_schema
     class SampleType(Base):
@@ -49,7 +49,7 @@ When .samples is called on a SampleType instance, Trident will use the database
 to retrieve all samples that have a sample_type_id equal to the id of the
 SampleType:
 
-.. code-block:: python
+. code-block:: python
 
     @add_schema
     class SampleType(Base):
@@ -215,13 +215,14 @@ class AllowableFieldType(ModelBase):
     )
 
     def __init__(self, field_type=None, object_type=None, sample_type=None):
-        self.field_type_id = None
-        self.sample_type_id = None
-        self.object_type_id = None
-        self.field_type = self.set_model_attribute(field_type)
-        self.object_type = self.set_model_attribute(object_type)
-        self.sample_type = self.set_model_attribute(sample_type)
-        super().__init__(**vars(self))
+        super().__init__(
+            field_type_id=None,
+            sample_type_id=None,
+            object_type_id=None,
+            field_type=field_type,
+            object_type=object_type,
+            sample_type=sample_type
+        )
 
     def __str__(self):
         return "<{} sample_type={} object_type={}>".format(
@@ -339,26 +340,24 @@ class FieldType(ModelBase, FieldMixin):
                  sample_type=None, aft_stype_and_objtype=(),
                  allowable_field_types=None):
         if operation_type and sample_type:
-            raise Exception()
-        if operation_type is not None:
-            parent_id = operation_type.id
+            raise Exception("Cannot instantiate a FieldType for both a OperationType and SampleType.")
+        super().__init__(
+            name=name,
+            ftype=ftype,
+            array=array,
+            choices=choices,
+            preferred_field_type_id=preferred_field_type_id,
+            preferred_operation_type_id=preferred_operation_type_id,
+            required=required,
+            routing=routing,
+            sample_type=sample_type,
+            operation_type=operation_type,
+            allowable_field_types=allowable_field_types
+        )
+        if self.operation_type:
             parent_class = "OperationType"
-        if sample_type is not None:
-            parent_id = sample_type.id
+        if self.sample_type:
             parent_class = "SampleType"
-        self.name = name
-        self.ftype = ftype
-        self.parent_id = parent_id
-        self.parent_class = parent_class
-        self.preferred_operation_type_id = preferred_operation_type_id
-        self.preferred_field_type_id = preferred_field_type_id
-        self.required = required
-        self.routing = routing
-        self.array = array
-        self.choices = choices
-        self.role = role
-        self.allowable_field_types = allowable_field_types
-        super().__init__(**vars(self))
 
         if self.allowable_field_types is None:
             if aft_stype_and_objtype is not None:
@@ -420,7 +419,7 @@ class FieldValue(ModelBase, FieldMixin):
         # FieldValue relationships
         field_type=HasOne("FieldType"),
         allowable_field_type=HasOne("AllowableFieldType"),
-        array=fields.Callback(lambda fv: fv.array, callback_args=(fields.Callback.ARGS.SELF,)),
+        array=fields.Callback(lambda fv: fv.array, callback_args=(fields.Callback.SELF,)),
         item=HasOne("Item", ref="child_item_id"),
         sample=HasOne("Sample", ref="child_sample_id"),
         operation=HasOne(
@@ -429,10 +428,10 @@ class FieldValue(ModelBase, FieldMixin):
             "Sample", callback="find_field_parent", ref="parent_id"),
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
-        sid=fields.Callback(lambda fv: fv.sid, callback_args=(fields.Callback.ARGS.SELF,)),
-        child_sample_name=fields.Callback(lambda fv: fv.sid, callback_args=(fields.Callback.ARGS.SELF,)),
+        sid=fields.Callback(lambda fv: fv.sid, callback_args=(fields.Callback.SELF,)),
+        child_sample_name=fields.Callback(lambda fv: fv.sid, callback_args=(fields.Callback.SELF,)),
         allowable_child_types=fields.Callback(
-            lambda fv: fv.allowable_child_types, callback_args=(fields.Callback.ARGS.SELF,)),
+            lambda fv: fv.allowable_child_types, callback_args=(fields.Callback.SELF,)),
         ignore=('object_type',),
     )
 
@@ -851,7 +850,7 @@ class ObjectType(ModelBase, NamedMixin):
         return "<{} id='{}' name='{}'>".format(self.__class__.__name__, id, name)
 
 
-# TODO: field_values should recognize parent_class (maybe where should ignore None field_values...)
+# TODO: field_values should recognize parent_class (maybe where should ignore None field_values..)
 @add_schema
 class Operation(ModelBase, DataAssociatorMixin):
     """A Operation model"""
@@ -863,7 +862,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
         jobs=HasManyThrough("Job", "JobAssociation"),
-        routing=fields.Callback(lambda op: op.routing, callback_args=(fields.Callback.ARGS.SELF,)),
+        routing=fields.Callback(lambda op: op.routing, callback_args=(fields.Callback.SELF,)),
         plan_associations=HasMany("PlanAssociation", "Operation"),
         plans=HasManyThrough("Plan", "PlanAssociation")
     )
@@ -1911,7 +1910,7 @@ class SampleType(ModelBase, NamedMixin):
         return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
 
 
-# TODO: expiring_url is never updated...
+# TODO: expiring_url is never updated..
 @add_schema
 class Upload(ModelBase):
     """
@@ -2057,7 +2056,7 @@ class UserBudgetAssociation(ModelBase):
 class Wire(ModelBase):
     """A Wire model"""
     fields = dict(
-        # load_only=False, will force dumping of FieldValues here...
+        # load_only=False, will force dumping of FieldValues here..
         source=HasOne("FieldValue", ref="from_id"),
         destination=HasOne("FieldValue", ref="to_id")
     )
