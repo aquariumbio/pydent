@@ -67,7 +67,7 @@ import requests
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema, fields
-from pydent.relationships import (One, Many, HasOne, HasMany,
+from pydent.relationships import (Raw, Function, JSON, One, Many, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric,
                                   HasOneFromMany)
 from pydent.utils import filter_list
@@ -192,12 +192,6 @@ class DataAssociatorMixin:
         return val
 
 
-class NamedMixin:
-
-    def __str__(self):
-        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
-
-
 # Models
 
 @add_schema
@@ -225,11 +219,7 @@ class AllowableFieldType(ModelBase):
         )
 
     def __str__(self):
-        return "<{} sample_type={} object_type={}>".format(
-            self.__class__.__name__,
-            self.sample_type,
-            self.object_type
-        )
+        return self._to_str('sample_type', 'object_type')
 
 
 @add_schema
@@ -310,7 +300,7 @@ class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-pub
 class DataAssociation(ModelBase):
     """A DataAssociation model"""
     fields = dict(
-        object=fields.JSON(),
+        object=JSON(),
         upload=HasOne("Upload")
     )
 
@@ -341,23 +331,26 @@ class FieldType(ModelBase, FieldMixin):
                  allowable_field_types=None):
         if operation_type and sample_type:
             raise Exception("Cannot instantiate a FieldType for both a OperationType and SampleType.")
+        if operation_type:
+            parent_class = "OperationType"
+        if sample_type:
+            parent_class = "SampleType"
         super().__init__(
             name=name,
             ftype=ftype,
             array=array,
             choices=choices,
+            role=role,
             preferred_field_type_id=preferred_field_type_id,
             preferred_operation_type_id=preferred_operation_type_id,
             required=required,
             routing=routing,
+            parent_class=parent_class,
+            parent_id=parent_id,
             sample_type=sample_type,
             operation_type=operation_type,
             allowable_field_types=allowable_field_types
         )
-        if self.operation_type:
-            parent_class = "OperationType"
-        if self.sample_type:
-            parent_class = "SampleType"
 
         if self.allowable_field_types is None:
             if aft_stype_and_objtype is not None:
@@ -419,25 +412,25 @@ class FieldValue(ModelBase, FieldMixin):
         # FieldValue relationships
         field_type=HasOne("FieldType"),
         allowable_field_type=HasOne("AllowableFieldType"),
-        array=fields.Callback(lambda fv: fv.array, callback_args=(fields.Callback.SELF,)),
+        array=fields.Field(),
+        # array=Function(lambda fv: fv.array, callback_args=(fields.Callback.SELF,)),
         item=HasOne("Item", ref="child_item_id"),
         sample=HasOne("Sample", ref="child_sample_id"),
+        object_type_id=Raw(),
+        object_type=HasOne("ObjectType"),
         operation=HasOne(
             "Operation", callback="find_field_parent", ref="parent_id"),
         parent_sample=HasOne(
             "Sample", callback="find_field_parent", ref="parent_id"),
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
-        sid=fields.Callback(lambda fv: fv.sid, callback_args=(fields.Callback.SELF,)),
-        child_sample_name=fields.Callback(lambda fv: fv.sid, callback_args=(fields.Callback.SELF,)),
-        allowable_child_types=fields.Callback(
-            lambda fv: fv.allowable_child_types, callback_args=(fields.Callback.SELF,)),
-        ignore=('object_type',),
+        sid=Function('get_sid'),
+        child_sample_name=Function(lambda fv: fv.sid, callback_args=(fields.Callback.SELF,)),
+        # allowable_child_types=Function('get_allowable_child_types'),
     )
 
     def __init__(self, name=None, role=None, parent_class=None, parent_id=None,
-                 field_type=None,
-                 sample=None, value=None, item=None, container=None):
+                 field_type=None, sample=None, value=None, item=None, container=None):
         """
 
         :param value:
@@ -449,35 +442,24 @@ class FieldValue(ModelBase, FieldMixin):
         :param item:
         :type item:
         """
-        self.column = None
-        self.row = None
-        self.role = role
-        self.id = None
-        self.name = name
-
-        self.parent_class = parent_class
-        self.parent_id = parent_id
-        self.operation = None  # only if parent_class == "Operation"
-        self.parent_sample = None  # only if parent_class == "Sample"
-
-        self.sample = None
-        self.child_sample_id = None
-
-        self.item = None
-        self.child_item_id = None
-
-        self.field_type = None
-        self.field_type_id = None
-
-        self.allowable_field_type = None
-        self.allowable_field_type_id = None
-
-        self.value = None
-        self.sample = None
-        self.item = None
-        self.container = None
-        # object_type is not included in the deserialization/serialization
-        self.object_type = None
+        super().__init__(
+            name=name,
+            role=role,
+            parent_class=parent_class,
+            parent_id=parent_id,
+            field_type_id=None,
+            field_type=field_type,
+            child_sample_id=None,
+            sample=sample,
+            value=value,
+            child_item_id=None,
+            item=item,
+            object_type=container,
+            allowable_field_type_id=None,
+            allowable_field_type=None,
+            column=None,
+            row=None,
+        )
 
         if field_type is not None:
             self.set_field_type(field_type)
@@ -485,29 +467,22 @@ class FieldValue(ModelBase, FieldMixin):
         if any([value, sample, item, container]):
             self._set_helper(value=value, sample=sample,
                              item=item, container=container)
-        super().__init__(**vars(self))
 
-    @property
-    def child_sample_name(self):
-        return "{}: {}".format(self.child_sample_id, self.sample.name)
+    # @property
+    # def array(self):
+    #     arr = self.field_type.array
+    #     if arr is None:
+    #         return False
+    #     return arr
 
-    @property
-    def array(self):
-        arr = self.field_type.array
-        if arr is None:
-            return False
-        return arr
-
-    @property
-    def sid(self):
+    def get_sid(self):
         if self.sample is not None:
             return self.sample.identifier
 
-    @property
-    def allowable_child_types(self):
-        if self.sample:
-            return [aft.sample.name for aft in self.field_type.allowable_field_types]
-        return []
+    # def get_allowable_child_types(self):
+    #     if self.sample:
+    #         return [aft.sample.name for aft in self.field_type.allowable_field_types]
+    #     return []
 
     @property
     def outgoing_wires(self):
@@ -700,15 +675,18 @@ class Item(ModelBase, DataAssociatorMixin):
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        data=fields.JSON(),
+        data=JSON(),
         ignore=("locator_id",)
     )
     methods = ['is_part']
 
-    def __init__(self=None, sample_id=None, object_type_id=None):
-        self.sample_id = sample_id
-        self.object_type_id = object_type_id
-        super().__init__(**vars(self))
+    def __init__(self=None, sample_id=None, sample=None, object_type=None, object_type_id=None):
+        super().__init__(
+            object_type_id=object_type_id,
+            object_type=object_type,
+            sample_id=sample_id,
+            sample=sample,
+        )
 
     def make(self):
         """Makes the Item on the Aquarium server. Requires
@@ -777,7 +755,7 @@ class Job(ModelBase):
     fields = dict(
         job_associations=HasMany("JobAssociation", "Job"),
         operations=HasManyThrough("Operation", "JobAssociation"),
-        state=fields.JSON()
+        state=JSON()
     )
 
     @property
@@ -836,7 +814,7 @@ class Membership(ModelBase):
 
 
 @add_schema
-class ObjectType(ModelBase, NamedMixin):
+class ObjectType(ModelBase):
     """A ObjectType model"""
 
     def save(self):
@@ -845,9 +823,7 @@ class ObjectType(ModelBase, NamedMixin):
         return self.reload(self.session.utils.create_object_type(self))
 
     def __str__(self):
-        name = self.__dict__.get('name', None)
-        id = self.__dict__.get('id', None)
-        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, id, name)
+        return self._to_str('id', 'name')
 
 
 # TODO: field_values should recognize parent_class (maybe where should ignore None field_values..)
@@ -862,25 +838,24 @@ class Operation(ModelBase, DataAssociatorMixin):
         operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
         jobs=HasManyThrough("Job", "JobAssociation"),
-        routing=fields.Callback(lambda op: op.routing, callback_args=(fields.Callback.SELF,)),
         plan_associations=HasMany("PlanAssociation", "Operation"),
-        plans=HasManyThrough("Plan", "PlanAssociation")
+        plans=HasManyThrough("Plan", "PlanAssociation"),
+        status=Raw(default='planning')
     )
 
-    def __init__(self, operation_type_id=None, status=None, x=0, y=0):
-        self.operation_type_id = operation_type_id
-        self.x = x
-        self.y = y
-        self.parent = 0
-        self.id = None
-        if status is None:
-            self.status = "planning"
-        self.field_values = None
-        self.operation_type = None
-        super().__init__(**vars(self))
+    def __init__(self, operation_type_id=None, operation_type=None, status=None, x=0, y=0):
+        super().__init__(
+            operation_type_id=None,
+            operation_type=operation_type,
+            status=status,
+            field_values=None,
+            x=x,
+            y=y
+
+        )
 
     @property
-    def routing(self):
+    def get_routing(self):
         routing_dict = {}
         fvs = self.field_values
         ot = self.operation_type
@@ -1328,7 +1303,7 @@ class OperationType(ModelBase):
         return self.reload(self.session.utils.create_operation_type(self))
 
     def __str__(self):
-        return "<{} id='{}' name='{}' category='{}'>".format(self.__class__.__name__, self.id, self.name, self.category)
+        return self._to_str('id', 'name', 'category')
 
 
 @add_schema
@@ -1344,11 +1319,12 @@ class PartAssociation(ModelBase):
     )
 
     def __init__(self, part_id=None, collection_id=None, row=None, column=None):
-        self.part_id = part_id
-        self.collection_id = collection_id
-        self.row = row
-        self.column = column
-        super().__init__(**vars(self))
+        super().__init__(
+            part_id=part_id,
+            collection_id=collection_id,
+            row=row,
+            column=column
+        )
 
 
 @add_schema
@@ -1361,36 +1337,30 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
         wires=Many("Wire", callback="get_wires"),
-        layout=fields.JSON()
+        layout=JSON(),
+        name=Raw(default="MyPlan"),
+        status=Raw(default="planning")
     )
 
-    def __init__(self, name=None, status=None, source=None, destination=None):
-        if name is None:
-            name = "MyPlan"
-        self.name = name
-        if status is None:
-            status = 'planning'
-        self.id = None
-        self.status = status
-        self.layout = {
-            "id": 0,
-            "children": [],
-            "documentation": "No documentation ofr this module",
-            "height": 60,
-            "input": [],
-            "output": [],
-            "name": "no_name",
-            "parent_id": -1,
-            "width": 160,
-            "wires": []
-        }
-        # self.operations = []
-        # self.wires = []
-        self.data_associations = None
-        self.plan_associations = None
-        self.source = source
-        self.destination = destination
-        super().__init__(**vars(self))
+    def __init__(self, name=None, status=None):
+        super().__init__(
+            name=name,
+            status=status,
+            data_associations=None,
+            plan_associations=None,
+            layout={
+                "id": 0,
+                "children": [],
+                "documentation": "No documentation ofr this module",
+                "height": 60,
+                "input": [],
+                "output": [],
+                "name": "no_name",
+                "parent_id": -1,
+                "width": 160,
+                "wires": []
+            }
+        )
 
     def add_operation(self, operation):
         """
@@ -1587,13 +1557,14 @@ class PlanAssociation(ModelBase):
     )
 
     def __init__(self, plan_id=None, operation_id=None):
-        self.plan_id = plan_id
-        self.operation_id = operation_id
-        super().__init__(**vars(self))
+        super().__init__(
+            plan_id=plan_id,
+            operation_id=operation_id
+        )
 
 
 @add_schema
-class Sample(ModelBase, NamedMixin):
+class Sample(ModelBase):
     """A Sample model"""
     fields = dict(
         # sample relationships
@@ -1619,14 +1590,15 @@ class Sample(ModelBase, NamedMixin):
         :param properties:
         :type properties:
         """
-        self.name = name
-        self.project = project
-        self.sample_type_id = sample_type_id
-        if sample_type:
-            self.sample_type = sample_type
-            self.sample_type_id = sample_type.id
-        self.description = description
-        super().__init__(**vars(self))
+        super().__init__(
+            name=name,
+            project=project,
+            description=description,
+            sample_type_id=None,
+            sample_type=sample_type,
+            field_values=None,
+            items=None,
+        )
         if properties is not None:
             self.update_properties(properties)
 
@@ -1861,12 +1833,11 @@ class Sample(ModelBase, NamedMixin):
                     i.object_type_id == object_type.id]
 
     def __str__(self):
-        return "<{} id='{}' name='{}' sample_type={}>".format(self.__class__.__name__, self.id, self.name,
-                                                              self.sample_type)
+        return self._to_str('id', 'name', 'sample_type')
 
 
 @add_schema
-class SampleType(ModelBase, NamedMixin):
+class SampleType(ModelBase):
     """A SampleType model"""
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
@@ -1907,7 +1878,7 @@ class SampleType(ModelBase, NamedMixin):
         return self.reload(self.session.utils.create_sample_type(self))
 
     def __str__(self):
-        return "<{} id='{}' name='{}'>".format(self.__class__.__name__, self.id, self.name)
+        return self._to_str('id', 'name')
 
 
 # TODO: expiring_url is never updated..
@@ -1929,9 +1900,10 @@ class Upload(ModelBase):
         :param file: file to upload
         :type file: file object
         """
-        self.job_id = job_id
+        super().__init__(
+            job_id=job_id,
+        )
         self.file = file
-        super().__init__(**vars(self))
 
     # def _get_uploads_from_job_id(self, job_id):
 
@@ -2037,7 +2009,7 @@ class User(ModelBase):
     )
 
     def __init__(self):
-        super().__init__(**vars(self))
+        pass
 
 
 @add_schema
@@ -2049,7 +2021,7 @@ class UserBudgetAssociation(ModelBase):
     )
 
     def __init__(self):
-        super().__init__(**vars(self))
+        pass
 
 
 @add_schema
@@ -2058,15 +2030,16 @@ class Wire(ModelBase):
     fields = dict(
         # load_only=False, will force dumping of FieldValues here..
         source=HasOne("FieldValue", ref="from_id"),
-        destination=HasOne("FieldValue", ref="to_id")
+        destination=HasOne("FieldValue", ref="to_id"),
+        active=Raw(default=True)
     )
 
     def __init__(self, source=None, destination=None):
-        self.source = source
-        self.destination = destination
-        self.active = True
-        self.id = None
-        super().__init__(**vars(self))
+        super().__init__(
+            source=source,
+            destination=destination,
+            active=None
+        )
 
     def to_save_json(self):
         return self.dump(include={'source', 'destination'})

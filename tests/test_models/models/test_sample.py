@@ -22,7 +22,7 @@ def test_update_properties_of_field_value_array(example_sample, num_field_values
     assert len(example_sample.field_value_array("Fragment Mix Array")) == 10 - num_field_values
 
 
-@pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
+@pytest.mark.parametrize("num_field_values", list(range(1)), ids=["{} field values".format(x) for x in range(1)])
 def test_update_properties_using_array(example_sample, num_field_values):
     # fake_sample.field_value_array
     example_sample.update_properties({

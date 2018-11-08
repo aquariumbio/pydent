@@ -7,20 +7,57 @@ from pydent.base import ModelBase
 from pydent.marshaller import ModelValidationError
 from pydent.marshaller import fields
 
+import json
 
 class FieldValidationError(ModelValidationError):
     pass
 
 
+class Raw(fields.Field):
+
+    def __init__(self, many=False, data_key=None, allow_none=True, default=None):
+        super().__init__(many=many, data_key=data_key, allow_none=allow_none, default=None)
+
+
+class JSON(Raw):
+
+    def _deserialize(self, data):
+        if isinstance(data, dict):
+            return data
+        return json.loads(data)
+
+    def _serialize(self, data):
+        return json.dumps(data)
+
+
+class Function(fields.Callback):
+
+    def __init__(self, callback, callback_args=None, callback_kwargs=None, cache=False, data_key=None, many=None, allow_none=True, always_dump=True):
+        super().__init__(callback, callback_args, callback_kwargs, cache, data_key, many, allow_none, always_dump)
+
+
+class BaseRelationshipAccessor(fields.RelationshipAccessor):
+
+    HOLDER = None
+
+
 class BaseRelationship(fields.Relationship):
     """
-    BaseRelationship field
+    BaseRelationship field. By default, if the value is None, attempt a callback. If that fails,
+    fallback to None. If successful, deserialize data to the nested model.
     """
 
-    def __init__(self, nested, callback, callback_args=None, callback_kwargs=None, many=None):
-        super().__init__(nested, callback, callback_args, callback_kwargs, cache=True, data_key=None, many=many)
-        pass
+    ACCESSOR = BaseRelationshipAccessor
 
+    def __init__(self, nested, callback, callback_args=None, callback_kwargs=None, many=None, allow_none=True):
+        super().__init__(nested, callback, callback_args, callback_kwargs, cache=True, data_key=None, many=many,
+                         allow_none=allow_none)
+
+    def fullfill(self, owner, cache=None):
+        try:
+            return super().fullfill(owner, cache)
+        except fields.RunTimeCallbackAttributeError:
+            return BaseRelationshipAccessor.HOLDER
 
 
 class One(BaseRelationship):
@@ -140,11 +177,14 @@ class HasOne(HasMixin, One):
         """
         self.set_ref(nested=nested, attr=attr, ref=ref)
 
-        super().__init__(nested, many=False, callback=callback, callback_args=(lambda slf: getattr(slf, self.ref)),
+        super().__init__(nested, many=False, callback=callback, callback_args=(self.get_ref,),
                          callback_kwargs=callback_kwargs, **kwargs)
 
+    def get_ref(self, instance):
+        return getattr(instance, self.ref)
+
     def __repr__(self):
-        return "<HasOne (model={}, callback_args=lambda self: self.{})>".format(self.model, self.ref)
+        return "<HasOne (model={}, callback_args=lambda self: self.{})>".format(self.nested, self.ref)
 
     def deserialize(self, owner, val):
         val = super().deserialize(owner, val)

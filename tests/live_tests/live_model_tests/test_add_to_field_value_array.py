@@ -1,5 +1,4 @@
 from pydent import models
-from marshmallow import pprint
 
 # TODO: no idea what this is supposed to be testing...
 def test_add_field_value_array(session):
@@ -12,7 +11,7 @@ def test_add_field_value_array(session):
         s = None
         try:
             s = session.Sample.find_by_name(sample_name)
-        except Exception:
+        except:
             s = models.Sample(
                 name=sample_name,
                 project='SD2',
