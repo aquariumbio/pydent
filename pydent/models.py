@@ -1728,7 +1728,7 @@ class Sample(ModelBase):
         }
 
     def set_field_value_array(self, name, values):
-        if not 'field_values' in self.__dict__:
+        if not self.field_values:
             self.field_values = []
         fvs = self.field_value_array(name)
         ft = self.sample_type.field_type(name)
