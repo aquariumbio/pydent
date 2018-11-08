@@ -3,10 +3,10 @@ Aquarium model baseclass
 
 This module contains the base classes for Trident models.
 Trident models load from JSON and dump to JSON.
-This is accomplished by adding the ``@add_schema`` decorator to classes inherited
-by the Base class.
-Using ``@add_schema`` dynamically creates a model schema that handles dumping and
-loading.
+This is accomplished by adding the ``@add_schema`` decorator to classes
+inherited by the Base class.
+Using ``@add_schema`` dynamically creates a model schema that handles dumping
+and loading.
 
 Features of Trident models:
 
@@ -65,12 +65,14 @@ class ModelRegistry(type):
     def __getattr__(cls, item):
         """
         Special warning for attribute errors.
-        Its likely that user may have wanted to use a model interface instead of
-        the Base class.
+        Its likely that user may have wanted to use a model interface
+        instead of the Base class.
         """
-        raise AttributeError("'{0}' has no attribute '{1}'. Method may be a ModelInterface method."
-                             " Did you mean '<yoursession>.{0}.{1}'?"
-                             .format(cls.__name__, item))
+        raise AttributeError(
+            "'{0}' has no attribute '{1}'."
+            " Method may be a ModelInterface method."
+            " Did you mean '<yoursession>.{0}.{1}'?"
+            .format(cls.__name__, item))
 
 
 class ModelBase(MarshallerBase, metaclass=ModelRegistry):
@@ -128,8 +130,11 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         if name in self.relationships:
             field = self.relationships[name]
             if not model.__class__.__name__ == field.model:
-                raise AquariumModelError("Cannot 'append_to_many.' Model must be a '{}' but found a '{}'".format(
-                    field.model, model.__class__.__name__))
+                raise AquariumModelError(
+                    "Cannot 'append_to_many.'"
+                    " Model must be a '{}' but found a '{}'".format(
+                        field.model, model.__class__.__name__)
+                )
             if field.many:
                 val = getattr(self, name)
                 if val is None:
@@ -180,15 +185,25 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         return self._session
 
     def connect_to_session(self, session):
-        """Connect model instance to a session. Does nothing if session already exists."""
+        """
+        Connect model instance to a session.
+
+        Does nothing if session already exists.
+        """
         if self._session is None:
             self._session = session
 
     def _check_for_session(self):
-        """Raises error if model is not connected to a session"""
+        """
+        Raises error if model is not connected to a session
+        """
         if self.session is None:
-            raise AttributeError("No AqSession instance found for '{}'. Use 'connect_to_session' "
-                                 "to connect this model to a session".format(self.__class__.__name__))
+            raise AttributeError(
+                "No AqSession instance found for '{}'."
+                " Use 'connect_to_session' "
+                "to connect this model to a session".format(
+                    self.__class__.__name__)
+            )
 
     def no_getter(self, *_):
         """Callback that always returns None"""
@@ -201,7 +216,8 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     def interface(cls, session):
         """Creates a model interface from this class and a session
 
-        This method can be overridden in model definitions for special cases."""
+        This method can be overridden in model definitions for special cases.
+        """
         return session.model_interface(cls.__name__)
 
     @classmethod
@@ -228,8 +244,11 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         return model.find(self.session, model_id)
 
     def where_callback(self, model_name, *args, **kwargs):
-        """Finds models using a model interface and a set of parameters. Used to
-        find models in model relationships."""
+        """
+        Finds models using a model interface and a set of parameters.
+        
+        Used to find models in model relationships.
+        """
         self._check_for_session()
         query_arg = args[0]
 
@@ -244,7 +263,10 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
         return model.where(self.session, query_arg, *args[1:], **kwargs)
 
     # def patch(self, json_data):
-    #     """Make a patch request to self using json_data. Reload model instance with new data"""
+    #     """
+    #     Make a patch request to self using json_data.
+    #     Reload model instance with new data.
+    #     """
     #     result = self.create_interface().patch(self.id, json_data=json_data)
     #     self.reload(data=result)
     #     return self
