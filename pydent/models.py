@@ -66,10 +66,10 @@ import requests
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
-from pydent.marshaller import add_schema, fields
+from pydent.marshaller import add_schema
 from pydent.relationships import (Raw, Function, JSON, One, Many, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric,
-                                  HasOneFromMany)
+                                  HasOneFromMany, fields)
 from pydent.utils import filter_list
 from pydent.utils.async_requests import make_async
 from pydent.utils.plan_validator import PlanValidator
@@ -677,7 +677,7 @@ class Item(ModelBase, DataAssociatorMixin):
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
-        data=JSON(),
+        data=Raw(),
         ignore=("locator_id",)
     )
     methods = ['is_part']
@@ -1596,7 +1596,7 @@ class Sample(ModelBase):
             name=name,
             project=project,
             description=description,
-            sample_type_id=None,
+            sample_type_id=sample_type_id,
             sample_type=sample_type,
             field_values=None,
             items=None,
@@ -2029,12 +2029,12 @@ class UserBudgetAssociation(ModelBase):
 @add_schema
 class Wire(ModelBase):
     """A Wire model"""
-    fields = dict(
-        # load_only=False, will force dumping of FieldValues here..
-        source=HasOne("FieldValue", ref="from_id"),
-        destination=HasOne("FieldValue", ref="to_id"),
-        active=Raw(default=True)
-    )
+    fields = {
+        "from": HasOne("FieldValue", ref="from_id"),
+        "to": HasOne("FieldValue", ref="to_id"),
+        "source": fields.Alias("from"),
+        "destination": fields.Alias("to")
+    }
 
     def __init__(self, source=None, destination=None):
         super().__init__(

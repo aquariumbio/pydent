@@ -109,7 +109,7 @@ def test_submit_gibson(session):
     try:
         p.create()
     except TridentRequestError as error:
-        assert False, "plan creation failed for request:\n{}".format(error)
+        raise Exception("Plan creation failed") from error
 
     # estimate the cost
     p.estimate_cost()
