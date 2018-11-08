@@ -58,18 +58,22 @@ class ModelBase(SchemaModel):
     GLOBAL_KEY = 'rid'
     counter = itertools.count()
 
+    def __new__(cls, *args, session=None, **kwargs):
+        instance = super(ModelBase, cls).__new__(cls)
+        instance._session = session
+        instance._rid = next(ModelBase.counter)
+        return instance
+
     def __init__(self, **data):
         super().__init__(data)
-        self._rid = next(self.counter)
         self.add_data({"rid": self._rid, "id": data.get('id', None)})
-        self._session = None
 
     @classmethod
     def _set_data(cls, data):
         instance = cls.__new__(cls)
+        instance.raw = data
         cls.__init__(instance)
         ModelBase.__init__(instance, **data)
-        instance.raw = data
         return instance
     # def __init__(self, **kwargs):
     #     self.add_data(kwargs)

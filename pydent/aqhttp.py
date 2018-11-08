@@ -49,17 +49,29 @@ class AqHTTP(logger.Loggable, object):
         self._login(login, password)
         self.init_logger("AqHTTP@{}".format(aquarium_url))
 
-    def _format_response_info(self, response):
-        if response:
+    def _format_response_info(self, response, include_text=False, include_body=False):
+        if response is not None:
+            if response.status_code >= 400:
+                include_text = True
             info = dict(response.request.__dict__)
             info.update({"seconds": response.elapsed.total_seconds()})
-            return "REQUEST (t={seconds}s)  {method} {url} \nBODY  {body}".format(**info)
-        return "NO RESPONSE"
+            msg = "REQUEST: (t={seconds}s)  {method} {url}".format(**info)
+            if include_body:
+                msg = "BODY: {body}".format(**info)
+            if include_text:
+                text = getattr(response, 'text', '')
+                try:
+                    text = json.dumps(json.loads(text), indent=2)
+                except:
+                    pass
+                msg = "TEXT: {text}".format(text=text)
+            return msg
+        return "RESPONSE: NO RESPONSE"
 
     def _format_request_status(self, response):
-        if response:
-            return "STATUS  {} {}".format(response.status_code, response.reason)
-        return "NO RESPONSE"
+        if response is not None:
+            return "STATUS:  {} {}".format(response.status_code, response.reason)
+        return "STATUS: NO RESPONSE"
 
     @property
     def url(self):
@@ -152,9 +164,9 @@ class AqHTTP(logger.Loggable, object):
 
         self._info(self._format_response_info(response))
         if response.status_code >= 400:
-            request_info = self._format_response_info(response)
+            response_info = self._format_response_info(response)
             request_status = self._format_request_status(response)
-            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, request_info]), response)
+            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, response_info]), response)
 
         return self._response_to_json(response)
 

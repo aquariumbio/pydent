@@ -492,10 +492,8 @@ class ModelInterface(SessionInterface):
 
     def new(self, *args, **kwargs):
         """
-        Creates a new model instance
+        Creates a new model instance. Attach a session by calling __new__ with session kwargs.
         """
-        instance = self.model.__new__(self.model)
-        instance._session = None
-        instance.connect_to_session(self.session)
-        instance.__init__(*args, **kwargs)
+        instance = self.model.__new__(self.model, *args, session=self.session, **kwargs)
+        self.model.__init__(instance, *args, **kwargs)
         return instance
