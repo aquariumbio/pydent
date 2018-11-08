@@ -8,7 +8,7 @@ def test_constructor():
         source=fvin,
         destination=fvout
     )
-    w.print(relations={"source", "destination"})
+    w.print()
     assert w.to_save_json() == {
             "from": fvin.dump(),
             "to": fvout.dump(),

@@ -54,10 +54,37 @@ class BaseRelationship(fields.Relationship):
                          allow_none=allow_none)
 
     def fullfill(self, owner, cache=None):
+        if self.data_key == 'items':
+            raise Exception("This was not supposed to happen.")
         try:
             return super().fullfill(owner, cache)
         except fields.RunTimeCallbackAttributeError:
             return BaseRelationshipAccessor.HOLDER
+
+    def build_query(self, models):
+        """Bundles all of the callback args for the models into a single query"""
+        args = {}
+        for s in models:
+            callback_args = self.get_callback_args(s)[1:]
+            if self.QUERY_TYPE == 'by_id':
+                args.setdefault(self.attr, [])
+                for x in callback_args:
+                    if x is not None and x not in args[self.attr]:
+                        args[self.attr].append(x)
+            else:
+                for cba in callback_args:
+                    for k in cba:
+                        args.setdefault(k, [])
+                        arg_arr = args[k]
+                        val = cba[k]
+                        if val is not None:
+                            if isinstance(val, list):
+                                for v in val:
+                                    if v not in arg_arr:
+                                        arg_arr.append(v)
+                            elif val not in arg_arr:
+                                arg_arr.append(val)
+        return args
 
 
 class One(BaseRelationship):

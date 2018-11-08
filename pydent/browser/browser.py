@@ -162,7 +162,7 @@ class Browser(logger.Loggable, object):
         found = []
         found_queries = []
         for m in models:
-            match = cls._match_query(query, m.__dict__)
+            match = cls._match_query(query, m._get_data())
             if match:
                 found.append(m)
                 found_queries.append(match)
@@ -211,6 +211,8 @@ class Browser(logger.Loggable, object):
         return self._update_model_cache_helper(model_class, {found_model.id: found_model})[0]
 
     def cached_where(self, model, query, primary_key='id'):
+        if [] in query.values():
+            return []
         cached_models = self.model_cache.get(model, {})
         found, found_queries = self._find_matches(query, list(cached_models.values()))
         found_dict = {f.id: f for f in found}
@@ -222,7 +224,11 @@ class Browser(logger.Loggable, object):
                 query_id_list = [query_id_list]
             remaining_ids = list(set(query_id_list).difference(set(found_ids)))
             remaining_query[primary_key] = remaining_ids
-        self._info("CACHE found {} {} models in cache".format(len(found_dict), model))
+        self._info("CACHE found {num} {model} models in cache using query {query}".format(
+            num=len(found_dict),
+            model=model,
+            query=self._pprint_data(query)
+        ))
 
         # TODO: this code may be sketchy... here {'id': []}, really means we found all of the models..
         if primary_key in remaining_query and not remaining_query[primary_key]:
@@ -340,7 +346,9 @@ class Browser(logger.Loggable, object):
         query.update({"parent_class": self.model_name, "parent_id": model_ids})
         return self.where(query, "FieldValue")
 
-    def _group_by_attribute(self, models, attribute):
+    @staticmethod
+    def _group_by_attribute(models, attribute):
+        """Group models by the given attribute"""
         d = {}
         for s in models:
             arr = d.setdefault(getattr(s, attribute), [])
@@ -452,7 +460,7 @@ class Browser(logger.Loggable, object):
 
     def new_sample(self, sample_type, name, description, project, properties=None):
         st = self.find_by_name(sample_type, "SampleType", primary_key='name')
-        if st.__dict__.get('field_types', None) is None:
+        if st._get_deserialized_data.get('field_types', None) is None:
             fts = self.where({"parent_class": "SampleType", "parent_id": st.id}, "FieldType")
             st.field_types = fts
         return st.new_sample(name, description, project, properties=properties)
@@ -537,29 +545,31 @@ class Browser(logger.Loggable, object):
         self._update_model_cache([sample])
         return sample
 
-    @staticmethod
-    def _collect_callback_args(models, relation):
-        """Combines all of the callback args into a single query"""
-        args = {}
-        for s in models:
-            callback_args = s._get_callback_args(relation)
-            if relation.QUERY_TYPE == 'by_id':
-                args.setdefault(relation.attr, [])
-                args[relation.attr] += [x for x in callback_args if x is not None]
-            else:
-                for cba in callback_args:
-                    for k in cba:
-                        args.setdefault(k, [])
-                        arg_arr = args[k]
-                        val = cba[k]
-                        if val is not None:
-                            if isinstance(val, list):
-                                for v in val:
-                                    if v not in arg_arr:
-                                        arg_arr.append(v)
-                            elif val not in arg_arr:
-                                arg_arr.append(val)
-        return args
+    # @staticmethod
+    # def _collect_callback_args(models, relation):
+    #     """Combines all of the callback args into a single query"""
+    #     args = {}
+    #     for s in models:
+    #         callback_args = relation.get_callback_args(s)[1:]
+    #         if relation.QUERY_TYPE == 'by_id':
+    #             args.setdefault(relation.attr, [])
+    #             for x in callback_args:
+    #                 if x is not None and x not in args[relation.attr]:
+    #                     args[relation.attr].append(x)
+    #         else:
+    #             for cba in callback_args:
+    #                 for k in cba:
+    #                     args.setdefault(k, [])
+    #                     arg_arr = args[k]
+    #                     val = cba[k]
+    #                     if val is not None:
+    #                         if isinstance(val, list):
+    #                             for v in val:
+    #                                 if v not in arg_arr:
+    #                                     arg_arr.append(v)
+    #                         elif val not in arg_arr:
+    #                             arg_arr.append(val)
+    #     return args
 
     # TODO: handle not-yet existant samples using rid
     def _retrieve_has_many_or_has_one(self, models, relationship_name, relation=None, strict=True):
@@ -568,20 +578,20 @@ class Browser(logger.Loggable, object):
             return []
         models = models[:]
         if relation is None:
-            relation = models[0].relationships[relationship_name]
+            relation = models[0].get_relationships()[relationship_name]
 
         ref = relation.ref  # sample_id
         attr = relation.attr  # id
-        model_class2 = relation.model
+        model_class2 = relation.nested
 
         # todo: collect existing fullfilled relationship
         # todo: partition, then collect callback
         # todo: how to handle when model_attr is absent?, or just raise error?
 
-        retrieve_query = self._collect_callback_args(models, relation)
+        retrieve_query = relation.build_query(models)
         retrieved_models = self.where(retrieve_query, model_class2)
-        self._info("RETRIEVE retrieved {l} {cls} models using query {query}".format(
-            l=len(retrieved_models),
+        self._info("RETRIEVE retrieved {num} {cls} models using query {query}".format(
+            num=len(retrieved_models),
             cls=model_class2,
             query=self._pprint_data(retrieve_query)
         ))
@@ -637,20 +647,20 @@ class Browser(logger.Loggable, object):
             raise BrowserException("QUERY_TYPE '{}' for relation '{}' not recognized.".format(relation.QUERY_TYPE, relationship_name))
         for model in models:
             found_models = model_dict[getattr(model, attr)]
-            model.__dict__.update({relationship_name: found_models})
+            setattr(model, relationship_name, found_models)
 
         return retrieved_models
 
     def _retrieve_has_many_through(self, models, relationship_name, strict=True):
         """Performs exactly 2 queries to establish a HasManyThrough relationship"""
-        relation = models[0].relationships[relationship_name]
-        association_relation = models[0].relationships[relation.through_model_attr]
+        relation = models[0].get_relationships()[relationship_name]
+        association_relation = models[0].get_relationships()[relation.through_model_attr]
         attr = relation.attr
         ref = association_relation.ref
 
         # find other key
         association_class = ModelRegistry.get_model(association_relation.nested)
-        association_relationships = association_class.get_schema_class().relationships
+        association_relationships = association_class.get_relationships()
         other_ref = None
         for r in association_relationships:
             ar = association_relationships[r]
@@ -670,10 +680,10 @@ class Browser(logger.Loggable, object):
             if mid in associations_by_mid:
                 associations = associations_by_mid[mid]
                 _models = [getattr(a, other_ref) for a in associations]
-                m.__dict__.update({relationship_name: _models})
+                setattr(m, relationship_name, _models)
                 all_models += _models
             else:
-                m.__dict__.update({relationship_name: None})
+                setattr(m, relationship_name, None)
         return list(set(all_models))
 
     def retrieve(self, models, relationship_name, relation=None, strict=True):
@@ -717,9 +727,9 @@ class Browser(logger.Loggable, object):
         model_classes = set([m.__class__.__name__ for m in models])
         assert len(model_classes) == 1, "Models must be all of the same BaseModel, but found {}".format(model_classes)
         if relation is None:
-            relation = models[0].relationships[relationship_name]
+            relation = models[0].get_relationships()[relationship_name]
         else:
-            if relationship_name in models[0].relationships:
+            if relationship_name in models[0].get_relationships():
                 raise BrowserException(
                     'Cannot add new relationship "{}" because it already exists in the model definition'.format(
                         relationship_name))

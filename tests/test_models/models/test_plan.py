@@ -3,10 +3,7 @@ from pydent.models import (FieldValue, Operation, Plan)
 
 def test_plan_constructor():
     g = Plan()
-    assert g.name is not None  # plan should have default name?
-    assert g.source is None
-    assert g.destination is None
-    assert g.status == 'planning'
+    assert g.name is not None
     print(g.plan_associations)
     assert g.operations is None
     assert g.wires == []

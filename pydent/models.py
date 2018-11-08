@@ -854,7 +854,6 @@ class Operation(ModelBase, DataAssociatorMixin):
             field_values=None,
             x=x,
             y=y
-
         )
 
     def get_routing(self):
@@ -1340,11 +1339,10 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         operations=HasManyThrough("Operation", "PlanAssociation"),
         wires=Many("Wire", callback="get_wires"),
         layout=JSON(),
-        name=Raw(default="MyPlan"),
         status=Raw(default="planning")
     )
 
-    def __init__(self, name=None, status=None):
+    def __init__(self, name="MyPlan", status=None):
         super().__init__(
             name=name,
             status=status,
@@ -2040,7 +2038,7 @@ class Wire(ModelBase):
         super().__init__(
             source=source,
             destination=destination,
-            active=None
+            active=True
         )
 
     def to_save_json(self):

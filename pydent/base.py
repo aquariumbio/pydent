@@ -266,6 +266,9 @@ class ModelBase(SchemaModel):
         return self._to_str('id', 'rid')
 
     def _to_str(self, *attributes):
+        if 'rid' not in attributes:
+            attributes = list(attributes)
+            attributes.append('rid')
         return "<{} {}>".format(self.__class__.__name__, ' '.join([
             "{}={}".format(k, self._get_data().get(k, None)) for k in attributes
         ]))
