@@ -246,7 +246,7 @@ class ModelBase(MarshallerBase, metaclass=ModelRegistry):
     def where_callback(self, model_name, *args, **kwargs):
         """
         Finds models using a model interface and a set of parameters.
-        
+
         Used to find models in model relationships.
         """
         self._check_for_session()
