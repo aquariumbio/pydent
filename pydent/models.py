@@ -191,7 +191,6 @@ class DataAssociatorMixin:
             return None
         return val
 
-
 # Models
 
 @add_schema
@@ -310,6 +309,9 @@ class DataAssociation(ModelBase):
 
     def delete(self):
         return self.session.utils.delete_data_association(self)
+
+    def __str__(self):
+        return self._to_str("id", "object")
 
 
 @add_schema
@@ -840,7 +842,8 @@ class Operation(ModelBase, DataAssociatorMixin):
         jobs=HasManyThrough("Job", "JobAssociation"),
         plan_associations=HasMany("PlanAssociation", "Operation"),
         plans=HasManyThrough("Plan", "PlanAssociation"),
-        status=Raw(default='planning')
+        status=Raw(default='planning'),
+        routing=Function('get_routing')
     )
 
     def __init__(self, operation_type_id=None, operation_type=None, status=None, x=0, y=0):
@@ -854,7 +857,6 @@ class Operation(ModelBase, DataAssociatorMixin):
 
         )
 
-    @property
     def get_routing(self):
         routing_dict = {}
         fvs = self.field_values

@@ -69,6 +69,7 @@ class ModelBase(SchemaModel):
         instance = cls.__new__(cls)
         cls.__init__(instance)
         ModelBase.__init__(instance, **data)
+        instance.raw = data
         return instance
     # def __init__(self, **kwargs):
     #     self.add_data(kwargs)
