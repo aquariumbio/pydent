@@ -3,7 +3,7 @@ import re
 import pytest
 from pydent import models as pydent_models
 from pydent.browser import Browser
-from pydent.exceptions import TridentModelNotFoundError
+from pydent.marshaller import exceptions as marshaller_exceptions
 import random
 import uuid
 
@@ -64,10 +64,31 @@ def test_close_match(session):
     assert len(samples) > 1
 
 
-def test_cache(session):
+def test_nested_cache(session):
+    """Tests whether the sample pulled """
     browser = Browser(session)
     browser.use_cache = True
-    raise NotImplementedError("I don't know how to test this...")
+
+
+    st_from_session = session.SampleType.find(1)
+    sample_from_session = st_from_session.samples[0]
+
+    sample = browser.find(sample_from_session.id, 'Sample')
+    st = browser.find(st_from_session.id, 'SampleType')
+
+    sample_from_cache = browser.find(sample_from_session.id, 'Sample')
+    st_from_cache = browser.find(st_from_session.id, 'SampleType')
+
+    # check if sample type pulle from cache is always the same
+    assert st_from_session is not st
+    assert st_from_cache is st
+
+    # check if sample pulled from cache is the same
+    assert sample_from_session is not sample
+    assert sample_from_cache is sample
+
+    assert st_from_cache.samples[0].id == sample.id, "The first indexed sample should be the same sample found by the browser"
+    # assert st_from_cache.samples[0] is sample, "The browser should have preferentially found the previously cached sample."
 
 
 def test_cache_where(session):
@@ -115,8 +136,20 @@ def test_recursive_cache(session):
     st = browser.find(1, 'SampleType')
     assert browser.model_cache['SampleType'][st.id] == st
 
+    found_st = browser.find(1, 'SampleType')
+    assert found_st is st
+
+    st_from_where = browser.where({"id": samples[0].sample_type_id}, "SampleType")
+    assert st_from_where[0] is st, "SampleType retrieved by where should find the SampleType in the cache"
+
     # should retrieve the exact model that was preloaded
+    print(browser.model_cache)
+    session.set_verbose(True)
+    browser.set_verbose(True)
     browser.retrieve(samples, 'sample_type')
+    print(st)
+    print(samples[0]._get_data()['sample_type'])
+    print(samples[0].sample_type)
     assert samples[0].sample_type is st
 
     # affecting sample_types from these models should refer to the same sample type
@@ -148,7 +181,7 @@ def test_recursive_cache_plan(session):
 def test_set_model_error(session):
     browser = Browser(session)
 
-    with pytest.raises(TridentModelNotFoundError):
+    with pytest.raises(marshaller_exceptions.ModelRegistryError):
         browser.set_model("Op")
 
 
@@ -164,6 +197,10 @@ def test_set_model(session):
 def test_filter_by_sample_properties(session):
     browser = Browser(session)
     primers = browser.search(".*gfp.*", sample_type="Primer")
+    #
+    # session.Sample.where({"sample_type_id": session.SampleType.find_by_name("Primer"), })
+    field_value = session.FieldValue.where("name = 'T Anneal' AND value == 64 AND parent_class = 'Sample'")
+    print(field_value)
 
     filtered_primers = browser.filter_by_properties(primers, {"T Anneal": 64})
 
@@ -295,10 +332,10 @@ def test_retrieve_with_many(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
 
-    assert 'items' not in samples[0].__dict__, "Items should not have been loaded into the sample yet."
+    assert not samples[0]._get_deserialized_data().get('items', None), "Items should not have been loaded into the sample yet."
     browser._retrieve_has_many_or_has_one(samples, 'items')
-    assert 'items' in samples[0].__dict__
-    assert len(samples[0].__dict__['items']) > 0, "Items should have been found."
+    assert 'items' in samples[0]._get_deserialized_data()
+    assert len(samples[0]._get_deserialized_data()['items']) > 0, "Items should have been found."
 
 
 def test_retrieve_query_with_field_values(session):
@@ -308,7 +345,7 @@ def test_retrieve_query_with_field_values(session):
     browser = Browser(session)
     sample = session.Sample.one()
     relation = sample.relationships['field_values']
-    query = browser._collect_callback_args([sample], relation)
+    query = relation.build_query._collect_callback_args([sample], relation)
     assert query == {
         'parent_class': ['Sample'],
         'parent_id': [sample.id]
@@ -317,9 +354,10 @@ def test_retrieve_query_with_field_values(session):
 
 def test_retrieve_with_many_field_values(session):
     browser = Browser(session)
+    session.set_verbose(True)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
     assert len(samples[0].field_values) > 0
-    assert 'items' not in samples[0].__dict__, "Items should not have been loaded into the sample yet."
+    assert not samples[0]._get_deserialized_data().get('items', None), "Items should not have been loaded into the sample yet."
     field_values = browser._retrieve_has_many_or_has_one(samples, 'field_values')
     assert len(field_values) > 0
 
@@ -327,10 +365,10 @@ def test_retrieve_with_many_field_values(session):
 def test_retrieve_with_one(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
-    assert 'sample_type' not in samples[0].__dict__, "SampleType should not have been loaded into the sample yet."
+    assert not samples[0]._get_deserialized_data().get('sample_type', None), "SampleType should not have been loaded into the sample yet."
     sample_types = browser._retrieve_has_many_or_has_one(samples, 'sample_type')
-    assert 'sample_type' in samples[0].__dict__, "SampleType should have been loaded"
-    assert samples[0].__dict__['sample_type'].id, session.SampleType.find_by_name("Fragment").id
+    assert 'sample_type' in samples[0]._get_deserialized_data(), "SampleType should have been loaded"
+    assert samples[0]._get_deserialized_data()['sample_type'].id, session.SampleType.find_by_name("Fragment").id
     assert isinstance(sample_types[0], pydent_models.SampleType)
 
 
@@ -339,15 +377,15 @@ def test_retrieve_with_many_through_for_jobs_and_operations(session):
     jobs = session.Job.last(50)
 
     for j in jobs:
-        assert 'operations' not in j.__dict__
+        assert not j._get_deserialized_data().get('operations', None)
 
     operations = browser._retrieve_has_many_through(jobs, 'operations')
     assert len(operations) > 0
-    assert not all([m.__dict__['operations'] is None for m in jobs])
+    assert not all([m._get_deserialized_data()['operations'] is None for m in jobs])
 
     for model in jobs:
-        assert 'operations' in model.__dict__
-        other_models = model.__dict__['operations']
+        assert 'operations' in model._get_deserialized_data()
+        other_models = model._get_deserialized_data()['operations']
         if other_models is not None:
             for other_model in other_models:
                 assert isinstance(other_model, pydent_models.Operation)
@@ -358,18 +396,35 @@ def test_retrieve_with_many_through_for_collections_and_parts(session):
     collections = session.Collection.last(50)
 
     for c in collections:
-        assert not 'parts' in c.__dict__
+        assert not 'parts' in c._get_deserialized_data()
 
     parts = browser._retrieve_has_many_through(collections, 'parts')
     assert len(parts) > 0
-    assert not all([m.__dict__['parts'] is None for m in collections])
+    assert not all([m._get_deserialized_data()['parts'] is None for m in collections])
 
     for model in collections:
-        assert 'parts' in model.__dict__
-        other_models = model.__dict__['parts']
+        assert 'parts' in model._get_deserialized_data()
+        other_models = model._get_deserialized_data()['parts']
         if other_models is not None:
             for other_model in other_models:
                 assert isinstance(other_model, pydent_models.Item)
+
+
+def test_collect_callbacks_for_retrieve_for_QUERYTYPE_BYID(session):
+    models = session.Sample.last(10)
+    sample_type_ids = set([m.sample_type_id for m in models])
+
+    args = models[0].get_relationships()['sample_type'].build_query(models)
+    assert 'id' in args
+    assert len(args['id']) == len(set(args['id']))
+    assert {'id': set(args['id'])} == {'id': sample_type_ids}
+
+
+def test_collect_callbacks_for_retrieve_for_QUERYTYPE_QUERY(session):
+    models = session.SampleType.last(10)
+    args = models[0].get_relationships()['samples'].build_query(models)
+    assert 'sample_type_id' in args
+    assert set(args['sample_type_id']) == set([st.id for st in models])
 
 
 def test_retrieve(session):
@@ -380,8 +435,8 @@ def test_retrieve(session):
     parts = browser.retrieve(collections, 'parts')
     assert len(parts) > 0
     for model in collections:
-        assert 'parts' in model.__dict__
-        other_models = model.__dict__['parts']
+        assert 'parts' in model._get_deserialized_data()
+        other_models = model._get_deserialized_data()['parts']
         if other_models is not None:
             for other_model in other_models:
                 assert isinstance(other_model, pydent_models.Item)
@@ -390,17 +445,17 @@ def test_retrieve(session):
     operations = browser._retrieve_has_many_through(jobs, 'operations')
     assert len(operations) > 0
     for model in jobs:
-        assert 'operations' in model.__dict__
-        other_models = model.__dict__['operations']
+        assert 'operations' in model._get_deserialized_data()
+        other_models = model._get_deserialized_data()['operations']
         if other_models is not None:
             for other_model in other_models:
                 assert isinstance(other_model, pydent_models.Operation)
 
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
-    assert 'sample_type' not in samples[0].__dict__, "SampleType should not have been loaded into the sample yet."
+    assert not samples[0]._get_deserialized_data().get('sample_type', None), "SampleType should not have been loaded into the sample yet."
     sample_types = browser._retrieve_has_many_or_has_one(samples, 'sample_type')
     assert len(sample_types) > 0
-    assert samples[0].__dict__['sample_type'].id, session.SampleType.find_by_name("Fragment").id
+    assert samples[0]._get_deserialized_data()['sample_type'].id, session.SampleType.find_by_name("Fragment").id
 
 
 def test_retrieve_with_HasOneFromMany(session):
@@ -410,7 +465,7 @@ def test_retrieve_with_HasOneFromMany(session):
     ots = browser.last(10, 'OperationType')
     assert len(ots) == 10
     browser.retrieve(ots, 'protocol')
-    assert 'protocol' in ots[0].__dict__
+    assert 'protocol' in ots[0]._get_deserialized_data()
 
 
 def test_recursive_retrieve(session):
@@ -438,9 +493,9 @@ def test_recursive_retrieve(session):
     assert len(r['source']) > 0
     assert len(r['destination']) > 0
     assert len(r['operation']) > 0
-    assert 'field_values' in ops[0].__dict__
-    assert 'wires_as_dest' in ops[0].field_values[0].__dict__
-    assert 'wires_as_source' in ops[0].field_values[0].__dict__
+    assert 'field_values' in ops[0]._get_deserialized_data()
+    assert 'wires_as_dest' in ops[0].field_values[0]._get_deserialized_data()
+    assert 'wires_as_source' in ops[0].field_values[0]._get_deserialized_data()
 
 
 def test_retrieve_fidelity(session):
@@ -462,7 +517,7 @@ def test_retrieve_fidelity(session):
     assert fvs == fvs2
 
 
-# TODO: do we want retrieve to force a new query?, if its new, it is just ignored for now...
+# TODO: do we want retrieve to force a new query?, if its new, it is just ignored for now..
 def test_retrieve_with_new_operations(session):
     """We expect when we create new models for the model relationships to be maintained"""
 
@@ -523,7 +578,7 @@ def test_operation_type_retrieve(session):
     for accessor in accessors:
         browser.retrieve(ots, accessor)
         for ot in ots:
-            assert accessor in ot.__dict__
+            assert accessor in ot._get_deserialized_data()
             assert isinstance(getattr(ot, accessor), pydent_models.Code)
 
 
@@ -535,7 +590,7 @@ def test_library_retrieve(session):
 
     browser.retrieve(libs, 'source')
     for lib in libs:
-        assert 'source' in lib.__dict__
+        assert 'source' in lib._get_deserialized_data()
         assert isinstance(lib.source, pydent_models.Code)
 
 

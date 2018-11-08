@@ -49,7 +49,7 @@ class AqHTTP(logger.Loggable, object):
         self._login(login, password)
         self.init_logger("AqHTTP@{}".format(aquarium_url))
 
-    def _format_response_info(self, response, include_text=False, include_body=False):
+    def _format_response_info(self, response, include_text=False, include_body=True):
         if response is not None:
             if response.status_code >= 400:
                 include_text = True
@@ -57,7 +57,14 @@ class AqHTTP(logger.Loggable, object):
             info.update({"seconds": response.elapsed.total_seconds()})
             msg = "REQUEST: (t={seconds}s)  {method} {url}".format(**info)
             if include_body:
-                msg = "BODY: {body}".format(**info)
+                body = info['body']
+                try:
+                    my_json = body.decode('utf8').replace("'", '"')
+                    body = json.loads(my_json)
+                    body = self._pprint_data(body, max_list_len=10)
+                except:
+                    pass
+                msg = "BODY: {body}".format(body=body)
             if include_text:
                 text = getattr(response, 'text', '')
                 try:
