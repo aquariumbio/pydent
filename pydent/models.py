@@ -516,6 +516,12 @@ class FieldValue(ModelBase, FieldMixin):
                              item=item, container=container)
         super().__init__(**vars(self))
 
+    def is_input(self):
+        return self.role == 'input'
+
+    def is_output(self):
+        return self.role == 'output'
+
     @property
     def child_sample_name(self):
         return "{}: {}".format(self.child_sample_id, self.sample.name)
@@ -535,7 +541,11 @@ class FieldValue(ModelBase, FieldMixin):
     @property
     def allowable_child_types(self):
         if self.sample:
-            return [aft.sample.name for aft in self.field_type.allowable_field_types]
+            return [
+                aft.sample.name for aft
+                in
+                self.field_type.allowable_field_types
+            ]
         return []
 
     @property
@@ -573,16 +583,19 @@ class FieldValue(ModelBase, FieldMixin):
             print('{}{}.{}:{}'.format(pre, self.role, self.name, self.value))
 
     # TODO: object_type isn't a real attribute, its just for AFT
-    def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
+    def _set_helper(self, value=None, sample=None, container=None,
+                    item=None, row=None, column=None):
         if row is not None:
             if not self.field_type.part:
                 raise AquariumModelError(
-                    "Cannot set row of a non-part for {} {}".format(self.role, self.name))
+                    "Cannot set row of a non-part for {} {}".format(
+                        self.role, self.name))
             self.row = row
         if column is not None:
             if not self.field_type.part:
                 raise AquariumModelError(
-                    "Cannot set column of a non-part for {} {}".format(self.role, self.name))
+                    "Cannot set column of a non-part for {} {}".format(
+                        self.role, self.name))
             self.column = column
         if item and container and item.object_type_id != container.id:
             raise AquariumModelError(
@@ -592,8 +605,9 @@ class FieldValue(ModelBase, FieldMixin):
             choices = self.field_type.get_choices()
             if choices is not None:
                 if value not in choices and str(value) not in choices:
-                    raise AquariumModelError("Value \'{}\' not in list of field "
-                                             "type choices \'{}\'".format(value, choices))
+                    raise AquariumModelError(
+                        "Value \'{}\' not in list of field "
+                        "type choices \'{}\'".format(value, choices))
             self.value = value
         if item is not None:
             self.item = item
@@ -609,9 +623,11 @@ class FieldValue(ModelBase, FieldMixin):
         if container is not None:
             self.object_type = container
 
-    def set_value(self, value=None, sample=None, container=None, item=None, row=None, column=None):
+    def set_value(self, value=None, sample=None, container=None,
+                  item=None, row=None, column=None):
         self._set_helper(value=value, sample=sample,
-                         container=container, item=item, row=row, column=column)
+                         container=container, item=item,
+                         row=row, column=column)
         """Sets the value of a """
         if any([sample, container, item]):
             afts = self.field_type.allowable_field_types
@@ -773,10 +789,10 @@ class Item(ModelBase, DataAssociatorMixin):
     def is_collection(self):
         """
         Returns True if this Item is a collection in a PartAssociation.
-
-        Note: this is not how Aquarium does this test in the `collection?` method.
         """
-        assoc_list = self.session.PartAssociation.where({'collection_id': self.id})
+        # NOTE: not how Aquarium does this test in the `collection?` method.
+        assoc_list = self.session.PartAssociation.where(
+            {'collection_id': self.id})
         return bool(assoc_list)
 
 
@@ -1317,15 +1333,15 @@ class OperationType(ModelBase, HasCodeMixin):
 class PartAssociation(ModelBase):
     """
     Represents a PartAssociation linking a part to a collection.
-
-    Aquarium definition has the collection as an Item. Not sure why this isn't a Collection.
     """
+    # NOTE: Aquarium definition has the collection as an Item.
     fields = dict(
         part=HasOne('Item', ref="part_id"),
         collection=HasOne('Collection')
     )
 
-    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
+    def __init__(self, part_id=None, collection_id=None,
+                 row=None, column=None):
         self.part_id = part_id
         self.collection_id = collection_id
         self.row = row
@@ -1357,7 +1373,7 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         self.layout = {
             "id": 0,
             "children": [],
-            "documentation": "No documentation ofr this module",
+            "documentation": "No documentation for this module",
             "height": 60,
             "input": [],
             "output": [],
@@ -1458,9 +1474,12 @@ class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
         # get model interface from Base class
         model_interface = super(Plan, cls).interface(session)
 
-        # make a special find method for plans, as generic method is too minimal.
-        def new_find(model_id): return model_interface.get(
-            'plans/{}.json'.format(model_id))
+        def new_find(model_id):
+            """
+            make a special find method for plans, as generic method is too
+            minimal.
+            """
+            return model_interface.get('plans/{}.json'.format(model_id))
 
         # override the old find method
         model_interface.find = new_find
@@ -1582,7 +1601,8 @@ class Sample(ModelBase):
                               "parent_class": self.__class__.__name__})
     )
 
-    def __init__(self, name=None, project=None, description=None, sample_type_id=None, properties=None):
+    def __init__(self, name=None, project=None, description=None,
+                 sample_type_id=None, properties=None):
         """
 
         :param name:
@@ -1656,7 +1676,8 @@ class Sample(ModelBase):
     def empty_properties(self):
         return {ft.name: None for ft in self.sample_type.field_types}
 
-    # TODO: somehow do some kind of type checking for field_types. Note the field_values do not have field_types for some reason unless they are a sample field value
+    # TODO: do some kind of type checking for field_types.
+    # NOTE: the field_values do not have field_types for some reason unless they are a sample field value
     def _set_field_value(self, field_value, value):
         ft = field_value.field_type
         if ft is None:
@@ -1691,7 +1712,12 @@ class Sample(ModelBase):
         if object_type_name is None:
             return [i for i in self.items if i.location != 'deleted']
         else:
-            return [i for i in self.items if i.location != 'deleted' and i.object_type.name == object_type_name]
+            return [
+                i for i in self.items
+                if (i.location != 'deleted'
+                    and
+                    i.object_type.name == object_type_name)
+            ]
 
 
 @add_schema
@@ -1793,9 +1819,9 @@ class Upload(ModelBase):
 
         :param uploads: list of Uploads
         :type uploads: list
-        :param outdir: path to output directory to save downloaded files (defaults to current directory)
+        :param outdir: output path for downloaded files (default: CWD)
         :type outdir: str
-        :param overwrite: if True, will overwrite existing files (default: True)
+        :param overwrite: overwrite existing files if True (default: True)
         :type overwrite: bool
         :return: list of filepaths
         :rtype: list
@@ -1810,7 +1836,7 @@ class Upload(ModelBase):
         """
         Downloads the uploaded file
 
-        :param outdir: path of directory of output file (default is current directory)
+        :param outdir: output path (default: CWD)
         :param outfile: filename of output file (defaults to upload_filename)
         :param overwrite: whether to overwrite file if it already exists
         :return: None
