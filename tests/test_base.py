@@ -16,19 +16,22 @@ from pydent.marshaller import add_schema, fields, SchemaRegistry
 #     """
 #     m = ModelBase()
 #     assert m.session is None
+
 @pytest.fixture(scope="function")
-def mymodel():
+def base():
+    ModelRegistry.models.pop("MyModel", None)
+    SchemaRegistry.schemas.pop("MyModelSchema", None)
+    yield ModelBase
     ModelRegistry.models.pop("MyModel", None)
     SchemaRegistry.schemas.pop("MyModelSchema", None)
 
+@pytest.fixture(scope="function")
+def mymodel(base):
     @add_schema
-    class MyModel(ModelBase):
+    class MyModel(base):
         pass
-
     yield MyModel
 
-    ModelRegistry.models.pop("MyModel", None)
-    SchemaRegistry.schemas.pop("MyModelSchema", None)
 
 
 def test_record_id():
@@ -185,3 +188,30 @@ def test_print(mymodel):
     m = mymodel()
     print(m)
     m.print()
+
+
+def test_load_many(base):
+
+    @add_schema
+    class Child(base):
+        pass
+
+    @add_schema
+    class Parent(base):
+        fields = dict(
+            children=fields.Relationship('Child', 'get_children', many=True)
+        )
+
+        def get_children(self, model_name):
+            return None
+
+    parent = Parent.load({
+        "id": 10,
+        "children": [
+            {"id": 1, "name": "Child1"},
+            {"id": 2}
+        ]
+    })
+    assert len(parent.children) == 2
+    assert isinstance(parent.children[0], Child)
+    assert parent.children[0].name == "Child1"

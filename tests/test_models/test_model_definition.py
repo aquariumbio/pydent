@@ -1,10 +1,21 @@
 import pytest
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
+from pydent.marshaller import ModelRegistry, SchemaRegistry
 
 
 @pytest.fixture(scope="function")
-def test_model():
+def base():
+    ModelRegistry.models.pop("MyModel", None)
+    SchemaRegistry.schemas.pop("MyModelSchema", None)
+    yield ModelBase
+    ModelRegistry.models.pop("MyModel", None)
+    SchemaRegistry.schemas.pop("MyModelSchema", None)
+
+
+
+@pytest.fixture(scope="function")
+def test_model(base):
     """
     Tests heirarchical loading of a JSON file into Trident Models.
 
@@ -21,7 +32,7 @@ def test_model():
     loadonly = ("field6", "field7")
 
     @add_schema
-    class MyModel(ModelBase):
+    class MyModel(base):
         fields = dict(
             ignore=ignored,
             load_only=loadonly

@@ -6,8 +6,8 @@ def test_field_type_constructor_with_sample_type(fake_session, monkeypatch):
 
     def fake_post(*_, **kwargs):
         json_data = kwargs['json_data']
-        if json_data['model'] == 'SampleType' and json_data['arguments']['id'] == 5:
-            return [{'id': 5}]
+        if json_data['model'] == 'SampleType' and json_data['id'] == 5:
+            return {'id': 5}
     monkeypatch.setattr(AqHTTP, 'post', fake_post)
 
     ft = FieldType.load({
@@ -23,8 +23,8 @@ def test_field_type_constructor_with_operation_type(fake_session, monkeypatch):
 
     def fake_post(*_, **kwargs):
         json_data = kwargs['json_data']
-        if json_data['model'] == 'OperationType' and json_data['arguments']['id'] == 5:
-            return [{'id': 5}]
+        if json_data['model'] == 'OperationType' and json_data['id'] == 5:
+            return {'id': 5}
     monkeypatch.setattr(AqHTTP, 'post', fake_post)
 
     ft = FieldType.load({

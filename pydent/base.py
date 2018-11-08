@@ -61,9 +61,15 @@ class ModelBase(SchemaModel):
     def __init__(self, **data):
         super().__init__(data)
         self._rid = next(self.counter)
-        self.add_data({"rid": self._rid})
+        self.add_data({"rid": self._rid, "id": data.get('id', None)})
         self._session = None
 
+    @classmethod
+    def _set_data(cls, data):
+        instance = cls.__new__(cls)
+        cls.__init__(instance)
+        ModelBase.__init__(instance, **data)
+        return instance
     # def __init__(self, **kwargs):
     #     self.add_data(kwargs)
 
@@ -102,17 +108,18 @@ class ModelBase(SchemaModel):
         :return: None
         :rtype: None
         """
-        if name in self.relationships:
-            field = self.relationships[name]
-            if not model.__class__.__name__ == field.model:
+        if name in self.get_relationships():
+            field = self.get_relationships()[name]
+            if not model.__class__.__name__ == field.nested:
                 raise AquariumModelError("Cannot 'append_to_many.' Model must be a '{}' but found a '{}'".format(
                     field.model, model.__class__.__name__))
             if field.many:
                 val = getattr(self, name)
                 if val is None:
                     val = []
-                setattr(self, name, val)
-                val.append(model)
+                    setattr(self, name, val)
+                getattr(self, name).append(model)
+        return self
 
     def set_model_attribute(self, model, attr=None):
         if attr is None:
@@ -128,13 +135,11 @@ class ModelBase(SchemaModel):
         if isinstance(data, list):
             models = []
             for d in data:
-                model = cls.__new__(cls)
-                ModelBase.__init__(model, **d)
+                model = cls._set_data(d)
                 models.append(model)
             return models
         else:
-            model = cls.__new__(cls)
-            ModelBase.__init__(model, **data)
+            model = cls._set_data(data)
         return model
 
     def reload(self, data):
@@ -251,6 +256,14 @@ class ModelBase(SchemaModel):
         relationships = self.get_relationships()
         data.update(relationships)
         print(data)
+
+    def __str__(self):
+        return self._to_str('id', 'rid')
+
+    def _to_str(self, *attributes):
+        return "<{} {}>".format(self.__class__.__name__, ' '.join([
+            "{}={}".format(k, self._get_data().get(k, None)) for k in attributes
+        ]))
 
     # def patch(self, json_data):
     #     """Make a patch request to self using json_data. Reload model instance with new data"""

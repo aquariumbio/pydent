@@ -2,7 +2,7 @@ import pytest
 
 from pydent.aqhttp import AqHTTP
 from pydent.exceptions import AquariumModelError
-from pydent.models import (FieldValue, Sample, Item, ObjectType)
+from pydent.models import (FieldValue, FieldType, Sample, Item, ObjectType)
 
 
 def test_fv_simple_constructor():
@@ -23,16 +23,21 @@ def test_constructor_with_sample():
 
 
 def test_constructor_with_item():
-    i = Item.load({'id': 4})
+    i = Item()
     fv = FieldValue(role='input', parent_class='Operation', item=i)
     assert fv.item == i
     assert fv.child_item_id == i.id
 
 
 def test_constructor_with_value():
-    fv = FieldValue.load(dict(
-        role='input', parent_class='Operation', value=400, field_type=dict(choices='400', id=5)
-    ))
+    fv = FieldValue(
+        role="input",
+        parent_class="Operation",
+        value=400,
+        field_type=FieldType(
+            choices='400'
+        )
+    )
     assert fv.value == 400
 
 
@@ -96,6 +101,7 @@ def test_set_sample():
         "allowable_field_type": None,
         'parent_class': "Operation",
         'role': 'input',
+        'object_type': None,
         "field_type": {
             "id": 100,
             "allowable_field_types": [
@@ -124,6 +130,7 @@ def test_set_container():
         "child_item_id": None,
         "allowable_field_type_id": None,
         "allowable_field_type": None,
+        'child_sample_id': None,
         'parent_class': "Operation",
         'role': 'input',
         "field_type": {
