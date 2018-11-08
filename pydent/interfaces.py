@@ -140,17 +140,17 @@ class UtilityInterface(SessionInterface):
         """
         Saves a plan
         """
-        pre_ops = plan.operations
-        if pre_ops is None:
-            pre_ops = []
+        # pre_ops = plan.operations
+        # if pre_ops is None:
+        #     pre_ops = []
         plan_data = plan.to_save_json()
         result = self.aqhttp.post(
             "plans.json?user_id={}".format(self.session.current_user.id),
             json_data=plan_data)
         plan.reload(result)
-        post_ops = plan.operations
-        for i in range(len(pre_ops)):
-            pre_ops[i].reload(post_ops[i])
+        # post_ops = plan.operations
+        # for i in range(len(pre_ops)):
+        #     vars(pre_ops[i]).update(vars(post_ops[i]))
         return plan
 
     def save_plan(self, plan):
