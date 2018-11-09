@@ -132,7 +132,11 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">SchemaModel</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">SchemaException</span><span class="p">(</span><span class="s2">&quot;Model must be a subclaass of &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">SchemaModel</span><span class="p">))</span>
-    <span class="n">new_schema</span> <span class="o">=</span> <span class="n">SchemaRegistry</span><span class="p">(</span><span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">make_schema_name</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="p">(</span><span class="n">DynamicSchema</span><span class="p">,),</span> <span class="p">{})</span>
+    <span class="n">new_schema</span> <span class="o">=</span> <span class="n">SchemaRegistry</span><span class="p">(</span>
+        <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">make_schema_name</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">DynamicSchema</span><span class="p">,),</span>
+        <span class="p">{</span><span class="s2">&quot;_model_class&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="p">}</span>
+    <span class="p">)</span>
     <span class="n">new_schema</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span></div>
 
@@ -173,13 +177,18 @@
 <div class="viewcode-block" id="SchemaModel.add_data"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel.add_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initializes fake attributes that correspond to data.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_schema</span><span class="p">:</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">filepath</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
             <span class="k">raise</span> <span class="n">SchemaModelException</span><span class="p">(</span><span class="s2">&quot;Cannot initialize a </span><span class="si">{}</span><span class="s2"> without a </span><span class="si">{}</span><span class="s2">. &quot;</span>
                                        <span class="s2">&quot;Use &#39;@</span><span class="si">{}</span><span class="s2">&#39; to decorate the class definition for &#39;</span><span class="si">{}</span><span class="s2">&#39; located in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">SchemaModel</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                 <span class="n">DynamicSchema</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                 <span class="n">add_schema</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+                <span class="n">filepath</span><span class="p">,</span>
             <span class="p">))</span>
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">model_schema</span><span class="o">.</span><span class="n">init_data_accessors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>

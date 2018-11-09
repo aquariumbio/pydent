@@ -54,7 +54,7 @@ def test_plan_with_parameter(session):
 
 
 def test_parameter_to_zero(session):
-    test_plan = models.Plan(name="Test Plan")
+    test_plan = session.Plan.new(name="Test Plan")
     op_type = session.OperationType.find_by_name('Challenge and Label')
     assert(op_type), "Operation type Challenge and Label not found"
 
