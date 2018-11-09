@@ -1,0 +1,956 @@
+interactions:
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=VO67K2Y5%2FnL7A%2Fym1uIS7bIqZsWPSHZzzYVC4yxk2%2B5WyKo3bTPMCv%2BPvE%2FVqy3NxlpihqAxOWBP7MGeW%2FnykQ%3D%3D;
+          _aquarium_NURSERY_production_session=QVJxNXhRRWRRWnBNcEVHbkVNSlFiaE1JN1FrYWQ3SG56U0JjRk1lU0YwUDdMYlJ3dkpKSWFEdStxRFM1cGFNWnoybFNodm54TkhUdlM5UUxRNHFlWVROSVNHTzRwa0Z4SERaOUdJQVdudzVYY0lPa3pMekZGcWQvZzZhdVVLcjRrMXR4M3BaVHIxNFU1cDV3RVh0ZlFkWFFvL0lCYUFUclhnMU5wZHQyelpNN0UwOTBEc083UXVhSU1yTkZhYjg1clNRbkdSU0NUcUlwYUJVMDh5T2xkNmVMRG5FU1VkcGtHejh3VjBZYzVvZ0dhOXJ1K1RRUElhTlpNRTNTVjZwQ1BhZjlTSGNkVkpJZUlHVzZBQmFRL21SQXdlOUFOQnZjYk5rT2VaUlBHQXhNUXY1QUFiUFROYU1PRlZQbCtXSDlheUk4K01heWtJRmNPRnZSam9kRnpOSEltZ0ZTOHduY0o5ZCtSalpDQWNwdlhzRUwzeXRWVlVkSXRUbnFwOStZbVR2SzNNd3dHRkJDY09rcmlnOFRMaXdGeVZPRHJUUnphODJEb09oZi9xdz0tLUxMUFp1YW5nK2FRS2xVbHpxRTdvVEE9PQ%3D%3D--bb4ac2cb02dd1aa4c69e8a58192aec9a5f5db506;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 02 Nov 2018 04:27:04 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=nnkmK3jxt2V3uzEaN6zn6NWZinuHcQ%2FukgrnBKCFfRicXzc3c%2FuFHXM3cfM05djIoemOOKgIQP0QY2R51xhUZw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=aTUrZmg3eWJGZEhoYU9RQU1iclk4WmtFSGdmNWFoR1hiZ0FhQkRIeC9YT2w1NzhKWjJXeDY1NEJFSkdybVR2T3VhSE5lbFJHZG9YSFVQbGRiOWJ6TFJBUXhmTHQ0MUFJODFBdzF4OEtHcU1xSzlmRVVUSnZMeFVHZm15cCsvTGFacER3eGNwRXZqYXQ5R244ckxmQTJOcnFIYU8xY0M0cGUrMlBxNFlvQUU2YnBMbFNCc0pmeEt6RkVVMzY1bUFyY2RVV29oK1YwK1JsL1Q2M2tQUEZLR29VaDJJeUJrQlZaaG9zaW5pS0ZTVDErUFlIWmFzRFdWQVhFUmZ4Mk9HYkhvdGl5cDBZcjl0SFoyMVdPUUc3eWZydC9tQjFGYUJHY0RYc1NmdTlKdjVrSTByNU5nRDdHaGtaRk5OQTB6S2U2WnNDa2hmSkd1ZEx0M0NDYkRqbGRTOFBBb1VzU0E3QVd3M01GTkFabFpJcG45L3Jya1lRakFLN3ZDNnNBUGhQODJPY1ZQU1A5V2w1RTM0KzFFZ3NXWkJPc2ZtejR1ZFU1WlhiUjcvYUJlND0tLXNJbHc2dEZjT3FiTFdyR1U1b1d3Tnc9PQ%3D%3D--dd13b497cf7e32ee4b3682a50551f4702783c26f;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [a4ca0acb-53bb-4f8e-b570-328c916e7565]
+      X-Runtime: ['0.004060']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=VO67K2Y5%2FnL7A%2Fym1uIS7bIqZsWPSHZzzYVC4yxk2%2B5WyKo3bTPMCv%2BPvE%2FVqy3NxlpihqAxOWBP7MGeW%2FnykQ%3D%3D;
+          _aquarium_NURSERY_production_session=QVJxNXhRRWRRWnBNcEVHbkVNSlFiaE1JN1FrYWQ3SG56U0JjRk1lU0YwUDdMYlJ3dkpKSWFEdStxRFM1cGFNWnoybFNodm54TkhUdlM5UUxRNHFlWVROSVNHTzRwa0Z4SERaOUdJQVdudzVYY0lPa3pMekZGcWQvZzZhdVVLcjRrMXR4M3BaVHIxNFU1cDV3RVh0ZlFkWFFvL0lCYUFUclhnMU5wZHQyelpNN0UwOTBEc083UXVhSU1yTkZhYjg1clNRbkdSU0NUcUlwYUJVMDh5T2xkNmVMRG5FU1VkcGtHejh3VjBZYzVvZ0dhOXJ1K1RRUElhTlpNRTNTVjZwQ1BhZjlTSGNkVkpJZUlHVzZBQmFRL21SQXdlOUFOQnZjYk5rT2VaUlBHQXhNUXY1QUFiUFROYU1PRlZQbCtXSDlheUk4K01heWtJRmNPRnZSam9kRnpOSEltZ0ZTOHduY0o5ZCtSalpDQWNwdlhzRUwzeXRWVlVkSXRUbnFwOStZbVR2SzNNd3dHRkJDY09rcmlnOFRMaXdGeVZPRHJUUnphODJEb09oZi9xdz0tLUxMUFp1YW5nK2FRS2xVbHpxRTdvVEE9PQ%3D%3D--bb4ac2cb02dd1aa4c69e8a58192aec9a5f5db506;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 02 Nov 2018 04:27:04 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=3hSAVjV%2FD9n14Ko9Jj0g9K2OU%2F1OEKr%2FsquH9CJBqX%2FcMpFKPnU9ofFs6tQldB%2FU2f5XvmFp5ewwwgSJVdyAAA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=bnlaM2xSOEdTdzVETkdSK1VTOU9PQi9hWmdvbmZ5MS92WkZHVWdHd0dwVDlSOTNuS0M1SUwwT0Vkc3FqbXB2WUtzVWdmZW5oTW1OOG9OOFU3WnJSS0dHcGl4NDc0Z0xqMjNtNlpHSWdLakw0NkpSbjcyOTJUelk5VXdac1ZCZmNReUdyMjJJWndqTUJCd1NQKzVLM2k4QXhNWHoyQzhBbUc2Qk5PZUlMMXZRbm1jazJqSkEyN1hqd3VkdTkwb3BoaytvenAyTTNWbDFrZDhyRC93SkVkRWFLVHpudlE1RWRPc3lObEE4MDdXMXFBOFV3ZHczbi84THk3eG5NZlpqVHVETEZtODYrdzJOSVpkNENOWDJTSFQ3bm9UbEhJZW5oZ1MwUitReUxFOTJlZCtjdjhESytIRlY0b0k3RFlFWVU5elF1OVdaelY0c000T0VnUjlNdTVLcTg3VEJOS3hJSnJ2akhSdFBSZENMSVFJRlJpaEdtRVA2Q01ITDFRdlVIRWxFVkUzQVc2UkExTTloVHpBR2FxaUNhcnI1cEdZd0hsM1BRZ3VUWUhnbz0tLWRIWEhsaFpxbTV0MFpBT280TUgrdFE9PQ%3D%3D--7d4b683bd26de29a83dd88dbcd519efc23c1244b;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [3a10d00b-75c4-4d1a-82c9-3fabc8ee47b4]
+      X-Runtime: ['0.025620']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=6GfGjtpoPOv8ZAnTG09GJP%2Fjg%2FWZOIS5HL7sPkuX%2B8AuIFK%2FtroAv4G7jo9a0%2FlaLZeeAgOp6BBibiOo68wXhg%3D%3D;
+          _aquarium_NURSERY_production_session=Rm5PUU1sV3ZMUW9CZlJySTNINFowbXRwTGsyQXVTODRVV1M4ZlE1YS9LWG5HREFsb051ZWtTMHB0NnBUc2cwVm9yRmZDZ3BPaDY2QjFIaTEvMWZiYjhyVTNpTVA3QjBMVFFaODFScTk4TmpEbGg5dTlQdzNIUFhGSHMyWWp1OUo0a0dxYWxSUFI5enhMcjBVU2FBOFk0S3FGNFZmSFRsTXJqM0ltR1V4RVJKRWZBZVpSbDQ2VGM2U1lYa2MxWWN3YitSUFRuU2o2WlRuRXNEaDBSUitvakZmVjF3cW9CY05WdDVYSXBadEh0ZWN0N0NPbFhGcFMvQ0JRSmU0cG5IWVB5RTc2Sjk0djR5K3pqVUI5WmlaK2NUWTZDUHFNMkJaM0ZWMzlLN2dtVzVVSnhGVllrWFE3NG4yd3AzQlZBczJmNlhaTlhFeE40cWc3c3p0dEVQVi93a3pwK2NJZ2ZqNVY4WmdWd3hXZUVKZk5QWnozVHBpcTJuMnRSVEp0aXJUZXJzajVCVjZERW02bktNaXRuZnRBVnNFWHVzRGgyaXowRndyc0dlWWUvUT0tLWtBdC9IQWVHZngvRFF5Y0l5dnBuS0E9PQ%3D%3D--b8dd2d5a9ddec6c47db0efc60d67c067ec718bc0;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 07:26:24 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=t8z21tHq8L6kCdQGbiOlLIfvBOoqlN6CT6q43eVgCnNxi2LnvTjM6tnWU1ovvxpSVZsZHbAFsisxendLRTvmNQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=S2hlZzlJaXhzd0VxdUl4ZkVUWUpZYk5aalpIdnRYWjBhaUJKQVVOUXBjNUNhT29Sa3pSamF2b0dOUlo4Z2l4bTJiS0xldGc2aFIvUzFicytZU1Z6dHFBN1grRnd3Mms5a28rT1Q1Zm9CUW9DbE1OeTJmVEEzbkxSWGRpRW1hZWI5RGdrc3QwYVAzdjY1UVE5RTFHYWM1VFBQWDZMZEgxL2hKUll5ejFLd05pYTBnNm02d0syTThTWmZ1Y1ZPbkluc2llUWt6M1dDZkNTc1R5ZjdXOEgyN0x2K3ozOWJJVVV1R0ZuWmZKTXIyeWlmTkNGVmlLcjZISFljdXRlUTB3S0hMZWRBZVNuVlR2VTdGbEd3Nm40RUdlUll0UytNNDRvNDZjMjJNbzJRc0NxaW1sa0kzVmE1aUhqQ1A0Mm1zamdpVnhmQTRNN1JveG1peWxvQmMwWHZicEJsMWFhV3RscklHcW5DVmo2eEJUQ3FiR2pkUWtSN3BxQjd3WVI2SzM2SUVkckUrWVNPRjlIbmhEOXcvY0lDQmtOQTA1UjNzcEo4d1lxd0cyeVUycz0tLUphT0VVTnYxeVYxMi9WdDIrQzcxZGc9PQ%3D%3D--289a7aab3e963327209d1b159a9bb66aa3a63e2f;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [8bad4926-690c-4b61-84d0-252d77ff7347]
+      X-Runtime: ['0.004646']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=6GfGjtpoPOv8ZAnTG09GJP%2Fjg%2FWZOIS5HL7sPkuX%2B8AuIFK%2FtroAv4G7jo9a0%2FlaLZeeAgOp6BBibiOo68wXhg%3D%3D;
+          _aquarium_NURSERY_production_session=Rm5PUU1sV3ZMUW9CZlJySTNINFowbXRwTGsyQXVTODRVV1M4ZlE1YS9LWG5HREFsb051ZWtTMHB0NnBUc2cwVm9yRmZDZ3BPaDY2QjFIaTEvMWZiYjhyVTNpTVA3QjBMVFFaODFScTk4TmpEbGg5dTlQdzNIUFhGSHMyWWp1OUo0a0dxYWxSUFI5enhMcjBVU2FBOFk0S3FGNFZmSFRsTXJqM0ltR1V4RVJKRWZBZVpSbDQ2VGM2U1lYa2MxWWN3YitSUFRuU2o2WlRuRXNEaDBSUitvakZmVjF3cW9CY05WdDVYSXBadEh0ZWN0N0NPbFhGcFMvQ0JRSmU0cG5IWVB5RTc2Sjk0djR5K3pqVUI5WmlaK2NUWTZDUHFNMkJaM0ZWMzlLN2dtVzVVSnhGVllrWFE3NG4yd3AzQlZBczJmNlhaTlhFeE40cWc3c3p0dEVQVi93a3pwK2NJZ2ZqNVY4WmdWd3hXZUVKZk5QWnozVHBpcTJuMnRSVEp0aXJUZXJzajVCVjZERW02bktNaXRuZnRBVnNFWHVzRGgyaXowRndyc0dlWWUvUT0tLWtBdC9IQWVHZngvRFF5Y0l5dnBuS0E9PQ%3D%3D--b8dd2d5a9ddec6c47db0efc60d67c067ec718bc0;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 07:26:24 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=MpXUwA71Q%2BvSRorVZNZhjeM3LkEAyCwnJffTnbL2Zr%2F00kDxYid%2Fv6%2BZDYklSt7zMUMztppZQI5bJxwLEq2K%2BQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=VGJNRWIzTFZLLzl2R1FZaFRJbXRHTG9oRTB6NlFMMDZKbGdlckM2QkNkV0l6T1l1c1ROa2FvTXZvdjdZeU40ZUZmUXBMQ3RwVFJkY2tjY09IQ2JZM01ncHoySnpYNFVkUFpaNFlPT0h4Y0tQQ1pyTXkyYzdFWnNHemNNTW00dVBwUlJiZmJ4L2FCRjBVSHFLei9VdXdHZ29TUVFWY0xyK09KRVJlWmVnN1VaakxwSTF3OHlBdHdVZHpHWDErWTdVZzhsZEZsdTdOaUdxZG1VclFlb2E2THd4NU1DQVpvekJtMkFLcnRwL0doejliRk1hRFQ1RS9ackJud0kwWGtQZTkxZG8vbzEwSVBZcHRoT2V2UG83dGUwWUc5SnJpSWNzbkZ3Z0xKVzRVeG91bUVqWnE2NUxwZG9wTzdhR1pHZGVTWDE0MDJMbU1VUGhVS2pIa09vOFd0V1R5RGl2bTg1NmVUUXRrT041NlIxTWlSNkVPWW1XTUN5Vnp3OWl6aTYwdlhtT3kraTV3a3ZRUWo4Nm5hUmYxMkZlVnFEYVM3WDdTVW5KT3RuUDk1UT0tLU8vZTREQWp6RjQxT253V3lkeFkvaHc9PQ%3D%3D--029d45257a25458447231e61fc4d1c27796084a8;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [83d6f07e-471f-497b-a081-e2bf2b5dacb8]
+      X-Runtime: ['0.023198']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=40BZGIktrhKBBDguBDyJCdzU9Zr3hqCirKucSC0WeEIsCYGW0RS5nIjwAsjwbmbNEYA52vSBW70jlbGI5Uf40w%3D%3D;
+          _aquarium_NURSERY_production_session=cXF5dEJrZjhleE1sNVM3OWQrOVFsYXEvM1hlQlV1bkxNa3RZL2Q4aS9JNEFjc0tqMFE0Y01RN2s2SjBmOEdHOHhPZ1RZTEZWWVVNQzAwQlNpREs1OG1RdThtRlFaKy9WWGt3bS9WU3ZzZ1EzcHNZRno5TzVjSkQvR1ZaTXVtcVJWZ29nbnFSNjIvYlk5dGJKYWd4QWFpUEYwVWEvM09JaTRTVkNHM2dLQ2R3b3hvMmxGc1N3ckNaQlQ1TUhYaCtvZVlqU0ZJajVuSk1FQlE5Q3luME13RTJxaWZLV2pvbkZ3QjUrTWo2OFZoalk2elpkOS9zZ0d5K25RdE5rSkI5UE1tZDJKUmhHbytGL25McXEyaXBCTHJrT2NsVjFJS094OGxGMkNtUWNNMS80RHVtSW0zdEoyYWIxeVAwLzhTR3ZJQk0wK0QvdDZhbXlDWGw5ZlJrU3d3eUdFeHl6U3R5VnJkVTY3YmxnWVgxUlBtaHZQZTNFRU5scVVuNmkrSDgzUDg2QzJsNnA0SFdUbG9YRmVjbXFNWVB2dmRSUUN1WTJUZnc5VlFSL0RKST0tLUhqUzA5Z044dDVUVi9OZ1M1OVgzbUE9PQ%3D%3D--bfc6bdbbcc1b6bf416127e4a2ddcb88970b88947;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 16:05:51 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=%2BRjncYfT8dwjmVn6a7zZ938XAZCWwy6l2tNiitTRVuE2UT%2F%2F3%2BrmUiptYxyf7jYzskPN0JXE1bpV7U9KHIDWcA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=NG9rVVFiR0dIV0dFVXZNK05MTzYzZkpvSS9vWitmMURxVit1Rmlaa0EwWFNwYVRjU1VUU0pGNzJlOE5ybHJsWlNHVkc3NXplREdHd1N6V2t0Y2ZaQkJsNExDUE1NWmVuVWxuaEliRlRoS1YxVTlQb1ZoQmxDcThCbmdRLzJhSFVrMjhFbFJaTC8wQzRxeHB3TUNsaWZHUUMxaFBNY3kzeEVpUFRMdzFPeEVBV1dKYTRrRFRFUnQwOHZKRXVLQmYxVlcyMGk1NXJxTk84UnZydEtqYUl0ZlNxcCtKM0d5aXJLNzdmaysxQWEyRXhGK1o4OTFJc0NpclNGZVNKRUltQ3c3Z3ZOUitQZnpPWWxxdGNrZUdJa1NyWkNIZnp3V1VEYlpaVm1BUzl2TjdQS2FEVTJrN3B6aGxYb1kxY1JtT0hNZUdmRFVrc3dhWXFTU2dhNXlPNjc1K1l5ZW9NL2twMkk5QVkyTjlnQnNMbmlkN2x3blBzNnAxYWRkNnoxSFJrbmVnbFJiRjJyM3haYmdJWTV0R0p6Vy8vV2RDZkhjc0l1SG5VSU1xbWJFaz0tLXBuYko4bEZiRU9IMjNnVkYybzdQeFE9PQ%3D%3D--1a19333283c2201adcf81ad40b95767a6d7cf9c8;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [cf6165a6-4396-47e7-9ea1-cb56510c9481]
+      X-Runtime: ['0.004246']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=40BZGIktrhKBBDguBDyJCdzU9Zr3hqCirKucSC0WeEIsCYGW0RS5nIjwAsjwbmbNEYA52vSBW70jlbGI5Uf40w%3D%3D;
+          _aquarium_NURSERY_production_session=cXF5dEJrZjhleE1sNVM3OWQrOVFsYXEvM1hlQlV1bkxNa3RZL2Q4aS9JNEFjc0tqMFE0Y01RN2s2SjBmOEdHOHhPZ1RZTEZWWVVNQzAwQlNpREs1OG1RdThtRlFaKy9WWGt3bS9WU3ZzZ1EzcHNZRno5TzVjSkQvR1ZaTXVtcVJWZ29nbnFSNjIvYlk5dGJKYWd4QWFpUEYwVWEvM09JaTRTVkNHM2dLQ2R3b3hvMmxGc1N3ckNaQlQ1TUhYaCtvZVlqU0ZJajVuSk1FQlE5Q3luME13RTJxaWZLV2pvbkZ3QjUrTWo2OFZoalk2elpkOS9zZ0d5K25RdE5rSkI5UE1tZDJKUmhHbytGL25McXEyaXBCTHJrT2NsVjFJS094OGxGMkNtUWNNMS80RHVtSW0zdEoyYWIxeVAwLzhTR3ZJQk0wK0QvdDZhbXlDWGw5ZlJrU3d3eUdFeHl6U3R5VnJkVTY3YmxnWVgxUlBtaHZQZTNFRU5scVVuNmkrSDgzUDg2QzJsNnA0SFdUbG9YRmVjbXFNWVB2dmRSUUN1WTJUZnc5VlFSL0RKST0tLUhqUzA5Z044dDVUVi9OZ1M1OVgzbUE9PQ%3D%3D--bfc6bdbbcc1b6bf416127e4a2ddcb88970b88947;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 16:05:51 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=VNyEwc08H2hGhcul3E9OaoI%2BCZNnkTJSkMq28LOGs%2BGblVxPlQUI5k9x8UMoHaGuT2rF02SWyU0f9Jswe9czcA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=U0xtNWdxVmFpWGpwc1c0eUVPV25OODh5L2plenkrRUYzNC93ZWJGUzBhTmt2SmZsbDcyS0E0Z0wrMks4ZFFSMk9pOWxWckJpblltOGhRM043MUxjc2dtU0NhTnpkbDU2enovVUJoaDRoREliblV3VkJ5RENON2tZeTMrV1pqTVJqczNVNnYwOHo1bVQxMS9ac1BkS2RicW1TWDkxN0Nmd3B6azJCTWdWUjArcW1oUk5BNmFncXJBdmdFcitFOXBYeUhEV2k5MG1pNW5VMlNkRlNFenRRY1FUcE5JdWlwMVl6Q3pPNHlQOWE0cnBTRVdjaHpnL1NQYmxObzFPZGtmSEJuS21EM0t3bjRKYlpoL2EvSFk0MXY4MElnRHpTSFhNcWlwaDBrM0JjYXNsWEpuZS8vSGlFK2dmUUQ1dzF3MzhZOGVaRkhiOW1wdVNmQmJkQ3dicENSZUpkYkhQalRNclFGWDRIT2N6QXdIcFZJTEgvUmVwbE1DUXFnTFF2aGFjTFFDMnJUQlUwUTF3bENJMVhkK2F1MEVjY21TT3BidVBMSXJoczBjR2J3ND0tLVBxRVZ1MHBFQkgxTWNTQUt0QnZZeUE9PQ%3D%3D--45de799c42eb979de91ee4e9dec0f7e9f1c349a3;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [943acf32-ebde-4fec-b1f9-dce70ece8840]
+      X-Runtime: ['0.022996']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=hM4XRlNferyxsPEQIi9uyUkUbWVyl8qngDfe7941eOpOc9L5v6ojNyODpegDtZziddnA2VzLJJlacdwF%2B%2FSaEQ%3D%3D;
+          _aquarium_NURSERY_production_session=QkJqRkZPL3ordEdINS9pMVA0blJ2YTFFa0ZvalVCMW9BMkVUYWZQNDFuR1ZXRUpDd3FMRzRPdmZyK1ZBck9uaG9QQ1RUQlVOcjdhV3krTWIwbStsTndJTUxYSmQzL0tZQ0RYVXYxb3ZxQjhlYWp6WGRBN2lpUlBHVnhDTGQxbkhoK0hvZUc3SEgreXVqaCs5K3l1YzZRUmM5RHlnOXhxL29jL0NPcWNwUk5mSFpqb2E4Q0lyR0V2TlB0NWFZSHR0VHlKb2RGT3BNT1pkbW4zNTU3L1p1NC9SKzkveDlOL3BoRUR2dHdsSW1BSkVqUUsrOTFoOVZDNStmUnZIT2dLWkYzQTdXVXRFalBEWEFZZWRuM2xNVTFacERsK0lWSmd0c0tNKzF1WjEyM3pmWmVwYURWSkpIYVNCeDRUUzlUcFhzb3kwRjN6MmxCUm16eHZCbm55ZC9tSmM1dGZPc0NwNHJNZ1ByNk1UL0xPUHIrNlFJcjdRMzBHU3YxN05JUmFZa1hHMGFwQUp0aGMzM0l0Q1N5WVl5aDZqUkJVNjlrcjNkbDZSck93MEFGbz0tLTAvd1JMYlNacHBUeHRQQysvd2x0RkE9PQ%3D%3D--dcac1dee8d1b51b73b1a883beb2fcb7ecd41f591;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 16:27:10 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=PGlS%2Fh%2BzMV4mnuHnV8wOc6bVtNyh43wuUKibTD5JHqD21JdB80Zo1bSttR92VvxYmhgZYI%2B%2FkhCK7pmmG4j8Ww%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=TkVRZ1lYUEErMFZsTElGK3ZHdkU4ZGJ3U1YzV3Vka0NtekhDdzJLQzdEWUsrNko3NUxRdXJRRUtHVVVMMW9xTDdaVGl4YjZYSEc1dFNvRXZBNjhvZkxiWDFIOEIzL2kzcXFLdm9DckJxQmoxOGxFVXVOdm9RKzRPbm5pcGlUTzVSbk1wSkxkaXMwTWlraDV2WVlyZUdxc2c0WFBRYytQclJ5Q3VXbFJ4ejh6b2RpeWVKYXh3WEIvWmtMSWNna1ByM2FReTZkTUhjbUZEZXhXZGRlWTNNZjNQUDY5Z2ZELy9wUjN3TjRaS1lrY0NZd21XVHo4V3NzRE1xWXk0MUdRVFFVRGlZOWF4eHZIdDVoeTBlZE16ZnhKV3cxVVlHeTA2QUtwb3J6bi9HcktWanl6TVprWmxBR2RTR092R1kvSjNVM21WK2ppa1UxL2RLb0I3UzdoVEQ0YTRNWFRxZjZPMTVhSkdYVE0rSXd2NnFtRzQzbnZvWkpkMkpBbUtvUXAvdHh2VGYzOWVPYVBpU0piOEd2UXY2SC9PYmcvb2F5RXAybExTRmo0ektnVT0tLUdQejJyVk5EbmxjTzBxVDBqZFdQTnc9PQ%3D%3D--c7480009e444c715a9b08ca9550f1753cc1e852c;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [06e48739-1c63-4a91-97dc-97d275e2ff01]
+      X-Runtime: ['0.004606']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=hM4XRlNferyxsPEQIi9uyUkUbWVyl8qngDfe7941eOpOc9L5v6ojNyODpegDtZziddnA2VzLJJlacdwF%2B%2FSaEQ%3D%3D;
+          _aquarium_NURSERY_production_session=QkJqRkZPL3ordEdINS9pMVA0blJ2YTFFa0ZvalVCMW9BMkVUYWZQNDFuR1ZXRUpDd3FMRzRPdmZyK1ZBck9uaG9QQ1RUQlVOcjdhV3krTWIwbStsTndJTUxYSmQzL0tZQ0RYVXYxb3ZxQjhlYWp6WGRBN2lpUlBHVnhDTGQxbkhoK0hvZUc3SEgreXVqaCs5K3l1YzZRUmM5RHlnOXhxL29jL0NPcWNwUk5mSFpqb2E4Q0lyR0V2TlB0NWFZSHR0VHlKb2RGT3BNT1pkbW4zNTU3L1p1NC9SKzkveDlOL3BoRUR2dHdsSW1BSkVqUUsrOTFoOVZDNStmUnZIT2dLWkYzQTdXVXRFalBEWEFZZWRuM2xNVTFacERsK0lWSmd0c0tNKzF1WjEyM3pmWmVwYURWSkpIYVNCeDRUUzlUcFhzb3kwRjN6MmxCUm16eHZCbm55ZC9tSmM1dGZPc0NwNHJNZ1ByNk1UL0xPUHIrNlFJcjdRMzBHU3YxN05JUmFZa1hHMGFwQUp0aGMzM0l0Q1N5WVl5aDZqUkJVNjlrcjNkbDZSck93MEFGbz0tLTAvd1JMYlNacHBUeHRQQysvd2x0RkE9PQ%3D%3D--dcac1dee8d1b51b73b1a883beb2fcb7ecd41f591;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 16:27:10 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=RUT%2Fxib%2B%2Ftqpsn2qxHelwxlBbEf54LdhEhr%2Fbipa11yP%2BTp5ygunUTuBKVLl7VfoJYzB%2B9e8WV%2FIXP2ED5s1pw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=SnBLUjVLVlA2cE5rbjdlejU4R0hDS2cwcDZxMzFOYnZNT1dQWWtnV1Z5ZExjdVk1THdaWVJQUDVNemRTYVN3Tm9ydEMxd2pGR2RHbDVLMFROUHU3VmJTa0ZxZjhNWTZ2ek1NMnM3aUt3Tllsd3MvVlFySWVWSElVRTVrcmJocDBrMTJaem5KUEJZYnVIUnpXbEhCRkkwTFZ4S3p5NTRjeTJKM1o5anc0T1RyWWdxL2UrdUVTckQ5T05DenNwNEdBVWJ2dk5hMDBEYjIxZzl6YXoweC9ubndtQWZxZ2srVG01bDBiUE1NM2ZsZmEwZnN6NzJKZmREQXN6ZFNuMEVtRGFNZ2F4SE1vNVRKcWlVYS9jUUFXK2JrNVdJQXJjczlYSkpETHhPWHRZd2xublVjVVVBOEp6QzVFL2YxOVFPMEhkeGNYZUo0V0t6SC9IRDlmTWxLUG1xaUxreXFLRlBmWVo3RzJsMS9UaTIrOGMyWjI0akQ0aVNJamczTTZzNEV2RlFnZE13ZW5zMFlrZlk0dTJUcmdXc3kwb1lsOGt6VE9HUFBXVDBoMGhwWT0tLVROM0dDcHlQWDlFUkZzdVBuSSt0a3c9PQ%3D%3D--4fd9f2c493dff3a844093237c4f05840a2ea7215;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [22f9b832-027a-4739-99f3-9e4df61afd64]
+      X-Runtime: ['0.024663']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=LU0sXFXk%2BHWZIlFXS74DZS4kNEyaPh38FTDEJItv08HW1rAg8MmFM3XW8jqgvcLT3k43il91CzW5ZJJQf84sNg%3D%3D;
+          _aquarium_NURSERY_production_session=eDVVV2JST2xyMlhqTGlEYzh1cVVVc2VsTnEyN1JWTzBtckhlVTVQMmJncm1KVnh6QUJvdEN6cmVEQVNnMmNVbHArdThKelMxN2dsakRqWUxkU3NySDdzWlFQM0w5cUU3TmkvdG41WVJXNXFjMTllejh2VkIzdklqYlR0MFdKYnY2VmRmTmtzUHlUNE1SK2pCSEJ1aTdXQkI0UUxCWFhGQWE2OENOaEUwTXlNdDlGRzFXMDNNWjNQVlQ4WnZnL3d0VURJN2srY0E1dVZPbmQ3endmcEZEaG5CNUdDSmltb1k3S21yUTg5cXo0VU1GUzJjOWtsVEQ0TWFVWGVwN0tYOGRNak5yMDNab3g0d0F4WXVqTHlSMWlYNVJ1VldGaU9XYmI1SlRxRjVvNy9NVEI0czhLNXYwaVM5RkF4WVhMZHdsdzNSOEF4YnI4YWJQSnRnRm5GWmNQUGRPQzJXOTRocks2SE9MTzBLbDM2bUFIejV3SC9DN3RIdW9HVWxNWk5BdVVjWlVTNUs5c3VEMU1mb0YxaVBROHNTZFpwL3ZLNkNYN2MwYkkybXZoND0tLWZZckdLR1lzeG53ZzRUY3VqMUtJOWc9PQ%3D%3D--324f063bef3019a8692846f5a3ea48d08a7ef3fd;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 17:45:10 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=7vTGHfrPpyA6%2Fy0D6U%2Ff36a0KMJ4Jvo94X2ise%2FjpgIVb1phX%2BLaZtYLjm4CTB5pVt4rBL1t7PRNKfTFG0JZ9Q%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=MzUyL1hoTFBLVHRQVWdFSkprNnVXRSsvRnllVkdMZUQ2L05vNklDc0hkUk9sbnRwTFFsbnVKcVViWTJQalAvdHRKVGpiUHYxakZtY292cWt2cmNVL1JGWm4vZkh1cFlYUXdSTWsyUmphTzR2K1lld0w0SEFyQ1NSYjJSUm82ZUZNa25wWlN0VktkaUhIcTRGQTNyRnJoM1VNb1o5S3pROElJS0c5ZWxVYjVWMVlVL3F6VGJPWU1nNnVWWFdaTnZ3OUQvSm5sazVZOTVZeEdoOGlsVWZaM0hMcVhpM1VTYVJ4YlB0WHp0ckFHSTA4cE8rWmVnQ21nRHFiNHNFZEQ0M2d6aXFQY1E4VGpTeGx0NHJIQlF4VHZ0Zy9wVHNreS83KzJwUjBXQjdlY09hTFYySk1FN1hKWTJwL0c3YUU4R0kwN2tPbU1FNDU4eDVSNmc5Q0llQlZZUzdnVGFOSzJkbU5hUGZ2VmJrc05GMlpOcysxMXQ4VzFOeldXUy9GTC9aSGhnREgzZTRncVh0Z3ErNmVFNXFqbThQVkw0d01DL2tuNUZRWExUdTdCWT0tLWVLbDk5Ri90bXVGZktOV09qQlNwRHc9PQ%3D%3D--061977a76435082afb7c95cd0279542389ac6373;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [d78e17ed-d41b-479e-a0f6-e2534a86325a]
+      X-Runtime: ['0.004666']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=LU0sXFXk%2BHWZIlFXS74DZS4kNEyaPh38FTDEJItv08HW1rAg8MmFM3XW8jqgvcLT3k43il91CzW5ZJJQf84sNg%3D%3D;
+          _aquarium_NURSERY_production_session=eDVVV2JST2xyMlhqTGlEYzh1cVVVc2VsTnEyN1JWTzBtckhlVTVQMmJncm1KVnh6QUJvdEN6cmVEQVNnMmNVbHArdThKelMxN2dsakRqWUxkU3NySDdzWlFQM0w5cUU3TmkvdG41WVJXNXFjMTllejh2VkIzdklqYlR0MFdKYnY2VmRmTmtzUHlUNE1SK2pCSEJ1aTdXQkI0UUxCWFhGQWE2OENOaEUwTXlNdDlGRzFXMDNNWjNQVlQ4WnZnL3d0VURJN2srY0E1dVZPbmQ3endmcEZEaG5CNUdDSmltb1k3S21yUTg5cXo0VU1GUzJjOWtsVEQ0TWFVWGVwN0tYOGRNak5yMDNab3g0d0F4WXVqTHlSMWlYNVJ1VldGaU9XYmI1SlRxRjVvNy9NVEI0czhLNXYwaVM5RkF4WVhMZHdsdzNSOEF4YnI4YWJQSnRnRm5GWmNQUGRPQzJXOTRocks2SE9MTzBLbDM2bUFIejV3SC9DN3RIdW9HVWxNWk5BdVVjWlVTNUs5c3VEMU1mb0YxaVBROHNTZFpwL3ZLNkNYN2MwYkkybXZoND0tLWZZckdLR1lzeG53ZzRUY3VqMUtJOWc9PQ%3D%3D--324f063bef3019a8692846f5a3ea48d08a7ef3fd;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 17:45:10 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=ABrO1H203xzs%2BNR4sFv7elsdGexmcF6L7mMYH2%2BpGE37gVKo2JmiWgAMdxVbWDrMq3caKqM7SEJCN05rmwjnug%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=U1VqTko5UDFTQWxaWmZJbXEvK2FTYTBhSDJOQW0rTlZkNWhiazlqNlNVVmxGMVg3STBhV0puV0lBcWJoZXdSeGwvT2JnUlEvUjYzRTJCT1RVeVpYdEZjM3pRZTFnN3hRbk54S0YxR0xrZTZRV253TEJXS3FjQyt3eXpVZmlLcGFmUEkrRGlBMnhzRzhybTJjNzRRNlNSSUgyc2tZSjk5UFJDT0htdm13TWJ2d004WGpuV0RsWFNzOCsrS3NWMlRzeGRFcjZ5a2lJMkpncVpkZk01ZnJQcXNPOUVoQWNpS2J5TVUzWnM3dFBUZEpMNnRYZGVmZ2RlSmo0Tk9oK3FUK2ZlcXY2Q1lkMStLQ3hvYUxBOUFRNGdpb2dPeXliTDZOYXdlWE1ONmZNdWpqWjIrdVY3eWx4OWFSWDZXcmpDdUZ3L3pFL2J5RmtiYWVkanJ5bGpITzdHYmFYQkIrUWZ6V2YvOEJtQUh2R3NNMmpsTkNldmxpRWNyY3BYVVZNUmlIakRobFdaMVBxN0x1aHB0dytFWDRlZ2N1NkN4RCthcTFoREdXUU93eXpCdz0tLXZXekVXd2lwa0wyaGpUV2QvaE00VEE9PQ%3D%3D--67f2402575d057888d7326015467c2e6d2e2b0cc;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [c294debf-82d6-4293-b201-cc55188fe407]
+      X-Runtime: ['0.022747']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=t2JcDP1ZeY4hdyuAa2a1EIrsJlXk4VLNUCJqw0uW6Up8uaKveuL1rcLJO375KuDX58qRf7Du58%2B%2BxwhNrJ2FmQ%3D%3D;
+          _aquarium_NURSERY_production_session=YjJaYTRNVlFoRkVPaXBucEwwdEx4WkNvVXBpSEp4dFdSVmRuSi8rR293Wk1kOTZOZzZmKzkzOGEwRjJlTHM0bkdodXJEaGlUY0UxTnRsUEhJZzN5TUYxVTlzazFQdFo2aU1ZMktXUUF0S1hwTXBwamdiVklRSzNzejhHalZ1NkxDaUg0RWFOcnFVZWRnVnkxWTlBY3lFaWtCdUdrRkFvM2hxdDU0RGR2MjNmMm1qdERxV3k0SmwvY21iNStMdHZFYS8rOEJLNkg0eFB6R1F1NDk2REowUXgzWmM5NVJsdnAwbW9GRXdJTjk1VHFySnQ5UFAyV0s4ZEwwNFp2Q2N2UGJ6VndMSU5NRnpOSnd0UC80L2JSWmY1M3pYa1o2TWh4WEcxc0E3TkRnSDk0Y29TY294Z2NEOXovUWNESGhJWkQ4ZTR5cUdpRzBBZWFxQzBUSjdqSUNLTzBDTzZnOXdaRTlkSjRKcTRyTnVEQzdZY29VR0haUWRMZncybHdIWHhRMnNTNzlhdXF4RTNsRHpSc01tb3dRVjZacW8vWGNtZ25ESExrdW9XWXFzRT0tLW1GS1NkTGxIRWJweUdoSFI0Y1RaNkE9PQ%3D%3D--9343e858dbc69b151e78d69ba320055d6baf159e;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 18:14:56 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=dFmDA1vhJ1n7O8b%2BY9meHFNlZocjJthl1%2BGUQxq%2B7cG%2Fgn2g3FqrehiF1gDxlcvbPkPRrXcpbWc5BPbN%2FbWBEg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=TjdRdkdZLytIaHdZQnh6WDRuZzdsRGcxN1VvbUQ4NHNXcDB1MlpRdjJOaUx2N0d6MXRQUEJsM3dYU3VFNE9pSEhXVEt0Wk83OVVrZXBEbXorYVlmbGNDMlA4ZzdpTWZVV3J6akZ0WkFOdWVLMEFQeXJtVTJUV0NJWVFiTkhvYWRaTXo2NE9iZzQ0aUpkcjcxUUFFVVNsYWlxVUFWUzdZNHpqaUFhYUpVKzlRMnB0NTgyK3FVMmF6R2h3NEY3TVprR0hoMnc0Q25kM01PWEw5YUZQMUJWQmNZN2hobEtRemFqNWNCYU5UbEtKZjdGZW1yclo4eUhmZGEvQUJ0Z04yMUZ0N0VUY09Rd1Z1YXRmcW9QWDd5dHJtUnM1V3Q3dUtCamFJTmZBVG1jNGpzVlNtbk1rTlIzakF1RW41VzlCdWZLeXg2dkROQy8rTGdyK0Q2STAxc0Fjc1I2bWpuVkoyak5GVStZNWgxRTg4VDE5YklOMmFDbTBYS01hMjlvVXV2a0xWbGhxaC9zZDRJenBBaU1PK0UwN1liMmtJckhaUkd5amJod3JTYmJZMD0tLVRhaWVMbWJTbmM1R1ByWVFyVDVxd3c9PQ%3D%3D--8d02fc33ef28f8b69ecf2edec4dbbf9ea876c541;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [f84a8dc2-6e53-409d-8d87-3eaaabbb17c9]
+      X-Runtime: ['0.004122']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=t2JcDP1ZeY4hdyuAa2a1EIrsJlXk4VLNUCJqw0uW6Up8uaKveuL1rcLJO375KuDX58qRf7Du58%2B%2BxwhNrJ2FmQ%3D%3D;
+          _aquarium_NURSERY_production_session=YjJaYTRNVlFoRkVPaXBucEwwdEx4WkNvVXBpSEp4dFdSVmRuSi8rR293Wk1kOTZOZzZmKzkzOGEwRjJlTHM0bkdodXJEaGlUY0UxTnRsUEhJZzN5TUYxVTlzazFQdFo2aU1ZMktXUUF0S1hwTXBwamdiVklRSzNzejhHalZ1NkxDaUg0RWFOcnFVZWRnVnkxWTlBY3lFaWtCdUdrRkFvM2hxdDU0RGR2MjNmMm1qdERxV3k0SmwvY21iNStMdHZFYS8rOEJLNkg0eFB6R1F1NDk2REowUXgzWmM5NVJsdnAwbW9GRXdJTjk1VHFySnQ5UFAyV0s4ZEwwNFp2Q2N2UGJ6VndMSU5NRnpOSnd0UC80L2JSWmY1M3pYa1o2TWh4WEcxc0E3TkRnSDk0Y29TY294Z2NEOXovUWNESGhJWkQ4ZTR5cUdpRzBBZWFxQzBUSjdqSUNLTzBDTzZnOXdaRTlkSjRKcTRyTnVEQzdZY29VR0haUWRMZncybHdIWHhRMnNTNzlhdXF4RTNsRHpSc01tb3dRVjZacW8vWGNtZ25ESExrdW9XWXFzRT0tLW1GS1NkTGxIRWJweUdoSFI0Y1RaNkE9PQ%3D%3D--9343e858dbc69b151e78d69ba320055d6baf159e;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 18:14:56 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=m9RO9PPjOwUDacMaAtDMu3lO6JQg4jo6%2FWEPJXB6ZS9QD7BXdFi3JuDX0%2BSQnJl8FGhfvnTtjzgThG2rl3EJ%2FA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=ZE8xN3dzcnR6RGtwOC9BcmlrR3RTcDQ5L0VvZU0vYmFMeFBpNzlSV29rbU8xL0lwN3VjWXNPTEJZTkFSU0Q0ZHRnV2VybU5GaWJzSFBMbExGc1BzeTlxN0VDYmRXbHo1NURVUnJEUExFV2NDVGsyeFJKVFprc1ZXVXFJQjFLYTBrLzVaVm9ZVlBtUVlhMkszZkEzc1dBR1RQVUZOUlhWbTY0anEwYVdoU0lBUklmS1dRbWJPelltYk9TSjdNWk9QcjRjSVRtTlBORmVIa0pyaHhBNWFkbFBKNWxqV095WnIyUmc1NDNXNlR6ZDNOeWZHREtySytKWUFrRGUvTEpJNmFHL0MxdElucG1OMlR2SjF6KytVZ2dGSE52SktzUXFGSUdyUURGMUNHWjgwNkp2N2hKb0ZOV0hoV0g5c21jUjlPaGd3YXgrTStiYUFTZmVqOEdUTmpBUURzTDJvV2hkUlBneFhQOXdGTkhyaUFMZTVRdVFnbHk2d3F4OFBwVllJM1dScXlnc0UzWGNad0ZLQkhMTmxhQzlSeGdBTGxRUlQxRmxKbHpkQkdPQT0tLXpzYlNCcTZ3OEozU3JlQmpQNmZicmc9PQ%3D%3D--6b00ce4b11c25a0e95f039af0549249e60ce607e;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [6a8988b3-0948-458d-ac9f-00b4987aa3af]
+      X-Runtime: ['0.022511']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=wh7xob%2FlsvmFRRhxH%2BVxEE6jzHZvGyzLQMmztpAcFvzjZQaDuQX2gDkXL5f73bsUNDT0MWzSPjJccLY1zd5HEA%3D%3D;
+          _aquarium_NURSERY_production_session=SG1zR1gvUGZFMkhEMXJva0hSTDJvWldxclpSOSs0Yzlqa2crS1kzZWcvSkplQWFwd0RiRmJ5TFJ4NHQ3U2x0bGhhRjhXdm1pV0NKMVQ3YnJEbzhNNDFCdk1KY3lQaGZmVVNWb2dqSlczTUkyZDBXMjZocCtabW9FZWxYNEM3NzQraEp4akpjeG5uZDY2WlVZdG8yYWFmSXgxT082Zy9xVDd0UnFhWVJNQjM2UzIyTEx1NEl0dnRpcjhIUzUwZ2trZVdWZTVhK3RQdjAybjZPbnJtWmk3NmlvMnBvOVM4by9aMmhYN0pkT3g2NEtqanliVFg4djlZSXpzL1FrRVRseUFNcytmWUlta1hjaGhMTXk3MEdlbThyTzRJbjh5c0U3SVEwbEhBcWhLcXRNNEY5NGVXMWlsTy9qZFhEVi90bHBraG9Jb3Y4L2ZBTnA5eGxtU1pGU0gySmVvS2hmb0p4TG1yOEN0a2tPbTZ5TTNaRFY3c093YklRbmt2emVTTG9DVFYvanlRaU16bUZsMlJPWnJ4S2JnamxHanlRb3A4TTlDNkVFZGdlK3hKOD0tLUEvb2F6bWtveDluZ1JHR3o4RkNBc1E9PQ%3D%3D--d58b3dca8bd426ae2438d18f6757be28a837abea;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 18:16:54 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=dG20eXNuoj6Jjn3YrMzDUC3X56mGqcHjkP9FYozAdVFVFkNbdY7mRzXcSj5I9AlUV0Df7oVg0xqMRkDh0QIkvQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=YnozZjd3YVE4bGRNVFJEd1YvSGZuY0RHNk9zbjlqbjNEV0RWOU52ci91ZTA3VFhRL2RldFZEbVZsN3c4M0hWOXNpQmJQdVFvNW1VQU8wN0J2citrZXN2bm1EbmhxcjlyNXY2elhGb3JrR0prV0JzUko0Tmh0WFp1VHBwV281UnE2U0ZGU0puejNJWSs1ZlQrTkY1aXpYanFDSlVvN1RnQmRJbzBqZHQwQlNuelRLMXhvYlpzaFpkdngvS1J5dWpUZE5SWEdhb0RnOEVBOUFYU28vZzhOb2pWNEtqZjNoT1R0c3pmcDVBeUJRUHFDUXhWRUpuVXpLMG5QS1VMWmhvWHVsYUlVOUFBRXZUZXBjMHRqYlVMN3haUC9pbW9POXMyb0JvbDYxSXBqTytpMzkvbk5ncmNXZm1Ed0VkbDFSVTBVM2NNUzlUQ0dscmhCbldPRHJzK01Fb1VCd3FhWWxYbG9sQ1RSVkkzN0xNS1BVMDdNY1Jyb1hKVk1zK1dPUmhyYTlGVEw4RjduWUVKSDJIRTErdThKUy9sZUpGcFpXUE1BMlQ0TFV3UjVZQT0tLWUxZml2RHFtbURlOU4yMEdzQW4vcWc9PQ%3D%3D--aa524fed2f7a7f5880fcb33e8b029cf48d031c81;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [87501089-8162-4ab7-b092-09757ae7a087]
+      X-Runtime: ['0.004416']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=wh7xob%2FlsvmFRRhxH%2BVxEE6jzHZvGyzLQMmztpAcFvzjZQaDuQX2gDkXL5f73bsUNDT0MWzSPjJccLY1zd5HEA%3D%3D;
+          _aquarium_NURSERY_production_session=SG1zR1gvUGZFMkhEMXJva0hSTDJvWldxclpSOSs0Yzlqa2crS1kzZWcvSkplQWFwd0RiRmJ5TFJ4NHQ3U2x0bGhhRjhXdm1pV0NKMVQ3YnJEbzhNNDFCdk1KY3lQaGZmVVNWb2dqSlczTUkyZDBXMjZocCtabW9FZWxYNEM3NzQraEp4akpjeG5uZDY2WlVZdG8yYWFmSXgxT082Zy9xVDd0UnFhWVJNQjM2UzIyTEx1NEl0dnRpcjhIUzUwZ2trZVdWZTVhK3RQdjAybjZPbnJtWmk3NmlvMnBvOVM4by9aMmhYN0pkT3g2NEtqanliVFg4djlZSXpzL1FrRVRseUFNcytmWUlta1hjaGhMTXk3MEdlbThyTzRJbjh5c0U3SVEwbEhBcWhLcXRNNEY5NGVXMWlsTy9qZFhEVi90bHBraG9Jb3Y4L2ZBTnA5eGxtU1pGU0gySmVvS2hmb0p4TG1yOEN0a2tPbTZ5TTNaRFY3c093YklRbmt2emVTTG9DVFYvanlRaU16bUZsMlJPWnJ4S2JnamxHanlRb3A4TTlDNkVFZGdlK3hKOD0tLUEvb2F6bWtveDluZ1JHR3o4RkNBc1E9PQ%3D%3D--d58b3dca8bd426ae2438d18f6757be28a837abea;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 18:16:54 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=so33seonih1x8xSD4056Uqiow8%2FzXzbWLW6HPi0e%2F2eT9gCT7MfOZM2hI2UHdrBW0j%2F7iPCWJC8x14K9cNyuiw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=TG5jMjUzR29ZeW5VenFUOHZzS0VMb1l6Zjd2OE03Ui8zV1ZGdzBydWdKNDlLMnNPemYyU1pFTDVuYkpOUG53M0JBUE1DeG8rWURLWGdMQlRrQUE4Zmh5a0hIYm01SGt2SXUvdG4zSVQ4MVZqRUNCZzhSTnVBK0Noczh1NmxkRjYydWk2RG9lWTJmTnF4dkhnZ0hTSXJmclN4Z1k4ZkF6cGJ0N1ltM05FaWxEYytDb0xWeVlYeVRvRHlObDJSMks5R25qMDltMDdtcUdPblBRbFZwVUdZYUg1ZUJvY1NIeXZMeHhCc3pzc1VOejVLTnBNUkNjVlI2Y2hvWlVSc3NuV0Nmazl0WjJZbnFTNUU0RzhEUW93WmNiV0NQRm52ZFdhOVhPNnh4cmw1RHFsRldlMzhEOG5TeEVmdWJBQXE4M05oek9oeHpUdXhLQmJ3Y3hwUk01aEhBR1NnWk1JZGFFSWNBaktxZ1JJVTFweHRiMFFMUWJtSUxFTHFUVDA1RmhZem9oVUFOR0ZMeWpySHNrdXR5UHdndEVFUXJCc1QzenZWZHRoNnBKMmZOMD0tLStISDhhWGlOMVZ1akRiVU9rZ01IOUE9PQ%3D%3D--5af11195d0f8666e07ca4f9d20759b7566d677c0;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [f61cd099-b685-4cad-b4f9-0d3c416a0348]
+      X-Runtime: ['0.025186']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=9WLTZO0SaGaU3tP2PnBkm5ZZhhFKZ9AZnT0HHDP73sASL6sdr%2FAmApwMykY02vMHEyS9dqpq6DyBU9gzjqWmEA%3D%3D;
+          _aquarium_NURSERY_production_session=UkhOZkh4b3M3eHFwL3JnV1Y4YU1IeDR3QjRMU1VDK0ZIQU9jbVB5WDJPYjNsTXVyQitaNzB6aWh2SVJ3Rlk0dHZHdnVPUkRpMW5UTmIrdC83ejYwbEV0OU9qUlRjN204c2FWZFB1QUlPYXhIcldSSm9wZHdHdmZNYll2aWo1cmVnTExBZXNGTjhZVEEybFhvYmxSZGZnRGJNekNiV01rVC83TUhBbTJCOVZ0bVBNWnV5VytxVTBRZkNXbHJRVHlBR1I1Z0NxK2J0MCsyZkF4ZmlnNjV2dkF4c3BCQjAzZFVWOEhzWjJ5TGovVGVtbjFUdktqZ0x4UGZNejViTEtFZmRqenV4Z01WY05pTWhsNnl6L0xEdFFUN3Y2R0Q5a1h5Y0lLK2tmV1Q0TGUxU0xxMjdEdWtOR25taGpLdXBKRzFuUE9WQlIxTVBWRmttSkV4NjRJQUtRWUcybW1ReGxpcmJQQm4rYWJNQVdjT3VJcnpvYlBrUEY4a0xWQUtHdUpCYlVkT0k4NzVmdlJrVmd5bGVaUFB6VnE0S3gvRkNVbjU0TTVQeGVRSXlGUT0tLWVsZVF6ZXphaFdNdHFabEh4c3ZDMHc9PQ%3D%3D--998ed3a14679af57ab4e8041b9c438dcce338120;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 18:18:27 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=qt7BVdnT5iJ6P3k0r%2B5kXaWGegwiS3DQvLsld6B572pNk7ksmzGoRnLtYISlRPPBIPtBa8JGSPWg1fpYHSeXug%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=SllpWk1qdkpWNStmZUlrVUNoMWhkRFRHOEo4N1BubjF1d0RuM0dzMDJlMGRPeWExejVvN2R0VDZnS20wS1pXdHNnSjVFLzRwdTN0V3RkbnR3V0ZISUNDVlhJRnRVZ1VodXAwVGtRY01XbEF3U1VmZE91U2pBdzJnTFhMSHY2TExjVXZiMTIvc29Xd0Vyc2tybGpDNGF0aEdjemhxbDZteVh1OGRzTU00ZDd2T0I1MENKTlBSd3VxRWNHUndqMnRYVDJqWk9ocEE3OWZ4Q3Q5UXlzN1Z0b2NCMGFyMHl0WGpjVCt0N0hwaVhDcWlvR0NPTnF0RGJXeE1ia3hhWW84cjVHd3pkbVRwWTJUS0dmWUQyWEJSYUl3Tm5XUGhoSndrQ3ZwNlJhblc1QnJCUWQ1M0FFVEdVcytSSjdYdnBQQVVaQWl5TkJwOU5RQVpOcUQ4WUpzR1JFNjZrZHJNWWhCUXRZQ1Z3SHI3NHpKM1hOZjFRMTZweE9FRDlQcFV5eHd4NitQbTRYU2pNODU5Ny9sZmpyQ1gxT0VQYnBPTGdud1hYZ1YrMEJnb1dMcz0tLXJyNlUzbjdsRE5hY24zMTBBZnFHbEE9PQ%3D%3D--a02a9805d6a3d9602c95465d17c9d71c019a70df;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [7b5f1e04-f83e-4b1a-850e-edff736311ae]
+      X-Runtime: ['0.004342']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=9WLTZO0SaGaU3tP2PnBkm5ZZhhFKZ9AZnT0HHDP73sASL6sdr%2FAmApwMykY02vMHEyS9dqpq6DyBU9gzjqWmEA%3D%3D;
+          _aquarium_NURSERY_production_session=UkhOZkh4b3M3eHFwL3JnV1Y4YU1IeDR3QjRMU1VDK0ZIQU9jbVB5WDJPYjNsTXVyQitaNzB6aWh2SVJ3Rlk0dHZHdnVPUkRpMW5UTmIrdC83ejYwbEV0OU9qUlRjN204c2FWZFB1QUlPYXhIcldSSm9wZHdHdmZNYll2aWo1cmVnTExBZXNGTjhZVEEybFhvYmxSZGZnRGJNekNiV01rVC83TUhBbTJCOVZ0bVBNWnV5VytxVTBRZkNXbHJRVHlBR1I1Z0NxK2J0MCsyZkF4ZmlnNjV2dkF4c3BCQjAzZFVWOEhzWjJ5TGovVGVtbjFUdktqZ0x4UGZNejViTEtFZmRqenV4Z01WY05pTWhsNnl6L0xEdFFUN3Y2R0Q5a1h5Y0lLK2tmV1Q0TGUxU0xxMjdEdWtOR25taGpLdXBKRzFuUE9WQlIxTVBWRmttSkV4NjRJQUtRWUcybW1ReGxpcmJQQm4rYWJNQVdjT3VJcnpvYlBrUEY4a0xWQUtHdUpCYlVkT0k4NzVmdlJrVmd5bGVaUFB6VnE0S3gvRkNVbjU0TTVQeGVRSXlGUT0tLWVsZVF6ZXphaFdNdHFabEh4c3ZDMHc9PQ%3D%3D--998ed3a14679af57ab4e8041b9c438dcce338120;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 18:18:27 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=V2fCyQO9E9bPJuai21cjNXqIMQD7nHkDxbXnFtfADu2wKrqwQV9dssf0%2FxLR%2FbSp%2F%2FUKZxuRQSbZ2zg5ap52PQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=OFM5akswMjhiQnlZUlZsb1d5SU12Q2Y2Nk9oOGpjV3ZvcVEwTjJXREFWM3M0WjUzZEp6SGdEV3RTQittS28zdHJJd3JKR2hTaSs2c0xTS1pRUnBGT0lXVTI4RVVrSUdqNlJSRDN6Y0hHRjRDcm02TWI3bGJsVStkZG9PZTNZcW9kMndnMll1dmROYnV5VmF5TmdiOWlSbEFhL2lyWldrdWxrVWZ3QzJDbm8vY1E4bzJlRVlUTmRwM21QTzNKaXhBZ3VKc3JKQnFHRDdIdUhMbHp0VGJjbE9HOHRuMWRqS2JOb1RpRldiYk1RVDVDNHkyNlhKUm9BaW0wc1g0ekdVemVZOEQydldNekdFSCsxRmtPQWdSellWVEJrZXBGSE5vOHVLczh1ZUQ2aFM3ZHRaT3RPQnNiclRWT2poeW1hdVBncC9QRTdLVGh0RmdnV1VyN2ZPYUR3Ti8xQ3gydnhVRlBENEI2M2Q3bDgzcGEySXFia2t1a3h1Zit3RWN2WG9zWnZ3QTFOMDdKRGdNRVRFcHlORXhCRHdkVGFkUXdTQkxHTWVpVWh5aW9KUT0tLVB5TEtkbzJNMG0vSjlTWlNCV2JrVnc9PQ%3D%3D--75f1f1990b48e350a587c297625fb36ddea85dd8;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [8837eac2-7820-4f47-bf88-18d5b5e58ebd]
+      X-Runtime: ['0.023067']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "OperationType", "method": "find_by_name", "arguments": ["Challenge
+      and Label"]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['90']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=mighiJjlEQZk62IQmvZ4Ip52sR7535kENoNsO0eD2UaqUk249%2Fexy2oqrpD8EnHLpxOTa%2Bs4hdSo06UWHBHDEg%3D%3D;
+          _aquarium_NURSERY_production_session=YmthOU5lZjhSVmxudEJMSkFScVVrOWZab0dwbEVsTjBrVUttdEN6M1V2eWhhM3Fib0NldE83TVJkWnJvb0oyOUc4djRPMHV4YVVxVVc1TnRvVk9UMTlCNXdpQjF1ZE1hd2pYZWpWSTNZUnR3b3NmOUNJZC9wbWVWNDV3Y0wxT0xWMEtPSlVrSk5haUQyMjZvZU9lcTN1K0hhb0grWDcwTnpUWWpaTkViQWRhbkxESjNiTExyM0JHTzRZOGlRalBlRG1vaHY1QWZvRGtHaTFhU2UxUjFWS1FwRC8xYkREd3pFcXQvMWw3Nm1YWitwdFBDNXdMakVTQ1d5cFl5a3dDQWl4QTVOTjA2OHhYY1lCQytWYmF5MEo1cE43SW9zMlVZZS9tZmx4U3ZhcjRUdnlzL2l0K0xzTWJkUVdKWkg5c2RsR2NPT3hESVJ4Vk1PalJwS0hXeXhBZEw3TGowYklJNmpjVWtDcXBKbzM5cDFacmhseVc4ajBBZ2t4MU1qOUw4UWt6ckpiREdVdzZNSmQ2ZzFSUkVkbWY0elBDUzBjNGxNTWxVSllGT0hmST0tLTZPbmMxVVBoWHZoNTBvVDRHNUhqQkE9PQ%3D%3D--059e46c06cc5b4e8ba0166a29dd7498a1626e89d;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"id":764,"name":"Challenge and Label","category":"Yeast Display","deployed":true,"on_the_fly":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-10-13T13:21:26.000-07:00"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 18:40:07 GMT']
+      ETag: [W/"97c002cab5e6b855df02a5477173e780"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=h6fEQaLGlMavU6YuCuDF3UHxEDobjyyUYZh4zmdJFie33ahxzdQ0C6GSaq5sBMw0eJQyTwloMET%2FyLHjPNsMcw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=cVJBWUNJTkFiS3RWUVIvaXkzczVmVmpLQzcwVGpOM0xmeEhEbTNaakZCOENFMFlRcmpZRkxsbXFHRDQrYkp2MjFoblNlZ1l5WmxRaHNSQkdxMU1QY0NHQXJxV0pCSjV5OVVMQVgzQXJCWDRiZXMxaktIb3FhUkhuVVdDTzIvVzZzc3EvMHBjNi8rYmJNSDlZbC9Ob2Z1emZ3bTRrRXl2QS81em5tcHdxZFQ0TWN3eThnZVhrY1lucCtJaDNLbklicGw1UzhIOFJFdmNyeGhydTUrYWl6UlkzR3RDc1RDd3RwOC94TEUvbzFxUzNHc1U3UE55VW1MdHl1S1NhNzFFem40Ry92bHZWVnhXYXJMSncyb2dXRnBva0VOTDZ3bVNpKzEzcFJPeUxodzFRRjNVUy9iZVR0eDd1UkNGZGFzUmhpV0J3ZkpuNnJWNU5JYUd4VGNHUWZJOVh2Z3pjc2thNUpzZXBwWC81aThmZ1JBRmN0TzRqd0lmNDdQVk9jTzlMeUVJSzkxYXNNVnVhUWdvQktrcitrdEE3M3EvQlQyUFduYzhnZVE4YURBYz0tLVl1TkgybnN0M29kR1k2cDZqY1g0c2c9PQ%3D%3D--a2a254aab5081209dc6fe8917cbc3a2b804c1ba3;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [8e748155-a027-4692-95fc-521053b297d4]
+      X-Runtime: ['0.004447']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 764,
+      "parent_class": "OperationType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['165']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=mighiJjlEQZk62IQmvZ4Ip52sR7535kENoNsO0eD2UaqUk249%2Fexy2oqrpD8EnHLpxOTa%2Bs4hdSo06UWHBHDEg%3D%3D;
+          _aquarium_NURSERY_production_session=YmthOU5lZjhSVmxudEJMSkFScVVrOWZab0dwbEVsTjBrVUttdEN6M1V2eWhhM3Fib0NldE83TVJkWnJvb0oyOUc4djRPMHV4YVVxVVc1TnRvVk9UMTlCNXdpQjF1ZE1hd2pYZWpWSTNZUnR3b3NmOUNJZC9wbWVWNDV3Y0wxT0xWMEtPSlVrSk5haUQyMjZvZU9lcTN1K0hhb0grWDcwTnpUWWpaTkViQWRhbkxESjNiTExyM0JHTzRZOGlRalBlRG1vaHY1QWZvRGtHaTFhU2UxUjFWS1FwRC8xYkREd3pFcXQvMWw3Nm1YWitwdFBDNXdMakVTQ1d5cFl5a3dDQWl4QTVOTjA2OHhYY1lCQytWYmF5MEo1cE43SW9zMlVZZS9tZmx4U3ZhcjRUdnlzL2l0K0xzTWJkUVdKWkg5c2RsR2NPT3hESVJ4Vk1PalJwS0hXeXhBZEw3TGowYklJNmpjVWtDcXBKbzM5cDFacmhseVc4ajBBZ2t4MU1qOUw4UWt6ckpiREdVdzZNSmQ2ZzFSUkVkbWY0elBDUzBjNGxNTWxVSllGT0hmST0tLTZPbmMxVVBoWHZoNTBvVDRHNUhqQkE9PQ%3D%3D--059e46c06cc5b4e8ba0166a29dd7498a1626e89d;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":2887,"parent_id":764,"name":"Yeast Culture","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-12-20T10:16:44.000-08:00","parent_class":"OperationType","role":"input","part":null,"routing":"YL","preferred_operation_type_id":763,"preferred_field_type_id":2885,"allowable_field_types":[{"id":3143,"field_type_id":2887,"sample_type_id":45,"object_type_id":667,"created_at":"2017-08-04T15:48:34.000-07:00","updated_at":"2017-08-04T15:48:34.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":667,"name":"Yeast
+        Library Liquid Culture","description":"A special case of yeast culture that
+        contains a strain library ","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T12:04:36.000-07:00","updated_at":"2017-08-04T12:21:02.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3977,"field_type_id":2887,"sample_type_id":5,"object_type_id":428,"created_at":"2017-11-06T16:15:47.000-08:00","updated_at":"2017-11-16T15:42:20.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":428,"name":"Yeast
+        50ml culture","description":"Culture for making comp cells","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2014-07-30T15:07:45.000-07:00","updated_at":"2014-08-12T19:17:15.000-07:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"dispose","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":2890,"parent_id":764,"name":"Protease
+        Concentration","ftype":"number","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:00:33.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":2891,"parent_id":764,"name":"Antibody","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"Ab","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3145,"field_type_id":2891,"sample_type_id":46,"object_type_id":672,"created_at":"2017-08-04T16:01:06.000-07:00","updated_at":"2017-08-04T16:01:06.000-07:00","sample_type":{"id":46,"name":"Antibody","description":"New
+        sample type description","created_at":"2017-08-04T15:58:16.000-07:00","updated_at":"2017-08-04T15:58:16.000-07:00"},"object_type":{"id":672,"name":"Antibody
+        Stock","description":"Purified antibody","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T15:59:34.000-07:00","updated_at":"2017-08-04T15:59:34.000-07:00","unit":"Antibody","cost":0.01,"release_method":"return","release_description":"","sample_type_id":46,"image":"","prefix":"M20","rows":null,"columns":null}}]},{"id":2892,"parent_id":764,"name":"Labeled
+        Yeast Library","ftype":"sample","choices":null,"array":false,"required":null,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T19:13:57.000-07:00","parent_class":"OperationType","role":"output","part":null,"routing":"YL","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3146,"field_type_id":2892,"sample_type_id":45,"object_type_id":673,"created_at":"2017-08-04T16:02:16.000-07:00","updated_at":"2017-08-04T18:28:17.000-07:00","sample_type":{"id":45,"name":"DNA
+        Library","description":"A sample that contains a pool of DNA molecules with
+        many unique sequences","created_at":"2017-08-04T11:58:15.000-07:00","updated_at":"2017-08-04T11:58:15.000-07:00"},"object_type":{"id":673,"name":"Labeled
+        Yeast Library Suspension","description":"Yeast library labeled with dye-conjugated
+        antibody (e.g., anti-Myc-FITC","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-04T16:03:56.000-07:00","updated_at":"2017-08-04T16:03:56.000-07:00","unit":"DNA
+        Library","cost":0.01,"release_method":"return","release_description":"","sample_type_id":45,"image":"","prefix":"","rows":null,"columns":null}},{"id":3997,"field_type_id":2892,"sample_type_id":5,"object_type_id":750,"created_at":"2017-11-13T14:25:31.000-08:00","updated_at":"2017-11-13T14:25:31.000-08:00","sample_type":{"id":5,"name":"Yeast
+        Strain","description":"A strain of yeast distinguished from others by genomic
+        or plasmid modifications","created_at":"2013-10-16T14:37:29.000-07:00","updated_at":"2015-12-08T17:40:57.000-08:00"},"object_type":{"id":750,"name":"Labeled
+        Yeast Strain Suspension","description":"A yeast strain that has been labeled
+        for flow cytometry","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-11-13T14:24:54.000-08:00","updated_at":"2017-11-13T14:24:54.000-08:00","unit":"Yeast
+        Strain","cost":0.01,"release_method":"return","release_description":"","sample_type_id":5,"image":"","prefix":"","rows":null,"columns":null}}]},{"id":3671,"parent_id":764,"name":"Protease","ftype":"sample","choices":null,"array":null,"required":null,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","parent_class":"OperationType","role":"input","part":null,"routing":"P","preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[{"id":3438,"field_type_id":3671,"sample_type_id":50,"object_type_id":689,"created_at":"2017-08-16T09:27:26.000-07:00","updated_at":"2017-08-16T09:27:26.000-07:00","sample_type":{"id":50,"name":"Protease","description":"An
+        enzyme for digesting other proteins","created_at":"2017-08-14T20:03:00.000-07:00","updated_at":"2017-08-14T20:03:00.000-07:00"},"object_type":{"id":689,"name":"Protease
+        Stock","description":"Protease at stock concentration","min":0,"max":1,"handler":"sample_container","safety":"No
+        safety information","cleanup":"No cleanup information","data":"No data","vendor":"No
+        vendor information","created_at":"2017-08-15T09:53:10.000-07:00","updated_at":"2017-08-15T09:53:10.000-07:00","unit":"Protease","cost":0.01,"release_method":"return","release_description":"","sample_type_id":50,"image":"","prefix":"","rows":null,"columns":null}}]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 08 Nov 2018 18:40:07 GMT']
+      ETag: [W/"f81b759e9097c0d41b562040b531beb4"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=vtikidLr7koRODHjekkQoAkABqXqBdyKlnsRqUDw2GyOosi5vflOhx%2F5%2FWMcrRlJMGUk0PjiwFoIK9iEG2LCOA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=NUZrei8rVFMwOTdoUG01dWwySkZXSEE1a1V3ZXJDclkwdzNydS9BcHVwRWtFQUlrOFg2a0JEenAvMjVSY1RJMkJzZ1BnT2N2T2UxN1dsQnkyUTVpYkk4MTRHT21lSWtTaXFoeEhGVTNIbzU5MUNTUC9XTWRKRlYyaFNBRWsrV21VcEErK0RoS3N5ZytuT2dESWpPRzA0MFYzd3JiSFFnQ2w4SitYbHFlOExZK0Y5Q29QbUdYSmlXQ2ZFcmhmNEpxd09Kdm9JR054OVBDc1hyN0prNmtBcHRhVnVzRk1XY1p6b1JaMExBcVpoWFc0TUQzNlB6TFlCakZ0T2w5MGRVYkFlSFQ0STZBRVRBeFZxZ1EzVkVzVHc3aU1MTW1WajlkZGdrTjdjZVJ4NVlXdW1UalRyNnBYNkp3bDNrQmgvbDZhUGZENjlHckdJY1JBSStrQzhXSGwwbHlyVnRiakx6WEVBcnFKMmJud2YyODMyd0l1dVB3d09JdEVTOVZnNVdFQmN2VFJrUGsxWk9iK0NHRkVwTmZ3anl6ZmYzU2YwYlFUVTNLa0x2NU93VT0tLW14N2hWSUxXNGw4MnhCRVhBK0ZxN0E9PQ%3D%3D--27d3c36876e7a96856c94140b5361403c5471836;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [f38ae39f-4943-45b8-910b-56466ef5fb68]
+      X-Runtime: ['0.023241']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

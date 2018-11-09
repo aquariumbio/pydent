@@ -38,9 +38,8 @@ relationships - models relationships are stored
 
 """
 
-from pydent.exceptions import AquariumModelError
-from pydent.marshaller import SchemaModel, ModelRegistry
-from pydent.marshaller import fields
+from pydent.exceptions import AquariumModelError, NoSessionError
+from pydent.marshaller import SchemaModel, ModelRegistry, fields
 from inflection import underscore
 import itertools
 
@@ -69,8 +68,12 @@ class ModelBase(SchemaModel):
         self.add_data({"rid": self._rid, "id": data.get('id', None)})
 
     @classmethod
-    def _set_data(cls, data):
-        instance = cls.__new__(cls)
+    def _set_data(cls, data, calling_obj):
+        if calling_obj is not None:
+            session = calling_obj.session
+        else:
+            session = None
+        instance = cls.__new__(cls, session=session)
         instance.raw = data
         cls.__init__(instance)
         ModelBase.__init__(instance, **data)
@@ -135,16 +138,27 @@ class ModelBase(SchemaModel):
         return model
 
     @classmethod
-    def load(cls, data):
+    def load(cls, *args, **kwargs):
+        raise Exception("This method is now depreciated as of version 0.1.0. Trident now requires"
+                        " model instantiations to be explicitly attached to an AqSession object."
+                        "\nPlease use the following"
+                        " methods to initialize your models, which will automatically attach your session object to"
+                        " the newly constructed instance."
+                        "\n(1) `session.{name}.new(*args, **kwargs)` to initialize a new model using a constructor."
+                        "\n(2) `session.{name}.load(data)  # to initialize a model with data."
+                        "\n(3) `{name}.load_from(data, session)".format(name=cls.__name__))
+
+    @classmethod
+    def load_from(cls, data, obj=None):
         """Create a new model instance from loaded attributes"""
         if isinstance(data, list):
             models = []
             for d in data:
-                model = cls._set_data(d)
+                model = cls._set_data(d, obj)
                 models.append(model)
             return models
         else:
-            model = cls._set_data(data)
+            model = cls._set_data(data, obj)
         return model
 
     def reload(self, data):
@@ -156,14 +170,21 @@ class ModelBase(SchemaModel):
         :return: model instance
         :rtype: ModelBase
         """
-        temp_model = self.__class__.load(data=data)
+        temp_model = self.__class__.load_from(data, self)
         temp_model.connect_to_session(self.session)
         vars(self).update(vars(temp_model))
         return self
 
     @classmethod
     def get_relationships(cls):
-        return cls._model_schema.grouped_fields[fields.Relationship.__name__]
+        grouped = cls._model_schema.grouped_fields
+        relationships = grouped[fields.Relationship.__name__]
+        alias = grouped[fields.Alias.__name__]
+        for aname, alias_field in alias.items():
+            aliased = relationships.get(alias_field.alias, None)
+            if aliased:
+                relationships[aname] = aliased
+        return relationships
 
     @property
     def session(self):
@@ -178,8 +199,15 @@ class ModelBase(SchemaModel):
     def _check_for_session(self):
         """Raises error if model is not connected to a session"""
         if self.session is None:
-            raise AttributeError("No AqSession instance found for '{}'. Use 'connect_to_session' "
-                                 "to connect this model to a session".format(self.__class__.__name__))
+            raise NoSessionError("No AqSession instance found for '{name}' but one is required for the method."
+                                 "\nDo one of the following:"
+                                 "\n(1) - Use 'connect_to_session' after initializing your model."
+                                 "\n(2) - If initializing a model use the session model constructor."
+                                 "\n\t >> USE: \t\t'session.{name}.new(*args, **kwargs)'"
+                                 "\n\t >> DO NOT USE:\t'{name}(*args, **kwargs)'"
+                                 "\n(3) - If initializing with load"
+                                 "\n\t >> USE: \t\t'session.{name}.load(data)"
+                                 "\n\t >> DO NOT USE\t'{name}.load(data)".format(name=self.__class__.__name__))
 
     def no_getter(self, *_):
         """Callback that always returns None"""

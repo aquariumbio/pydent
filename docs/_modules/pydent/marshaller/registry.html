@@ -1,0 +1,242 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  
+  <!-- Licensed under the Apache 2.0 License -->
+  <link rel="stylesheet" type="text/css" href="../../../_static/fonts/open-sans/stylesheet.css" />
+  <!-- Licensed under the SIL Open Font License -->
+  <link rel="stylesheet" type="text/css" href="../../../_static/fonts/source-serif-pro/source-serif-pro.css" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>pydent.marshaller.registry &#8212; Trident 1.0.0a documentation</title>
+    <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  
+   
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="container-wrapper">
+
+      <div id="mobile-toggle">
+        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+      </div>
+  <div id="left-column">
+    <div class="sphinxsidebar"><a href="http://klavinslab.org/trident" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<div>
+    <div>
+        <h1 align="center"><a href="../../../index.html">Trident</a>
+        </h1>
+    </div>
+</div>
+
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<div>
+
+</div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <h2>Table Of Contents</h2>
+  </div>
+  <div class="sidebar-toc">
+    
+    
+      <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Trident Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../browsing.html">Model browsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_notes.html">Developer Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a></li>
+</ul>
+
+    
+  </div>
+</div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <div id="main-search">
+      <form class="form-inline" action="../../../search.html" method="GET" role="form">
+        <div class="input-group">
+          <input name="q" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+        <div id="right-column">
+          
+          <div role="navigation" aria-label="breadcrumbs navigation">
+            <ol class="breadcrumb">
+              <li><a href="../../../index.html">Docs</a></li>
+              
+                <li><a href="../../index.html">Module code</a></li>
+              
+              <li>pydent.marshaller.registry</li>
+            </ol>
+          </div>
+          
+          <div class="document clearer body">
+            
+  <h1>Source code for pydent.marshaller.registry</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Model and schema registry meta-classes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">from</span> <span class="nn">pydent.marshaller.exceptions</span> <span class="k">import</span> <span class="n">ModelRegistryError</span><span class="p">,</span> <span class="n">SchemaRegistryError</span>
+
+
+<div class="viewcode-block" id="SchemaRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry">[docs]</a><span class="k">class</span> <span class="nc">SchemaRegistry</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stores a list of models that can be accessed by name.&quot;&quot;&quot;</span>
+
+    <span class="n">schemas</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># the registry of Schemas instantiated</span>
+    <span class="n">_fields</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># list of fields instantiated</span>
+    <span class="n">_model_class</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># reference to model class the schema is attached to</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__mro__</span>
+        <span class="k">if</span> <span class="n">bases</span> <span class="o">!=</span> <span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;DynamicSchema&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SchemaRegistryError</span><span class="p">(</span><span class="s2">&quot;Cannot register &#39;</span><span class="si">{}</span><span class="s2">&#39; since it already exists.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The registered model class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_class</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The shcmea fields.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_fields</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grouped_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fields grouped by their base classes.</span>
+
+<span class="sd">        Returns empty list of base class not in fields.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grouped</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">mro</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">mro</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="n">grouped</span><span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="vm">__name__</span><span class="p">][</span><span class="n">fname</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
+        <span class="k">return</span> <span class="n">grouped</span>
+
+<div class="viewcode-block" id="SchemaRegistry.make_schema_name"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.make_schema_name">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_schema_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Makes a Schema class name from a model name (appending &#39;Schema&#39; to</span>
+<span class="sd">        name)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;Schema&quot;</span></div>
+
+<div class="viewcode-block" id="SchemaRegistry.get"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets model by model_name.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SchemaRegistryError</span><span class="p">(</span><span class="s2">&quot;Schema </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2"> not found in SchemaRegistry.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SchemaRegistry.get_model_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_model_schema">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_model_schema</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets a model schema from a model name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">make_schema_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="ModelRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry">[docs]</a><span class="k">class</span> <span class="nc">ModelRegistry</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stores list of all models instantiated from the SchemaModel base.&quot;&quot;&quot;</span>
+
+    <span class="n">models</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># the dictionary of model classes instantiated</span>
+    <span class="n">_model_schema</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the class attribute to store the model_classes Schema class</span>
+    <span class="n">_fields_key</span> <span class="o">=</span> <span class="s2">&quot;fields&quot;</span>  <span class="c1"># the class level attribute key to instantiate model fields</span>
+    <span class="n">_data_key</span> <span class="o">=</span> <span class="s2">&quot;__serialized_data&quot;</span>  <span class="c1"># the attribute key used to store serialized data</span>
+    <span class="n">_deserialized_key</span> <span class="o">=</span> <span class="s2">&quot;__deserialized_data&quot;</span>  <span class="c1"># the attribute key used to store serialized data</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bases</span> <span class="o">!=</span> <span class="p">()</span> <span class="ow">and</span> <span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s1">&#39;SchemaModel&#39;</span><span class="p">:</span>
+            <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model_schema</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the class&#39;s schema.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_schema</span>
+
+<div class="viewcode-block" id="ModelRegistry.get_model"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry.get_model">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets a model class by name.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ModelRegistryError</span><span class="p">(</span><span class="s2">&quot;Model &#39;</span><span class="si">{}</span><span class="s2">&#39; not found in registry. Available models:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+        <span class="k">return</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div></div>
+</pre></div>
+
+          </div>
+            
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+<script type="text/javascript">
+  $("#mobile-toggle a").click(function () {
+    $("#left-column").toggle();
+  });
+</script>
+<script type="text/javascript" src="../../../_static/js/bootstrap.js"></script>
+  <div class="footer">
+    &copy; Copyright 2017, University of Washington. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  </body>
+</html>

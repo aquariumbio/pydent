@@ -15,13 +15,14 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.interfaces &#8212; Trident 0.0.34a documentation</title>
+    <title>pydent.interfaces &#8212; Trident 1.0.0a documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   
@@ -37,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -56,7 +57,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.0.34a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
 <div>
 
 </div>
@@ -255,17 +256,17 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves a plan</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pre_ops</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">operations</span>
-        <span class="k">if</span> <span class="n">pre_ops</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">pre_ops</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># pre_ops = plan.operations</span>
+        <span class="c1"># if pre_ops is None:</span>
+        <span class="c1">#     pre_ops = []</span>
         <span class="n">plan_data</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="s2">&quot;plans.json?user_id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
             <span class="n">json_data</span><span class="o">=</span><span class="n">plan_data</span><span class="p">)</span>
         <span class="n">plan</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="n">post_ops</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">operations</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pre_ops</span><span class="p">)):</span>
-            <span class="n">pre_ops</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">post_ops</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="c1"># post_ops = plan.operations</span>
+        <span class="c1"># for i in range(len(pre_ops)):</span>
+        <span class="c1">#     vars(pre_ops[i]).update(vars(post_ops[i]))</span>
         <span class="k">return</span> <span class="n">plan</span></div>
 
     <span class="k">def</span> <span class="nf">save_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">):</span>
@@ -469,14 +470,7 @@
 <span class="sd">        Model instances will be of class defined by self.model.</span>
 <span class="sd">        If data is a list, will return a list of model instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">many</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">post_response</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">post_response</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="n">many</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">many</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">post_response</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
-                <span class="n">model</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">models</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_from</span><span class="p">(</span><span class="n">post_response</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">models</span></div>
 
 <div class="viewcode-block" id="ModelInterface.get"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
@@ -609,13 +603,14 @@
 
 <div class="viewcode-block" id="ModelInterface.new"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.new">[docs]</a>    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new model instance</span>
+<span class="sd">        Creates a new model instance. Attach a session by calling __new__ with session kwargs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">connect_to_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-        <span class="n">instance</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">instance</span></div></div>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -632,7 +627,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

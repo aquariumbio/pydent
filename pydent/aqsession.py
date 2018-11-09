@@ -66,6 +66,10 @@ class AqSession(object):
         for model_name in allmodels:
             self._register_interface(model_name)
 
+    @property
+    def session(self):
+        return self
+
     def set_verbose(self, verbose):
         self.__aqhttp.set_verbose(verbose)
 

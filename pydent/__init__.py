@@ -15,6 +15,10 @@ Submodules
     interfaces
     models
     relationships
+    browser
+    planner
+    marshaller
+    utils
 
 """
 

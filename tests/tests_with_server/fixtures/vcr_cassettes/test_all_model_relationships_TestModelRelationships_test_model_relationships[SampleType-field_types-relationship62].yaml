@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: '{"model": "SampleType", "method": "where", "arguments": {}, "options":
+      {"offset": -1, "limit": 1, "reverse": true}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['115']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=xZ6egEhh%2BlChVfXVPVD8YDggenvqtv9YVI1kUABHZSqerspp7tLf1BOFEB5vpSJ3RUUQmElNf2kq8Up%2BqGs3ow%3D%3D;
+          _aquarium_NURSERY_production_session=WEdBOGo4U21nWnJkZDByZ2ErSE1FeFpEVkE1OVM4ZFJPTFNNcnd5NlhQOWQyQ2lETk1rVDFnYmNwbFBiWnlnMTFkSzQ1ZFkxUklGcE0rMmNnMmZHVm1PWk9LLzNUVTBCd1liZkxDMVBBeXBmaUEwZHJaTjhvWFNsVFpVQ2Zmd3RyQlNWRlV5NytET3BqNUVraGtldXBFQzh2eEx2emF2cDRxM2lJSFM4OEJIZlpXaUNYblMxREZWc0E5ZnJTMlBEVWhkOFVGNDBWbDVacXEvcC92L0cveklUSmdRN0lYalRGbHJMalc1VnZvWkh4SjJvdzUxU25UdXNzQmFPSERadVFEVmZ3Q1dPaEVFZnlwVVpZR2c1Y2F1VVZTN3lrdWV0TDV6Um9vYUxKWHQ2a01tdlAvMEhhUTdKUW5tM3pHRUFiK0lsWjI5SnFTWDJiYVlGclY0RlppQ21MZVRuOUh0T1hvbnZIbHFZWjZVNzdLVGl0aTFFa2tyVytVeHpZMXM3aWZJMDFycENoblZEblBwTEtGcWRKcFVtMFZzWFJ1TkEyNmVlVkdaWFhPYz0tLTZoVW9XMzJuV0doLys5Y3UxNngxOFE9PQ%3D%3D--1cac2424c270f93e630e78a91a59326644cf5ee8;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":86,"name":"Oxalis Line","description":"A unique genotype
+        of Oxalis plant","created_at":"2018-10-19T16:44:17.000-07:00","updated_at":"2018-10-19T16:44:17.000-07:00"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 01 Nov 2018 04:15:25 GMT']
+      ETag: [W/"4382ecd0f698b015e72c90d8e2961d7a"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=h6OCbdVnkrKQwME1vE1NgTMzmxe9aBaYKHIBJYXUYyfck9aEc9S3NiIQJP7uuJOWTlbx9B6TlqlWDi8LLfgxrg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=NkpYUTlnR01zdFM4MW5kWENJVEI4VWU5L1BraExmQ1R5Vkx0M0lFdzlBNjVrNmwwS1A4NktlU0R0WGxGa0J4TXhCaXZjZnVwUGFYcFVOL0huYmFhKzg0cGlwS2NZRU1uaFBXRmhldVh5RUluMUlWMkYvK0s5N2x5OG91MW9SWWJ3N2x3RVlMU0g0UHNjODRuQVJla25TenQvR2dHSjFNSFJIREZiYkcxa3Q2YnZJWWVJazFJclpGekMzbUp0MnZtNlhiV0doeWFERm1rNFVIa21xMnBSQVN0RHVadEtDVytaczB6SnpGVWI2SnpCTlN3eXg0eWV6bkZHaUc2YlBiNWs1R1dhNEI1NFkxbjh1SFR1UHZPYzBVbFhWK0NtK05pY3RvMHdjMERwVXdYcVFGeFNuY0xNWGJuRCtEcEtpQzlES1FOV001dmFEU0VuODFvZmVtQWpvdERqZUR5NndJRFNDOTNhamttTFBUQXFlYU1jVnp5SldURFZJbHFRTjl2QmN3RHFMMUVCVmVSZG1SUVZUb0hHeUpTak1zY2gyZWs1RnRTb05CM3NmST0tLXoyN2FsTm9Pa1laVjgvdWNEajd6UlE9PQ%3D%3D--0503a3237b0978ac67b36929f4f09a25c3a783f8;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [bc75fb9e-a785-4da6-a1a9-8b47f92ca565]
+      X-Runtime: ['0.003216']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldType", "method": "where", "arguments": {"parent_id": 86,
+      "parent_class": "SampleType"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['161']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=xZ6egEhh%2BlChVfXVPVD8YDggenvqtv9YVI1kUABHZSqerspp7tLf1BOFEB5vpSJ3RUUQmElNf2kq8Up%2BqGs3ow%3D%3D;
+          _aquarium_NURSERY_production_session=WEdBOGo4U21nWnJkZDByZ2ErSE1FeFpEVkE1OVM4ZFJPTFNNcnd5NlhQOWQyQ2lETk1rVDFnYmNwbFBiWnlnMTFkSzQ1ZFkxUklGcE0rMmNnMmZHVm1PWk9LLzNUVTBCd1liZkxDMVBBeXBmaUEwZHJaTjhvWFNsVFpVQ2Zmd3RyQlNWRlV5NytET3BqNUVraGtldXBFQzh2eEx2emF2cDRxM2lJSFM4OEJIZlpXaUNYblMxREZWc0E5ZnJTMlBEVWhkOFVGNDBWbDVacXEvcC92L0cveklUSmdRN0lYalRGbHJMalc1VnZvWkh4SjJvdzUxU25UdXNzQmFPSERadVFEVmZ3Q1dPaEVFZnlwVVpZR2c1Y2F1VVZTN3lrdWV0TDV6Um9vYUxKWHQ2a01tdlAvMEhhUTdKUW5tM3pHRUFiK0lsWjI5SnFTWDJiYVlGclY0RlppQ21MZVRuOUh0T1hvbnZIbHFZWjZVNzdLVGl0aTFFa2tyVytVeHpZMXM3aWZJMDFycENoblZEblBwTEtGcWRKcFVtMFZzWFJ1TkEyNmVlVkdaWFhPYz0tLTZoVW9XMzJuV0doLys5Y3UxNngxOFE9PQ%3D%3D--1cac2424c270f93e630e78a91a59326644cf5ee8;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":16004,"parent_id":86,"name":"Source","ftype":"string","choices":null,"array":false,"required":true,"created_at":"2018-10-19T16:45:17.000-07:00","updated_at":"2018-10-19T16:45:17.000-07:00","parent_class":"SampleType","role":null,"part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":16005,"parent_id":86,"name":"New
+        Field","ftype":"string","choices":null,"array":false,"required":false,"created_at":"2018-10-19T16:45:17.000-07:00","updated_at":"2018-10-19T16:45:17.000-07:00","parent_class":"SampleType","role":null,"part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":16006,"parent_id":86,"name":"New
+        Field","ftype":"string","choices":null,"array":false,"required":false,"created_at":"2018-10-19T16:45:17.000-07:00","updated_at":"2018-10-19T16:45:17.000-07:00","parent_class":"SampleType","role":null,"part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":16007,"parent_id":86,"name":"New
+        Field","ftype":"string","choices":null,"array":false,"required":false,"created_at":"2018-10-19T16:45:17.000-07:00","updated_at":"2018-10-19T16:45:17.000-07:00","parent_class":"SampleType","role":null,"part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]},{"id":16008,"parent_id":86,"name":"Species","ftype":"string","choices":null,"array":false,"required":false,"created_at":"2018-10-19T16:45:17.000-07:00","updated_at":"2018-10-19T16:45:17.000-07:00","parent_class":"SampleType","role":null,"part":null,"routing":null,"preferred_operation_type_id":null,"preferred_field_type_id":null,"allowable_field_types":[]}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 01 Nov 2018 04:15:25 GMT']
+      ETag: [W/"eaa685f22f70ec621cd8dacbe9ad1082"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=fIcRymJRogImoLXkJXbTb3GubprM8FBk7C%2BI7rh2sHUnt0UjxOKHhpRwUC93gw14DMsEeW8L0FWSU6bAEFri%2FA%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=RSt0MTRxaHI5QzMzZkNSZ3dxd25QWTZnNERWK20zVUV1bEZLT2ozcmsrdmlEVzRPSkFNR0t6SUppQ1ZGWEZGakRpMkxCZWVmS1pQVGRLMHhUMC9STnJKcjcvSU1CcElLUkU3RUFOdmg4SUE4aFltWFlxOHgzRWRMZGFtYndPYThzdkxBSGxadTlYK1hqakdnbVRBOVRoQWM4MHZHNmhjNlBwUHZjVitsdjEydThpR0RxdVB3NGhtR0NabXRSOUR1SlBZR014bFF2dmsyZ3Q1UTlRK0FwV042dlM4VkdYd2hhd1ZTdjBLUUZiTnZROUJsakJMRjRLaG11ZWRWcWhBWUJOd3BsVlVJa2JjZnhKU1pCako0RXVRSWN6Smp5SXFUeTVrVVQrYm5pZ2llQ1EzYUVVR1lvNkYzUWVqUXEyc3NKelN5VTJwanNaUFhSZ1MzRzNvZkpzMHhSTExiOExYK3hGMWVYUU44VjlhbGpJclRMVDN0VDNyblgvUTNzbVNsRU5vam1rSXZtT080cjFBZTBGWk5XWms4U2FjNkIyd0JRTzV4SW8yT3R4OD0tLXVyMXlITUQ2VFBrZyszaXpRdTdBN0E9PQ%3D%3D--a37a5552ad5bb374f42f529d443ff971635ee964;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [dc75309b-355a-4493-9dfa-9b71de4e3d1f]
+      X-Runtime: ['0.008306']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

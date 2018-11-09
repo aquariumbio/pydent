@@ -354,12 +354,7 @@ class ModelInterface(SessionInterface):
         Model instances will be of class defined by self.model.
         If data is a list, will return a list of model instances.
         """
-        models = self.model.load(post_response)
-        if isinstance(models, list):
-            for model in models:
-                model.connect_to_session(self.session)
-        else:
-            models.connect_to_session(self.session)
+        models = self.model.load_from(post_response, self)
         return models
 
     def get(self, path):
@@ -497,3 +492,6 @@ class ModelInterface(SessionInterface):
         instance = self.model.__new__(self.model, *args, session=self.session, **kwargs)
         self.model.__init__(instance, *args, **kwargs)
         return instance
+
+    def __call__(self, *args, **kwargs):
+        return self.new(*args, **kwargs)

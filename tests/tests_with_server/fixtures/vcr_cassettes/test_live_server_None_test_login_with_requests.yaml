@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: '{"session": {"login": "vrana", "password": "Mountain5"}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['56']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81//sessions.json
+  response:
+    body: {string: '{"message":"Log in successful"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 02 Nov 2018 04:26:27 GMT']
+      ETag: [W/"9eefd57ff8b81648cfff106b9c54a92e"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: ['remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg; path=/;
+          expires=Tue, 02 Nov 2038 04:26:27 -0000', XSRF-TOKEN=SffLYddU9NhO07zatyku2myA0cidroxje8tOdEW65etRRCtPz7uNTmhJnY3SHcTcI2JZEfAkSjMmI%2FbF9552Dw%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=eWZTSlpVS1FkSEhZd1RxaHF6NG5uaDNpMEhJbUhLVUoyUzJzRUpZR1BSKzkwSkM1MW9qWUtoeGxGd05ycGg5SGI0Q3piZDVjSkdLTkRIQ3RtUkZGbUNvR2UyWWxsMnNRNWZvdisxbGdCSGwzUm1HQU9LUjBiblNmeVJLNG8wNTV6MGd6ZXRMbm0waXJlbithcHRCQXNycWYyc1U4SHdEODdsa2hNaTJ2K0ZuMnBudXFidE5hNzRVZG5MQktrMWJsdis2ZnZ5SVJ2TWE1RTkvVW05N0NybmFlZjdxRDg4Y1ZZY0xZOWdneW51VzhTelVDU0J2eDlMdVhzS2dsOU9KZCtqSlRaMTkwSUNOaWJLV1ZsTnZlbXB6N3J5MndNWmlwUzk1SFl0Y21GZ0pnSmhtQ1VwaTIrM3pGR0xRMGgrYWhac0oyRlVkV0V2SVMxWWpWSkhnRnNPK1hvYWpqZkJZTjZ3UmVXOVRqZmdJTllIRlo2aGp4a1lTVkI1djUrVWN5RldMMTNNVGt1TFE1MkQvcWJLUnhVNVJPcWtHSjE2STdQNTRwMUVmNW1JMD0tLUJIR2pvQTIrZEFxZkZvTkkwNElxY0E9PQ%3D%3D--661ea8ebb073d1f637c817d5aefdccb2e85b7488;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [bc53c0b4-9932-41f4-acd6-398a65c1a059]
+      X-Runtime: ['0.076545']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "User", "id": 1}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['26']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=SffLYddU9NhO07zatyku2myA0cidroxje8tOdEW65etRRCtPz7uNTmhJnY3SHcTcI2JZEfAkSjMmI%2FbF9552Dw%3D%3D;
+          _aquarium_NURSERY_production_session=eWZTSlpVS1FkSEhZd1RxaHF6NG5uaDNpMEhJbUhLVUoyUzJzRUpZR1BSKzkwSkM1MW9qWUtoeGxGd05ycGg5SGI0Q3piZDVjSkdLTkRIQ3RtUkZGbUNvR2UyWWxsMnNRNWZvdisxbGdCSGwzUm1HQU9LUjBiblNmeVJLNG8wNTV6MGd6ZXRMbm0waXJlbithcHRCQXNycWYyc1U4SHdEODdsa2hNaTJ2K0ZuMnBudXFidE5hNzRVZG5MQktrMWJsdis2ZnZ5SVJ2TWE1RTkvVW05N0NybmFlZjdxRDg4Y1ZZY0xZOWdneW51VzhTelVDU0J2eDlMdVhzS2dsOU9KZCtqSlRaMTkwSUNOaWJLV1ZsTnZlbXB6N3J5MndNWmlwUzk1SFl0Y21GZ0pnSmhtQ1VwaTIrM3pGR0xRMGgrYWhac0oyRlVkV0V2SVMxWWpWSkhnRnNPK1hvYWpqZkJZTjZ3UmVXOVRqZmdJTllIRlo2aGp4a1lTVkI1djUrVWN5RldMMTNNVGt1TFE1MkQvcWJLUnhVNVJPcWtHSjE2STdQNTRwMUVmNW1JMD0tLUJIR2pvQTIrZEFxZkZvTkkwNElxY0E9PQ%3D%3D--661ea8ebb073d1f637c817d5aefdccb2e85b7488;
+          remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81//json
+  response:
+    body: {string: '{"id":1,"name":"Eric Klavins","login":"klavins","created_at":"2013-06-16T10:26:54.000-07:00","updated_at":"2015-11-17T21:23:18.000-08:00","password_digest":"$2a$10$.KxYZP32kCylaVs9mNxVzu4vyXq5p115E3rrSLAwA8DONO1Ji3l5m","remember_token":"_vfss-nRqQK6kbsBBBhZHQ","admin":true,"key":"VHzz9IW3xnNx8O3cA_P0rKsUWmTVH_Qz9mHKqgE-hNI","groups":[{"id":1,"name":"admin","description":"These
+        users can use administrative functions (make users, etc)","created_at":"2013-11-15T13:37:36.000-08:00","updated_at":"2013-11-15T13:37:36.000-08:00"},{"id":2,"name":"klavins","description":"Group
+        containing only user Eric Klavins","created_at":"2013-11-15T17:29:53.000-08:00","updated_at":"2013-11-15T17:29:53.000-08:00"},{"id":21,"name":"transformers","description":"People
+        who are working on the transformation optimization project.","created_at":"2013-11-25T12:30:50.000-08:00","updated_at":"2014-01-03T17:08:55.000-08:00"},{"id":55,"name":"technicians","description":"Aquarium
+        lab technicians","created_at":"2014-03-10T17:54:01.000-07:00","updated_at":"2015-02-12T08:46:29.000-08:00"},{"id":205,"name":"Hydra","description":"Hydra
+        Team","created_at":"2017-03-17T13:31:25.000-07:00","updated_at":"2017-03-17T13:31:25.000-07:00"}]}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 02 Nov 2018 04:26:27 GMT']
+      ETag: [W/"845f00e183b5c8c260379589dccb580a"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=tClZw769r4onEuEoSYhsBaPGmNJdP0%2FAszyL1aWGyc6smrntplLWHAGIwH8svIYD7CQQCzC1iZDu1DNkF6JaKg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=SDc5YUhLbnpkYzdhVjNEUW5rbEpxa29oRG4yeStLSnpMZFBldWVKRTc0T3RaeldoaWdScFQwYmlJMVR2SG1ESFdpT0pNbXc3WWRFZWU0ZE5BNnVqYUp5UWk5YTRjN041K3dLb0QxaWNKa21sNnVsN01NaHc2WnBxQVpaQTRieS8ybmI5a25SQXh2T1BmNlEzMnJTZDlJalBkWCt6Sk9SajFjNUxzOTcvcnlrU2VpRDJjaEhvYktmK0pBZ1RmN1JCRVZLNk9TN2xObnJaQ1E4UWM4UTNiMFNNM0M2Ny9ZVmxlR1NQRTIzeEU2cXU1V212Tmo2cTFEVlZTczM5SGxVWWxQdno1eGFQOFlpSVNiTkMxWmE1N1luVG0zM1hmWi8relc4ZVM3N1l0RktqbzU5VWtOenMwM1VDMjdXL1NWUm9EMEhwNmRLWEtuUlZNWncxeDlHVTU1R3FydElUYVd2bE5mOHAvY1ZyUVNUMjQ4My9HVVZYald4b1ZTS29pdnF3UC9nMUlWcitWbnMzTkM5anpYWFhMZkVzN01GU25uM1dSQzJMSGEyOU5ZVT0tLWhlelF3SEhHOUhxdm1KRWVyQ2FKTFE9PQ%3D%3D--9c2ae3ba5af113298697ad4508c38390efce71b2;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [e191d91f-7843-49b5-999c-02caf466a093]
+      X-Runtime: ['0.009121']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

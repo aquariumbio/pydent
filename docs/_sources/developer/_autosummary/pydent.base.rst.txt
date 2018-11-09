@@ -14,7 +14,6 @@ pydent.base
    .. autosummary::
    
       ModelBase
-      ModelRegistry
    
    
 

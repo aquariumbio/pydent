@@ -30,7 +30,6 @@ pydent.models
       JobAssociation
       Library
       Membership
-      NamedMixin
       ObjectType
       Operation
       OperationType

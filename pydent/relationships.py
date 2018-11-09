@@ -1,13 +1,14 @@
 """Nested model relationships for Aquarium models.
 """
 
+import json
+
 import inflection
 
-from pydent.base import ModelBase
-from pydent.marshaller import ModelValidationError
 from pydent.marshaller import fields
+from pydent.base import ModelBase
+from pydent.marshaller.exceptions import ModelValidationError
 
-import json
 
 class FieldValidationError(ModelValidationError):
     pass
@@ -21,23 +22,23 @@ class Raw(fields.Field):
 
 class JSON(Raw):
 
-    def _deserialize(self, data):
+    def _deserialize(self, owner, data):
         if isinstance(data, dict):
             return data
         return json.loads(data)
 
-    def _serialize(self, data):
+    def _serialize(self, owner, data):
         return json.dumps(data)
 
 
 class Function(fields.Callback):
 
-    def __init__(self, callback, callback_args=None, callback_kwargs=None, cache=False, data_key=None, many=None, allow_none=True, always_dump=True):
+    def __init__(self, callback, callback_args=None, callback_kwargs=None, cache=False, data_key=None, many=None,
+                 allow_none=True, always_dump=True):
         super().__init__(callback, callback_args, callback_kwargs, cache, data_key, many, allow_none, always_dump)
 
 
 class BaseRelationshipAccessor(fields.RelationshipAccessor):
-
     HOLDER = None
 
 
@@ -58,7 +59,7 @@ class BaseRelationship(fields.Relationship):
             raise Exception("This was not supposed to happen.")
         try:
             return super().fullfill(owner, cache)
-        except fields.RunTimeCallbackAttributeError:
+        except fields.RunTimeCallbackAttributeError as e:
             return BaseRelationshipAccessor.HOLDER
 
     def build_query(self, models):

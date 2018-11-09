@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: '{"model": "Operation", "method": "where", "arguments": {}, "options": {"offset":
+      -1, "limit": 1, "reverse": true}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['114']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=xZ6egEhh%2BlChVfXVPVD8YDggenvqtv9YVI1kUABHZSqerspp7tLf1BOFEB5vpSJ3RUUQmElNf2kq8Up%2BqGs3ow%3D%3D;
+          _aquarium_NURSERY_production_session=WEdBOGo4U21nWnJkZDByZ2ErSE1FeFpEVkE1OVM4ZFJPTFNNcnd5NlhQOWQyQ2lETk1rVDFnYmNwbFBiWnlnMTFkSzQ1ZFkxUklGcE0rMmNnMmZHVm1PWk9LLzNUVTBCd1liZkxDMVBBeXBmaUEwZHJaTjhvWFNsVFpVQ2Zmd3RyQlNWRlV5NytET3BqNUVraGtldXBFQzh2eEx2emF2cDRxM2lJSFM4OEJIZlpXaUNYblMxREZWc0E5ZnJTMlBEVWhkOFVGNDBWbDVacXEvcC92L0cveklUSmdRN0lYalRGbHJMalc1VnZvWkh4SjJvdzUxU25UdXNzQmFPSERadVFEVmZ3Q1dPaEVFZnlwVVpZR2c1Y2F1VVZTN3lrdWV0TDV6Um9vYUxKWHQ2a01tdlAvMEhhUTdKUW5tM3pHRUFiK0lsWjI5SnFTWDJiYVlGclY0RlppQ21MZVRuOUh0T1hvbnZIbHFZWjZVNzdLVGl0aTFFa2tyVytVeHpZMXM3aWZJMDFycENoblZEblBwTEtGcWRKcFVtMFZzWFJ1TkEyNmVlVkdaWFhPYz0tLTZoVW9XMzJuV0doLys5Y3UxNngxOFE9PQ%3D%3D--1cac2424c270f93e630e78a91a59326644cf5ee8;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":260038,"operation_type_id":1460,"status":"planning","user_id":66,"created_at":"2018-10-31T18:48:10.000-07:00","updated_at":"2018-10-31T18:48:10.000-07:00","x":100.0,"y":270.0,"parent_id":null}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 01 Nov 2018 04:14:45 GMT']
+      ETag: [W/"8a5a9f6b23e44bc5d16d38fda2bffa30"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=JfjaXgdC0svZay3TWD5BmE22kS472lSzvXcX8PQfvtt%2ByI63ofH3T2u7yBgKy5%2BPMNP7zZgh1ILDCzneXDPsUg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=dC9yalZSUjJZUStYQzVvVDdIS2tydmp6WFhwT2JpZzlPNitJbkYxd0d4ajU0clJCSVNPWWVmUjcrSHFXK1RTNW84S3pTZThSOEFOeWRaNTNzeG1DWGlkNjhHWmthTDEwNWdZYitQTE9tcng3cy9MbWlVVGwxZG5pSUdjK0hGWG5vT2diWE5NQ1ZMcjhRRWt1aENZb0dPUjF2SkZ6dUs0SEdaVUJzU3pBa0lNNlZMUVlyL3c4RWZ3b05iZnVvVi9JOXFadFZ1Q3dMZkJBVE8vd3drYVhxNFZxVjZYbzB0anlkaXZDZjZsN2RtSUwwSSt0b2tzdFRRR2orTTZ2THN4MnkxeFF6dHlXQ0k5VnhiUXdKUVlwbTc4clZlb3BKZjhGZStsNFlLdHM1Z3g3aElxNkExTG1XdjY1em9YRks4MmJDQ0hFRGdKQkVNQ09HL0x6aWJva1VZeE43L29Wd3c2SytKcHY1YkdzL1d2YkpnWGNISkNmS2RVeGdCRkVlcWRiS3k3UGs0ZXBlTUkvVUQrM2phU0xSZjFRbUMwMUlPZnluRy95ZzQrUEZuRT0tLWFzWFBTdy9KMHhqR3k3R3c3aXhlbVE9PQ%3D%3D--0e8a3f483f93f3a47d85de4cd234e95a97ca21d1;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [93fc1585-c288-4d4b-bd5f-f0d74598ede5]
+      X-Runtime: ['0.014528']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "PlanAssociation", "method": "where", "arguments": {"operation_id":
+      260038}, "options": {"offset": -1, "limit": -1, "reverse": false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['144']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=xZ6egEhh%2BlChVfXVPVD8YDggenvqtv9YVI1kUABHZSqerspp7tLf1BOFEB5vpSJ3RUUQmElNf2kq8Up%2BqGs3ow%3D%3D;
+          _aquarium_NURSERY_production_session=WEdBOGo4U21nWnJkZDByZ2ErSE1FeFpEVkE1OVM4ZFJPTFNNcnd5NlhQOWQyQ2lETk1rVDFnYmNwbFBiWnlnMTFkSzQ1ZFkxUklGcE0rMmNnMmZHVm1PWk9LLzNUVTBCd1liZkxDMVBBeXBmaUEwZHJaTjhvWFNsVFpVQ2Zmd3RyQlNWRlV5NytET3BqNUVraGtldXBFQzh2eEx2emF2cDRxM2lJSFM4OEJIZlpXaUNYblMxREZWc0E5ZnJTMlBEVWhkOFVGNDBWbDVacXEvcC92L0cveklUSmdRN0lYalRGbHJMalc1VnZvWkh4SjJvdzUxU25UdXNzQmFPSERadVFEVmZ3Q1dPaEVFZnlwVVpZR2c1Y2F1VVZTN3lrdWV0TDV6Um9vYUxKWHQ2a01tdlAvMEhhUTdKUW5tM3pHRUFiK0lsWjI5SnFTWDJiYVlGclY0RlppQ21MZVRuOUh0T1hvbnZIbHFZWjZVNzdLVGl0aTFFa2tyVytVeHpZMXM3aWZJMDFycENoblZEblBwTEtGcWRKcFVtMFZzWFJ1TkEyNmVlVkdaWFhPYz0tLTZoVW9XMzJuV0doLys5Y3UxNngxOFE9PQ%3D%3D--1cac2424c270f93e630e78a91a59326644cf5ee8;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":195374,"plan_id":139130,"operation_id":260038,"created_at":"2018-10-31T18:48:10.000-07:00","updated_at":"2018-10-31T18:48:10.000-07:00"}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 01 Nov 2018 04:14:45 GMT']
+      ETag: [W/"ae34b54d5d7a4fd617f891d0081c403c"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=8w%2BWsPt%2FtuDYUvAyhM%2Bq5BuvshyJco2dEi1aBJT6wFKoP8JZXcyTZGqCFfnWOnTzZsrY%2FyqJDaxsUXQqPNaS2w%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=YUo5bUNvakc2dytKVmlNU1VQenZqUlVWeGVGekVySU9ncHZsYUNxUW5JQlNKbWU5SExTYlY2UjlHVXo3TTc5SERIcWQrT2d3K3NRdG5LK2NjWWV6WG9lM1YzOEdhRkRkMmlRbGNqMjc0dEw2MEtyejlWQnZsK2FFUDhHOXBPVVczMFJ3VFNIQTROY05RbWtITHhRVHdnSEM2K0lxcWdoaFl1RDlrRGRuTmtWVGg4M20wclZSYzhNemtaK0VXcnpyOE5tTFVHeVNseTl5YTNIN0ZtVmI5M2ptUTFQUWxiYnYrVGtTaStnSEx0ekIrandFL3ZydzZCOWpPRmtzcWxqSkYvRUFLcnhpWk8rK09WTmZyTHg4dzUwWFNvRktSZ3V4Zkl1ZlNiR0hoUFArMEduL1pUc1NONjhWc1VTTm5IazNHcXZ4VUt0cW9pZDNsV0RuUkkwRE8yenY3YXVPb1J0ajcwa3IrZzFkeGFMbk9haXpuTTJpUmM5WUR0OHJVdExIb3hSS09Fb1dJbjlEa0tCMXZaUGJYUjYwdS8wTnN0UjduZ045eFllMEN1Yz0tLWE3ZGpTMXRWRGlBMTVNQkg5aWlGOEE9PQ%3D%3D--2f2ae49a1757b31a9efee392de4114411b29b0ee;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [159fe2e9-7b94-45d5-a308-6a2afa04f272]
+      X-Runtime: ['0.003603']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1
