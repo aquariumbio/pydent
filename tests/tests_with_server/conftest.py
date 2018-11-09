@@ -65,12 +65,18 @@ def pytest_pyfunc_call(pyfuncitem):
     """Sorts through each test, uses a vcr cassette to run the test, storing the
     request results into a single file location"""
     cassette_name = hash_test_function(pyfuncitem)
-    if USE_VCR:
+    recordmode = pyfuncitem.keywords._markers.get('record', None)
+    if recordmode and recordmode.args[0] != 'no':
+        myvcr.record_mode = recordmode.args[0]
         with myvcr.use_cassette(os.path.join(fixtures_path, cassette_name) + ".yaml"):
             outcome = yield
     else:
         outcome = yield
 
+
+def pytest_collection_modifyitems(items):
+    for item in items:
+        item.add_marker('webtest')
 
 ###########
 # Fixtures

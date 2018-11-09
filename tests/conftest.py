@@ -1,11 +1,61 @@
-import pytest
 import functools
+
+import pytest
+
 from pydent.marshaller import SchemaModel
+from pydent.marshaller.registry import SchemaRegistry, ModelRegistry
+
+
+# def pytest_addoption(parser):
+#     parser.addoption(
+#         "--recordmode", action="store", default="no", help="'no' or 'all' or 'none' or 'all_episodes' or 'once'"
+#     )
+#
+# @pytest.fixture
+# def recordmodeopt(request):
+#     return request.config.getoptions('--recordmode')
+
+
+def pytest_configure(config):
+    # register an additional marker
+    config.addinivalue_line("markers",
+        "recordmode(mode): mark test to have its requests recorded")
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--webtest", action="store_true", default=False, help="run web tests",
+    )
+    parser.addoption(
+        "--recordmode", action="store", default="no", help="[no, all, new_episodes, once, none]"
+    )
+
+
+
+def pytest_collection_modifyitems(config, items):
+    skip_slow = pytest.mark.skip(reason="need --webtest option to run")
+    record_mode = pytest.mark.record(config.getoption('--recordmode'))
+    for item in items:
+        if config.getoption('--recordmode') != 'no':
+            item.add_marker(record_mode)
+        if "webtest" in item.keywords:
+            if not config.getoption('--webtest'):
+                item.add_marker(skip_slow)
+
+
+@pytest.fixture(autouse=True)
+def rollback_registries():
+    """Rollback registries so that any newly created classes will not persist while testing."""
+    old_schemas = dict(SchemaRegistry.schemas)
+    old_models = dict(ModelRegistry.models)
+    print(old_schemas)
+    yield
+    SchemaRegistry.schemas = old_schemas
+    ModelRegistry.models = old_models
 
 
 @pytest.fixture(autouse=True)
 def replace_dir(monkeypatch):
-
     dir_func = functools.partial(SchemaModel.__dir__)
 
     def __dir__(self):

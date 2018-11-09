@@ -55,8 +55,6 @@ class BaseRelationship(fields.Relationship):
                          allow_none=allow_none)
 
     def fullfill(self, owner, cache=None):
-        if self.data_key == 'items':
-            raise Exception("This was not supposed to happen.")
         try:
             return super().fullfill(owner, cache)
         except fields.RunTimeCallbackAttributeError as e:

@@ -149,7 +149,6 @@ class DynamicSchema(metaclass=SchemaRegistry):
         :rtype: None
         """
         setattr(model_class, "_model_schema", cls)
-        setattr(cls, "_model_class", model_class)
 
         schema_fields = {}
         ignored_fields = {}

@@ -2,7 +2,7 @@ import pytest
 
 from pydent.aqhttp import AqHTTP
 from pydent.exceptions import AquariumModelError
-from pydent.models import (FieldValue, FieldType, Sample, Item, ObjectType)
+from pydent.models import (FieldValue, FieldType)
 
 
 def test_fv_simple_constructor(fake_session):
@@ -29,12 +29,12 @@ def test_constructor_with_item(fake_session):
     assert fv.child_item_id == i.id
 
 
-def test_constructor_with_value():
-    fv = FieldValue(
+def test_constructor_with_value(fake_session):
+    fv = fake_session.FieldValue(
         role="input",
         parent_class="Operation",
         value=400,
-        field_type=FieldType(
+        field_type=fake_session.FieldType(
             choices='400'
         )
     )
