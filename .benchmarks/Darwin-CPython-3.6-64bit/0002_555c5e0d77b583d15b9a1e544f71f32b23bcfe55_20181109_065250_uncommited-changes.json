@@ -1,0 +1,3757 @@
+{
+    "machine_info": {
+        "node": "Justins-iMac.local",
+        "processor": "i386",
+        "machine": "x86_64",
+        "python_compiler": "GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.6.3",
+        "python_version": "3.6.3",
+        "python_build": [
+            "default",
+            "Oct 27 2017 12:14:30"
+        ],
+        "release": "16.7.0",
+        "system": "Darwin",
+        "cpu": {
+            "vendor_id": "GenuineIntel",
+            "hardware": "unknown",
+            "brand": "Intel(R) Core(TM) i5-3570K CPU @ 3.40GHz"
+        }
+    },
+    "commit_info": {
+        "id": "555c5e0d77b583d15b9a1e544f71f32b23bcfe55",
+        "time": "2018-11-08T22:48:30-08:00",
+        "author_time": "2018-11-08T22:48:30-08:00",
+        "dirty": true,
+        "project": "trident",
+        "branch": "update_marshaller"
+    },
+    "benchmarks": [
+        {
+            "group": null,
+            "name": "test_set_data[EmptyModel]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_data[EmptyModel]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]"
+            },
+            "param": "EmptyModel",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.007100217975676e-05,
+                "max": 7.520800136262551e-05,
+                "mean": 1.0542036062745414e-05,
+                "stddev": 2.218491478279303e-06,
+                "rounds": 1884,
+                "median": 1.0382005712017417e-05,
+                "iqr": 1.4699617167934775e-07,
+                "q1": 1.0308001947123557e-05,
+                "q3": 1.0454998118802905e-05,
+                "iqr_outliers": 60,
+                "stddev_outliers": 26,
+                "outliers": "26;60",
+                "ld15iqr": 1.0098003258462995e-05,
+                "hd15iqr": 1.0675998055376112e-05,
+                "ops": 94858.33609827117,
+                "total": 0.019861195942212362,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_data[WithFields]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_data[WithFields]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]"
+            },
+            "param": "WithFields",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.1947005987167358e-05,
+                "max": 0.00014496599760605022,
+                "mean": 1.2732631036128163e-05,
+                "stddev": 5.044051035907483e-06,
+                "rounds": 2848,
+                "median": 1.2304997653700411e-05,
+                "iqr": 1.4199395081959665e-07,
+                "q1": 1.2235002941451967e-05,
+                "q3": 1.2376996892271563e-05,
+                "iqr_outliers": 132,
+                "stddev_outliers": 44,
+                "outliers": "44;132",
+                "ld15iqr": 1.2026001058984548e-05,
+                "hd15iqr": 1.2589996913447976e-05,
+                "ops": 78538.3631366175,
+                "total": 0.03626253319089301,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_data[CachedCallback]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_data[CachedCallback]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]"
+            },
+            "param": "CachedCallback",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.1838004866149276e-05,
+                "max": 0.00022562599770026281,
+                "mean": 1.3006144541727175e-05,
+                "stddev": 7.042261499272356e-06,
+                "rounds": 2920,
+                "median": 1.2142998457420617e-05,
+                "iqr": 1.5350451576523483e-07,
+                "q1": 1.2072498066117987e-05,
+                "q3": 1.2226002581883222e-05,
+                "iqr_outliers": 261,
+                "stddev_outliers": 28,
+                "outliers": "28;261",
+                "ld15iqr": 1.1873002222273499e-05,
+                "hd15iqr": 1.2458003766369075e-05,
+                "ops": 76886.73586486246,
+                "total": 0.03797794206184335,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_data[NoCacheCallback]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_data[NoCacheCallback]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]"
+            },
+            "param": "NoCacheCallback",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.1832002201117575e-05,
+                "max": 0.0002406149942544289,
+                "mean": 1.2736959681205917e-05,
+                "stddev": 7.873333180326372e-06,
+                "rounds": 3000,
+                "median": 1.2124000932089984e-05,
+                "iqr": 1.2699456419795752e-07,
+                "q1": 1.2065000191796571e-05,
+                "q3": 1.2191994755994529e-05,
+                "iqr_outliers": 153,
+                "stddev_outliers": 29,
+                "outliers": "29;153",
+                "ld15iqr": 1.188199530588463e-05,
+                "hd15iqr": 1.2387994502205402e-05,
+                "ops": 78511.67193969805,
+                "total": 0.03821087904361775,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_data[ControlModel]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_data[ControlModel]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]"
+            },
+            "param": "ControlModel",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 7.409992880032709e-07,
+                "max": 4.262633228790946e-05,
+                "mean": 7.868039454704885e-07,
+                "stddev": 4.908335355604684e-07,
+                "rounds": 19810,
+                "median": 7.698339080282798e-07,
+                "iqr": 8.166049762318496e-09,
+                "q1": 7.661668253907313e-07,
+                "q3": 7.743328751530498e-07,
+                "iqr_outliers": 1433,
+                "stddev_outliers": 58,
+                "outliers": "58;1433",
+                "ld15iqr": 7.539989989406118e-07,
+                "hd15iqr": 7.866656233090907e-07,
+                "ops": 1270964.6485085017,
+                "total": 0.015586586159770351,
+                "iterations": 6
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_data[Marshmallow]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_data[Marshmallow]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]"
+            },
+            "param": "Marshmallow",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.0594998204614967e-05,
+                "max": 7.416399603243917e-05,
+                "mean": 2.1603737920239812e-05,
+                "stddev": 5.329275690963198e-06,
+                "rounds": 107,
+                "median": 2.0831997971981764e-05,
+                "iqr": 1.6774720279499888e-07,
+                "q1": 2.0769253751495853e-05,
+                "q3": 2.0937000954290852e-05,
+                "iqr_outliers": 10,
+                "stddev_outliers": 3,
+                "outliers": "3;10",
+                "ld15iqr": 2.0594998204614967e-05,
+                "hd15iqr": 2.1230996935628355e-05,
+                "ops": 46288.2860221672,
+                "total": 0.00231159995746566,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_data[Marshmallow2]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_data[Marshmallow2]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]"
+            },
+            "param": "Marshmallow2",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 4.557100328383967e-05,
+                "max": 0.0010791329987114295,
+                "mean": 5.0318766930592745e-05,
+                "stddev": 3.33435068338055e-05,
+                "rounds": 1210,
+                "median": 4.63719989056699e-05,
+                "iqr": 6.230038707144558e-07,
+                "q1": 4.615899524651468e-05,
+                "q3": 4.6781999117229134e-05,
+                "iqr_outliers": 189,
+                "stddev_outliers": 30,
+                "outliers": "30;189",
+                "ld15iqr": 4.557100328383967e-05,
+                "hd15iqr": 4.77700014016591e-05,
+                "ops": 19873.30097693672,
+                "total": 0.06088570798601722,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_dump[EmptyModel]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_dump[EmptyModel]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]"
+            },
+            "param": "EmptyModel",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.732700184220448e-05,
+                "max": 0.0001756429992383346,
+                "mean": 1.837498985972606e-05,
+                "stddev": 6.185490843482298e-06,
+                "rounds": 3353,
+                "median": 1.773999974830076e-05,
+                "iqr": 1.5999830793589354e-07,
+                "q1": 1.766700006555766e-05,
+                "q3": 1.7826998373493552e-05,
+                "iqr_outliers": 199,
+                "stddev_outliers": 47,
+                "outliers": "47;199",
+                "ld15iqr": 1.742799940984696e-05,
+                "hd15iqr": 1.806799991754815e-05,
+                "ops": 54421.79874024204,
+                "total": 0.06161134099966148,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_dump[WithFields]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_dump[WithFields]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]"
+            },
+            "param": "WithFields",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.4171000404749066e-05,
+                "max": 0.00014273999840952456,
+                "mean": 2.5086227365074142e-05,
+                "stddev": 5.695316276179903e-06,
+                "rounds": 730,
+                "median": 2.451050386298448e-05,
+                "iqr": 1.9599974621087313e-07,
+                "q1": 2.4420995032414794e-05,
+                "q3": 2.4616994778625667e-05,
+                "iqr_outliers": 39,
+                "stddev_outliers": 13,
+                "outliers": "13;39",
+                "ld15iqr": 2.4171000404749066e-05,
+                "hd15iqr": 2.493699867045507e-05,
+                "ops": 39862.51043041379,
+                "total": 0.018312945976504125,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_dump[CachedCallback]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_dump[CachedCallback]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]"
+            },
+            "param": "CachedCallback",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.355500328121707e-05,
+                "max": 0.00014082700363360345,
+                "mean": 2.4337344233158523e-05,
+                "stddev": 4.834201882562478e-06,
+                "rounds": 2646,
+                "median": 2.3916996724437922e-05,
+                "iqr": 1.6499689081683755e-07,
+                "q1": 2.3836000764276832e-05,
+                "q3": 2.400099765509367e-05,
+                "iqr_outliers": 131,
+                "stddev_outliers": 41,
+                "outliers": "41;131",
+                "ld15iqr": 2.3589003831148148e-05,
+                "hd15iqr": 2.4250999558717012e-05,
+                "ops": 41089.117630080014,
+                "total": 0.06439661284093745,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_dump[NoCacheCallback]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_dump[NoCacheCallback]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]"
+            },
+            "param": "NoCacheCallback",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.347100235056132e-05,
+                "max": 0.00012876700202468783,
+                "mean": 2.435022617839656e-05,
+                "stddev": 5.17909680103652e-06,
+                "rounds": 2676,
+                "median": 2.3865002731326967e-05,
+                "iqr": 1.7899583326652646e-07,
+                "q1": 2.3774002329446375e-05,
+                "q3": 2.3952998162712902e-05,
+                "iqr_outliers": 150,
+                "stddev_outliers": 46,
+                "outliers": "46;150",
+                "ld15iqr": 2.3512999177910388e-05,
+                "hd15iqr": 2.4233006115537137e-05,
+                "ops": 41067.38034684855,
+                "total": 0.0651612052533892,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_dump[ControlModel]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_dump[ControlModel]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]"
+            },
+            "param": "ControlModel",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.860003459157751e-07,
+                "max": 1.3623000139726655e-05,
+                "mean": 2.9496290476496513e-07,
+                "stddev": 1.566554121223261e-07,
+                "rounds": 19456,
+                "median": 2.8935285038588677e-07,
+                "iqr": 1.4119637746583075e-09,
+                "q1": 2.8870571815573116e-07,
+                "q3": 2.9011768193038947e-07,
+                "iqr_outliers": 893,
+                "stddev_outliers": 60,
+                "outliers": "60;893",
+                "ld15iqr": 2.865884144900038e-07,
+                "hd15iqr": 2.9229404925204376e-07,
+                "ops": 3390256.821605521,
+                "total": 0.005738798275107147,
+                "iterations": 17
+            }
+        },
+        {
+            "group": null,
+            "name": "test_dump[Marshmallow]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_dump[Marshmallow]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]"
+            },
+            "param": "Marshmallow",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.9792998500633985e-05,
+                "max": 0.00012202899961266667,
+                "mean": 2.0712154932619683e-05,
+                "stddev": 4.825648449297402e-06,
+                "rounds": 2355,
+                "median": 2.0150997443124652e-05,
+                "iqr": 1.6575177141930908e-07,
+                "q1": 2.0075249267392792e-05,
+                "q3": 2.02410010388121e-05,
+                "iqr_outliers": 177,
+                "stddev_outliers": 54,
+                "outliers": "54;177",
+                "ld15iqr": 1.9826999050565064e-05,
+                "hd15iqr": 2.049299655482173e-05,
+                "ops": 48280.82849192552,
+                "total": 0.048777124866319355,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_dump[Marshmallow2]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_dump[Marshmallow2]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]"
+            },
+            "param": "Marshmallow2",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 4.34989997302182e-05,
+                "max": 0.0001810850008041598,
+                "mean": 4.740457220228004e-05,
+                "stddev": 1.5363793801996833e-05,
+                "rounds": 208,
+                "median": 4.436499875737354e-05,
+                "iqr": 1.06200241134502e-06,
+                "q1": 4.404649735079147e-05,
+                "q3": 4.510849976213649e-05,
+                "iqr_outliers": 31,
+                "stddev_outliers": 5,
+                "outliers": "5;31",
+                "ld15iqr": 4.34989997302182e-05,
+                "hd15iqr": 4.674800584325567e-05,
+                "ops": 21095.01158944965,
+                "total": 0.009860151018074248,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_attribute[EmptyModel]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_attribute[EmptyModel]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]"
+            },
+            "param": "EmptyModel",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 7.453333334221194e-07,
+                "max": 1.912633403359602e-05,
+                "mean": 7.819007639846613e-07,
+                "stddev": 2.960908752784138e-07,
+                "rounds": 18868,
+                "median": 7.686661168312033e-07,
+                "iqr": 1.1499651009216905e-08,
+                "q1": 7.633328399000069e-07,
+                "q3": 7.748324909092238e-07,
+                "iqr_outliers": 778,
+                "stddev_outliers": 66,
+                "outliers": "66;778",
+                "ld15iqr": 7.474991434719414e-07,
+                "hd15iqr": 7.921662472654134e-07,
+                "ops": 1278934.6756791468,
+                "total": 0.014752903614862591,
+                "iterations": 6
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_attribute[WithFields]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_attribute[WithFields]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]"
+            },
+            "param": "WithFields",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.1404994186013937e-06,
+                "max": 0.00014143050066195428,
+                "mean": 2.2735999534804357e-06,
+                "stddev": 1.8585650659976111e-06,
+                "rounds": 17700,
+                "median": 2.2054991859477013e-06,
+                "iqr": 2.8001522878184915e-08,
+                "q1": 2.1924970496911556e-06,
+                "q3": 2.2204985725693405e-06,
+                "iqr_outliers": 788,
+                "stddev_outliers": 55,
+                "outliers": "55;788",
+                "ld15iqr": 2.150500222342089e-06,
+                "hd15iqr": 2.2625026758760214e-06,
+                "ops": 439831.1138550104,
+                "total": 0.040242719176603714,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_attribute[CachedCallback]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_attribute[CachedCallback]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]"
+            },
+            "param": "CachedCallback",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.1635023585986346e-06,
+                "max": 7.939550050650723e-05,
+                "mean": 2.2881772300479473e-06,
+                "stddev": 1.3762958026393471e-06,
+                "rounds": 17753,
+                "median": 2.2355015971697867e-06,
+                "iqr": 2.5502231437712908e-08,
+                "q1": 2.223499905085191e-06,
+                "q3": 2.249002136522904e-06,
+                "iqr_outliers": 522,
+                "stddev_outliers": 45,
+                "outliers": "45;522",
+                "ld15iqr": 2.185497578466311e-06,
+                "hd15iqr": 2.2874992282595485e-06,
+                "ops": 437029.08449056005,
+                "total": 0.040622010365041206,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_attribute[NoCacheCallback]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_attribute[NoCacheCallback]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]"
+            },
+            "param": "NoCacheCallback",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.180498995585367e-06,
+                "max": 0.00011577600162127055,
+                "mean": 2.307658026063654e-06,
+                "stddev": 1.6007957332890266e-06,
+                "rounds": 17209,
+                "median": 2.245000359835103e-06,
+                "iqr": 2.650267560966313e-08,
+                "q1": 2.2319982235785574e-06,
+                "q3": 2.2585008991882205e-06,
+                "iqr_outliers": 461,
+                "stddev_outliers": 48,
+                "outliers": "48;461",
+                "ld15iqr": 2.1925006876699626e-06,
+                "hd15iqr": 2.298500476172194e-06,
+                "ops": 433339.7707570108,
+                "total": 0.039712486970529426,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_attribute[ControlModel]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_attribute[ControlModel]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]"
+            },
+            "param": "ControlModel",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.7588248485699296e-07,
+                "max": 1.2894470487748657e-05,
+                "mean": 2.8756819669743517e-07,
+                "stddev": 1.7542118441602934e-07,
+                "rounds": 19933,
+                "median": 2.824706504778827e-07,
+                "iqr": 3.5879030988058748e-09,
+                "q1": 2.8064738109926966e-07,
+                "q3": 2.8423528419807553e-07,
+                "iqr_outliers": 374,
+                "stddev_outliers": 38,
+                "outliers": "38;374",
+                "ld15iqr": 2.7588248485699296e-07,
+                "hd15iqr": 2.896468846730011e-07,
+                "ops": 3477436.001214505,
+                "total": 0.005732096864770003,
+                "iterations": 17
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_attribute[Marshmallow]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_attribute[Marshmallow]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]"
+            },
+            "param": "Marshmallow",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.768236513742629e-07,
+                "max": 1.3271059073946054e-05,
+                "mean": 2.9000413140179953e-07,
+                "stddev": 1.7904558451176254e-07,
+                "rounds": 19666,
+                "median": 2.8276468476499704e-07,
+                "iqr": 2.8825632077368054e-09,
+                "q1": 2.8141178464626564e-07,
+                "q3": 2.8429434785400245e-07,
+                "iqr_outliers": 496,
+                "stddev_outliers": 64,
+                "outliers": "64;496",
+                "ld15iqr": 2.7711768566137725e-07,
+                "hd15iqr": 2.8864708249731097e-07,
+                "ops": 3448226.7378960284,
+                "total": 0.005703221248147799,
+                "iterations": 17
+            }
+        },
+        {
+            "group": null,
+            "name": "test_set_attribute[Marshmallow2]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_set_attribute[Marshmallow2]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]"
+            },
+            "param": "Marshmallow2",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.762942184584544e-07,
+                "max": 1.0906647195738247e-05,
+                "mean": 2.8835766522474126e-07,
+                "stddev": 1.3660434315978323e-07,
+                "rounds": 19377,
+                "median": 2.8335318133673245e-07,
+                "iqr": 3.470631781965494e-09,
+                "q1": 2.8170581893338e-07,
+                "q3": 2.851764507153455e-07,
+                "iqr_outliers": 397,
+                "stddev_outliers": 55,
+                "outliers": "55;397",
+                "ld15iqr": 2.7652918908964184e-07,
+                "hd15iqr": 2.904117162175038e-07,
+                "ops": 3467915.441819833,
+                "total": 0.005587506479059845,
+                "iterations": 17
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[EmptyModel-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[EmptyModel-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]",
+                "num": 1
+            },
+            "param": "EmptyModel-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.824999344535172e-06,
+                "max": 0.00022490500123240054,
+                "mean": 1.9653961771106626e-06,
+                "stddev": 1.73490729648759e-06,
+                "rounds": 18051,
+                "median": 1.9260041881352663e-06,
+                "iqr": 4.500179784372449e-08,
+                "q1": 1.9059953046962619e-06,
+                "q3": 1.9509971025399864e-06,
+                "iqr_outliers": 415,
+                "stddev_outliers": 36,
+                "outliers": "36;415",
+                "ld15iqr": 1.839995093178004e-06,
+                "hd15iqr": 2.0189982024021447e-06,
+                "ops": 508803.2691048094,
+                "total": 0.03547736639302457,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[EmptyModel-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[EmptyModel-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]",
+                "num": 10
+            },
+            "param": "EmptyModel-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.536001016385853e-06,
+                "max": 0.00010452200513100252,
+                "mean": 9.847460242313745e-06,
+                "stddev": 2.6903831598107085e-06,
+                "rounds": 7904,
+                "median": 9.671006409917027e-06,
+                "iqr": 6.29952410236001e-08,
+                "q1": 9.643001249060035e-06,
+                "q3": 9.705996490083635e-06,
+                "iqr_outliers": 375,
+                "stddev_outliers": 50,
+                "outliers": "50;375",
+                "ld15iqr": 9.552997653372586e-06,
+                "hd15iqr": 9.800998668652028e-06,
+                "ops": 101549.02638784773,
+                "total": 0.07783432575524785,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[EmptyModel-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[EmptyModel-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]",
+                "num": 100
+            },
+            "param": "EmptyModel-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.612999954493716e-05,
+                "max": 0.00041215599776478484,
+                "mean": 8.830802471493371e-05,
+                "stddev": 1.5045346048047855e-05,
+                "rounds": 1124,
+                "median": 8.642600005259737e-05,
+                "iqr": 2.50496668741107e-07,
+                "q1": 8.632450044387951e-05,
+                "q3": 8.657499711262062e-05,
+                "iqr_outliers": 103,
+                "stddev_outliers": 25,
+                "outliers": "25;103",
+                "ld15iqr": 8.612999954493716e-05,
+                "hd15iqr": 8.695799624547362e-05,
+                "ops": 11323.999186122557,
+                "total": 0.09925821977958549,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[EmptyModel-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[EmptyModel-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]",
+                "num": 1000
+            },
+            "param": "EmptyModel-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0008609209980932064,
+                "max": 0.001125135000620503,
+                "mean": 0.000887936096995346,
+                "stddev": 4.506766029544081e-05,
+                "rounds": 114,
+                "median": 0.0008696810000401456,
+                "iqr": 5.714005965273827e-06,
+                "q1": 0.0008680209939484484,
+                "q3": 0.0008737349999137223,
+                "iqr_outliers": 25,
+                "stddev_outliers": 16,
+                "outliers": "16;25",
+                "ld15iqr": 0.0008609209980932064,
+                "hd15iqr": 0.0008842370007187128,
+                "ops": 1126.2071711960612,
+                "total": 0.10122471505746944,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[WithFields-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[WithFields-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]",
+                "num": 1
+            },
+            "param": "WithFields-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.8020000425167382e-06,
+                "max": 0.00012418199912644923,
+                "mean": 1.914889368412343e-06,
+                "stddev": 1.2696537261234497e-06,
+                "rounds": 19759,
+                "median": 1.8749997252598405e-06,
+                "iqr": 3.699824446812272e-08,
+                "q1": 1.8579958123154938e-06,
+                "q3": 1.8949940567836165e-06,
+                "iqr_outliers": 570,
+                "stddev_outliers": 61,
+                "outliers": "61;570",
+                "ld15iqr": 1.8069986253976822e-06,
+                "hd15iqr": 1.9509971025399864e-06,
+                "ops": 522223.3808886367,
+                "total": 0.037836299030459486,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[WithFields-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[WithFields-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]",
+                "num": 10
+            },
+            "param": "WithFields-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.018003765959293e-06,
+                "max": 0.00013254900113679469,
+                "mean": 9.396511270224719e-06,
+                "stddev": 3.522670558598143e-06,
+                "rounds": 8410,
+                "median": 9.20100137591362e-06,
+                "iqr": 6.40065991319716e-08,
+                "q1": 9.169998520519584e-06,
+                "q3": 9.234005119651556e-06,
+                "iqr_outliers": 380,
+                "stddev_outliers": 44,
+                "outliers": "44;380",
+                "ld15iqr": 9.073999535758048e-06,
+                "hd15iqr": 9.330993634648621e-06,
+                "ops": 106422.4765172963,
+                "total": 0.07902465978258988,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[WithFields-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[WithFields-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]",
+                "num": 100
+            },
+            "param": "WithFields-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.074299694271758e-05,
+                "max": 0.00024410900368820876,
+                "mean": 8.338981805394044e-05,
+                "stddev": 1.137656137717839e-05,
+                "rounds": 1193,
+                "median": 8.18290063762106e-05,
+                "iqr": 7.349990482907742e-07,
+                "q1": 8.147225162247196e-05,
+                "q3": 8.220725067076273e-05,
+                "iqr_outliers": 60,
+                "stddev_outliers": 26,
+                "outliers": "26;60",
+                "ld15iqr": 8.074299694271758e-05,
+                "hd15iqr": 8.334500307682902e-05,
+                "ops": 11991.87170972304,
+                "total": 0.09948405293835094,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[WithFields-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[WithFields-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]",
+                "num": 1000
+            },
+            "param": "WithFields-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.000814797000202816,
+                "max": 0.0010542539966991171,
+                "mean": 0.000837589587192286,
+                "stddev": 3.3880819004236874e-05,
+                "rounds": 109,
+                "median": 0.0008252749976236373,
+                "iqr": 1.3065498933428898e-05,
+                "q1": 0.0008207720002246788,
+                "q3": 0.0008338374991581077,
+                "iqr_outliers": 21,
+                "stddev_outliers": 15,
+                "outliers": "15;21",
+                "ld15iqr": 0.000814797000202816,
+                "hd15iqr": 0.0008564059971831739,
+                "ops": 1193.902139294897,
+                "total": 0.09129726500395918,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[CachedCallback-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[CachedCallback-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 1
+            },
+            "param": "CachedCallback-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.7990023479796946e-06,
+                "max": 0.00019692799833137542,
+                "mean": 1.970434522966617e-06,
+                "stddev": 2.4762345127787294e-06,
+                "rounds": 18242,
+                "median": 1.8700011423788965e-06,
+                "iqr": 3.400054993107915e-08,
+                "q1": 1.8549981177784503e-06,
+                "q3": 1.8889986677095294e-06,
+                "iqr_outliers": 750,
+                "stddev_outliers": 65,
+                "outliers": "65;750",
+                "ld15iqr": 1.8040009308606386e-06,
+                "hd15iqr": 1.9400031305849552e-06,
+                "ops": 507502.27340436314,
+                "total": 0.03594466656795703,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[CachedCallback-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[CachedCallback-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 10
+            },
+            "param": "CachedCallback-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.950999472290277e-06,
+                "max": 0.00015106500359252095,
+                "mean": 9.283439178148984e-06,
+                "stddev": 3.424379126480438e-06,
+                "rounds": 8090,
+                "median": 9.112001862376928e-06,
+                "iqr": 8.300412446260452e-08,
+                "q1": 9.072995453607291e-06,
+                "q3": 9.155999578069896e-06,
+                "iqr_outliers": 223,
+                "stddev_outliers": 37,
+                "outliers": "37;223",
+                "ld15iqr": 8.950999472290277e-06,
+                "hd15iqr": 9.281000529881567e-06,
+                "ops": 107718.70002162163,
+                "total": 0.07510302295122528,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[CachedCallback-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[CachedCallback-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 100
+            },
+            "param": "CachedCallback-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.148699998855591e-05,
+                "max": 0.00031878200388746336,
+                "mean": 8.35853379421119e-05,
+                "stddev": 1.0986825236514587e-05,
+                "rounds": 1187,
+                "median": 8.204799814848229e-05,
+                "iqr": 4.692537913797423e-07,
+                "q1": 8.190899825422093e-05,
+                "q3": 8.237825204560068e-05,
+                "iqr_outliers": 81,
+                "stddev_outliers": 26,
+                "outliers": "26;81",
+                "ld15iqr": 8.148699998855591e-05,
+                "hd15iqr": 8.308699761983007e-05,
+                "ops": 11963.820744405712,
+                "total": 0.09921579613728682,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[CachedCallback-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[CachedCallback-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 1000
+            },
+            "param": "CachedCallback-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0008383349995710887,
+                "max": 0.0010768729989649728,
+                "mean": 0.0008663194550047969,
+                "stddev": 3.1484377297245474e-05,
+                "rounds": 123,
+                "median": 0.0008543320000171661,
+                "iqr": 1.1462756447144784e-05,
+                "q1": 0.0008514697456121212,
+                "q3": 0.000862932502059266,
+                "iqr_outliers": 26,
+                "stddev_outliers": 14,
+                "outliers": "14;26",
+                "ld15iqr": 0.0008383349995710887,
+                "hd15iqr": 0.0008829829966998659,
+                "ops": 1154.3086031635557,
+                "total": 0.10655729296559002,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[NoCacheCallback-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[NoCacheCallback-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 1
+            },
+            "param": "NoCacheCallback-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.57766529203703e-06,
+                "max": 6.521400064229965e-05,
+                "mean": 1.6553489033623299e-06,
+                "stddev": 8.556532759484045e-07,
+                "rounds": 17973,
+                "median": 1.6196669700245063e-06,
+                "iqr": 1.8332987868537435e-08,
+                "q1": 1.6113335732370615e-06,
+                "q3": 1.629666561105599e-06,
+                "iqr_outliers": 493,
+                "stddev_outliers": 54,
+                "outliers": "54;493",
+                "ld15iqr": 1.5840002257997792e-06,
+                "hd15iqr": 1.6573321772739291e-06,
+                "ops": 604102.2517783477,
+                "total": 0.029751585840131097,
+                "iterations": 3
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[NoCacheCallback-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[NoCacheCallback-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 10
+            },
+            "param": "NoCacheCallback-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.043003956321627e-06,
+                "max": 0.00012791199696948752,
+                "mean": 9.296734957655132e-06,
+                "stddev": 1.9485862382638085e-06,
+                "rounds": 8288,
+                "median": 9.221999789588153e-06,
+                "iqr": 7.70014594309032e-08,
+                "q1": 9.185998351313174e-06,
+                "q3": 9.262999810744077e-06,
+                "iqr_outliers": 326,
+                "stddev_outliers": 30,
+                "outliers": "30;326",
+                "ld15iqr": 9.07099456526339e-06,
+                "hd15iqr": 9.379000402987003e-06,
+                "ops": 107564.6454970278,
+                "total": 0.07705133932904573,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[NoCacheCallback-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[NoCacheCallback-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 100
+            },
+            "param": "NoCacheCallback-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.126899774651974e-05,
+                "max": 0.000256840001384262,
+                "mean": 8.343168490992343e-05,
+                "stddev": 8.086970375055542e-06,
+                "rounds": 1175,
+                "median": 8.270499529317021e-05,
+                "iqr": 5.867459549335763e-07,
+                "q1": 8.246100333053619e-05,
+                "q3": 8.304774928546976e-05,
+                "iqr_outliers": 56,
+                "stddev_outliers": 12,
+                "outliers": "12;56",
+                "ld15iqr": 8.158099808497354e-05,
+                "hd15iqr": 8.395999611821026e-05,
+                "ops": 11985.854068267285,
+                "total": 0.09803222976916004,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[NoCacheCallback-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[NoCacheCallback-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 1000
+            },
+            "param": "NoCacheCallback-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0008182960009435192,
+                "max": 0.0009227740010828711,
+                "mean": 0.0008356769836520143,
+                "stddev": 1.7593863244578937e-05,
+                "rounds": 122,
+                "median": 0.0008299285000248346,
+                "iqr": 1.2185002560727298e-05,
+                "q1": 0.0008249819948105142,
+                "q3": 0.0008371669973712415,
+                "iqr_outliers": 17,
+                "stddev_outliers": 18,
+                "outliers": "18;17",
+                "ld15iqr": 0.0008182960009435192,
+                "hd15iqr": 0.0008564390009269118,
+                "ops": 1196.634608302688,
+                "total": 0.10195259200554574,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[ControlModel-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[ControlModel-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]",
+                "num": 1
+            },
+            "param": "ControlModel-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.091497198212891e-07,
+                "max": 4.337249993113801e-06,
+                "mean": 6.270786930378363e-07,
+                "stddev": 8.718380718880053e-08,
+                "rounds": 7263,
+                "median": 6.213500455487519e-07,
+                "iqr": 5.64978108741343e-09,
+                "q1": 6.186503014760091e-07,
+                "q3": 6.243000825634226e-07,
+                "iqr_outliers": 177,
+                "stddev_outliers": 55,
+                "outliers": "55;177",
+                "ld15iqr": 6.102498446125538e-07,
+                "hd15iqr": 6.328002200461924e-07,
+                "ops": 1594696.1858256853,
+                "total": 0.0045544725475338355,
+                "iterations": 20
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[ControlModel-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[ControlModel-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]",
+                "num": 10
+            },
+            "param": "ControlModel-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.2204985725693405e-06,
+                "max": 0.0001469570015615318,
+                "mean": 2.383567199034117e-06,
+                "stddev": 1.9634994570799285e-06,
+                "rounds": 18192,
+                "median": 2.3024986148811877e-06,
+                "iqr": 4.5500200940296054e-08,
+                "q1": 2.280499757034704e-06,
+                "q3": 2.325999957975e-06,
+                "iqr_outliers": 388,
+                "stddev_outliers": 68,
+                "outliers": "68;388",
+                "ld15iqr": 2.2204985725693405e-06,
+                "hd15iqr": 2.39449946093373e-06,
+                "ops": 419539.2520946025,
+                "total": 0.043361854484828655,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[ControlModel-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[ControlModel-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]",
+                "num": 100
+            },
+            "param": "ControlModel-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.683399750618264e-05,
+                "max": 0.0006367680034600198,
+                "mean": 1.8218261223492094e-05,
+                "stddev": 1.2205587453185319e-05,
+                "rounds": 4935,
+                "median": 1.7329002730548382e-05,
+                "iqr": 1.809967216104269e-07,
+                "q1": 1.7245001799892634e-05,
+                "q3": 1.742599852150306e-05,
+                "iqr_outliers": 256,
+                "stddev_outliers": 66,
+                "outliers": "66;256",
+                "ld15iqr": 1.697800325928256e-05,
+                "hd15iqr": 1.7698002920951694e-05,
+                "ops": 54889.980318786926,
+                "total": 0.08990711913793348,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[ControlModel-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[ControlModel-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]",
+                "num": 1000
+            },
+            "param": "ControlModel-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0001704360038274899,
+                "max": 0.0007660459959879518,
+                "mean": 0.00018089610409492747,
+                "stddev": 3.7564612080103895e-05,
+                "rounds": 577,
+                "median": 0.00017527199815958738,
+                "iqr": 2.5637473299866542e-06,
+                "q1": 0.00017366924839734565,
+                "q3": 0.0001762329957273323,
+                "iqr_outliers": 53,
+                "stddev_outliers": 19,
+                "outliers": "19;53",
+                "ld15iqr": 0.0001704360038274899,
+                "hd15iqr": 0.00018029000057140365,
+                "ops": 5528.035028743558,
+                "total": 0.10437705206277315,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[Marshmallow-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[Marshmallow-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]",
+                "num": 1
+            },
+            "param": "Marshmallow-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.091999239288271e-07,
+                "max": 1.3548450078815222e-05,
+                "mean": 6.397533805728695e-07,
+                "stddev": 2.626211571789192e-07,
+                "rounds": 7775,
+                "median": 6.21750223217532e-07,
+                "iqr": 5.50026015844194e-09,
+                "q1": 6.192000000737607e-07,
+                "q3": 6.247002602322027e-07,
+                "iqr_outliers": 286,
+                "stddev_outliers": 63,
+                "outliers": "63;286",
+                "ld15iqr": 6.109497917350382e-07,
+                "hd15iqr": 6.329999450827018e-07,
+                "ops": 1563102.3303144507,
+                "total": 0.004974082533954061,
+                "iterations": 20
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[Marshmallow-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[Marshmallow-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]",
+                "num": 10
+            },
+            "param": "Marshmallow-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.225999196525663e-06,
+                "max": 0.0002929125002992805,
+                "mean": 2.3758276883450086e-06,
+                "stddev": 2.5739757492996712e-06,
+                "rounds": 18872,
+                "median": 2.3005013645160943e-06,
+                "iqr": 3.59978002961725e-08,
+                "q1": 2.2835010895505548e-06,
+                "q3": 2.3194988898467273e-06,
+                "iqr_outliers": 418,
+                "stddev_outliers": 47,
+                "outliers": "47;418",
+                "ld15iqr": 2.2304993763100356e-06,
+                "hd15iqr": 2.3734974092803895e-06,
+                "ops": 420905.945707113,
+                "total": 0.044836620134447,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[Marshmallow-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[Marshmallow-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]",
+                "num": 100
+            },
+            "param": "Marshmallow-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.6694000805728137e-05,
+                "max": 0.0001782039980753325,
+                "mean": 1.7572387603975697e-05,
+                "stddev": 4.936065226120866e-06,
+                "rounds": 5177,
+                "median": 1.719399733701721e-05,
+                "iqr": 1.5499972505494952e-07,
+                "q1": 1.7120997654274106e-05,
+                "q3": 1.7275997379329056e-05,
+                "iqr_outliers": 567,
+                "stddev_outliers": 37,
+                "outliers": "37;567",
+                "ld15iqr": 1.6890997358132154e-05,
+                "hd15iqr": 1.751200034050271e-05,
+                "ops": 56907.46314824931,
+                "total": 0.09097225062578218,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[Marshmallow-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[Marshmallow-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]",
+                "num": 1000
+            },
+            "param": "Marshmallow-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00017017200298141688,
+                "max": 0.0004105970001546666,
+                "mean": 0.00017675036689708692,
+                "stddev": 1.543371000189916e-05,
+                "rounds": 564,
+                "median": 0.00017426149861421436,
+                "iqr": 1.1039992386940867e-06,
+                "q1": 0.0001736129997880198,
+                "q3": 0.0001747169990267139,
+                "iqr_outliers": 53,
+                "stddev_outliers": 23,
+                "outliers": "23;53",
+                "ld15iqr": 0.00017195999680552632,
+                "hd15iqr": 0.0001764939952408895,
+                "ops": 5657.69688377649,
+                "total": 0.09968720692995703,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[Marshmallow2-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[Marshmallow2-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]",
+                "num": 1
+            },
+            "param": "Marshmallow2-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.248003046493977e-07,
+                "max": 2.0975799998268485e-05,
+                "mean": 6.583031404652737e-07,
+                "stddev": 3.864944747037748e-07,
+                "rounds": 13887,
+                "median": 6.426998879760504e-07,
+                "iqr": 7.799826562404633e-09,
+                "q1": 6.390000635292381e-07,
+                "q3": 6.467998900916427e-07,
+                "iqr_outliers": 415,
+                "stddev_outliers": 47,
+                "outliers": "47;415",
+                "ld15iqr": 6.273003236856312e-07,
+                "hd15iqr": 6.585003575310111e-07,
+                "ops": 1519057.009652468,
+                "total": 0.00914185571164119,
+                "iterations": 10
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[Marshmallow2-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[Marshmallow2-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]",
+                "num": 10
+            },
+            "param": "Marshmallow2-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.2405001800507307e-06,
+                "max": 0.00016668899843352847,
+                "mean": 2.376284304653666e-06,
+                "stddev": 1.5783913947584142e-06,
+                "rounds": 18225,
+                "median": 2.3295033315662295e-06,
+                "iqr": 3.500463208183646e-08,
+                "q1": 2.3129978217184544e-06,
+                "q3": 2.348002453800291e-06,
+                "iqr_outliers": 376,
+                "stddev_outliers": 49,
+                "outliers": "49;376",
+                "ld15iqr": 2.260498149553314e-06,
+                "hd15iqr": 2.401000529062003e-06,
+                "ops": 420825.0662774739,
+                "total": 0.043307781452313066,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[Marshmallow2-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[Marshmallow2-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]",
+                "num": 100
+            },
+            "param": "Marshmallow2-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.6572994354646653e-05,
+                "max": 0.00026378899929113686,
+                "mean": 1.7353899211046154e-05,
+                "stddev": 5.452957700241148e-06,
+                "rounds": 5099,
+                "median": 1.7033999029081315e-05,
+                "iqr": 1.6700505511835217e-07,
+                "q1": 1.695499668130651e-05,
+                "q3": 1.7122001736424863e-05,
+                "iqr_outliers": 445,
+                "stddev_outliers": 29,
+                "outliers": "29;445",
+                "ld15iqr": 1.6714002413209528e-05,
+                "hd15iqr": 1.7377999029122293e-05,
+                "ops": 57623.937297243094,
+                "total": 0.08848753207712434,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_field_access[Marshmallow2-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_field_access[Marshmallow2-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]",
+                "num": 1000
+            },
+            "param": "Marshmallow2-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0001697730040177703,
+                "max": 0.0007079200004227459,
+                "mean": 0.0001806382896355554,
+                "stddev": 3.460423119808295e-05,
+                "rounds": 580,
+                "median": 0.00017493900304543786,
+                "iqr": 2.3790016712155193e-06,
+                "q1": 0.00017335899974568747,
+                "q3": 0.000175738001416903,
+                "iqr_outliers": 60,
+                "stddev_outliers": 21,
+                "outliers": "21;60",
+                "ld15iqr": 0.0001699190033832565,
+                "hd15iqr": 0.00017998800467466936,
+                "ops": 5535.924869625028,
+                "total": 0.10477020798862213,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[EmptyModel-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[EmptyModel-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]",
+                "num": 1
+            },
+            "param": "EmptyModel-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.6169991188993056e-06,
+                "max": 4.423766707380613e-05,
+                "mean": 1.7089562560381821e-06,
+                "stddev": 8.226862905087107e-07,
+                "rounds": 18064,
+                "median": 1.672000507824123e-06,
+                "iqr": 2.7997884899377823e-08,
+                "q1": 1.659667759668082e-06,
+                "q3": 1.6876656445674598e-06,
+                "iqr_outliers": 467,
+                "stddev_outliers": 53,
+                "outliers": "53;467",
+                "ld15iqr": 1.618333044461906e-06,
+                "hd15iqr": 1.7296648972357314e-06,
+                "ops": 585152.4850134391,
+                "total": 0.030870585809073557,
+                "iterations": 3
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[EmptyModel-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[EmptyModel-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]",
+                "num": 10
+            },
+            "param": "EmptyModel-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.403003787156194e-06,
+                "max": 0.00014272300177253783,
+                "mean": 9.773049027331258e-06,
+                "stddev": 3.661798756619807e-06,
+                "rounds": 7752,
+                "median": 9.579001925885677e-06,
+                "iqr": 6.29952410236001e-08,
+                "q1": 9.549003152642399e-06,
+                "q3": 9.611998393666e-06,
+                "iqr_outliers": 351,
+                "stddev_outliers": 37,
+                "outliers": "37;351",
+                "ld15iqr": 9.45499778026715e-06,
+                "hd15iqr": 9.707000572234392e-06,
+                "ops": 102322.2125667645,
+                "total": 0.07576067605987191,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[EmptyModel-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[EmptyModel-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]",
+                "num": 100
+            },
+            "param": "EmptyModel-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.556299871997908e-05,
+                "max": 0.00022408700169762596,
+                "mean": 8.746158088534572e-05,
+                "stddev": 9.061289149581696e-06,
+                "rounds": 1131,
+                "median": 8.621299639344215e-05,
+                "iqr": 2.7924579626414925e-07,
+                "q1": 8.610200166003779e-05,
+                "q3": 8.638124745630194e-05,
+                "iqr_outliers": 100,
+                "stddev_outliers": 22,
+                "outliers": "22;100",
+                "ld15iqr": 8.569599594920874e-05,
+                "hd15iqr": 8.681100007379428e-05,
+                "ops": 11433.591639635582,
+                "total": 0.098919047981326,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[EmptyModel-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[EmptyModel-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]",
+                "num": 1000
+            },
+            "param": "EmptyModel-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0008717689997865818,
+                "max": 0.000996069997199811,
+                "mean": 0.0008845970612463517,
+                "stddev": 1.538329102577869e-05,
+                "rounds": 114,
+                "median": 0.0008801635012787301,
+                "iqr": 7.1390095399692655e-06,
+                "q1": 0.0008769599953666329,
+                "q3": 0.0008840990049066022,
+                "iqr_outliers": 14,
+                "stddev_outliers": 12,
+                "outliers": "12;14",
+                "ld15iqr": 0.0008717689997865818,
+                "hd15iqr": 0.0008978699988801964,
+                "ops": 1130.4581982117954,
+                "total": 0.10084406498208409,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[WithFields-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[WithFields-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]",
+                "num": 1
+            },
+            "param": "WithFields-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.61566761865591e-06,
+                "max": 5.522833331876124e-05,
+                "mean": 1.6718870132208162e-06,
+                "stddev": 5.362733241167445e-07,
+                "rounds": 17928,
+                "median": 1.6573321772739291e-06,
+                "iqr": 2.0666144943485728e-08,
+                "q1": 1.6476672802430887e-06,
+                "q3": 1.6683334251865745e-06,
+                "iqr_outliers": 661,
+                "stddev_outliers": 36,
+                "outliers": "36;661",
+                "ld15iqr": 1.6170015442185104e-06,
+                "hd15iqr": 1.6993338552614052e-06,
+                "ops": 598126.543296453,
+                "total": 0.029973590373022857,
+                "iterations": 3
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[WithFields-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[WithFields-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]",
+                "num": 10
+            },
+            "param": "WithFields-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.567993402015418e-06,
+                "max": 2.5348999770358205e-05,
+                "mean": 9.73254271988332e-06,
+                "stddev": 3.415536658455763e-07,
+                "rounds": 8275,
+                "median": 9.707997378427535e-06,
+                "iqr": 7.1995600592345e-08,
+                "q1": 9.673000022303313e-06,
+                "q3": 9.744995622895658e-06,
+                "iqr_outliers": 186,
+                "stddev_outliers": 91,
+                "outliers": "91;186",
+                "ld15iqr": 9.567993402015418e-06,
+                "hd15iqr": 9.852999937720597e-06,
+                "ops": 102748.07198708998,
+                "total": 0.08053679100703448,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[WithFields-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[WithFields-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]",
+                "num": 100
+            },
+            "param": "WithFields-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.549800259061158e-05,
+                "max": 0.00017525899602333084,
+                "mean": 8.623374503166265e-05,
+                "stddev": 3.395495618121247e-06,
+                "rounds": 1122,
+                "median": 8.588300261180848e-05,
+                "iqr": 1.590015017427504e-07,
+                "q1": 8.581300062360242e-05,
+                "q3": 8.597200212534517e-05,
+                "iqr_outliers": 94,
+                "stddev_outliers": 27,
+                "outliers": "27;94",
+                "ld15iqr": 8.558400440961123e-05,
+                "hd15iqr": 8.62139931996353e-05,
+                "ops": 11596.388393346799,
+                "total": 0.0967542619255255,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[WithFields-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[WithFields-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]",
+                "num": 1000
+            },
+            "param": "WithFields-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0008590680008637719,
+                "max": 0.0010747350024757907,
+                "mean": 0.0008719348619518408,
+                "stddev": 2.922611758476157e-05,
+                "rounds": 116,
+                "median": 0.0008620004991826136,
+                "iqr": 5.622998287435621e-06,
+                "q1": 0.0008608844982518349,
+                "q3": 0.0008665074965392705,
+                "iqr_outliers": 15,
+                "stddev_outliers": 11,
+                "outliers": "11;15",
+                "ld15iqr": 0.0008590680008637719,
+                "hd15iqr": 0.0008799040006124415,
+                "ops": 1146.874661900183,
+                "total": 0.10114444398641353,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[CachedCallback-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[CachedCallback-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 1
+            },
+            "param": "CachedCallback-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.6090004161621134e-06,
+                "max": 5.844166783693557e-05,
+                "mean": 1.7011541658593191e-06,
+                "stddev": 1.0609619284708218e-06,
+                "rounds": 18212,
+                "median": 1.652333594392985e-06,
+                "iqr": 2.0666144943485516e-08,
+                "q1": 1.6426662720429401e-06,
+                "q3": 1.6633324169864256e-06,
+                "iqr_outliers": 473,
+                "stddev_outliers": 75,
+                "outliers": "75;473",
+                "ld15iqr": 1.611998110699157e-06,
+                "hd15iqr": 1.6943328470612566e-06,
+                "ops": 587836.1997220065,
+                "total": 0.03098141966862986,
+                "iterations": 3
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[CachedCallback-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[CachedCallback-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 10
+            },
+            "param": "CachedCallback-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.381998097524047e-06,
+                "max": 0.000144015000842046,
+                "mean": 9.691514905540307e-06,
+                "stddev": 3.78879196724063e-06,
+                "rounds": 8148,
+                "median": 9.506999049335718e-06,
+                "iqr": 5.999754648655653e-08,
+                "q1": 9.477997082285583e-06,
+                "q3": 9.53799462877214e-06,
+                "iqr_outliers": 300,
+                "stddev_outliers": 33,
+                "outliers": "33;300",
+                "ld15iqr": 9.388000762555748e-06,
+                "hd15iqr": 9.627998224459589e-06,
+                "ops": 103183.04307908914,
+                "total": 0.07896646345034242,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[CachedCallback-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[CachedCallback-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 100
+            },
+            "param": "CachedCallback-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.594999962951988e-05,
+                "max": 0.00024105500051518902,
+                "mean": 8.856943540365391e-05,
+                "stddev": 9.975094236635109e-06,
+                "rounds": 1132,
+                "median": 8.703400089871138e-05,
+                "iqr": 4.1400198824703693e-07,
+                "q1": 8.681999679538421e-05,
+                "q3": 8.723399878363125e-05,
+                "iqr_outliers": 95,
+                "stddev_outliers": 37,
+                "outliers": "37;95",
+                "ld15iqr": 8.620099833933637e-05,
+                "hd15iqr": 8.78690043464303e-05,
+                "ops": 11290.57665821753,
+                "total": 0.10026060087693622,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[CachedCallback-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[CachedCallback-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 1000
+            },
+            "param": "CachedCallback-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0008687160006957129,
+                "max": 0.0011919749958906323,
+                "mean": 0.0008942124522392354,
+                "stddev": 4.792421708587949e-05,
+                "rounds": 115,
+                "median": 0.0008752099965931848,
+                "iqr": 1.0430503607494757e-05,
+                "q1": 0.0008738340002309997,
+                "q3": 0.0008842645038384944,
+                "iqr_outliers": 21,
+                "stddev_outliers": 13,
+                "outliers": "13;21",
+                "ld15iqr": 0.0008687160006957129,
+                "hd15iqr": 0.0009016800031531602,
+                "ops": 1118.302476660728,
+                "total": 0.10283443200751208,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[NoCacheCallback-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[NoCacheCallback-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 1
+            },
+            "param": "NoCacheCallback-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.6096673789434135e-06,
+                "max": 4.216899833409116e-05,
+                "mean": 1.690233200760727e-06,
+                "stddev": 8.548087647576566e-07,
+                "rounds": 18305,
+                "median": 1.6493334745367367e-06,
+                "iqr": 1.933464470009016e-08,
+                "q1": 1.6403331149679918e-06,
+                "q3": 1.659667759668082e-06,
+                "iqr_outliers": 577,
+                "stddev_outliers": 69,
+                "outliers": "69;577",
+                "ld15iqr": 1.6116658419681091e-06,
+                "hd15iqr": 1.6889995701300602e-06,
+                "ops": 591634.3375280594,
+                "total": 0.03093971873992498,
+                "iterations": 3
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[NoCacheCallback-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[NoCacheCallback-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 10
+            },
+            "param": "NoCacheCallback-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.408999176230282e-06,
+                "max": 0.00023163799778558314,
+                "mean": 9.739443582232184e-06,
+                "stddev": 4.300309312553781e-06,
+                "rounds": 8086,
+                "median": 9.520001185592264e-06,
+                "iqr": 6.199843483045697e-08,
+                "q1": 9.490999218542129e-06,
+                "q3": 9.552997653372586e-06,
+                "iqr_outliers": 268,
+                "stddev_outliers": 33,
+                "outliers": "33;268",
+                "ld15iqr": 9.408999176230282e-06,
+                "hd15iqr": 9.645998943597078e-06,
+                "ops": 102675.27005591114,
+                "total": 0.07875314080592943,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[NoCacheCallback-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[NoCacheCallback-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 100
+            },
+            "param": "NoCacheCallback-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.638500003144145e-05,
+                "max": 0.00028340599965304136,
+                "mean": 8.925989697353312e-05,
+                "stddev": 1.198728962125993e-05,
+                "rounds": 1116,
+                "median": 8.736650124774314e-05,
+                "iqr": 5.189976945985109e-07,
+                "q1": 8.712400085642003e-05,
+                "q3": 8.764299855101854e-05,
+                "iqr_outliers": 97,
+                "stddev_outliers": 32,
+                "outliers": "32;97",
+                "ld15iqr": 8.638500003144145e-05,
+                "hd15iqr": 8.845899719744921e-05,
+                "ops": 11203.239460342586,
+                "total": 0.09961404502246296,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[NoCacheCallback-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[NoCacheCallback-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 1000
+            },
+            "param": "NoCacheCallback-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.000855741003761068,
+                "max": 0.0010269990016240627,
+                "mean": 0.0008806632068971621,
+                "stddev": 2.7890077260510393e-05,
+                "rounds": 116,
+                "median": 0.0008679000020492822,
+                "iqr": 2.000549648073502e-05,
+                "q1": 0.000865600501128938,
+                "q3": 0.0008856059976096731,
+                "iqr_outliers": 11,
+                "stddev_outliers": 16,
+                "outliers": "16;11",
+                "ld15iqr": 0.000855741003761068,
+                "hd15iqr": 0.0009184579976135865,
+                "ops": 1135.5078674437834,
+                "total": 0.10215693200007081,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[ControlModel-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[ControlModel-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]",
+                "num": 1
+            },
+            "param": "ControlModel-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.304995622485876e-07,
+                "max": 1.4734299475094303e-05,
+                "mean": 6.592080356137479e-07,
+                "stddev": 2.440089601720835e-07,
+                "rounds": 13538,
+                "median": 6.471003871411085e-07,
+                "iqr": 7.900234777480385e-09,
+                "q1": 6.433998350985348e-07,
+                "q3": 6.513000698760152e-07,
+                "iqr_outliers": 402,
+                "stddev_outliers": 58,
+                "outliers": "58;402",
+                "ld15iqr": 6.317000952549279e-07,
+                "hd15iqr": 6.631998985540122e-07,
+                "ops": 1516971.799454717,
+                "total": 0.008924358386138953,
+                "iterations": 10
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[ControlModel-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[ControlModel-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]",
+                "num": 10
+            },
+            "param": "ControlModel-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.233497070847079e-06,
+                "max": 0.00019838150183204561,
+                "mean": 2.370716100785358e-06,
+                "stddev": 1.9655146568472916e-06,
+                "rounds": 18783,
+                "median": 2.3025022528599948e-06,
+                "iqr": 3.4502591006457806e-08,
+                "q1": 2.2860003809910268e-06,
+                "q3": 2.3205029719974846e-06,
+                "iqr_outliers": 476,
+                "stddev_outliers": 58,
+                "outliers": "58;476",
+                "ld15iqr": 2.2345011529978365e-06,
+                "hd15iqr": 2.3724969651084393e-06,
+                "ops": 421813.47638746176,
+                "total": 0.04452916052105138,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[ControlModel-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[ControlModel-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]",
+                "num": 100
+            },
+            "param": "ControlModel-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.6643003618810326e-05,
+                "max": 0.0001899679991765879,
+                "mean": 1.751499973841238e-05,
+                "stddev": 5.716757090617553e-06,
+                "rounds": 5066,
+                "median": 1.7054997442755848e-05,
+                "iqr": 1.9000435713678598e-07,
+                "q1": 1.6981997760012746e-05,
+                "q3": 1.7172002117149532e-05,
+                "iqr_outliers": 887,
+                "stddev_outliers": 36,
+                "outliers": "36;887",
+                "ld15iqr": 1.670899655437097e-05,
+                "hd15iqr": 1.745999907143414e-05,
+                "ops": 57093.92035027478,
+                "total": 0.08873098867479712,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[ControlModel-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[ControlModel-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]",
+                "num": 1000
+            },
+            "param": "ControlModel-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00017011400632327422,
+                "max": 0.00040449700463796034,
+                "mean": 0.0001767534669296664,
+                "stddev": 1.8691275919946573e-05,
+                "rounds": 576,
+                "median": 0.00017347650282317773,
+                "iqr": 9.86001396086067e-07,
+                "q1": 0.00017296599980909377,
+                "q3": 0.00017395200120517984,
+                "iqr_outliers": 69,
+                "stddev_outliers": 22,
+                "outliers": "22;69",
+                "ld15iqr": 0.00017149299674201757,
+                "hd15iqr": 0.0001754569966578856,
+                "ops": 5657.597654918527,
+                "total": 0.10180999695148785,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[Marshmallow-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[Marshmallow-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]",
+                "num": 1
+            },
+            "param": "Marshmallow-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.199996278155595e-07,
+                "max": 2.0840499928453937e-05,
+                "mean": 6.577620531743989e-07,
+                "stddev": 3.915443343396893e-07,
+                "rounds": 13773,
+                "median": 6.38599885860458e-07,
+                "iqr": 8.000642992556137e-09,
+                "q1": 6.348993338178843e-07,
+                "q3": 6.428999768104404e-07,
+                "iqr_outliers": 437,
+                "stddev_outliers": 63,
+                "outliers": "63;437",
+                "ld15iqr": 6.233000021893531e-07,
+                "hd15iqr": 6.549998943228275e-07,
+                "ops": 1520306.6141835658,
+                "total": 0.009059356758370987,
+                "iterations": 10
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[Marshmallow-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[Marshmallow-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]",
+                "num": 10
+            },
+            "param": "Marshmallow-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.2460008040070534e-06,
+                "max": 0.00014949749674997292,
+                "mean": 2.3583459074790036e-06,
+                "stddev": 1.3402931243339675e-06,
+                "rounds": 18577,
+                "median": 2.318502083653584e-06,
+                "iqr": 3.300010575912893e-08,
+                "q1": 2.3030006559565663e-06,
+                "q3": 2.3360007617156953e-06,
+                "iqr_outliers": 418,
+                "stddev_outliers": 45,
+                "outliers": "45;418",
+                "ld15iqr": 2.2550011635757983e-06,
+                "hd15iqr": 2.385502739343792e-06,
+                "ops": 424026.00773224485,
+                "total": 0.04381099192323745,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[Marshmallow-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[Marshmallow-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]",
+                "num": 100
+            },
+            "param": "Marshmallow-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.6723999578971416e-05,
+                "max": 0.00024032600049395114,
+                "mean": 1.750622942337436e-05,
+                "stddev": 6.557536115613765e-06,
+                "rounds": 5087,
+                "median": 1.7071004549507052e-05,
+                "iqr": 1.619919203221798e-07,
+                "q1": 1.699600397842005e-05,
+                "q3": 1.715799589874223e-05,
+                "iqr_outliers": 418,
+                "stddev_outliers": 36,
+                "outliers": "36;418",
+                "ld15iqr": 1.6754995158407837e-05,
+                "hd15iqr": 1.740300649544224e-05,
+                "ops": 57122.52340671359,
+                "total": 0.08905418907670537,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[Marshmallow-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[Marshmallow-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]",
+                "num": 1000
+            },
+            "param": "Marshmallow-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00017155599925899878,
+                "max": 0.0003519329984555952,
+                "mean": 0.00017803677443650544,
+                "stddev": 1.5739845864431994e-05,
+                "rounds": 501,
+                "median": 0.00017506400035927072,
+                "iqr": 8.312526915688068e-07,
+                "q1": 0.00017463299991504755,
+                "q3": 0.00017546425260661636,
+                "iqr_outliers": 57,
+                "stddev_outliers": 23,
+                "outliers": "23;57",
+                "ld15iqr": 0.00017339999612886459,
+                "hd15iqr": 0.00017729299725033343,
+                "ops": 5616.81710514609,
+                "total": 0.08919642399268923,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[Marshmallow2-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[Marshmallow2-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]",
+                "num": 1
+            },
+            "param": "Marshmallow2-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.072499672882259e-07,
+                "max": 9.588450120645576e-06,
+                "mean": 6.311197571948665e-07,
+                "stddev": 2.272203777024005e-07,
+                "rounds": 7711,
+                "median": 6.181999196996912e-07,
+                "iqr": 4.899993655271913e-09,
+                "q1": 6.158999894978478e-07,
+                "q3": 6.207999831531197e-07,
+                "iqr_outliers": 254,
+                "stddev_outliers": 36,
+                "outliers": "36;254",
+                "ld15iqr": 6.085501809138805e-07,
+                "hd15iqr": 6.281501555349678e-07,
+                "ops": 1584485.3351520707,
+                "total": 0.004866564447729608,
+                "iterations": 20
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[Marshmallow2-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[Marshmallow2-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]",
+                "num": 10
+            },
+            "param": "Marshmallow2-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.2304993763100356e-06,
+                "max": 0.00015110250024008565,
+                "mean": 2.343306145016408e-06,
+                "stddev": 1.5471529410369102e-06,
+                "rounds": 18458,
+                "median": 2.2909989638719708e-06,
+                "iqr": 3.100285539403558e-08,
+                "q1": 2.2759995772503316e-06,
+                "q3": 2.3070024326443672e-06,
+                "iqr_outliers": 388,
+                "stddev_outliers": 53,
+                "outliers": "53;388",
+                "ld15iqr": 2.2304993763100356e-06,
+                "hd15iqr": 2.353997842874378e-06,
+                "ops": 426747.4833054722,
+                "total": 0.04325274482471286,
+                "iterations": 2
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[Marshmallow2-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[Marshmallow2-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]",
+                "num": 100
+            },
+            "param": "Marshmallow2-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.669899938860908e-05,
+                "max": 0.00014844399993307889,
+                "mean": 1.74722117946448e-05,
+                "stddev": 4.375569408262064e-06,
+                "rounds": 5132,
+                "median": 1.705899921944365e-05,
+                "iqr": 2.3800384951755404e-07,
+                "q1": 1.6975995094981045e-05,
+                "q3": 1.72139989444986e-05,
+                "iqr_outliers": 974,
+                "stddev_outliers": 41,
+                "outliers": "41;974",
+                "ld15iqr": 1.669899938860908e-05,
+                "hd15iqr": 1.7575002857483923e-05,
+                "ops": 57233.73845013132,
+                "total": 0.08966739093011711,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_data_access[Marshmallow2-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_data_access[Marshmallow2-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]",
+                "num": 1000
+            },
+            "param": "Marshmallow2-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00017664099868852645,
+                "max": 0.00037397399864858016,
+                "mean": 0.0001829061779550412,
+                "stddev": 1.4563079300275052e-05,
+                "rounds": 399,
+                "median": 0.00017996200040215626,
+                "iqr": 1.069744030246511e-06,
+                "q1": 0.00017943150123755913,
+                "q3": 0.00018050124526780564,
+                "iqr_outliers": 55,
+                "stddev_outliers": 21,
+                "outliers": "21;55",
+                "ld15iqr": 0.00017783999646781012,
+                "hd15iqr": 0.00018269499560119584,
+                "ops": 5467.28388937088,
+                "total": 0.07297956500406144,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_access_to_missing[CachedCallback-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_access_to_missing[CachedCallback-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 1
+            },
+            "param": "CachedCallback-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00011568199988687411,
+                "max": 0.00026191000506514683,
+                "mean": 0.00014774905950060567,
+                "stddev": 1.262368905673475e-05,
+                "rounds": 569,
+                "median": 0.00015049400099087507,
+                "iqr": 1.3567996575147845e-05,
+                "q1": 0.00013729600323131308,
+                "q3": 0.00015086399980646092,
+                "iqr_outliers": 21,
+                "stddev_outliers": 34,
+                "outliers": "34;21",
+                "ld15iqr": 0.00012237500050105155,
+                "hd15iqr": 0.00017426400154363364,
+                "ops": 6768.232592342835,
+                "total": 0.08406921485584462,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_access_to_missing[CachedCallback-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_access_to_missing[CachedCallback-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 10
+            },
+            "param": "CachedCallback-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0013705050005228259,
+                "max": 0.0016119930005515926,
+                "mean": 0.0014804236419497182,
+                "stddev": 7.210766234508625e-05,
+                "rounds": 67,
+                "median": 0.0015015030003269203,
+                "iqr": 0.00013045075502304826,
+                "q1": 0.001399796250552754,
+                "q3": 0.0015302470055758022,
+                "iqr_outliers": 0,
+                "stddev_outliers": 30,
+                "outliers": "30;0",
+                "ld15iqr": 0.0013705050005228259,
+                "hd15iqr": 0.0016119930005515926,
+                "ops": 675.4823225350548,
+                "total": 0.09918838401063113,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_access_to_missing[CachedCallback-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_access_to_missing[CachedCallback-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 100
+            },
+            "param": "CachedCallback-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.014015082997502759,
+                "max": 0.01539092100574635,
+                "mean": 0.015118018875000416,
+                "stddev": 0.0004508502298798764,
+                "rounds": 8,
+                "median": 0.01524298849835759,
+                "iqr": 0.00012021399743389338,
+                "q1": 0.015202935501292814,
+                "q3": 0.015323149498726707,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.015180046000750735,
+                "hd15iqr": 0.01539092100574635,
+                "ops": 66.14623306587005,
+                "total": 0.12094415100000333,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_access_to_missing[CachedCallback-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_access_to_missing[CachedCallback-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]",
+                "num": 1000
+            },
+            "param": "CachedCallback-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.14791917899856344,
+                "max": 0.15038008800183889,
+                "mean": 0.14972009359917138,
+                "stddev": 0.0010206082239707756,
+                "rounds": 5,
+                "median": 0.15005369600112317,
+                "iqr": 0.0008535975048289401,
+                "q1": 0.1494534239955101,
+                "q3": 0.15030702150033903,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 0.1499648389944923,
+                "hd15iqr": 0.15038008800183889,
+                "ops": 6.679130208649124,
+                "total": 0.7486004679958569,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_access_to_missing[NoCacheCallback-1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_access_to_missing[NoCacheCallback-1]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 1
+            },
+            "param": "NoCacheCallback-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00011433900363044813,
+                "max": 0.00032209900382440537,
+                "mean": 0.00014585773127712845,
+                "stddev": 1.6166635529397565e-05,
+                "rounds": 696,
+                "median": 0.00014355800158227794,
+                "iqr": 1.3366003258852288e-05,
+                "q1": 0.00013731249782722443,
+                "q3": 0.00015067850108607672,
+                "iqr_outliers": 13,
+                "stddev_outliers": 44,
+                "outliers": "44;13",
+                "ld15iqr": 0.00011898199591087177,
+                "hd15iqr": 0.00017342700448352844,
+                "ops": 6855.995847762149,
+                "total": 0.1015169809688814,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_access_to_missing[NoCacheCallback-10]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_access_to_missing[NoCacheCallback-10]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 10
+            },
+            "param": "NoCacheCallback-10",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0013432600026135333,
+                "max": 0.001624336997338105,
+                "mean": 0.0014226400317056687,
+                "stddev": 6.995448578660498e-05,
+                "rounds": 64,
+                "median": 0.0013847055015503429,
+                "iqr": 9.208350093103945e-05,
+                "q1": 0.0013723189986194484,
+                "q3": 0.0014644024995504878,
+                "iqr_outliers": 2,
+                "stddev_outliers": 16,
+                "outliers": "16;2",
+                "ld15iqr": 0.0013432600026135333,
+                "hd15iqr": 0.0016053520012064837,
+                "ops": 702.9185020198356,
+                "total": 0.0910489620291628,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_access_to_missing[NoCacheCallback-100]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_access_to_missing[NoCacheCallback-100]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 100
+            },
+            "param": "NoCacheCallback-100",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.014004871998622548,
+                "max": 0.015323197992984205,
+                "mean": 0.014870866284971791,
+                "stddev": 0.0004930325988190499,
+                "rounds": 7,
+                "median": 0.015006232999439817,
+                "iqr": 0.000727552247553831,
+                "q1": 0.014526989003570634,
+                "q3": 0.015254541251124465,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.014004871998622548,
+                "hd15iqr": 0.015323197992984205,
+                "ops": 67.24557808784688,
+                "total": 0.10409606399480253,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_access_to_missing[NoCacheCallback-1000]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_access_to_missing[NoCacheCallback-1000]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]",
+                "num": 1000
+            },
+            "param": "NoCacheCallback-1000",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.14590059900365304,
+                "max": 0.15049317000375595,
+                "mean": 0.14880494080280188,
+                "stddev": 0.0020721601867238135,
+                "rounds": 5,
+                "median": 0.14999895100481808,
+                "iqr": 0.003389166749911965,
+                "q1": 0.1469666317516385,
+                "q3": 0.15035579850155045,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 0.14590059900365304,
+                "hd15iqr": 0.15049317000375595,
+                "ops": 6.720206967624901,
+                "total": 0.7440247040140093,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_complex[EmptyModel]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_complex[EmptyModel]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.EmptyModel at 0x10a255ae8>]"
+            },
+            "param": "EmptyModel",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00401188599789748,
+                "max": 0.004246484997565858,
+                "mean": 0.004087982679775451,
+                "stddev": 6.409280942218551e-05,
+                "rounds": 25,
+                "median": 0.004064615000970662,
+                "iqr": 8.221125244745053e-05,
+                "q1": 0.0040400947491434636,
+                "q3": 0.004122306001590914,
+                "iqr_outliers": 1,
+                "stddev_outliers": 7,
+                "outliers": "7;1",
+                "ld15iqr": 0.00401188599789748,
+                "hd15iqr": 0.004246484997565858,
+                "ops": 244.619431718074,
+                "total": 0.10219956699438626,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_complex[WithFields]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_complex[WithFields]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.WithFields at 0x10a369a60>]"
+            },
+            "param": "WithFields",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004375823998998385,
+                "max": 0.004639876002329402,
+                "mean": 0.004457787652348127,
+                "stddev": 6.560446342218161e-05,
+                "rounds": 23,
+                "median": 0.004433486006746534,
+                "iqr": 5.834074727317784e-05,
+                "q1": 0.004409303746797377,
+                "q3": 0.004467644494070555,
+                "iqr_outliers": 2,
+                "stddev_outliers": 5,
+                "outliers": "5;2",
+                "ld15iqr": 0.004375823998998385,
+                "hd15iqr": 0.004584575995977502,
+                "ops": 224.32652203010448,
+                "total": 0.10252911600400694,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_complex[CachedCallback]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_complex[CachedCallback]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.CachedCallback at 0x10a37ebf8>]"
+            },
+            "param": "CachedCallback",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004411016998346895,
+                "max": 0.004850338998949155,
+                "mean": 0.004522432227200956,
+                "stddev": 9.617298165197428e-05,
+                "rounds": 22,
+                "median": 0.004501275994698517,
+                "iqr": 8.946601155912504e-05,
+                "q1": 0.004454835994692985,
+                "q3": 0.00454430200625211,
+                "iqr_outliers": 1,
+                "stddev_outliers": 4,
+                "outliers": "4;1",
+                "ld15iqr": 0.004411016998346895,
+                "hd15iqr": 0.004850338998949155,
+                "ops": 221.11995266293346,
+                "total": 0.09949350899842102,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_complex[NoCacheCallback]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_complex[NoCacheCallback]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.NoCacheCallback at 0x10a37ed08>]"
+            },
+            "param": "NoCacheCallback",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.004425140003149863,
+                "max": 0.004698092001490295,
+                "mean": 0.004530339499483075,
+                "stddev": 6.872361653913402e-05,
+                "rounds": 22,
+                "median": 0.004515283995715436,
+                "iqr": 5.46730007044971e-05,
+                "q1": 0.004496793000726029,
+                "q3": 0.004551466001430526,
+                "iqr_outliers": 2,
+                "stddev_outliers": 7,
+                "outliers": "7;2",
+                "ld15iqr": 0.004425140003149863,
+                "hd15iqr": 0.00466789700294612,
+                "ops": 220.73400903267907,
+                "total": 0.09966746898862766,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_complex[ControlModel]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_complex[ControlModel]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.ControlModel at 0x10a37ed90>]"
+            },
+            "param": "ControlModel",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0003744349960470572,
+                "max": 0.0006862520021968521,
+                "mean": 0.00038342192812767747,
+                "stddev": 2.966122495764155e-05,
+                "rounds": 237,
+                "median": 0.0003753460041480139,
+                "iqr": 6.457521521952003e-07,
+                "q1": 0.0003750727464648662,
+                "q3": 0.0003757184986170614,
+                "iqr_outliers": 37,
+                "stddev_outliers": 18,
+                "outliers": "18;37",
+                "ld15iqr": 0.0003744349960470572,
+                "hd15iqr": 0.00037680199602618814,
+                "ops": 2608.0928779509068,
+                "total": 0.09087099696625955,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_complex[Marshmallow]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_complex[Marshmallow]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow at 0x10a37eea0>]"
+            },
+            "param": "Marshmallow",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.000583613000344485,
+                "max": 0.001148995004768949,
+                "mean": 0.0006121729347558869,
+                "stddev": 6.644022663304746e-05,
+                "rounds": 153,
+                "median": 0.0005865109997102991,
+                "iqr": 1.4619745343225077e-05,
+                "q1": 0.0005852620015502907,
+                "q3": 0.0005998817468935158,
+                "iqr_outliers": 31,
+                "stddev_outliers": 16,
+                "outliers": "16;31",
+                "ld15iqr": 0.000583613000344485,
+                "hd15iqr": 0.0006232150044525042,
+                "ops": 1633.5253377360843,
+                "total": 0.09366245901765069,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_complex[Marshmallow2]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestSpeec::()::test_complex[Marshmallow2]",
+            "params": {
+                "model": "UNSERIALIZABLE[<function TestSpeec.Marshmallow2 at 0x10a37ee18>]"
+            },
+            "param": "Marshmallow2",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0008594600003561936,
+                "max": 0.005973894003545865,
+                "mean": 0.000981845409332891,
+                "stddev": 0.0005121039250144248,
+                "rounds": 100,
+                "median": 0.000881887499417644,
+                "iqr": 0.00011320250268909149,
+                "q1": 0.0008669959970575292,
+                "q3": 0.0009801984997466207,
+                "iqr_outliers": 5,
+                "stddev_outliers": 1,
+                "outliers": "1;5",
+                "ld15iqr": 0.0008594600003561936,
+                "hd15iqr": 0.0011593949966481887,
+                "ops": 1018.4902740233251,
+                "total": 0.0981845409332891,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_nested_dump_benchmark[Company-None-expected0]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestBenchmarkRelationships::()::test_nested_dump_benchmark[Company-None-expected0]",
+            "params": {
+                "model": "Company",
+                "include": null,
+                "expected": {}
+            },
+            "param": "Company-None-expected0",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 8.463000995106995e-06,
+                "max": 0.0001340870003332384,
+                "mean": 8.929239770246218e-06,
+                "stddev": 3.7095939098775463e-06,
+                "rounds": 5659,
+                "median": 8.695998985785991e-06,
+                "iqr": 9.500217856839299e-08,
+                "q1": 8.650997187942266e-06,
+                "q3": 8.74599936651066e-06,
+                "iqr_outliers": 196,
+                "stddev_outliers": 39,
+                "outliers": "39;196",
+                "ld15iqr": 8.509996405337006e-06,
+                "hd15iqr": 8.88900103745982e-06,
+                "ops": 111991.61694953854,
+                "total": 0.05053056785982335,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_nested_dump_benchmark[Publisher-None-expected1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestBenchmarkRelationships::()::test_nested_dump_benchmark[Publisher-None-expected1]",
+            "params": {
+                "model": "Publisher",
+                "include": null,
+                "expected": {}
+            },
+            "param": "Publisher-None-expected1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.158000466413796e-06,
+                "max": 0.0002286220042151399,
+                "mean": 9.693399984824645e-06,
+                "stddev": 5.297060560943392e-06,
+                "rounds": 4998,
+                "median": 9.413000952918082e-06,
+                "iqr": 1.0099756764248013e-07,
+                "q1": 9.364004654344171e-06,
+                "q3": 9.465002221986651e-06,
+                "iqr_outliers": 164,
+                "stddev_outliers": 24,
+                "outliers": "24;164",
+                "ld15iqr": 9.221999789588153e-06,
+                "hd15iqr": 9.616996976546943e-06,
+                "ops": 103162.97703236582,
+                "total": 0.04844761312415358,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_nested_dump_benchmark[Author-None-expected2]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestBenchmarkRelationships::()::test_nested_dump_benchmark[Author-None-expected2]",
+            "params": {
+                "model": "Author",
+                "include": null,
+                "expected": {}
+            },
+            "param": "Author-None-expected2",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 9.235001925844699e-06,
+                "max": 0.0001322679963777773,
+                "mean": 9.743813764939341e-06,
+                "stddev": 3.968049237464765e-06,
+                "rounds": 5264,
+                "median": 9.486000635661185e-06,
+                "iqr": 1.0200164979323745e-07,
+                "q1": 9.43899794947356e-06,
+                "q3": 9.540999599266797e-06,
+                "iqr_outliers": 205,
+                "stddev_outliers": 39,
+                "outliers": "39;205",
+                "ld15iqr": 9.286995918955654e-06,
+                "hd15iqr": 9.69499524217099e-06,
+                "ops": 102629.2193307561,
+                "total": 0.051291435658640694,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_nested_dump_benchmark[1 layer nested0]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestBenchmarkRelationships::()::test_nested_dump_benchmark[1 layer nested0]",
+            "params": {
+                "model": "Publisher",
+                "include": "company",
+                "expected": {
+                    "company": {
+                        "id": 6,
+                        "name": "MyCompany"
+                    }
+                }
+            },
+            "param": "1 layer nested0",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.587999915704131e-05,
+                "max": 0.00023482699907617643,
+                "mean": 2.7755483794426095e-05,
+                "stddev": 1.1196151196643571e-05,
+                "rounds": 1135,
+                "median": 2.6319998141843826e-05,
+                "iqr": 2.387441782047972e-07,
+                "q1": 2.62140019913204e-05,
+                "q3": 2.64527461695252e-05,
+                "iqr_outliers": 117,
+                "stddev_outliers": 22,
+                "outliers": "22;117",
+                "ld15iqr": 2.587999915704131e-05,
+                "hd15iqr": 2.6821006031241268e-05,
+                "ops": 36028.916210094016,
+                "total": 0.03150247410667362,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_nested_dump_benchmark[1 layer nested1]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestBenchmarkRelationships::()::test_nested_dump_benchmark[1 layer nested1]",
+            "params": {
+                "model": "Author",
+                "include": "publisher",
+                "expected": {
+                    "publisher": {
+                        "id": 4,
+                        "name": "MyPublisher"
+                    }
+                }
+            },
+            "param": "1 layer nested1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.61410023085773e-05,
+                "max": 0.00025356099649798125,
+                "mean": 2.866307858560535e-05,
+                "stddev": 1.3415425824586383e-05,
+                "rounds": 1183,
+                "median": 2.6669004000723362e-05,
+                "iqr": 2.707438397919759e-07,
+                "q1": 2.6549001631792635e-05,
+                "q3": 2.681974547158461e-05,
+                "iqr_outliers": 125,
+                "stddev_outliers": 35,
+                "outliers": "35;125",
+                "ld15iqr": 2.6271001843269914e-05,
+                "hd15iqr": 2.723900252021849e-05,
+                "ops": 34888.08771930737,
+                "total": 0.03390842196677113,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_nested_dump_benchmark[2 layer nested]",
+            "fullname": "tests/test_marshaller/benchmark/test_benchmark.py::TestBenchmarkRelationships::()::test_nested_dump_benchmark[2 layer nested]",
+            "params": {
+                "model": "Author",
+                "include": {
+                    "publisher": "company"
+                },
+                "expected": {
+                    "publisher": {
+                        "id": 4,
+                        "name": "MyPublisher",
+                        "company": {
+                            "id": 6,
+                            "name": "MyCompany"
+                        }
+                    }
+                }
+            },
+            "param": "2 layer nested",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 0.1,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 4.227200406603515e-05,
+                "max": 0.00015221600187942386,
+                "mean": 4.393941256329155e-05,
+                "stddev": 7.377135308765847e-06,
+                "rounds": 710,
+                "median": 4.280000212020241e-05,
+                "iqr": 3.2299431040883064e-07,
+                "q1": 4.2661005863919854e-05,
+                "q3": 4.2984000174328685e-05,
+                "iqr_outliers": 59,
+                "stddev_outliers": 17,
+                "outliers": "17;59",
+                "ld15iqr": 4.227200406603515e-05,
+                "hd15iqr": 4.34869944001548e-05,
+                "ops": 22758.611043321805,
+                "total": 0.031196982919937,
+                "iterations": 1
+            }
+        }
+    ],
+    "datetime": "2018-11-09T06:53:19.669930",
+    "version": "3.1.1"
+}
