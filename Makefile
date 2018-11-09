@@ -35,6 +35,7 @@ docs:
 
 	touch docs/.nojekyll
 
+
 doctest:
 	rm -rf docs
 	cd docsrc && pipenv run make doctest
@@ -44,6 +45,16 @@ testdeploy:
 	rm -rf dist
 	python setup.py sdist
 	twine upload dist/* -r testpypi
+
+
+benchmark:
+	rm -rf .benchmarks/images/*svg
+	python -m pytest --benchmark-autosave --benchmark-max-time=0.1 --benchmark-group-by=func --benchmark-histogram=.benchmarks/images/histogram
+
+
+format:
+	pipenv run yapf . -r -i --style="./format.ini"
+	pipenv run docformatter . -r -i
 
 
 deploy:

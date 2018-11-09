@@ -9,11 +9,16 @@ from collections import OrderedDict
 
 # TODO: browser documentation
 # TODO: examples in sphinx
+
+
 class BrowserException(Exception):
     """Generic browser exception"""
 
 
 class Browser(logger.Loggable, object):
+    """
+    A class for browsing models and Aquarium inventory
+    """
 
     # TODO: ability to block model callbacks to enforce cache
 
@@ -460,7 +465,7 @@ class Browser(logger.Loggable, object):
 
     def new_sample(self, sample_type, name, description, project, properties=None):
         st = self.find_by_name(sample_type, "SampleType", primary_key='name')
-        if st._get_deserialized_data.get('field_types', None) is None:
+        if st._get_deserialized_data().get('field_types', None) is None:
             fts = self.where({"parent_class": "SampleType", "parent_id": st.id}, "FieldType")
             st.field_types = fts
         return st.new_sample(name, description, project, properties=properties)

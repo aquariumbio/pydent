@@ -10,8 +10,8 @@ Submodules
 .. autosummary::
     :toctree: _autosummary
 
-    magiclist
-    plan_validator
+    async_requests
+    logger
 
 """
 

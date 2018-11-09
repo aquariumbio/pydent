@@ -72,7 +72,6 @@ from pydent.relationships import (Raw, Function, JSON, One, Many, HasOne, HasMan
                                   HasOneFromMany, fields)
 from pydent.utils import filter_list
 from pydent.utils.async_requests import make_async
-from pydent.utils.plan_validator import PlanValidator
 
 __all__ = [
     "Account",
@@ -354,7 +353,7 @@ class FieldType(ModelBase, FieldMixin):
             allowable_field_types=allowable_field_types
         )
 
-        if self.allowable_field_types is None:
+        if allowable_field_types is None:
             if aft_stype_and_objtype is not None:
                 for smple_type, obj_type in aft_stype_and_objtype:
                     self.create_allowable_field_type(smple_type, obj_type)
@@ -380,7 +379,7 @@ class FieldType(ModelBase, FieldMixin):
         afts = []
         if self.allowable_field_types:
             afts = self.allowable_field_types
-        field_type = AllowableFieldType(
+        field_type = self.session.AllowableFieldType.new(
             field_type=self, sample_type=sample_type, object_type=object_type)
         afts.append(field_type)
         self.allowable_field_types = afts
@@ -397,7 +396,7 @@ class FieldType(ModelBase, FieldMixin):
         """
 
         if not field_value:
-            field_value = FieldValue(
+            field_value = self.session.FieldValue.new(
                 name=self.name, role=self.role, field_type=self)
         if self.allowable_field_types:
             field_value.allowable_field_type_id = self.allowable_field_types[0].id
@@ -1279,9 +1278,8 @@ class OperationType(ModelBase):
         return self.code(model_name)
 
     def instance(self, xpos=0, ypos=0):
-        operation = Operation(operation_type_id=self.id,
+        operation = self.session.Operation.new(operation_type_id=self.id,
                               status='planning', x=xpos, y=ypos)
-        operation.connect_to_session(self.session)
         operation.operation_type = self
         operation.init_field_values()
         return operation
@@ -1329,7 +1327,7 @@ class PartAssociation(ModelBase):
 
 
 @add_schema
-class Plan(ModelBase, PlanValidator, DataAssociatorMixin):
+class Plan(ModelBase, DataAssociatorMixin):
     """
     A Plan model
     """

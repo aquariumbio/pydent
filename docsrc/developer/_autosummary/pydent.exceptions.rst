@@ -19,6 +19,7 @@ pydent.exceptions
    
       AquariumError
       AquariumModelError
+      NoSessionError
       TridentJSONDataIncomplete
       TridentLoginError
       TridentModelNotFoundError

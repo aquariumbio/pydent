@@ -15,15 +15,17 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.relationships &#8212; Trident 0.0.34a documentation</title>
+    <title>pydent.relationships &#8212; Trident 1.0.0a documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pydent.browser" href="pydent.browser.html" />
     <link rel="prev" title="pydent.models" href="pydent.models.html" />
   
    
@@ -39,9 +41,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="pydent.browser.html" title="pydent.browser"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
           <a href="pydent.models.html" title="pydent.models"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -60,7 +65,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.0.34a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
 <div>
 
 </div>
@@ -129,35 +134,239 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.HasMany" title="pydent.relationships.HasMany"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasMany</span></code></a>(model[,&nbsp;ref_model,&nbsp;attr,&nbsp;ref,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.BaseRelationship" title="pydent.relationships.BaseRelationship"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseRelationship</span></code></a>(nested,&nbsp;callback[,&nbsp;…])</td>
+<td>BaseRelationship field.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a>(name,&nbsp;field,&nbsp;…[,&nbsp;…])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.Function" title="pydent.relationships.Function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Function</span></code></a>(callback[,&nbsp;callback_args,&nbsp;…])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.HasMany" title="pydent.relationships.HasMany"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasMany</span></code></a>(nested[,&nbsp;ref_model,&nbsp;attr,&nbsp;ref,&nbsp;…])</td>
 <td>A relationship that establishes a One-to-Many relationship with another model.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.HasManyGeneric" title="pydent.relationships.HasManyGeneric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasManyGeneric</span></code></a>(model[,&nbsp;additional_args,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.HasManyGeneric" title="pydent.relationships.HasManyGeneric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasManyGeneric</span></code></a>(nested[,&nbsp;additional_args,&nbsp;…])</td>
 <td>Establishes a One-to-Many relationship using ‘parent_id’ as the attribute to find other models.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.HasManyThrough" title="pydent.relationships.HasManyThrough"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasManyThrough</span></code></a>(model,&nbsp;through[,&nbsp;attr,&nbsp;ref,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.HasManyThrough" title="pydent.relationships.HasManyThrough"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasManyThrough</span></code></a>(nested,&nbsp;through[,&nbsp;attr,&nbsp;ref,&nbsp;…])</td>
 <td>A relationship using an intermediate association model.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.HasMixin" title="pydent.relationships.HasMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasMixin</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.HasMixin" title="pydent.relationships.HasMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasMixin</span></code></a></td>
 <td>Mixin for adding the ‘set_ref’ method.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.HasOne" title="pydent.relationships.HasOne"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasOne</span></code></a>(model[,&nbsp;attr,&nbsp;ref,&nbsp;callback,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.HasOne" title="pydent.relationships.HasOne"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasOne</span></code></a>(nested[,&nbsp;attr,&nbsp;ref,&nbsp;callback,&nbsp;…])</td>
 <td>HasOne initializer.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.HasOneFromMany" title="pydent.relationships.HasOneFromMany"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasOneFromMany</span></code></a>(model[,&nbsp;ref_model,&nbsp;attr,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.HasOneFromMany" title="pydent.relationships.HasOneFromMany"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasOneFromMany</span></code></a>(nested[,&nbsp;ref_model,&nbsp;attr,&nbsp;…])</td>
 <td>HasOneFromMany relationship initializer, which is intended to return a single model from a Many query</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.Many" title="pydent.relationships.Many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Many</span></code></a>(model,&nbsp;*args[,&nbsp;callback,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.JSON" title="pydent.relationships.JSON"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSON</span></code></a>([many,&nbsp;data_key,&nbsp;allow_none,&nbsp;default])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.Many" title="pydent.relationships.Many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Many</span></code></a>(nested,&nbsp;*args[,&nbsp;callback,&nbsp;…])</td>
 <td>Defines a many relationship with another model.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.One" title="pydent.relationships.One"><code class="xref py py-obj docutils literal notranslate"><span class="pre">One</span></code></a>(model,&nbsp;*args[,&nbsp;callback,&nbsp;callback_args,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.relationships.One" title="pydent.relationships.One"><code class="xref py py-obj docutils literal notranslate"><span class="pre">One</span></code></a>(nested,&nbsp;*args[,&nbsp;callback,&nbsp;…])</td>
 <td>Defines a single relationship with another model.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.Raw" title="pydent.relationships.Raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Raw</span></code></a>([many,&nbsp;data_key,&nbsp;allow_none,&nbsp;default])</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Exceptions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.relationships.FieldValidationError" title="pydent.relationships.FieldValidationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldValidationError</span></code></a></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <dl class="class">
+<dt id="pydent.relationships.BaseRelationship">
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">BaseRelationship</code><span class="sig-paren">(</span><em>nested</em>, <em>callback</em>, <em>callback_args=None</em>, <em>callback_kwargs=None</em>, <em>many=None</em>, <em>allow_none=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#BaseRelationship"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.BaseRelationship" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Relationship" title="pydent.marshaller.fields.Relationship"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Relationship</span></code></a></p>
+<p>BaseRelationship field. By default, if the value is None, attempt a callback. If that fails,
+fallback to None. If successful, deserialize data to the nested model.</p>
+<dl class="attribute">
+<dt id="pydent.relationships.BaseRelationship.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.BaseRelationship.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.BaseRelationship._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.BaseRelationship._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.BaseRelationship.build_query">
+<code class="descname">build_query</code><span class="sig-paren">(</span><em>models</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#BaseRelationship.build_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.BaseRelationship.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.BaseRelationship.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#BaseRelationship.fullfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.BaseRelationship.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.BaseRelationship.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.BaseRelationship.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.BaseRelationship.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.BaseRelationship.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.BaseRelationship.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.BaseRelationship.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydent.relationships.BaseRelationshipAccessor">
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">BaseRelationshipAccessor</code><span class="sig-paren">(</span><em>name</em>, <em>field</em>, <em>accessor</em>, <em>deserialized_accessor</em>, <em>default=&lt;Placeholders.CALLBACK: 3&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#BaseRelationshipAccessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.BaseRelationshipAccessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.RelationshipAccessor" title="pydent.marshaller.descriptors.RelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.RelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.relationships.FieldValidationError">
+<em class="property">exception </em><code class="descclassname">pydent.relationships.</code><code class="descname">FieldValidationError</code><a class="reference internal" href="../../_modules/pydent/relationships.html#FieldValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.FieldValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ModelValidationError" title="pydent.marshaller.exceptions.ModelValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.ModelValidationError</span></code></a></p>
+<dl class="method">
+<dt id="pydent.relationships.FieldValidationError.with_traceback">
+<code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.FieldValidationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydent.relationships.Function">
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">Function</code><span class="sig-paren">(</span><em>callback</em>, <em>callback_args=None</em>, <em>callback_kwargs=None</em>, <em>cache=False</em>, <em>data_key=None</em>, <em>many=None</em>, <em>allow_none=True</em>, <em>always_dump=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#Function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.Function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback</span></code></a></p>
+<dl class="attribute">
+<dt id="pydent.relationships.Function.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.Function.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.CallbackAccessor" title="pydent.marshaller.descriptors.CallbackAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.CallbackAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.Function._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.Function._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.Function.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.Function.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.Function.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.Function.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pydent.relationships.HasMany">
-<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasMany</code><span class="sig-paren">(</span><em>model</em>, <em>ref_model=None</em>, <em>attr=None</em>, <em>ref=None</em>, <em>additional_args=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasMany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasMany" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasMany</code><span class="sig-paren">(</span><em>nested</em>, <em>ref_model=None</em>, <em>attr=None</em>, <em>ref=None</em>, <em>additional_args=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasMany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasMany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.relationships.HasMixin" title="pydent.relationships.HasMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.HasMixin</span></code></a>, <a class="reference internal" href="#pydent.relationships.Many" title="pydent.relationships.Many"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.Many</span></code></a></p>
 <p>A relationship that establishes a One-to-Many relationship with another model.</p>
 <p>HasMany relationship initializer</p>
@@ -166,7 +375,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>model</strong> (<em>str</em>) – Model class name for this relationship</li>
+<li><strong>nested</strong> (<em>str</em>) – Model class name for this relationship</li>
 <li><strong>ref_model</strong> – Reference model name of the model owning this relationships.</li>
 </ul>
 </td>
@@ -192,169 +401,75 @@ built from the ‘ref_model’ and ‘attr’ parameters</li>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pydent.relationships.HasMany.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.HasMany.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.HasMany._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.HasMany._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
 <dl class="method">
-<dt id="pydent.relationships.HasMany._add_to_schema">
-<code class="descname">_add_to_schema</code><span class="sig-paren">(</span><em>field_name</em>, <em>schema</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany._add_to_schema" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Update field with values from its parent schema. Called by</dt>
-<dd><code class="xref py py-meth docutils literal notranslate"><span class="pre">__set_field_attrs</span></code>.</dd>
-</dl>
+<dt id="pydent.relationships.HasMany.build_query">
+<code class="descname">build_query</code><span class="sig-paren">(</span><em>models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasMany.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>field_name</strong> (<em>str</em>) – Field name set in schema.</li>
-<li><strong>schema</strong> (<em>Schema</em>) – Parent schema.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.HasMany._deserialize">
-<code class="descname">_deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany._deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize value. Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
+<dt id="pydent.relationships.HasMany.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasMany.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasMany.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be deserialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute/key in <cite>data</cite> to be deserialized.</li>
-<li><strong>data</strong> (<em>dict</em>) – The raw input data passed to the <cite>Schema.load</cite>.</li>
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The deserialized value.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 2.0.0: </span>Added <code class="docutils literal notranslate"><span class="pre">attr</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> parameters.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany._serialize">
-<code class="descname">_serialize</code><span class="sig-paren">(</span><em>nested_obj</em>, <em>attr</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany._serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serializes <code class="docutils literal notranslate"><span class="pre">value</span></code> to a basic Python datatype. Noop by default.
-Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TitleCase</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be serialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute or key on the object to be serialized.</li>
-<li><strong>obj</strong> (<em>object</em>) – The object the value was pulled from.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The serialized value</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany._validate">
-<code class="descname">_validate</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany._validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform validation on <code class="docutils literal notranslate"><span class="pre">value</span></code>. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if validation
-does not succeed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany._validate_missing">
-<code class="descname">_validate_missing</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany._validate_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate missing values. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if
-<cite>value</cite> should be considered missing.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasMany.context">
-<code class="descname">context</code><a class="headerlink" href="#pydent.relationships.HasMany.context" title="Permalink to this definition">¶</a></dt>
-<dd><p>The context dictionary for the parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValidationError</strong> – If an invalid value is passed or if a required value
-is missing.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.fail">
-<code class="descname">fail</code><span class="sig-paren">(</span><em>key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.fail" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper method that simply raises a <cite>ValidationError</cite>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.get_value">
-<code class="descname">get_value</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em>, <em>default=&lt;marshmallow.missing&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the value for a given key from an object.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasMany.root">
-<code class="descname">root</code><a class="headerlink" href="#pydent.relationships.HasMany.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reference to the <cite>Schema</cite> that this field belongs to even if it is buried in a <cite>List</cite>.
-Return <cite>None</cite> for unbound fields.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasMany.schema">
-<code class="descname">schema</code><a class="headerlink" href="#pydent.relationships.HasMany.schema" title="Permalink to this definition">¶</a></dt>
-<dd><p>The nested Schema object.</p>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 1.0.0: </span>Renamed from <cite>serializer</cite> to <cite>schema</cite></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.serialize">
-<code class="descname">serialize</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pulls the value for the given key from the object, applies the
-field’s formatting and returns the result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>attr</strong> (<em>str</em>) – The attibute or key to get from the object.</li>
-<li><strong>obj</strong> (<em>str</em>) – The object to pull the key from.</li>
-<li><strong>accessor</strong> (<em>callable</em>) – Function used to pull values from <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValidationError</strong> – In case of formatting problem</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -363,7 +478,7 @@ field’s formatting and returns the result.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasMany.set_ref">
-<code class="descname">set_ref</code><span class="sig-paren">(</span><em>model=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.set_ref" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_ref</code><span class="sig-paren">(</span><em>nested=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the ‘ref’ and ‘attr’ attributes. These attributes are used to
 defined parameters for
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code> classes.</p>
@@ -388,173 +503,79 @@ defined parameters for
 
 <dl class="class">
 <dt id="pydent.relationships.HasManyGeneric">
-<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasManyGeneric</code><span class="sig-paren">(</span><em>model</em>, <em>additional_args=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasManyGeneric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasManyGeneric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasManyGeneric</code><span class="sig-paren">(</span><em>nested</em>, <em>additional_args=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasManyGeneric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasManyGeneric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.relationships.HasMany" title="pydent.relationships.HasMany"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.HasMany</span></code></a></p>
 <p>Establishes a One-to-Many relationship using ‘parent_id’ as the attribute
 to find other models.</p>
+<dl class="attribute">
+<dt id="pydent.relationships.HasManyGeneric.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.HasManyGeneric.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.HasManyGeneric._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.HasManyGeneric._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
 <dl class="method">
-<dt id="pydent.relationships.HasManyGeneric._add_to_schema">
-<code class="descname">_add_to_schema</code><span class="sig-paren">(</span><em>field_name</em>, <em>schema</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric._add_to_schema" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Update field with values from its parent schema. Called by</dt>
-<dd><code class="xref py py-meth docutils literal notranslate"><span class="pre">__set_field_attrs</span></code>.</dd>
-</dl>
+<dt id="pydent.relationships.HasManyGeneric.build_query">
+<code class="descname">build_query</code><span class="sig-paren">(</span><em>models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasManyGeneric.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>field_name</strong> (<em>str</em>) – Field name set in schema.</li>
-<li><strong>schema</strong> (<em>Schema</em>) – Parent schema.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.HasManyGeneric._deserialize">
-<code class="descname">_deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric._deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize value. Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
+<dt id="pydent.relationships.HasManyGeneric.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasManyGeneric.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasManyGeneric.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be deserialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute/key in <cite>data</cite> to be deserialized.</li>
-<li><strong>data</strong> (<em>dict</em>) – The raw input data passed to the <cite>Schema.load</cite>.</li>
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The deserialized value.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 2.0.0: </span>Added <code class="docutils literal notranslate"><span class="pre">attr</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> parameters.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyGeneric._serialize">
-<code class="descname">_serialize</code><span class="sig-paren">(</span><em>nested_obj</em>, <em>attr</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric._serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serializes <code class="docutils literal notranslate"><span class="pre">value</span></code> to a basic Python datatype. Noop by default.
-Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TitleCase</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be serialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute or key on the object to be serialized.</li>
-<li><strong>obj</strong> (<em>object</em>) – The object the value was pulled from.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The serialized value</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyGeneric._validate">
-<code class="descname">_validate</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric._validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform validation on <code class="docutils literal notranslate"><span class="pre">value</span></code>. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if validation
-does not succeed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyGeneric._validate_missing">
-<code class="descname">_validate_missing</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric._validate_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate missing values. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if
-<cite>value</cite> should be considered missing.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasManyGeneric.context">
-<code class="descname">context</code><a class="headerlink" href="#pydent.relationships.HasManyGeneric.context" title="Permalink to this definition">¶</a></dt>
-<dd><p>The context dictionary for the parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyGeneric.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValidationError</strong> – If an invalid value is passed or if a required value
-is missing.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyGeneric.fail">
-<code class="descname">fail</code><span class="sig-paren">(</span><em>key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.fail" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper method that simply raises a <cite>ValidationError</cite>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyGeneric.get_value">
-<code class="descname">get_value</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em>, <em>default=&lt;marshmallow.missing&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.get_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the value for a given key from an object.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasManyGeneric.root">
-<code class="descname">root</code><a class="headerlink" href="#pydent.relationships.HasManyGeneric.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reference to the <cite>Schema</cite> that this field belongs to even if it is buried in a <cite>List</cite>.
-Return <cite>None</cite> for unbound fields.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasManyGeneric.schema">
-<code class="descname">schema</code><a class="headerlink" href="#pydent.relationships.HasManyGeneric.schema" title="Permalink to this definition">¶</a></dt>
-<dd><p>The nested Schema object.</p>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 1.0.0: </span>Renamed from <cite>serializer</cite> to <cite>schema</cite></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyGeneric.serialize">
-<code class="descname">serialize</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pulls the value for the given key from the object, applies the
-field’s formatting and returns the result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>attr</strong> (<em>str</em>) – The attibute or key to get from the object.</li>
-<li><strong>obj</strong> (<em>str</em>) – The object to pull the key from.</li>
-<li><strong>accessor</strong> (<em>callable</em>) – Function used to pull values from <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValidationError</strong> – In case of formatting problem</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -563,7 +584,7 @@ field’s formatting and returns the result.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasManyGeneric.set_ref">
-<code class="descname">set_ref</code><span class="sig-paren">(</span><em>model=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.set_ref" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_ref</code><span class="sig-paren">(</span><em>nested=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the ‘ref’ and ‘attr’ attributes. These attributes are used to
 defined parameters for
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code> classes.</p>
@@ -588,173 +609,79 @@ defined parameters for
 
 <dl class="class">
 <dt id="pydent.relationships.HasManyThrough">
-<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasManyThrough</code><span class="sig-paren">(</span><em>model</em>, <em>through</em>, <em>attr='id'</em>, <em>ref=None</em>, <em>additional_args=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasManyThrough"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasManyThrough" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasManyThrough</code><span class="sig-paren">(</span><em>nested</em>, <em>through</em>, <em>attr='id'</em>, <em>ref=None</em>, <em>additional_args=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasManyThrough"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasManyThrough" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.relationships.HasMixin" title="pydent.relationships.HasMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.HasMixin</span></code></a>, <a class="reference internal" href="#pydent.relationships.Many" title="pydent.relationships.Many"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.Many</span></code></a></p>
 <p>A relationship using an intermediate association model.
 Establishes a Many-to-Many relationship with another model</p>
+<dl class="attribute">
+<dt id="pydent.relationships.HasManyThrough.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.HasManyThrough.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.HasManyThrough._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.HasManyThrough._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
 <dl class="method">
-<dt id="pydent.relationships.HasManyThrough._add_to_schema">
-<code class="descname">_add_to_schema</code><span class="sig-paren">(</span><em>field_name</em>, <em>schema</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough._add_to_schema" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Update field with values from its parent schema. Called by</dt>
-<dd><code class="xref py py-meth docutils literal notranslate"><span class="pre">__set_field_attrs</span></code>.</dd>
-</dl>
+<dt id="pydent.relationships.HasManyThrough.build_query">
+<code class="descname">build_query</code><span class="sig-paren">(</span><em>models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasManyThrough.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>field_name</strong> (<em>str</em>) – Field name set in schema.</li>
-<li><strong>schema</strong> (<em>Schema</em>) – Parent schema.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.HasManyThrough._deserialize">
-<code class="descname">_deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough._deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize value. Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
+<dt id="pydent.relationships.HasManyThrough.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasManyThrough.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasManyThrough.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be deserialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute/key in <cite>data</cite> to be deserialized.</li>
-<li><strong>data</strong> (<em>dict</em>) – The raw input data passed to the <cite>Schema.load</cite>.</li>
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The deserialized value.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 2.0.0: </span>Added <code class="docutils literal notranslate"><span class="pre">attr</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> parameters.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyThrough._serialize">
-<code class="descname">_serialize</code><span class="sig-paren">(</span><em>nested_obj</em>, <em>attr</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough._serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serializes <code class="docutils literal notranslate"><span class="pre">value</span></code> to a basic Python datatype. Noop by default.
-Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TitleCase</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be serialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute or key on the object to be serialized.</li>
-<li><strong>obj</strong> (<em>object</em>) – The object the value was pulled from.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The serialized value</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyThrough._validate">
-<code class="descname">_validate</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough._validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform validation on <code class="docutils literal notranslate"><span class="pre">value</span></code>. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if validation
-does not succeed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyThrough._validate_missing">
-<code class="descname">_validate_missing</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough._validate_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate missing values. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if
-<cite>value</cite> should be considered missing.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasManyThrough.context">
-<code class="descname">context</code><a class="headerlink" href="#pydent.relationships.HasManyThrough.context" title="Permalink to this definition">¶</a></dt>
-<dd><p>The context dictionary for the parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyThrough.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValidationError</strong> – If an invalid value is passed or if a required value
-is missing.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyThrough.fail">
-<code class="descname">fail</code><span class="sig-paren">(</span><em>key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.fail" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper method that simply raises a <cite>ValidationError</cite>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyThrough.get_value">
-<code class="descname">get_value</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em>, <em>default=&lt;marshmallow.missing&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.get_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the value for a given key from an object.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasManyThrough.root">
-<code class="descname">root</code><a class="headerlink" href="#pydent.relationships.HasManyThrough.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reference to the <cite>Schema</cite> that this field belongs to even if it is buried in a <cite>List</cite>.
-Return <cite>None</cite> for unbound fields.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasManyThrough.schema">
-<code class="descname">schema</code><a class="headerlink" href="#pydent.relationships.HasManyThrough.schema" title="Permalink to this definition">¶</a></dt>
-<dd><p>The nested Schema object.</p>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 1.0.0: </span>Renamed from <cite>serializer</cite> to <cite>schema</cite></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasManyThrough.serialize">
-<code class="descname">serialize</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pulls the value for the given key from the object, applies the
-field’s formatting and returns the result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>attr</strong> (<em>str</em>) – The attibute or key to get from the object.</li>
-<li><strong>obj</strong> (<em>str</em>) – The object to pull the key from.</li>
-<li><strong>accessor</strong> (<em>callable</em>) – Function used to pull values from <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValidationError</strong> – In case of formatting problem</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -763,7 +690,7 @@ field’s formatting and returns the result.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasManyThrough.set_ref">
-<code class="descname">set_ref</code><span class="sig-paren">(</span><em>model=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.set_ref" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_ref</code><span class="sig-paren">(</span><em>nested=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the ‘ref’ and ‘attr’ attributes. These attributes are used to
 defined parameters for
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code> classes.</p>
@@ -794,7 +721,7 @@ defined parameters for
 attributes</p>
 <dl class="method">
 <dt id="pydent.relationships.HasMixin.set_ref">
-<code class="descname">set_ref</code><span class="sig-paren">(</span><em>model=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasMixin.set_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasMixin.set_ref" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_ref</code><span class="sig-paren">(</span><em>nested=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasMixin.set_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasMixin.set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the ‘ref’ and ‘attr’ attributes. These attributes are used to
 defined parameters for
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code> classes.</p>
@@ -819,7 +746,7 @@ defined parameters for
 
 <dl class="class">
 <dt id="pydent.relationships.HasOne">
-<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasOne</code><span class="sig-paren">(</span><em>model</em>, <em>attr=None</em>, <em>ref=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasOne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasOne" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasOne</code><span class="sig-paren">(</span><em>nested</em>, <em>attr=None</em>, <em>ref=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasOne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasOne" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.relationships.HasMixin" title="pydent.relationships.HasMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.HasMixin</span></code></a>, <a class="reference internal" href="#pydent.relationships.One" title="pydent.relationships.One"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.One</span></code></a></p>
 <p>HasOne initializer. Uses the “get_one_generic” callback and
 automatically assigns attribute as in the following:</p>
@@ -831,176 +758,82 @@ automatically assigns attribute as in the following:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>model</strong> (<em>basestring</em>) – model name of the target model</li>
+<li><strong>nested</strong> (<em>basestring</em>) – model name of the target model</li>
 <li><strong>attr</strong> (<em>basestring</em>) – attribute to append underscored model name</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pydent.relationships.HasOne.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.HasOne.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.HasOne._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.HasOne._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
 <dl class="method">
-<dt id="pydent.relationships.HasOne._add_to_schema">
-<code class="descname">_add_to_schema</code><span class="sig-paren">(</span><em>field_name</em>, <em>schema</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne._add_to_schema" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Update field with values from its parent schema. Called by</dt>
-<dd><code class="xref py py-meth docutils literal notranslate"><span class="pre">__set_field_attrs</span></code>.</dd>
-</dl>
+<dt id="pydent.relationships.HasOne.build_query">
+<code class="descname">build_query</code><span class="sig-paren">(</span><em>models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasOne.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>field_name</strong> (<em>str</em>) – Field name set in schema.</li>
-<li><strong>schema</strong> (<em>Schema</em>) – Parent schema.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.HasOne._deserialize">
-<code class="descname">_deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne._deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize value. Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
+<dt id="pydent.relationships.HasOne.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasOne.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasOne.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be deserialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute/key in <cite>data</cite> to be deserialized.</li>
-<li><strong>data</strong> (<em>dict</em>) – The raw input data passed to the <cite>Schema.load</cite>.</li>
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The deserialized value.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 2.0.0: </span>Added <code class="docutils literal notranslate"><span class="pre">attr</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> parameters.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOne._serialize">
-<code class="descname">_serialize</code><span class="sig-paren">(</span><em>nested_obj</em>, <em>attr</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne._serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serializes <code class="docutils literal notranslate"><span class="pre">value</span></code> to a basic Python datatype. Noop by default.
-Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TitleCase</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be serialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute or key on the object to be serialized.</li>
-<li><strong>obj</strong> (<em>object</em>) – The object the value was pulled from.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The serialized value</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOne._validate">
-<code class="descname">_validate</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne._validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform validation on <code class="docutils literal notranslate"><span class="pre">value</span></code>. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if validation
-does not succeed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOne._validate_missing">
-<code class="descname">_validate_missing</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne._validate_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate missing values. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if
-<cite>value</cite> should be considered missing.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasOne.context">
-<code class="descname">context</code><a class="headerlink" href="#pydent.relationships.HasOne.context" title="Permalink to this definition">¶</a></dt>
-<dd><p>The context dictionary for the parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOne.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValidationError</strong> – If an invalid value is passed or if a required value
-is missing.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOne.fail">
-<code class="descname">fail</code><span class="sig-paren">(</span><em>key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.fail" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper method that simply raises a <cite>ValidationError</cite>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOne.get_value">
-<code class="descname">get_value</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em>, <em>default=&lt;marshmallow.missing&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.get_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the value for a given key from an object.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasOne.root">
-<code class="descname">root</code><a class="headerlink" href="#pydent.relationships.HasOne.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reference to the <cite>Schema</cite> that this field belongs to even if it is buried in a <cite>List</cite>.
-Return <cite>None</cite> for unbound fields.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasOne.schema">
-<code class="descname">schema</code><a class="headerlink" href="#pydent.relationships.HasOne.schema" title="Permalink to this definition">¶</a></dt>
-<dd><p>The nested Schema object.</p>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 1.0.0: </span>Renamed from <cite>serializer</cite> to <cite>schema</cite></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOne.serialize">
-<code class="descname">serialize</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pulls the value for the given key from the object, applies the
-field’s formatting and returns the result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>attr</strong> (<em>str</em>) – The attibute or key to get from the object.</li>
-<li><strong>obj</strong> (<em>str</em>) – The object to pull the key from.</li>
-<li><strong>accessor</strong> (<em>callable</em>) – Function used to pull values from <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValidationError</strong> – In case of formatting problem</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -1009,7 +842,7 @@ field’s formatting and returns the result.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasOne.set_ref">
-<code class="descname">set_ref</code><span class="sig-paren">(</span><em>model=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.set_ref" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_ref</code><span class="sig-paren">(</span><em>nested=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the ‘ref’ and ‘attr’ attributes. These attributes are used to
 defined parameters for
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code> classes.</p>
@@ -1034,7 +867,7 @@ defined parameters for
 
 <dl class="class">
 <dt id="pydent.relationships.HasOneFromMany">
-<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasOneFromMany</code><span class="sig-paren">(</span><em>model</em>, <em>ref_model=None</em>, <em>attr=None</em>, <em>ref=None</em>, <em>additional_args=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasOneFromMany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasOneFromMany" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">HasOneFromMany</code><span class="sig-paren">(</span><em>nested</em>, <em>ref_model=None</em>, <em>attr=None</em>, <em>ref=None</em>, <em>additional_args=None</em>, <em>callback=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasOneFromMany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasOneFromMany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.relationships.HasMixin" title="pydent.relationships.HasMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.HasMixin</span></code></a>, <a class="reference internal" href="#pydent.relationships.One" title="pydent.relationships.One"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.One</span></code></a></p>
 <p>HasOneFromMany relationship initializer, which is intended to return a single model from
 a Many query</p>
@@ -1043,7 +876,7 @@ a Many query</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>model</strong> (<em>str</em>) – Model class name for this relationship</li>
+<li><strong>nested</strong> (<em>str</em>) – Model class name for this relationship</li>
 <li><strong>ref_model</strong> – Reference model name of the model owning this relationships.</li>
 </ul>
 </td>
@@ -1069,169 +902,75 @@ built from the ‘ref_model’ and ‘attr’ parameters</li>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pydent.relationships.HasOneFromMany.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.HasOneFromMany.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.HasOneFromMany._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.HasOneFromMany._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
 <dl class="method">
-<dt id="pydent.relationships.HasOneFromMany._add_to_schema">
-<code class="descname">_add_to_schema</code><span class="sig-paren">(</span><em>field_name</em>, <em>schema</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany._add_to_schema" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Update field with values from its parent schema. Called by</dt>
-<dd><code class="xref py py-meth docutils literal notranslate"><span class="pre">__set_field_attrs</span></code>.</dd>
-</dl>
+<dt id="pydent.relationships.HasOneFromMany.build_query">
+<code class="descname">build_query</code><span class="sig-paren">(</span><em>models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasOneFromMany.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>field_name</strong> (<em>str</em>) – Field name set in schema.</li>
-<li><strong>schema</strong> (<em>Schema</em>) – Parent schema.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.HasOneFromMany._deserialize">
-<code class="descname">_deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany._deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize value. Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
+<dt id="pydent.relationships.HasOneFromMany.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasOneFromMany.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasOneFromMany.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be deserialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute/key in <cite>data</cite> to be deserialized.</li>
-<li><strong>data</strong> (<em>dict</em>) – The raw input data passed to the <cite>Schema.load</cite>.</li>
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The deserialized value.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 2.0.0: </span>Added <code class="docutils literal notranslate"><span class="pre">attr</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> parameters.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOneFromMany._serialize">
-<code class="descname">_serialize</code><span class="sig-paren">(</span><em>nested_obj</em>, <em>attr</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany._serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serializes <code class="docutils literal notranslate"><span class="pre">value</span></code> to a basic Python datatype. Noop by default.
-Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TitleCase</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be serialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute or key on the object to be serialized.</li>
-<li><strong>obj</strong> (<em>object</em>) – The object the value was pulled from.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The serialized value</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOneFromMany._validate">
-<code class="descname">_validate</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany._validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform validation on <code class="docutils literal notranslate"><span class="pre">value</span></code>. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if validation
-does not succeed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOneFromMany._validate_missing">
-<code class="descname">_validate_missing</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany._validate_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate missing values. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if
-<cite>value</cite> should be considered missing.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasOneFromMany.context">
-<code class="descname">context</code><a class="headerlink" href="#pydent.relationships.HasOneFromMany.context" title="Permalink to this definition">¶</a></dt>
-<dd><p>The context dictionary for the parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOneFromMany.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValidationError</strong> – If an invalid value is passed or if a required value
-is missing.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOneFromMany.fail">
-<code class="descname">fail</code><span class="sig-paren">(</span><em>key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.fail" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper method that simply raises a <cite>ValidationError</cite>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOneFromMany.get_value">
-<code class="descname">get_value</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em>, <em>default=&lt;marshmallow.missing&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.get_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the value for a given key from an object.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasOneFromMany.root">
-<code class="descname">root</code><a class="headerlink" href="#pydent.relationships.HasOneFromMany.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reference to the <cite>Schema</cite> that this field belongs to even if it is buried in a <cite>List</cite>.
-Return <cite>None</cite> for unbound fields.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.HasOneFromMany.schema">
-<code class="descname">schema</code><a class="headerlink" href="#pydent.relationships.HasOneFromMany.schema" title="Permalink to this definition">¶</a></dt>
-<dd><p>The nested Schema object.</p>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 1.0.0: </span>Renamed from <cite>serializer</cite> to <cite>schema</cite></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasOneFromMany.serialize">
-<code class="descname">serialize</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pulls the value for the given key from the object, applies the
-field’s formatting and returns the result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>attr</strong> (<em>str</em>) – The attibute or key to get from the object.</li>
-<li><strong>obj</strong> (<em>str</em>) – The object to pull the key from.</li>
-<li><strong>accessor</strong> (<em>callable</em>) – Function used to pull values from <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValidationError</strong> – In case of formatting problem</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -1240,7 +979,7 @@ field’s formatting and returns the result.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasOneFromMany.set_ref">
-<code class="descname">set_ref</code><span class="sig-paren">(</span><em>model=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.set_ref" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_ref</code><span class="sig-paren">(</span><em>nested=None</em>, <em>ref=None</em>, <em>attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the ‘ref’ and ‘attr’ attributes. These attributes are used to
 defined parameters for
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code> classes.</p>
@@ -1264,9 +1003,46 @@ defined parameters for
 </dd></dl>
 
 <dl class="class">
+<dt id="pydent.relationships.JSON">
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">JSON</code><span class="sig-paren">(</span><em>many=False</em>, <em>data_key=None</em>, <em>allow_none=True</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#JSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.JSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.relationships.Raw" title="pydent.relationships.Raw"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.Raw</span></code></a></p>
+<dl class="attribute">
+<dt id="pydent.relationships.JSON.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.JSON.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.MarshallingAccessor" title="pydent.marshaller.descriptors.MarshallingAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.MarshallingAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.JSON.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.JSON.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pydent.relationships.Many">
-<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">Many</code><span class="sig-paren">(</span><em>model</em>, <em>*args</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#Many"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.Many" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.field_extensions.Relation</span></code></p>
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">Many</code><span class="sig-paren">(</span><em>nested</em>, <em>*args</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#Many"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.Many" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.relationships.BaseRelationship" title="pydent.relationships.BaseRelationship"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.BaseRelationship</span></code></a></p>
 <p>Defines a many relationship with another model.
 Subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code>.</p>
 <p>Many initializer. Uses “where” callback by default.</p>
@@ -1275,7 +1051,7 @@ Subclass of <code class="xref py py-class docutils literal notranslate"><span cl
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>model</strong> (<em>basestring</em>) – target model</li>
+<li><strong>nested</strong> (<em>basestring</em>) – target model</li>
 <li><strong>args</strong> – other args for fields.Nested relationship</li>
 <li><strong>attr</strong> (<em>basestring</em>) – attribute to use to find model</li>
 <li><strong>kwargs</strong> – other kwargs for fields.Nested relationship</li>
@@ -1284,169 +1060,75 @@ Subclass of <code class="xref py py-class docutils literal notranslate"><span cl
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pydent.relationships.Many.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.Many.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.Many._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.Many._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
 <dl class="method">
-<dt id="pydent.relationships.Many._add_to_schema">
-<code class="descname">_add_to_schema</code><span class="sig-paren">(</span><em>field_name</em>, <em>schema</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many._add_to_schema" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Update field with values from its parent schema. Called by</dt>
-<dd><code class="xref py py-meth docutils literal notranslate"><span class="pre">__set_field_attrs</span></code>.</dd>
-</dl>
+<dt id="pydent.relationships.Many.build_query">
+<code class="descname">build_query</code><span class="sig-paren">(</span><em>models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.Many.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>field_name</strong> (<em>str</em>) – Field name set in schema.</li>
-<li><strong>schema</strong> (<em>Schema</em>) – Parent schema.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.Many._deserialize">
-<code class="descname">_deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many._deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize value. Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
+<dt id="pydent.relationships.Many.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.Many.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.Many.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be deserialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute/key in <cite>data</cite> to be deserialized.</li>
-<li><strong>data</strong> (<em>dict</em>) – The raw input data passed to the <cite>Schema.load</cite>.</li>
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The deserialized value.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 2.0.0: </span>Added <code class="docutils literal notranslate"><span class="pre">attr</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> parameters.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.Many._serialize">
-<code class="descname">_serialize</code><span class="sig-paren">(</span><em>nested_obj</em>, <em>attr</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many._serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serializes <code class="docutils literal notranslate"><span class="pre">value</span></code> to a basic Python datatype. Noop by default.
-Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TitleCase</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be serialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute or key on the object to be serialized.</li>
-<li><strong>obj</strong> (<em>object</em>) – The object the value was pulled from.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The serialized value</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.Many._validate">
-<code class="descname">_validate</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many._validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform validation on <code class="docutils literal notranslate"><span class="pre">value</span></code>. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if validation
-does not succeed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.Many._validate_missing">
-<code class="descname">_validate_missing</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many._validate_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate missing values. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if
-<cite>value</cite> should be considered missing.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.Many.context">
-<code class="descname">context</code><a class="headerlink" href="#pydent.relationships.Many.context" title="Permalink to this definition">¶</a></dt>
-<dd><p>The context dictionary for the parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.Many.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValidationError</strong> – If an invalid value is passed or if a required value
-is missing.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.Many.fail">
-<code class="descname">fail</code><span class="sig-paren">(</span><em>key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.fail" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper method that simply raises a <cite>ValidationError</cite>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.Many.get_value">
-<code class="descname">get_value</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em>, <em>default=&lt;marshmallow.missing&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.get_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the value for a given key from an object.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.Many.root">
-<code class="descname">root</code><a class="headerlink" href="#pydent.relationships.Many.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reference to the <cite>Schema</cite> that this field belongs to even if it is buried in a <cite>List</cite>.
-Return <cite>None</cite> for unbound fields.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.Many.schema">
-<code class="descname">schema</code><a class="headerlink" href="#pydent.relationships.Many.schema" title="Permalink to this definition">¶</a></dt>
-<dd><p>The nested Schema object.</p>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 1.0.0: </span>Renamed from <cite>serializer</cite> to <cite>schema</cite></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.Many.serialize">
-<code class="descname">serialize</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pulls the value for the given key from the object, applies the
-field’s formatting and returns the result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>attr</strong> (<em>str</em>) – The attibute or key to get from the object.</li>
-<li><strong>obj</strong> (<em>str</em>) – The object to pull the key from.</li>
-<li><strong>accessor</strong> (<em>callable</em>) – Function used to pull values from <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValidationError</strong> – In case of formatting problem</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -1457,8 +1139,8 @@ field’s formatting and returns the result.</p>
 
 <dl class="class">
 <dt id="pydent.relationships.One">
-<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">One</code><span class="sig-paren">(</span><em>model</em>, <em>*args</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#One"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.One" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.field_extensions.Relation</span></code></p>
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">One</code><span class="sig-paren">(</span><em>nested</em>, <em>*args</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>callback_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#One"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.One" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.relationships.BaseRelationship" title="pydent.relationships.BaseRelationship"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.BaseRelationship</span></code></a></p>
 <p>Defines a single relationship with another model.
 Subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code>.</p>
 <p>One initializer. Uses “find” callback by default.</p>
@@ -1467,7 +1149,7 @@ Subclass of <code class="xref py py-class docutils literal notranslate"><span cl
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>model</strong> (<em>basestring</em>) – target model</li>
+<li><strong>nested</strong> (<em>basestring</em>) – target model</li>
 <li><strong>args</strong> – other args for fields.Nested relationship</li>
 <li><strong>attr</strong> (<em>basestring</em>) – attribute to use to find model</li>
 <li><strong>kwargs</strong> – other kwargs for fields.Nested relationship</li>
@@ -1476,169 +1158,112 @@ Subclass of <code class="xref py py-class docutils literal notranslate"><span cl
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pydent.relationships.One.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.One.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.relationships.One._Callback__FLAGS">
+<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.relationships.One._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback.__FLAGS</span></code></p>
+</dd></dl>
+
 <dl class="method">
-<dt id="pydent.relationships.One._add_to_schema">
-<code class="descname">_add_to_schema</code><span class="sig-paren">(</span><em>field_name</em>, <em>schema</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One._add_to_schema" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Update field with values from its parent schema. Called by</dt>
-<dd><code class="xref py py-meth docutils literal notranslate"><span class="pre">__set_field_attrs</span></code>.</dd>
-</dl>
+<dt id="pydent.relationships.One.build_query">
+<code class="descname">build_query</code><span class="sig-paren">(</span><em>models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.One.fullfill">
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A
+Callback.SELF arg value will be replaced to be equivalent to the
+owner instance model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>field_name</strong> (<em>str</em>) – Field name set in schema.</li>
-<li><strong>schema</strong> (<em>Schema</em>) – Parent schema.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.One._deserialize">
-<code class="descname">_deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One._deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize value. Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
+<dt id="pydent.relationships.One.get_callback_args">
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.One.get_callback_kwargs">
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.One.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be deserialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute/key in <cite>data</cite> to be deserialized.</li>
-<li><strong>data</strong> (<em>dict</em>) – The raw input data passed to the <cite>Schema.load</cite>.</li>
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The deserialized value.</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 2.0.0: </span>Added <code class="docutils literal notranslate"><span class="pre">attr</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> parameters.</p>
-</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydent.relationships.Raw">
+<em class="property">class </em><code class="descclassname">pydent.relationships.</code><code class="descname">Raw</code><span class="sig-paren">(</span><em>many=False</em>, <em>data_key=None</em>, <em>allow_none=True</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#Raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.Raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Field" title="pydent.marshaller.fields.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Field</span></code></a></p>
+<dl class="attribute">
+<dt id="pydent.relationships.Raw.ACCESSOR">
+<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.Raw.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.MarshallingAccessor" title="pydent.marshaller.descriptors.MarshallingAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.MarshallingAccessor</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.One._serialize">
-<code class="descname">_serialize</code><span class="sig-paren">(</span><em>nested_obj</em>, <em>attr</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One._serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serializes <code class="docutils literal notranslate"><span class="pre">value</span></code> to a basic Python datatype. Noop by default.
-Concrete <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code> classes should implement this method.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TitleCase</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-</pre></div>
-</div>
+<dt id="pydent.relationships.Raw.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Raw.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the corresponding
+descriptor (i.e. accessor)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The value to be serialized.</li>
-<li><strong>attr</strong> (<em>str</em>) – The attribute or key on the object to be serialized.</li>
-<li><strong>obj</strong> (<em>object</em>) – The object the value was pulled from.</li>
+<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
+<li><strong>objtype</strong> (<a class="reference internal" href="_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValidationError</strong> – In case of formatting or validation failure.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The serialized value</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.One._validate">
-<code class="descname">_validate</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One._validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform validation on <code class="docutils literal notranslate"><span class="pre">value</span></code>. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if validation
-does not succeed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.One._validate_missing">
-<code class="descname">_validate_missing</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One._validate_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate missing values. Raise a <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValidationError</span></code> if
-<cite>value</cite> should be considered missing.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.One.context">
-<code class="descname">context</code><a class="headerlink" href="#pydent.relationships.One.context" title="Permalink to this definition">¶</a></dt>
-<dd><p>The context dictionary for the parent <code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.One.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><em>value</em>, <em>attr=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.deserialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deserialize <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValidationError</strong> – If an invalid value is passed or if a required value
-is missing.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.One.fail">
-<code class="descname">fail</code><span class="sig-paren">(</span><em>key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.fail" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper method that simply raises a <cite>ValidationError</cite>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.One.get_value">
-<code class="descname">get_value</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em>, <em>default=&lt;marshmallow.missing&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.get_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the value for a given key from an object.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.One.root">
-<code class="descname">root</code><a class="headerlink" href="#pydent.relationships.One.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reference to the <cite>Schema</cite> that this field belongs to even if it is buried in a <cite>List</cite>.
-Return <cite>None</cite> for unbound fields.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pydent.relationships.One.schema">
-<code class="descname">schema</code><a class="headerlink" href="#pydent.relationships.One.schema" title="Permalink to this definition">¶</a></dt>
-<dd><p>The nested Schema object.</p>
-<div class="versionchanged">
-<p><span class="versionmodified">Changed in version 1.0.0: </span>Renamed from <cite>serializer</cite> to <cite>schema</cite></p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.One.serialize">
-<code class="descname">serialize</code><span class="sig-paren">(</span><em>attr</em>, <em>obj</em>, <em>accessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.serialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pulls the value for the given key from the object, applies the
-field’s formatting and returns the result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>attr</strong> (<em>str</em>) – The attibute or key to get from the object.</li>
-<li><strong>obj</strong> (<em>str</em>) – The object to pull the key from.</li>
-<li><strong>accessor</strong> (<em>callable</em>) – Function used to pull values from <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>ValidationError</strong> – In case of formatting problem</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -1658,6 +1283,9 @@ field’s formatting and returns the result.</p>
         <a class="btn btn-default" href="pydent.models.html" title="previous chapter (use the left arrow)">pydent.models</a>
       </div>
     
+      <div class="pull-right">
+        <a class="btn btn-default" href="pydent.browser.html" title="next chapter (use the right arrow)">pydent.browser</a>
+      </div>
     </div>
     <div class="clearer"></div>
   
@@ -1674,9 +1302,12 @@ field’s formatting and returns the result.</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="pydent.browser.html" title="pydent.browser"
+             >next</a> |</li>
+        <li class="right" >
           <a href="pydent.models.html" title="pydent.models"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: '{"model": "Sample", "method": "where", "arguments": {"nonexistant": 1},
+      "options": {"offset": -1, "limit": 1, "reverse": true}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['127']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=VO67K2Y5%2FnL7A%2Fym1uIS7bIqZsWPSHZzzYVC4yxk2%2B5WyKo3bTPMCv%2BPvE%2FVqy3NxlpihqAxOWBP7MGeW%2FnykQ%3D%3D;
+          _aquarium_NURSERY_production_session=QVJxNXhRRWRRWnBNcEVHbkVNSlFiaE1JN1FrYWQ3SG56U0JjRk1lU0YwUDdMYlJ3dkpKSWFEdStxRFM1cGFNWnoybFNodm54TkhUdlM5UUxRNHFlWVROSVNHTzRwa0Z4SERaOUdJQVdudzVYY0lPa3pMekZGcWQvZzZhdVVLcjRrMXR4M3BaVHIxNFU1cDV3RVh0ZlFkWFFvL0lCYUFUclhnMU5wZHQyelpNN0UwOTBEc083UXVhSU1yTkZhYjg1clNRbkdSU0NUcUlwYUJVMDh5T2xkNmVMRG5FU1VkcGtHejh3VjBZYzVvZ0dhOXJ1K1RRUElhTlpNRTNTVjZwQ1BhZjlTSGNkVkpJZUlHVzZBQmFRL21SQXdlOUFOQnZjYk5rT2VaUlBHQXhNUXY1QUFiUFROYU1PRlZQbCtXSDlheUk4K01heWtJRmNPRnZSam9kRnpOSEltZ0ZTOHduY0o5ZCtSalpDQWNwdlhzRUwzeXRWVlVkSXRUbnFwOStZbVR2SzNNd3dHRkJDY09rcmlnOFRMaXdGeVZPRHJUUnphODJEb09oZi9xdz0tLUxMUFp1YW5nK2FRS2xVbHpxRTdvVEE9PQ%3D%3D--bb4ac2cb02dd1aa4c69e8a58192aec9a5f5db506;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '{"errors":"Mysql2::Error: Unknown column ''samples.nonexistant''
+        in ''where clause'': SELECT  `samples`.* FROM `samples` WHERE `samples`.`nonexistant`
+        = 1  ORDER BY created_at DESC LIMIT 1"}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 02 Nov 2018 04:26:29 GMT']
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=kas30Hj0qOjzFAAihytwMFqXbaDJgHzBbEH8XrgsOt6TjSbMc%2F6akPeYQMuEYk8QLudp4%2Bb5M9LuKH8jz7EToQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=cUIrWlJ4L1p0RTZMYyszT0FsWHMvKzY1TFRCT0llSzhqSFBuMUtPU2F1RDVQMFhVbnhHdkdHSlJiNlcyZVd1TG92WmZYTTk4K2NLbFVoYTQ1WksvSlYySzJLL3djdzlBR096VjE1VzUvTWxqRTdHbjVsT20xNm02dTRCU3Nvc09FUG9LK3Vzd2F0M2xVVFJVVTZBVVo3ME9ncm9kRzk1bnBiakJaekF6WGVraGZsWEEzTU45Zzl3c01EK3U5NVN3UisvY0xXd3FuU29tMnJ2MHRqWGlCNW9KNmk1OWp1L0U4TXdrZmZQd3VrVVZaZ3JTR0t3SUJrOWd6c3FKd2RrL0dJTmpzSE1KZkxnRmx4aTFMUUR6ZEMxVTNlY0QzcGdpT3lvS0k1MHFEWVNLUWVVVHVJVDhMUXlvQUlvS0ZJSS85T0p3WnhGT2FxZHJQU2pVRzhpam1OQzNwd0lOaDVGenRCZ3gxZ2p0TkJ2V0NvY2hkQVVwZGc4UHh3ZWtlU0I3TkVoWnJzWEZvYkpZSkhWN3gyMFB5MExXSlpMbVlXeVlDdCtLYXJNYzhTST0tLWp2VEU0WlhNc01na0hnL0ZlZXB2eHc9PQ%3D%3D--4f558307b6068467afe5579fc27c6c1fd7f52499;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [6dc39d41-b888-4e7b-b23a-6afcce658055]
+      X-Runtime: ['0.003369']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 422, message: Unprocessable Entity}
+version: 1

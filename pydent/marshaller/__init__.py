@@ -1,7 +1,24 @@
-from marshaller.base import SchemaModel, add_schema
-from marshaller import fields
-from marshaller.registry import SchemaRegistry, ModelRegistry
-from marshaller import exceptions
-from marshaller.exceptions import ModelValidationError
+"""Serialization/Deserialization
 
-fields.JSON = fields.Field
+==========
+marshaller
+==========
+
+Submodules
+==========
+
+.. autosummary::
+    :toctree: _autosummary
+
+    base
+    descriptors
+    exceptions
+    fields
+    registry
+    schema
+
+"""
+
+from pydent.marshaller.base import SchemaModel, add_schema
+from pydent.marshaller.registry import SchemaRegistry, ModelRegistry
+from pydent.marshaller import fields, exceptions, descriptors

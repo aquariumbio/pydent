@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: '{"model": "Sample", "method": "where", "arguments": {}, "options": {"offset":
+      -1, "limit": 1, "reverse": true}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['111']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=Z7rOeOl0mCZIsf6WVfIT5KppzC6Bp5fLC%2FTb4WKBtgZsb3Npd5LqCB38ABz5zCom4vMMBCi%2Fb5gLtY6c5X%2BcgQ%3D%3D;
+          _aquarium_NURSERY_production_session=dFQwOEdTbEI3ZnREa1VWblNJNXAxMVVQUzEycitIK1lkZWdmQjNackxGTy9YSjZZUTJtZjFERTc1S1M2WlJ6QmVKOWlISHhtU29IL1gvcy80dCt6MHZnNFdoMnM2ZFlNTnIzOHNNU1d5MEcyTTE5S2ZvSG9EV0JTaWUrdVR6STBKWEp5Mk5qM01kMVF2QUw5dExtNjYrOGRUbTkvM2FoWFJNR3JkNVFYNmJkSzd1YXRDa3U3dm12YUNOT1ZuOWF2cjBBZ05adEt1aE9ldkZZT010MkdBb0lWcnA3K3Rrb2NSUGtnSlgxN2U2V0c4amJaNXF5ZjhDMDlXcW54VjBxTDc1TnJERzRpUnorcHhrWHhVL0pUYUprZlVTRjNkVTByeHcyWis0VjdUR252Q0gvcm02RSsvMzhBSTkrVytaMlpQNGNhVTZSdkJQcTZlMktSMDBOdGhTbVJjTklMNGdGRVEvNmpMTVloWllzMVI3a1RrbHE4MEN5S3Z6MWh4bDU0NjdyeEd5M0FlY0VGUXUvL2FXQ2RjUjZNT3djeVkxWlZCMDhPQWh6S1dWYz0tLWtNU0I0dGhOMkZWMUlBWUR4S29JZ3c9PQ%3D%3D--865ef42f75263dd463f5aabd5a92e5029404008d;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":19767,"name":"IDT Test","sample_type_id":1,"project":"SD2","created_at":"2018-10-30T15:57:33.000-07:00","updated_at":"2018-10-30T15:57:33.000-07:00","user_id":185,"description":"New
+        sample type description","data":null}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 01 Nov 2018 04:20:29 GMT']
+      ETag: [W/"a426609eb7bafcd6074f0bf3bd94ec56"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=aTQs%2BnsHjhhqSZ1Zz%2FY%2FuJcYrGZao%2Fy4B8svWQXO0X1i4ZHr5eH8Nj8EY9NjyAZ634JsTPO7BOsHinokgjD7%2Bg%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=czJZQllVVjdNellHMzZpTHYvR3VoVC8wdjdCU1RSYUYvZEtpZW5OblQ3ZUtJZVNJSmNxYnFEc0FDeUcvVUdZTE9TVy9TRGNBRE9xSUFNbjZpeFQzb3RBNTlpZVA0Tk15TG9hNVJYSDQyZ3Y1aWRvczB3R3hBTHQvNUdXTnFkV3cwVWRod214WG9mQ1A4bFV3WTNrL2M0aFhZUlN4MnRuQld2SFgwNmM1ekxWSCtKaWFRNG1BdmhxeHdxVWVTTTJ1TUpEVTU4Q1M4akhDeW11UjFrNXNRRE5TZ0EzM2krK2dWNCtodXY1VGltY1J5bThWd3RJYzE3TFEyclF2TGFicHB3c2ZIV0FDU3RTd1VTSWo5TzdreThSK0cyQlo0aHhzaXFQQ3gwTGd6WkNha1V0UmdGZ2JKZTJLMWh6azV5aFZDKzhsbWNsT2RmMVVEMFlGNDFITC9VQ0ZRYlAzTTlHcVpXQU9YN1JqQm9BQzhFdDJuem9sS3I2SThDM2hWa0lJNVhKWVdDem9zbjVYbnd1U1d2TUd6N1R0eU5rV05LZDU2b1hWanhySTNWND0tLVc3ZmtrY1BNYzJWbFEwTmRVUlE3cmc9PQ%3D%3D--dfd6b1cf8d8f43cadc00a08a07f4d226235efb55;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [5b7a180a-e6f7-4818-8cd5-7bea9d81595a]
+      X-Runtime: ['0.009394']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"model": "FieldValue", "method": "where", "arguments": {"parent_id": 19767,
+      "parent_class": "Sample"}, "options": {"offset": -1, "limit": -1, "reverse":
+      false}}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['161']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=Z7rOeOl0mCZIsf6WVfIT5KppzC6Bp5fLC%2FTb4WKBtgZsb3Npd5LqCB38ABz5zCom4vMMBCi%2Fb5gLtY6c5X%2BcgQ%3D%3D;
+          _aquarium_NURSERY_production_session=dFQwOEdTbEI3ZnREa1VWblNJNXAxMVVQUzEycitIK1lkZWdmQjNackxGTy9YSjZZUTJtZjFERTc1S1M2WlJ6QmVKOWlISHhtU29IL1gvcy80dCt6MHZnNFdoMnM2ZFlNTnIzOHNNU1d5MEcyTTE5S2ZvSG9EV0JTaWUrdVR6STBKWEp5Mk5qM01kMVF2QUw5dExtNjYrOGRUbTkvM2FoWFJNR3JkNVFYNmJkSzd1YXRDa3U3dm12YUNOT1ZuOWF2cjBBZ05adEt1aE9ldkZZT010MkdBb0lWcnA3K3Rrb2NSUGtnSlgxN2U2V0c4amJaNXF5ZjhDMDlXcW54VjBxTDc1TnJERzRpUnorcHhrWHhVL0pUYUprZlVTRjNkVTByeHcyWis0VjdUR252Q0gvcm02RSsvMzhBSTkrVytaMlpQNGNhVTZSdkJQcTZlMktSMDBOdGhTbVJjTklMNGdGRVEvNmpMTVloWllzMVI3a1RrbHE4MEN5S3Z6MWh4bDU0NjdyeEd5M0FlY0VGUXUvL2FXQ2RjUjZNT3djeVkxWlZCMDhPQWh6S1dWYz0tLWtNU0I0dGhOMkZWMUlBWUR4S29JZ3c9PQ%3D%3D--865ef42f75263dd463f5aabd5a92e5029404008d;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.0]
+    method: POST
+    uri: http://52.27.43.242:81/json
+  response:
+    body: {string: '[{"id":894077,"parent_id":19767,"value":"","child_sample_id":null,"child_item_id":null,"created_at":"2018-10-30T15:57:33.000-07:00","updated_at":"2018-10-30T15:57:33.000-07:00","name":"Overhang
+        Sequence","parent_class":"Sample","role":null,"field_type_id":null,"row":null,"column":null,"allowable_field_type_id":null},{"id":894078,"parent_id":19767,"value":"","child_sample_id":null,"child_item_id":null,"created_at":"2018-10-30T15:57:33.000-07:00","updated_at":"2018-10-30T15:57:33.000-07:00","name":"Anneal
+        Sequence","parent_class":"Sample","role":null,"field_type_id":null,"row":null,"column":null,"allowable_field_type_id":null},{"id":894079,"parent_id":19767,"value":"0.0","child_sample_id":null,"child_item_id":null,"created_at":"2018-10-30T15:57:33.000-07:00","updated_at":"2018-10-30T15:57:33.000-07:00","name":"T
+        Anneal","parent_class":"Sample","role":null,"field_type_id":null,"row":null,"column":null,"allowable_field_type_id":null}]'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 01 Nov 2018 04:20:29 GMT']
+      ETag: [W/"10ac212241583b77250b119d991c4976"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=zs1SLa9PuS03pb5%2BlutKOr5DeGtuKeB488YdEVFZk57FGO88ManLA2LoQPQ61XP49tm4QccxGCvzh0hs1qe5GQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=QXhXYmlieWVWZmlJLys5VkIzZEtNbWFmdjJXTTdCRW05RkpKRTB4WVpHd0ZYTkM2RkxNQXVqY3FvamlKVzBDZzNpRXhlVnZSWTltL2cxbWlzUnNPRWRackFyakgya3JUU2dFNUJVSmgrYTVnb0NaSGJSWGJDOFJSY3hVTzRWZkJYREtFWllMRVhHQ2tZcFlhVEJFVUFSSFZZdi9XSFlXQ0EyQTYyZlpZR1NVbkNXYUFsalR5ZUFnQzV1dFQ4VEZFazZWd1p2Mm52c0ovSVRacmI2UFlHMXJFNFZ3UWIyYlB5Rmc0bDlyNGFTaWIwcnBDckZZNVVDdjcwY1NhNndRN0MyS2ttZy85bzJtbnNWYUFSUFB0Rzl4RkdWamlKbEh1c3FTQ01zN1RiZ3VFUW0xQlVMRTgvVTZ6RnM0UW1tdGpvcHJ1Vkdxc3RqMWtxbUtVOC9sU2YxVklGU2s3Y3ZEcndtM0xQMENyODlYdUR0R3QrMzQ4c2VxTlBkSkdWcnliV204bGRONGZqNVN2ZHlIOE56SitNUG4wQVBpUFM0OGE2RXEvN2txbVVSWT0tLWRuV2VQekZVam1KdFZzOUhXN3JuZUE9PQ%3D%3D--4b1f9fcc0cb7fc861134268957df7e844b33d31d;
+          path=/; HttpOnly]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [0156b36b-a950-45a0-af9d-c8c6765e863f]
+      X-Runtime: ['0.004020']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1
