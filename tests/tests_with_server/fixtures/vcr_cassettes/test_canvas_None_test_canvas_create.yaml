@@ -413,4 +413,42 @@ interactions:
       X-Runtime: ['0.025052']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
+- request:
+    body: '{"status": null, "layout": {"id": 0, "children": [], "documentation": "No
+      documentation ofr this module", "height": 60, "input": [], "output": [], "name":
+      "no_name", "parent_id": -1, "width": 160, "wires": []}, "id": null, "rid": 59329,
+      "name": "MyPlan", "wires": []}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['267']
+      Content-Type: [application/json]
+      Cookie: [XSRF-TOKEN=2Ejc%2FWUrvCmaxlvWM9e5FoYurO9bMK6zU%2F4xkD1B%2FFid6wKx2xYarjvLaQOd%2BEu2G3JmxdM6iw%2FLEWzL5dW7vg%3D%3D;
+          _aquarium_NURSERY_production_session=MDdOK2hPRDAwdmlpVGNYbk1Ta0pzZW1NQ2JSVUZKck9xRTFwd1pBb09rNEZHeHZ3V2hQdktPUGFmaEQyM0YyQklSNjB2LytzOVhacjVDQkRjT20wbWFDb2lERTN2ZHZwMXgrT3BpMXBxVXlkaHh2dHU5dFR3eldEd1hXV1U5N0tWR004K1crMVRRS1NOamNBUE9IRDNqb1Z6SFJreTFZMklaSGJ4bW5xVkRvTVJZM3ovbVVqSEZRQXRrUWF0MnJXTURxd3J6djBTRFFhQlNhdDVQQ3dzdUNFemZXNkNSUUNLSjU5QU9xRmNVR2pRNzg5WG5HODlLdG9iMVB6TStOMitHNVNXRWFkbDYxbHZrNDJHRUw5NCt6b29pU2VHL3hpdE5vUkcwRE4rcVpna3R3K0ZHdTlubGNCNkRGdDVBWlBDODBmSWE5SlFwU2pOQk5PbjJqS0c1V0ZkQ0tITkNHZlJvOEJlY3JPSnQyOHgwRTAyQ1dzR21NRy9MVHcwMFcvNTVDZ0YvZzAvaDZ3ME9hMndlT3lzbUlCRDB3SzRSdHBtcG8zbWIySitaST0tLXJIYjE3eXVHekszRHhid3NQbVNiU0E9PQ%3D%3D--e3ec034de55bdce8a36d5d62d944899d42bbb40a;
+          remember_token=SLLRrvtYchvNLhWHJR3FVg; remember_token_NURSERY_production=SLLRrvtYchvNLhWHJR3FVg]
+      User-Agent: [python-requests/2.20.1]
+    method: POST
+    uri: http://52.27.43.242:81/plans.json?user_id=66
+  response:
+    body: {string: '{"id":139805,"name":"MyPlan","budget_id":null,"folder":null,"user_id":66,"created_at":"2018-11-09T11:08:00.000-08:00","updated_at":"2018-11-09T11:08:00.000-08:00","status":null,"operations":[],"wires":[],"layout":"{\"id\":0,\"children\":null,\"documentation\":\"No
+        documentation ofr this module\",\"height\":60,\"input\":null,\"output\":null,\"name\":\"no_name\",\"parent_id\":-1,\"width\":160,\"wires\":null}"}'}
+    headers:
+      Cache-Control: ['max-age=0, private, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 09 Nov 2018 19:08:00 GMT']
+      ETag: [W/"52c0d5cd93fda1522481e8595c7cb16b"]
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Set-Cookie: [XSRF-TOKEN=b7T1Sqm1tV7WqNOguWlteWHGSvq9YBGno2z2CYhQaMsqFysGF4gT2Xel4XUXRp%2FZ%2FJqA0DVqNBs7g6tSUMQvLQ%3D%3D;
+          path=/, _aquarium_NURSERY_production_session=emMya1VxWEFBbko2OFc0R0JFZ24rSUxHZlc4Q1krT2luL0JqT1dkUjkydC90Tmp4UVh4Vkh1MThMWXNVRVVKUlRBVVl6MDFYbHByeWRDL01td3BKbWtFbG1lK1BtdHlFcDBCZTZON3RXZmNTWmRtT0RYZU85bVhDWFVQK0tEeTNRZmpCc0VRaU1xRU5GQlBuclpET1VORE15azMzb01Oa3NZbGoxOEdrYjZvUHRGL0tUWmdGc0lodnNua05MZW53TWwwMzdmLzdBcVE5TFQ3VUFPUlBoeXY3WXRCYTJUcTdmQUpQQi82cU5sQUg0bWtZdTVYanJ4MTlvbWloZnVabUl0SDMyNllCenJmTHF3dDFvTVZSc3d1dVlJNDROZW9LNFBRVkZUTHJvT09uRmZOcHN6ZUkweEJja2VRNEE2QWdqMy9GNEI2bmNmdHF6V2EzR3o5ZWNvYktUVmlIZ1ZGNHh2SHdTUSs2UWwrR3lWR0pkWWdidlpZOUlQV3RwdjMxY1hCR0EvZERoYXNxMWtKRG4xSEV3SUI5bVZEK0Y2SElEeEVPWXJFdzZmcz0tLWZCUTNyNUNhaXY5d1NUU25RMWxEV3c9PQ%3D%3D--90e5edaa25603908d967d56717bc55b59abe3c73;
+          path=/; HttpOnly]
+      Transfer-Encoding: [chunked]
+      Vary: [Origin]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [11d22564-9e49-4602-b996-ed06ac3a4021]
+      X-Runtime: ['0.022539']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
 version: 1

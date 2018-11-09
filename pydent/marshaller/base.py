@@ -16,7 +16,11 @@ def add_schema(cls):
 
     if not issubclass(cls, SchemaModel):
         raise SchemaException("Model must be a subclaass of '{}'".format(SchemaModel))
-    new_schema = SchemaRegistry(SchemaRegistry.make_schema_name(cls.__name__), (DynamicSchema,), {})
+    new_schema = SchemaRegistry(
+        SchemaRegistry.make_schema_name(cls.__name__),
+        (DynamicSchema,),
+        {"_model_class": cls}
+    )
     new_schema.register(cls)
     return cls
 
@@ -57,13 +61,18 @@ class SchemaModel(metaclass=ModelRegistry):
     def add_data(self, data):
         """Initializes fake attributes that correspond to data."""
         if not self.model_schema:
+            filepath = ''
+            try:
+                filepath = inspect.getfile(self.__class__)
+            except:
+                pass
             raise SchemaModelException("Cannot initialize a {} without a {}. "
                                        "Use '@{}' to decorate the class definition for '{}' located in {}".format(
                 SchemaModel.__name__,
                 DynamicSchema.__name__,
                 add_schema.__name__,
                 self.__class__.__name__,
-                inspect.getfile(self.__class__)
+                filepath,
             ))
         if data is not None:
             self.__class__.model_schema.init_data_accessors(self, data)

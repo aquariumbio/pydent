@@ -1,4 +1,5 @@
 import json
+import os
 
 import pytest
 import requests
@@ -17,12 +18,12 @@ def mock_login_post():
             "sessions.json": dict(
                 cookies={
                     "remember_token_NURSERY_production": "SLLRrvtYchvNLhWHJR3FVg; path=/; expires=Tue, 10-Nov"
-                    "-2037 00:15:54 GMT, XSRF-TOKEN=tlhdb%2BXY1FVupNSe0GdOvzNNFULtwW4Xzfkiya5gAbU%3D; pat"
-                    "h=/, _aquarium_NURSERY_production_session=dfsdf"
-                    "VwTlNlMEdkT3Z6Tk5GVUx0d1c0WHpsdfsma2l5YTVnQWJVPQY6BkVGSSIKZmxhc2gGOwZUbzolQWN0aW9uRGlzcG"
-                    "F0Y2g6OkZsYXNoOjpGbGFzaEhhc2gJOgpAdXNsdfsdfsMmY4NDliMDY1MWJiOGVlNzJlZTlm"
-                    "NjJlZjU1NmQ4YWQGOwZU-"
-                    "-9e441bf82be44d39e7ec95f475b02751bb7b3c46; path=/; HttpOnly"
+                                                         "-2037 00:15:54 GMT, XSRF-TOKEN=tlhdb%2BXY1FVupNSe0GdOvzNNFULtwW4Xzfkiya5gAbU%3D; pat"
+                                                         "h=/, _aquarium_NURSERY_production_session=dfsdf"
+                                                         "VwTlNlMEdkT3Z6Tk5GVUx0d1c0WHpsdfsma2l5YTVnQWJVPQY6BkVGSSIKZmxhc2gGOwZUbzolQWN0aW9uRGlzcG"
+                                                         "F0Y2g6OkZsYXNoOjpGbGFzaEhhc2gJOgpAdXNsdfsdfsMmY4NDliMDY1MWJiOGVlNzJlZTlm"
+                                                         "NjJlZjU1NmQ4YWQGOwZU-"
+                                                         "-9e441bf82be44d39e7ec95f475b02751bb7b3c46; path=/; HttpOnly"
                 }
             )
         }
@@ -48,7 +49,6 @@ def fake_session(monkeypatch, mock_login_post):
 
 @pytest.fixture(scope="function")
 def fake_response():
-
     class FakeRequest(object):
         def __init__(self, status_code=200, url="myfakeurl.com", method="post"):
             self.status_code = status_code
@@ -76,7 +76,6 @@ def fake_response():
 
     return make_response
 
-import os
 
 @pytest.fixture(autouse=True)
 def no_requests(monkeypatch):

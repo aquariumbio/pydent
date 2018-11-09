@@ -13,12 +13,12 @@ class SchemaRegistry(type):
     schemas = {}  # the registry of Schemas instantiated
     _fields = None  # list of fields instantiated
     _model_class = None  # reference to model class the schema is attached to
+    BASE = "DynamicSchema"
 
     def __init__(cls, name, bases, selfdict):
         """Saves model to the registry."""
         super().__init__(name, bases, selfdict)
-        r = cls.__mro__
-        if bases != () and name != 'DynamicSchema':
+        if bases != () and name != SchemaRegistry.BASE:
             if name in SchemaRegistry.schemas:
                 raise SchemaRegistryError("Cannot register '{}' since it already exists.".format(name))
             SchemaRegistry.schemas[name] = cls
@@ -53,17 +53,20 @@ class SchemaRegistry(type):
         return name + "Schema"
 
     @staticmethod
-    def get(name):
+    def get_schema(name):
         """Gets model by model_name."""
         if name not in SchemaRegistry.schemas:
-            raise SchemaRegistryError("Schema \"{}\" not found in SchemaRegistry.".format(name))
+            raise SchemaRegistryError("Schema \"{}\" not found in SchemaRegistry. Available schemas:\n{}".format(
+                name,
+                ','.join(SchemaRegistry.schemas.keys())
+            ))
         else:
             return SchemaRegistry.schemas[name]
 
     @staticmethod
     def get_model_schema(model_name):
         """Gets a model schema from a model name."""
-        return SchemaRegistry.get(SchemaRegistry.make_schema_name(model_name))
+        return SchemaRegistry.get_schema(SchemaRegistry.make_schema_name(model_name))
 
 
 class ModelRegistry(type):
@@ -74,12 +77,12 @@ class ModelRegistry(type):
     _fields_key = "fields"  # the class level attribute key to instantiate model fields
     _data_key = "__serialized_data"  # the attribute key used to store serialized data
     _deserialized_key = "__deserialized_data"  # the attribute key used to store serialized data
+    BASE = 'SchemaModel'
 
     def __init__(cls, name, bases, selfdict):
         """Saves model to the registry."""
         super().__init__(name, bases, selfdict)
-
-        if bases != () and bases[0].__name__ != 'SchemaModel':
+        if bases != () and bases[0].__name__ != ModelRegistry.BASE:
             ModelRegistry.models[name] = cls
 
     @property

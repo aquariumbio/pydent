@@ -1,5 +1,3 @@
-from pydent.models import Item
-
 def test_item_get_data_association(fake_session):
     item = fake_session.Item.load(
         {'created_at': '2018-07-03T13:06:35-07:00',

@@ -19,13 +19,19 @@ from pydent.exceptions import NoSessionError
 
 @pytest.fixture(scope="function")
 def base():
-    ModelRegistry.models.pop("MyModel", None)
-    SchemaRegistry.schemas.pop("MyModelSchema", None)
+    old_schemas = dict(SchemaRegistry.schemas)
+    old_models = dict(ModelRegistry.models)
 
     yield ModelBase
 
-    ModelRegistry.models.pop("MyModel", None)
-    SchemaRegistry.schemas.pop("MyModelSchema", None)
+    new_schemas = set(SchemaRegistry.schemas.keys()).difference(set(old_schemas))
+    new_models = set(ModelRegistry.models.keys()).difference(set(old_models))
+
+    for s in new_schemas:
+        SchemaRegistry.schemas.pop(s)
+
+    for m in new_models:
+        ModelRegistry.models.pop(m)
 
 
 @pytest.fixture(scope="function")

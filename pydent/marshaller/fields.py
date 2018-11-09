@@ -108,7 +108,6 @@ class Field(FieldABC):
             key = name
             if self.data_key:
                 key = self.data_key
-            print("setting {} to an accessor for {}".format(name, objtype))
             setattr(objtype, name, self.ACCESSOR(name=key, field=self, accessor=objtype._data_key,
                                                  deserialized_accessor=objtype._deserialized_key, default=self.default))
 

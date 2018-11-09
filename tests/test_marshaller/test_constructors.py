@@ -10,7 +10,7 @@ class TestModelConstructors:
 
     def test_model_base_constructor(self):
         @add_schema
-        class ModelBase(SchemaModel):
+        class TestBase(SchemaModel):
             pass
 
         assert True, "should pass with no errors"
@@ -18,22 +18,26 @@ class TestModelConstructors:
     def test_model_base_constructor(self):
         with pytest.raises(SchemaException):
             @add_schema
-            class ModelBase(object):
+            class TestBase(object):
                 pass
 
     def test_model_registry(self):
-        class ModelBase(SchemaModel):
+
+        class TestBase(SchemaModel):
             pass
 
-        assert not ModelRegistry.models, "There should be no models for the first base class of SchemaModel"
+        assert 'SchemaModel' not in ModelRegistry.models, "There should be no models for the " \
+                                                          "first base class of SchemaModel"
 
-        class MyFirstModel(ModelBase):
+        num = len(ModelRegistry.models)
+
+        class MyFirstModel(TestBase):
             pass
 
-        class MySecondModel(ModelBase):
+        class MySecondModel(TestBase):
             pass
 
-        assert len(ModelRegistry.models) == 2, "There should be 2 models registered"
+        assert len(ModelRegistry.models) == num + 2, "There should be 2 models registered"
 
         assert ModelRegistry.get_model('MyFirstModel') is MyFirstModel
         assert ModelRegistry.get_model('MySecondModel') is MySecondModel
@@ -94,7 +98,7 @@ class TestRelationshipConstructors:
         SchemaRegistry.schemas = {}
         ModelRegistry.models = {}
 
-        class ModelBase(SchemaModel):
+        class TestBase(SchemaModel):
 
             def _set_data(self):
                 pass
@@ -102,7 +106,7 @@ class TestRelationshipConstructors:
             def dump(self):
                 pass
 
-        yield ModelBase
+        yield TestBase
         SchemaRegistry.schemas = {}
         ModelRegistry.models = {}
 
