@@ -129,12 +129,12 @@
     <span class="n">schemas</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># the registry of Schemas instantiated</span>
     <span class="n">_fields</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># list of fields instantiated</span>
     <span class="n">_model_class</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># reference to model class the schema is attached to</span>
+    <span class="n">BASE</span> <span class="o">=</span> <span class="s2">&quot;DynamicSchema&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__mro__</span>
-        <span class="k">if</span> <span class="n">bases</span> <span class="o">!=</span> <span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;DynamicSchema&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">bases</span> <span class="o">!=</span> <span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">BASE</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">SchemaRegistryError</span><span class="p">(</span><span class="s2">&quot;Cannot register &#39;</span><span class="si">{}</span><span class="s2">&#39; since it already exists.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
             <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
@@ -168,18 +168,21 @@
 <span class="sd">        name)&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;Schema&quot;</span></div>
 
-<div class="viewcode-block" id="SchemaRegistry.get"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="SchemaRegistry.get_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_schema">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets model by model_name.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SchemaRegistryError</span><span class="p">(</span><span class="s2">&quot;Schema </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2"> not found in SchemaRegistry.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">SchemaRegistryError</span><span class="p">(</span><span class="s2">&quot;Schema </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2"> not found in SchemaRegistry. Available schemas:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="SchemaRegistry.get_model_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_model_schema">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_model_schema</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets a model schema from a model name.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">make_schema_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">make_schema_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="ModelRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry">[docs]</a><span class="k">class</span> <span class="nc">ModelRegistry</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
@@ -190,12 +193,12 @@
     <span class="n">_fields_key</span> <span class="o">=</span> <span class="s2">&quot;fields&quot;</span>  <span class="c1"># the class level attribute key to instantiate model fields</span>
     <span class="n">_data_key</span> <span class="o">=</span> <span class="s2">&quot;__serialized_data&quot;</span>  <span class="c1"># the attribute key used to store serialized data</span>
     <span class="n">_deserialized_key</span> <span class="o">=</span> <span class="s2">&quot;__deserialized_data&quot;</span>  <span class="c1"># the attribute key used to store serialized data</span>
+    <span class="n">BASE</span> <span class="o">=</span> <span class="s1">&#39;SchemaModel&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">bases</span> <span class="o">!=</span> <span class="p">()</span> <span class="ow">and</span> <span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s1">&#39;SchemaModel&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">bases</span> <span class="o">!=</span> <span class="p">()</span> <span class="ow">and</span> <span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">BASE</span><span class="p">:</span>
             <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
 
     <span class="nd">@property</span>
