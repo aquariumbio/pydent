@@ -98,7 +98,7 @@ pygments_style = 'sphinx'
 todo_include_todos = False
 
 
-html_context = {'version': version, 'github': pydent.__url__, 'pypi': pydent.__pypi__}
+html_context = {'version': version, 'github': pydent.__url__, 'pypi': pydent.__pypi__, 'articles': [1,2,3]}
 
 # -- Options for HTML output ----------------------------------------------
 

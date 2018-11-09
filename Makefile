@@ -49,7 +49,7 @@ testdeploy:
 
 benchmark:
 	rm -rf .benchmarks/images/*svg
-	python -m pytest --benchmark-autosave --benchmark-max-time=0.1 --benchmark-group-by=func --benchmark-histogram=.benchmarks/images/histogram
+	python -m pytest --benchmark-autosave --benchmark-max-time=0.1 --benchmark-group-by=func --benchmark-histogram=docsrc/_static/benchmark/histogram
 
 
 format:
