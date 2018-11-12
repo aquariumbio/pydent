@@ -5,8 +5,8 @@ import json
 
 import inflection
 
-from pydent.marshaller import fields
 from pydent.base import ModelBase
+from pydent.marshaller import fields
 from pydent.marshaller.exceptions import ModelValidationError
 
 

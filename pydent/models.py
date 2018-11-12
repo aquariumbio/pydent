@@ -190,6 +190,7 @@ class DataAssociatorMixin:
             return None
         return val
 
+
 # Models
 
 @add_schema
@@ -677,7 +678,21 @@ class Item(ModelBase, DataAssociatorMixin):
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation"),
         data=Raw(),
-        ignore=("locator_id",)
+        ignore=("locator_id",),
+        part_associations=HasMany("PartAssociation", ref="part_id"),  # TODO: add to change log
+        collections=HasManyThrough("Collection", "PartAssociation"),  # TODO: add to change log
+        # provedance fields
+        # TODO: add new relationships to change log
+        field_values_as_outputs=HasMany("FieldValue", ref="child_item_id", additional_args={
+            "role": "output",
+            "parent_class": "Operation"
+        }),
+        field_values_as_inputs=HasMany("FieldValue", ref="child_item_id", additional_args={
+            "role": "input",
+            "parent_class": "Operation"
+        }),
+        operations_as_outputs=HasManyThrough("Operation", "FieldValuesAsOutput", ref="parent_id"),
+        operations_as_inputs=HasManyThrough("Operation", "FieldValuesAsInput", ref="parent_id"),
     )
     methods = ['is_part']
 
@@ -748,6 +763,16 @@ class Item(ModelBase, DataAssociatorMixin):
         """
         assoc_list = self.session.PartAssociation.where({'collection_id': self.id})
         return bool(assoc_list)
+
+    # TODO: add to change log
+    @property
+    def collection(self):
+        return self.collections[0]
+
+    # TODO: add to change log
+    @property
+    def part_association(self):
+        return self.part_associations[0]
 
 
 @add_schema
@@ -831,6 +856,7 @@ class ObjectType(ModelBase):
 @add_schema
 class Operation(ModelBase, DataAssociatorMixin):
     """A Operation model"""
+    # TODO: add 'inputs' and 'outputs' as bone-fide properties
     fields = dict(
         field_values=HasMany("FieldValue",
                              ref="parent_id",
@@ -842,7 +868,7 @@ class Operation(ModelBase, DataAssociatorMixin):
         plan_associations=HasMany("PlanAssociation", "Operation"),
         plans=HasManyThrough("Plan", "PlanAssociation"),
         status=Raw(default='planning'),
-        routing=Function('get_routing')
+        routing=Function('get_routing'),
     )
 
     def __init__(self, operation_type_id=None, operation_type=None, status=None, x=0, y=0):
@@ -1279,7 +1305,7 @@ class OperationType(ModelBase):
 
     def instance(self, xpos=0, ypos=0):
         operation = self.session.Operation.new(operation_type_id=self.id,
-                              status='planning', x=xpos, y=ypos)
+                                               status='planning', x=xpos, y=ypos)
         operation.operation_type = self
         operation.init_field_values()
         return operation
@@ -1340,7 +1366,7 @@ class Plan(ModelBase, DataAssociatorMixin):
         status=Raw(default="planning")
     )
 
-    def __init__(self, name="MyPlan", status=None):
+    def __init__(self, name="MyPlan", status="planning"):
         super().__init__(
             name=name,
             status=status,
@@ -1570,7 +1596,31 @@ class Sample(ModelBase):
         items=HasMany("Item", ref="sample_id"),
         field_values=HasMany("FieldValue",
                              ref="parent_id",
-                             additional_args={"parent_class": "Sample"})
+                             additional_args={"parent_class": "Sample"}),
+
+        # TODO: add new sample relationships to change log
+        field_values_as_properties=HasMany("FieldValue",
+                                         ref="child_sample_id",
+                                         additional_args={
+                                             "parent_class": "Sample"
+                                         }),
+        field_values_as_outputs=HasMany("FieldValue",
+                                       ref="child_sample_id",
+                                       additional_args={
+                                           "parent_class": "Operation",
+                                           "role": "output"
+                                       }
+                                       ),
+        field_values_as_inputs=HasMany("FieldValue",
+                                      ref="child_sample_id",
+                                      additional_args={
+                                          "parent_class": "Operation",
+                                          "role": "input"
+                                      }
+                                      ),
+        operations_as_outputs=HasManyThrough("Operation", "FieldValuesAsOutput"),
+        operations_as_inputs=HasManyThrough("Operation", "FieldValuesAsInput"),
+        parent_samples=HasManyThrough("Sample", "FieldValuesAsProperty")
     )
 
     def __init__(self, name=None, project=None, description=None, sample_type=None, sample_type_id=None,
@@ -1839,7 +1889,11 @@ class SampleType(ModelBase):
     """A SampleType model"""
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
-        field_types=HasMany("FieldType", ref="parent_id", additional_args={"parent_class": "SampleType"})
+        field_types=HasMany("FieldType", ref="parent_id", additional_args={"parent_class": "SampleType"}),
+
+        # TODO: operation_type_afts
+        # TODO: property_afts
+        # TODO: add relationships description
     )
 
     @property

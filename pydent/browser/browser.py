@@ -895,3 +895,39 @@ class Browser(logger.Loggable, object):
             row.update(props)
             rows.append(row)
         return rows
+
+    # TODO: add to change log
+    @staticmethod
+    def _inspect_header(model, name=None, _id='id'):
+        if name is not None:
+            name = eval("model.{}".format(name))
+        else:
+            name = ''
+        return "{model_class}: {_id} {name}".format(
+            model_class=model.__class__.__name__,
+            name=name,
+            _id=eval("model.{}".format(_id))
+        )
+
+    # TODO: add to change log
+    @staticmethod
+    def _inspect_rows(model, attributes, indent=2):
+        rows = []
+        for attr in attributes:
+            rows.append("{attr}: {val}".format(
+                attr=attr,
+                val=eval("model.{}".format(attr))
+            ))
+        sep = '\n' + ' ' * indent
+        s = sep + sep.join(rows)
+        return s
+
+    # TODO: add to change log
+    @classmethod
+    def inspect(cls, model, header, attributes):
+        model_header = cls._inspect_header(model, **header)
+        rows = cls._inspect_rows(model, attributes)
+        return "{header}{rows}".format(
+            header=model_header,
+            rows=rows
+        )
