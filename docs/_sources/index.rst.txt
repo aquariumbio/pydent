@@ -11,7 +11,6 @@ Trident is the Python scripting API for Aquarium, the software that runs the
 The `code respository <https://github.com/klavinslab/trident>`_ is freely available to members of the
 `Klavins lab <https://github.com/klavinslab/>`_ GitHub
 organization, which consists of lab members and collaborators.
-There is also a Javascript version of Trident available to that group.
 
 Links:
 ~~~~~~
@@ -22,6 +21,7 @@ Links:
 * aquarium docker hub
 * |klavinslab|
 * |uwbiofab|
+* parrotfish
 
 .. |tridentgithub| raw:: html
 
@@ -61,6 +61,7 @@ User guide
    developer_notes
    tests
    developer/api_reference
+   versions
 
 
 
