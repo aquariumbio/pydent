@@ -444,7 +444,8 @@ class Planner(logger.Loggable, object):
         # TODO: automatically wire to empty FV if they are equivalent
         if (len(model_inputs) > 1 or len(model_outputs) > 1) and strict:
             raise PlannerException(
-                "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}".format(
+                "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}\n"
+                "Instead, try to use `add_wire` method to wire together two FieldValues.".format(
                     ', '.join([fv.name for fv in model_inputs]),
                     model_inputs[0].operation.operation_type.name,
                     ', '.join([fv.name for fv in model_outputs]),
