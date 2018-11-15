@@ -18,6 +18,7 @@
     <title>pydent.browser.browser &#8212; Trident 1.0.0a documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
@@ -78,6 +79,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../developer_notes.html">Developer Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
 </ul>
 
     
@@ -1010,7 +1012,43 @@
             <span class="n">props</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">sample_resolver</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">rows</span></div></div>
+        <span class="k">return</span> <span class="n">rows</span></div>
+
+    <span class="c1"># TODO: add to change log</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_inspect_header</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_id</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;model.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{model_class}</span><span class="s2">: </span><span class="si">{_id}</span><span class="s2"> </span><span class="si">{name}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">model_class</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">_id</span><span class="o">=</span><span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;model.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_id</span><span class="p">))</span>
+        <span class="p">)</span>
+
+    <span class="c1"># TODO: add to change log</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_inspect_rows</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{attr}</span><span class="s2">: </span><span class="si">{val}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span>
+                <span class="n">val</span><span class="o">=</span><span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;model.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">))</span>
+            <span class="p">))</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="n">indent</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">sep</span> <span class="o">+</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="c1"># TODO: add to change log</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+        <span class="n">model_header</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_inspect_header</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">header</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_inspect_rows</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{header}{rows}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">header</span><span class="o">=</span><span class="n">model_header</span><span class="p">,</span>
+            <span class="n">rows</span><span class="o">=</span><span class="n">rows</span>
+        <span class="p">)</span></div>
 </pre></div>
 
           </div>
