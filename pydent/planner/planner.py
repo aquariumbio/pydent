@@ -964,8 +964,11 @@ class Planner(logger.Loggable, object):
         return hashgroup
 
     def ipython_link(self):
-        from IPython.display import display, HTML
-        return display(HTML("<a href=\"{url}\">{url}</a>".format(url=self.url)))
+        try:
+            from IPython.display import display, HTML
+            return display(HTML("<a href=\"{url}\">{url}</a>".format(url=self.url)))
+        except ImportError:
+            print("Could not import IPython. This is likely not installed.")
 
     def optimize_plan(self, operations=None, ignore=None):
         """

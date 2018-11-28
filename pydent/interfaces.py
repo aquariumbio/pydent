@@ -50,6 +50,8 @@ class SessionInterface(object):
     http requests.
     """
 
+    __slots__ = ['aqhttp', 'session']
+
     def __init__(self, aqhttp, session):
         """
         Initializer for SessionInterface
@@ -67,6 +69,8 @@ class UtilityInterface(SessionInterface):
     """
     Miscellaneous requests for creating, updating, etc.
     """
+
+    __slots__ = ['aqhttp', 'session']
 
     # TODO: have ability to save new properties
     def create_samples(self, samples):
@@ -315,6 +319,9 @@ class ModelInterface(SessionInterface):
     Establishes a connection between a session object and an Aquarium model.
     """
 
+    __slots__ = ["aqhttp", "session", "model"]
+    MERGE = ["methods"]
+
     def __init__(self, model_name, aqhttp, session):
         super().__init__(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
@@ -326,13 +333,22 @@ class ModelInterface(SessionInterface):
         """
         return self.model.__name__
 
+    def _prepost_query_hook(self, query):
+        """Method for modifying the query before posting"""
+        additional_query = {}
+        for attr in self.MERGE:
+            if hasattr(self.model, attr):
+                additional_query[attr] = getattr(self.model, attr)
+        query.update(additional_query)
+        return query
+
     def _post_json(self, data):
         """
         Posts a json request to session for this interface.
         Attaches raw json and this session instance to the models it retrieves.
         """
         data_dict = {'model': self.model_name}
-        data_dict = self._merge_methods(data_dict)
+        data_dict = self._prepost_query_hook(data_dict)
         data_dict.update(data)
 
         try:
@@ -368,13 +384,6 @@ class ModelInterface(SessionInterface):
                 return None
             raise err
         return self.load(response)
-
-    def _merge_methods(self, query):
-        if hasattr(self.model, 'methods'):
-            new_query = dict(query)
-            new_query.update({"methods": self.model.methods})
-            return new_query
-        return query
 
     def find(self, model_id):
         """
