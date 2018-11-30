@@ -1277,29 +1277,29 @@ class OperationType(ModelBase):
             return getattr(self, accessor)
         return None
 
-    # @classmethod
-    # def interface(cls, session):
-    #     # get model interface from Base class
-    #     model_interface = super(OperationType, cls).interface(session)
-    #
-    #     def find_deployed_by_name(name):
-    #         ots = model_interface.where({"deployed": True, "name": name})
-    #         if len(ots) == 0:
-    #             return None
-    #         if len(ots) > 1:
-    #             raise Exception("More than one OperationType found.")
-    #         return ots[0]
-    #
-    #     def where_deployed(params):
-    #         params = dict(params)
-    #         params.update({"deployed": True})
-    #         return model_interface.where(params)
-    #
-    #     # override the old find method
-    #     model_interface.find = find_deployed_by_name
-    #     model_interface.where_deployed = where_deployed
-    #
-    #     return model_interface
+    @classmethod
+    def interface(cls, session):
+        # get model interface from Base class
+        model_interface = super(OperationType, cls).interface(session)
+
+        def find_deployed_by_name(name):
+            ots = model_interface.where({"deployed": True, "name": name})
+            if len(ots) == 0:
+                return None
+            if len(ots) > 1:
+                raise Exception("More than one OperationType found.")
+            return ots[0]
+
+        def where_deployed(params):
+            params = dict(params)
+            params.update({"deployed": True})
+            return model_interface.where(params)
+
+        # override the old find method
+        model_interface.find = find_deployed_by_name
+        model_interface.where_deployed = where_deployed
+
+        return model_interface
 
     def get_field_type(self, model_name, parent_class):
         return self.code(model_name)
@@ -1471,19 +1471,19 @@ class Plan(ModelBase, DataAssociatorMixin):
                     das += field_value.item.data_associations
         return das
 
-    # @classmethod
-    # def interface(cls, session):
-    #     # get model interface from Base class
-    #     model_interface = super(Plan, cls).interface(session)
-    #
-    #     # make a special find method for plans, as generic method is too minimal.
-    #     def new_find(model_id): return model_interface.get(
-    #         'plans/{}.json'.format(model_id))
-    #
-    #     # override the old find method
-    #     model_interface.find = new_find
-    #
-    #     return model_interface
+    @classmethod
+    def interface(cls, session):
+        # get model interface from Base class
+        model_interface = super(Plan, cls).interface(session)
+
+        # make a special find method for plans, as generic method is too minimal.
+        def new_find(model_id): return model_interface.get(
+            'plans/{}.json'.format(model_id))
+
+        # override the old find method
+        model_interface.find = new_find
+
+        return model_interface
 
     def to_save_json(self):
         """

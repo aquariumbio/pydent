@@ -38,7 +38,7 @@ class TestModelRelationships:
         print("\nRelationships:")
 
         num_models = 1
-        tries = 3
+        tries = 6
         curr = 0
         num_model_increase = 10
         while curr < tries and num_models:

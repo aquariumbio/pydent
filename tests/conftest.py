@@ -33,14 +33,14 @@ def pytest_addoption(parser):
 
 
 def pytest_collection_modifyitems(config, items):
-    skip_slow = pytest.mark.skip(reason="need --webtest option to run")
+    skip_web = pytest.mark.skip(reason="need --webtest option to run")
     record_mode = pytest.mark.record(config.getoption('--recordmode'))
     for item in items:
         if config.getoption('--recordmode') != 'no':
             item.add_marker(record_mode)
         if "webtest" in item.keywords:
             if not config.getoption('--webtest'):
-                item.add_marker(skip_slow)
+                item.add_marker(skip_web)
 
 
 @pytest.fixture(autouse=True)
