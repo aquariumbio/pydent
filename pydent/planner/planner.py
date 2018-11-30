@@ -3,6 +3,7 @@ Planner
 """
 
 import random
+import webbrowser
 from functools import wraps
 from uuid import uuid4
 
@@ -114,6 +115,9 @@ class Planner(logger.Loggable, object):
     @property
     def url(self):
         return self.session.url + "plans?plan_id={}".format(self.plan.id)
+
+    def open(self):
+        webbrowser.open(self.url)
 
     def create(self):
         """Create the plan on Aquarium"""
