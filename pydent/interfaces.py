@@ -319,7 +319,7 @@ class ModelInterface(SessionInterface):
     Establishes a connection between a session object and an Aquarium model.
     """
 
-    __slots__ = ["aqhttp", "session", "model"]
+    __slots__ = ["aqhttp", "session", "model", "__dict__"]
     MERGE = ["methods"]
 
     def __init__(self, model_name, aqhttp, session):
