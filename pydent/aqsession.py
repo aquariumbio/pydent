@@ -20,6 +20,7 @@ Interfaces are accessed by:
 
 import inspect
 import timeit
+import webbrowser
 from decimal import Decimal
 
 from requests.exceptions import ReadTimeout
@@ -65,6 +66,9 @@ class AqSession(object):
         # initialize model interfaces
         for model_name in allmodels:
             self._register_interface(model_name)
+
+    def open(self):
+        webbrowser.open(self.__aqhttp.url)
 
     @property
     def session(self):
