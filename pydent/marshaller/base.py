@@ -200,10 +200,15 @@ class SchemaModel(metaclass=ModelRegistry):
         return cls._set_data(data)
 
     def __setstate__(self, state):
+        """Overrides how models are unpickled. The default way pickling works by dumping
+        the __dict__ along with the class definition. Since the way data is handle in
+        the marshaller object involves live creation of descriptors, these are not properly
+        handled upon load. Here we will create these descriptors upon
+        unpickling."""
         self.__dict__ = state
-        data = state[ModelRegistry._data_key]
 
         # add data accessors
+        data = state[ModelRegistry._data_key]
         for k in data:
             if k not in self.__class__.__dict__:
                 setattr(self.__class__, k, DataAccessor(k, ModelRegistry._data_key))
