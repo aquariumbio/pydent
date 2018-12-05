@@ -6,6 +6,7 @@ from pydent.marshaller.exceptions import SchemaException, SchemaModelException
 from pydent.marshaller.schema import DynamicSchema, SchemaRegistry
 from pydent.marshaller.fields import Callback
 from pydent.marshaller.registry import ModelRegistry
+from pydent.marshaller.descriptors import DataAccessor
 from copy import deepcopy
 import functools
 import inspect
@@ -198,3 +199,11 @@ class SchemaModel(metaclass=ModelRegistry):
         """
         return cls._set_data(data)
 
+    def __setstate__(self, state):
+        self.__dict__ = state
+        data = state[ModelRegistry._data_key]
+
+        # add data accessors
+        for k in data:
+            if k not in self.__class__.__dict__:
+                setattr(self.__class__, k, DataAccessor(k, ModelRegistry._data_key))

@@ -49,7 +49,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
             if not add_extra and k not in cls.model_class.fields:
                 raise AttributeError(
                     "Expected field missing. Cannot initialize accessor for '{}' for '{}' because it is not a field."
-                    " It may be missing from the 'field' dictionary?".format(k, cls.model_class))
+                    " It may be missing from the 'field' dictionary.".format(k, cls.model_class))
             if k not in cls.model_class.__dict__:
                 setattr(cls.model_class, k, DataAccessor(k, cls.model_class._data_key))
             try:
