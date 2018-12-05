@@ -202,9 +202,10 @@ class SchemaModel(metaclass=ModelRegistry):
     def __setstate__(self, state):
         """Overrides how models are unpickled. The default way pickling works by dumping
         the __dict__ along with the class definition. Since the way data is handle in
-        the marshaller object involves live creation of descriptors, these are not properly
+        the marshaller object involves dynamic creation of descriptors, these are not properly
         handled upon load. Here we will create these descriptors upon
-        unpickling."""
+        unpickling. Unlike serialized data, deserialized data is handled explicitly using 'fields' in the
+        schema/model definition, it is not necessary to do anything with these descriptors."""
         self.__dict__ = state
 
         # add data accessors
