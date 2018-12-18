@@ -2081,10 +2081,10 @@ class UserBudgetAssociation(ModelBase):
 class Wire(ModelBase):
     """A Wire model"""
     fields = {
-        "from": HasOne("FieldValue", ref="from_id"),
-        "to": HasOne("FieldValue", ref="to_id"),
-        "source": fields.Alias("from"),
-        "destination": fields.Alias("to")
+        "from_fv": HasOne("FieldValue", ref="from_id"),
+        "to_fv": HasOne("FieldValue", ref="to_id"),
+        "source": fields.Alias("from_fv"),
+        "destination": fields.Alias("to_fv")
     }
 
     def __init__(self, source=None, destination=None):
