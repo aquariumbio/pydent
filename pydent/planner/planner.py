@@ -15,6 +15,7 @@ from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
 from pydent.utils import filter_list, make_async, logger
 
+import networkx as nx
 
 class PlannerException(Exception):
     """Generic planner Exception"""
@@ -974,6 +975,8 @@ class Planner(logger.Loggable, object):
         except ImportError:
             print("Could not import IPython. This is likely not installed.")
 
+    # TODO: procedure should run on topologically sorted operations, if there is the case that
+    # two operations have different parents, then these operations are NOT mergable
     def optimize_plan(self, operations=None, ignore=None):
         """
         Optimizes a plan by removing redundent operations.
@@ -987,21 +990,35 @@ class Planner(logger.Loggable, object):
         if operations is None:
             operations = [
                 op for op in self.plan.operations if op.status == 'planning']
-        if ignore is not None:
+        if ignore:
             operations = [
                 op for op in operations if op.operation_type.name not in ignore]
         groups = {k: v for k, v in self._group_ops_by_hashes(
             operations).items() if len(v) > 1}
-
         num_inputs_rewired = 0
         num_outputs_rewired = 0
         ops_to_remove = []
-        for gops in groups.values():
-            op = gops[0]
-            other_ops = gops[1:]
+
+        op_graph = PlannerLayout.from_plan(self.plan).G
+        sorted_nodes = nx.topological_sort(op_graph)
+
+        visited_groups = []
+        for node in sorted_nodes:
+            node_data = op_graph.node[node]
+            op = node_data['operation']
+            op_hash = self._op_to_hash(op)
+            if op_hash in visited_groups or op_hash not in groups:
+                continue
+            visited_groups.append(op_hash)
+            grouped_ops = groups[op_hash]
+            op = grouped_ops[0]
+            other_ops = grouped_ops[1:]
+
+            # merge wires from other ops into op wires
             for other_op in other_ops:
                 connected_ops = self.get_op_successors(other_op)
                 connected_ops += self.get_op_predecessors(other_op)
+
                 if all([_op.status == "planning" for _op in connected_ops]):
                     # only optimize if ALL connected operations are in planning status
                     for i in other_op.inputs:

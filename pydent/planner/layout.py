@@ -41,11 +41,19 @@ class PlannerLayout(object):
 
         @make_async(10, progress_bar=False)
         def add_wires(wires):
+            missing_operations = []
             for wire in wires:
                 from_id = _id_getter(wire.source.operation)
                 to_id = _id_getter(wire.destination.operation)
                 if from_id is not None and to_id is not None:
-                    G.add_edge(from_id, to_id, wire=wire)
+                    if from_id not in G:
+                        missing_operations.append(from_id)
+                    if to_id not in G:
+                        missing_operations.append(to_id)
+                    if from_id in G and to_id in G:
+                        G.add_edge(from_id, to_id, wire=wire)
+            # if missing_operations:
+            #     raise Exception("The following operations are missing from the graph: {}".format(missing_operations))
             return wires
 
         @make_async(10, progress_bar=False)
@@ -73,7 +81,13 @@ class PlannerLayout(object):
     @property
     def operations(self):
         for node in self.G.nodes:
-            yield self.G.node[node]['operation']
+            if 'operation' in self.G.node[node]:
+                yield self.G. node[node]['operation']
+
+    def iter_operations(self):
+        for node in self.G.nodes:
+            if 'operation' in self.G.node[node]:
+                yield (node, self.G.node[node]['operation'])
 
     def _add_operation(self, operation: Operation):
         """
@@ -213,19 +227,21 @@ class PlannerLayout(object):
 
         max_depth = {}
         roots = self.roots()
+        lengths = nx.all_pairs_shortest_path_length(self.G)
         for root in roots:
             depths = nx.single_source_shortest_path_length(self.G, root)
             for n, d in depths.items():
                 max_depth[n] = max(max_depth.get(n, d), d)
 
         # push roots 'up' so they are not stuck on layer one
-        for root in self.roots():
+        for root in roots:
             successors = list(self.successors(root))
             if len(successors) > 0:
                 min_depth = min([max_depth[s] for s in successors])
                 max_depth[root] = min_depth - 1
 
         by_depth = OrderedDict()
+
         for node, depth in max_depth.items():
             by_depth.setdefault(depth, [])
             by_depth[depth].append(node)
@@ -516,8 +532,7 @@ class PlannerLayout(object):
 
     def pos(self):
         pos = {}
-        for n in self.nodes:
-            op = self.G.node[n]['operation']
+        for n, op in self.iter_operations():
             pos[n] = (op.x, -op.y)
         return pos
 
