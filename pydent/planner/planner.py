@@ -4,18 +4,19 @@ Planner
 
 import random
 import webbrowser
+from collections import defaultdict
 from functools import wraps
 from uuid import uuid4
 
-from networkx import nx
+import networkx as nx
 
 from pydent.browser import Browser
 from pydent.models import FieldValue, Operation
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
-from pydent.utils import filter_list, make_async, logger
+from pydent.utils import make_async, logger
 
-import networkx as nx
+import itertools
 
 class PlannerException(Exception):
     """Generic planner Exception"""
@@ -59,8 +60,9 @@ class Planner(logger.Loggable, object):
         RESTRICT = "RESTRICT"  # restrict to the currently set allowable_field_type
         PREFERRED = "PREFERRED"  # (default) pick the item that matches the currently set allowable_field_type, else
         # pick ANY item that matches the set field_value
+        RESTRICT_TO_ONE = "RESTRICT TO ONE"  # will not select item if its being used in another active operation
         _DEFAULT = PREFERRED
-        _CHOICES = [ANY, RESTRICT, PREFERRED]
+        _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]
 
     class ITEM_ORDER_PREFERENCE:
 
@@ -519,7 +521,7 @@ class Planner(logger.Loggable, object):
         self.clean_wires()
         operations = self.plan.operations
         wires = set(self.plan.wires)
-        wires_to_remove = {}
+        wires_to_remove = set()
 
         for op in ops:
             operations.remove(op)
@@ -531,7 +533,6 @@ class Planner(logger.Loggable, object):
 
         self.plan.operations = operations
         self.plan.wires = wires
-
 
     # TODO: resolve afts if already set...
     # TODO: clean up _set_wire
@@ -722,7 +723,7 @@ class Planner(logger.Loggable, object):
         # restrict allowable_field_types based on preference
         afts = list(field_value.field_type.allowable_field_types)
 
-        if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT:
+        if item_preference in [self.ITEM_SELECTION_PREFERENCE.RESTRICT, self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE]:
             afts = [field_value.allowable_field_type]
         elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
             afts = [aft for aft in field_value.field_types if aft.sample]
@@ -732,37 +733,89 @@ class Planner(logger.Loggable, object):
         query.update({"object_type_id": [aft.object_type_id for aft in afts]})
         return query
 
+    def reserved_items(self, items):
+        """Returns a dictionary of item_ids and the array of field_values that use them"""
+        browser = self._browser
+        item_ids = [i.id for i in items]
+        server_fvs = browser.where({"child_item_id": item_ids}, model_class='FieldValue')
+        browser.retrieve(server_fvs, 'operation')
+        server_fvs = [fv for fv in server_fvs if fv.operation.status != 'planning']
+
+        these_fvs = []
+        for op in self.plan.operations:
+            for fv in op.inputs:
+                if fv.child_item_id in item_ids:
+                    these_fvs.append(fv)
+
+        fvs = list(set(server_fvs + these_fvs))
+
+        item_id_to_fv = defaultdict(list)
+        for fv in fvs:
+            item_id_to_fv[fv.child_item_id].append(fv)
+        return item_id_to_fv
+
     @plan_verification_wrapper
     def get_available_items(self, field_value, item_preference):
         sample = field_value.sample
         if not sample:
             return []
 
-        if item_preference not in self.ITEM_SELECTION_PREFERENCE._CHOICES:
-            raise PlannerException("Item selection preference \"{}\" not recognized"
-                                   " Please select from one of {}".format(item_preference, ','.join(
-                self.ITEM_SELECTION_PREFERENCE._CHOICES)))
-        query = {"sample_id": sample.id}
-
-        # restrict allowable_field_types based on preference
-        afts = list(field_value.field_type.allowable_field_types)
-
-        if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT:
-            afts = [field_value.allowable_field_type]
-        elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
-            afts = filter_list(afts, sample_type_id=sample.sample_type_id)
-
-        if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
-            afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id == sample.sample_type_id)
-
-        if not afts:
-            return []
-
-        query.update({"object_type_id": [aft.object_type_id for aft in afts]})
-
+        query = self._item_preference_query(sample, field_value, item_preference)
         available_items = self.session.Item.where(query)
         available_items = [i for i in available_items if i.location != 'deleted']
+
+
+        x = len(available_items)
+        if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE:
+            reserved = self.reserved_items(available_items)
+            available_items = [i for i in available_items if len(reserved[i.id]) == 0]
+            self._info("{} items are reserved".format(x - len(available_items)))
         return available_items
+
+    def distribute_items_of_object_type(self, object_type):
+        """Distribute items of a particular object_type across non-planning operations across
+         existing plans and these operations in this Planner instance. E.g. distributing
+         one-shot yeast competent cell aliquots"""
+        # collect items of that type used
+        items = []
+        browser = self._browser
+        for op in self.plan.operations:
+            for i in op.inputs:
+                item = i.item
+                if item:
+                    if item.object_type_id == object_type.id:
+                        items.append(item)
+
+        # find all field_values that use this item
+        item_id_to_fv = defaultdict(list)
+        item_ids = [i.id for i in items]
+        fvs = browser.where({"child_item_id": item_ids}, model_class='FieldValue')
+        browser.retrieve(fvs, 'operation')
+
+        for fv in fvs:
+            item_id_to_fv[fv.child_item_id].append(fv)
+
+        distributed = []
+
+        for item in items:
+            fvs = item_id_to_fv[item.id]
+
+            # filter by operations that are submitted
+            fvs = [fv for fv in fvs if fv.operation.status != 'planning']
+            if len(fvs) > 1:
+                available_items = browser.where({"sample_id": item.sample_id, 'object_type_id': item.object_type_id},
+                                                model_class='Item')
+                available_items = [item for item in available_items if item.location != 'deleted']
+                print("Item {} {} is used in {} inputs. There are {} available items.".format(item.id, item.sample.name,
+                                                                                              len(fvs),
+                                                                                              len(available_items)))
+
+                for fv, item in itertools.zip_longest(fvs, available_items, fillvalue='&&&'):
+                    if fv != '&&&' and item != '&&&':
+                        distributed.append(fv, item)
+
+        for fv, item in distributed:
+            fv.set_value(item=item)
 
     @plan_verification_wrapper
     def set_to_available_item(self, fv, order_preference=ITEM_ORDER_PREFERENCE._DEFAULT, filter_func=None,
