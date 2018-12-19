@@ -325,9 +325,12 @@ class Browser(logger.Loggable, object):
         if ignore_case:
             args.append(re.IGNORECASE)
         for sample in samples:
+            description = sample.description
+            if description is None:
+                continue
             if re.search(pattern, sample.description, *args):
                 matches.append(sample)
-        return samples
+        return matches
 
     def close_matches(self, pattern, sample_type=None, **query):
         """

@@ -134,9 +134,13 @@ class Planner(logger.Loggable, object):
             ))
         self.plan.create()
 
+    # TODO: fix this 'set_timeout' to not be global
     def save(self):
         """Save the plan on Aquarium"""
+        prev_timeout = self.session._AqSession__aqhttp.timeout
+        self.session.set_timeout(60)
         self.plan.save()
+        self.session.set_timeout(prev_timeout)
         return self.plan
 
     def create_operation_by_type(self, ot, status="planning"):
@@ -1218,6 +1222,10 @@ class Planner(logger.Loggable, object):
         errors = {k: v for k, v in routes.items() if v['valid'] != True}
         return errors
         # return routes
+
+    # TODO: implement planner.copy and anonymize the operations and field_values by removing their ids
+    def copy(self):
+        raise NotImplementedError("Copy is not implemented yet.")
 
     # TODO: implement individual wires and things
     def draw(self):
