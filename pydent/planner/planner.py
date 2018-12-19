@@ -168,6 +168,8 @@ class Planner(logger.Loggable, object):
         if model1.id is None and model2.id is None:
             if model1._primary_key == model2._primary_key:
                 return True
+        elif model1.id == model2.id:
+            return True
         return False
 
     def get_operation(self, id):
@@ -192,11 +194,21 @@ class Planner(logger.Loggable, object):
         :return:
         """
         wire = self.get_wire(fv1, fv2)
+        wires = list(self.plan.wires)
         if wire:
             self._info("removing wire from {} to {}".format(fv1.name, fv2.name))
-            fv1.wires_as_source.remove(wire)
-            fv2.wires_as_dest.remove(wire)
-            self.plan.wires.remove(wire)
+            wires_as_source = fv1.wires_as_source
+            wires_as_dest = fv2.wires_as_dest
+
+            wires_as_source.remove(wire)
+            wires_as_dest.remove(wire)
+
+            fv1.wires_as_source = wires_as_source
+            fv2.wires_as_dest = wires_as_dest
+
+            wires.remove(wire)
+            self.plan.wires = wires
+        return wire
 
     @plan_verification_wrapper
     def get_outgoing_wires(self, fv):
@@ -483,6 +495,44 @@ class Planner(logger.Loggable, object):
         op2 = self.find_operations_by_name(otname2)[-1]
         return self.quick_wire(op1, op2)
 
+    def clean_wires(self):
+        wires_by_id = {}
+        for wire in self.plan.wires:
+            if wire.source is not None and wire.destination is not None:
+                _id = "{}_{}".format(wire.source._primary_key, wire.destination._primary_key)
+                wires_by_id[_id] = wire
+        for op in self.plan.operations:
+            for fv in op.field_values:
+                wires_as_source = fv.wires_as_source
+                wires_as_dest = fv.wires_as_dest
+
+                if wires_as_source is None:
+                    wires_as_source = []
+                if wires_as_dest is None:
+                    wires_as_dest = []
+
+                fv.wires_as_source = list(set(wires_as_source))
+                fv.wires_as_dest = list(set(wires_as_dest))
+        self.plan.wires = list(wires_by_id.values())
+
+    def remove_operations(self, ops):
+        self.clean_wires()
+        operations = self.plan.operations
+        wires = set(self.plan.wires)
+        wires_to_remove = {}
+
+        for op in ops:
+            operations.remove(op)
+            for fv in op.field_values:
+                wires_to_remove = wires_to_remove.union(set(fv.wires_as_source))
+                wires_to_remove = wires_to_remove.union(set(fv.wires_as_dest))
+
+        wires = list(wires.difference(wires_to_remove))
+
+        self.plan.operations = operations
+        self.plan.wires = wires
+
+
     # TODO: resolve afts if already set...
     # TODO: clean up _set_wire
     def _set_wire(self, src_fv, dest_fv, preference="source", setter=None):
@@ -554,7 +604,7 @@ class Planner(logger.Loggable, object):
         if wire is None:
             # wire does not exist, so create it
             self._set_wire(fv1, fv2)
-            self.plan.wire(fv1, fv2)
+            wire = self.plan.wire(fv1, fv2)
             self._info("wired {} to {}".format(fv1.name, fv2.name))
         return wire
 
@@ -1036,8 +1086,11 @@ class Planner(logger.Loggable, object):
                                 self.add_wire(op.output(o.name), w.destination)
                                 num_outputs_rewired += 1
                     ops_to_remove.append(other_op)
+
+        operations_list = self.plan.operations
         for op in ops_to_remove:
-            self.plan.operations.remove(op)
+            operations_list.remove(op)
+        self.plan.operations = operations_list
         self._info("\t{} operations removed".format(len(ops_to_remove)))
         self._info("\t{} input wires re-wired".format(num_inputs_rewired))
         self._info("\t{} output wires re-wired".format(num_outputs_rewired))
