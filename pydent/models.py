@@ -1508,6 +1508,18 @@ class Plan(ModelBase, DataAssociatorMixin):
         for wire in self.wires:
             wire.dump()
 
+        # if 'layout' in json_data:
+        #     if json_data['layout']['wires'] is None:
+        #         json_data['layout']['wires'] = []
+        #     if json_data['layout']['input'] is None:
+        #         json_data['layout']['input'] = []
+        #     if json_data['layout']['output'] is None:
+        #         json_data['layout']['output'] = []
+        #     if json_data['layout']['children'] is None:
+        #         json_data['layout']['children'] = []
+        #     if json_data['layout']['text_boxes'] is None:
+        #         json_data['layout']['text_boxes'] = []
+
         return json_data
 
     def estimate_cost(self):
@@ -2081,10 +2093,10 @@ class UserBudgetAssociation(ModelBase):
 class Wire(ModelBase):
     """A Wire model"""
     fields = {
-        "from_fv": HasOne("FieldValue", ref="from_id"),
-        "to_fv": HasOne("FieldValue", ref="to_id"),
-        "source": fields.Alias("from_fv"),
-        "destination": fields.Alias("to_fv")
+        "from": HasOne("FieldValue", ref="from_id"),
+        "to": HasOne("FieldValue", ref="to_id"),
+        "source": fields.Alias("from"),
+        "destination": fields.Alias("to")
     }
 
     def __init__(self, source=None, destination=None):
