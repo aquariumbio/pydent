@@ -730,7 +730,7 @@ class Planner(logger.Loggable, object):
         if item_preference in [self.ITEM_SELECTION_PREFERENCE.RESTRICT, self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE]:
             afts = [field_value.allowable_field_type]
         elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
-            afts = [aft for aft in field_value.field_types if aft.sample]
+            afts = [aft for aft in field_value.field_type.allowable_field_types if aft.sample]
         if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
             afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id == sample.sample_type_id)
 
