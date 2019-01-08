@@ -1,6 +1,7 @@
 import networkx as nx
 from copy import deepcopy
 
+
 def arr_to_pairs(arr):
     arr1 = arr[:-1]
     arr2 = arr[1:]

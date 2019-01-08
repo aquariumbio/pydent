@@ -70,6 +70,22 @@ def test_count_wires(example_plan):
     assert len(example_plan.wires) == 80, "There should be exactly 80 wires in this plan."
 
 
+def test_plan_copy(example_plan):
+    """Copying plans should anonymize operations and wires"""
+
+    copied_plan = example_plan.copy()
+    assert copied_plan.operations
+    for op in copied_plan.operations:
+        assert op.id is None
+        assert op.operation_type_id is None
+
+    assert copied_plan.wires
+    for wire in copied_plan.wires:
+        print(wire.to)
+        # assert wire.source
+
+
+
 # TODO: make this a deterministic test
 """def test_new_plan(session):
 

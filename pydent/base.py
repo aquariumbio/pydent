@@ -301,6 +301,7 @@ class ModelBase(SchemaModel):
             "{}={}".format(k, self._get_data().get(k, None)) for k in attributes
         ]))
 
+    # TODO: anonymize the keys for relationships as well
     def annonymize(self):
         """
         Resets the primary key of the model and assigns a new rid
@@ -309,13 +310,18 @@ class ModelBase(SchemaModel):
         """
         setattr(self, self.PRIMARY_KEY, None)
         setattr(self, self.GLOBAL_KEY, next(self.counter))
+        self.raw = {}
+        for name, relation in self.get_relationships().items():
+            if hasattr(relation, 'ref'):
+                setattr(self, relation.ref, None)
+
 
     def copy(self):
         """Provides a deepcopy of the model, but annonymizes the primary and global keys"""
         memo = {}
         copied = deepcopy(self, memo)
         for m in memo.values():
-            if issubclass(type(m), type(self)):
+            if issubclass(type(m), ModelBase):
                 m.annonymize()
         return copied
 

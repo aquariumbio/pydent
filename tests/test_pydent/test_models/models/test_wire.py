@@ -9,6 +9,12 @@ def test_constructor(fake_session):
         destination=fvout
     )
     w.print()
+
+    assert w.to
+    assert getattr(w, 'from')
+    assert w.source
+    assert w.destination
+
     assert w.to_save_json() == {
             "from": fvin.dump(),
             "to": fvout.dump(),
@@ -16,3 +22,4 @@ def test_constructor(fake_session):
             "active": True,
             'id': None
     }
+
