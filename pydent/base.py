@@ -55,6 +55,7 @@ class ModelBase(SchemaModel):
     """
     PRIMARY_KEY = 'id'
     GLOBAL_KEY = 'rid'
+    DEFAULT_COPY_KEEP_UNANONYMOUS = ['Item', 'Sample', 'Collection']
     counter = itertools.count()
 
     def __new__(cls, *args, session=None, **kwargs):
@@ -314,19 +315,30 @@ class ModelBase(SchemaModel):
             self.raw = {}
         for name, relation in self.get_relationships().items():
             if hasattr(relation, 'ref'):
-                print(relation.nested, relation.ref)
                 if not relation.nested.endswith('Type'):
                     setattr(self, relation.ref, None)
 
 
     # TODO: deepcopy should not annonymize everything... e.g. OperationTypes should not be annonymized
-    def copy(self):
-        """Provides a deepcopy of the model, but annonymizes the primary and global keys unless"""
+    def copy(self, keep=None):
+        """
+        Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+        class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+        found in list of 'keep'
+
+        By default, inventory classes such as Sample, Item, and Collection are 'kept'.
+
+        :param keep: list of model classes (as a list of strings) to keep un-anonymous
+        :return:
+        """
         memo = {}
         copied = deepcopy(self, memo)
+        if keep is None:
+            keep = self.DEFAULT_COPY_KEEP_UNANONYMOUS
         for m in memo.values():
             if issubclass(type(m), ModelBase):
-                m.anonymize()
+                if keep is None or m.__class__.__name__ not in keep:
+                    m.anonymize()
         return copied
 
     def __copy__(self):
