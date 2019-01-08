@@ -1245,6 +1245,54 @@ class Planner(logger.Loggable, object):
     def __copy__(self):
         return self.copy()
 
+    @staticmethod
+    def combine_plans(plans):
+        copied_plans = [deepcopy(c) for c in plans]
+
+        sessions = set([p.session for p in plans])
+        if len(sessions) > 1:
+            raise PlannerException("Cannot combine plans, plans must all derive from same session instance")
+        session = sessions.pop()
+
+        new_plan = Planner(session)
+        new_plan.plan.operations = []
+        for p in copied_plans:
+            print(len(p.plan.operations))
+            new_plan.plan.operations += p.plan.operations
+            new_plan.plan.wires += p.plan.wires
+
+    def split(self):
+        """Split the plan into several distinct plans, if possible. This will return copies of all
+        the plans"""
+
+        # copy this plan
+        copied_plan = self.copy()
+
+        # get independent operation graphs
+        layouts = copied_plan.layout.get_independent_layouts()
+
+        # for each independent graph, make a new plan
+        new_plans = []
+        for layout in layouts:
+            new_plan = Planner(self.session)
+            new_plans.append(new_plan)
+
+            # copy over the operations
+            opids = list(layout.G.nodes)
+            ops = [layout.G.nodes[opid]['operation'] for opid in opids]
+            wires = []
+
+            # copy over relevant wires
+            for wire in copied_plan.plan.wires:
+                to_id = wire.to.operation._primary_key
+                from_id = getattr(wire, 'from').operation._primary_key
+                if to_id in opids or from_id in opids:
+                    wires.append(wire)
+
+            new_plan.plan.operations = ops
+            new_plan.plan.wires = wires
+        return new_plans
+
     # TODO: implement individual wires and things
     def draw(self):
         layout = self.layout

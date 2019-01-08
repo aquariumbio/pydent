@@ -311,11 +311,12 @@ class ModelBase(SchemaModel):
         setattr(self, self.PRIMARY_KEY, None)
         setattr(self, self.GLOBAL_KEY, next(self.counter))
         self.raw = {}
-        for name, relation in self.get_relationships().items():
-            if hasattr(relation, 'ref'):
-                setattr(self, relation.ref, None)
+        # for name, relation in self.get_relationships().items():
+        #     if hasattr(relation, 'ref'):
+        #         setattr(self, relation.ref, None)
 
 
+    # TODO: deepcopy should not annonymize everything... e.g. OperationTypes should not be annonymized
     def copy(self):
         """Provides a deepcopy of the model, but annonymizes the primary and global keys"""
         memo = {}
