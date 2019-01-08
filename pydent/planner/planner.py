@@ -1262,8 +1262,11 @@ class Planner(logger.Loggable, object):
             new_plan.plan.wires += p.plan.wires
 
     def split(self):
-        """Split the plan into several distinct plans, if possible. This will return copies of all
-        the plans"""
+        """Split the plan into several distinct plans, if possible. This first convert the plan
+         to an operation graph, find subgraphs that are not connected to each other,
+         and create new plans based on these subgraphs. This will return anonymous copies of all
+        the plans, meaning operations and field_values will be anonymized. Sample and items attached to
+        field values will remain to avoid re-creating samples and items."""
 
         # copy this plan
         copied_plan = self.copy()
