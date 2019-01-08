@@ -1352,7 +1352,7 @@ class PartAssociation(ModelBase):
             column=column
         )
 
-
+# TODO: API_CHANGE: Plan.copy() no longer reroutes to replan
 @add_schema
 class Plan(ModelBase, DataAssociatorMixin):
     """
@@ -1568,10 +1568,6 @@ class Plan(ModelBase, DataAssociatorMixin):
     def replan(self):
         """Copies or replans the plan. Returns a plan copy"""
         return self.session.utils.replan(self.id)
-
-    def copy(self):
-        """Copies or replans the plan"""
-        return self.replan()
 
     def download_files(self, outdir=None, overwrite=True):
         """

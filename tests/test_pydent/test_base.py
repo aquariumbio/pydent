@@ -64,6 +64,86 @@ def test_record_id():
     assert m.rid != m3.rid
 
 
+def test_deepcopy():
+    """Deepcopy should retain attributes exactly"""
+    @add_schema
+    class MyModel(ModelBase):
+        pass
+
+    m = MyModel()
+    copied = copy.deepcopy(m)
+    assert m.rid == copied.rid
+
+
+def test_annonymize():
+
+    @add_schema
+    class MyModel(ModelBase):
+        def __init__(self, id):
+            super().__init__(id=id)
+
+    m = MyModel(5)
+    assert m.id == 5
+    old_rid = m.rid
+
+    m.annonymize()
+
+    assert m.id is None, "Primary key should be None"
+    assert m.rid != old_rid, "Annonymize should assign a new rid"
+    assert m.rid is not None, "rid should not be None after annonymizing"
+
+@pytest.mark.parametrize('copy_method', [
+
+        pytest.param(lambda x: x.copy()),
+        pytest.param(lambda x: copy.copy(x)),
+
+])
+def test_copy(copy_method):
+    """Copy should anonymize models"""
+
+    @add_schema
+    class MyModel(ModelBase):
+        def __init__(self, id):
+            super().__init__(id=id)
+
+    m = MyModel(5)
+    copied = copy_method(m)
+    assert m.rid != copied.rid
+    assert copied.id is None
+
+
+def test_copy_anonymizes_nested_relationships():
+    """Copy should recursively anonymize all models"""
+
+    @add_schema
+    class MyModel(ModelBase):
+        def __init__(self, id):
+            super().__init__(id=id)
+
+    m = MyModel(1)
+    m2 = MyModel(2)
+    m3 = MyModel(3)
+    m3.other = m2
+    m2.other = m
+
+    rid1 = m.rid
+    rid2 = m2.rid
+    rid3 = m3.rid
+
+    copied = m3.copy()
+    assert copied.id is None
+    assert copied.other.id is None
+    assert copied.other.other.id is None
+
+    assert copied.rid != rid1
+    assert copied.other.rid != rid2
+    assert copied.other.other.rid != rid3
+
+    assert m3.rid == rid3
+    assert m3.other.rid == rid2
+    assert m3.other.other.rid == rid1
+
+
 def test_basic_constructor(mymodel):
     """
     Model should absorb the kwargs.
