@@ -120,8 +120,13 @@ def test_copy_anonymizes_nested_relationships():
         def __init__(self, id):
             super().__init__(id=id)
 
+    @add_schema
+    class MyOtherModel(ModelBase):
+        def __init__(self, id):
+            super().__init__(id=id)
+
     m = MyModel(1)
-    m2 = MyModel(2)
+    m2 = MyOtherModel(2)
     m3 = MyModel(3)
     m3.other = m2
     m2.other = m

@@ -1,6 +1,7 @@
 import pytest
 from pydent.planner import Planner, PlannerException
 from pydent.planner.utils import get_subgraphs
+import json
 
 def test_canvas_create(session):
     canvas = Planner(session)
@@ -342,3 +343,4 @@ def test_cached(session):
     canvas = Planner(session, plan_id=136974)
 
     canvas.validate()
+
