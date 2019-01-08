@@ -1535,6 +1535,10 @@ class Plan(ModelBase, DataAssociatorMixin):
     def field_values(self):
         raise NotImplementedError()
 
+    def step(self):
+        """Steps a plan"""
+        return self.session.utils.step_plan(self.id)
+
     def show(self):
         """Print the plan nicely"""
         print(self.name + " id: " + str(self.id))
