@@ -101,6 +101,7 @@ class Planner(logger.Loggable, object):
                     "operation": [],
                     "field_type": []
                 },
+                'plan_associations': ['plan'],
                 "operation_type": {
                     "field_types": []
                 }
@@ -134,6 +135,7 @@ class Planner(logger.Loggable, object):
                 save=self.save.__name__,
                 replan=self.replan.__name__
             ))
+
         self.plan.create()
 
     # TODO: fix this 'set_timeout' to not be global
