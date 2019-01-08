@@ -326,7 +326,7 @@ class ModelBase(SchemaModel):
         copied = deepcopy(self, memo)
         for m in memo.values():
             if issubclass(type(m), ModelBase):
-                m.annonymize()
+                m.anonymize()
         return copied
 
     def __copy__(self):
