@@ -302,7 +302,7 @@ class ModelBase(SchemaModel):
         ]))
 
     # TODO: anonymize the keys for relationships as well
-    def annonymize(self):
+    def anonymize(self):
         """
         Resets the primary key of the model and assigns a new rid
 
