@@ -77,13 +77,12 @@ def test_plan_copy(example_plan):
     assert copied_plan.operations
     for op in copied_plan.operations:
         assert op.id is None
-        assert op.operation_type_id is None
-
-    assert copied_plan.wires
-    for wire in copied_plan.wires:
-        print(wire.to)
-        # assert wire.source
-
+        assert op.operation_type_id is not None
+        assert op.field_values is not None
+        for fv in op.field_values:
+            assert fv.id is None
+            assert fv.parent_id is None
+            assert fv.field_type_id is not None
 
 
 # TODO: make this a deterministic test

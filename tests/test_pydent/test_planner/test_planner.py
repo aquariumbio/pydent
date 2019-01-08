@@ -31,3 +31,6 @@ def test_copy_planner(fake_plan, fake_session):
 
     assert not fake_plan.id is None
     assert copied.plan.id is None
+    for op in copied.operations:
+        assert op.id is None
+        assert op.operation_type_id
