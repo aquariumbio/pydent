@@ -191,6 +191,9 @@ class DataAssociatorMixin:
         return val
 
 
+class 
+
+
 # Models
 
 @add_schema
@@ -252,7 +255,7 @@ class Code(ModelBase):
 
 
 @add_schema
-class Collection(ModelBase, DataAssociatorMixin):  # pylint: disable=too-few-public-methods
+class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-public-methods
     """A Collection model"""
     fields = dict(
         object_type=HasOne("ObjectType"),
@@ -315,7 +318,7 @@ class DataAssociation(ModelBase):
 
 
 @add_schema
-class FieldType(ModelBase, FieldMixin):
+class FieldType(FieldMixin, ModelBase):
     """A FieldType model"""
     fields = dict(
         allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
@@ -407,7 +410,7 @@ class FieldType(ModelBase, FieldMixin):
 
 
 @add_schema
-class FieldValue(ModelBase, FieldMixin):
+class FieldValue(FieldMixin, ModelBase):
     """
     A FieldValue model. One of the more complex models.
     """
@@ -669,7 +672,7 @@ class Invoice(ModelBase):
 
 
 @add_schema
-class Item(ModelBase, DataAssociatorMixin):
+class Item(DataAssociatorMixin, ModelBase):
     """
     Defines a proxy object for an Item model in Aquarium.
     An Item is a physical object in the lab.
@@ -855,7 +858,7 @@ class ObjectType(ModelBase):
 
 # TODO: field_values should recognize parent_class (maybe where should ignore None field_values..)
 @add_schema
-class Operation(ModelBase, DataAssociatorMixin):
+class Operation(DataAssociatorMixin, ModelBase):
     """A Operation model"""
     # TODO: add 'inputs' and 'outputs' as bone-fide properties
     fields = dict(
@@ -1354,7 +1357,7 @@ class PartAssociation(ModelBase):
 
 # TODO: API_CHANGE: Plan.copy() no longer reroutes to replan
 @add_schema
-class Plan(ModelBase, DataAssociatorMixin):
+class Plan(DataAssociatorMixin, ModelBase):
     """
     A Plan model
     """
@@ -1892,6 +1895,12 @@ class Sample(ModelBase):
             object_type = object_types[0]
             return [i for i in self.items if i.location != 'deleted' and
                     i.object_type_id == object_type.id]
+
+    def copy(self):
+        """Return a copy of this sample."""
+        copied = super().copy()
+        copied.anonymize()
+        return copied
 
     def __str__(self):
         return self._to_str('id', 'name', 'sample_type')
