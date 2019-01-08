@@ -167,6 +167,12 @@ class UtilityInterface(SessionInterface):
         plan.reload(result)
         return plan
 
+    def step_plan(self, plan_id):
+        self.aqhttp.get(
+            'operations/step?plan_id={}'.format(plan_id)
+        )
+        return None
+
     def delete_plan(self, plan):
         self.aqhttp.delete('plans/{}'.format(plan.id))
 
