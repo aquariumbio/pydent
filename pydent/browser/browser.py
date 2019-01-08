@@ -114,6 +114,17 @@ class Browser(logger.Loggable, object):
         return self.interface(model_class).find(model_id)
 
     def where(self, query, model_class=None, primary_key='id', sample_type=None, **kwargs):
+        """
+        Perform a 'where' query. If models are found in the browser cache, those are returned,
+        else new http queries are made to find the models.
+
+        :param query: query as a dictionary
+        :param model_class: model class to use (str)
+        :param primary_key: which primary key to use (default: 'id')
+        :param sample_type: optional sample_type short cut for finding samples
+        :param kwargs: other kwargs
+        :return: returned model list
+        """
         if model_class is None:
             model_class = self.model_name
         if sample_type is not None:
@@ -124,6 +135,14 @@ class Browser(logger.Loggable, object):
         return self.interface(model_class).where(query)
 
     def find_by_name(self, name, model_class=None, primary_key='id'):
+        """
+        Find model by name.
+
+        :param name:
+        :param model_class:
+        :param primary_key:
+        :return:
+        """
         models = self.where({'name': name}, model_class, primary_key=primary_key)
         if not models:
             return None
