@@ -14,9 +14,11 @@ from pydent.browser import Browser
 from pydent.models import FieldValue, Operation
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
-from pydent.utils import make_async, logger
+from pydent.utils import make_async, logger, empty_copy
+from copy import deepcopy
 
 import itertools
+
 
 class PlannerException(Exception):
     """Generic planner Exception"""
@@ -729,8 +731,8 @@ class Planner(logger.Loggable, object):
 
         if item_preference in [self.ITEM_SELECTION_PREFERENCE.RESTRICT, self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE]:
             afts = [field_value.allowable_field_type]
-        elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
-            afts = [aft for aft in field_value.field_type.allowable_field_types if aft.sample]
+        # elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
+        #     afts = [aft for aft in field_value.field_type.allowable_field_types if aft.sample]
         if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
             afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id == sample.sample_type_id)
 
@@ -1225,7 +1227,21 @@ class Planner(logger.Loggable, object):
 
     # TODO: implement planner.copy and anonymize the operations and field_values by removing their ids
     def copy(self):
-        raise NotImplementedError("Copy is not implemented yet.")
+        """Return a copy of this planner, with a new anonymous copy of the plan. Browser cache is copied as well,
+        but model_cache in browser are not anonymous"""
+        # copy everything execpt plan, which may be large
+        copied = empty_copy(self)
+        data = self.__dict__.copy()
+        data.pop('plan')
+        copied.__dict__ = deepcopy(data)
+
+        # copy over anonymous copy
+        copied.plan = self.plan.copy()
+        copied.plan_id = None
+        return copied
+
+    def __copy__(self):
+        return self.copy()
 
     # TODO: implement individual wires and things
     def draw(self):
@@ -1242,3 +1258,4 @@ class Planner(logger.Loggable, object):
                 color = "red"
             edge_colors.append(color)
         nx.draw(self.layout.G, edge_colors=edge_colors, pos=self.layout.pos())
+
