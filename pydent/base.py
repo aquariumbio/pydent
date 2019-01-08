@@ -308,17 +308,20 @@ class ModelBase(SchemaModel):
 
         :return: self
         """
-        setattr(self, self.PRIMARY_KEY, None)
-        setattr(self, self.GLOBAL_KEY, next(self.counter))
-        self.raw = {}
-        # for name, relation in self.get_relationships().items():
-        #     if hasattr(relation, 'ref'):
-        #         setattr(self, relation.ref, None)
+        if not self.__class__.__name__.endswith('Type'):
+            setattr(self, self.PRIMARY_KEY, None)
+            setattr(self, self.GLOBAL_KEY, next(self.counter))
+            self.raw = {}
+        for name, relation in self.get_relationships().items():
+            if hasattr(relation, 'ref'):
+                print(relation.nested, relation.ref)
+                if not relation.nested.endswith('Type'):
+                    setattr(self, relation.ref, None)
 
 
     # TODO: deepcopy should not annonymize everything... e.g. OperationTypes should not be annonymized
     def copy(self):
-        """Provides a deepcopy of the model, but annonymizes the primary and global keys"""
+        """Provides a deepcopy of the model, but annonymizes the primary and global keys unless"""
         memo = {}
         copied = deepcopy(self, memo)
         for m in memo.values():
@@ -329,7 +332,7 @@ class ModelBase(SchemaModel):
     def __copy__(self):
         return self.copy()
 
-    #
+
     #     return cp
     # def patch(self, json_data):
     #     """Make a patch request to self using json_data. Reload model instance with new data"""
