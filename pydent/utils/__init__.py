@@ -47,6 +47,15 @@ def url_build(*parts):
     url = '/'.join(p.strip('/') for p in parts)
     return url
 
+def empty_copy(obj):
+    """Return an empty copy of an object for copying purposes"""
+    class Empty(obj.__class__):
+        def __init__(self): pass
+    newcopy = Empty(  )
+    newcopy.__class__ = obj.__class__
+    return newcopy
+
+
 # def filter_dictionary(dictionary, filter_function):
 #     new_dict = {}
 #     if isinstance(dictionary, dict):
