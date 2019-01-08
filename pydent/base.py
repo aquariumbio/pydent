@@ -42,7 +42,7 @@ from pydent.exceptions import AquariumModelError, NoSessionError
 from pydent.marshaller import SchemaModel, ModelRegistry, fields
 from inflection import underscore
 import itertools
-
+from copy import deepcopy
 
 class ModelBase(SchemaModel):
     """
@@ -301,6 +301,29 @@ class ModelBase(SchemaModel):
             "{}={}".format(k, self._get_data().get(k, None)) for k in attributes
         ]))
 
+    def annonymize(self):
+        """
+        Resets the primary key of the model and assigns a new rid
+
+        :return: self
+        """
+        setattr(self, self.PRIMARY_KEY, None)
+        setattr(self, self.GLOBAL_KEY, next(self.counter))
+
+    def copy(self):
+        """Provides a deepcopy of the model, but annonymizes the primary and global keys"""
+        memo = {}
+        copied = deepcopy(self, memo)
+        for m in memo.values():
+            if issubclass(type(m), type(self)):
+                m.annonymize()
+        return copied
+
+    def __copy__(self):
+        return self.copy()
+
+    #
+    #     return cp
     # def patch(self, json_data):
     #     """Make a patch request to self using json_data. Reload model instance with new data"""
     #     result = self.create_interface().patch(self.id, json_data=json_data)
