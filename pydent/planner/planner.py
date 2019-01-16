@@ -88,10 +88,19 @@ class Planner(logger.Loggable, object):
             self.plan = session.Plan.new()
         self.init_logger("Planner@plan_rid={}".format(self.plan.rid))
 
-    def cache(self):
-        # ots = self.browser.where('OperationType', {'deployed': True})
-        # self.browser.retrieve(ots, 'field_types')
-        results = self._browser.recursive_retrieve([self.plan], {
+    @classmethod
+    def from_plans(cls, session, plans):
+        browser = Browser(session)
+        cls.cache_plans(browser, plans)
+        for plan in plans:
+            planner = cls.__new__()
+            planner._browser = browser
+            planner.session = session
+            planner.plan = plan
+
+    @staticmethod
+    def _cache_query():
+        return {
             "operations": {
                 "field_values": {
                     "wires_as_dest": ["source", "destination"],
@@ -106,9 +115,24 @@ class Planner(logger.Loggable, object):
                     "field_types": []
                 }
             }
-        })
-        wires = results['wires_as_dest'] + results['wires_as_source']
-        self.plan.wires = wires
+        }
+
+    @classmethod
+    def cache_plans(cls, browser, plans):
+        browser.recursive_retrieve(plans, cls._cache_query())
+        for plan in plans:
+            wire_dict = {}
+            for op in plan.operations:
+                for fv in op.field_values:
+                    for w in fv.wires_as_dest:
+                        wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
+                    for w in fv.wires_as_source:
+                        wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
+            plan.wires = list(wire_dict.values())
+        return plans
+
+    def cache(self):
+        self.cache_plans(self._browser, [self.plan])
 
     @property
     def name(self):

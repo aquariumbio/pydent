@@ -425,58 +425,92 @@ class ModelInterface(SessionInterface):
             return []
         return res
 
-    def all(self, rest=None, opts=None):
+    def all(self, rest=None, **opts):
         """
         Finds all models
+
+        :param rest:
+        :type rest:
+        :param opts: additional options ("offset", "limit", "reverse", etc.)
+        :type opts: dict
+        :return:
+        :rtype:
         """
+
         if rest is None:
             rest = {}
-        if opts is None:
-            opts = {}
+        addopts = opts.pop('opts', dict())
+        opts.update(addopts)
         options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
         return self.array_query("all", [], rest, options)
 
-    def where(self, criteria, methods=None, opts=None):
+    def where(self, criteria, methods=None, **opts):
         """
-        Finds models based on some criteria
+        Performs a query for models
+
+        :param criteria: query to find models
+        :type criteria: dict
+        :param methods: server side methods to implement
+        :type methods: list
+        :param opts: additional options ("offset", "limit", "reverse", etc.)
+        :type opts: dict
+        :return: list of models
+        :rtype: list
         """
+
+        addopts = opts.pop('opts', dict())
+        opts.update(addopts)
         rest = {}
         if methods is not None:
             rest = {"methods": methods}
-        if opts is None:
-            opts = {}
         options = {"offset": -1, "limit": -1, "reverse": False}
         options.update(opts)
         return self.array_query("where", criteria, rest, options)
 
-    def last(self, num=None, **query):
+    # TODO: Refactor 'last' so query is an argument, not part of kwargs
+    def last(self, num=None, query=None, **opts):
         """
         Find the last added models
 
-        :param num: number of models to return
+        :param num: number of models to return. If not provided, assumes 1
         :type num: int
-        :return: models
+        :param query: additional query to find models
+        :type query: dict
+        :param opts: additional options ("offset", "limit", "reverse", etc.)
+        :type opts: dict
+        :return: list of models
         :rtype: list
         """
+        if query is None:
+            query = dict()
         if num is None:
             num = 1
-        return self.where(query, opts={"limit": num, "reverse": True})
+        return self.where(query, limit=num, reverse=True, opts=opts)
 
-    def first(self, num=None, **query):
+
+    # TODO: Refactor 'first' so query is an argument, not part of kwargs
+    def first(self, num=None, query=None, **opts):
         """
         Find the first added models
 
-        :param num: number of models to return
+        :param num: number of models to return. If not provided, assumes 1
         :type num: int
-        :return: models
+        :param query: additional query to find models
+        :type query: dict
+        :param opts: additional options ("offset", "limit", "reverse", etc.)
+        :type opts: dict
+        :return: list of models
         :rtype: list
         """
+        if query is None:
+            query = dict()
         if num is None:
             num = 1
-        return self.where(query, opts={"limit": num, "reverse": False})
+        return self.where(query, limit=num, reverse=False, opts=opts)
 
-    def one(self, first=False, offset=-1, **query):
+    # TODO: Refactor 'one' so query is an argument, not part of kwargs
+    def one(self, first=False, query=None, **opts):
         """
         Return one model. Returns the last model by default. Returns None if no model is found.
 
@@ -485,10 +519,7 @@ class ModelInterface(SessionInterface):
         :return: model
         :rtype: ModelBase
         """
-        models = self.where(query, opts={"limit": 1, "offset": offset, "reverse": not first})
-        if len(models) == 0:
-            return None
-        return models[0]
+        return self.last(1, query=query, **opts)
 
     # TODO: implement 'patch' or 'update'? Would this be too dangerous?
     # def patch(self, model_id, json_data):
