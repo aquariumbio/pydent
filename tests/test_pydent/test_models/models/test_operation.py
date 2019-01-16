@@ -237,3 +237,35 @@ def test_operation_init_fieldvalues(fake_op):
     fake_op.init_field_values()
     assert len(fake_op.field_values) == len(
         fake_op.operation_type.field_types) == 2
+
+
+def test_operation_copy(fake_op):
+
+    for fv in fake_op.field_values:
+        assert fv.id is not None
+        assert fv.child_sample_id
+
+    for fv in fake_op.copy().field_values:
+        assert fv.id is None
+        assert fv.child_sample_id
+
+
+def test_operation_copy_does_not_anonymize_items(fake_op, fake_session):
+
+    for fv in fake_op.field_values:
+        fv.item = fake_session.Item.load({'id': 123})
+        assert fv.child_item_id
+
+    for fv in fake_op.field_values:
+        assert fv.id is not None
+        assert fv.child_sample_id
+        assert fv.child_item_id
+        assert fv.parent_id
+        assert fv.item
+
+    for fv in fake_op.copy().field_values:
+        assert fv.id is None
+        assert fv.parent_id is None
+        assert fv.child_sample_id
+        assert fv.child_item_id
+        assert fv.item
