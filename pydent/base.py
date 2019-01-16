@@ -311,15 +311,21 @@ class ModelBase(SchemaModel):
         """
         if not self.__class__.__name__.endswith('Type'):
             setattr(self, self.PRIMARY_KEY, None)
-            setattr(self, self.GLOBAL_KEY, next(self.counter))
+            setattr(self, '_rid', next(self.counter))
             self.raw = {}
+
+    def _anonymize_field_keys(self, keep=None):
         for name, relation in self.get_relationships().items():
             if hasattr(relation, 'ref'):
-                if not relation.nested.endswith('Type'):
+                if relation.nested.endswith('Type'):
+                    continue
+                elif keep and relation.nested in keep:
+                    continue
+                else:
                     setattr(self, relation.ref, None)
 
-
     # TODO: deepcopy should not annonymize everything... e.g. OperationTypes should not be annonymized
+    # TODO: formalize what is kept (inventory and types) and what is not
     def copy(self, keep=None):
         """
         Provides a deepcopy of the model, but annonymizes the primary and global keys unless
@@ -339,11 +345,39 @@ class ModelBase(SchemaModel):
             if issubclass(type(m), ModelBase):
                 if keep is None or m.__class__.__name__ not in keep:
                     m.anonymize()
+                m._anonymize_field_keys(keep=keep)
         return copied
+
+    @classmethod
+    def _flatten_deserialized_data(cls, models, memo):
+        """Flattens all of the relationships found in the models, returning a rid: model dictionary"""
+        if models is None:
+            return memo
+        for model in models:
+
+            if model is None or model.rid in memo:
+                continue
+            else:
+                memo[model.rid] = model
+                data = model._get_deserialized_data()
+                for key in model.get_relationships():
+                    val = data.get(key, None)
+                    if val is None:
+                        continue
+                    elif isinstance(val, list):
+                        cls._flatten_deserialized_data(val, memo)
+                    else:
+                        cls._flatten_deserialized_data([val], memo)
+        return memo
+
+    def _rid_dict(self):
+        """Dictionary of all models attached to this model keyed by their rid"""
+        memo = {}
+        self._flatten_deserialized_data([self], memo)
+        return memo
 
     def __copy__(self):
         return self.copy()
-
 
     #     return cp
     # def patch(self, json_data):

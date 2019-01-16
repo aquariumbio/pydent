@@ -1,7 +1,6 @@
 import pytest
 
 
-
 def test_update_properties_to_none(example_sample):
 
     assert example_sample.properties['Length']
@@ -37,5 +36,10 @@ def test_update_properties_using_array(example_sample, num_field_values):
     assert len(example_sample.field_value_array("Fragment Mix Array")) == 10 - num_field_values
 
 
+def test_copy_sample(example_sample):
 
+    copied = example_sample.copy()
 
+    assert copied.id is None
+    assert copied.properties['Reverse Primer'].id == example_sample.properties['Reverse Primer'].id
+    assert not id(copied.properties['Reverse Primer']) == id(example_sample.properties['Reverse Primer'])

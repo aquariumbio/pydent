@@ -190,10 +190,6 @@ class DataAssociatorMixin:
             return None
         return val
 
-
-class 
-
-
 # Models
 
 @add_schema
