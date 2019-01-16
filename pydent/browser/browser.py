@@ -754,7 +754,12 @@ class Browser(logger.Loggable, object):
         model_classes = set([m.__class__.__name__ for m in models])
         assert len(model_classes) == 1, "Models must be all of the same BaseModel, but found {}".format(model_classes)
         if relation is None:
-            relation = models[0].get_relationships()[relationship_name]
+            relation = models[0].get_relationships().get(relationship_name, None)
+            if relation is None:
+                if strict:
+                    raise BrowserException("Relation '{}' not found in relationships for {}".format(relationship_name, type(models[0])))
+                else:
+                    return []
         else:
             if relationship_name in models[0].get_relationships():
                 raise BrowserException(
@@ -810,11 +815,13 @@ class Browser(logger.Loggable, object):
         if isinstance(relations, str):
             self._info('RETRIEVE retrieving "{}"'.format(relations))
             return {relations: self.retrieve(models, relations, strict=strict)}
-        else:
+        elif isinstance(relations, list) or \
+                isinstance(relations, set) or \
+                isinstance(relations, dict):
             models_by_attr = {}
             for relation_name in relations:
                 models_by_attr.setdefault(relation_name, [])
-                new_models = self.retrieve(models, relation_name)
+                new_models = self.retrieve(models, relation_name, strict=strict)
                 models_by_attr[relation_name] += new_models
                 if isinstance(relations, dict):
                     _models_by_attr = self.recursive_retrieve(new_models, dict(relations).pop(relation_name), strict=strict)
@@ -825,6 +832,10 @@ class Browser(logger.Loggable, object):
                         else:
                             models_by_attr[attr] = _models_by_attr[attr]
             return models_by_attr
+        elif not strict:
+            return []
+        else:
+            raise BrowserException("Type {} for is not recognized for recursive_retrieve".format(type(relations)))
 
     def samples_to_df(self, samples):
         """
