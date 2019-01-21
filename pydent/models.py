@@ -804,6 +804,7 @@ class Job(ModelBase):
         operations=HasManyThrough("Operation", "JobAssociation"),
         state=fields.JSON(allow_none=True, strict=False)
     )
+    methods=["status"]
 
     @property
     def is_complete(self):
