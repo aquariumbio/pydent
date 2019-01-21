@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pydent.base &#8212; Trident 0.0.34 documentation</title>
+    <title>pydent.base &#8212; Trident 0.0.35 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -26,7 +26,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.35 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -34,7 +34,7 @@
         <div class="sphinxsidebarwrapper"><p class="sidebar-subtitle">
     <a href="../../index.html">
         <h1>Trident</h1>
-        <h2>0.0.34</h2>
+        <h2>0.0.35</h2>
     </a>
 </p>
 
@@ -42,7 +42,7 @@
     Trident is a python scripting API wrapper for Aquarium. With Trident,
     you can create python scripts and apps that mine data, create samples,
     submit laboratory protocols, and more. You are looking at documentation
-    for version <b>0.0.34</b>.
+    for version <b>0.0.35</b>.
 </p>
 <div>
     <a href="https://circleci.com/gh/klavinslab/trident/tree/master"><img src="https://circleci.com/gh/klavinslab/trident.svg?style=svg" alt="build status"></a>
@@ -74,10 +74,10 @@
 
 <span class="sd">This module contains the base classes for Trident models.</span>
 <span class="sd">Trident models load from JSON and dump to JSON.</span>
-<span class="sd">This is accomplished by adding the ``@add_schema`` decorator to classes inherited</span>
-<span class="sd">by the Base class.</span>
-<span class="sd">Using ``@add_schema`` dynamically creates a model schema that handles dumping and</span>
-<span class="sd">loading.</span>
+<span class="sd">This is accomplished by adding the ``@add_schema`` decorator to classes</span>
+<span class="sd">inherited by the Base class.</span>
+<span class="sd">Using ``@add_schema`` dynamically creates a model schema that handles dumping</span>
+<span class="sd">and loading.</span>
 
 <span class="sd">Features of Trident models:</span>
 
@@ -136,12 +136,14 @@
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Special warning for attribute errors.</span>
-<span class="sd">        Its likely that user may have wanted to use a model interface instead of</span>
-<span class="sd">        the Base class.</span>
+<span class="sd">        Its likely that user may have wanted to use a model interface</span>
+<span class="sd">        instead of the Base class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{1}</span><span class="s2">&#39;. Method may be a ModelInterface method.&quot;</span>
-                             <span class="s2">&quot; Did you mean &#39;&lt;yoursession&gt;.</span><span class="si">{0}</span><span class="s2">.</span><span class="si">{1}</span><span class="s2">&#39;?&quot;</span>
-                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{1}</span><span class="s2">&#39;.&quot;</span>
+            <span class="s2">&quot; Method may be a ModelInterface method.&quot;</span>
+            <span class="s2">&quot; Did you mean &#39;&lt;yoursession&gt;.</span><span class="si">{0}</span><span class="s2">.</span><span class="si">{1}</span><span class="s2">&#39;?&quot;</span>
+            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ModelBase"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.base.ModelBase">[docs]</a><span class="k">class</span> <span class="nc">ModelBase</span><span class="p">(</span><span class="n">MarshallerBase</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ModelRegistry</span><span class="p">):</span>
@@ -199,8 +201,11 @@
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="p">:</span>
             <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="n">field</span><span class="o">.</span><span class="n">model</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot &#39;append_to_many.&#39; Model must be a &#39;</span><span class="si">{}</span><span class="s2">&#39; but found a &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">field</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
+                    <span class="s2">&quot;Cannot &#39;append_to_many.&#39;&quot;</span>
+                    <span class="s2">&quot; Model must be a &#39;</span><span class="si">{}</span><span class="s2">&#39; but found a &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">field</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">many</span><span class="p">:</span>
                 <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -251,15 +256,25 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span>
 
 <div class="viewcode-block" id="ModelBase.connect_to_session"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.base.ModelBase.connect_to_session">[docs]</a>    <span class="k">def</span> <span class="nf">connect_to_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Connect model instance to a session. Does nothing if session already exists.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Connect model instance to a session.</span>
+
+<span class="sd">        Does nothing if session already exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span></div>
 
 <div class="viewcode-block" id="ModelBase._check_for_session"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.base.ModelBase._check_for_session">[docs]</a>    <span class="k">def</span> <span class="nf">_check_for_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Raises error if model is not connected to a session&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Raises error if model is not connected to a session</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;No AqSession instance found for &#39;</span><span class="si">{}</span><span class="s2">&#39;. Use &#39;connect_to_session&#39; &quot;</span>
-                                 <span class="s2">&quot;to connect this model to a session&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span></div>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="s2">&quot;No AqSession instance found for &#39;</span><span class="si">{}</span><span class="s2">&#39;.&quot;</span>
+                <span class="s2">&quot; Use &#39;connect_to_session&#39; &quot;</span>
+                <span class="s2">&quot;to connect this model to a session&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ModelBase.no_getter"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.base.ModelBase.no_getter">[docs]</a>    <span class="k">def</span> <span class="nf">no_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Callback that always returns None&quot;&quot;&quot;</span>
@@ -272,7 +287,8 @@
     <span class="k">def</span> <span class="nf">interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a model interface from this class and a session</span>
 
-<span class="sd">        This method can be overridden in model definitions for special cases.&quot;&quot;&quot;</span>
+<span class="sd">        This method can be overridden in model definitions for special cases.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">model_interface</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ModelBase.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.base.ModelBase.find">[docs]</a>    <span class="nd">@classmethod</span>
@@ -299,8 +315,11 @@
         <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">model_id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ModelBase.where_callback"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.base.ModelBase.where_callback">[docs]</a>    <span class="k">def</span> <span class="nf">where_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Finds models using a model interface and a set of parameters. Used to</span>
-<span class="sd">        find models in model relationships.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds models using a model interface and a set of parameters.</span>
+
+<span class="sd">        Used to find models in model relationships.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_session</span><span class="p">()</span>
         <span class="n">query_arg</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -315,7 +334,10 @@
         <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">query_arg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="c1"># def patch(self, json_data):</span>
-    <span class="c1">#     &quot;&quot;&quot;Make a patch request to self using json_data. Reload model instance with new data&quot;&quot;&quot;</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     Make a patch request to self using json_data.</span>
+    <span class="c1">#     Reload model instance with new data.</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
     <span class="c1">#     result = self.create_interface().patch(self.id, json_data=json_data)</span>
     <span class="c1">#     self.reload(data=result)</span>
     <span class="c1">#     return self</span>
@@ -354,7 +376,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.34 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.0.35 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
