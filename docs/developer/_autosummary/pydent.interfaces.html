@@ -1,24 +1,35 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
     <title>pydent.interfaces &#8212; Trident 0.0.35 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.35',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.models" href="pydent.models.html" />
     <link rel="prev" title="pydent.exceptions" href="pydent.exceptions.html" /> 
-  </head><body>
+  </head>
+  <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -71,14 +82,12 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -110,7 +119,7 @@ session1.User
 # =&gt; a ModelInterface instance</p>
 <p>session1.User.find(1)
 # use model interface with User to find User(id=1)</p>
-<p>session1.aqhttp.post(…)
+<p>session1.aqhttp.post(...)
 # not allowed</p>
 <p>session1.create
 # =&gt; a CreateInterface</p>
@@ -118,6 +127,24 @@ session1.User
 # creates samples from a list by calling method CreateInterface.samples</p>
 </dd>
 </dl>
+<p class="rubric">Functions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">pluralize</span></code>(word)</td>
+<td>Return the plural form of a word.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">underscore</span></code>(word)</td>
+<td>Make an underscored, lowercase form from the expression in the string.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">url_build</span></code>(*parts)</td>
+<td>Join parts of a url into a string</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Classes</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -125,21 +152,36 @@ session1.User
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.ModelInterface" title="pydent.interfaces.ModelInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelInterface</span></code></a>(model_name,&nbsp;aqhttp,&nbsp;session)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.ModelInterface" title="pydent.interfaces.ModelInterface"><code class="xref py py-obj docutils literal"><span class="pre">ModelInterface</span></code></a>(model_name,&nbsp;aqhttp,&nbsp;session)</td>
 <td>Makes requests using AqHTTP that are model specific.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SessionInterface</span></code></a>(aqhttp,&nbsp;session)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">ModelRegistry</span></code>(name,&nbsp;bases,&nbsp;selfdict)</td>
+<td>Stores a list of models that can be accessed by name.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-obj docutils literal"><span class="pre">SessionInterface</span></code></a>(aqhttp,&nbsp;session)</td>
 <td>Generic session interface.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.UtilityInterface" title="pydent.interfaces.UtilityInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UtilityInterface</span></code></a>(aqhttp,&nbsp;session)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.interfaces.UtilityInterface" title="pydent.interfaces.UtilityInterface"><code class="xref py py-obj docutils literal"><span class="pre">UtilityInterface</span></code></a>(aqhttp,&nbsp;session)</td>
 <td>Miscellaneous requests for creating, updating, etc.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Exceptions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">TridentRequestError</span></code></td>
+<td>There was an ambiguous exception that occurred handling your request.</td>
 </tr>
 </tbody>
 </table>
 <dl class="class">
 <dt id="pydent.interfaces.ModelInterface">
 <em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">ModelInterface</code><span class="sig-paren">(</span><em>model_name</em>, <em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
 <p>Makes requests using AqHTTP that are model specific.
 Establishes a connection between a session object and an Aquarium model.</p>
 <dl class="method">
@@ -210,7 +252,7 @@ If data is a list, will return a list of model instances.</p>
 <dl class="class">
 <dt id="pydent.interfaces.SessionInterface">
 <em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">SessionInterface</code><span class="sig-paren">(</span><em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#SessionInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.SessionInterface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Generic session interface.</p>
 <p>Trident users should only be able to make requests through a
 SessionInterface to avoid making arbitrary and potentially damaging
@@ -221,8 +263,8 @@ http requests.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>aqhttp</strong> (<a class="reference internal" href="pydent.aqhttp.html#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><em>AqHTTP</em></a>) – aqhttp instance for this interface</li>
-<li><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) – session instance for this interface</li>
+<li><strong>aqhttp</strong> (<a class="reference internal" href="pydent.aqhttp.html#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><em>AqHTTP</em></a>) &#8211; aqhttp instance for this interface</li>
+<li><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) &#8211; session instance for this interface</li>
 </ul>
 </td>
 </tr>
@@ -233,7 +275,7 @@ http requests.</p>
 <dl class="class">
 <dt id="pydent.interfaces.UtilityInterface">
 <em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">UtilityInterface</code><span class="sig-paren">(</span><em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#UtilityInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
 <p>Miscellaneous requests for creating, updating, etc.</p>
 <p>Initializer for SessionInterface</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -241,8 +283,8 @@ http requests.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>aqhttp</strong> (<a class="reference internal" href="pydent.aqhttp.html#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><em>AqHTTP</em></a>) – aqhttp instance for this interface</li>
-<li><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) – session instance for this interface</li>
+<li><strong>aqhttp</strong> (<a class="reference internal" href="pydent.aqhttp.html#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><em>AqHTTP</em></a>) &#8211; aqhttp instance for this interface</li>
+<li><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) &#8211; session instance for this interface</li>
 </ul>
 </td>
 </tr>
@@ -305,7 +347,7 @@ http requests.</p>
 <dl class="method">
 <dt id="pydent.interfaces.UtilityInterface.set_operation_status">
 <code class="descname">set_operation_status</code><span class="sig-paren">(</span><em>operation_id</em>, <em>status</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#UtilityInterface.set_operation_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.set_operation_status" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets an operation’s status</p>
+<dd><p>Sets an operation&#8217;s status</p>
 </dd></dl>
 
 <dl class="method">
@@ -356,8 +398,8 @@ http requests.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, University of Washington.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
+        &#169; Copyright 2017-2019 University of Washington.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>
 </html>

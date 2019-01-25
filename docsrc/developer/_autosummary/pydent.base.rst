@@ -1,9 +1,15 @@
-pydent.base
-===========
+pydent\.base
+============
 
 .. automodule:: pydent.base
 
    
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      underscore
    
    
 
@@ -13,11 +19,19 @@ pydent.base
 
    .. autosummary::
    
+      MarshallerBase
       ModelBase
       ModelRegistry
    
    
 
    
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      AquariumModelError
+      TridentModelNotFoundError
    
    

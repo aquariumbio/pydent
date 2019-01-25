@@ -1,5 +1,5 @@
-pydent.aqsession
-================
+pydent\.aqsession
+=================
 
 .. automodule:: pydent.aqsession
 
@@ -13,7 +13,11 @@ pydent.aqsession
 
    .. autosummary::
    
+      AqHTTP
       AqSession
+      ModelInterface
+      ModelRegistry
+      UtilityInterface
    
    
 

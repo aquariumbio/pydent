@@ -1,9 +1,17 @@
-pydent.models
-=============
+pydent\.models
+==============
 
 .. automodule:: pydent.models
 
    
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      add_schema
+      filter_list
+      make_async
    
    
 
@@ -25,18 +33,26 @@ pydent.models
       FieldValue
       Group
       HasCodeMixin
+      HasMany
+      HasManyGeneric
+      HasManyThrough
+      HasOne
       Invoice
       Item
       Job
       JobAssociation
       Library
+      Many
       Membership
+      ModelBase
       ObjectType
+      One
       Operation
       OperationType
       PartAssociation
       Plan
       PlanAssociation
+      PlanValidator
       Sample
       SampleType
       Upload
@@ -47,5 +63,11 @@ pydent.models
    
 
    
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      AquariumModelError
    
    
