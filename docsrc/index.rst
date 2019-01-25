@@ -10,8 +10,8 @@ Trident is the Python scripting API for
 `Aquarium <https://www.aquarium.bio/>`_
 , the software that runs the 
 `UW BIOFAB <http://www.uwbiofab.org>`_.
-The code is available `here <https://github.com/klavinslab/trident>`_ 
-and was built by members of the 
+The code is available `here <https://github.com/klavinslab/trident>`_ .
+Trident was built by members of the 
 `Klavins lab <http://klavinslab.org/>`_.
 
 .. toctree::
