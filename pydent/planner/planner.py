@@ -144,12 +144,13 @@ class Planner(logger.Loggable, object):
         browser.recursive_retrieve(plans, cls._cache_query())
         for plan in plans:
             wire_dict = {}
-            for op in plan.operations:
-                for fv in op.field_values:
-                    for w in fv.wires_as_dest:
-                        wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
-                    for w in fv.wires_as_source:
-                        wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
+            if plan.operations:
+                for op in plan.operations:
+                    for fv in op.field_values:
+                        for w in fv.wires_as_dest:
+                            wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
+                        for w in fv.wires_as_source:
+                            wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
             plan.wires = list(wire_dict.values())
         return plans
 
