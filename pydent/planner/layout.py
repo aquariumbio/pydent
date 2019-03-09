@@ -116,7 +116,7 @@ class PlannerLayout(object):
         """Returns a sub-layout containing only the operations"""
         return self.subgraph(self.ops_to_nodes(ops))
 
-    def get_independent_layouts(self):
+    def get_independeget_subgraphsnt_layouts(self):
         """
         Finds all independent subgraphs.
 
@@ -227,7 +227,6 @@ class PlannerLayout(object):
 
         max_depth = {}
         roots = self.roots()
-        lengths = nx.all_pairs_shortest_path_length(self.G)
         for root in roots:
             depths = nx.single_source_shortest_path_length(self.G, root)
             for n, d in depths.items():
