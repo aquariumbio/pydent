@@ -318,7 +318,6 @@ class UtilityInterface(SessionInterface):
         data.update(model.dump(**params))
         return self.aqhttp.post('json/save', json_data=data)
 
-
 class ModelInterface(SessionInterface):
     """
     Makes requests using AqHTTP that are model specific.
