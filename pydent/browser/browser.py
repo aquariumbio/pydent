@@ -9,7 +9,7 @@ from collections import OrderedDict
 from pydent.base import ModelBase
 # TODO: browser documentation
 # TODO: examples in sphinx
-
+# TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
 
 class BrowserException(Exception):
     """Generic browser exception"""
