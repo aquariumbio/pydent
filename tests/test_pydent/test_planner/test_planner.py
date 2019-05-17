@@ -5,10 +5,15 @@ import dill
 
 
 @pytest.fixture(scope='function')
-def fake_planner():
-    with open('multiplan.pkl', 'rb') as f:
-        canvas = dill.load(f)
-    return canvas
+def fake_planner(fake_session):
+    with open('fromaq.json', 'r') as f:
+        plan_json = json.load(f)
+
+    fake_plan = fake_session.Plan.load(plan_json)
+    canvas = Planner(fake_plan)
+    # with open('multiplan.pkl', 'rb') as f:
+    #     canvas = dill.load(f)
+    # return canvas
 
     # fv_to_op_dict = {}
     # for op in plan.operations:
