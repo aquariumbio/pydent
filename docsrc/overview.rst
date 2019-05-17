@@ -25,9 +25,6 @@ To use trident, you'll need an Aquarium login, password, and url
 
     session = AqSession("user", "password", "http://you.aquarium.url")
 
-Bleeding edge
-~~~~~~~~~~~~~
-
 License
 -------
 
@@ -212,7 +209,3 @@ Then commit on github. Make a new release on github. Release to PyPi using:
 ::
 
     make deploy
-
-
-Reporting bugs
---------------

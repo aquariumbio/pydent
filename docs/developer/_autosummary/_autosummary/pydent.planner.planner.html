@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.planner.planner &#8212; Trident 1.0.0a documentation</title>
+    <title>pydent.planner.planner &#8212; Trident 1.0.0a1 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="pydent.planner.layout" href="pydent.planner.layout.html" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="../pydent.planner.html" title="pydent.planner"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pydent.planner.html" accesskey="U">pydent.planner</a> &#187;</li> 
       </ul>
@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
 <div>
 
 </div>
@@ -304,6 +304,13 @@ text annotation at that location.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.planner.planner.Planner.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of this planner, with a new anonymous copy of the plan. Browser cache is copied as well,
+but model_cache in browser are not anonymous</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.planner.planner.Planner.create">
 <code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the plan on Aquarium</p>
@@ -313,6 +320,14 @@ text annotation at that location.</p>
 <dt id="pydent.planner.planner.Planner.create_operation_by_name">
 <code class="descname">create_operation_by_name</code><span class="sig-paren">(</span><em>operation_type_name</em>, <em>category=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.create_operation_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.create_operation_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a new operation to the plan</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.planner.planner.Planner.distribute_items_of_object_type">
+<code class="descname">distribute_items_of_object_type</code><span class="sig-paren">(</span><em>object_type</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.distribute_items_of_object_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.distribute_items_of_object_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distribute items of a particular object_type across non-planning operations across
+existing plans and these operations in this Planner instance. E.g. distributing
+one-shot yeast competent cell aliquots</p>
 </dd></dl>
 
 <dl class="method">
@@ -420,6 +435,12 @@ Sample inputs and outputs will be set along the wire if possible.</p>
 <dt id="pydent.planner.planner.Planner.replan">
 <code class="descname">replan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.replan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.replan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replan the plan, by ‘copying’ the plan using the Aquarium server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.planner.planner.Planner.reserved_items">
+<code class="descname">reserved_items</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.reserved_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.reserved_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary of item_ids and the array of field_values that use them</p>
 </dd></dl>
 
 <dl class="method">
@@ -541,6 +562,18 @@ set for the field_value</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.planner.planner.Planner.split">
+<code class="descname">split</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.split" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Split the plan into several distinct plans, if possible. This first convert the plan</dt>
+<dd>to an operation graph, find subgraphs that are not connected to each other,
+and create new plans based on these subgraphs. This will return anonymous copies of all</dd>
+</dl>
+<p>the plans, meaning operations and field_values will be anonymized. Sample and items attached to
+field values will remain to avoid re-creating samples and items.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.planner.planner.Planner.validate">
 <code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.validate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validates sample routes in the plan.</p>
@@ -614,7 +647,7 @@ as arguments exist in the plan.</p>
         <li class="right" >
           <a href="../pydent.planner.html" title="pydent.planner"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pydent.planner.html" >pydent.planner</a> &#187;</li> 
       </ul>
