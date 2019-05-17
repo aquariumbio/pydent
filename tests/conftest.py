@@ -30,8 +30,6 @@ def pytest_addoption(parser):
         "--recordmode", action="store", default="no", help="[no, all, new_episodes, once, none]"
     )
 
-
-
 def pytest_collection_modifyitems(config, items):
     skip_web = pytest.mark.skip(reason="need --webtest option to run")
     record_mode = pytest.mark.record(config.getoption('--recordmode'))

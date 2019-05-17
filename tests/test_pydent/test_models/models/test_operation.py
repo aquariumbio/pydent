@@ -190,7 +190,6 @@ def test_constructor(fake_session):
     op = fake_session.Operation.new()
     op_dump = op.dump()
     assert op_dump['routing'] == {}
-    assert op_dump['parent'] == 0
     assert 'x' in op_dump
     assert 'y' in op_dump
 

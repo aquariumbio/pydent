@@ -75,28 +75,10 @@ def test_deepcopy():
     assert m.rid == copied.rid
 
 
-def test_annonymize():
-
-    @add_schema
-    class MyModel(ModelBase):
-        def __init__(self, id):
-            super().__init__(id=id)
-
-    m = MyModel(5)
-    assert m.id == 5
-    old_rid = m.rid
-
-    m.annonymize()
-
-    assert m.id is None, "Primary key should be None"
-    assert m.rid != old_rid, "Annonymize should assign a new rid"
-    assert m.rid is not None, "rid should not be None after annonymizing"
 
 @pytest.mark.parametrize('copy_method', [
-
         pytest.param(lambda x: x.copy()),
         pytest.param(lambda x: copy.copy(x)),
-
 ])
 def test_copy(copy_method):
     """Copy should anonymize models"""

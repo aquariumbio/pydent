@@ -13,7 +13,7 @@ def mock_login_post():
     A fake cookie to fake a logged in account
     """
 
-    def post(path, **kwargs):
+    def fake_post(path, **kwargs):
         routes = {
             "sessions.json": dict(
                 cookies={
@@ -33,7 +33,7 @@ def mock_login_post():
                 response.__dict__.update(res)
                 return response
 
-    return post
+    return fake_post
 
 
 @pytest.fixture(scope="function")
