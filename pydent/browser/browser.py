@@ -77,42 +77,6 @@ class Browser(logger.Loggable, object):
         self.model_list_cache['models'][self.model_name] = model_list[:]
         return model_list
 
-    def one(self, model_class=None, sample_type=None, **kwargs):
-        if model_class is None:
-            model_class = self.model_name
-        query = dict(kwargs)
-        if sample_type is not None:
-            query.update({"sample_type_id": self.find_by_name(sample_type, "SampleType").id})
-        model = self.interface(model_class).one(**query)
-        if model is None:
-            return None
-        return self._update_model_cache_from_list(model_class, [model])[0]
-
-    def last(self, num, model_class=None, sample_type=None, **kwargs):
-        if model_class is None:
-            model_class = self.model_name
-        query = dict(kwargs)
-        if sample_type is not None:
-            query.update({"sample_type_id": self.find_by_name(sample_type, "SampleType").id})
-        models = self.interface(model_class).last(num, **query)
-        return self._update_model_cache_from_list(model_class, models)
-
-    def first(self, num, model_class=None, sample_type=None, **kwargs):
-        if model_class is None:
-            model_class = self.model_name
-        query = dict(kwargs)
-        if sample_type is not None:
-            query.update({"sample_type_id": self.find_by_name(sample_type, "SampleType").id})
-        models = self.interface(model_class).first(num, **query)
-        return self._update_model_cache_from_list(model_class, models)
-
-    def find(self, model_id, model_class=None):
-        if model_class is None:
-            model_class = self.model_name
-        if self.use_cache:
-            return self.cached_find(model_class, model_id)
-        return self.interface(model_class).find(model_id)
-
     def where(self, query, model_class=None, primary_key='id', sample_type=None, **kwargs):
         """
         Perform a 'where' query. If models are found in the browser cache, those are returned,
@@ -131,8 +95,45 @@ class Browser(logger.Loggable, object):
             sample_type_id = self.find_by_name(sample_type, 'SampleType').id
             query.update({"sample_type_id": sample_type_id})
         if self.use_cache:
-            return self.cached_where(model_class, query, primary_key=primary_key, **kwargs)
+            return self.cached_where(query, model_class, primary_key=primary_key)
         return self.interface(model_class).where(query)
+
+    def __query_helper(self, fname, query, model_class, sample_type=None, opts=None, params=None, as_single=False):
+        if model_class is None:
+            model_class = self.model_name
+        if query is None:
+            query = dict()
+        if params is None:
+            params = dict()
+        if sample_type is not None:
+            query.update({'sample_type_id': self.find_by_name(sample_type, 'SampleType').id})
+        interface = self.interface(model_class)
+        fxn = getattr(interface, fname)
+        models = fxn(query=query, opts=opts, **params)
+        if as_single:
+            models = [models]
+        return self._update_model_cache_from_list(model_class, models)
+
+    def one(self, model_class=None, sample_type=None, query=None, opts=None):
+        models = self.__query_helper('one', query, model_class, sample_type, opts=opts, as_single=True)
+        if not models:
+            return None
+        return models[0]
+
+    def last(self, num=1, model_class=None, sample_type=None, query=None):
+        models = self.__query_helper('last', query, model_class, sample_type, params=dict(num=num))
+        return self._update_model_cache_from_list(model_class, models)
+
+    def first(self, num=1, model_class=None, sample_type=None, query=None):
+        models = self.__query_helper('first', query, model_class, sample_type, params=dict(num=num))
+        return self._update_model_cache_from_list(model_class, models)
+
+    def find(self, model_id, model_class=None):
+        if model_class is None:
+            model_class = self.model_name
+        if self.use_cache:
+            return self.cached_find(model_class, model_id)
+        return self.interface(model_class).find(model_id)
 
     def find_by_name(self, name, model_class=None, primary_key='id'):
         """
@@ -234,7 +235,7 @@ class Browser(logger.Loggable, object):
     # TODO: support unsaved models as well
     def cached_find(self, model_class, id):
         if isinstance(id, list):
-            return self.cached_where(model_class, {'id': id})
+            return self.cached_where({'id': id}, model_class)
         cached_models = self.model_cache.get(model_class, {})
         found_model = cached_models.get(id, None)
         if found_model is None:
@@ -245,7 +246,7 @@ class Browser(logger.Loggable, object):
             return None
         return self._update_model_cache_helper(model_class, {found_model.id: found_model})[0]
 
-    def cached_where(self, model, query, primary_key='id'):
+    def cached_where(self, query, model, primary_key='id'):
         if [] in query.values():
             return []
         cached_models = self.model_cache.get(model, {})

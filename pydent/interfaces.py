@@ -445,7 +445,7 @@ class ModelInterface(SessionInterface):
         options.update(opts)
         return self.array_query("all", [], rest, options)
 
-    def where(self, criteria, methods=None, **opts):
+    def where(self, criteria, methods=None, opts=None):
         """
         Performs a query for models
 
@@ -458,9 +458,7 @@ class ModelInterface(SessionInterface):
         :return: list of models
         :rtype: list
         """
-
-        addopts = opts.pop('opts', dict())
-        opts.update(addopts)
+        if opts is None: opts = dict()
         rest = {}
         if methods is not None:
             rest = {"methods": methods}
@@ -469,7 +467,7 @@ class ModelInterface(SessionInterface):
         return self.array_query("where", criteria, rest, options)
 
     # TODO: Refactor 'last' so query is an argument, not part of kwargs
-    def last(self, num=None, query=None, **opts):
+    def last(self, num=None, query=None, opts=None):
         """
         Find the last added models
 
@@ -486,7 +484,10 @@ class ModelInterface(SessionInterface):
             query = dict()
         if num is None:
             num = 1
-        return self.where(query, limit=num, reverse=True, opts=opts)
+        if opts is None:
+            opts = dict()
+        opts.update(dict(limit=num, reverse=True))
+        return self.where(query, opts=opts)
 
 
     # TODO: Refactor 'first' so query is an argument, not part of kwargs
@@ -507,10 +508,13 @@ class ModelInterface(SessionInterface):
             query = dict()
         if num is None:
             num = 1
-        return self.where(query, limit=num, reverse=False, opts=opts)
+        if opts is None:
+            opts = dict()
+        opts.update(dict(limit=num, reverse=False))
+        return self.where(query, opts=opts)
 
     # TODO: Refactor 'one' so query is an argument, not part of kwargs
-    def one(self, first=False, query=None, **opts):
+    def one(self, query=None, first=False, opts=None):
         """
         Return one model. Returns the last model by default. Returns None if no model is found.
 
@@ -519,7 +523,15 @@ class ModelInterface(SessionInterface):
         :return: model
         :rtype: ModelBase
         """
-        return self.last(1, query=query, **opts)
+        res = None
+        if not first:
+            res = self.last(1, query=query, opts=opts)
+        else:
+            res = self.first(1, query=query, opts=opts)
+        if not res:
+            return None
+        else:
+            return res[0]
 
     # TODO: implement 'patch' or 'update'? Would this be too dangerous?
     # def patch(self, model_id, json_data):

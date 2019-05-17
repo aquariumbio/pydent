@@ -4,9 +4,9 @@ from pydent.marshaller import ModelRegistry
 # from pydent.exceptions import TridentRequestError
 
 # # skip tests
-# pytestmark = pytest.mark.skip("These tests utilize a live session with alot of requests."
-#                               "In the future, we may want to utilize something like pyvrc to avoid"
-#                               "sending live requests to Aquarium.")
+pytestmark = pytest.mark.skip("These tests utilize a live session with alot of requests."
+                              "In the future, we may want to utilize something like pyvrc to avoid"
+                              "sending live requests to Aquarium.")
 
 relationship_pairs = []
 for model in ModelRegistry.models.values():

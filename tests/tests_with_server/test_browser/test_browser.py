@@ -93,14 +93,14 @@ def test_nested_cache(session):
 
 def test_cache_where(session):
     browser = Browser(session)
-    primers = browser.cached_where("Sample", {"sample_type_id": 1})
+    primers = browser.cached_where({"sample_type_id": 1}, "Sample")
 
     p = primers[-1]
     p.__dict__['foo'] = 'bar'
 
-    cached_primers = browser.cached_where("Sample", {"sample_type_id": 1, "id": p.id})
-    cached_primers2 = browser.cached_where("Sample", {"sample_type_id": [1,2], "id": [p.id]})
-    empty = browser.cached_where("Sample", {"sample_type_id": 2, "id": p.id})
+    cached_primers = browser.cached_where({"sample_type_id": 1, "id": p.id}, "Sample")
+    cached_primers2 = browser.cached_where({"sample_type_id": [1, 2], "id": [p.id]}, "Sample")
+    empty = browser.cached_where({"sample_type_id": 2, "id": p.id}, "Sample")
 
     assert empty == [], 'should not return any primers since query does not match'
     assert len(cached_primers) == 1, 'should return exactly 1 primer'
@@ -112,7 +112,7 @@ def test_cache_where(session):
 
 def test_cache_find(session):
     browser = Browser(session)
-    primers = browser.cached_where("Sample", {"sample_type_id": 1})
+    primers = browser.cached_where({"sample_type_id": 1}, "Sample")
 
     p = primers[-1]
     p.__dict__['foo'] = 'bar'

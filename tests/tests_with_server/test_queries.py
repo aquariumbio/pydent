@@ -62,8 +62,8 @@ def test_first_and_last_with_num(session):
 
 def test_first_and_last_with_query(session):
     """First and last should be able to filter by query parameters"""
-    first_samples = session.Sample.first(2, sample_type_id=1)
-    last_samples = session.Sample.last(3, sample_type_id=1)
+    first_samples = session.Sample.first(2, dict(sample_type_id=1))
+    last_samples = session.Sample.last(3, dict(sample_type_id=1))
 
     for f in first_samples:
         assert f.sample_type_id == 1
@@ -95,19 +95,19 @@ def test_one_default(session):
 
 def test_one_with_query(session):
     """Query parameters should be able to be passed into one()"""
-    last = session.Sample.one(sample_type_id=1)
+    last = session.Sample.one(dict(sample_type_id=1))
     assert last.sample_type_id == 1, "Sample should have a sample_type_id of 1"
 
 
 def test_one_returns_none(session):
     """One returns None if it cannot find model with query"""
-    last = session.Sample.one(nonexistant=1)
+    last = session.Sample.one(dict(sample_id=-10))
     assert last is None, "should be None"
 
 
 def test_first_and_last_returns_emtpy(session):
     """First and last should return empty array if no models found."""
-    last = session.Sample.first(5, nonexistant=1)
-    first = session.Sample.first(5, nonexistant=1)
+    last = session.Sample.first(5, dict(nonexistant=1))
+    first = session.Sample.first(5, dict(nonexistant=1))
     assert last == [], "should be empty"
     assert first == [], "should be empty"

@@ -4,14 +4,15 @@ Planner
 
 import random
 import webbrowser
-from collections import defaultdict
+from collections import defaultdict, Sequence
 from functools import wraps
 from uuid import uuid4
 
 import networkx as nx
 
+from pydent.aqsession import AqSession
 from pydent.browser import Browser
-from pydent.models import FieldValue, Operation
+from pydent.models import FieldValue, Operation, Plan
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
 from pydent.utils import make_async, logger, empty_copy
@@ -74,29 +75,48 @@ class Planner(logger.Loggable, object):
         _DEFAULT = LAST
         _CHOICES = [FIRST, LAST, RANDOM]
 
-    def __init__(self, session, plan_id=None):
-        self.session = session
-        self._browser = Browser(session)
-
-        if plan_id is not None:
-            plan = self._browser.find(plan_id, 'Plan')
-            if plan is None:
-                raise PlannerException(
-                    "Could not find plan with id={}".format(plan_id))
+    def __init__(self, session_or_plan=None, plan_id=None):
+        if issubclass(type(session_or_plan), AqSession):
+            # initialize with session
+            self.session = session_or_plan
+            self._browser = Browser(self.session)
+            if plan_id is None:
+                # load an existing plan
+                self.plan = self._browser.find(plan_id, 'Plan')
+                if self.plan is None:
+                    raise PlannerException(
+                        "Could not find plan with id={}".format(plan_id))
+            else:
+                # create a new plan
+                self.plan = self.session.Plan.new()
+        elif issubclass(type(session_or_plan), Plan):
+            # initialize with Plan
+            plan = session_or_plan
+            self.session = plan.session
+            self._browser = Browser(self.session)
             self.plan = plan
-        else:
-            self.plan = session.Plan.new()
         self.init_logger("Planner@plan_rid={}".format(self.plan.rid))
 
     @classmethod
-    def from_plans(cls, session, plans):
+    def _check_plans_for_single_session(cls, models):
+        session_ids = set([id(m.session) for m in models])
+        if len(session_ids) > 1:
+            raise PlannerException("Plans have different session ids")
+        if models:
+            return models[0].session
+
+
+    @classmethod
+    def from_plans(cls, plans):
+        session = cls._check_plans_for_single_session(plans)
         browser = Browser(session)
         cls.cache_plans(browser, plans)
+        planners = []
         for plan in plans:
-            planner = cls.__new__()
+            planner = cls.__new__(plan)
             planner._browser = browser
-            planner.session = session
-            planner.plan = plan
+            planners.append(planner)
+        return planners
 
     @staticmethod
     def _cache_query():

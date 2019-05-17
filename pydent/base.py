@@ -248,7 +248,7 @@ class ModelBase(SchemaModel):
         interface = cls.interface(session)
         query = dict(query)
         query.update(kwargs)
-        return interface.one(**query)
+        return interface.one(query)
 
     def one_callback(self, model_name, *args, **kwargs):
         self._check_for_session()
