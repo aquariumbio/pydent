@@ -66,7 +66,7 @@ class ModelBase(SchemaModel):
 
     def __init__(self, **data):
         super().__init__(data)
-        self.add_data({"rid": self._rid, "id": data.get('id', None)})
+        self.add_data({'rid': self._rid, "id": data.get('id', None)})
 
     @classmethod
     def _set_data(cls, data, calling_obj):
@@ -96,6 +96,11 @@ class ModelBase(SchemaModel):
     @property
     def rid(self):
         return self._rid
+
+    @rid.setter
+    def rid(self, _rid):
+        self._rid = _rid
+        self.add_data({'rid': self._rid})
 
     @property
     def _primary_key(self):
@@ -305,13 +310,15 @@ class ModelBase(SchemaModel):
     # TODO: anonymize the keys for relationships as well
     def anonymize(self):
         """
-        Resets the primary key of the model and assigns a new rid
+        Resets the primary key of the model and assigns a new rid.
+
+        Metatypes cannot be annonymized.
 
         :return: self
         """
         if not self.__class__.__name__.endswith('Type'):
             setattr(self, self.PRIMARY_KEY, None)
-            setattr(self, '_rid', next(self.counter))
+            setattr(self, 'rid', next(self.counter))
             self.raw = {}
 
     def _anonymize_field_keys(self, keep=None):
@@ -324,9 +331,7 @@ class ModelBase(SchemaModel):
                 else:
                     setattr(self, relation.ref, None)
 
-    # TODO: deepcopy should not annonymize everything... e.g. OperationTypes should not be annonymized
-    # TODO: formalize what is kept (inventory and types) and what is not
-    def copy(self, keep=None):
+    def deepcopy(self, keep=None):
         """
         Provides a deepcopy of the model, but annonymizes the primary and global keys unless
         class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
@@ -334,13 +339,23 @@ class ModelBase(SchemaModel):
 
         By default, inventory classes such as Sample, Item, and Collection are 'kept'.
 
+        This specific usecase is that when copying whole plans, that the integrity of the
+        inventory used in the operations is maintained. These are the items that refer
+        to physical inventory in the laboratory and are referred to by their `rids`, and
+        so it is important to that any of these inventory are always maintain their `rids`.
+        Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+        there is only ONE instance of inventory that is referred to by its rid.
+
+        Similarly, any metatype model must also maintain their `rid`.
+
         :param keep: list of model classes (as a list of strings) to keep un-anonymous
-        :return:
+        :return: copied model
         """
         memo = {}
         copied = deepcopy(self, memo)
         if keep is None:
             keep = self.DEFAULT_COPY_KEEP_UNANONYMOUS
+
         for m in memo.values():
             if issubclass(type(m), ModelBase):
                 if keep is None or m.__class__.__name__ not in keep:
@@ -377,7 +392,7 @@ class ModelBase(SchemaModel):
         return memo
 
     def __copy__(self):
-        return self.copy()
+        return self.deepcopy()
 
     #     return cp
     # def patch(self, json_data):
