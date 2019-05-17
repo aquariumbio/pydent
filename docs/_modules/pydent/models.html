@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.models &#8212; Trident 1.0.0a documentation</title>
+    <title>pydent.models &#8212; Trident 1.0.0a1 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
 <div>
 
 </div>
@@ -308,7 +308,6 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">val</span>
 
-
 <span class="c1"># Models</span>
 
 <div class="viewcode-block" id="Account"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Account">[docs]</a><span class="nd">@add_schema</span>
@@ -370,7 +369,7 @@
 
 
 <div class="viewcode-block" id="Collection"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Collection">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Collection</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">DataAssociatorMixin</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+<span class="k">class</span> <span class="nc">Collection</span><span class="p">(</span><span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
     <span class="sd">&quot;&quot;&quot;A Collection model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">object_type</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;ObjectType&quot;</span><span class="p">),</span>
@@ -433,7 +432,7 @@
 
 
 <div class="viewcode-block" id="FieldType"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.FieldType">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">FieldType</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">FieldMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FieldType</span><span class="p">(</span><span class="n">FieldMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A FieldType model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">allowable_field_types</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;AllowableFieldType&quot;</span><span class="p">,</span> <span class="s2">&quot;FieldType&quot;</span><span class="p">),</span>
@@ -441,6 +440,7 @@
             <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;find_field_parent&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">),</span>
         <span class="n">sample_type</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span>
             <span class="s2">&quot;SampleType&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;find_field_parent&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">),</span>
+        <span class="n">field_values</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;FieldValue&quot;</span><span class="p">,</span> <span class="s2">&quot;FieldType&quot;</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -524,7 +524,7 @@
 
 
 <div class="viewcode-block" id="FieldValue"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.FieldValue">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">FieldValue</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">FieldMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FieldValue</span><span class="p">(</span><span class="n">FieldMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A FieldValue model. One of the more complex models.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -786,7 +786,7 @@
 
 
 <div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Item">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">DataAssociatorMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a proxy object for an Item model in Aquarium.</span>
 <span class="sd">    An Item is a physical object in the lab.</span>
@@ -972,7 +972,7 @@
 
 <span class="c1"># TODO: field_values should recognize parent_class (maybe where should ignore None field_values..)</span>
 <div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Operation">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">DataAssociatorMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Operation model&quot;&quot;&quot;</span>
     <span class="c1"># TODO: add &#39;inputs&#39; and &#39;outputs&#39; as bone-fide properties</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -1394,29 +1394,29 @@
             <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="OperationType.interface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.OperationType.interface">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
-        <span class="c1"># get model interface from Base class</span>
-        <span class="n">model_interface</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">OperationType</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">find_deployed_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-            <span class="n">ots</span> <span class="o">=</span> <span class="n">model_interface</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ots</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ots</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;More than one OperationType found.&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">ots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="k">def</span> <span class="nf">where_deployed</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-            <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
-            <span class="k">return</span> <span class="n">model_interface</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-
-        <span class="c1"># override the old find method</span>
-        <span class="n">model_interface</span><span class="o">.</span><span class="n">find_deployed_by_name</span> <span class="o">=</span> <span class="n">find_deployed_by_name</span>
-        <span class="n">model_interface</span><span class="o">.</span><span class="n">where_deployed</span> <span class="o">=</span> <span class="n">where_deployed</span>
-
-        <span class="k">return</span> <span class="n">model_interface</span></div>
+    <span class="c1"># @classmethod</span>
+    <span class="c1"># def interface(cls, session):</span>
+    <span class="c1">#     # get model interface from Base class</span>
+    <span class="c1">#     model_interface = super(OperationType, cls).interface(session)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     def find_deployed_by_name(name):</span>
+    <span class="c1">#         ots = model_interface.where({&quot;deployed&quot;: True, &quot;name&quot;: name})</span>
+    <span class="c1">#         if len(ots) == 0:</span>
+    <span class="c1">#             return None</span>
+    <span class="c1">#         if len(ots) &gt; 1:</span>
+    <span class="c1">#             raise Exception(&quot;More than one OperationType found.&quot;)</span>
+    <span class="c1">#         return ots[0]</span>
+    <span class="c1">#</span>
+    <span class="c1">#     def where_deployed(params):</span>
+    <span class="c1">#         params = dict(params)</span>
+    <span class="c1">#         params.update({&quot;deployed&quot;: True})</span>
+    <span class="c1">#         return model_interface.where(params)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     # override the old find method</span>
+    <span class="c1">#     model_interface.find = find_deployed_by_name</span>
+    <span class="c1">#     model_interface.where_deployed = where_deployed</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return model_interface</span>
 
     <span class="k">def</span> <span class="nf">get_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">parent_class</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
@@ -1469,9 +1469,9 @@
             <span class="n">column</span><span class="o">=</span><span class="n">column</span>
         <span class="p">)</span></div>
 
-
+<span class="c1"># TODO: API_CHANGE: Plan.copy() no longer reroutes to replan</span>
 <div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Plan</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">DataAssociatorMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Plan</span><span class="p">(</span><span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A Plan model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1625,6 +1625,18 @@
         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
             <span class="n">wire</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
 
+        <span class="c1"># if &#39;layout&#39; in json_data:</span>
+        <span class="c1">#     if json_data[&#39;layout&#39;][&#39;wires&#39;] is None:</span>
+        <span class="c1">#         json_data[&#39;layout&#39;][&#39;wires&#39;] = []</span>
+        <span class="c1">#     if json_data[&#39;layout&#39;][&#39;input&#39;] is None:</span>
+        <span class="c1">#         json_data[&#39;layout&#39;][&#39;input&#39;] = []</span>
+        <span class="c1">#     if json_data[&#39;layout&#39;][&#39;output&#39;] is None:</span>
+        <span class="c1">#         json_data[&#39;layout&#39;][&#39;output&#39;] = []</span>
+        <span class="c1">#     if json_data[&#39;layout&#39;][&#39;children&#39;] is None:</span>
+        <span class="c1">#         json_data[&#39;layout&#39;][&#39;children&#39;] = []</span>
+        <span class="c1">#     if json_data[&#39;layout&#39;][&#39;text_boxes&#39;] is None:</span>
+        <span class="c1">#         json_data[&#39;layout&#39;][&#39;text_boxes&#39;] = []</span>
+
         <span class="k">return</span> <span class="n">json_data</span></div>
 
 <div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.estimate_cost">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1639,6 +1651,10 @@
 
     <span class="k">def</span> <span class="nf">field_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Plan.step"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Steps a plan&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">step_plan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plan.show"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print the plan nicely&quot;&quot;&quot;</span>
@@ -1669,10 +1685,6 @@
 <div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.replan">[docs]</a>    <span class="k">def</span> <span class="nf">replan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copies or replans the plan. Returns a plan copy&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">replan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Plan.copy"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Copies or replans the plan&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">replan</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Plan.download_files"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Plan.download_files">[docs]</a>    <span class="k">def</span> <span class="nf">download_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1998,6 +2010,12 @@
             <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">location</span> <span class="o">!=</span> <span class="s1">&#39;deleted&#39;</span> <span class="ow">and</span>
                     <span class="n">i</span><span class="o">.</span><span class="n">object_type_id</span> <span class="o">==</span> <span class="n">object_type</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
 
+<div class="viewcode-block" id="Sample.copy"><a class="viewcode-back" href="../../developer/_autosummary/pydent.models.html#pydent.models.Sample.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of this sample.&quot;&quot;&quot;</span>
+        <span class="n">copied</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copied</span><span class="o">.</span><span class="n">anonymize</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">copied</span></div>
+
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_str</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">)</span></div>
 
@@ -2239,7 +2257,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

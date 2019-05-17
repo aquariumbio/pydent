@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.models &#8212; Trident 1.0.0a documentation</title>
+    <title>pydent.models &#8212; Trident 1.0.0a1 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.relationships" href="pydent.relationships.html" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
 <div>
 
 </div>
@@ -289,6 +289,12 @@ class SampleType(Base):</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Account._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Account._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account._get_data" title="Permalink to this definition">¶</a></dt>
@@ -308,9 +314,29 @@ class SampleType(Base):</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Account._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Account.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Account.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -341,6 +367,25 @@ class SampleType(Base):</p>
 <dt id="pydent.models.Account.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Account.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -474,6 +519,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.AllowableFieldType._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.AllowableFieldType._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType._get_data" title="Permalink to this definition">¶</a></dt>
@@ -493,9 +544,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.AllowableFieldType._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.AllowableFieldType.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.AllowableFieldType.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -526,6 +597,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.AllowableFieldType.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.AllowableFieldType.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -659,6 +749,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Budget._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Budget._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget._get_data" title="Permalink to this definition">¶</a></dt>
@@ -678,9 +774,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Budget._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Budget.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Budget.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -711,6 +827,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Budget.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Budget.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -844,6 +979,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Code._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Code._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code._get_data" title="Permalink to this definition">¶</a></dt>
@@ -863,9 +1004,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Code._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Code.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Code.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -896,6 +1057,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Code.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Code.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1021,12 +1201,18 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.Collection">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Collection</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Collection model</p>
 <dl class="method">
 <dt id="pydent.models.Collection._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection._check_for_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises error if model is not connected to a session</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydent.models.Collection._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
 </dd></dl>
 
 <dl class="method">
@@ -1048,9 +1234,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Collection._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Collection.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1139,6 +1345,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Collection.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1285,6 +1510,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.DataAssociation._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.DataAssociation._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation._get_data" title="Permalink to this definition">¶</a></dt>
@@ -1304,9 +1535,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.DataAssociation._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.DataAssociation.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.DataAssociation.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1337,6 +1588,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.DataAssociation.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.DataAssociation.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1462,12 +1732,18 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.FieldType">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">FieldType</code><span class="sig-paren">(</span><em>name=None</em>, <em>ftype=None</em>, <em>array=None</em>, <em>choices=None</em>, <em>operation_type=None</em>, <em>preferred_field_type_id=None</em>, <em>preferred_operation_type_id=None</em>, <em>required=None</em>, <em>routing=None</em>, <em>role=None</em>, <em>parent_class=None</em>, <em>parent_id=None</em>, <em>sample_type=None</em>, <em>aft_stype_and_objtype=()</em>, <em>allowable_field_types=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldMixin</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A FieldType model</p>
 <dl class="method">
 <dt id="pydent.models.FieldType._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType._check_for_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises error if model is not connected to a session</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydent.models.FieldType._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
 </dd></dl>
 
 <dl class="method">
@@ -1489,9 +1765,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.FieldType._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.FieldType.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldType.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1522,6 +1818,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.FieldType.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldType.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1673,7 +1988,7 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.FieldValue">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">FieldValue</code><span class="sig-paren">(</span><em>name=None</em>, <em>role=None</em>, <em>parent_class=None</em>, <em>parent_id=None</em>, <em>field_type=None</em>, <em>sample=None</em>, <em>value=None</em>, <em>item=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldMixin</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A FieldValue model. One of the more complex models.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1695,6 +2010,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.FieldValue._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.FieldValue._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue._get_data" title="Permalink to this definition">¶</a></dt>
@@ -1714,9 +2035,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.FieldValue._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.FieldValue.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldValue.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1759,6 +2100,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.FieldValue.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldValue.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1924,6 +2284,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Group._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Group._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._get_data" title="Permalink to this definition">¶</a></dt>
@@ -1943,9 +2309,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Group._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Group.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Group.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1976,6 +2362,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Group.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Group.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2109,6 +2514,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Invoice._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Invoice._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice._get_data" title="Permalink to this definition">¶</a></dt>
@@ -2128,9 +2539,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Invoice._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Invoice.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Invoice.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2161,6 +2592,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Invoice.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Invoice.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2286,13 +2736,19 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.Item">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>sample_id=None</em>, <em>sample=None</em>, <em>object_type=None</em>, <em>object_type_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>Defines a proxy object for an Item model in Aquarium.
 An Item is a physical object in the lab.</p>
 <dl class="method">
 <dt id="pydent.models.Item._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item._check_for_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises error if model is not connected to a session</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydent.models.Item._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
 </dd></dl>
 
 <dl class="method">
@@ -2314,9 +2770,29 @@ An Item is a physical object in the lab.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Item._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Item.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2421,6 +2897,25 @@ collection.</p>
 <dd><p>Returns the collection of which this Item is a part.</p>
 <p>Returns the collection object if the Item is a part, otherwise
 returns None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2574,6 +3069,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Job._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Job._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job._get_data" title="Permalink to this definition">¶</a></dt>
@@ -2593,9 +3094,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Job._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Job.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Job.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2626,6 +3147,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Job.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Job.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2759,6 +3299,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.JobAssociation._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.JobAssociation._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._get_data" title="Permalink to this definition">¶</a></dt>
@@ -2778,9 +3324,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.JobAssociation._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.JobAssociation.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2811,6 +3377,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.JobAssociation.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2944,6 +3529,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Library._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Library._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library._get_data" title="Permalink to this definition">¶</a></dt>
@@ -2963,9 +3554,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Library._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Library.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Library.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3002,6 +3613,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Library.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Library.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3134,6 +3764,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Membership._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Membership._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership._get_data" title="Permalink to this definition">¶</a></dt>
@@ -3153,9 +3789,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Membership._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Membership.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Membership.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3186,6 +3842,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Membership.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Membership.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3319,6 +3994,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.ObjectType._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.ObjectType._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType._get_data" title="Permalink to this definition">¶</a></dt>
@@ -3338,9 +4019,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.ObjectType._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.ObjectType.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.ObjectType.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3371,6 +4072,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.ObjectType.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.ObjectType.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3503,12 +4223,18 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.Operation">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>operation_type_id=None</em>, <em>operation_type=None</em>, <em>status=None</em>, <em>x=0</em>, <em>y=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Operation model</p>
 <dl class="method">
 <dt id="pydent.models.Operation._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation._check_for_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises error if model is not connected to a session</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydent.models.Operation._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
 </dd></dl>
 
 <dl class="method">
@@ -3527,6 +4253,12 @@ find models in model relationships.</p>
 <dt id="pydent.models.Operation._primary_key">
 <code class="descname">_primary_key</code><a class="headerlink" href="#pydent.models.Operation._primary_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
 </dd></dl>
 
 <dl class="method">
@@ -3623,6 +4355,20 @@ item/sample/container must be saved.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Operation.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Operation.append_to_many">
 <code class="descname">append_to_many</code><span class="sig-paren">(</span><em>name</em>, <em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.append_to_many" title="Permalink to this definition">¶</a></dt>
 <dd><p>Appends a model to the many relationship</p>
@@ -3708,6 +4454,25 @@ item/sample/container must be saved.</p>
 <dt id="pydent.models.Operation.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4065,6 +4830,12 @@ Aquarium.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.OperationType._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.OperationType._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType._get_data" title="Permalink to this definition">¶</a></dt>
@@ -4084,9 +4855,29 @@ Aquarium.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.OperationType._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.OperationType.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.OperationType.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4117,6 +4908,25 @@ Aquarium.</p>
 <dt id="pydent.models.OperationType.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.OperationType.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4159,7 +4969,7 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.OperationType.interface">
-<em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#OperationType.interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType.interface" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
@@ -4258,6 +5068,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.PartAssociation._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.PartAssociation._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation._get_data" title="Permalink to this definition">¶</a></dt>
@@ -4277,9 +5093,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.PartAssociation._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.PartAssociation.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PartAssociation.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4310,6 +5146,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.PartAssociation.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PartAssociation.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4435,12 +5290,18 @@ find models in model relationships.</p>
 <dl class="class">
 <dt id="pydent.models.Plan">
 <em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Plan</code><span class="sig-paren">(</span><em>name='MyPlan'</em>, <em>status='planning'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Plan model</p>
 <dl class="method">
 <dt id="pydent.models.Plan._check_for_session">
 <code class="descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan._check_for_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raises error if model is not connected to a session</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydent.models.Plan._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
 </dd></dl>
 
 <dl class="method">
@@ -4459,6 +5320,12 @@ find models in model relationships.</p>
 <dt id="pydent.models.Plan._primary_key">
 <code class="descname">_primary_key</code><a class="headerlink" href="#pydent.models.Plan._primary_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
 </dd></dl>
 
 <dl class="method">
@@ -4498,6 +5365,20 @@ find models in model relationships.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
 </tr>
 </tbody>
 </table>
@@ -4593,8 +5474,21 @@ find models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Plan.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copies or replans the plan</p>
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4802,6 +5696,12 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Plan.step">
+<code class="descname">step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Steps a plan</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Plan.submit">
 <code class="descname">submit</code><span class="sig-paren">(</span><em>user</em>, <em>budget</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.submit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submits the Plan to the Aquarium server.</p>
@@ -4868,6 +5768,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.PlanAssociation._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.PlanAssociation._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation._get_data" title="Permalink to this definition">¶</a></dt>
@@ -4887,9 +5793,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.PlanAssociation._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.PlanAssociation.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PlanAssociation.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4920,6 +5846,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.PlanAssociation.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PlanAssociation.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5068,6 +6013,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Sample._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Sample._fv_dict">
 <code class="descname">_fv_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample._fv_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample._fv_dict" title="Permalink to this definition">¶</a></dt>
@@ -5104,9 +6055,29 @@ then the value will be a list of FieldValues (or empty list). Otherwise the valu
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Sample._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Sample.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Sample.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5137,6 +6108,12 @@ then the value will be a list of FieldValues (or empty list). Otherwise the valu
 <dt id="pydent.models.Sample.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Sample.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of this sample.</p>
 </dd></dl>
 
 <dl class="method">
@@ -5301,6 +6278,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.SampleType._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.SampleType._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType._get_data" title="Permalink to this definition">¶</a></dt>
@@ -5320,9 +6303,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.SampleType._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.SampleType.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.SampleType.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5353,6 +6356,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.SampleType.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.SampleType.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5561,6 +6583,12 @@ find models in model relationships.</p>
 </table>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Upload._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Upload._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload._get_data" title="Permalink to this definition">¶</a></dt>
@@ -5580,9 +6608,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Upload._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Upload.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Upload.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5638,6 +6686,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Upload.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Upload.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5793,6 +6860,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.User._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.User._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User._get_data" title="Permalink to this definition">¶</a></dt>
@@ -5812,9 +6885,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.User._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.User.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.User.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5845,6 +6938,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.User.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.User.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5978,6 +7090,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.UserBudgetAssociation._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.UserBudgetAssociation._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation._get_data" title="Permalink to this definition">¶</a></dt>
@@ -5997,9 +7115,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.UserBudgetAssociation._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.UserBudgetAssociation.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.UserBudgetAssociation.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6030,6 +7168,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.UserBudgetAssociation.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.UserBudgetAssociation.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6163,6 +7320,12 @@ find models in model relationships.</p>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.models.Wire._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.models.Wire._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire._get_data" title="Permalink to this definition">¶</a></dt>
@@ -6182,9 +7345,29 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Wire._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Wire.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Wire.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6215,6 +7398,25 @@ find models in model relationships.</p>
 <dt id="pydent.models.Wire.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Wire.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6378,7 +7580,7 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

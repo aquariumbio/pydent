@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.browser.browser &#8212; Trident 1.0.0a documentation</title>
+    <title>pydent.browser.browser &#8212; Trident 1.0.0a1 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="pydent.planner" href="../pydent.planner.html" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="../pydent.browser.html" title="pydent.browser"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pydent.browser.html" accesskey="U">pydent.browser</a> &#187;</li> 
       </ul>
@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
 <div>
 
 </div>
@@ -209,6 +209,12 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.browser.browser.Browser._update_model_cache_helper">
+<code class="descname">_update_model_cache_helper</code><span class="sig-paren">(</span><em>modelname</em>, <em>modeldict</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/browser/browser.html#Browser._update_model_cache_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.browser.browser.Browser._update_model_cache_helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the browser’s model cache with models from the provided model dict</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.browser.browser.Browser.close_matches">
 <code class="descname">close_matches</code><span class="sig-paren">(</span><em>pattern</em>, <em>sample_type=None</em>, <em>**query</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/browser/browser.html#Browser.close_matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.browser.browser.Browser.close_matches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds samples whose names closely match the pattern</p>
@@ -280,6 +286,28 @@ browser.filter_samples_by_property(</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.browser.browser.Browser.find_by_name">
+<code class="descname">find_by_name</code><span class="sig-paren">(</span><em>name</em>, <em>model_class=None</em>, <em>primary_key='id'</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/browser/browser.html#Browser.find_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.browser.browser.Browser.find_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find model by name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> – </li>
+<li><strong>model_class</strong> – </li>
+<li><strong>primary_key</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
 </td>
 </tr>
 </tbody>
@@ -478,6 +506,38 @@ imported into a pandas DataFrame:</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydent.browser.browser.Browser.update_cache">
+<code class="descname">update_cache</code><span class="sig-paren">(</span><em>models</em>, <em>recursive=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/browser/browser.html#Browser.update_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.browser.browser.Browser.update_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the model cache with models. If recursive=True, recursively collect all models contained
+in the relationships and use those to update the cache as well.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.browser.browser.Browser.where">
+<code class="descname">where</code><span class="sig-paren">(</span><em>query</em>, <em>model_class=None</em>, <em>primary_key='id'</em>, <em>sample_type=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/browser/browser.html#Browser.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.browser.browser.Browser.where" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a ‘where’ query. If models are found in the browser cache, those are returned,
+else new http queries are made to find the models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>query</strong> – query as a dictionary</li>
+<li><strong>model_class</strong> – model class to use (str)</li>
+<li><strong>primary_key</strong> – which primary key to use (default: ‘id’)</li>
+<li><strong>sample_type</strong> – optional sample_type short cut for finding samples</li>
+<li><strong>kwargs</strong> – other kwargs</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">returned model list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="exception">
@@ -529,7 +589,7 @@ set self.__traceback__ to tb and return self.</p>
         <li class="right" >
           <a href="../pydent.browser.html" title="pydent.browser"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pydent.browser.html" >pydent.browser</a> &#187;</li> 
       </ul>

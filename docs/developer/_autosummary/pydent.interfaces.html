@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.interfaces &#8212; Trident 1.0.0a documentation</title>
+    <title>pydent.interfaces &#8212; Trident 1.0.0a1 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.models" href="pydent.models.html" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.exceptions.html" title="pydent.exceptions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
 <div>
 
 </div>
@@ -187,9 +187,33 @@ Attaches raw json and this session instance to the models it retrieves.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.interfaces.ModelInterface._prepost_query_hook">
+<code class="descname">_prepost_query_hook</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface._prepost_query_hook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface._prepost_query_hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for modifying the query before posting</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.interfaces.ModelInterface.all">
-<code class="descname">all</code><span class="sig-paren">(</span><em>rest=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.all" title="Permalink to this definition">¶</a></dt>
+<code class="descname">all</code><span class="sig-paren">(</span><em>rest=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds all models</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rest</strong> – </li>
+<li><strong>opts</strong> (<em>dict</em>) – additional options (“offset”, “limit”, “reverse”, etc.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -212,17 +236,24 @@ Attaches raw json and this session instance to the models it retrieves.</p>
 
 <dl class="method">
 <dt id="pydent.interfaces.ModelInterface.first">
-<code class="descname">first</code><span class="sig-paren">(</span><em>num=None</em>, <em>**query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.first" title="Permalink to this definition">¶</a></dt>
+<code class="descname">first</code><span class="sig-paren">(</span><em>num=None</em>, <em>query=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.first" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the first added models</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>num</strong> (<em>int</em>) – number of models to return</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num</strong> (<em>int</em>) – number of models to return. If not provided, assumes 1</li>
+<li><strong>query</strong> (<em>dict</em>) – additional query to find models</li>
+<li><strong>opts</strong> (<em>dict</em>) – additional options (“offset”, “limit”, “reverse”, etc.)</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">models</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of models</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -236,17 +267,24 @@ Attaches raw json and this session instance to the models it retrieves.</p>
 
 <dl class="method">
 <dt id="pydent.interfaces.ModelInterface.last">
-<code class="descname">last</code><span class="sig-paren">(</span><em>num=None</em>, <em>**query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.last" title="Permalink to this definition">¶</a></dt>
+<code class="descname">last</code><span class="sig-paren">(</span><em>num=None</em>, <em>query=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.last" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the last added models</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>num</strong> (<em>int</em>) – number of models to return</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>num</strong> (<em>int</em>) – number of models to return. If not provided, assumes 1</li>
+<li><strong>query</strong> (<em>dict</em>) – additional query to find models</li>
+<li><strong>opts</strong> (<em>dict</em>) – additional options (“offset”, “limit”, “reverse”, etc.)</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">models</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of models</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -274,7 +312,7 @@ If data is a list, will return a list of model instances.</p>
 
 <dl class="method">
 <dt id="pydent.interfaces.ModelInterface.one">
-<code class="descname">one</code><span class="sig-paren">(</span><em>first=False</em>, <em>offset=-1</em>, <em>**query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.one" title="Permalink to this definition">¶</a></dt>
+<code class="descname">one</code><span class="sig-paren">(</span><em>first=False</em>, <em>query=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.one" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return one model. Returns the last model by default. Returns None if no model is found.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -292,8 +330,27 @@ If data is a list, will return a list of model instances.</p>
 
 <dl class="method">
 <dt id="pydent.interfaces.ModelInterface.where">
-<code class="descname">where</code><span class="sig-paren">(</span><em>criteria</em>, <em>methods=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.where" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds models based on some criteria</p>
+<code class="descname">where</code><span class="sig-paren">(</span><em>criteria</em>, <em>methods=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.where" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a query for models</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>criteria</strong> (<em>dict</em>) – query to find models</li>
+<li><strong>methods</strong> (<em>list</em>) – server side methods to implement</li>
+<li><strong>opts</strong> (<em>dict</em>) – additional options (“offset”, “limit”, “reverse”, etc.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of models</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -460,7 +517,7 @@ http requests.</p>
         <li class="right" >
           <a href="pydent.exceptions.html" title="pydent.exceptions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

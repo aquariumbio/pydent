@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.interfaces &#8212; Trident 1.0.0a documentation</title>
+    <title>pydent.interfaces &#8212; Trident 1.0.0a1 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
 <div>
 
 </div>
@@ -168,6 +168,8 @@
 <span class="sd">    http requests.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;aqhttp&#39;</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializer for SessionInterface</span>
@@ -185,6 +187,8 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Miscellaneous requests for creating, updating, etc.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;aqhttp&#39;</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">]</span>
 
     <span class="c1"># TODO: have ability to save new properties</span>
     <span class="k">def</span> <span class="nf">create_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="p">):</span>
@@ -280,6 +284,12 @@
         <span class="p">)</span>
         <span class="n">plan</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">plan</span>
+
+    <span class="k">def</span> <span class="nf">step_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;operations/step?plan_id=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_id</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">delete_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;plans/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
@@ -433,6 +443,9 @@
 <span class="sd">    Establishes a connection between a session object and an Aquarium model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aqhttp&quot;</span><span class="p">,</span> <span class="s2">&quot;session&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;__dict__&quot;</span><span class="p">]</span>
+    <span class="n">MERGE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;methods&quot;</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
@@ -444,13 +457,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span>
 
+<div class="viewcode-block" id="ModelInterface._prepost_query_hook"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface._prepost_query_hook">[docs]</a>    <span class="k">def</span> <span class="nf">_prepost_query_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method for modifying the query before posting&quot;&quot;&quot;</span>
+        <span class="n">additional_query</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MERGE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+                <span class="n">additional_query</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">query</span></div>
+
 <div class="viewcode-block" id="ModelInterface._post_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface._post_json">[docs]</a>    <span class="k">def</span> <span class="nf">_post_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Posts a json request to session for this interface.</span>
 <span class="sd">        Attaches raw json and this session instance to the models it retrieves.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">}</span>
-        <span class="n">data_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_methods</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepost_query_hook</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
         <span class="n">data_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -487,13 +509,6 @@
             <span class="k">raise</span> <span class="n">err</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_merge_methods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;methods&#39;</span><span class="p">):</span>
-            <span class="n">new_query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-            <span class="n">new_query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;methods&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">methods</span><span class="p">})</span>
-            <span class="k">return</span> <span class="n">new_query</span>
-        <span class="k">return</span> <span class="n">query</span>
-
 <div class="viewcode-block" id="ModelInterface.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds model by id</span>
@@ -528,58 +543,92 @@
             <span class="k">return</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="ModelInterface.all"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelInterface.all"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds all models</span>
+
+<span class="sd">        :param rest:</span>
+<span class="sd">        :type rest:</span>
+<span class="sd">        :param opts: additional options (&quot;offset&quot;, &quot;limit&quot;, &quot;reverse&quot;, etc.)</span>
+<span class="sd">        :type opts: dict</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">rest</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rest</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">addopts</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;opts&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span>
+        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">addopts</span><span class="p">)</span>
         <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
         <span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_query</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="n">rest</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelInterface.where"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelInterface.where"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds models based on some criteria</span>
+<span class="sd">        Performs a query for models</span>
+
+<span class="sd">        :param criteria: query to find models</span>
+<span class="sd">        :type criteria: dict</span>
+<span class="sd">        :param methods: server side methods to implement</span>
+<span class="sd">        :type methods: list</span>
+<span class="sd">        :param opts: additional options (&quot;offset&quot;, &quot;limit&quot;, &quot;reverse&quot;, etc.)</span>
+<span class="sd">        :type opts: dict</span>
+<span class="sd">        :return: list of models</span>
+<span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">addopts</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;opts&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span>
+        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">addopts</span><span class="p">)</span>
         <span class="n">rest</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">methods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rest</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;methods&quot;</span><span class="p">:</span> <span class="n">methods</span><span class="p">}</span>
-        <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
         <span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_query</span><span class="p">(</span><span class="s2">&quot;where&quot;</span><span class="p">,</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">rest</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelInterface.last"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.last">[docs]</a>    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">query</span><span class="p">):</span>
+    <span class="c1"># TODO: Refactor &#39;last&#39; so query is an argument, not part of kwargs</span>
+<div class="viewcode-block" id="ModelInterface.last"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.last">[docs]</a>    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the last added models</span>
 
-<span class="sd">        :param num: number of models to return</span>
+<span class="sd">        :param num: number of models to return. If not provided, assumes 1</span>
 <span class="sd">        :type num: int</span>
-<span class="sd">        :return: models</span>
+<span class="sd">        :param query: additional query to find models</span>
+<span class="sd">        :type query: dict</span>
+<span class="sd">        :param opts: additional options (&quot;offset&quot;, &quot;limit&quot;, &quot;reverse&quot;, etc.)</span>
+<span class="sd">        :type opts: dict</span>
+<span class="sd">        :return: list of models</span>
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">num</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">num</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">num</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelInterface.first"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.first">[docs]</a>    <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">query</span><span class="p">):</span>
+
+    <span class="c1"># TODO: Refactor &#39;first&#39; so query is an argument, not part of kwargs</span>
+<div class="viewcode-block" id="ModelInterface.first"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.first">[docs]</a>    <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the first added models</span>
 
-<span class="sd">        :param num: number of models to return</span>
+<span class="sd">        :param num: number of models to return. If not provided, assumes 1</span>
 <span class="sd">        :type num: int</span>
-<span class="sd">        :return: models</span>
+<span class="sd">        :param query: additional query to find models</span>
+<span class="sd">        :type query: dict</span>
+<span class="sd">        :param opts: additional options (&quot;offset&quot;, &quot;limit&quot;, &quot;reverse&quot;, etc.)</span>
+<span class="sd">        :type opts: dict</span>
+<span class="sd">        :return: list of models</span>
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">num</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">num</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">num</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelInterface.one"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.one">[docs]</a>    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">offset</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">query</span><span class="p">):</span>
+    <span class="c1"># TODO: Refactor &#39;one&#39; so query is an argument, not part of kwargs</span>
+<div class="viewcode-block" id="ModelInterface.one"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.one">[docs]</a>    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return one model. Returns the last model by default. Returns None if no model is found.</span>
 
@@ -588,10 +637,7 @@
 <span class="sd">        :return: model</span>
 <span class="sd">        :rtype: ModelBase</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="n">offset</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="ow">not</span> <span class="n">first</span><span class="p">})</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">)</span></div>
 
     <span class="c1"># TODO: implement &#39;patch&#39; or &#39;update&#39;? Would this be too dangerous?</span>
     <span class="c1"># def patch(self, model_id, json_data):</span>
@@ -629,7 +675,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
