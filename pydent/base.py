@@ -331,7 +331,7 @@ class ModelBase(SchemaModel):
                 else:
                     setattr(self, relation.ref, None)
 
-    def deepcopy(self, keep=None):
+    def copy(self, keep=None):
         """
         Provides a deepcopy of the model, but annonymizes the primary and global keys unless
         class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
@@ -392,7 +392,7 @@ class ModelBase(SchemaModel):
         return memo
 
     def __copy__(self):
-        return self.deepcopy()
+        return self.copy()
 
     #     return cp
     # def patch(self, json_data):
