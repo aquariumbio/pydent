@@ -16,7 +16,8 @@ install_requires = [
     'requests',
     'tqdm==4.23.4',
     'networkx',
-    'pandas'
+    'pandas',
+    'nest_asyncio'
 ]
 
 

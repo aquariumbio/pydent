@@ -8,7 +8,7 @@ init:
 
 
 test:
-	pipenv run pytest
+	pipenv run python -m pytest
 
 
 pylint:
