@@ -56,14 +56,14 @@ class DynamicSchema(metaclass=SchemaRegistry):
                 setattr(instance, k, v)
             except AttributeError as e:
                 raise e
-                raise AttributeError("can't set attribute '{key}' (accessor '{objtype}.{key}' is a {accessor} type) for '{objtype}'"
-                                     " because:\n{e}"
-                .format(
-                    key=k,
-                    objtype=instance.__class__,
-                    accessor=instance.__class__.__dict__.get(k, None),
-                    e="{}: {}".format(e.__class__.__name__, e)
-                )) from e
+                # raise AttributeError("can't set attribute '{key}' (accessor '{objtype}.{key}' is a {accessor} type) for '{objtype}'"
+                #                      " because:\n{e}"
+                # .format(
+                #     key=k,
+                #     objtype=instance.__class__,
+                #     accessor=instance.__class__.__dict__.get(k, None),
+                #     e="{}: {}".format(e.__class__.__name__, e)
+                # )) from e
 
     @classmethod
     def validate_callbacks(cls):
