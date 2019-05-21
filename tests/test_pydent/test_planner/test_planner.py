@@ -2,11 +2,12 @@ import pytest
 import json
 from pydent.planner import Planner
 import dill
-
+import os
 
 @pytest.fixture(scope='function')
 def fake_planner(fake_session):
-    with open('fromaq.json', 'r') as f:
+    here = os.path.abspath(os.path.dirname(__file__))
+    with open(os.path.join(here, 'fromaq.json'), 'r') as f:
         plan_json = json.load(f)
 
     fake_plan = fake_session.Plan.load(plan_json)
