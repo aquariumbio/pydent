@@ -513,6 +513,3 @@ class TestRelationship(object):
 
         assert len(author.publishers) == 3
         assert isinstance(author.publishers[0], Publisher)
-
-    def test_accessing_list_relationshipsI(self, base):
-        raise NotImplemented("Implement this test.")

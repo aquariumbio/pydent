@@ -1,6 +1,6 @@
 import pytest
 from pydent.marshaller.base import add_schema
-from pydent.marshaller.fields import Callback, Relationship
+from pydent.marshaller.fields import Callback, Relationship, Field
 from pydent.marshaller.exceptions import ModelValidationError
 from uuid import uuid4
 
@@ -117,8 +117,6 @@ class TestCallbackAccess:
         assert model.field1 == 2*8*11
         model.field1 = 5
         assert model.field1 == 5
-
-
 
     def test_wrong_nested_model_raises_error(self, base):
         with pytest.raises(ModelValidationError):

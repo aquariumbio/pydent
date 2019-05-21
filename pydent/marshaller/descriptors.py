@@ -187,6 +187,7 @@ class CallbackAccessor(MarshallingAccessor):
         getattr(obj, self.accessor)[self.name] = self.field.serialize(obj, val)
 
 
+# TODO: fix attribute access bug
 class RelationshipAccessor(CallbackAccessor):
     """
     The descriptor for a :class:`pydent.marshaller.fields.Relationship` field

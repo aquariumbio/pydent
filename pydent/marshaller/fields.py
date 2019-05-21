@@ -72,13 +72,15 @@ class Field(FieldABC):
     def _serialize(self, owner, data):
         return data
 
-    # TODO: return default
     def deserialize(self, owner, data):
         if data is None:
             if not self.allow_none:
                 raise AllowNoneFieldValidationError("None is not allowed for field '{}'".format(self.data_key))
             return None
         if self.many:
+            # TODO: This if statement patches a bug in which accessing many attibutes returned different lists
+            if data == []:
+                return data
             return [self._deserialize(owner, d) for d in data]
         return self._deserialize(owner, data)
 
