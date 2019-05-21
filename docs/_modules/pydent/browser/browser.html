@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.browser.browser &#8212; Trident 1.0.0a1 documentation</title>
+    <title>pydent.browser.browser &#8212; Trident 1.0.0a2 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
 <div>
 
 </div>
@@ -71,8 +71,8 @@
     
       <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../browsing.html">Model browsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
@@ -127,7 +127,7 @@
 <span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
 <span class="c1"># TODO: browser documentation</span>
 <span class="c1"># TODO: examples in sphinx</span>
-
+<span class="c1"># TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)</span>
 
 <div class="viewcode-block" id="BrowserException"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.browser.browser.html#pydent.browser.browser.BrowserException">[docs]</a><span class="k">class</span> <span class="nc">BrowserException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generic browser exception&quot;&quot;&quot;</span></div>
@@ -195,42 +195,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model_list_cache</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_list</span><span class="p">[:]</span>
         <span class="k">return</span> <span class="n">model_list</span>
 
-    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">model_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">model_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">sample_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="n">sample_type</span><span class="p">,</span> <span class="s2">&quot;SampleType&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">model_class</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">(</span><span class="o">**</span><span class="n">query</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_model_cache_from_list</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="p">[</span><span class="n">model</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">model_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">model_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">sample_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="n">sample_type</span><span class="p">,</span> <span class="s2">&quot;SampleType&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">model_class</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="o">**</span><span class="n">query</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_model_cache_from_list</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">models</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">model_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">model_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">sample_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="n">sample_type</span><span class="p">,</span> <span class="s2">&quot;SampleType&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">model_class</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="o">**</span><span class="n">query</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_model_cache_from_list</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">models</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">model_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">model_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cache</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_find</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">model_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">model_class</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
-
 <div class="viewcode-block" id="Browser.where"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.browser.browser.html#pydent.browser.browser.Browser.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform a &#39;where&#39; query. If models are found in the browser cache, those are returned,</span>
@@ -249,8 +213,45 @@
             <span class="n">sample_type_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="n">sample_type</span><span class="p">,</span> <span class="s1">&#39;SampleType&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
             <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;sample_type_id&quot;</span><span class="p">:</span> <span class="n">sample_type_id</span><span class="p">})</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cache</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_where</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="n">primary_key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">model_class</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="n">primary_key</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">model_class</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__query_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">model_class</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">as_single</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">model_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span>
+        <span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">sample_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;sample_type_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="n">sample_type</span><span class="p">,</span> <span class="s1">&#39;SampleType&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+        <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">model_class</span><span class="p">)</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">as_single</span><span class="p">:</span>
+            <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">models</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_model_cache_from_list</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">models</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_helper</span><span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">model_class</span><span class="p">,</span> <span class="n">sample_type</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">,</span> <span class="n">as_single</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">models</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_helper</span><span class="p">(</span><span class="s1">&#39;last&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">model_class</span><span class="p">,</span> <span class="n">sample_type</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_model_cache_from_list</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">models</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_helper</span><span class="p">(</span><span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">model_class</span><span class="p">,</span> <span class="n">sample_type</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_model_cache_from_list</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">models</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">model_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_find</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">model_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">model_class</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Browser.find_by_name"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.browser.browser.html#pydent.browser.browser.Browser.find_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -352,7 +353,7 @@
     <span class="c1"># TODO: support unsaved models as well</span>
     <span class="k">def</span> <span class="nf">cached_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_class</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_where</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">})</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_where</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">},</span> <span class="n">model_class</span><span class="p">)</span>
         <span class="n">cached_models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">found_model</span> <span class="o">=</span> <span class="n">cached_models</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">found_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -363,7 +364,7 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_model_cache_helper</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="p">{</span><span class="n">found_model</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">found_model</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">cached_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cached_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">[]</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="n">cached_models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{})</span>
@@ -1109,7 +1110,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

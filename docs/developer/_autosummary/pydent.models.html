@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.models &#8212; Trident 1.0.0a1 documentation</title>
+    <title>pydent.models &#8212; Trident 1.0.0a2 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
 <div>
 
 </div>
@@ -79,8 +79,8 @@
     
       <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../browsing.html">Model browsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../planning.html">Experiment Planning</a></li>
@@ -328,7 +328,8 @@ class SampleType(Base):</p>
 <dl class="method">
 <dt id="pydent.models.Account.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -376,13 +377,20 @@ class SampleType(Base):</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -558,7 +566,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.AllowableFieldType.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -606,13 +615,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -788,7 +804,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Budget.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -836,13 +853,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -1018,7 +1042,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Code.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1066,13 +1091,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -1248,7 +1280,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Collection.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1354,13 +1387,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -1549,7 +1589,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.DataAssociation.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1597,13 +1638,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -1779,7 +1827,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.FieldType.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1827,13 +1876,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -2049,7 +2105,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.FieldValue.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2109,13 +2166,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -2323,7 +2387,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Group.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2371,13 +2436,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -2553,7 +2625,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Invoice.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2601,13 +2674,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -2784,7 +2864,8 @@ An Item is a physical object in the lab.</p>
 <dl class="method">
 <dt id="pydent.models.Item.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2906,13 +2987,20 @@ returns None.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -3108,7 +3196,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Job.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3156,13 +3245,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -3338,7 +3434,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.JobAssociation.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3386,13 +3483,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -3568,7 +3672,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Library.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3622,13 +3727,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -3803,7 +3915,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Membership.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3851,13 +3964,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -4033,7 +4153,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.ObjectType.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4081,13 +4202,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -4357,7 +4485,8 @@ item/sample/container must be saved.</p>
 <dl class="method">
 <dt id="pydent.models.Operation.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4463,13 +4592,20 @@ item/sample/container must be saved.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -4869,7 +5005,8 @@ Aquarium.</p>
 <dl class="method">
 <dt id="pydent.models.OperationType.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4917,13 +5054,20 @@ Aquarium.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -5107,7 +5251,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.PartAssociation.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5155,13 +5300,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -5373,7 +5525,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Plan.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5479,13 +5632,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -5807,7 +5967,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.PlanAssociation.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5855,13 +6016,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -6069,7 +6237,8 @@ then the value will be a list of FieldValues (or empty list). Otherwise the valu
 <dl class="method">
 <dt id="pydent.models.Sample.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -6317,7 +6486,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.SampleType.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -6365,13 +6535,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -6622,7 +6799,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Upload.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -6695,13 +6873,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -6899,7 +7084,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.User.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -6947,13 +7133,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -7129,7 +7322,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.UserBudgetAssociation.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -7177,13 +7371,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -7359,7 +7560,8 @@ find models in model relationships.</p>
 <dl class="method">
 <dt id="pydent.models.Wire.anonymize">
 <code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.anonymize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -7407,13 +7609,20 @@ find models in model relationships.</p>
 class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
 found in list of ‘keep’</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">copied model</td>
 </tr>
 </tbody>
 </table>
@@ -7580,7 +7789,7 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
