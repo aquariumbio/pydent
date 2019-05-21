@@ -4,33 +4,24 @@ from pydent.models import Collection, PartAssociation
 
 
 @pytest.fixture
-def example_collection(session, scope='module'):
+def example_part_association(session):
     """
     this is a 96 well plate on Nursery (9/19/2018)
     """
-    collections = session.Collection.where({'id': 389073})
-    assert len(collections) == 1
-    collection = next(iter(collections))
-    assert collection
-    return collection
+    part_association = session.PartAssociation.one()
+    return part_association
 
 
 @pytest.fixture
-def ex_part_associations(session, example_collection, scope='module'):
-    collection = example_collection
-    part_associations = session.PartAssociation.where(
-        {'collection_id': collection.id}
-    )
-    assert part_associations
-    assert len(part_associations) > 0
-    return part_associations
+def example_collection(session, example_part_association):
+    return example_part_association.collection
 
 
 class TestCollection:
 
-    def test_parts(self, session, example_collection, ex_part_associations):
+    def test_parts(self, session, example_collection):
         collection = example_collection
-        part_associations = ex_part_associations
+        part_associations = collection.part_associations
 
         expected_part = next(iter([
             assoc.part for assoc in part_associations
@@ -44,11 +35,12 @@ class TestCollection:
         collection = example_collection
         assert collection.dimensions
         row, col = collection.dimensions
-        assert row == 8 and col == 12
+        assert row
+        assert col
 
-    def test_matrix(self, session, example_collection, ex_part_associations):
+    def test_matrix(self, session, example_collection):
         collection = example_collection
-        part_associations = ex_part_associations
+        part_associations = collection.part_associations
         num_row, num_col = collection.dimensions
 
         expected_matrix = list()
