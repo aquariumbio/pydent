@@ -179,11 +179,11 @@ class DataAssociatorMixin:
                 das.append(da)
         return das
 
+    # TODO: DataAssociation - do we really want to have this return either a list or single value? How are people using this?
     def get(self, key):
         val = []
-        for da in self.data_associations:
-            if da.key == key:
-                val.append(da.value)
+        for da in self.get_data_associations(key):
+            val.append(da.value)
         if len(val) == 1:
             return val[0]
         elif len(val) == 0:

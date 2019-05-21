@@ -1,11 +1,12 @@
 from pydent.marshaller import add_schema
 from pydent.relationships import HasMany
-from pydent import ModelBase, pprint
-from pydent.models import (AllowableFieldType, FieldType,
+from pydent import ModelBase
+from pydent.models import (AllowableFieldType,
                            ObjectType, OperationType, SampleType)
 
 
 def test_attribute_missing(fake_session):
+
     @add_schema
     class Author(ModelBase):
         fields = dict(books=HasMany("Book", ref="book_id", callback="foo"))
@@ -16,7 +17,7 @@ def test_attribute_missing(fake_session):
             )
 
         def foo(self, *args):
-            print(args)
+            return [1,2,3]
 
     class Book(ModelBase):
         pass
