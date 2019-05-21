@@ -299,7 +299,6 @@ class UtilityInterface(SessionInterface):
         result = self.aqhttp.post("json/save", json_data=data)
         data_association = model_inst.session.DataAssociation.find(
             result['id'])
-        data_associations = model_inst.data_associations
         model_inst.data_associations.append(data_association)
         return data_association
 

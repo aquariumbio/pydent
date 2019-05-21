@@ -297,9 +297,11 @@ class Callback(Field):
             cache = self.cache
         if cache:
             self.cache_result(owner, val)
+        vid = id(val)
         return val
 
     def cache_result(self, owner, val):
+        vid = id(val)
         setattr(owner, self.data_key, val)
 
     def _deserialize(self, owner, data):
