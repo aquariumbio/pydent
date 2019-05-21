@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.interfaces &#8212; Trident 1.0.0a1 documentation</title>
+    <title>pydent.interfaces &#8212; Trident 1.0.0a2 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.exceptions.html" title="pydent.exceptions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
 <div>
 
 </div>
@@ -79,8 +79,8 @@
     
       <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../browsing.html">Model browsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../planning.html">Experiment Planning</a></li>
@@ -267,7 +267,7 @@ Attaches raw json and this session instance to the models it retrieves.</p>
 
 <dl class="method">
 <dt id="pydent.interfaces.ModelInterface.last">
-<code class="descname">last</code><span class="sig-paren">(</span><em>num=None</em>, <em>query=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.last" title="Permalink to this definition">¶</a></dt>
+<code class="descname">last</code><span class="sig-paren">(</span><em>num=None</em>, <em>query=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.last" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the last added models</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -312,7 +312,7 @@ If data is a list, will return a list of model instances.</p>
 
 <dl class="method">
 <dt id="pydent.interfaces.ModelInterface.one">
-<code class="descname">one</code><span class="sig-paren">(</span><em>first=False</em>, <em>query=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.one" title="Permalink to this definition">¶</a></dt>
+<code class="descname">one</code><span class="sig-paren">(</span><em>query=None</em>, <em>first=False</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.one" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return one model. Returns the last model by default. Returns None if no model is found.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -330,7 +330,7 @@ If data is a list, will return a list of model instances.</p>
 
 <dl class="method">
 <dt id="pydent.interfaces.ModelInterface.where">
-<code class="descname">where</code><span class="sig-paren">(</span><em>criteria</em>, <em>methods=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.where" title="Permalink to this definition">¶</a></dt>
+<code class="descname">where</code><span class="sig-paren">(</span><em>criteria</em>, <em>methods=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.where" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a query for models</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -517,7 +517,7 @@ http requests.</p>
         <li class="right" >
           <a href="pydent.exceptions.html" title="pydent.exceptions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>
