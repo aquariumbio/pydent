@@ -80,7 +80,7 @@ class Planner(logger.Loggable, object):
             # initialize with session
             self.session = session_or_plan
             self._browser = Browser(self.session)
-            if plan_id is None:
+            if plan_id is not None:
                 # load an existing plan
                 self.plan = self._browser.find(plan_id, 'Plan')
                 if self.plan is None:
