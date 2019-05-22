@@ -295,6 +295,12 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
 
         return next(iter(parts))
 
+    def as_item(self):
+        """
+        Returns the Item object with the ID of this Collection
+        """
+        return self.session.Item.find(self.id)
+
 
 @add_schema
 class DataAssociation(ModelBase):
