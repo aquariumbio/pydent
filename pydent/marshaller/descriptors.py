@@ -179,7 +179,6 @@ class CallbackAccessor(MarshallingAccessor):
         val = self.get_val(obj)
         if val is self.HOLDER:
             val = self.field.fullfill(obj)
-        vid = id(val)
         return val
 
     def __set__(self, obj, val):
@@ -195,8 +194,5 @@ class RelationshipAccessor(CallbackAccessor):
     def __set__(self, obj, val):
         deserialized = self.field.deserialize(obj, val)
         serialized = self.field.serialize(obj, deserialized)
-        vid1 = id(val)
-        vid2 = id(deserialized)
-        vid3 = id(serialized)
         getattr(obj, self.deserialized_accessor)[self.name] = deserialized
         getattr(obj, self.accessor)[self.name] = serialized
