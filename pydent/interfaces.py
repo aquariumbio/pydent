@@ -328,8 +328,8 @@ class ModelInterface(SessionInterface):
     __slots__ = ["aqhttp", "session", "model", "__dict__"]
     MERGE = ["methods"]
     DEFAULT_OFFSET = 0
-    DEFAULT_LIMIT = -1
     DEFAULT_REVERSE = False
+    DEFAULT_LIMIT = 0
 
     def __init__(self, model_name, aqhttp, session):
         super().__init__(aqhttp, session)
@@ -444,7 +444,7 @@ class ModelInterface(SessionInterface):
             rest = {}
         addopts = opts.pop('opts', dict())
         opts.update(addopts)
-        options = {"offset": self.DEFAULT_OFFSET, "limit": self.DEFAULT_LIMIT, "reverse": self.DEFAULT_REVERSE}
+        options = {"offset": self.DEFAULT_OFFSET, "reverse": self.DEFAULT_REVERSE}
         options.update(opts)
         return self.array_query("all", [], rest, options)
 
@@ -465,9 +465,7 @@ class ModelInterface(SessionInterface):
         rest = {}
         if methods is not None:
             rest = {"methods": methods}
-        options = {"offset": self.DEFAULT_OFFSET, "limit": self.DEFAULT_LIMIT, "reverse": self.DEFAULT_REVERSE}
-        options.update(opts)
-        return self.array_query("where", criteria, rest, options)
+        return self.array_query("where", criteria, rest, opts)
 
     # TODO: Refactor 'last' so query is an argument, not part of kwargs
     def last(self, num=None, query=None, opts=None):
@@ -489,7 +487,7 @@ class ModelInterface(SessionInterface):
             num = 1
         if opts is None:
             opts = dict()
-        opts.update(dict(limit=num, reverse=True, offset=self.DEFAULT_OFFSET))
+        opts.update(dict(limit=num, reverse=True))
         return self.where(query, opts=opts)
 
 
@@ -526,7 +524,6 @@ class ModelInterface(SessionInterface):
         :return: model
         :rtype: ModelBase
         """
-        res = None
         if not first:
             res = self.last(1, query=query, opts=opts)
         else:

@@ -255,7 +255,9 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
     """A Collection model"""
     fields = dict(
         object_type=HasOne("ObjectType"),
-        data_associations=HasManyGeneric("DataAssociation"),
+        data_associations=HasManyGeneric("DataAssociation", additional_args={
+            "parent_class": "Collection"
+        }),
         part_associations=HasMany("PartAssociation", "Collection"),
         parts=HasManyThrough("Item", "PartAssociation", ref="part_id")
     )
@@ -676,7 +678,9 @@ class Item(DataAssociatorMixin, ModelBase):
     fields = dict(
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
-        data_associations=HasManyGeneric("DataAssociation"),
+        data_associations=HasManyGeneric("DataAssociation", additional_args={
+            "parent_class": "Item"
+        }),
         data=Raw(),
         ignore=("locator_id",),
         part_associations=HasMany("PartAssociation", ref="part_id"),  # TODO: add to change log
@@ -861,7 +865,9 @@ class Operation(DataAssociatorMixin, ModelBase):
         field_values=HasMany("FieldValue",
                              ref="parent_id",
                              additional_args={"parent_class": "Operation"}),
-        data_associations=HasManyGeneric("DataAssociation"),
+        data_associations=HasManyGeneric("DataAssociation", additional_args={
+            'parent_class': 'Operation'
+        }),
         operation_type=HasOne("OperationType"),
         job_associations=HasMany("JobAssociation", "Operation"),
         jobs=HasManyThrough("Job", "JobAssociation"),
@@ -1358,7 +1364,9 @@ class Plan(DataAssociatorMixin, ModelBase):
     A Plan model
     """
     fields = dict(
-        data_associations=HasManyGeneric("DataAssociation"),
+        data_associations=HasManyGeneric("DataAssociation", additional_args={
+            "parent_class": "Plan"
+        }),
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
         wires=Many("Wire", callback="get_wires"),
@@ -1438,6 +1446,7 @@ class Plan(DataAssociatorMixin, ModelBase):
                         wires[wire.id] = wire
         return sorted(wires.values(), key=lambda w: w.id)
 
+    # TODO: plan.create should be implicit in 'save'
     def create(self):
         """
         Creates the Plan on the Aquarium server.

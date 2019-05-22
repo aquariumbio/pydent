@@ -167,6 +167,7 @@ class ModelBase(SchemaModel):
             model = cls._set_data(data, obj)
         return model
 
+    # TODO: rename reload to something else, implement 'refresh' method and associated tests
     def reload(self, data):
         """
         Reload model attributes from new data

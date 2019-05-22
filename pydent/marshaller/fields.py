@@ -79,9 +79,11 @@ class Field(FieldABC):
             return None
         if self.many:
             # TODO: This if statement patches a bug in which accessing many attibutes returned different lists
-            if data == []:
-                return data
-            return [self._deserialize(owner, d) for d in data]
+            # return [self._deserialize(owner, d) for d in data]
+            # deserialize in place
+            for i, x in enumerate(data):
+                data[i] = self._deserialize(owner, x)
+            return data
         return self._deserialize(owner, data)
 
     def serialize(self, owner, data):
@@ -299,11 +301,9 @@ class Callback(Field):
             cache = self.cache
         if cache:
             self.cache_result(owner, val)
-        vid = id(val)
         return val
 
     def cache_result(self, owner, val):
-        vid = id(val)
         setattr(owner, self.data_key, val)
 
     def _deserialize(self, owner, data):
