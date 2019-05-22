@@ -332,9 +332,9 @@ class ModelInterface(SessionInterface):
 
     __slots__ = ["aqhttp", "session", "model", "__dict__"]
     MERGE = ["methods"]
-    DEFAULT_OFFSET = 0
+    DEFAULT_OFFSET = -1
     DEFAULT_REVERSE = False
-    DEFAULT_LIMIT = 0
+    DEFAULT_LIMIT = -1
 
     def __init__(self, model_name, aqhttp, session):
         super().__init__(aqhttp, session)
@@ -423,6 +423,8 @@ class ModelInterface(SessionInterface):
             opts = {}
         options = {"offset": self.DEFAULT_OFFSET, "limit": self.DEFAULT_LIMIT, "reverse": self.DEFAULT_REVERSE}
         options.update(opts)
+        if options.get('limit', None) == 0:
+            return []
         query = {"model": self.model.__name__,
                  "method": method,
                  "arguments": args,
