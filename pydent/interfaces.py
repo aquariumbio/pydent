@@ -327,6 +327,9 @@ class ModelInterface(SessionInterface):
 
     __slots__ = ["aqhttp", "session", "model", "__dict__"]
     MERGE = ["methods"]
+    DEFAULT_OFFSET = 0
+    DEFAULT_LIMIT = -1
+    DEFAULT_REVERSE = False
 
     def __init__(self, model_name, aqhttp, session):
         super().__init__(aqhttp, session)
@@ -413,7 +416,7 @@ class ModelInterface(SessionInterface):
         """
         if opts is None:
             opts = {}
-        options = {"offset": -1, "limit": -1, "reverse": False}
+        options = {"offset": self.DEFAULT_OFFSET, "limit": self.DEFAULT_LIMIT, "reverse": self.DEFAULT_REVERSE}
         options.update(opts)
         query = {"model": self.model.__name__,
                  "method": method,
@@ -441,7 +444,7 @@ class ModelInterface(SessionInterface):
             rest = {}
         addopts = opts.pop('opts', dict())
         opts.update(addopts)
-        options = {"offset": -1, "limit": -1, "reverse": False}
+        options = {"offset": self.DEFAULT_OFFSET, "limit": self.DEFAULT_LIMIT, "reverse": self.DEFAULT_REVERSE}
         options.update(opts)
         return self.array_query("all", [], rest, options)
 
@@ -462,7 +465,7 @@ class ModelInterface(SessionInterface):
         rest = {}
         if methods is not None:
             rest = {"methods": methods}
-        options = {"offset": -1, "limit": -1, "reverse": False}
+        options = {"offset": self.DEFAULT_OFFSET, "limit": self.DEFAULT_LIMIT, "reverse": self.DEFAULT_REVERSE}
         options.update(opts)
         return self.array_query("where", criteria, rest, options)
 
@@ -486,12 +489,12 @@ class ModelInterface(SessionInterface):
             num = 1
         if opts is None:
             opts = dict()
-        opts.update(dict(limit=num, reverse=True))
+        opts.update(dict(limit=num, reverse=True, offset=self.DEFAULT_OFFSET))
         return self.where(query, opts=opts)
 
 
     # TODO: Refactor 'first' so query is an argument, not part of kwargs
-    def first(self, num=None, query=None, **opts):
+    def first(self, num=None, query=None, opts=None):
         """
         Find the first added models
 
