@@ -1,6 +1,8 @@
 from pydent import models
+import pytest
 
 
+@pytest.mark.record('no')
 def test_submit_gibson(session):
 
     # find "Assembly Plasmid" protocol
@@ -62,25 +64,35 @@ def test_submit_gibson(session):
     p.connect_to_session(session)
     p.add_operation(gibson_op)
     p.add_operation(pcr_op)
-    # p.add_operation(gel_op)
+    p.add_operation(gel_op)
     p.add_operation(extract_op)
     p.add_operation(purify_op)
 
     # wires
-    # p.wire(purify_op.output("Fragment"), fv)
-    # p.wire(extract_op.output("Fragment"), purify_op.input("Gel"))
-    # p.wire(gel_op.output("Fragment"), extract_op.input("Fragment"))
-    # p.wire(pcr_op.output("Fragment"), gel_op.input("Fragment"))
-    # p.wire(pcr_op.output("Fragment"), gel_op.input("Fragment"))
+    p.wire(purify_op.output("Fragment"), fv)
+    p.wire(extract_op.output("Fragment"), purify_op.input("Gel"))
+    p.wire(gel_op.output("Fragment"), extract_op.input("Fragment"))
+    p.wire(pcr_op.output("Fragment"), gel_op.input("Fragment"))
+
+    # check wires
+    for w in p.wires:
+        assert getattr(w, 'from')
+        assert getattr(w, 'to')
+        assert w.source
+        assert w.destination
 
     # save the plan
     p.create()
 
+    # check wires
+    for w in p.wires:
+        if not w.from_id:
+            g = 1
+        assert w.from_id
+        assert w.to_id
+
     # estimate the cost
     p.estimate_cost()
-
-    # validate the plan
-    p.validate()
 
     # show the plan
     p.show()
