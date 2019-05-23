@@ -3,6 +3,7 @@ import os
 import pytest
 
 from pydent.models import AquariumModelError
+import functools
 
 here = os.path.dirname(os.path.abspath(__file__))
 dump_location = os.path.join(here, 'yeast_strain_dump.json')
@@ -141,36 +142,90 @@ def test_update_properties(session):
     assert yeast.properties["QC_length"] == 100
 
 
+class TestUpdateFieldValueArrays:
+    """Tests for updating field_values that are arrays."""
+
+    SAMPLE_TYPE_NAME = 'Fragment'
+    FIELD_TYPE_NAME = 'Fragment Mix Array'
+
+    @pytest.fixture(scope='module')
+    def example_sample_type(self, session):
+        sample_type = session.SampleType.find_by_name(self.SAMPLE_TYPE_NAME)
+        assert sample_type
+        return sample_type
+
+
+    @pytest.fixture(scope='function')
+    def example_sample(self, session, example_sample_type):
+        sample = session.Sample.one(query=dict(sample_type_id=example_sample_type.id))
+        assert sample
+        return sample
+
+    @pytest.fixture(scope='module')
+    def get_samples(self, session, example_sample_type):
+        """Returns a function that queries for samples that match the field_value of the FieldValue array specified
+        in the default values above. These samples can be used to set the properties for the tests."""
+        allowable_field_types = example_sample_type.field_type(self.FIELD_TYPE_NAME).allowable_field_types
+        assert allowable_field_types
+        aft = allowable_field_types[0]
+
+        func = functools.partial(session.Sample.last, query=dict(sample_type_id=aft.sample_type_id))
+        return func
+
+    @pytest.mark.parametrize('test_server_changes', [False, True])
+    @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
+    def test_local_changes(self, session, num_field_values, example_sample, get_samples, test_server_changes):
+
+        value_samples = get_samples(num_field_values)
+        assert len(value_samples) == num_field_values
+        example_sample.update_properties({
+            self.FIELD_TYPE_NAME: get_samples(num_field_values)
+        })
+
+        assert len(example_sample.field_value_array(self.FIELD_TYPE_NAME)) == num_field_values
+        assert len(example_sample.properties[self.FIELD_TYPE_NAME]) == num_field_values
+
+        if test_server_changes:
+            example_sample.save()
+
 @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
 def test_update_properties_using_array(session, num_field_values):
-    """Test updating a sample properties array"""
+    """Test updating a sample properties array. Requires a 'Fragment' SampleType in the database with a 'Fragment Mix Array'
+    FieldType."""
 
+    # grab example Fragment
     fragment_type = session.SampleType.find_by_name("Fragment")
-    sample = session.Sample.one(sample_type_id=fragment_type.id)
+    sample = session.Sample.one(query=dict(sample_type_id=fragment_type.id))
 
+    # query an array of additional Fragments
     if num_field_values == 0:
         fragments = []
     else:
-        fragments = session.Sample.last(num_field_values, sample_type_id=fragment_type.id)
+        fragments = session.Sample.last(num_field_values, query=dict(sample_type_id=fragment_type.id))
 
-    # fake_sample.field_value_array
+    # update the sample properties with fragments
     sample.update_properties({
         "Fragment Mix Array": fragments,
         "Length": 1000
     })
 
+    # verify local changes
     assert len(sample.field_value_array("Fragment Mix Array")) == len(fragments)
     assert set([s.id for s in sample.properties['Fragment Mix Array']]) == set([s.id for s in fragments])
     assert sample.properties["Length"] == 1000
 
-    new_set_fragments = session.Sample.last(10-num_field_values, sample_type_id=fragment_type.id)
+    # verify server changes
+    reloaded = session.Sample.find(sample.id)
+    assert len(reloaded.properties['Fragment Mix Array']) == len(fragments)
 
-    # fake_sample.field_value_array
+    # update the sample properties again
+    new_set_fragments = session.Sample.last(10-num_field_values, query=dict(sample_type_id=fragment_type.id))
     sample.update_properties({
         "Fragment Mix Array": new_set_fragments,
         "Length": 1100
     })
 
+    # verify local changes
     assert len(sample.field_value_array("Fragment Mix Array")) == len(new_set_fragments)
     assert set([s.id for s in sample.properties['Fragment Mix Array']]) == set([s.id for s in new_set_fragments])
     assert sample.properties["Length"] == 1100
