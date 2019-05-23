@@ -405,8 +405,8 @@ class FieldType(FieldMixin, ModelBase):
         """
 
         if not field_value:
-            field_value = self.session.FieldValue.new(
-                name=self.name, role=self.role, field_type=self)
+            self.c = self.session.FieldValue.new(name=self.name, role=self.role, field_type=self)
+            field_value = self.c
         if self.allowable_field_types:
             field_value.allowable_field_type_id = self.allowable_field_types[0].id
             field_value.allowable_field_type = self.allowable_field_types[0]
@@ -493,6 +493,33 @@ class FieldValue(FieldMixin, ModelBase):
     #     if self.sample:
     #         return [aft.sample.name for aft in self.field_type.allowable_field_types]
     #     return []
+
+    def add_incoming_wire(self, wire):
+        """Adds a wire to the list of this FieldValues incoming wires."""
+
+        if not wire.destination.rid == self.rid:
+            raise AquariumModelError("Cannot add wire {} to {}. The wire's destination Fieldvalue" \
+                                     " does not match this FieldValue".format(wire, self))
+        wires = self.incoming_wires
+        if wires is None:
+            wires = []
+        wires.append(wire)
+        self.wires_as_dest = [w for w in wires if w.destination.rid == self.rid]
+        return wire
+
+    def add_outgoing_wire(self, wire):
+        """Adds a wire to the list of this FieldValues outgoing wires."""
+
+        if not wire.source.rid == self.rid:
+            raise AquariumModelError("Cannot add wire {} to {}. The wire's source Fieldvalue" \
+                                     " does not match this FieldValue".format(wire, self))
+
+        wires = self.outgoing_wires
+        if wires is None:
+            wires = []
+        wires.append(wire)
+        self.wires_as_source = [w for w in wires if w.destination.rid == self.rid]
+        return wire
 
     @property
     def outgoing_wires(self):
@@ -637,8 +664,24 @@ class FieldValue(FieldMixin, ModelBase):
         """
         Sets properties from a field_type
         """
+
         self.field_type = field_type
         self.field_type_id = field_type.id
+
+        if self.name:
+            assert self.name == field_type.name
+        else:
+            self.name = field_type.name
+
+        if self.parent_class:
+            assert self.parent_class == field_type.parent_class
+        else:
+            self.parent_class = field_type.parent_class
+
+        if self.role:
+            assert self.role == field_type.role
+        else:
+            self.role = field_type.role
 
     def set_allowable_field_type(self, allowable_field_type):
         self.allowable_field_type = allowable_field_type
@@ -1375,7 +1418,7 @@ class Plan(DataAssociatorMixin, ModelBase):
         }),
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
-        wires=Many("Wire", callback="get_wires"),
+        wires=Many("Wire", callback="_get_wires"),
         layout=JSON(),
         status=Raw(default="planning")
     )
@@ -1423,22 +1466,70 @@ class Plan(DataAssociatorMixin, ModelBase):
         for operation in operations:
             self.add_operation(operation)
 
-    def wire(self, src, dest):
-        wire = Wire(source=src, destination=dest)
-        src.append_to_many("wires_as_source", wire)
-        dest.append_to_many("wires_as_dest", wire)
-        self.append_to_many("wires", wire)
+    def find_wires(self, src, dest):
+        """
+        Retrieves the wire between a source and destination FieldValues
 
-    def add_wires(self, pairs):
+        :param src: source FieldValue
+        :type src: FieldValue
+        :param dest: destination FieldValue
+        :type dest: FieldValue
+        :return: array of wires between src and dest FieldValues (determined by rid)
+        :rtype: array of wires
+        """
+
+        found = []
+        for wire in self.wires:
+            if src.rid == wire.source.rid and dest.rid == wire.destination.rid:
+                found.append(wire)
+        return found
+
+    def add_wire(self, wire, error_if_exists=False):
+        """
+
+        :param wire: Adds a wire to the plan. If the wire already exists,
+        :type wire: Wire
+        :param error_if_exists: Raise an error if the Wire already exists in the plan.
+        :type error_if_exists: boolean
+        :return: Newly created wire or existing wire (if exists and error_if_exists == False)
+        :rtype: Wire
+        """
+        existing_wires = self.find_wires(wire.source, wire.destination)
+        if not existing_wires:
+            self.append_to_many('wire', wire)
+            return wire
+        elif error_if_exists:
+            raise Exception("Cannot wire. Wire already exists between FieldValues {} --> {}".format(wire.source, wire.destination))
+        else:
+            return existing_wires[0]
+
+    def wire(self, src, dest, error_if_exists=False):
+        """
+        Creates a new wire between src and dest FieldValues. Returns the new wire
+        if it does not exist in the plan. If the wire already exists and
+        error_if_exists is True, then the existing wire is returned. Else an exception is raised.
+
+        :param src: source field value (the input of the wire)
+        :type src: FieldValue
+        :param dest: destination field value (the output of the wire)
+        :type dest: FieldValue
+        :param error_if_exists: Raise an error if the Wire already exists in the plan.
+        :type error_if_exists: boolean
+        :return: Newly created wire or existing wire (if exists and error_if_exists == False)
+        :rtype: Wire
+        """
+        wire = self.add_wire(Wire(source=src, destination=dest), error_if_exists=error_if_exists)
+        if not src.outgoing_wires or wire.rid not in [w.rid for w in src.outgoing_wires]:
+            src.add_outgoing_wire(wire)
+        if not dest.incoming_wires or wire not in [w.rid for w in dest.incoming_wires]:
+            dest.add_incoming_wire(wire)
+        return wire
+
+    def add_wires_from_pairs(self, pairs):
         for src, dest in pairs:
             self.wire(src, dest)
 
-    def get_wires(self, *args):
-        return self.all_wires
-
-    # This is not being deserialized properly
-    @property
-    def all_wires(self):
+    def _get_wires(self, *args):
         wires = {}
         if self.operations:
             for operation in self.operations:
@@ -1449,7 +1540,14 @@ class Plan(DataAssociatorMixin, ModelBase):
                     if field_value.incoming_wires:
                         field_value_wires += field_value.incoming_wires
                     for wire in field_value_wires:
-                        wires[wire.id] = wire
+
+                        wire_hash = self._wire_hash(wire)
+                        if wire_hash in wires:
+                            existing = wires[wire_hash]
+                            if existing.rid != wire.rid:
+                                raise Exception("Wire mismatch")
+                        wires[self._wire_hash] = wire
+
         return sorted(wires.values(), key=lambda w: w.id)
 
     # TODO: plan.create should be implicit in 'save'
@@ -1499,6 +1597,38 @@ class Plan(DataAssociatorMixin, ModelBase):
 
         return model_interface
 
+    def validate(self, raise_error=True):
+        """
+        Validates the plan.
+
+        :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.
+        :type raise_error: boolean
+        :return: list of error messages
+        :rtype: array
+        """
+        errors = []
+
+        field_values = []
+        for op in self.operations:
+            for fv in op.field_values:
+                field_values.append(fv)
+        fv_rids = [fv.rid for fv in field_values]
+
+        for wire in self.wires:
+            for _fvtype in ['source', 'destination']:
+                field_value = getattr(wire, _fvtype)
+                if field_value.rid not in fv_rids:
+                    msg = "The FieldValue of a wire Wire(rid={}).{} is missing from the list" \
+                          " of FieldValues in the plan. Did you forget to add an operation to "\
+                          " the plan?".format(
+                        wire.rid, _fvtype,
+                    )
+                    errors.append(msg)
+        if raise_error and errors:
+            msg = '\n'.join(["({}) - {}".format(i, e) for i, e in  enumerate(errors)])
+            raise AquariumModelError("Plan {} had the following errors:\n{}".format(msg))
+        return errors
+
     def to_save_json(self):
         """
         Returns the json representation of the plan for saving and creating
@@ -1507,32 +1637,48 @@ class Plan(DataAssociatorMixin, ModelBase):
         :return: JSON
         :rtype: dict
         """
+        self.validate(raise_error=True)
+
         json_data = self.dump(include={
             'operations': {
                 'field_values': {},
-            },
-            'wires': {"source", "destination"}
+            }
         })
-        # del json_data['layout']
+
+        # remove redundant wires
+        wire_dict = {}
+        for wire in self.wires:
+            wire_data = wire.to_save_json()
+            attributes = [
+                wire_data['from_id'],
+                wire_data['from']['rid'],
+                wire_data['to_id'],
+                wire_data['to']['rid']
+            ]
+            wire_hash = "*&".join([str(a) for a in attributes])
+            wire_dict[wire_hash] = wire_data
+        json_data['wires'] = list(wire_dict.values())
+
+        # validate
+        fv_rids = []
+        for op in json_data['operations']:
+            for fv in op['field_values']:
+                fv_rids.append(fv['rid'])
+
+        warnings = []
+        for wire_data in json_data['wires']:
+            if not wire_data['from']['rid'] in fv_rids:
+                warnings.append('rid {} is missing!'.format(wire_data['from']['rid']))
+            if not wire_data['to']['rid'] in fv_rids:
+
+                warnings.append('rid {} is missing!'.format(wire_data['to']['rid']))
+        if warnings:
+            print(warnings)
+
         if json_data['layout'] is not None:
             json_data['layout'] = json.loads(json_data['layout'])
         else:
             del json_data['layout']
-
-        for wire in self.wires:
-            wire.dump()
-
-        # if 'layout' in json_data:
-        #     if json_data['layout']['wires'] is None:
-        #         json_data['layout']['wires'] = []
-        #     if json_data['layout']['input'] is None:
-        #         json_data['layout']['input'] = []
-        #     if json_data['layout']['output'] is None:
-        #         json_data['layout']['output'] = []
-        #     if json_data['layout']['children'] is None:
-        #         json_data['layout']['children'] = []
-        #     if json_data['layout']['text_boxes'] is None:
-        #         json_data['layout']['text_boxes'] = []
 
         return json_data
 
@@ -1683,6 +1829,16 @@ class Sample(ModelBase):
         return "{}: {}".format(self.id, self.name)
 
     def field_value(self, name):
+        """
+        Returns the :class:`FieldValue` associated with the sample by its name. If the there is more than one FieldValue
+        with the same name (as in field_value arrays), it will return the first FieldValue.
+        See the :method:`Sample.field_value_array` method.
+
+        :param name: name of the field value
+        :type name: str
+        :return: the field value
+        :rtype: FieldValue
+        """
         for field_value in self.field_values:
             if field_value.name == name:
                 self._get_field_type(field_value)
@@ -1690,6 +1846,16 @@ class Sample(ModelBase):
         return None
 
     def field_value_array(self, name):
+        """
+        Returns an array of :class:`FieldValue` associated with the sample by their name.
+
+        See the :method:`Sample.field_value` if getting just a single FieldValue
+
+        :param name: name of FieldValue
+        :type name: array
+        :return: array of field values
+        :rtype: array
+        """
         field_values = []
         for field_value in self.field_values:
             if field_value.name == name:
@@ -2057,7 +2223,9 @@ class Upload(ModelBase):
 
     def download(self, outdir=None, filename=None, overwrite=True):
         """
-        Downloads the uploaded file
+        Downloads the uploaded file to the specified output directory. If
+        no output directory is specified, the file will be downloaded to the
+        current directory.
 
         :param outdir: path of directory of output file (default is current directory)
         :param outfile: filename of output file (defaults to upload_filename)
@@ -2075,10 +2243,12 @@ class Upload(ModelBase):
 
     @property
     def data(self):
+        """Return the data associated with the upload."""
         result = requests.get(self.temp_url())
         return result.content
 
     def save(self):
+        """Save the upload to the server."""
         return self.session.utils.create_upload(self)
 
 
@@ -2120,21 +2290,67 @@ class Wire(ModelBase):
     }
 
     def __init__(self, source=None, destination=None):
-        super().__init__(
-            source=source,
-            destination=destination,
-            active=True
-        )
+
+        if hasattr(source, 'id'):
+            from_id = source.id
+        else:
+            from_id = None
+
+        if hasattr(destination, 'id'):
+            to_id = destination.id
+        else:
+            to_id = None
+        super().__init__(**{
+            "from": source,
+            "from_id": from_id,
+            "to": destination,
+            "to_id": to_id
+        }, active=True)
+
+    @staticmethod
+    def _wire_hash(wire):
+        return "{}_{}".format(wire.source.rid, wire.destination.rid)
+
+    @classmethod
+    def _create_wire_hash_dict(cls, list_of_wires):
+        wire_hash_dict = dict()
+        for wire in list_of_wires:
+            hsh = cls._wire_hash(wire)
+            wire_hash_dict.setdefault(hsh, list()).append(wire)
+        return wire_hash_dict
 
     def to_save_json(self):
-        return self.dump(include={'source', 'destination'})
+        save_json = {
+            "id": self.id,
+            "from_id": self.source.id,
+            "to_id": self.destination.id,
+            "from": {"rid": self.source.rid},
+            "to": {"rid": self.destination.rid},
+            "active": self.active
+        }
+        return save_json
 
     def delete(self):
         return self.session.utils.delete_wire(self)
 
     def show(self, pre=""):
         """Show the wire nicely"""
-        print(pre + self.source.operation.operation_type.name +
-              ":" + self.source.name +
-              " --> " + self.destination.operation.operation_type.name +
-              ":" + self.destination.name)
+        source = self.source
+        dest = self.destination
+
+        from_op_type_name = 'None'
+        from_name = 'None'
+        if source:
+            from_op_type_name = self.source.operation.operation_type.name
+            from_name = source.name
+
+        to_op_type_name = 'None'
+        to_name = 'None'
+        if dest:
+            to_op_type_name = self.destination.operation.operation_type.name
+            to_name = dest.name
+
+        print(pre + from_op_type_name +
+              ":" + from_name +
+              " --> " + to_op_type_name +
+              ":" + to_name)
