@@ -72,6 +72,16 @@ class UtilityInterface(SessionInterface):
 
     __slots__ = ['aqhttp', 'session']
 
+    def __json_update(self, model, **params):
+        """This update method is fairly dangerous. Be careful!"""
+        data = {"model": {"model": model.__class__.__name__}}
+        data.update(model.dump(**params))
+        return self.aqhttp.post('json/save', json_data=data)
+
+    ##############################
+    # Create
+    ##############################
+
     # TODO: have ability to save new properties
     def create_samples(self, samples):
         json = [s.dump(include={"field_values"}) for s in samples]
@@ -126,20 +136,6 @@ class UtilityInterface(SessionInterface):
         operation_type.reload(result)
         return operation_type
 
-    def estimate_plan_cost(self, plan):
-        """
-        Estimates the plan cost
-        """
-        result = self.aqhttp.post('launcher/estimate', {'id': plan.id})
-        total = 0
-        for operation in plan.operations:
-            for cost in result['costs']:
-                if cost['id'] == operation.id:
-                    operation.cost = cost
-                    total += (cost['labor'] * cost['labor_rate'] +
-                              cost['materials']) * cost['markup_rate']
-        return total
-
     def create_plan(self, plan):
         """
         Saves a plan
@@ -155,7 +151,67 @@ class UtilityInterface(SessionInterface):
         # post_ops = plan.operations
         # for i in range(len(pre_ops)):
         #     vars(pre_ops[i]).update(vars(post_ops[i]))
+        plan.uploaded_data = plan_data
         return plan
+
+    def create_upload(self, upload):
+        files = {
+            'file': upload.file
+        }
+
+        result = self.aqhttp.post(
+            "krill/upload?job={}".format(upload.job_id), files=files)
+        upload.reload(result)
+        return upload
+
+    def create_data_association(self, model_inst, key, value, upload=None):
+        upload_id = None
+        if upload is not None:
+            upload_id = upload.id
+        data = {
+            "model": {
+                "model": "DataAssociation",
+                "record_methods": {},
+                "record_getters": {}
+            },
+            "parent_id": model_inst.id,
+            "key": str(key),
+            "object": json.dumps({str(key): value}),
+            "parent_class": model_inst.__class__.__name__,
+            "upload_id": upload_id
+        }
+        result = self.aqhttp.post("json/save", json_data=data)
+        data_association = model_inst.session.DataAssociation.find(
+            result['id'])
+        if data_association.id not in [da.id for da in model_inst.data_associations]:
+            model_inst.data_associations.append(data_association)
+            return data_association
+        else:
+            for da in model_inst.data_associations:
+                if da.id == data_association.id:
+                    return da
+
+    ##############################
+    # Save/Update
+    ##############################
+
+    # TODO: save methods
+    def save_sample(self, sample):
+        pass
+
+    def save_data_associations(self, data_association):
+        pass
+
+    def save_operation(self, operation):
+        # save field_values
+        pass
+
+    def save_field_value(self, field_value):
+        pass
+
+    def save_item(self, item):
+        # data_associations
+        pass
 
     def save_plan(self, plan):
         plan_data = plan.to_save_json()
@@ -167,11 +223,42 @@ class UtilityInterface(SessionInterface):
         plan.reload(result)
         return plan
 
-    def step_plan(self, plan_id):
-        self.aqhttp.get(
-            'operations/step?plan_id={}'.format(plan_id)
-        )
-        return None
+    def update_code(self, code):
+        """
+        Updates code for a operation_type
+        """
+        controller = underscore(
+            pluralize(code.parent_class))
+
+        code_data = {
+            "id": code.parent_id,
+            "name": code.name,
+            "content": code.content
+        }
+        result = self.aqhttp.post(url_build(controller, "code"), code_data)
+        if "id" in result:
+            code.id = result["id"]
+            code.parent_id = result["parent_id"]
+            code.updated_at = result["updated_at"]
+        else:
+            raise TridentRequestError(
+                "Unable to update code object {}".format(code_data), result)
+
+    ##############################
+    # Delete
+    ##############################
+
+    def delete_data_association(self, association):
+        data = {
+            "model": {
+                "model": "DataAssociation",
+                "record_methods": {},
+                "record_getters": {}
+            },
+        }
+        data.update(association.dump())
+        result = self.aqhttp.post("json/delete", json_data=data)
+        return result
 
     def delete_plan(self, plan):
         self.aqhttp.delete('plans/{}'.format(plan.id))
@@ -181,6 +268,30 @@ class UtilityInterface(SessionInterface):
 
     def delete_field_value(self, field_value):
         self.aqhttp.delete('field_values/{}'.format(field_value.id))
+
+    ##############################
+    # Misc
+    ##############################
+
+    def estimate_plan_cost(self, plan):
+        """
+        Estimates the plan cost
+        """
+        result = self.aqhttp.post('launcher/estimate', {'id': plan.id})
+        total = 0
+        for operation in plan.operations:
+            for cost in result['costs']:
+                if cost['id'] == operation.id:
+                    operation.cost = cost
+                    total += (cost['labor'] * cost['labor_rate'] +
+                              cost['materials']) * cost['markup_rate']
+        return total
+
+    def step_plan(self, plan_id):
+        self.aqhttp.get(
+            'operations/step?plan_id={}'.format(plan_id)
+        )
+        return None
 
     def replan(self, plan_id):
         """
@@ -233,27 +344,6 @@ class UtilityInterface(SessionInterface):
                                  budget_query + user_query)
         return result
 
-    def update_code(self, code):
-        """
-        Updates code for a operation_type
-        """
-        controller = underscore(
-            pluralize(code.parent_class))
-
-        code_data = {
-            "id": code.parent_id,
-            "name": code.name,
-            "content": code.content
-        }
-        result = self.aqhttp.post(url_build(controller, "code"), code_data)
-        if "id" in result:
-            code.id = result["id"]
-            code.parent_id = result["parent_id"]
-            code.updated_at = result["updated_at"]
-        else:
-            raise TridentRequestError(
-                "Unable to update code object {}".format(code_data), result)
-
     def compatible_items(self, sample_id, object_type_id):
         """
         Find items compatible with the field value.
@@ -266,62 +356,6 @@ class UtilityInterface(SessionInterface):
         for element in result:
             print(element)
         return items
-
-    # TODO: fix delete association
-    def delete_data_association(self, association):
-        data = {
-            "model": {
-                "model": "DataAssociation",
-                "record_methods": {},
-                "record_getters": {}
-            },
-        }
-        data.update(association.dump())
-        result = self.aqhttp.post("json/delete", json_data=data)
-        return result
-
-    def create_data_association(self, model_inst, key, value, upload=None):
-        upload_id = None
-        if upload is not None:
-            upload_id = upload.id
-        data = {
-            "model": {
-                "model": "DataAssociation",
-                "record_methods": {},
-                "record_getters": {}
-            },
-            "parent_id": model_inst.id,
-            "key": str(key),
-            "object": json.dumps({str(key): value}),
-            "parent_class": model_inst.__class__.__name__,
-            "upload_id": upload_id
-        }
-        result = self.aqhttp.post("json/save", json_data=data)
-        data_association = model_inst.session.DataAssociation.find(
-            result['id'])
-        if data_association.id not in [da.id for da in model_inst.data_associations]:
-            model_inst.data_associations.append(data_association)
-            return data_association
-        else:
-            for da in model_inst.data_associations:
-                if da.id == data_association.id:
-                    return da
-
-    def create_upload(self, upload):
-        files = {
-            'file': upload.file
-        }
-
-        result = self.aqhttp.post(
-            "krill/upload?job={}".format(upload.job_id), files=files)
-        upload.reload(result)
-        return upload
-
-    def __json_update(self, model, **params):
-        """This update method is fairly dangerous. Be careful!"""
-        data = {"model": {"model": model.__class__.__name__}}
-        data.update(model.dump(**params))
-        return self.aqhttp.post('json/save', json_data=data)
 
 
 class ModelInterface(SessionInterface):
