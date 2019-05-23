@@ -213,6 +213,15 @@ class UtilityInterface(SessionInterface):
         # data_associations
         pass
 
+    # TODO: BOOKMARK: update_sample
+    def update_sample(self, sample):
+        for prop in sample.properties.values():
+            if isinstance(prop, list):
+                pass
+            elif isinstance(prop.__class__.__name__ == 'FieldValue'):
+                self.__json_update('FieldValue', prop.dump())
+        self.__json_update('Sample', sample)
+
     def save_plan(self, plan):
         plan_data = plan.to_save_json()
         result = self.aqhttp.put(
