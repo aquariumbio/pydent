@@ -2,7 +2,7 @@ class TestItem(object):
 
     def test_field_values_as_output(self, session):
         fv = None
-        for fv in session.FieldValue.last(100, role="output"):
+        for fv in session.FieldValue.last(100, query=dict(role="output")):
             if fv.child_item_id:
                 break
         assert fv, "There should be a FieldValue with an item for this test"
@@ -12,7 +12,7 @@ class TestItem(object):
 
     def test_field_values_as_input(self, session):
         fv = None
-        for fv in session.FieldValue.last(100, role="input"):
+        for fv in session.FieldValue.last(100, query=dict(role="input")):
             if fv.child_item_id:
                 break
         assert fv, "There should be a FieldValue with an item for this test"
@@ -22,7 +22,7 @@ class TestItem(object):
 
     def test_operations_as_output(self, session):
         fv = None
-        for fv in session.FieldValue.last(100, role="output"):
+        for fv in session.FieldValue.last(100, query=dict(role="output")):
             if fv.child_item_id:
                 break
         assert fv, "There should be a FieldValue with an item for this test"
@@ -32,7 +32,7 @@ class TestItem(object):
 
     def test_operations_as_input(self, session):
         fv = None
-        for fv in session.FieldValue.last(100, role="input"):
+        for fv in session.FieldValue.last(100, query=dict(role="input")):
             if fv.child_item_id:
                 break
         assert fv, "There should be a FieldValue with an item for this test"

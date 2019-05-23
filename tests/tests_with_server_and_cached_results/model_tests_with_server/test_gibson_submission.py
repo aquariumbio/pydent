@@ -114,9 +114,6 @@ def test_submit_gibson(session):
     # estimate the cost
     p.estimate_cost()
 
-    # validate the plan
-    p.validate()
-
     # show the plan
     p.show()
 
