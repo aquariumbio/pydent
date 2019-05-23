@@ -2,6 +2,7 @@ from os.path import join, isfile
 import pytest
 from uuid import uuid4
 
+
 @pytest.mark.recode('no')
 def test_download(session, tmpdir):
     """Expect a new file to be created from the 'download' method"""
@@ -12,9 +13,11 @@ def test_download(session, tmpdir):
 
     assert isfile(newfile)
 
+
 @pytest.fixture
 def example_item(session):
     return session.Item.one()
+
 
 @pytest.mark.recode('no')
 def test_upload(session, tmpdir, example_item):
@@ -33,5 +36,3 @@ def test_upload(session, tmpdir, example_item):
     # verify file contents
     with open(fp, 'r') as f:
         assert val in f.read()
-
-
