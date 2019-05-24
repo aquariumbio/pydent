@@ -60,9 +60,10 @@ SampleType:
 import json
 import os
 import shutil
-from itertools import groupby
 
 import requests
+
+from itertools import zip_longest
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
@@ -72,7 +73,6 @@ from pydent.relationships import (Raw, Function, JSON, One, Many, HasOne, HasMan
                                   HasOneFromMany, fields)
 from pydent.utils import filter_list
 from pydent.utils.async_requests import make_async
-from pydent.mixins import FieldValueInterface
 
 __all__ = [
     "Account",
@@ -122,6 +122,100 @@ class FieldMixin:
             fxn = getattr(self, fxn_name)
             return fxn(model_name, model_id)
 
+
+class FieldTypeInterface(object):
+
+    def field_type(self, name, role):
+        if self.field_types:
+            fts = filter_list(self.field_types, role=role, name=name)
+            if len(fts) > 0:
+                return fts[0]
+
+
+class FieldValueInterface(object):
+    """A common interface for things (i.e. Operations and Samples) that have FieldValues and FieldTypes"""
+
+    def new_field_value_from_field_type(self, field_type, values=None):
+        assert field_type in self.get_field_types()
+        self.new_field_value(field_type.name, field_type.role, values=values)
+
+    def new_field_value(self, name, role=None, values=None):
+        # retrieve the field_type from the meta_type
+        metatype = self.get_metatype()
+        ft = metatype.field_type(name, role=role)
+
+        # initialize the field_value
+        fv = ft.initialize_field_value(parent=self)
+        if values:
+            fv.set_value(**values)
+        # add new field_value to list of field_values
+        if self.field_values is None:
+            self.field_values = []
+
+        self.field_values.append(fv)
+        return fv
+
+    def get_metatype(self):
+        metatype = getattr(self, self.METATYPE)
+        assert issubclass(type(metatype), FieldTypeInterface)
+        return metatype
+
+    def get_field_value(self, name, role=None):
+        fv_array = self.get_field_value_array(name, role=role)
+        if fv_array:
+            return fv_array[0]
+
+    def get_field_value_array(self, name, role=None):
+        return [fv for fv in self.field_values if fv.name == name and fv.role == role]
+
+    def get_field_types(self):
+        return self.get_metatype().field_types
+
+    def _field_value_dictionary(self, ft_func, fv_func):
+        data = {}
+        ft_dict = {ft.id: ft for ft in self.get_field_types()}
+
+        for ft in ft_dict.values():
+            if ft.array:
+                val = []
+            else:
+                val = None
+            data[ft_func(ft)] = val
+
+        for fv in self.field_values:
+            ft = ft_dict[fv.field_type_id]
+            val = fv_func(fv)
+            if ft.array:
+                data[ft_func(ft)].append(val)
+            else:
+                data[ft_func(ft)] = val
+
+        return data
+
+    def set_field_value(self, name, role, values):
+        fv = self.get_field_value(name, role)
+        fv.set_value(**values)
+        return self
+
+    def set_field_value_array(self, name, role, values_array):
+        fvs = self.get_field_value_array(name, role)
+        to_be_removed = []
+        for fv, val in zip_longest(fvs, values_array):
+            if fv and val:
+                fv.set_value(val)
+            elif fv and not val:
+                to_be_removed.append(fv)
+            elif not fv and val:
+                self.new_field_value(name, role, val)
+        for fv in to_be_removed:
+            self.field_values.remove(fv)
+        return self
+
+    def get_routing(self):
+        return self._field_value_dictionary(
+            lambda ft: ft.routing,
+            lambda fv: fv.sid
+        )
 
 # TODO: handle uploaded files (only safe files)
 class DataAssociatorMixin:
@@ -191,7 +285,6 @@ class DataAssociatorMixin:
             return None
         return val
 
-# Models
 
 @add_schema
 class Account(ModelBase):
@@ -483,21 +576,92 @@ class FieldValue(FieldMixin, ModelBase):
             self._set_helper(value=value, sample=sample,
                              item=item, container=container)
 
-    # @property
-    # def array(self):
-    #     arr = self.field_type.array
-    #     if arr is None:
-    #         return False
-    #     return arr
-
     def get_sid(self):
+        """The FieldValues sample identifier."""
         if self.sample is not None:
             return self.sample.identifier
 
-    # def get_allowable_child_types(self):
-    #     if self.sample:
-    #         return [aft.sample.name for aft in self.field_type.allowable_field_types]
-    #     return []
+    def get_outgoing_wires(self, destination=None):
+        """
+        Get the outgoing wires. Optionally, if provided with a destination FieldValue, will get
+        all of the outgoing wires coming from the destination FieldValue
+
+        :param destination: the optional destination FieldValue
+        :type destination: FieldValue
+        :return: array of wires
+        :rtype: array
+        """
+        if not self.outgoing_wires:
+            self.outgoing_wires = []
+            return self.outgoing_wires
+        wires = self.outgoing_wires
+        if destination:
+            return [w for w in wires if w.does_wire(self, destination)]
+        else:
+            return wires
+
+    def get_incoming_wires(self, source=None):
+        """
+        Get the incoming wires. Optionally, if provided with a source FieldValue, will get
+        all of the incoming wires coming from the source FieldValue
+
+        :param source: the optional source FieldValue
+        :type source: FieldValue
+        :return: array of wires
+        :rtype: array
+        """
+        if not self.incoming_wires:
+            self.incoming_wires = []
+            return self.incoming_wires
+        wires = self.incoming_wires
+        if source:
+            return [w for w in wires if w.does_wire(source, self)]
+        else:
+            return wires
+
+    def wire_to(self, destination):
+        """
+        Creates a new wire from this FieldValue to to a destination FieldValue. The
+        new wire is returned.
+
+        If the wire exists (determined by their unique instance rids), then the first
+        existing wire is returned instead.
+
+        :param destination: destination FieldValue to create a wire to.
+        :type destination: FieldValue
+        :return: the wire
+        :rtype: Wire
+        """
+        existing_wires = self.get_outgoing_wires(destination)
+        if existing_wires:
+            wire = existing_wires[0]
+        else:
+            wire = Wire(source=self, destination=destination)
+        self.add_outgoing_wire(wire)
+        destination.add_incoming_wire(wire)
+
+    def wire_from(self, source):
+        """
+        Creates a new wire from this FieldValue to to a destination FieldValue. The
+        new wire is returned.
+
+        If the wire exists (determined by their unique instance rids), then the first
+        existing wire is returned instead.
+
+        :param source: destination FieldValue to create a wire to.
+        :type source: FieldValue
+        :return: the wire
+        :rtype: Wire
+        """
+        existing_wires = self.get_incoming_wires(source)
+        if existing_wires:
+            wire = existing_wires[0]
+        else:
+            wire = Wire(source=source, destination=self)
+        source.add_outgoing_wire(wire)
+        self.add_incoming_wire(wire)
+        return wire
+        return wire
 
     def add_incoming_wire(self, wire):
         """Adds a wire to the list of this FieldValues incoming wires."""
@@ -509,7 +673,7 @@ class FieldValue(FieldMixin, ModelBase):
         if wires is None:
             wires = []
         wires.append(wire)
-        self.wires_as_dest = [w for w in wires if w.destination.rid == self.rid]
+        self.incoming_wires = [w for w in wires if w.destination.rid == self.rid]
         return wire
 
     def add_outgoing_wire(self, wire):
@@ -523,19 +687,19 @@ class FieldValue(FieldMixin, ModelBase):
         if wires is None:
             wires = []
         wires.append(wire)
-        self.wires_as_source = [w for w in wires if w.destination.rid == self.rid]
+        self.outgoing_wires = [w for w in wires if w.destination.rid == self.rid]
         return wire
 
     @property
     def successors(self):
-        if self.wires_as_source:
-            return [x.destination for x in self.wires_as_source]
+        if self.outgoing_wires:
+            return [x.destination for x in self.outgoing_wires]
         return []
 
     @property
     def predecessors(self):
-        if self.wires_as_dest:
-            return [x.source for x in self.wires_as_dest]
+        if self.incoming_wires:
+            return [x.source for x in self.incoming_wires]
         return []
 
     def show(self, pre=""):
@@ -919,6 +1083,8 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         routing=Function('get_routing'),
     )
 
+    METATYPE = "operation_type"
+
     def __init__(self, operation_type_id=None, operation_type=None, status=None, x=0, y=0):
         super().__init__(
             operation_type_id=None,
@@ -968,12 +1134,11 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         Initialize the :class:`FieldValue` from the :class:`FieldType` of the
         parent :class:`Operation` type.
         """
-        for field_type in self.operation_type.field_types:
-            if field_type.array:
-                self.add_to_field_value_array(field_type.name, field_type.role)
-            else:
-                self.set_field_value(field_type.name, field_type.role)
-            # self.show()
+        self.field_values = []
+        for field_type in self.get_metatype().field_types:
+            if not field_type.array:
+                self.new_field_value_from_field_type(field_type)
+        return self
 
     def field_value_array(self, name, role):
         """Returns :class:`FieldValue` array with name and role."""
@@ -997,91 +1162,6 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
             msg += " of operation {}.(id={}).{}.{}. Are you sure you didn't mean to call 'field_value_array'?"
             raise AquariumModelError(
                 msg.format(self.operation_type, self.id, role, name))
-
-    # TODO: automatically expand or contract field_values based on len(values)
-    def set_field_value_array(self, name, role, values):
-        """
-        Sets :class:`FieldValue` array using values. Values should be a list of
-        dictionaries containing sample, item, container, or values keys.
-        When setting values to items/samples/containers, the
-        item/sample/container must be saved.
-
-        :param name: name of the FieldType/FieldValues being modified
-        :type name: string
-        :param role: role of the FieldType/FieldValue being modified
-                ("input" or "output")
-        :type role: string
-        :param values: list of dictionary of values to set
-                (e.g. [{"sample": mysample}, {"item": myitem}])
-        :type values: list
-        :return: the list of modified FieldValues
-        :rtype: list
-        """
-        field_values = self.field_value_array(name, role)
-
-        # get the field type
-        field_type = self.operation_type.field_type(name, role)
-        if field_type is None:
-            msg = "No FieldType found for OperationType {}.{}.{}"
-            raise AquariumModelError(msg.format(
-                self.operation_type.name, role, name))
-        if not len(field_values) == len(values):
-            msg = "Cannot set_field_value_array."
-            msg += " Length of values must equal length of field_values"
-            raise AquariumModelError(
-                msg)
-
-        for fv, val in zip(field_values, values):
-            fv.set_value(**val)
-        return field_values
-
-    def set_field_value(self, name, role, sample=None, item=None, value=None,
-                        container=None):
-        """
-        Sets the a :class:`FieldValue` to a value. When setting values to
-        items/samples/containers, the item/sample/container must be saved.
-
-        :param name: name of the FieldValue/FieldType
-        :type name: string
-        :param role: role of the FieldValue ("input" or "output")
-        :type role: string
-        :param sample: an existing Sample
-        :type sample: Sample
-        :param item: an existing Item
-        :type item: Item
-        :param value: a string or number value
-        :type value: string|integer
-        :param container: an existing ObjectType
-        :type container: ObjectType
-        :return: the existing FieldValue modified
-        :rtype: FieldValue
-        """
-        # get the field value
-        field_value = self.field_value(name, role)
-
-        # get the field type
-        field_type = self.operation_type.field_type(name, role)
-        if field_type is None:
-            msg = "No FieldType found for OperationType {}.{}.{}"
-            raise AquariumModelError(msg.format(
-                self.operation_type.name, role, name))
-        if field_type.array:
-            msg = "FieldValue {} {} is an array. Use 'set_field_value_array'"
-            raise AquariumModelError(
-                msg.format(role, name))
-
-        # initialize the field value from the field type
-        if not field_value:
-            field_value = field_type.initialize_field_value(field_value)
-            field_value.set_as_operation_field_value(self)
-            if self.field_values is None:
-                self.field_values = []
-            self.field_values.append(field_value)
-
-        # set the value, finds allowable_field_types, etc.
-        field_value.set_value(value=value, sample=sample,
-                              item=item, container=container)
-        return self
 
     @property
     def plan(self):
@@ -1246,7 +1326,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
 
 # TODO: Refactor OperationType and Library code relationships to use ONE
 @add_schema
-class OperationType(ModelBase):
+class OperationType(FieldTypeInterface, ModelBase):
     """
     Represents an OperationType, which is the definition of a protocol in
     Aquarium.
@@ -1392,6 +1472,9 @@ class Plan(DataAssociatorMixin, ModelBase):
         for operation in operations:
             self.add_operation(operation)
 
+    def has_operation(self, op):
+        return self.operations and op.rid in [_op.rid for _op in self.operations]
+
     def find_wires(self, src, dest):
         """
         Retrieves the wire between a source and destination FieldValues
@@ -1410,28 +1493,7 @@ class Plan(DataAssociatorMixin, ModelBase):
                 found.append(wire)
         return found
 
-    # TODO: Maintain a list of wires in the plan. Ensure every wire refers to a fieldvalue in the plan.
-    def add_wire(self, wire, error_if_exists=False):
-        """
-
-        :param wire: Adds a wire to the plan. If the wire already exists,
-        :type wire: Wire
-        :param error_if_exists: Raise an error if the Wire already exists in the plan.
-        :type error_if_exists: boolean
-        :return: Newly created wire or existing wire (if exists and error_if_exists == False)
-        :rtype: Wire
-        """
-        existing_wires = self.find_wires(wire.source, wire.destination)
-        if not existing_wires:
-            self.append_to_many('wire', wire)
-            return wire
-        elif error_if_exists:
-            raise Exception("Cannot wire. Wire already exists between FieldValues {} --> {}".format(wire.source, wire.destination))
-        else:
-            return existing_wires[0]
-
-
-    def wire(self, src, dest, error_if_exists=False):
+    def wire(self, src, dest):
         """
         Creates a new wire between src and dest FieldValues. Returns the new wire
         if it does not exist in the plan. If the wire already exists and
@@ -1447,41 +1509,41 @@ class Plan(DataAssociatorMixin, ModelBase):
         :rtype: Wire
         """
 
-        wire = Wire(source=src, destination=dest)
-        if not src.outgoing_wires:
-            src.outgoing_wires = []
-        if not src.outgoing_wires or wire.rid not in [w.rid for w in src.outgoing_wires]:
-            src.add_outgoing_wire(wire)
-        if not dest.incoming_wires or wire not in [w.rid for w in dest.incoming_wires]:
-            dest.add_incoming_wire(wire)
-        # wire = self.add_wire(Wire(source=src, destination=dest), error_if_exists=error_if_exists)
-        return wire
+        if not self.has_operation(src.operation):
+            raise AquariumModelError("Cannot wire because the wire's source FieldValue does not exist in the Plan.")
+        if not self.has_operation(dest.operation):
+            raise AquariumModelError("Cannot wire because the wire's destination FieldValue does not exist in the Plan.")
 
-    def add_wires_from_pairs(self, pairs):
-        for src, dest in pairs:
-            self.wire(src, dest)
+        return src.wire_to(dest)
 
-    # TODO: simply maintain a list of wires
-    def _get_wires(self, *args):
-        wires = {}
+    def _collect_wires(self):
+        wires = []
         if self.operations:
             for operation in self.operations:
-                for field_value in operation.field_values:
-                    field_value_wires = []
-                    if field_value.outgoing_wires:
-                        field_value_wires += field_value.outgoing_wires
-                    if field_value.incoming_wires:
-                        field_value_wires += field_value.incoming_wires
-                    for wire in field_value_wires:
+                if operation.field_values:
+                    for field_value in operation.field_values:
+                        if field_value.outgoing_wires:
+                            wires += field_value.outgoing_wires
+                        if field_value.incoming_wires:
+                            wires += field_value.incoming_wires
+        return wires
 
-                        wire_hash = self._wire_hash(wire)
-                        if wire_hash in wires:
-                            existing = wires[wire_hash]
-                            if existing.rid != wire.rid:
-                                raise Exception("Wire mismatch")
-                        wires[self._wire_hash] = wire
+    # TODO: BOOKMARK: fix _get_wires upon plan loading; implement rewire_to and rewire_from; implement _merge_wires after __init__?
+    def _get_wires(self, *args):
+        wires = self._collect_wires()
+        wire_dict = {}
+        for w in wires:
+            wire_dict.setdefault(w.identifier, list())
+            if w not in wire_dict[w.identifier]:
+                wire_dict[w.identifier].append(w)
 
-        return sorted(wires.values(), key=lambda w: w.id)
+        for warr in wire_dict.values():
+            if len(warr) > 1:
+                raise AquariumModelError("There are duplicate wires in the plan. " \
+                                         "This means there is more than one instance of Wires that refer to the "
+                                         "exact same FieldValues. This can lead to unintended consequences.")
+
+        return sorted(wires, key=lambda w: w.id)
 
     # TODO: plan.create should be implicit in 'save'
     def create(self):
@@ -1729,6 +1791,8 @@ class Sample(FieldValueInterface, ModelBase):
         parent_samples=HasManyThrough("Sample", "FieldValuesAsProperty")
     )
 
+    METATYPE = "sample_type"
+
     def __init__(self, name=None, project=None, description=None, sample_type=None, sample_type_id=None,
                  properties=None):
         """
@@ -1834,7 +1898,7 @@ class Sample(FieldValueInterface, ModelBase):
 
 
 @add_schema
-class SampleType(ModelBase):
+class SampleType(FieldTypeInterface, ModelBase):
     """A SampleType model"""
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
@@ -1866,12 +1930,6 @@ class SampleType(ModelBase):
             properties=properties
         )
         return sample
-
-    def field_type(self, name):
-        """Return the field_type by name"""
-        for ft in self.field_types:
-            if ft.name == name:
-                return ft
 
     def save(self):
         """Saves the Sample Type to the Aquarium server. Requires
@@ -2039,7 +2097,11 @@ class Wire(ModelBase):
         "destination": fields.Alias("to")
     }
 
+    WIRABLE_PARENT_CLASSES = ['Operation']
+
     def __init__(self, source=None, destination=None):
+
+        self._validate_field_values(source, destination)
 
         if hasattr(source, 'id'):
             from_id = source.id
@@ -2050,6 +2112,7 @@ class Wire(ModelBase):
             to_id = destination.id
         else:
             to_id = None
+
         super().__init__(**{
             "from": source,
             "from_id": from_id,
@@ -2057,17 +2120,41 @@ class Wire(ModelBase):
             "to_id": to_id
         }, active=True)
 
-    @staticmethod
-    def _wire_hash(wire):
-        return "{}_{}".format(wire.source.rid, wire.destination.rid)
+    @property
+    def identifier(self):
+
+        if not self.source:
+            source_id = self.from_id
+        else:
+            source_id = 'r' + str(self.source.rid)
+
+        if not self.destination:
+            destination_id = self.to_id
+        else:
+            destination_id = 'r' + str(self.destination.rid)
+        return '{}_{}'.format(source_id, destination_id)
 
     @classmethod
-    def _create_wire_hash_dict(cls, list_of_wires):
-        wire_hash_dict = dict()
-        for wire in list_of_wires:
-            hsh = cls._wire_hash(wire)
-            wire_hash_dict.setdefault(hsh, list()).append(wire)
-        return wire_hash_dict
+    def _validate_field_values(cls, src, dest):
+        if src:
+            cls._validate_field_value(src, 'source')
+        if dest:
+            cls._validate_field_value(dest, 'destination')
+
+        if src and dest and src.rid == dest.rid:
+            raise AquariumModelError("Cannot create wire because source and destination are the same instance.")
+
+    @classmethod
+    def _validate_field_value(cls, fv, name):
+        if not issubclass(type(fv), FieldValue):
+            raise AquariumModelError("Cannot create wire because {} FieldValue is {}.".format(name, fv.__class__.__name__))
+
+        if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
+            raise AquariumModelError("Cannot create wire because the {} FieldValue is has a {} parent class" \
+                                     "Only {} parent classes are wirable".format(name, fv.parent_class, self.WIRABLE_PARENT_CLASSES))
+
+    def validate(self):
+        self._validate_field_values(self.source, self.destination)
 
     def to_save_json(self):
         save_json = {
@@ -2081,6 +2168,11 @@ class Wire(ModelBase):
         return save_json
 
     def delete(self):
+        """
+        Permanently deletes the wire instance on the Aquarium server.
+        :return:
+        :rtype:
+        """
         return self.session.utils.delete_wire(self)
 
     def show(self, pre=""):
@@ -2104,3 +2196,17 @@ class Wire(ModelBase):
               ":" + from_name +
               " --> " + to_op_type_name +
               ":" + to_name)
+
+    def does_wire(self, source, destination):
+        """Checks whether this Wire is a wire between the source and destination FieldValues.
+
+        If any of the source or destination FieldValues are None, returns False."""
+        if source and destination and self.source and self.destination:
+            return source.rid == self.source.rid and destination.rid == self.destination.rid
+        return False
+
+    def __eq__(self, other):
+        """Checks whether this Wire is wired to the same FieldValue instances of another Wire.
+
+        see `does_wire` method."""
+        return self.does_wire(other.source, other.destination)
