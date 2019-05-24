@@ -436,6 +436,9 @@ class FieldValue(FieldMixin, ModelBase):
             "Sample", callback="find_field_parent", ref="parent_id"),
         wires_as_source=HasMany("Wire", ref="from_id"),
         wires_as_dest=HasMany("Wire", ref="to_id"),
+        outgoing_wires=fields.Alias("wires_as_source"),
+        incoming_wires=fields.Alias("wires_as_dest"),
+
         sid=Function('get_sid'),
         child_sample_name=Function(lambda fv: fv.sid, callback_args=(fields.Callback.SELF,)),
         # allowable_child_types=Function('get_allowable_child_types'),
@@ -522,16 +525,6 @@ class FieldValue(FieldMixin, ModelBase):
         wires.append(wire)
         self.wires_as_source = [w for w in wires if w.destination.rid == self.rid]
         return wire
-
-    @property
-    def outgoing_wires(self):
-        """Alias of 'wires_as_source'"""
-        return self.wires_as_source
-
-    @property
-    def incoming_wires(self):
-        """Alias of 'wires_as_dest'"""
-        return self.wires_as_dest
 
     @property
     def successors(self):
@@ -1365,7 +1358,7 @@ class Plan(DataAssociatorMixin, ModelBase):
             layout={
                 "id": 0,
                 "children": [],
-                "documentation": "No documentation ofr this module",
+                "documentation": "No documentation of this module",
                 "height": 60,
                 "input": [],
                 "output": [],
@@ -1436,6 +1429,7 @@ class Plan(DataAssociatorMixin, ModelBase):
         else:
             return existing_wires[0]
 
+
     def wire(self, src, dest, error_if_exists=False):
         """
         Creates a new wire between src and dest FieldValues. Returns the new wire
@@ -1451,17 +1445,22 @@ class Plan(DataAssociatorMixin, ModelBase):
         :return: Newly created wire or existing wire (if exists and error_if_exists == False)
         :rtype: Wire
         """
-        wire = self.add_wire(Wire(source=src, destination=dest), error_if_exists=error_if_exists)
+
+        wire = Wire(source=src, destination=dest)
+        if not src.outgoing_wires:
+            src.outgoing_wires = []
         if not src.outgoing_wires or wire.rid not in [w.rid for w in src.outgoing_wires]:
             src.add_outgoing_wire(wire)
         if not dest.incoming_wires or wire not in [w.rid for w in dest.incoming_wires]:
             dest.add_incoming_wire(wire)
+        # wire = self.add_wire(Wire(source=src, destination=dest), error_if_exists=error_if_exists)
         return wire
 
     def add_wires_from_pairs(self, pairs):
         for src, dest in pairs:
             self.wire(src, dest)
 
+    # TODO: simply maintain a list of wires
     def _get_wires(self, *args):
         wires = {}
         if self.operations:
