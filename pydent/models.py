@@ -1410,6 +1410,7 @@ class Plan(DataAssociatorMixin, ModelBase):
                 found.append(wire)
         return found
 
+    # TODO: Maintain a list of wires in the plan. Ensure every wire refers to a fieldvalue in the plan.
     def add_wire(self, wire, error_if_exists=False):
         """
 
