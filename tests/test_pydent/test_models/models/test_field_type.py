@@ -69,7 +69,16 @@ def test_initialize_field_value(fake_session):
                  'id': 1
              }
          ]})
-    fv = ft.initialize_field_value()
+
+    fake_sample = fake_session.Sample.load(
+        {
+            'id': 6
+        }
+    )
+    fv = ft.initialize_field_value(parent=fake_sample)
+    assert fv.parent_id == 6
+    assert fv.parent_class == 'Sample'
+
     assert fv.field_type == ft
     assert fv.field_type_id == ft.id
     assert fv.role == ft.role

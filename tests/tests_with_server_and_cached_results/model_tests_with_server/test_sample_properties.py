@@ -173,7 +173,8 @@ class TestUpdateFieldValueArrays:
         return func
 
     @pytest.mark.parametrize('test_server_changes', [False, True])
-    @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
+    @pytest.mark.parametrize('num_field_values', [2])
+    # @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
     def test_local_changes(self, session, num_field_values, example_sample, get_samples, test_server_changes):
 
         value_samples = get_samples(num_field_values)
@@ -186,9 +187,16 @@ class TestUpdateFieldValueArrays:
         assert len(example_sample.properties[self.FIELD_TYPE_NAME]) == num_field_values
 
         if test_server_changes:
-            example_sample.save()
+            if example_sample.id:
+                example_sample.update()
+            else:
+                example_sample.save()
 
-@pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
+            fvs_from_server = session.FieldValue.where({'parent_id': example_sample.id, 'name': self.FIELD_TYPE_NAME,
+                                                        'parent_class': 'Sample'})
+            assert len(fvs_from_server) == num_field_values
+
+# @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
 def test_update_properties_using_array(session, num_field_values):
     """Test updating a sample properties array. Requires a 'Fragment' SampleType in the database with a 'Fragment Mix Array'
     FieldType."""

@@ -35,7 +35,8 @@ def test_constructor_with_value(fake_session):
         parent_class="Operation",
         value=400,
         field_type=fake_session.FieldType(
-            choices='400'
+            choices='400',
+            parent_class='Operation'
         )
     )
     assert fv.value == 400

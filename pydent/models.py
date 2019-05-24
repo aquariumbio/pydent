@@ -72,6 +72,7 @@ from pydent.relationships import (Raw, Function, JSON, One, Many, HasOne, HasMan
                                   HasOneFromMany, fields)
 from pydent.utils import filter_list
 from pydent.utils.async_requests import make_async
+from pydent.mixins import FieldValueInterface
 
 __all__ = [
     "Account",
@@ -394,7 +395,7 @@ class FieldType(FieldMixin, ModelBase):
         self.allowable_field_types = afts
         return field_type
 
-    def initialize_field_value(self, field_value=None):
+    def initialize_field_value(self, field_value=None, parent=None):
         """
         Updates or initializes a new :class:`FieldValue` from this FieldType
 
@@ -405,11 +406,12 @@ class FieldType(FieldMixin, ModelBase):
         """
 
         if not field_value:
-            self.c = self.session.FieldValue.new(name=self.name, role=self.role, field_type=self)
-            field_value = self.c
+            field_value = self.session.FieldValue.new(name=self.name, role=self.role, field_type=self)
         if self.allowable_field_types:
             field_value.allowable_field_type_id = self.allowable_field_types[0].id
             field_value.allowable_field_type = self.allowable_field_types[0]
+        if parent:
+            field_value.set_parent(parent)
         return field_value
 
 
@@ -646,6 +648,12 @@ class FieldValue(FieldMixin, ModelBase):
                     msg.format(self.role, self.name))
         return self
 
+
+    def set_parent(self, model):
+        self.parent_id = model.id
+        self.parent_class = model.__class__.__name__
+        return self
+
     # TODO: rename set_operation, or re-implement?
     def set_as_operation_field_value(self, operation):
         self.parent_class = "Operation"
@@ -668,19 +676,11 @@ class FieldValue(FieldMixin, ModelBase):
         self.field_type = field_type
         self.field_type_id = field_type.id
 
-        if self.name:
-            assert self.name == field_type.name
-        else:
+        if field_type.name:
             self.name = field_type.name
-
-        if self.parent_class:
-            assert self.parent_class == field_type.parent_class
-        else:
+        if field_type.parent_class:
             self.parent_class = field_type.parent_class
-
-        if self.role:
-            assert self.role == field_type.role
-        else:
+        if field_type.role:
             self.role = field_type.role
 
     def set_allowable_field_type(self, allowable_field_type):
@@ -907,7 +907,7 @@ class ObjectType(ModelBase):
 
 # TODO: field_values should recognize parent_class (maybe where should ignore None field_values..)
 @add_schema
-class Operation(DataAssociatorMixin, ModelBase):
+class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
     """A Operation model"""
     # TODO: add 'inputs' and 'outputs' as bone-fide properties
     fields = dict(
@@ -984,7 +984,7 @@ class Operation(DataAssociatorMixin, ModelBase):
 
     def field_value_array(self, name, role):
         """Returns :class:`FieldValue` array with name and role."""
-        return filter_list(self.field_values, name=name, role=role)
+        return filter_list(self.get_field_value_array(name, role))
 
     def field_value(self, name, role):
         """
@@ -992,7 +992,8 @@ class Operation(DataAssociatorMixin, ModelBase):
         Return None if not found.
         """
         if self.field_values:
-            fvs = filter_list(self.field_values, name=name, role=role)
+            fvs = self.field_value_array(name, role)
+
             if len(fvs) == 0:
                 return None
 
@@ -1041,38 +1042,6 @@ class Operation(DataAssociatorMixin, ModelBase):
             fv.set_value(**val)
         return field_values
 
-    # TODO: add initialize_field_value to Operation
-    def add_to_field_value_array(self, name, role, sample=None, item=None,
-                                 value=None, container=None):
-        """
-        Creates and adds a new :class:`FieldValue`. When setting values to
-        items/samples/containers, the item/sample/container must be saved.
-
-        :param name: name of the FieldType/FieldValue
-        :type name: string
-        :param role: role of the FieldValue ("input" or "output")
-        :type role: string
-        :param sample: an existing Sample
-        :type sample: Sample
-        :param item: an existing Item
-        :type item: Item
-        :param value: a string or number value
-        :type value: string|integer
-        :param container: an existing ObjectType
-        :type container: ObjectType
-        :return: the newly created FieldValue
-        :rtype: FieldValue
-        """
-        field_type = self.operation_type.field_type(name, role)
-        fv = field_type.initialize_field_value()
-        fv.set_value(sample=sample, item=item,
-                     value=value, container=container)
-        fv.set_as_operation_field_value(self)
-        if self.field_values is None:
-            self.field_values = []
-        self.field_values.append(fv)
-        return fv
-
     def set_field_value(self, name, role, sample=None, item=None, value=None,
                         container=None):
         """
@@ -1095,7 +1064,6 @@ class Operation(DataAssociatorMixin, ModelBase):
         :rtype: FieldValue
         """
         # get the field value
-        fvs = self.field_values
         field_value = self.field_value(name, role)
 
         # get the field type
@@ -1154,11 +1122,11 @@ class Operation(DataAssociatorMixin, ModelBase):
         :return: the newly created FieldValue
         :rtype: FieldValue
         """
-        return self.add_to_field_value_array(name, "input",
-                                             sample=sample,
+        return self.new_field_value(name, "input",
+                                             dict(sample=sample,
                                              item=item,
                                              value=value,
-                                             container=container)
+                                             container=container))
 
     def add_to_output_array(self, name, sample=None, item=None, value=None,
                             container=None):
@@ -1180,19 +1148,21 @@ class Operation(DataAssociatorMixin, ModelBase):
         :return: the newly created FieldValue
         :rtype: FieldValue
         """
-        return self.add_to_field_value_array(name, "output",
-                                             sample=sample,
+        return self.new_field_value(name, "output",
+                                             dict(sample=sample,
                                              item=item,
                                              value=value,
-                                             container=container)
+                                             container=container))
 
-    def input_array(self, name):
+    @property
+    def inputs(self):
         """Return a list of all input :class:`FieldValues`"""
-        return self.field_value_array(name, "input")
+        return [fv for fv in self.field_values if fv.role == 'input']
 
-    def output_array(self, name):
+    @property
+    def outputs(self):
         """Return a list of all output :class:`FieldValues`"""
-        return self.field_value_array(name, "output")
+        return [fv for fv in self.field_values if fv.role == 'output']
 
     def set_input(self, name, sample=None, item=None, value=None,
                   container=None):
@@ -1213,8 +1183,7 @@ class Operation(DataAssociatorMixin, ModelBase):
         :return: the existing FieldValue modified
         :rtype: FieldValue
         """
-        return self.set_field_value(name, 'input', sample=sample, item=item,
-                                    value=value, container=container)
+        return self.set_field_value(name, 'input', sample=sample, item=item, value=value, container=container)
 
     def set_output(self, name, sample=None, item=None, value=None,
                    container=None):
@@ -1235,8 +1204,7 @@ class Operation(DataAssociatorMixin, ModelBase):
         :return: the existing FieldValue modified
         :rtype: FieldValue
         """
-        return self.set_field_value(name, 'output', sample=sample, item=item,
-                                    value=value, container=container)
+        return self.set_field_value(name, 'output', sample=sample, item=item, value=value, container=container)
 
     def set_input_array(self, name, values):
         """
@@ -1282,14 +1250,6 @@ class Operation(DataAssociatorMixin, ModelBase):
         for field_value in self.field_values:
             field_value.show(pre=pre + "  ")
 
-    @property
-    def inputs(self):
-        return [fv for fv in self.field_values if fv.role == 'input']
-
-    @property
-    def outputs(self):
-        return [fv for fv in self.field_values if fv.role == 'output']
-
 
 # TODO: Refactor OperationType and Library code relationships to use ONE
 @add_schema
@@ -1330,33 +1290,6 @@ class OperationType(ModelBase):
         if accessor in ["protocol", 'precondition', 'documentation', 'cost_model']:
             return getattr(self, accessor)
         return None
-
-    # @classmethod
-    # def interface(cls, session):
-    #     # get model interface from Base class
-    #     model_interface = super(OperationType, cls).interface(session)
-    #
-    #     def find_deployed_by_name(name):
-    #         ots = model_interface.where({"deployed": True, "name": name})
-    #         if len(ots) == 0:
-    #             return None
-    #         if len(ots) > 1:
-    #             raise Exception("More than one OperationType found.")
-    #         return ots[0]
-    #
-    #     def where_deployed(params):
-    #         params = dict(params)
-    #         params.update({"deployed": True})
-    #         return model_interface.where(params)
-    #
-    #     # override the old find method
-    #     model_interface.find = find_deployed_by_name
-    #     model_interface.where_deployed = where_deployed
-    #
-    #     return model_interface
-
-    def get_field_type(self, model_name, parent_class):
-        return self.code(model_name)
 
     def instance(self, xpos=0, ypos=0):
         operation = self.session.Operation.new(operation_type_id=self.id,
@@ -1761,7 +1694,7 @@ class PlanAssociation(ModelBase):
 
 
 @add_schema
-class Sample(ModelBase):
+class Sample(FieldValueInterface, ModelBase):
     """A Sample model"""
     fields = dict(
         # sample relationships
@@ -1839,157 +1772,24 @@ class Sample(ModelBase):
         :return: the field value
         :rtype: FieldValue
         """
-        for field_value in self.field_values:
-            if field_value.name == name:
-                self._get_field_type(field_value)
-                return field_value
-        return None
+        return self.get_field_value(name, None)
 
     def field_value_array(self, name):
-        """
-        Returns an array of :class:`FieldValue` associated with the sample by their name.
-
-        See the :method:`Sample.field_value` if getting just a single FieldValue
-
-        :param name: name of FieldValue
-        :type name: array
-        :return: array of field values
-        :rtype: array
-        """
-        field_values = []
-        for field_value in self.field_values:
-            if field_value.name == name:
-                self._get_field_type(field_value)
-                field_values.append(field_value)
-        return field_values
-
-    def _prop_dict(self, expected_keys):
-        d = {k: None for k in expected_keys}
-        fvs = self.field_values
-        if fvs is not None:
-            for fv in fvs:
-                if fv.name in d:
-                    v = None
-                    if fv.sample is not None:
-                        v = fv.sample
-                    else:
-                        v = fv.value
-                    if d[fv.name] is None:
-                        # set value
-                        d[fv.name] = v
-                    elif type(d[fv.name]) is list:
-                        # append to list
-                        d[fv.name].append(v)
-                    else:
-                        # make values an array
-                        d[fv.name] = [d[fv.name]] + [v]
-        return d
-
-    def _fv_dict(self):
-        d = {}
-        if self.field_values is not None:
-            for fv in self.field_values:
-                self._get_field_type(fv)
-                d[fv.name] = fv
-        fv_dict = {}
-        for ft in self.sample_type.field_types:
-            fv_dict[ft.name] = d.get(ft.name, None)
-        return fv_dict
-
-    def empty_properties(self):
-        empty_properties = {}
-        for ft in self.sample_type.field_types:
-            val = None
-            if ft.array:
-                val = []
-            empty_properties[ft.name] = val
-        return empty_properties
+        return self.get_field_value_array(name, None)
 
     @staticmethod
-    def _field_type_value_accessor(field_type):
-        if field_type.ftype == 'sample':
-            return 'sample'
-        return 'value'
-
-    @classmethod
-    def set_field_value_helper(cls, field_type, field_value, value):
-        if value is None:
-            field_value.reset()
-            return field_value
-        field_value.set_value(**{cls._field_type_value_accessor(field_type): value})
-        return field_value
-
-    # TODO: somehow do some kind of type checking for field_types. Note the field_values do not have field_types for some reason unless they are a sample field value
-    def _set_field_value(self, field_value, value):
-        ft = self._get_field_type(field_value)
-        return self.set_field_value_helper(ft, field_value, value)
-
-    def _get_field_value_value(self, field_value):
-        ft = self._get_field_type(field_value)
-        return getattr(field_value, self._field_type_value_accessor(ft))
-
-    def _get_field_type(self, field_value):
-        field_type = None
-        if field_value:
-            field_type = field_value.field_type
-        if field_type is None:
-            field_type = self.sample_type.field_type(field_value.name)
-            field_value.field_type = field_type
-        return field_type
-
-    # TODO: refactor to use initialize_field_value
-    @classmethod
-    def _update_field_value_array(cls, old_field_values, field_type, values):
-        s1 = set(range(len(old_field_values)))
-        s2 = set(range(len(values)))
-
-        add_indices = sorted(s2.difference(s1))
-        del_indices = sorted(s1.difference(s2))
-        update_indices = sorted(s1.intersection(s2))
-
-        new_fvs = []
-        for x in add_indices:
-            new_fv = field_type.initialize_field_value()
-            cls.set_field_value_helper(field_type, new_fv, values[x])
-            new_fvs.append(new_fv)
-
-        updated_fvs = []
-        for x in update_indices:
-            cls.set_field_value_helper(field_type, old_field_values[x], values[x])
-            updated_fvs.append(old_field_values[x])
-
-        deleted_fvs = [old_field_values[x] for x in del_indices]
-
-        return {
-            'add': new_fvs,
-            'delete': deleted_fvs,
-            'update': updated_fvs
-        }
-
-    def set_field_value_array(self, name, values):
-        if not self.field_values:
-            self.field_values = []
-        fvs = self.field_value_array(name)
-        ft = self.sample_type.field_type(name)
-        if ft.array:
-            update_hash = self._update_field_value_array(fvs, ft, values)
-            other_fvs = [fv for fv in self.field_values if fv.name != ft.name]
-            self.field_values = other_fvs + update_hash['add'] + update_hash['update']
-            # self.field_values = update_hash['update'] + update_hash['add']
-            return update_hash
+    def _property_accessor(fv):
+        if fv.ftype == 'sample':
+            return fv.sample
         else:
-            raise AquariumModelError("Cannot update FieldValue array. FieldType \"{}\" is not an array.".format(name))
+            return fv.value
 
-    def initialize_field_value(self, name, val=None):
-        ft = self.sample_type.field_type(name)
-        fv = ft.initialize_field_value()
-        fv.set_as_sample_field_value(self)
-        if self.field_values is None:
-            self.field_values = []
-        self.field_values.append(fv)
-        if val:
-            self._set_field_value(fv, val)
-        return fv
+    @property
+    def properties(self):
+        return self._field_value_dictionary(
+            lambda ft: ft.name,
+            self._property_accessor
+        )
 
     def update_properties(self, prop_dict):
         """
@@ -2000,67 +1800,17 @@ class Sample(ModelBase):
         :return: self
         :rtype: Sample
         """
-        properties = self.properties
-        fv_dict = self._fv_dict()
-        for k, v in prop_dict.items():
-            fv = fv_dict.get(k)
-            if fv is None:
-                # then create a new field value
-                self.initialize_field_value(k, v)
-            elif isinstance(fv, list):
-                if isinstance(v, list):
-                    self.set_field_value_array(k, v)
-                else:
-                    raise AquariumModelError("Cannot update. The FieldValue '{}' is part of an array and "
-                                             "the properties expected a list, but it "
-                                             "instead received a '{}'".format(k, type(v)))
-            else:
-                self._set_field_value(fv, v)
-        return self
-
-    def _fv_dict(self):
-        """
-        Returns field_values grouped by their field_type name. If the field_type is an array,
-        then the value will be a list of FieldValues (or empty list). Otherwise the value will be a FieldValue or None.
-
-        :return: dictionary of field_values
-        :rtype: dict
-        """
-        properties = {}
-        field_values_by_name = {}
-        if self.field_values:
-            field_values_by_name = dict((k, list(v)) for k, v in groupby(self.field_values, lambda x: x.name))
-        for ft in self.sample_type.field_types:
-            if ft.array:
-                val = field_values_by_name.get(ft.name, [])
-                for fv in val:
-                    fv.field_type = ft
-            else:
-                val = field_values_by_name.get(ft.name, [None])[0]
-                if val:
-                    val.field_type = ft
-            properties[ft.name] = val
-        return properties
-
-    # TODO: put properties in a Mixin, along with all field_value methods?
-    @property
-    def properties(self):
-        fv_dict = self._fv_dict()
-        for name in fv_dict:
-            fvs = fv_dict[name]
-            if isinstance(fvs, list):
-                fv_dict[name] = [self._get_field_value_value(fv) for fv in fvs]
-            elif isinstance(fvs, FieldValue):
-                fv_dict[name] = self._get_field_value_value(fvs)
-            else:
-                fv_dict[name] = None
-        return fv_dict
+        pass
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
         this Sample to be connected to a session."""
-        result = self.session.utils.create_samples([self])
-        return self.reload(result['samples'][0])
+        self.session.utils.create_samples([self])
+        return self
+
+    def update(self):
+        self.session.utils.update_sample(self)
+        return self
 
     def available_items(self, object_type_name=None, object_type_id=None):
         query = {"name": object_type_name, "id": object_type_id}

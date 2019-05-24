@@ -85,12 +85,21 @@ class UtilityInterface(SessionInterface):
     # TODO: have ability to save new properties
     def create_samples(self, samples):
         json = [s.dump(include={"field_values"}) for s in samples]
+        assert len(json['samples']) == len(samples)
+        for updated_sample_data, sample in zip(json['samples'], samples):
+            sample.reload(updated_sample_data)
         return self.aqhttp.post('browser/create_samples', {"samples": json})
 
     def create_items(self, items):
         return [self.aqhttp.get('items/make/{}/{}'.format(
             i.sample.id, i.object_type.id))
             for i in items]
+
+    def create_field_value(self, field_value):
+        data = field_value.dump()
+        result = self.aqhttp.post('field_values.json', json_data=data)
+        field_value.reload(result)
+        return field_value
 
     def create_sample_type(self, sample_type):
         """
@@ -215,12 +224,22 @@ class UtilityInterface(SessionInterface):
 
     # TODO: BOOKMARK: update_sample
     def update_sample(self, sample):
-        for prop in sample.properties.values():
-            if isinstance(prop, list):
-                pass
-            elif isinstance(prop.__class__.__name__ == 'FieldValue'):
-                self.__json_update('FieldValue', prop.dump())
-        self.__json_update('Sample', sample)
+        for field_value in sample._fv_dict().values():
+            if isinstance(field_value, list):
+                fvs = field_value
+                existing_field_values = self.session.FieldValue.where({'parent_id': sample.id,
+                                                                       'parent_class': 'Sample'})
+                for fv in fvs:
+                    data = self.__json_update(fv)
+                    pass
+                for efv in existing_field_values:
+                    if efv.id not in [_.id for _ in fvs]:
+                        self.delete_field_value(efv)
+            elif field_value.__class__.__name__==  'FieldValue':
+                self.__json_update(field_value)
+        data = self.__json_update(sample)
+        return data
+
 
     def save_plan(self, plan):
         plan_data = plan.to_save_json()
