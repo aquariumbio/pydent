@@ -26,14 +26,12 @@ class TestModelRelationships:
     This code isn't ideal, but may be useful in conjunction with request vcr.
     """
 
-    # @pytest.fixture(params=ModelRegistry.models.values())
     @pytest.mark.parametrize('model_class,attr,relationship', relationship_pairs)
     def test_model_relationships(self, session, model_class, attr, relationship):
         """
         Tries to access nested relationships in an a model
         """
         interface = session.model_interface(model_class.__name__)
-        relationships = model_class.get_relationships()
 
         print("\nRelationships:")
 

@@ -77,13 +77,13 @@ class Planner(logger.Loggable, object):
     def __init__(self, session, plan_id=None):
         self.session = session
         self._browser = Browser(session)
-        self.plan_id = plan_id
-        if self.plan_id is not None:
-            self.plan = self._browser.find(self.plan_id, 'Plan')
-            if self.plan is None:
+
+        if plan_id is not None:
+            plan = self._browser.find(plan_id, 'Plan')
+            if plan is None:
                 raise PlannerException(
                     "Could not find plan with id={}".format(plan_id))
-            self.cache()
+            self.plan = plan
         else:
             self.plan = session.Plan.new()
         self.init_logger("Planner@plan_rid={}".format(self.plan.rid))
@@ -103,8 +103,14 @@ class Planner(logger.Loggable, object):
         return {
             "operations": {
                 "field_values": {
-                    "wires_as_dest": ["source", "destination"],
-                    "wires_as_source": ["source", "destination"],
+                    "wires_as_dest": {
+                        'source': 'operation',
+                        'destination': 'operation'
+                    },
+                    "wires_as_source": {
+                        'source': 'operation',
+                        'destination': 'operation'
+                    },
                     "sample": [],
                     "item": [],
                     "operation": [],
@@ -117,17 +123,34 @@ class Planner(logger.Loggable, object):
             }
         }
 
+    @property
+    def plan(self):
+        return self._plan
+
+    @plan.setter
+    def plan(self, new_plan):
+        self._plan = new_plan
+        self.cache()
+
+    def cache(self):
+        # ots = self.browser.where('OperationType', {'deployed': True})
+        # self.browser.retrieve(ots, 'field_types')
+        self._browser.update_cache([self.plan], recursive=True)
+        results = self._browser.recursive_retrieve([self.plan], self.cache_query())
+
+
     @classmethod
     def cache_plans(cls, browser, plans):
         browser.recursive_retrieve(plans, cls._cache_query())
         for plan in plans:
             wire_dict = {}
-            for op in plan.operations:
-                for fv in op.field_values:
-                    for w in fv.wires_as_dest:
-                        wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
-                    for w in fv.wires_as_source:
-                        wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
+            if plan.operations:
+                for op in plan.operations:
+                    for fv in op.field_values:
+                        for w in fv.wires_as_dest:
+                            wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
+                        for w in fv.wires_as_source:
+                            wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
             plan.wires = list(wire_dict.values())
         return plans
 
@@ -1110,6 +1133,9 @@ class Planner(logger.Loggable, object):
         except ImportError:
             print("Could not import IPython. This is likely not installed.")
 
+    # TODO: find redundant segments
+    # TODO: search functions for plans
+
     # TODO: procedure should run on topologically sorted operations, if there is the case that
     # two operations have different parents, then these operations are NOT mergable
     def optimize_plan(self, operations=None, ignore=None):
@@ -1258,19 +1284,18 @@ class Planner(logger.Loggable, object):
         # copy everything execpt plan, which may be large
         copied = empty_copy(self)
         data = self.__dict__.copy()
-        data.pop('plan')
+        data.pop('_plan')
         copied.__dict__ = deepcopy(data)
 
         # copy over anonymous copy
-        copied.plan = self.plan.copy()
-        copied.plan_id = None
+        copied._plan = self.plan.copy()
         return copied
 
     def __copy__(self):
         return self.copy()
 
     @staticmethod
-    def combine_plans(plans):
+    def combine(plans):
         copied_plans = [deepcopy(c) for c in plans]
 
         sessions = set([p.session for p in plans])
@@ -1284,10 +1309,14 @@ class Planner(logger.Loggable, object):
             print(len(p.plan.operations))
             new_plan.plan.operations += p.plan.operations
             new_plan.plan.wires += p.plan.wires
+        return new_plan
 
     def split(self):
-        """Split the plan into several distinct plans, if possible. This will return copies of all
-        the plans"""
+        """Split the plan into several distinct plans, if possible. This first convert the plan
+         to an operation graph, find subgraphs that are not connected to each other,
+         and create new plans based on these subgraphs. This will return anonymous copies of all
+        the plans, meaning operations and field_values will be anonymized. Sample and items attached to
+        field values will remain to avoid re-creating samples and items."""
 
         # copy this plan
         copied_plan = self.copy()

@@ -6,7 +6,7 @@ from pydent import models as pydent_models
 from pydent.utils import logger
 import pandas as pd
 from collections import OrderedDict
-
+from pydent.base import ModelBase
 # TODO: browser documentation
 # TODO: examples in sphinx
 
@@ -192,8 +192,19 @@ class Browser(logger.Loggable, object):
                 found_queries.append(match)
         return found, found_queries
 
+    def update_cache(self, models, recursive=True):
+        """Updates the model cache with models. If recursive=True, recursively collect all models contained
+        in the relationships and use those to update the cache as well."""
+        assert isinstance(models, list)
+        if recursive:
+            memo = {}
+            ModelBase._flatten_deserialized_data(models, memo)
+            models = list(memo.values())
+        return self._update_model_cache(models)
+
     # TODO: do we really want to simply overwrite the dictionary or update the models?
     def _update_model_cache_helper(self, modelname, modeldict):
+        """Updates the browser's model cache with models from the provided model dict"""
         self._info("CACHE updated cached with {} {} models".format(len(modeldict), modelname))
         self.model_cache.setdefault(modelname, {})
 

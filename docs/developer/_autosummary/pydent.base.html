@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.base &#8212; Trident 1.0.0a documentation</title>
+    <title>pydent.base &#8212; Trident 1.0.0a1 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.exceptions" href="pydent.exceptions.html" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.aqsession.html" title="pydent.aqsession"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
 <div>
 
 </div>
@@ -188,6 +188,12 @@ instance that loaded this model</li>
 <dd><p>Raises error if model is not connected to a session</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="pydent.base.ModelBase._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/base.html#ModelBase._flatten_deserialized_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.base.ModelBase._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.base.ModelBase._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase._get_data" title="Permalink to this definition">¶</a></dt>
@@ -201,9 +207,29 @@ instance that loaded this model</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.base.ModelBase._rid_dict">
+<code class="descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/base.html#ModelBase._rid_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.base.ModelBase._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.base.ModelBase.add_data">
 <code class="descname">add_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.base.ModelBase.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.base.ModelBase.anonymize">
+<code class="descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/base.html#ModelBase.anonymize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.base.ModelBase.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -234,6 +260,25 @@ instance that loaded this model</li>
 <dt id="pydent.base.ModelBase.connect_to_session">
 <code class="descname">connect_to_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/base.html#ModelBase.connect_to_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.base.ModelBase.connect_to_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.base.ModelBase.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>keep=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/base.html#ModelBase.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.base.ModelBase.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -385,7 +430,7 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.aqsession.html" title="pydent.aqsession"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

@@ -55,6 +55,7 @@ class ModelBase(SchemaModel):
     """
     PRIMARY_KEY = 'id'
     GLOBAL_KEY = 'rid'
+    DEFAULT_COPY_KEEP_UNANONYMOUS = ['Item', 'Sample', 'Collection']
     counter = itertools.count()
 
     def __new__(cls, *args, session=None, **kwargs):
@@ -65,7 +66,7 @@ class ModelBase(SchemaModel):
 
     def __init__(self, **data):
         super().__init__(data)
-        self.add_data({"rid": self._rid, "id": data.get('id', None)})
+        self.add_data({'rid': self._rid, "id": data.get('id', None)})
 
     @classmethod
     def _set_data(cls, data, calling_obj):
@@ -95,6 +96,11 @@ class ModelBase(SchemaModel):
     @property
     def rid(self):
         return self._rid
+
+    @rid.setter
+    def rid(self, _rid):
+        self._rid = _rid
+        self.add_data({'rid': self._rid})
 
     @property
     def _primary_key(self):
@@ -302,36 +308,91 @@ class ModelBase(SchemaModel):
         ]))
 
     # TODO: anonymize the keys for relationships as well
-    def annonymize(self):
+    def anonymize(self):
         """
-        Resets the primary key of the model and assigns a new rid
+        Resets the primary key of the model and assigns a new rid.
+
+        Metatypes cannot be annonymized.
 
         :return: self
         """
         if not self.__class__.__name__.endswith('Type'):
             setattr(self, self.PRIMARY_KEY, None)
-            setattr(self, self.GLOBAL_KEY, next(self.counter))
+            setattr(self, 'rid', next(self.counter))
             self.raw = {}
+
+    def _anonymize_field_keys(self, keep=None):
         for name, relation in self.get_relationships().items():
             if hasattr(relation, 'ref'):
-                print(relation.nested, relation.ref)
-                if not relation.nested.endswith('Type'):
+                if relation.nested.endswith('Type'):
+                    continue
+                elif keep and relation.nested in keep:
+                    continue
+                else:
                     setattr(self, relation.ref, None)
 
+    def copy(self, keep=None):
+        """
+        Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+        class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+        found in list of 'keep'
 
-    # TODO: deepcopy should not annonymize everything... e.g. OperationTypes should not be annonymized
-    def copy(self):
-        """Provides a deepcopy of the model, but annonymizes the primary and global keys unless"""
+        By default, inventory classes such as Sample, Item, and Collection are 'kept'.
+
+        This specific usecase is that when copying whole plans, that the integrity of the
+        inventory used in the operations is maintained. These are the items that refer
+        to physical inventory in the laboratory and are referred to by their `rids`, and
+        so it is important to that any of these inventory are always maintain their `rids`.
+        Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+        there is only ONE instance of inventory that is referred to by its rid.
+
+        Similarly, any metatype model must also maintain their `rid`.
+
+        :param keep: list of model classes (as a list of strings) to keep un-anonymous
+        :return: copied model
+        """
         memo = {}
         copied = deepcopy(self, memo)
+        if keep is None:
+            keep = self.DEFAULT_COPY_KEEP_UNANONYMOUS
+
         for m in memo.values():
             if issubclass(type(m), ModelBase):
-                m.annonymize()
+                if keep is None or m.__class__.__name__ not in keep:
+                    m.anonymize()
+                m._anonymize_field_keys(keep=keep)
         return copied
+
+    @classmethod
+    def _flatten_deserialized_data(cls, models, memo):
+        """Flattens all of the relationships found in the models, returning a rid: model dictionary"""
+        if models is None:
+            return memo
+        for model in models:
+
+            if model is None or model.rid in memo:
+                continue
+            else:
+                memo[model.rid] = model
+                data = model._get_deserialized_data()
+                for key in model.get_relationships():
+                    val = data.get(key, None)
+                    if val is None:
+                        continue
+                    elif isinstance(val, list):
+                        cls._flatten_deserialized_data(val, memo)
+                    else:
+                        cls._flatten_deserialized_data([val], memo)
+        return memo
+
+    def _rid_dict(self):
+        """Dictionary of all models attached to this model keyed by their rid"""
+        memo = {}
+        self._flatten_deserialized_data([self], memo)
+        return memo
 
     def __copy__(self):
         return self.copy()
-
 
     #     return cp
     # def patch(self, json_data):

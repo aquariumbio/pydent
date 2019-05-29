@@ -30,7 +30,7 @@ If you have not already installed, Guzzle, head over to the :doc:`overview` page
     session = session()
 
 
-Loggin in
+Logging in
 ---------
 
 .. code:: python

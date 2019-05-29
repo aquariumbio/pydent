@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.planner.planner &#8212; Trident 1.0.0a documentation</title>
+    <title>pydent.planner.planner &#8212; Trident 1.0.0a1 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
 <div>
 
 </div>
@@ -121,16 +121,21 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
 <span class="kn">from</span> <span class="nn">uuid</span> <span class="k">import</span> <span class="n">uuid4</span>
 
-<span class="kn">from</span> <span class="nn">networkx</span> <span class="k">import</span> <span class="n">nx</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 <span class="kn">from</span> <span class="nn">pydent.browser</span> <span class="k">import</span> <span class="n">Browser</span>
 <span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">FieldValue</span><span class="p">,</span> <span class="n">Operation</span>
 <span class="kn">from</span> <span class="nn">pydent.planner.layout</span> <span class="k">import</span> <span class="n">PlannerLayout</span>
 <span class="kn">from</span> <span class="nn">pydent.planner.utils</span> <span class="k">import</span> <span class="n">arr_to_pairs</span><span class="p">,</span> <span class="n">_id_getter</span><span class="p">,</span> <span class="n">get_subgraphs</span>
-<span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">filter_list</span><span class="p">,</span> <span class="n">make_async</span><span class="p">,</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">make_async</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">empty_copy</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span>
 
 
 <div class="viewcode-block" id="PlannerException"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.PlannerException">[docs]</a><span class="k">class</span> <span class="nc">PlannerException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -175,8 +180,9 @@
         <span class="n">RESTRICT</span> <span class="o">=</span> <span class="s2">&quot;RESTRICT&quot;</span>  <span class="c1"># restrict to the currently set allowable_field_type</span>
         <span class="n">PREFERRED</span> <span class="o">=</span> <span class="s2">&quot;PREFERRED&quot;</span>  <span class="c1"># (default) pick the item that matches the currently set allowable_field_type, else</span>
         <span class="c1"># pick ANY item that matches the set field_value</span>
+        <span class="n">RESTRICT_TO_ONE</span> <span class="o">=</span> <span class="s2">&quot;RESTRICT TO ONE&quot;</span>  <span class="c1"># will not select item if its being used in another active operation</span>
         <span class="n">_DEFAULT</span> <span class="o">=</span> <span class="n">PREFERRED</span>
-        <span class="n">_CHOICES</span> <span class="o">=</span> <span class="p">[</span><span class="n">ANY</span><span class="p">,</span> <span class="n">RESTRICT</span><span class="p">,</span> <span class="n">PREFERRED</span><span class="p">]</span>
+        <span class="n">_CHOICES</span> <span class="o">=</span> <span class="p">[</span><span class="n">ANY</span><span class="p">,</span> <span class="n">RESTRICT</span><span class="p">,</span> <span class="n">PREFERRED</span><span class="p">,</span> <span class="n">RESTRICT_TO_ONE</span><span class="p">]</span>
 
     <span class="k">class</span> <span class="nc">ITEM_ORDER_PREFERENCE</span><span class="p">:</span>
 
@@ -189,37 +195,85 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">plan_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plan_id</span> <span class="o">=</span> <span class="n">plan_id</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan_id</span><span class="p">,</span> <span class="s1">&#39;Plan&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">plan_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">plan_id</span><span class="p">,</span> <span class="s1">&#39;Plan&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">plan</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span>
                     <span class="s2">&quot;Could not find plan with id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="n">plan</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Plan</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init_logger</span><span class="p">(</span><span class="s2">&quot;Planner@plan_rid=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">rid</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># ots = self.browser.where(&#39;OperationType&#39;, {&#39;deployed&#39;: True})</span>
-        <span class="c1"># self.browser.retrieve(ots, &#39;field_types&#39;)</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">recursive_retrieve</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">],</span> <span class="p">{</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_plans</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">plans</span><span class="p">):</span>
+        <span class="n">browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">cache_plans</span><span class="p">(</span><span class="n">browser</span><span class="p">,</span> <span class="n">plans</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">plan</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">:</span>
+            <span class="n">planner</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">()</span>
+            <span class="n">planner</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="n">browser</span>
+            <span class="n">planner</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+            <span class="n">planner</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="n">plan</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_cache_query</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;operations&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;field_values&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;wires_as_dest&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;destination&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;wires_as_source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;destination&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;wires_as_dest&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;operation&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;destination&#39;</span><span class="p">:</span> <span class="s1">&#39;operation&#39;</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;wires_as_source&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;operation&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;destination&#39;</span><span class="p">:</span> <span class="s1">&#39;operation&#39;</span>
+                    <span class="p">},</span>
                     <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="p">[],</span>
                     <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="p">[],</span>
                     <span class="s2">&quot;operation&quot;</span><span class="p">:</span> <span class="p">[],</span>
                     <span class="s2">&quot;field_type&quot;</span><span class="p">:</span> <span class="p">[]</span>
                 <span class="p">},</span>
+                <span class="s1">&#39;plan_associations&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;plan&#39;</span><span class="p">],</span>
                 <span class="s2">&quot;operation_type&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;field_types&quot;</span><span class="p">:</span> <span class="p">[]</span>
                 <span class="p">}</span>
             <span class="p">}</span>
-        <span class="p">})</span>
-        <span class="n">wires</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;wires_as_dest&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;wires_as_source&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span> <span class="o">=</span> <span class="n">wires</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">plan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span>
+
+    <span class="nd">@plan</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_plan</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span> <span class="o">=</span> <span class="n">new_plan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ots = self.browser.where(&#39;OperationType&#39;, {&#39;deployed&#39;: True})</span>
+        <span class="c1"># self.browser.retrieve(ots, &#39;field_types&#39;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">update_cache</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">],</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">recursive_retrieve</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_query</span><span class="p">())</span>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">cache_plans</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">browser</span><span class="p">,</span> <span class="n">plans</span><span class="p">):</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">recursive_retrieve</span><span class="p">(</span><span class="n">plans</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_cache_query</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">plan</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">:</span>
+            <span class="n">wire_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">fv</span><span class="o">.</span><span class="n">wires_as_dest</span><span class="p">:</span>
+                            <span class="n">wire_dict</span><span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">wire_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">fv</span><span class="o">.</span><span class="n">wires_as_source</span><span class="p">:</span>
+                            <span class="n">wire_dict</span><span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">wire_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+            <span class="n">plan</span><span class="o">.</span><span class="n">wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wire_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">plans</span>
+
+    <span class="k">def</span> <span class="nf">cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_plans</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">])</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -233,6 +287,9 @@
     <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&quot;plans?plan_id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Planner.create"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the plan on Aquarium&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
@@ -243,11 +300,16 @@
                 <span class="n">save</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                 <span class="n">replan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">replan</span><span class="o">.</span><span class="vm">__name__</span>
             <span class="p">))</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></div>
 
+    <span class="c1"># TODO: fix this &#39;set_timeout&#39; to not be global</span>
 <div class="viewcode-block" id="Planner.save"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the plan on Aquarium&quot;&quot;&quot;</span>
+        <span class="n">prev_timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">_AqSession__aqhttp</span><span class="o">.</span><span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="n">prev_timeout</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span></div>
 
     <span class="k">def</span> <span class="nf">create_operation_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ot</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;planning&quot;</span><span class="p">):</span>
@@ -281,6 +343,8 @@
         <span class="k">if</span> <span class="n">model1</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model2</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">model1</span><span class="o">.</span><span class="n">_primary_key</span> <span class="o">==</span> <span class="n">model2</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">model1</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">model2</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">get_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
@@ -305,11 +369,21 @@
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">wire</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wire</span><span class="p">(</span><span class="n">fv1</span><span class="p">,</span> <span class="n">fv2</span><span class="p">)</span>
+        <span class="n">wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">wire</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;removing wire from </span><span class="si">{}</span><span class="s2"> to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fv1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">fv2</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-            <span class="n">fv1</span><span class="o">.</span><span class="n">wires_as_source</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
-            <span class="n">fv2</span><span class="o">.</span><span class="n">wires_as_dest</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span></div>
+            <span class="n">wires_as_source</span> <span class="o">=</span> <span class="n">fv1</span><span class="o">.</span><span class="n">wires_as_source</span>
+            <span class="n">wires_as_dest</span> <span class="o">=</span> <span class="n">fv2</span><span class="o">.</span><span class="n">wires_as_dest</span>
+
+            <span class="n">wires_as_source</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
+            <span class="n">wires_as_dest</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
+
+            <span class="n">fv1</span><span class="o">.</span><span class="n">wires_as_source</span> <span class="o">=</span> <span class="n">wires_as_source</span>
+            <span class="n">fv2</span><span class="o">.</span><span class="n">wires_as_dest</span> <span class="o">=</span> <span class="n">wires_as_dest</span>
+
+            <span class="n">wires</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span> <span class="o">=</span> <span class="n">wires</span>
+        <span class="k">return</span> <span class="n">wire</span></div>
 
     <span class="nd">@plan_verification_wrapper</span>
     <span class="k">def</span> <span class="nf">get_outgoing_wires</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
@@ -562,7 +636,8 @@
         <span class="c1"># TODO: automatically wire to empty FV if they are equivalent</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model_inputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">strict</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot quick wire. Ambiguous wiring between inputs [</span><span class="si">{}</span><span class="s2">] for </span><span class="si">{}</span><span class="s2"> and outputs [</span><span class="si">{}</span><span class="s2">] for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot quick wire. Ambiguous wiring between inputs [</span><span class="si">{}</span><span class="s2">] for </span><span class="si">{}</span><span class="s2"> and outputs [</span><span class="si">{}</span><span class="s2">] for </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Instead, try to use `add_wire` method to wire together two FieldValues.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">fv</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">model_inputs</span><span class="p">]),</span>
                     <span class="n">model_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                     <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">fv</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">model_outputs</span><span class="p">]),</span>
@@ -594,6 +669,43 @@
         <span class="n">op1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_operations_by_name</span><span class="p">(</span><span class="n">otname1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">op2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_operations_by_name</span><span class="p">(</span><span class="n">otname2</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quick_wire</span><span class="p">(</span><span class="n">op1</span><span class="p">,</span> <span class="n">op2</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">clean_wires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wires_by_id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">wire</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">_id</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">,</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">)</span>
+                <span class="n">wires_by_id</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">wire</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+                <span class="n">wires_as_source</span> <span class="o">=</span> <span class="n">fv</span><span class="o">.</span><span class="n">wires_as_source</span>
+                <span class="n">wires_as_dest</span> <span class="o">=</span> <span class="n">fv</span><span class="o">.</span><span class="n">wires_as_dest</span>
+
+                <span class="k">if</span> <span class="n">wires_as_source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">wires_as_source</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="n">wires_as_dest</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">wires_as_dest</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="n">fv</span><span class="o">.</span><span class="n">wires_as_source</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">wires_as_source</span><span class="p">))</span>
+                <span class="n">fv</span><span class="o">.</span><span class="n">wires_as_dest</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">wires_as_dest</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wires_by_id</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">remove_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ops</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clean_wires</span><span class="p">()</span>
+        <span class="n">operations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span>
+        <span class="n">wires</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="p">)</span>
+        <span class="n">wires_to_remove</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ops</span><span class="p">:</span>
+            <span class="n">operations</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+                <span class="n">wires_to_remove</span> <span class="o">=</span> <span class="n">wires_to_remove</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">fv</span><span class="o">.</span><span class="n">wires_as_source</span><span class="p">))</span>
+                <span class="n">wires_to_remove</span> <span class="o">=</span> <span class="n">wires_to_remove</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">fv</span><span class="o">.</span><span class="n">wires_as_dest</span><span class="p">))</span>
+
+        <span class="n">wires</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wires</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">wires_to_remove</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="n">operations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span> <span class="o">=</span> <span class="n">wires</span>
 
     <span class="c1"># TODO: resolve afts if already set...</span>
     <span class="c1"># TODO: clean up _set_wire</span>
@@ -666,7 +778,7 @@
         <span class="k">if</span> <span class="n">wire</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># wire does not exist, so create it</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_wire</span><span class="p">(</span><span class="n">fv1</span><span class="p">,</span> <span class="n">fv2</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wire</span><span class="p">(</span><span class="n">fv1</span><span class="p">,</span> <span class="n">fv2</span><span class="p">)</span>
+            <span class="n">wire</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wire</span><span class="p">(</span><span class="n">fv1</span><span class="p">,</span> <span class="n">fv2</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;wired </span><span class="si">{}</span><span class="s2"> to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fv1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">fv2</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">wire</span></div>
 
@@ -784,15 +896,36 @@
         <span class="c1"># restrict allowable_field_types based on preference</span>
         <span class="n">afts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">allowable_field_types</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">item_preference</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">RESTRICT</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item_preference</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">RESTRICT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">RESTRICT_TO_ONE</span><span class="p">]:</span>
             <span class="n">afts</span> <span class="o">=</span> <span class="p">[</span><span class="n">field_value</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">item_preference</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">ANY</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">PREFERRED</span><span class="p">]:</span>
-            <span class="n">afts</span> <span class="o">=</span> <span class="p">[</span><span class="n">aft</span> <span class="k">for</span> <span class="n">aft</span> <span class="ow">in</span> <span class="n">field_value</span><span class="o">.</span><span class="n">field_types</span> <span class="k">if</span> <span class="n">aft</span><span class="o">.</span><span class="n">sample</span><span class="p">]</span>
+        <span class="c1"># elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:</span>
+        <span class="c1">#     afts = [aft for aft in field_value.field_type.allowable_field_types if aft.sample]</span>
         <span class="k">if</span> <span class="n">item_preference</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">PREFERRED</span><span class="p">:</span>
             <span class="n">afts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">afts</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">aft</span><span class="p">:</span> <span class="n">aft</span><span class="o">.</span><span class="n">sample_type_id</span> <span class="o">==</span> <span class="n">sample</span><span class="o">.</span><span class="n">sample_type_id</span><span class="p">)</span>
 
         <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;object_type_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">aft</span><span class="o">.</span><span class="n">object_type_id</span> <span class="k">for</span> <span class="n">aft</span> <span class="ow">in</span> <span class="n">afts</span><span class="p">]})</span>
         <span class="k">return</span> <span class="n">query</span>
+
+<div class="viewcode-block" id="Planner.reserved_items"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.reserved_items">[docs]</a>    <span class="k">def</span> <span class="nf">reserved_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary of item_ids and the array of field_values that use them&quot;&quot;&quot;</span>
+        <span class="n">browser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span>
+        <span class="n">item_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+        <span class="n">server_fvs</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;child_item_id&quot;</span><span class="p">:</span> <span class="n">item_ids</span><span class="p">},</span> <span class="n">model_class</span><span class="o">=</span><span class="s1">&#39;FieldValue&#39;</span><span class="p">)</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">server_fvs</span><span class="p">,</span> <span class="s1">&#39;operation&#39;</span><span class="p">)</span>
+        <span class="n">server_fvs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fv</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">server_fvs</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;planning&#39;</span><span class="p">]</span>
+
+        <span class="n">these_fvs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">child_item_id</span> <span class="ow">in</span> <span class="n">item_ids</span><span class="p">:</span>
+                    <span class="n">these_fvs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
+
+        <span class="n">fvs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">server_fvs</span> <span class="o">+</span> <span class="n">these_fvs</span><span class="p">))</span>
+
+        <span class="n">item_id_to_fv</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">fvs</span><span class="p">:</span>
+            <span class="n">item_id_to_fv</span><span class="p">[</span><span class="n">fv</span><span class="o">.</span><span class="n">child_item_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">item_id_to_fv</span></div>
 
     <span class="nd">@plan_verification_wrapper</span>
     <span class="k">def</span> <span class="nf">get_available_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_value</span><span class="p">,</span> <span class="n">item_preference</span><span class="p">):</span>
@@ -800,31 +933,62 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">sample</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="k">if</span> <span class="n">item_preference</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">_CHOICES</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span><span class="s2">&quot;Item selection preference </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2"> not recognized&quot;</span>
-                                   <span class="s2">&quot; Please select from one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item_preference</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">_CHOICES</span><span class="p">)))</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sample_id&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
-
-        <span class="c1"># restrict allowable_field_types based on preference</span>
-        <span class="n">afts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">allowable_field_types</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">item_preference</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">RESTRICT</span><span class="p">:</span>
-            <span class="n">afts</span> <span class="o">=</span> <span class="p">[</span><span class="n">field_value</span><span class="o">.</span><span class="n">allowable_field_type</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">item_preference</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">ANY</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">PREFERRED</span><span class="p">]:</span>
-            <span class="n">afts</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="n">afts</span><span class="p">,</span> <span class="n">sample_type_id</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_type_id</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">item_preference</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">PREFERRED</span><span class="p">:</span>
-            <span class="n">afts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">afts</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">aft</span><span class="p">:</span> <span class="n">aft</span><span class="o">.</span><span class="n">sample_type_id</span> <span class="o">==</span> <span class="n">sample</span><span class="o">.</span><span class="n">sample_type_id</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">afts</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[]</span>
-
-        <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;object_type_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">aft</span><span class="o">.</span><span class="n">object_type_id</span> <span class="k">for</span> <span class="n">aft</span> <span class="ow">in</span> <span class="n">afts</span><span class="p">]})</span>
-
+        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_preference_query</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">field_value</span><span class="p">,</span> <span class="n">item_preference</span><span class="p">)</span>
         <span class="n">available_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Item</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">available_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">available_items</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">location</span> <span class="o">!=</span> <span class="s1">&#39;deleted&#39;</span><span class="p">]</span>
+
+
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">available_items</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">item_preference</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ITEM_SELECTION_PREFERENCE</span><span class="o">.</span><span class="n">RESTRICT_TO_ONE</span><span class="p">:</span>
+            <span class="n">reserved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reserved_items</span><span class="p">(</span><span class="n">available_items</span><span class="p">)</span>
+            <span class="n">available_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">available_items</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">reserved</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">id</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> items are reserved&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">available_items</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">available_items</span>
+
+<div class="viewcode-block" id="Planner.distribute_items_of_object_type"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.distribute_items_of_object_type">[docs]</a>    <span class="k">def</span> <span class="nf">distribute_items_of_object_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Distribute items of a particular object_type across non-planning operations across</span>
+<span class="sd">         existing plans and these operations in this Planner instance. E.g. distributing</span>
+<span class="sd">         one-shot yeast competent cell aliquots&quot;&quot;&quot;</span>
+        <span class="c1"># collect items of that type used</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">browser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">item</span>
+                <span class="k">if</span> <span class="n">item</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">object_type_id</span> <span class="o">==</span> <span class="n">object_type</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="c1"># find all field_values that use this item</span>
+        <span class="n">item_id_to_fv</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="n">item_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+        <span class="n">fvs</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;child_item_id&quot;</span><span class="p">:</span> <span class="n">item_ids</span><span class="p">},</span> <span class="n">model_class</span><span class="o">=</span><span class="s1">&#39;FieldValue&#39;</span><span class="p">)</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">fvs</span><span class="p">,</span> <span class="s1">&#39;operation&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">fvs</span><span class="p">:</span>
+            <span class="n">item_id_to_fv</span><span class="p">[</span><span class="n">fv</span><span class="o">.</span><span class="n">child_item_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
+
+        <span class="n">distributed</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">fvs</span> <span class="o">=</span> <span class="n">item_id_to_fv</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+            <span class="c1"># filter by operations that are submitted</span>
+            <span class="n">fvs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fv</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">fvs</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;planning&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">available_items</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;sample_id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">sample_id</span><span class="p">,</span> <span class="s1">&#39;object_type_id&#39;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">object_type_id</span><span class="p">},</span>
+                                                <span class="n">model_class</span><span class="o">=</span><span class="s1">&#39;Item&#39;</span><span class="p">)</span>
+                <span class="n">available_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">available_items</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">location</span> <span class="o">!=</span> <span class="s1">&#39;deleted&#39;</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Item </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> is used in </span><span class="si">{}</span><span class="s2"> inputs. There are </span><span class="si">{}</span><span class="s2"> available items.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                                                              <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">),</span>
+                                                                                              <span class="nb">len</span><span class="p">(</span><span class="n">available_items</span><span class="p">)))</span>
+
+                <span class="k">for</span> <span class="n">fv</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">zip_longest</span><span class="p">(</span><span class="n">fvs</span><span class="p">,</span> <span class="n">available_items</span><span class="p">,</span> <span class="n">fillvalue</span><span class="o">=</span><span class="s1">&#39;&amp;&amp;&amp;&#39;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">fv</span> <span class="o">!=</span> <span class="s1">&#39;&amp;&amp;&amp;&#39;</span> <span class="ow">and</span> <span class="n">item</span> <span class="o">!=</span> <span class="s1">&#39;&amp;&amp;&amp;&#39;</span><span class="p">:</span>
+                        <span class="n">distributed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">fv</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">distributed</span><span class="p">:</span>
+            <span class="n">fv</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Planner.set_to_available_item"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_to_available_item">[docs]</a>    <span class="nd">@plan_verification_wrapper</span>
     <span class="k">def</span> <span class="nf">set_to_available_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fv</span><span class="p">,</span> <span class="n">order_preference</span><span class="o">=</span><span class="n">ITEM_ORDER_PREFERENCE</span><span class="o">.</span><span class="n">_DEFAULT</span><span class="p">,</span> <span class="n">filter_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1081,9 +1245,17 @@
         <span class="k">return</span> <span class="n">hashgroup</span>
 
     <span class="k">def</span> <span class="nf">ipython_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
-        <span class="k">return</span> <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;a href=</span><span class="se">\&quot;</span><span class="si">{url}</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="si">{url}</span><span class="s2">&lt;/a&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+            <span class="k">return</span> <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;a href=</span><span class="se">\&quot;</span><span class="si">{url}</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="si">{url}</span><span class="s2">&lt;/a&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)))</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not import IPython. This is likely not installed.&quot;</span><span class="p">)</span>
 
+    <span class="c1"># TODO: find redundant segments</span>
+    <span class="c1"># TODO: search functions for plans</span>
+
+    <span class="c1"># TODO: procedure should run on topologically sorted operations, if there is the case that</span>
+    <span class="c1"># two operations have different parents, then these operations are NOT mergable</span>
 <div class="viewcode-block" id="Planner.optimize_plan"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.optimize_plan">[docs]</a>    <span class="k">def</span> <span class="nf">optimize_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Optimizes a plan by removing redundent operations.</span>
@@ -1097,21 +1269,35 @@
         <span class="k">if</span> <span class="n">operations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">op</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span> <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;planning&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">ignore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ignore</span><span class="p">:</span>
             <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">op</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">operations</span> <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore</span><span class="p">]</span>
         <span class="n">groups</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_ops_by_hashes</span><span class="p">(</span>
             <span class="n">operations</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">}</span>
-
         <span class="n">num_inputs_rewired</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">num_outputs_rewired</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">ops_to_remove</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">gops</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">op</span> <span class="o">=</span> <span class="n">gops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">other_ops</span> <span class="o">=</span> <span class="n">gops</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="n">op_graph</span> <span class="o">=</span> <span class="n">PlannerLayout</span><span class="o">.</span><span class="n">from_plan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">)</span><span class="o">.</span><span class="n">G</span>
+        <span class="n">sorted_nodes</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">op_graph</span><span class="p">)</span>
+
+        <span class="n">visited_groups</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sorted_nodes</span><span class="p">:</span>
+            <span class="n">node_data</span> <span class="o">=</span> <span class="n">op_graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">node_data</span><span class="p">[</span><span class="s1">&#39;operation&#39;</span><span class="p">]</span>
+            <span class="n">op_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_to_hash</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">op_hash</span> <span class="ow">in</span> <span class="n">visited_groups</span> <span class="ow">or</span> <span class="n">op_hash</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">visited_groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">op_hash</span><span class="p">)</span>
+            <span class="n">grouped_ops</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="n">op_hash</span><span class="p">]</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">grouped_ops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">other_ops</span> <span class="o">=</span> <span class="n">grouped_ops</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+            <span class="c1"># merge wires from other ops into op wires</span>
             <span class="k">for</span> <span class="n">other_op</span> <span class="ow">in</span> <span class="n">other_ops</span><span class="p">:</span>
                 <span class="n">connected_ops</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_op_successors</span><span class="p">(</span><span class="n">other_op</span><span class="p">)</span>
                 <span class="n">connected_ops</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_op_predecessors</span><span class="p">(</span><span class="n">other_op</span><span class="p">)</span>
+
                 <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">_op</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;planning&quot;</span> <span class="k">for</span> <span class="n">_op</span> <span class="ow">in</span> <span class="n">connected_ops</span><span class="p">]):</span>
                     <span class="c1"># only optimize if ALL connected operations are in planning status</span>
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">other_op</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
@@ -1129,8 +1315,11 @@
                                 <span class="bp">self</span><span class="o">.</span><span class="n">add_wire</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">w</span><span class="o">.</span><span class="n">destination</span><span class="p">)</span>
                                 <span class="n">num_outputs_rewired</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">ops_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">other_op</span><span class="p">)</span>
+
+        <span class="n">operations_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span>
         <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ops_to_remove</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+            <span class="n">operations_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="n">operations_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2"> operations removed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ops_to_remove</span><span class="p">)))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2"> input wires re-wired&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_inputs_rewired</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2"> output wires re-wired&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_outputs_rewired</span><span class="p">))</span></div>
@@ -1206,6 +1395,75 @@
         <span class="k">return</span> <span class="n">errors</span></div>
         <span class="c1"># return routes</span>
 
+    <span class="c1"># TODO: implement planner.copy and anonymize the operations and field_values by removing their ids</span>
+<div class="viewcode-block" id="Planner.copy"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of this planner, with a new anonymous copy of the plan. Browser cache is copied as well,</span>
+<span class="sd">        but model_cache in browser are not anonymous&quot;&quot;&quot;</span>
+        <span class="c1"># copy everything execpt plan, which may be large</span>
+        <span class="n">copied</span> <span class="o">=</span> <span class="n">empty_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_plan&#39;</span><span class="p">)</span>
+        <span class="n">copied</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># copy over anonymous copy</span>
+        <span class="n">copied</span><span class="o">.</span><span class="n">_plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">copied</span></div>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="n">plans</span><span class="p">):</span>
+        <span class="n">copied_plans</span> <span class="o">=</span> <span class="p">[</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">]</span>
+
+        <span class="n">sessions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">session</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sessions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span><span class="s2">&quot;Cannot combine plans, plans must all derive from same session instance&quot;</span><span class="p">)</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">sessions</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+        <span class="n">new_plan</span> <span class="o">=</span> <span class="n">Planner</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+        <span class="n">new_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">copied_plans</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">))</span>
+            <span class="n">new_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span> <span class="o">+=</span> <span class="n">p</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span>
+            <span class="n">new_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span> <span class="o">+=</span> <span class="n">p</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span>
+        <span class="k">return</span> <span class="n">new_plan</span>
+
+<div class="viewcode-block" id="Planner.split"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Split the plan into several distinct plans, if possible. This first convert the plan</span>
+<span class="sd">         to an operation graph, find subgraphs that are not connected to each other,</span>
+<span class="sd">         and create new plans based on these subgraphs. This will return anonymous copies of all</span>
+<span class="sd">        the plans, meaning operations and field_values will be anonymized. Sample and items attached to</span>
+<span class="sd">        field values will remain to avoid re-creating samples and items.&quot;&quot;&quot;</span>
+
+        <span class="c1"># copy this plan</span>
+        <span class="n">copied_plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># get independent operation graphs</span>
+        <span class="n">layouts</span> <span class="o">=</span> <span class="n">copied_plan</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">get_independent_layouts</span><span class="p">()</span>
+
+        <span class="c1"># for each independent graph, make a new plan</span>
+        <span class="n">new_plans</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">layout</span> <span class="ow">in</span> <span class="n">layouts</span><span class="p">:</span>
+            <span class="n">new_plan</span> <span class="o">=</span> <span class="n">Planner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+            <span class="n">new_plans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_plan</span><span class="p">)</span>
+
+            <span class="c1"># copy over the operations</span>
+            <span class="n">opids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+            <span class="n">ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">layout</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">opid</span><span class="p">][</span><span class="s1">&#39;operation&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">opid</span> <span class="ow">in</span> <span class="n">opids</span><span class="p">]</span>
+            <span class="n">wires</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># copy over relevant wires</span>
+            <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="n">copied_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
+                <span class="n">to_id</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">_primary_key</span>
+                <span class="n">from_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wire</span><span class="p">,</span> <span class="s1">&#39;from&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">_primary_key</span>
+                <span class="k">if</span> <span class="n">to_id</span> <span class="ow">in</span> <span class="n">opids</span> <span class="ow">or</span> <span class="n">from_id</span> <span class="ow">in</span> <span class="n">opids</span><span class="p">:</span>
+                    <span class="n">wires</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
+
+            <span class="n">new_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="n">ops</span>
+            <span class="n">new_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span> <span class="o">=</span> <span class="n">wires</span>
+        <span class="k">return</span> <span class="n">new_plans</span></div>
+
     <span class="c1"># TODO: implement individual wires and things</span>
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span>
@@ -1221,6 +1479,7 @@
                 <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span>
             <span class="n">edge_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
         <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">edge_colors</span><span class="o">=</span><span class="n">edge_colors</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span></div>
+
 </pre></div>
 
           </div>
@@ -1237,7 +1496,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

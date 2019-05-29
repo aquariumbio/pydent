@@ -33,18 +33,30 @@ class PlannerLayout(object):
         self.G = G
         self.annotations = []
 
+
     @classmethod
     def from_plan(cls, plan: Plan):
         """Creates a layout from a :class:`pydent.models.Plan` instance"""
         G = nx.DiGraph()
         layout = cls(G)
 
+        # store reference of operation
+        fv_to_op_dict = {}
+        for op in plan.operations:
+            for fv in op.field_values:
+                fv_to_op_dict[fv.rid] = op
+
         @make_async(10, progress_bar=False)
         def add_wires(wires):
             missing_operations = []
             for wire in wires:
-                from_id = _id_getter(wire.source.operation)
-                to_id = _id_getter(wire.destination.operation)
+                # TODO:
+                try:
+                    from_id = _id_getter(fv_to_op_dict[wire.source.rid])
+                    to_id = _id_getter(fv_to_op_dict[wire.destination.rid])
+                except KeyError as e:
+                    pass
+                    raise e
                 if from_id is not None and to_id is not None:
                     if from_id not in G:
                         missing_operations.append(from_id)
