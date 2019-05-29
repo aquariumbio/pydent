@@ -217,7 +217,7 @@ class FieldValueInterface(object):
             lambda fv: fv.sid
         )
 
-# TODO: handle uploaded files (only safe files)
+
 class DataAssociatorMixin:
     """
     Mixin for handling data associations
@@ -639,6 +639,7 @@ class FieldValue(FieldMixin, ModelBase):
             wire = Wire(source=self, destination=destination)
         self.add_outgoing_wire(wire)
         destination.add_incoming_wire(wire)
+        return wire
 
     def wire_from(self, source):
         """
@@ -660,7 +661,6 @@ class FieldValue(FieldMixin, ModelBase):
             wire = Wire(source=source, destination=self)
         source.add_outgoing_wire(wire)
         self.add_incoming_wire(wire)
-        return wire
         return wire
 
     def add_incoming_wire(self, wire):
@@ -727,7 +727,6 @@ class FieldValue(FieldMixin, ModelBase):
         self.column = None
 
     # TODO: have field_value resolve the ids when it is dumped? Or how does this work?
-    # TODO: object_type isn't a real attribute, its just for AFT
     def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
         if row is not None:
             if not self.field_type.part:
@@ -1516,34 +1515,47 @@ class Plan(DataAssociatorMixin, ModelBase):
 
         return src.wire_to(dest)
 
+    # TODO: assert incoming and outgoing wires are the same
     def _collect_wires(self):
-        wires = []
+        incoming_wires = []
+        outgoing_wires = []
         if self.operations:
             for operation in self.operations:
                 if operation.field_values:
                     for field_value in operation.field_values:
                         if field_value.outgoing_wires:
-                            wires += field_value.outgoing_wires
+                            outgoing_wires += field_value.outgoing_wires
                         if field_value.incoming_wires:
-                            wires += field_value.incoming_wires
-        return wires
+                            incoming_wires += field_value.incoming_wires
+        return incoming_wires, outgoing_wires
 
-    # TODO: BOOKMARK: fix _get_wires upon plan loading; implement rewire_to and rewire_from; implement _merge_wires after __init__?
-    def _get_wires(self, *args):
-        wires = self._collect_wires()
+    def _get_wire_dict(self, wires):
+        """Return all wires in the plan grouped by the wire identifier"""
         wire_dict = {}
         for w in wires:
             wire_dict.setdefault(w.identifier, list())
             if w not in wire_dict[w.identifier]:
                 wire_dict[w.identifier].append(w)
+        return wire_dict
 
-        for warr in wire_dict.values():
+    # TODO: BOOKMARK: fix _get_wires upon plan loading; implement rewire_to and rewire_from; implement _merge_wires after __init__?
+    def _get_wires(self, *args):
+        incoming_wires, outgoing_wires = self._collect_wires()
+
+        iwiredict = self._get_wire_dict(incoming_wires)
+        owiredict = self._get_wire_dict(outgoing_wires)
+
+        for warr in iwiredict.values():
             if len(warr) > 1:
-                raise AquariumModelError("There are duplicate wires in the plan. " \
-                                         "This means there is more than one instance of Wires that refer to the "
-                                         "exact same FieldValues. This can lead to unintended consequences.")
+                raise AquariumModelError("There are duplicate wires in the plan")
 
-        return sorted(wires, key=lambda w: w.id)
+        for warr in owiredict.values():
+            if len(warr) > 1:
+                raise AquariumModelError("There are duplicate wires in the plan")
+
+        assert len(iwiredict) == len(owiredict)
+
+        return sorted(incoming_wires, key=lambda w: w.id)
 
     # TODO: plan.create should be implicit in 'save'
     def create(self):
