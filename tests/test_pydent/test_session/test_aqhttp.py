@@ -2,7 +2,6 @@ import json
 import os
 
 import pytest
-# import requests
 
 from pydent.exceptions import (TridentJSONDataIncomplete, TridentLoginError,
                                TridentTimeoutError, TridentRequestError)
