@@ -512,6 +512,11 @@ class FieldType(FieldMixin, ModelBase):
 class FieldValue(FieldMixin, ModelBase):
     """
     A FieldValue model. One of the more complex models.
+
+    Change Log:
+    * 2019_06_03 FieldValues no longer have 'wires_as_source' or 'wires_as_dest' fields. Wires may only be accessed
+    via plans only or via the FieldValue instance method 'get_wires,' which accesses the FieldValues operation
+    and its Plan to obtain wires.
     """
     fields = dict(
         # FieldValue relationships
@@ -527,11 +532,6 @@ class FieldValue(FieldMixin, ModelBase):
             "Operation", callback="find_field_parent", ref="parent_id"),
         parent_sample=HasOne(
             "Sample", callback="find_field_parent", ref="parent_id"),
-        wires_as_source=HasMany("Wire", ref="from_id"),
-        wires_as_dest=HasMany("Wire", ref="to_id"),
-        outgoing_wires=fields.Alias("wires_as_source"),
-        incoming_wires=fields.Alias("wires_as_dest"),
-
         sid=Function('get_sid'),
         child_sample_name=Function(lambda fv: fv.sid, callback_args=(fields.Callback.SELF,)),
         # allowable_child_types=Function('get_allowable_child_types'),
@@ -576,119 +576,29 @@ class FieldValue(FieldMixin, ModelBase):
             self._set_helper(value=value, sample=sample,
                              item=item, container=container)
 
+        if self.parent_class == 'Operation' and not self.role:
+            raise AquariumModelError("FieldValue {} needs a role to be a field value for an operation".format(self))
+
     def get_sid(self):
         """The FieldValues sample identifier."""
         if self.sample is not None:
             return self.sample.identifier
 
-    def get_outgoing_wires(self, destination=None):
-        """
-        Get the outgoing wires. Optionally, if provided with a destination FieldValue, will get
-        all of the outgoing wires coming from the destination FieldValue
+    def get_wires(self, other=None):
+        if not self.role or self.parent_class != 'Operation':
+            return None
+        elif self.operation and self.operation.plan:
+            wires = self.operation.plan.wires
+            if self.role == 'input':
+                return [w for w in wires if w.does_wire_to(self)]
+            elif self.role == 'output':
+                return [w for w in wires if w.does_wire_from(self)]
+        return []
 
-        :param destination: the optional destination FieldValue
-        :type destination: FieldValue
-        :return: array of wires
-        :rtype: array
-        """
-        if not self.outgoing_wires:
-            self.outgoing_wires = []
-            return self.outgoing_wires
-        wires = self.outgoing_wires
-        if destination:
-            return [w for w in wires if w.does_wire(self, destination)]
-        else:
-            return wires
-
-    def get_incoming_wires(self, source=None):
-        """
-        Get the incoming wires. Optionally, if provided with a source FieldValue, will get
-        all of the incoming wires coming from the source FieldValue
-
-        :param source: the optional source FieldValue
-        :type source: FieldValue
-        :return: array of wires
-        :rtype: array
-        """
-        if not self.incoming_wires:
-            self.incoming_wires = []
-            return self.incoming_wires
-        wires = self.incoming_wires
-        if source:
-            return [w for w in wires if w.does_wire(source, self)]
-        else:
-            return wires
-
-    def wire_to(self, destination):
-        """
-        Creates a new wire from this FieldValue to to a destination FieldValue. The
-        new wire is returned.
-
-        If the wire exists (determined by their unique instance rids), then the first
-        existing wire is returned instead.
-
-        :param destination: destination FieldValue to create a wire to.
-        :type destination: FieldValue
-        :return: the wire
-        :rtype: Wire
-        """
-        existing_wires = self.get_outgoing_wires(destination)
-        if existing_wires:
-            wire = existing_wires[0]
-        else:
-            wire = Wire(source=self, destination=destination)
-        self.add_outgoing_wire(wire)
-        destination.add_incoming_wire(wire)
-        return wire
-
-    def wire_from(self, source):
-        """
-        Creates a new wire from this FieldValue to to a destination FieldValue. The
-        new wire is returned.
-
-        If the wire exists (determined by their unique instance rids), then the first
-        existing wire is returned instead.
-
-        :param source: destination FieldValue to create a wire to.
-        :type source: FieldValue
-        :return: the wire
-        :rtype: Wire
-        """
-        existing_wires = self.get_incoming_wires(source)
-        if existing_wires:
-            wire = existing_wires[0]
-        else:
-            wire = Wire(source=source, destination=self)
-        source.add_outgoing_wire(wire)
-        self.add_incoming_wire(wire)
-        return wire
-
-    def add_incoming_wire(self, wire):
-        """Adds a wire to the list of this FieldValues incoming wires."""
-
-        if not wire.destination.rid == self.rid:
-            raise AquariumModelError("Cannot add wire {} to {}. The wire's destination Fieldvalue" \
-                                     " does not match this FieldValue".format(wire, self))
-        wires = self.incoming_wires
-        if wires is None:
-            wires = []
-        wires.append(wire)
-        self.incoming_wires = [w for w in wires if w.destination.rid == self.rid]
-        return wire
-
-    def add_outgoing_wire(self, wire):
-        """Adds a wire to the list of this FieldValues outgoing wires."""
-
-        if not wire.source.rid == self.rid:
-            raise AquariumModelError("Cannot add wire {} to {}. The wire's source Fieldvalue" \
-                                     " does not match this FieldValue".format(wire, self))
-
-        wires = self.outgoing_wires
-        if wires is None:
-            wires = []
-        wires.append(wire)
-        self.outgoing_wires = [w for w in wires if w.destination.rid == self.rid]
-        return wire
+    def incoming_wires(self):
+        if self.role == 'input':
+            return self.get_wires()
+        return []
 
     @property
     def successors(self):
@@ -835,7 +745,12 @@ class FieldValue(FieldMixin, ModelBase):
         if field_type.name:
             self.name = field_type.name
         if field_type.parent_class:
-            self.parent_class = field_type.parent_class
+            if field_type.parent_class == 'OperationType':
+                self.parent_class = 'Operation'
+            elif field_type.parent_class == 'SampleType':
+                self.parent_class = 'Sample'
+            else:
+                raise AquariumModelError("FieldType parent_class '{}' not recognized".format(field_type.parent_class))
         if field_type.role:
             self.role = field_type.role
 
@@ -1428,7 +1343,7 @@ class Plan(DataAssociatorMixin, ModelBase):
         }),
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
-        wires=Many("Wire", callback="_get_wires"),
+        wires=Many("Wire", callback="_get_wires_from_server"),
         layout=JSON(),
         status=Raw(default="planning")
     )
@@ -1518,7 +1433,9 @@ class Plan(DataAssociatorMixin, ModelBase):
         if not self.has_operation(dest.operation):
             raise AquariumModelError("Cannot wire because the wire's destination FieldValue does not exist in the Plan.")
 
-        return src.wire_to(dest)
+        wire = Wire(source=src, destination=dest)
+        self.append_to_many('wires', wire)
+        return wire
 
     # TODO: assert incoming and outgoing wires are the same
     def _collect_wires(self):
@@ -1544,23 +1461,19 @@ class Plan(DataAssociatorMixin, ModelBase):
         return wire_dict
 
     # TODO: BOOKMARK: fix _get_wires upon plan loading; implement rewire_to and rewire_from; implement _merge_wires after __init__?
-    def _get_wires(self, *args):
-        incoming_wires, outgoing_wires = self._collect_wires()
+    def _get_wires_from_server(self, *args):
+        fvs = []
+        if self.operations:
+            for op in self.operations:
+                fvs += op.field_values
 
-        iwiredict = self._get_wire_dict(incoming_wires)
-        owiredict = self._get_wire_dict(outgoing_wires)
+        fv_ids = [fv.id for fv in fvs if fv.id is not None]
+        wires_from_server = []
+        if fv_ids:
+            wires_from_server = self.session.Wire.where({
+            'from_id': fv_ids, 'to_id': fv_ids})
+        return wires_from_server
 
-        for warr in iwiredict.values():
-            if len(warr) > 1:
-                raise AquariumModelError("There are duplicate wires in the plan")
-
-        for warr in owiredict.values():
-            if len(warr) > 1:
-                raise AquariumModelError("There are duplicate wires in the plan")
-
-        assert len(iwiredict) == len(owiredict)
-
-        return sorted(incoming_wires, key=lambda w: w.id)
 
     # TODO: plan.create should be implicit in 'save'
     def create(self):
@@ -2130,6 +2043,23 @@ class Wire(ModelBase):
         else:
             to_id = None
 
+        if (source and not destination) or (destination and not source):
+            raise AquariumModelError("Cannot wire. Either source ({}) or destination ({}) is None".format(
+                source, destination
+            ))
+
+        if source:
+            if not source.role:
+                raise AquariumModelError("Cannot wire. FieldValue {} does not have a role".format(source.role))
+            elif source.role != 'output':
+                raise AquariumModelError("Cannot wire an '{}' FieldValue as a source".format(source.role))
+
+        if destination:
+            if not destination.role:
+                raise AquariumModelError("Cannot wire. FieldValue {} does not have a role".format(destination.role))
+            elif destination.role != 'input':
+                raise AquariumModelError("Cannot wire an '{}' FieldValue as a destination".format(destination.role))
+
         super().__init__(**{
             "from": source,
             "from_id": from_id,
@@ -2167,8 +2097,8 @@ class Wire(ModelBase):
             raise AquariumModelError("Cannot create wire because {} FieldValue is {}.".format(name, fv.__class__.__name__))
 
         if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
-            raise AquariumModelError("Cannot create wire because the {} FieldValue is has a {} parent class" \
-                                     "Only {} parent classes are wirable".format(name, fv.parent_class, self.WIRABLE_PARENT_CLASSES))
+            raise AquariumModelError("Cannot create wire because the {} FieldValue is has '{}' parent class. " \
+                                     "Only {} parent classes are wirable".format(name, fv.parent_class, cls.WIRABLE_PARENT_CLASSES))
 
     def validate(self):
         self._validate_field_values(self.source, self.destination)
@@ -2213,6 +2143,16 @@ class Wire(ModelBase):
               ":" + from_name +
               " --> " + to_op_type_name +
               ":" + to_name)
+
+    def does_wire_to(self, destination):
+        if destination and self.destination:
+            return destination.rid == self.destination.rid
+        return False
+
+    def does_wire_from(self, source):
+        if source and self.source:
+            return source.rid == self.source.rid
+        return False
 
     def does_wire(self, source, destination):
         """Checks whether this Wire is a wire between the source and destination FieldValues.
