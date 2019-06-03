@@ -356,12 +356,6 @@ class Relationship(Callback):
     def serialize(self, owner, obj):
         return self.nested_field.serialize(owner, obj)
 
-    # def _deserialize(self, data):
-    #     return self.nested_field._deserialize(data)
-
-    # def _serialize(self, obj):
-    #     return self.nested_field._serialize(obj)
-
 
 class Alias(Callback):
     """A shallow alias to another field. """
