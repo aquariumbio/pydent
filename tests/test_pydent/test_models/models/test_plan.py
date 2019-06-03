@@ -44,8 +44,8 @@ def fake_plan(fake_session):
     op1 = fake_session.Operation.load({})
     op2 = fake_session.Operation.load({})
 
-    src = fake_session.FieldValue.load({'name': 'myinput', 'parent_class': 'Operation', 'operation': op1})
-    dest = fake_session.FieldValue.load({'name': 'myoutput', 'parent_class': 'Operation', 'operation': op2})
+    src = fake_session.FieldValue.load({'name': 'myinput', 'parent_class': 'Operation', 'operation': op1, 'role': 'output'})
+    dest = fake_session.FieldValue.load({'name': 'myoutput', 'parent_class': 'Operation', 'operation': op2, 'role': 'input'})
     op1.field_values = [src]
     op2.field_values = [dest]
 

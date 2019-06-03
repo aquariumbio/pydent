@@ -1,6 +1,6 @@
 def test_constructor(fake_session):
-    fvin = fake_session.FieldValue(name="input")
-    fvout = fake_session.FieldValue(name="output")
+    fvout = fake_session.FieldValue(name="input", parent_class='Operation', role='input')
+    fvin = fake_session.FieldValue(name="output", parent_class='Operation', role='output')
     w = fake_session.Wire(
         source=fvin,
         destination=fvout
