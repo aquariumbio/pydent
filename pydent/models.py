@@ -1053,6 +1053,11 @@ class Membership(ModelBase):
 class ObjectType(ModelBase):
     """A ObjectType model"""
 
+    fields = dict(
+        items=HasMany("Item", "ObjectType"),
+        sample_type=HasOne("SampleType")
+    )
+
     def save(self):
         """Saves the Object Type to the Aquarium server. Requires
         this Object Type to be connected to a session."""
