@@ -1,5 +1,5 @@
 from uuid import uuid4
-import pytest
+import json
 
 # pytestmark = pytest.mark.skip("These tests utilize a live session with alot of requests."
 #                               "In the future, we may want to utilize something like pyvrc to avoid"
@@ -47,7 +47,6 @@ def test_create_sample(session):
     fvs = init_props(prop, st)
 
     new_yeast.field_values = fvs
-    print(new_yeast.dump(include={"field_values": {"sid"}}))
 
     new_yeast.save()
 

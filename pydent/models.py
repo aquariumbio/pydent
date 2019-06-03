@@ -155,6 +155,15 @@ class FieldValueInterface(object):
         self.field_values.append(fv)
         return fv
 
+    def safe_get_field_type(self, fv):
+        if fv.field_type_id is None:
+            fts = self.get_field_types()
+            h = lambda f: '{}_%&^_{}'.format(f.name, f.role)
+            name_role_to_ft = {h(ft): ft for ft in fts}
+            ft = name_role_to_ft[h(fv)]
+            fv.set_field_type(ft)
+        return fv.field_type
+
     def get_metatype(self):
         metatype = getattr(self, self.METATYPE)
         assert issubclass(type(metatype), FieldTypeInterface)
@@ -182,9 +191,12 @@ class FieldValueInterface(object):
                 val = None
             data[ft_func(ft)] = val
 
+        # safely get field_types; field_type_id is sometimes None in Sample field_values;
+        # unsure if this used to be a bug in Aquarium that has been since resolved
+
         for fv in self.field_values:
-            ft = ft_dict[fv.field_type_id]
             val = fv_func(fv)
+            ft = self.safe_get_field_type(fv)
             if ft.array:
                 data[ft_func(ft)].append(val)
             else:
@@ -467,7 +479,6 @@ class FieldType(FieldMixin, ModelBase):
         if self.choices is not None:
             return self.choices.split(',')
 
-    @property
     def is_parameter(self):
         return self.ftype != "sample"
 
@@ -1724,7 +1735,7 @@ class Sample(FieldValueInterface, ModelBase):
     METATYPE = "sample_type"
 
     def __init__(self, name=None, project=None, description=None, sample_type=None, sample_type_id=None,
-                 properties=None):
+                 properties=None, field_values=None):
         """
 
         :param name:
@@ -1744,11 +1755,16 @@ class Sample(FieldValueInterface, ModelBase):
             description=description,
             sample_type_id=sample_type_id,
             sample_type=sample_type,
-            field_values=None,
+            field_values=field_values,
             items=None,
         )
         if properties is not None:
             self.update_properties(properties)
+
+    def postdata_hook(self):
+        if self.field_values:
+            for fv in self.field_values:
+                self.safe_get_field_type(fv)
 
     @property
     def identifier(self):
@@ -1773,7 +1789,7 @@ class Sample(FieldValueInterface, ModelBase):
 
     @staticmethod
     def _property_accessor(fv):
-        if fv.ftype == 'sample':
+        if fv.field_type.ftype == 'sample':
             return fv.sample
         else:
             return fv.value
@@ -1790,11 +1806,19 @@ class Sample(FieldValueInterface, ModelBase):
         Update the FieldValues properties for this sample.
 
         :param prop_dict: values to update
-        :type prop_dict: dict
+        :type pro fp_dict: dict
         :return: self
         :rtype: Sample
         """
-        pass
+        for k, v in prop_dict.items():
+            fv = self.field_value(k)
+            if fv:
+                # TODO: Bookmark; error when setting array here
+                if not fv.field_type.is_parameter():
+                    fv.set_value(sample=v)
+                else:
+                    fv.set_value(value=v)
+
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
