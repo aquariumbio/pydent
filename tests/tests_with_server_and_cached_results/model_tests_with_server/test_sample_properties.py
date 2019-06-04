@@ -126,15 +126,16 @@ def test_create_with_choice(session):
     assert yeast.properties["Mating Type"] == "MATa"
 
 
+@pytest.mark.record_mode('no')
 def test_update_properties(session):
     yeast_strain = session.SampleType.find_by_name("Yeast Strain")
     yeast = session.Sample.new(sample_type_id=yeast_strain.id,
-                               properties={
-                                   "QC_length": 200,
-                                   "Comp_cell_limit": "Yes"
-                               }
+                                   properties={
+                                       "QC_length": 200,
+                                       "Comp_cell_limit": "Yes"
+                                   }
                                )
-    parent = yeast_strain.samples[-1]
+    parent = session.Sample.one(query={"sample_type_id": yeast_strain.id})
     yeast.update_properties({"Mating Type": "MATa", "Parent": parent, "QC_length": 100})
 
     assert yeast.properties["Mating Type"] == "MATa"
