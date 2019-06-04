@@ -73,6 +73,7 @@ from pydent.relationships import (Raw, Function, JSON, One, Many, HasOne, HasMan
                                   HasOneFromMany, fields)
 from pydent.utils import filter_list
 from pydent.utils.async_requests import make_async
+from collections import Sequence
 
 __all__ = [
     "Account",
@@ -180,7 +181,13 @@ class FieldValueInterface(object):
     def get_field_types(self):
         return self.get_metatype().field_types
 
-    def _field_value_dictionary(self, ft_func, fv_func):
+    def _field_value_dictionary(self, ft_func=None, fv_func=None):
+
+        if ft_func is None:
+            ft_func = lambda ft: ft.name
+        if fv_func is None:
+            fv_func = lambda fv: fv
+
         data = {}
         ft_dict = {ft.id: ft for ft in self.get_field_types()}
 
@@ -228,6 +235,30 @@ class FieldValueInterface(object):
             lambda ft: ft.routing,
             lambda fv: fv.sid
         )
+
+    def update_field_values(self, value_dict, role=None):
+        fv_dict = self._field_value_dictionary()
+
+        for name, val in value_dict.items():
+            fv = fv_dict[name]
+            if fv is None:
+                fv = self.new_field_value(name, role, val)
+
+        for name, val in value_dict.items():
+
+            fvs = self.get_field_value_array(name, role)
+            if fvs:
+                ft = self.safe_get_field_type(fvs[0])
+                if issubclass(type(val), Sequence):
+                    if ft.array:
+                        self.set_field_value_array(name, role, val)
+                    else:
+                        raise AquariumModelError("Cannot update non-array FieldValue {} with an array.".format(ft.name))
+                elif ft.array:
+                    raise AquariumModelError(
+                        "Cannot update array FieldValue {} with a non-array value.".format(ft.name))
+                else:
+                    self.set_field_value(name, role, val)
 
 
 class DataAssociatorMixin:
@@ -467,7 +498,7 @@ class FieldType(FieldMixin, ModelBase):
             operation_type=operation_type,
             allowable_field_types=allowable_field_types
         )
-
+        self.part = None
         if allowable_field_types is None:
             if aft_stype_and_objtype is not None:
                 for smple_type, obj_type in aft_stype_and_objtype:
@@ -482,12 +513,12 @@ class FieldType(FieldMixin, ModelBase):
     def is_parameter(self):
         return self.ftype != "sample"
 
-    def get_allowable_field_types(self):
+    def get_allowable_field_types(self, sample_type_id=None, object_type_id=None):
         afts = self.allowable_field_types
         if afts is None or afts == []:
             self.allowable_field_types = None
             afts = self.allowable_field_types
-        return afts
+        return filter_list(afts, sample_type_id=sample_type_id, object_type_id=object_type_id)
 
     def create_allowable_field_type(self, sample_type=None, object_type=None):
         afts = []
@@ -585,7 +616,7 @@ class FieldValue(FieldMixin, ModelBase):
 
         if any([value, sample, item, container]):
             self._set_helper(value=value, sample=sample,
-                             item=item, container=container)
+                             item=item, object_type=container)
 
         if self.parent_class == 'Operation' and not self.role:
             raise AquariumModelError("FieldValue {} needs a role to be a field value for an operation".format(self))
@@ -647,84 +678,137 @@ class FieldValue(FieldMixin, ModelBase):
         self.row = None
         self.column = None
 
-    # TODO: have field_value resolve the ids when it is dumped? Or how does this work?
-    def _set_helper(self, value=None, sample=None, container=None, item=None, row=None, column=None):
-        if row is not None:
-            if not self.field_type.part:
-                raise AquariumModelError(
-                    "Cannot set row of a non-part for {} {}".format(self.role, self.name))
-            self.row = row
-        if column is not None:
-            if not self.field_type.part:
-                raise AquariumModelError(
-                    "Cannot set column of a non-part for {} {}".format(self.role, self.name))
-            self.column = column
-        if item and container and item.object_type_id != container.id:
+    def _validate_types(self, name, x, expected_types):
+        if x is not None and not any([issubclass(type(x), e) for e in expected_types]):
             raise AquariumModelError(
-                "Item {} is not in container {}".format(
-                    item.id, str(container)))
+                "Cannot set FieldValue.{} with a {}. Expected types {}".format(name, type(x), expected_types))
+
+    def _validate_value(self, value):
         if value is not None:
             choices = self.field_type.get_choices()
             if choices is not None:
                 if value not in choices and str(value) not in choices:
                     raise AquariumModelError("Value \'{}\' not in list of field "
                                              "type choices \'{}\'".format(value, choices))
+
+    def _validate_item_and_container(self, item, container):
+        self._validate_types('item', item, [Item, Collection])
+        self._validate_types('container', container, [ObjectType])
+        if item and container and item.object_type_id != container.id:
+            raise AquariumModelError(
+                "Item {} is not in container {}".format(
+                    item.id, str(container)))
+
+    def _validate_sample(self, sample):
+        self._validate_types('sample', sample, [Sample])
+        if sample is not None and not issubclass(type(sample), Sample):
+            raise AquariumModelError("Cannot set sample with a type '{}'".format(type(sample)))
+
+    def _validate_sample_and_item(self, sample, item):
+        if sample and hasattr(sample, 'id') and item:
+            if not item.sample_id == sample.id:
+                raise AquariumModelError("Cannot set FieldValue {}. Item {} is not a member of sample {}".format(
+                    self, item, sample
+                ))
+
+    def _validate_row_and_column(self, row: int, col: int):
+        if row and col and (not isinstance(row, int) or not isinstance(col, int)):
+            raise AquariumModelError("Row and column must be integers.")
+        if row is not None:
+            if not self.field_type.is_part():
+                raise AquariumModelError(
+                    "Cannot set row of a non-part for {} {}".format(self.role, self.name))
+            self.row = row
+        if col is not None:
+            if not self.field_type.is_part():
+                raise AquariumModelError(
+                    "Cannot set column of a non-part for {} {}".format(self.role, self.name))
+            self.column = col
+
+    def _validate(self, value, sample, item, object_type, row, column):
+        self._validate_row_and_column(row, column)
+        self._validate_value(value)
+        self._validate_sample(sample)
+        self._validate_item_and_container(item, object_type)
+        # if not self.field_type.part:
+        #     self._validate_sample_and_item(sample, item)
+
+    # TODO: have field_value resolve the ids when it is dumped? Or how does this work?
+    def _set_helper(self, value=None, sample=None, item=None, object_type=None, row=None, column=None):
+        self._validate(value, sample, item, object_type, row, column)
+        if row is not None:
+            self.row = row
+        if column is not None:
+            self.column = column
+
+        if value is not None:
             self.value = value
+
         if item is not None:
             self.item = item
             if hasattr(item, 'id'):
                 self.child_item_id = item.id
-            self.object_type = item.object_type
             if not sample:
                 sample = item.sample
         if sample is not None:
             self.sample = sample
             if hasattr(sample, 'id'):
                 self.child_sample_id = sample.id
-        if container is not None:
-            self.object_type = container
+        if object_type is not None:
+            self.object_type = object_type
 
-    def set_value(self, value=None, sample=None, container=None, item=None, row=None, column=None):
-        self._set_helper(value=value, sample=sample,
-                         container=container, item=item, row=row, column=column)
+    def valid_afts(self):
+        afts = self.field_type.allowable_field_types
+        if self.sample is not None:
+            afts = filter_list(
+                afts, sample_type_id=self.sample.sample_type_id)
+        if self.object_type is not None:
+            afts = filter_list(afts, object_type_id=self.object_type.id)
+        if self.item is not None and self.item.object_type_id is not None:
+            afts = filter_list(afts, object_type_id=self.item.object_type_id)
+        return afts
+
+    def _raise_aft_error(self):
+        aft_list = []
+        for aft in self.field_type.allowable_field_types:
+            st = "none"
+            ot = "none"
+            if aft.object_type is not None:
+                ot = aft.object_type.name
+            if aft.sample_type is not None:
+                st = aft.sample_type.name
+            aft_list.append("{}:{}".format(st, ot))
+        sid = "none"
+        if self.sample is not None:
+            sid = self.sample.sample_type.name
+        oid = "none"
+        if self.object_type is not None:
+            oid = self.object_type.name
+        msg = "No allowable field types found for {} {} using {} {}."
+        msg += " Available afts: {}"
+        raise AquariumModelError(msg.format(
+            self.role, self.name, sid, oid, ', '.join(aft_list)))
+
+    def set_aft(self):
+        afts = self.valid_afts()
+        if len(afts) >= 1:
+            self.set_allowable_field_type(afts[0])
+        else:
+            self._raise_aft_error()
+
+    def set_value(self, value=None, sample=None, item=None, object_type=None, row=None, column=None, container=None):
+        # to maintain old API
+        # if container:
+        #     raise DeprecationWarning("Typed parameter 'container' is now depreciated. Please use 'object_type'")
+        if object_type is None and container:
+            object_type = container
+        self._validate(value, sample, item, container, row, column)
+        self._set_helper(value=value, sample=sample, item=item, object_type=object_type, row=row, column=column)
+
         """Sets the value of a """
-        if any([sample, container, item]):
-            afts = self.field_type.allowable_field_types
-            if self.sample is not None:
-                afts = filter_list(
-                    afts, sample_type_id=self.sample.sample_type_id)
-            if self.object_type is not None:
-                afts = filter_list(afts, object_type_id=self.object_type.id)
-            if len(afts) == 0:
-                aft_list = []
-                for aft in self.field_type.allowable_field_types:
-                    st = "none"
-                    ot = "none"
-                    if aft.object_type is not None:
-                        ot = aft.object_type.name
-                    if aft.sample_type is not None:
-                        st = aft.sample_type.name
-                    aft_list.append("{}:{}".format(st, ot))
-                sid = "none"
-                if self.sample is not None:
-                    sid = self.sample.sample_type.name
-                oid = "none"
-                if self.object_type is not None:
-                    oid = self.object_type.name
-                msg = "No allowable field types found for {} {} using {} {}."
-                msg += " Available afts: {}"
-                raise AquariumModelError(msg.format(
-                    self.role, self.name, sid, oid, ', '.join(aft_list)))
-            if len(afts) > 1:
-                self.set_allowable_field_type(afts[0])
-            elif len(afts) == 1:
-                self.set_allowable_field_type(afts[0])
-            else:
-                msg = "No allowable field type found for {} '{}'"
-                raise AquariumModelError(
-                    msg.format(self.role, self.name))
+        if any([sample, object_type, item]):
+            self.set_aft()
         return self
-
 
     def set_parent(self, model):
         self.parent_id = model.id
@@ -1126,10 +1210,10 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         :rtype: FieldValue
         """
         return self.new_field_value(name, "input",
-                                             dict(sample=sample,
-                                             item=item,
-                                             value=value,
-                                             container=container))
+                                    dict(sample=sample,
+                                         item=item,
+                                         value=value,
+                                         container=container))
 
     def add_to_output_array(self, name, sample=None, item=None, value=None,
                             container=None):
@@ -1152,10 +1236,10 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         :rtype: FieldValue
         """
         return self.new_field_value(name, "output",
-                                             dict(sample=sample,
-                                             item=item,
-                                             value=value,
-                                             container=container))
+                                    dict(sample=sample,
+                                         item=item,
+                                         value=value,
+                                         container=container))
 
     @property
     def inputs(self):
@@ -1342,6 +1426,7 @@ class PartAssociation(ModelBase):
             column=column
         )
 
+
 # TODO: API_CHANGE: Plan.copy() no longer reroutes to replan
 @add_schema
 class Plan(DataAssociatorMixin, ModelBase):
@@ -1442,7 +1527,8 @@ class Plan(DataAssociatorMixin, ModelBase):
         if not self.has_operation(src.operation):
             raise AquariumModelError("Cannot wire because the wire's source FieldValue does not exist in the Plan.")
         if not self.has_operation(dest.operation):
-            raise AquariumModelError("Cannot wire because the wire's destination FieldValue does not exist in the Plan.")
+            raise AquariumModelError(
+                "Cannot wire because the wire's destination FieldValue does not exist in the Plan.")
 
         wire = Wire(source=src, destination=dest)
         self.append_to_many('wires', wire)
@@ -1482,9 +1568,8 @@ class Plan(DataAssociatorMixin, ModelBase):
         wires_from_server = []
         if fv_ids:
             wires_from_server = self.session.Wire.where({
-            'from_id': fv_ids, 'to_id': fv_ids})
+                'from_id': fv_ids, 'to_id': fv_ids})
         return wires_from_server
-
 
     # TODO: plan.create should be implicit in 'save'
     def create(self):
@@ -1555,13 +1640,13 @@ class Plan(DataAssociatorMixin, ModelBase):
                 field_value = getattr(wire, _fvtype)
                 if field_value.rid not in fv_rids:
                     msg = "The FieldValue of a wire Wire(rid={}).{} is missing from the list" \
-                          " of FieldValues in the plan. Did you forget to add an operation to "\
+                          " of FieldValues in the plan. Did you forget to add an operation to " \
                           " the plan?".format(
                         wire.rid, _fvtype,
                     )
                     errors.append(msg)
         if raise_error and errors:
-            msg = '\n'.join(["({}) - {}".format(i, e) for i, e in  enumerate(errors)])
+            msg = '\n'.join(["({}) - {}".format(i, e) for i, e in enumerate(errors)])
             raise AquariumModelError("Plan {} had the following errors:\n{}".format(msg))
         return errors
 
@@ -1606,7 +1691,6 @@ class Plan(DataAssociatorMixin, ModelBase):
             if not wire_data['from']['rid'] in fv_rids:
                 warnings.append('rid {} is missing!'.format(wire_data['from']['rid']))
             if not wire_data['to']['rid'] in fv_rids:
-
                 warnings.append('rid {} is missing!'.format(wire_data['to']['rid']))
         if warnings:
             print(warnings)
@@ -1709,24 +1793,24 @@ class Sample(FieldValueInterface, ModelBase):
 
         # TODO: add new sample relationships to change log
         field_values_as_properties=HasMany("FieldValue",
-                                         ref="child_sample_id",
-                                         additional_args={
-                                             "parent_class": "Sample"
-                                         }),
+                                           ref="child_sample_id",
+                                           additional_args={
+                                               "parent_class": "Sample"
+                                           }),
         field_values_as_outputs=HasMany("FieldValue",
+                                        ref="child_sample_id",
+                                        additional_args={
+                                            "parent_class": "Operation",
+                                            "role": "output"
+                                        }
+                                        ),
+        field_values_as_inputs=HasMany("FieldValue",
                                        ref="child_sample_id",
                                        additional_args={
                                            "parent_class": "Operation",
-                                           "role": "output"
+                                           "role": "input"
                                        }
                                        ),
-        field_values_as_inputs=HasMany("FieldValue",
-                                      ref="child_sample_id",
-                                      additional_args={
-                                          "parent_class": "Operation",
-                                          "role": "input"
-                                      }
-                                      ),
         operations_as_outputs=HasManyThrough("Operation", "FieldValuesAsOutput"),
         operations_as_inputs=HasManyThrough("Operation", "FieldValuesAsInput"),
         parent_samples=HasManyThrough("Sample", "FieldValuesAsProperty")
@@ -1815,10 +1899,12 @@ class Sample(FieldValueInterface, ModelBase):
             if fv:
                 # TODO: Bookmark; error when setting array here
                 if not fv.field_type.is_parameter():
+                    if issubclass(type(v), Sequence):
+                        if fv.field_type.array:
+                            fvs = self.field_value_array()
                     fv.set_value(sample=v)
                 else:
                     fv.set_value(value=v)
-
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
@@ -2118,11 +2204,13 @@ class Wire(ModelBase):
     @classmethod
     def _validate_field_value(cls, fv, name):
         if not issubclass(type(fv), FieldValue):
-            raise AquariumModelError("Cannot create wire because {} FieldValue is {}.".format(name, fv.__class__.__name__))
+            raise AquariumModelError(
+                "Cannot create wire because {} FieldValue is {}.".format(name, fv.__class__.__name__))
 
         if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
             raise AquariumModelError("Cannot create wire because the {} FieldValue is has '{}' parent class. " \
-                                     "Only {} parent classes are wirable".format(name, fv.parent_class, cls.WIRABLE_PARENT_CLASSES))
+                                     "Only {} parent classes are wirable".format(name, fv.parent_class,
+                                                                                 cls.WIRABLE_PARENT_CLASSES))
 
     def validate(self):
         self._validate_field_values(self.source, self.destination)
