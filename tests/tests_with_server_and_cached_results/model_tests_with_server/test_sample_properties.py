@@ -197,7 +197,7 @@ class TestUpdateFieldValueArrays:
                                                         'parent_class': 'Sample'})
             assert len(fvs_from_server) == num_field_values
 
-# @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
+@pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
 def test_update_properties_using_array(session, num_field_values):
     """Test updating a sample properties array. Requires a 'Fragment' SampleType in the database with a 'Fragment Mix Array'
     FieldType."""

@@ -1982,6 +1982,9 @@ class SampleType(FieldTypeInterface, ModelBase):
         # TODO: add relationships description
     )
 
+    def field_type(self, name, role=None):
+        return super().field_type(name, role)
+
     @property
     def properties(self):
         props = {}
