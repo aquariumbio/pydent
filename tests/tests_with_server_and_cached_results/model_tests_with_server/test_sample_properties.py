@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from pydent.models import AquariumModelError
+from pydent.exceptions import AquariumModelError
 import functools
 
 here = os.path.dirname(os.path.abspath(__file__))
