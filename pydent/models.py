@@ -161,8 +161,9 @@ class FieldValueInterface(object):
             fts = self.get_field_types()
             h = lambda f: '{}_%&^_{}'.format(f.name, f.role)
             name_role_to_ft = {h(ft): ft for ft in fts}
-            ft = name_role_to_ft[h(fv)]
-            fv.set_field_type(ft)
+            ft = name_role_to_ft.get(h(fv), None)
+            if ft is not None:
+                fv.set_field_type(ft)
         return fv.field_type
 
     def get_metatype(self):
@@ -176,6 +177,8 @@ class FieldValueInterface(object):
             return fv_array[0]
 
     def get_field_value_array(self, name, role=None):
+        if self.field_values is None:
+            return []
         return [fv for fv in self.field_values if fv.name == name and fv.role == role]
 
     def get_field_types(self, name=None, role=None):
@@ -214,10 +217,11 @@ class FieldValueInterface(object):
         for fv in self.field_values:
             val = fv_func(fv)
             ft = self.safe_get_field_type(fv)
-            if ft.array:
-                data[ft_func(ft)].append(val)
-            else:
-                data[ft_func(ft)] = val
+            if ft:
+                if ft.array:
+                    data[ft_func(ft)].append(val)
+                else:
+                    data[ft_func(ft)] = val
 
         return data
 
@@ -1877,10 +1881,11 @@ class Sample(FieldValueInterface, ModelBase):
 
     @staticmethod
     def _property_accessor(fv):
-        if fv.field_type.ftype == 'sample':
-            return fv.sample
-        else:
-            return fv.value
+        if fv.field_type:
+            if fv.field_type.ftype == 'sample':
+                return fv.sample
+            else:
+                return fv.value
 
     @property
     def properties(self):

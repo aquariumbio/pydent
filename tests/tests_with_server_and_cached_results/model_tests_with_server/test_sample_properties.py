@@ -58,7 +58,7 @@ def test_create_with_integer_properties(session):
 
 def test_create_with_sample_properties(session):
     yeast_strain = session.SampleType.find_by_name("Yeast Strain")
-    parent = yeast_strain.samples[-1]
+    parent = session.Sample.one(query={"sample_type_id": yeast_strain.id})
     yeast = session.Sample.new(
         sample_type_id=yeast_strain.id,
         properties={

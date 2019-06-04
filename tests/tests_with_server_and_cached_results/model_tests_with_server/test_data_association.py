@@ -32,8 +32,6 @@ class TestDataAssociation:
     def test_create_data_association(self, session):
 
         item = self.get_example_item(session)
-        data_associations = session.DataAssociation.where({"parent_id": item.id, "parent_class": "Item"})
-
         val = str(uuid4())
         new_da = item.associate('test', val)
 
