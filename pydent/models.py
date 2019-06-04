@@ -178,8 +178,18 @@ class FieldValueInterface(object):
     def get_field_value_array(self, name, role=None):
         return [fv for fv in self.field_values if fv.name == name and fv.role == role]
 
-    def get_field_types(self):
-        return self.get_metatype().field_types
+    def get_field_types(self, name=None, role=None):
+        fts = self.get_metatype().field_types
+        if name is not None:
+            fts = [ft for ft in fts if ft.name == name]
+        if role is not None:
+            fts = [ft for ft in fts if ft.name == name]
+        return fts
+
+    def get_field_type(self, name, role):
+        fts = self.get_field_types(name, role)
+        if fts:
+            return fts[0]
 
     def _field_value_dictionary(self, ft_func=None, fv_func=None):
 
@@ -212,8 +222,12 @@ class FieldValueInterface(object):
         return data
 
     def set_field_value(self, name, role, values):
+        ft = self.get_field_type(name, role)
         fv = self.get_field_value(name, role)
-        fv.set_value(**values)
+        if fv is None:
+            self.new_field_value_from_field_type(ft, values)
+        else:
+            fv.set_value(**values)
         return self
 
     def set_field_value_array(self, name, role, values_array):
@@ -237,29 +251,15 @@ class FieldValueInterface(object):
         )
 
     def update_field_values(self, value_dict, role=None):
-        fv_dict = self._field_value_dictionary()
+        ft_dict = {ft.name: ft for ft in self.get_field_types()}
 
         for name, val in value_dict.items():
-            fv = fv_dict[name]
-            if fv is None:
-                fv = self.new_field_value(name, role, val)
-
-        for name, val in value_dict.items():
-
-            fvs = self.get_field_value_array(name, role)
-            if fvs:
-                ft = self.safe_get_field_type(fvs[0])
-                if issubclass(type(val), Sequence):
-                    if ft.array:
-                        self.set_field_value_array(name, role, val)
-                    else:
-                        raise AquariumModelError("Cannot update non-array FieldValue {} with an array.".format(ft.name))
-                elif ft.array:
-                    raise AquariumModelError(
-                        "Cannot update array FieldValue {} with a non-array value.".format(ft.name))
-                else:
-                    self.set_field_value(name, role, val)
-
+            ft = ft_dict[name]
+            if issubclass(type(val), Sequence) and ft.array:
+                self.set_field_value_array(name, role, val)
+            else:
+                self.set_field_value(name, role, val)
+        return self
 
 class DataAssociatorMixin:
     """
@@ -549,7 +549,6 @@ class FieldType(FieldMixin, ModelBase):
             field_value.set_parent(parent)
         return field_value
 
-
 @add_schema
 class FieldValue(FieldMixin, ModelBase):
     """
@@ -639,6 +638,11 @@ class FieldValue(FieldMixin, ModelBase):
 
     def incoming_wires(self):
         if self.role == 'input':
+            return self.get_wires()
+        return []
+
+    def outgoing_wires(self):
+        if self.role == 'output':
             return self.get_wires()
         return []
 
@@ -1894,17 +1898,17 @@ class Sample(FieldValueInterface, ModelBase):
         :return: self
         :rtype: Sample
         """
-        for k, v in prop_dict.items():
-            fv = self.field_value(k)
-            if fv:
-                # TODO: Bookmark; error when setting array here
-                if not fv.field_type.is_parameter():
-                    if issubclass(type(v), Sequence):
-                        if fv.field_type.array:
-                            fvs = self.field_value_array()
-                    fv.set_value(sample=v)
-                else:
-                    fv.set_value(value=v)
+        ft_dict = {ft.name: ft for ft in self.get_field_types()}
+        for name, val in prop_dict.items():
+            ft = ft_dict[name]
+            if ft.is_parameter():
+                key = 'value'
+            else:
+                key = 'sample'
+            if issubclass(type(val), Sequence) and ft.array:
+                self.set_field_value_array(name, None, [{key: v} for v in val])
+            else:
+                self.set_field_value(name, None, {key: val})
 
     def save(self):
         """Saves the Sample to the Aquarium server. Requires
