@@ -53,7 +53,7 @@ def test_field_type_constructor2(fake_session):
 
 def test_field_type_is_parameter(fake_session):
     ft = FieldType.load_from({"ftype": "sample"}, fake_session)
-    assert not ft.is_parameter
+    assert not ft.is_parameter()
 
     ft.ftype = "string"
     assert ft.is_parameter
