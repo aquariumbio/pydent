@@ -818,9 +818,23 @@ class FieldValue(FieldMixin, ModelBase):
             self.set_aft()
         return self
 
+    def get_parent_key(self):
+        if self.parent_class == 'Operation':
+            return 'operation'
+        elif self.parent_class == 'Sample':
+            return 'parent_sample'
+        else:
+            raise AquariumModelError("Parent class '{}' not recognized as a FieldValue parent."
+                                     .format(self.parent_class))
+
+    def get_parent(self):
+        key = self.get_parent_key()
+        return getattr(self, key)
+
     def set_parent(self, model):
         self.parent_id = model.id
         self.parent_class = model.__class__.__name__
+        setattr(self, self.get_parent_key(), model)
         return self
 
     # TODO: rename set_operation, or re-implement?
@@ -879,6 +893,8 @@ class FieldValue(FieldMixin, ModelBase):
             self.sample.id,
             self.allowable_field_type.object_type_id)
 
+    def __str__(self):
+        return self._to_str('id', 'name', 'role')
 
 @add_schema
 class Group(ModelBase):
@@ -1260,7 +1276,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return [fv for fv in self.field_values if fv.role == 'output']
 
     def set_input(self, name, sample=None, item=None, value=None,
-                  container=None):
+                  container=None, object_type=None):
         """
         Sets a input :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
@@ -1278,10 +1294,11 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         :return: the existing FieldValue modified
         :rtype: FieldValue
         """
-        return self.set_field_value(name, 'input', sample=sample, item=item, value=value, container=container)
+        if object_type is None and container:
+            object_type = container
+        return self.set_field_value(name, 'input', dict(sample=sample, item=item, value=value, object_type=container))
 
-    def set_output(self, name, sample=None, item=None, value=None,
-                   container=None):
+    def set_output(self, name, sample=None, item=None, value=None, container=None, object_type=None):
         """
         Sets a output :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
@@ -1299,7 +1316,9 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         :return: the existing FieldValue modified
         :rtype: FieldValue
         """
-        return self.set_field_value(name, 'output', sample=sample, item=item, value=value, container=container)
+        if object_type is None and container:
+            object_type = container
+        return self.set_field_value(name, 'output', dict(sample=sample, item=item, value=value, object_type=object_type))
 
     def set_input_array(self, name, values):
         """
@@ -1496,6 +1515,8 @@ class Plan(DataAssociatorMixin, ModelBase):
             self.add_operation(operation)
 
     def has_operation(self, op):
+        if op is None:
+            return False
         return self.operations and op.rid in [_op.rid for _op in self.operations]
 
     def find_wires(self, src, dest):
@@ -1533,10 +1554,13 @@ class Plan(DataAssociatorMixin, ModelBase):
         """
 
         if not self.has_operation(src.operation):
-            raise AquariumModelError("Cannot wire because the wire's source FieldValue does not exist in the Plan.")
+            raise AquariumModelError(
+                "Cannot wire because the wire's source FieldValue {} does "
+                "not exist in the Plan because its Operation '{}' is not in the plan".format(src, src.operation))
         if not self.has_operation(dest.operation):
             raise AquariumModelError(
-                "Cannot wire because the wire's destination FieldValue does not exist in the Plan.")
+                "Cannot wire because the wire's destination FieldValue {} does not exist "
+                "in the Plan because its Operation '{}' is not in the plan.".formst(dest, dest.operation))
 
         wire = Wire(source=src, destination=dest)
         self.append_to_many('wires', wire)

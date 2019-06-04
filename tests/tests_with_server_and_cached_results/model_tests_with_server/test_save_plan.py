@@ -7,7 +7,7 @@ def test_submit_order_primer(session):
 
     order_primer_op = order_primer.instance()
 
-    p = models.Plan(name="MyOrderPrimerTest")
+    p = session.Plan.new(name="MyOrderPrimerTest")
     p.add_operation(order_primer_op)
     p.connect_to_session(session)
     # p.add_operation(order_primer_op)
@@ -30,8 +30,10 @@ def test_plan_with_parameter(session):
     # create an operation
     order_primer = ot.instance()
 
+    example_sample = session.Sample.one(query={"sample_type_id": primer.id})
+
     # set io
-    order_primer.set_output("Primer", sample=primer.samples[0])
+    order_primer.set_output("Primer", sample=example_sample)
     order_primer.set_input("Urgent?", value="no")
 
     # create a new plan

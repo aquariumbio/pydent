@@ -15,13 +15,14 @@ class TestDataAssociation:
 
         return lambda: session.Item.one(first=True, query={'user_id': session.current_user.id})
 
+    @pytest.mark.record_mode('no')
     def test_successive_queries(self, session):
         """We expect the length of the associations to be unchanged. The 'where' query for
         data associations occasionally has strange behavior, retrieving only some of the data
         associations."""
 
         lengths = []
-        for i in range(5):
+        for i in range(3):
             item1 = self.get_example_item(session)
             item_das1 = list(item1.data_associations)
             if len(item_das1) not in lengths:
@@ -46,10 +47,15 @@ class TestDataAssociation:
         item = self.get_example_item(session)
 
         val = str(uuid4())
-        item.associate('to_be_deleted', val)
-        das = item.get_data_associations('to_be_deleted')
+        key = 'test'
+        item.associate(key, val)
+        das = item.get_data_associations(key)
         assert das
 
         for da in das:
             da.delete()
+
+        item.data_associations = None
+        das = item.get_data_associations(key)
+        assert not das
 
