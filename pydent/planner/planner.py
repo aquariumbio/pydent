@@ -327,46 +327,22 @@ class Planner(logger.Loggable, object):
             ops += [fv.operation for fv in self.get_fv_predecessors(input)]
         return ops
 
-    @classmethod
-    def _resolve_source_to_outputs(cls, source):
-        """
-        Resolves a FieldValue or Operation to its sample output FieldValues
-        """
-        if isinstance(source, FieldValue):
-            if source.role == "output":
-                outputs = [source]
-            else:
-                msg = "Planner attempted to find matching" \
-                      " allowable_field_types for an output FieldValue but" \
-                      " found an input FieldValue"
-                raise PlannerException(msg)
-        elif isinstance(source, Operation):
-            outputs = [
-                fv for fv in source.outputs if fv.field_type.ftype == 'sample']
-        return outputs
-
-    # TODO: Bookmark, just build graph and convert?
-    # TODO: Bookmark, how to handle input arrays in quick wire
-    @classmethod
-    def _resolve_destination_to_inputs(cls, destination):
-        """
-        Resolves a FieldValue or Operation to its sample input FieldValues
-        """
-        if isinstance(destination, FieldValue):
-            if destination.role == "input":
-                return [destination]
+    @staticmethod
+    def _resolve_to_field_types(model, role=None):
+        if isinstance(model, FieldValue):
+            if model.role == role:
+                return [model.field_type]
             else:
                 msg = "Planner attempted to find matching" \
                       " allowable_field_types for" \
                       " an input FieldValue but found an output FieldValue"
                 raise PlannerException(msg)
-        elif isinstance(destination, Operation):
-            inputs = [fv for fv in destination.inputs
-                      if fv.field_type.ftype == 'sample']
-            return inputs
+        elif isinstance(model, Operation):
+            return [ft for ft in model.get_field_types() if ft.role == role]
         else:
             raise PlannerException(
-                "Cannot resolve inputs, type must be a FieldValue or Operation, not a \"{}\"".format(type(destination)))
+                "Cannot resolve inputs, type must be a FieldValue or Operation, not a \"{}\"".format(type(model)))
+
 
     @classmethod
     def _collect_matching_afts(cls, source, destination):
@@ -380,45 +356,45 @@ class Planner(logger.Loggable, object):
         :rtype: tuple
         """
         """Find matching AllowableFieldTypes"""
-        inputs = cls._resolve_destination_to_inputs(destination)
-        outputs = cls._resolve_source_to_outputs(source)
+        dest_fts = cls._resolve_to_field_types(destination, role='input')
+        src_fts = cls._resolve_to_field_types(source, role='output')
 
         matching_afts = []
         matching_inputs = []
         matching_outputs = []
-        for output in outputs:
-            for input in inputs:
-                io_matching_afts = cls._find_matching_afts(output, input)
+        for src in src_fts:
+            for dest in dest_fts:
+                io_matching_afts = cls._find_matching_afts(src, dest)
                 if len(io_matching_afts) > 0:
-                    if input not in matching_inputs:
-                        matching_inputs.append(input)
-                    if output not in matching_outputs:
-                        matching_outputs.append(output)
+                    if dest not in matching_inputs:
+                        matching_inputs.append(dest)
+                    if src not in matching_outputs:
+                        matching_outputs.append(src)
                 matching_afts += io_matching_afts
         return matching_afts, matching_inputs, matching_outputs
 
     @staticmethod
-    def _find_matching_afts(output, input):
-        """Finds matching afts between two FieldValues"""
+    def _find_matching_afts(src_ft, dest_ft):
+        """Finds matching afts between two FieldTypes"""
         afts = []
-        output_afts = output.field_type.allowable_field_types
-        input_afts = input.field_type.allowable_field_types
+        src_afts = src_ft.allowable_field_types
+        dest_afts = dest_ft.allowable_field_types
 
         # check whether the field_type handles collections
-        input_handles_collections = input.field_type.part is True
-        output_handles_collections = input.field_type.part is True
+        input_handles_collections = dest_ft.part is True
+        output_handles_collections = dest_ft.part is True
         if input_handles_collections != output_handles_collections:
             return []
 
-        for input_aft in input_afts:
-            for output_aft in output_afts:
-                out_object_type_id = output_aft.object_type_id
-                in_object_type_id = input_aft.object_type_id
-                out_sample_type_id = output_aft.sample_type_id
-                in_sample_type_id = input_aft.sample_type_id
+        for dest_aft in dest_afts:
+            for src_aft in src_afts:
+                out_object_type_id = src_aft.object_type_id
+                in_object_type_id = dest_aft.object_type_id
+                out_sample_type_id = src_aft.sample_type_id
+                in_sample_type_id = dest_aft.sample_type_id
                 if (out_object_type_id == in_object_type_id
                         and out_sample_type_id == in_sample_type_id):
-                    afts.append((output_aft, input_aft))
+                    afts.append((src_aft, dest_aft))
         return afts
 
     def quick_create_operation_by_name(self, otname):
@@ -516,7 +492,7 @@ class Planner(logger.Loggable, object):
             for fv in existing_fvs:
                 if fv.sample is None and not self.get_incoming_wires(fv):
                     return fv
-            fv = op.add_to_field_value_array(field_type.name, "input")
+            fv = op.new_field_value(field_type.name, "input")
             return fv
 
     # TODO: way to select preference for afts in quick_wire?
@@ -542,10 +518,10 @@ class Planner(logger.Loggable, object):
             raise PlannerException(
                 "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}\n"
                 "Instead, try to use `add_wire` method to wire together two FieldValues.".format(
-                    ', '.join([fv.name for fv in model_inputs]),
-                    model_inputs[0].operation.operation_type.name,
-                    ', '.join([fv.name for fv in model_outputs]),
-                    model_outputs[0].operation.operation_type.name))
+                    ', '.join([ft.name for ft in model_inputs]),
+                    model_inputs[0].operation_type.name,
+                    ', '.join([ft.name for ft in model_outputs]),
+                    model_outputs[0].operation_type.name))
         elif len(afts) > 0:
             for aft1, aft2 in afts:
 
@@ -558,6 +534,7 @@ class Planner(logger.Loggable, object):
                 else:
                     input_fv = destination.input(input_ft.name)
                 output_fv = source.output(output_ft.name)
+
                 return self.add_wire(output_fv, input_fv)
 
         elif len(afts) == 0:
