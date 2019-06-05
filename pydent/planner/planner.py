@@ -345,6 +345,8 @@ class Planner(logger.Loggable, object):
                 fv for fv in source.outputs if fv.field_type.ftype == 'sample']
         return outputs
 
+    # TODO: Bookmark, just build graph and convert?
+    # TODO: Bookmark, how to handle input arrays in quick wire
     @classmethod
     def _resolve_destination_to_inputs(cls, destination):
         """
@@ -560,11 +562,9 @@ class Planner(logger.Loggable, object):
 
         elif len(afts) == 0:
             raise PlannerException(
-                "Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
-                    ', '.join([fv.name for fv in model_inputs]),
-                    model_inputs[0].operation.operation_type.name,
-                    ', '.join([fv.name for fv in model_outputs]),
-                    model_outputs[0].operation.operation_type.name))
+                "Cannot quick wire. No possible wiring found between inputs {} and {}".format(
+                    source, destination
+                ))
 
     def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""

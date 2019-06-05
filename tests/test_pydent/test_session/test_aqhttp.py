@@ -107,7 +107,7 @@ def test_custom_timeout(monkeypatch, fake_response, aqhttp):
             return fake_response(method, path, {}, 200)
 
     monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
-    aqhttp.post("someurl", timeout=0.1, json_data={})
+    aqhttp.post("someurl", timeout=0.1, json={})
 
 
 def test_default_timeout(monkeypatch, fake_response, aqhttp):
@@ -124,7 +124,7 @@ def test_default_timeout(monkeypatch, fake_response, aqhttp):
             return fake_response(method, path, {}, 200)
 
     monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
-    aqhttp.post("someurl", json_data={})
+    aqhttp.post("someurl", json={})
 
 
 def test_aqhttp_repr(aqhttp):
