@@ -58,4 +58,3 @@ class TestDataAssociation:
         item.data_associations = None
         das = item.get_data_associations(key)
         assert not das
-

@@ -35,19 +35,19 @@ class FieldTypeInterface(object):
 class FieldValueInterface(object):
     """A common interface for things (i.e. Operations and Samples) that have FieldValues and FieldTypes"""
 
-    def new_field_value_from_field_type(self, field_type, values=None):
+    def new_field_value_from_field_type(self, field_type, values_dict=None):
         assert field_type in self.get_field_types()
-        self.new_field_value(field_type.name, field_type.role, values=values)
+        self.new_field_value(field_type.name, field_type.role, values_dict=values_dict)
 
-    def new_field_value(self, name, role=None, values=None):
+    def new_field_value(self, name, role=None, values_dict=None):
         # retrieve the field_type from the meta_type
         metatype = self.get_metatype()
         ft = metatype.field_type(name, role=role)
 
         # initialize the field_value
         fv = ft.initialize_field_value(parent=self)
-        if values:
-            fv.set_value(**values)
+        if values_dict:
+            fv.set_value(**values_dict)
         # add new field_value to list of field_values
         if self.field_values is None:
             self.field_values = []
@@ -138,7 +138,7 @@ class FieldValueInterface(object):
         to_be_removed = []
         for fv, val in zip_longest(fvs, values_array):
             if fv and val:
-                fv.set_value(val)
+                fv.set_value(**val)
             elif fv and not val:
                 to_be_removed.append(fv)
             elif not fv and val:

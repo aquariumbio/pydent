@@ -5,10 +5,10 @@ from pydent.marshaller import add_schema
 from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
 from pydent.relationships import (HasOne, HasMany,
                                   HasManyThrough)
-
+from pydent.models.crud_mixin import SaveMixin
 
 @add_schema
-class Sample(FieldValueInterface, ModelBase):
+class Sample(FieldValueInterface, SaveMixin, ModelBase):
     """A Sample model"""
     fields = dict(
         # sample relationships
@@ -134,15 +134,14 @@ class Sample(FieldValueInterface, ModelBase):
             else:
                 self.set_field_value(name, None, {key: val})
 
-    def save(self):
-        """Saves the Sample to the Aquarium server. Requires
-        this Sample to be connected to a session."""
-        self.session.utils.create_samples([self])
-        return self
+    # def _get_create_json(self):
+    #     return self.dump(include=('field_values',))
+    #
+    # def _get_update_json(self):
+    #     return self.dump(include=('field_values',))
 
-    def update(self):
-        self.session.utils.update_sample(self)
-        return self
+    def create(self):
+        return self.session.utils.create_samples([self])
 
     def available_items(self, object_type_name=None, object_type_id=None):
         query = {"name": object_type_name, "id": object_type_id}
@@ -166,7 +165,7 @@ class Sample(FieldValueInterface, ModelBase):
 
 
 @add_schema
-class SampleType(FieldTypeInterface, ModelBase):
+class SampleType(FieldTypeInterface, SaveMixin, ModelBase):
     """A SampleType model"""
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
@@ -202,10 +201,11 @@ class SampleType(FieldTypeInterface, ModelBase):
         )
         return sample
 
-    def save(self):
-        """Saves the Sample Type to the Aquarium server. Requires
-        this Sample Type to be connected to a session."""
-        return self.reload(self.session.utils.create_sample_type(self))
+    def _get_update_json(self):
+        return self.dump(include=('field_types',))
+
+    def _get_create_json(self):
+        return self.dump(include=('field_types',))
 
     def __str__(self):
         return self._to_str('id', 'name')

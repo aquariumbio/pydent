@@ -40,7 +40,7 @@ relationships - models relationships are stored
 
 from pydent.exceptions import AquariumModelError, NoSessionError
 from pydent.marshaller import SchemaModel, ModelRegistry, fields
-from inflection import underscore
+from inflection import underscore, tableize
 import itertools
 from copy import deepcopy
 
@@ -55,6 +55,7 @@ class ModelBase(SchemaModel):
     """
     PRIMARY_KEY = 'id'
     GLOBAL_KEY = 'rid'
+    SERVER_MODEL_NAME = None
     DEFAULT_COPY_KEEP_UNANONYMOUS = ['Item', 'Sample', 'Collection']
     counter = itertools.count()
 
@@ -89,19 +90,16 @@ class ModelBase(SchemaModel):
             x = 1
         ModelBase.__init__(instance, **data)
         return instance
-    # def __init__(self, **kwargs):
-    #     self.add_data(kwargs)
 
-    # def setup(self):
-    #     self._session = None
-    #
-    # @classmethod
-    # def model_factory(cls, data):
-    #     instance = cls._set_data(data)
+    @classmethod
+    def get_server_model_name(cls):
+        if cls.SERVER_MODEL_NAME is None:
+            return cls.__name__
+        return cls.SERVER_MODEL_NAME
 
-    # def __init__(self, **model_args):
-    #     model_args.update({"rid": self._rid})
-    #     super().__init__(model_args)
+    @classmethod
+    def get_tableized_name(cls):
+        return tableize(cls.get_server_model_name())
 
     @property
     def rid(self):
@@ -144,14 +142,6 @@ class ModelBase(SchemaModel):
                     setattr(self, name, val)
                 getattr(self, name).append(model)
         return self
-
-    def set_model_attribute(self, model, attr=None):
-        if attr is None:
-            attr = ModelBase.PRIMARY_KEY
-        model_name = underscore(model.__class__.__name__)
-        if hasattr(model, attr):
-            setattr(self, model_name + "_" + attr, getattr(model, attr))
-        return model
 
     @classmethod
     def load(cls, *args, **kwargs):

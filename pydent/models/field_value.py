@@ -1,11 +1,15 @@
+import json
+
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import SaveMixin, DeleteMixin
+from pydent.models.field_value_mixins import FieldMixin
 from pydent.models.inventory import Item, Collection, ObjectType
 from pydent.models.sample import Sample
 from pydent.relationships import HasOne, Function, Raw, fields, HasMany
 from pydent.utils import filter_list
-from pydent.models.field_value_mixins import FieldMixin
+
 
 @add_schema
 class AllowableFieldType(ModelBase):
@@ -123,7 +127,7 @@ class FieldType(FieldMixin, ModelBase):
 
 
 @add_schema
-class FieldValue(FieldMixin, ModelBase):
+class FieldValue(FieldMixin, SaveMixin, DeleteMixin, ModelBase):
     """
     A FieldValue model. One of the more complex models.
 
@@ -267,6 +271,12 @@ class FieldValue(FieldMixin, ModelBase):
                 if value not in choices and str(value) not in choices:
                     raise AquariumModelError("Value \'{}\' not in list of field "
                                              "type choices \'{}\'".format(value, choices))
+        try:
+            json.dumps(value)
+        except TypeError as e:
+            raise AquariumModelError("Cannot set value '{}'. "
+                                     "Value is not json serializable.".format(value)) from e
+
 
     def _validate_item_and_container(self, item, container):
         self._validate_types('item', item, [Item, Collection])

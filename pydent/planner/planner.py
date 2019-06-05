@@ -1003,7 +1003,7 @@ class Planner(logger.Loggable, object):
         aqhttp = model.session._AqSession__aqhttp
         data = {"model": {"model": model.__class__.__name__}}
         data.update(model.dump(**params))
-        model_data = aqhttp.post('json/save', json_data=data)
+        model_data = aqhttp.create('json/save', json_data=data)
         model.reload(model_data)
         return model
 

@@ -7,6 +7,7 @@ from pydent.relationships import (Raw, Function, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric,
                                   HasOneFromMany)
 from pydent.utils import filter_list
+from pydent.models.crud_mixin import SaveMixin
 
 
 # TODO: field_values should recognize parent_class (maybe where should ignore None field_values..)
@@ -277,7 +278,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
 
 # TODO: Refactor OperationType and Library code relationships to use ONE
 @add_schema
-class OperationType(FieldTypeInterface, ModelBase):
+class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
     """
     Represents an OperationType, which is the definition of a protocol in
     Aquarium.
@@ -338,6 +339,32 @@ class OperationType(FieldTypeInterface, ModelBase):
         """Saves the Operation Type to the Aquarium server. Requires
         this Operation Type to be connected to a session."""
         return self.reload(self.session.utils.create_operation_type(self))
+
+    def to_save_json(self):
+        op_data = self.dump(include={
+            'field_types': {
+                'allowable_field_types': {}
+            },
+            'protocol': {},
+            'cost_model': {},
+            'documentation': {},
+            'precondition': {}
+        })
+
+        # Format 'sample_type' and 'object_type' keys for afts
+        for ft_d, ft in zip(
+                op_data['field_types'], self.field_types):
+            for aft_d, aft in zip(
+                    ft_d['allowable_field_types'], ft.allowable_field_types):
+                aft_d['sample_type'] = {'name': aft.sample_type.name}
+                aft_d['object_type'] = {'name': aft.object_type.name}
+        return op_data
+
+    def _get_create_json(self):
+        return self.to_save_json()
+
+    def _get_update_json(self):
+        return self.to_save_json()
 
     def __str__(self):
         return self._to_str('id', 'name', 'category')

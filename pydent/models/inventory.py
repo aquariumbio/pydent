@@ -3,10 +3,10 @@ from pydent.marshaller import add_schema
 from pydent.models.data_associations import DataAssociatorMixin
 from pydent.relationships import (Raw, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric)
-
+from pydent.models.crud_mixin import SaveMixin
 
 @add_schema
-class Item(DataAssociatorMixin, ModelBase):
+class Item(DataAssociatorMixin, SaveMixin, ModelBase):
     """
     Defines a proxy object for an Item model in Aquarium.
     An Item is a physical object in the lab.
@@ -166,20 +166,24 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
         """
         return self.session.Item.find(self.id)
 
+    def create(self):
+        self.as_item().create()
+
+    def update(self):
+        self.as_item().update()
+
+    def save(self):
+        self.as_item().save()
+
 
 @add_schema
-class ObjectType(ModelBase):
+class ObjectType(SaveMixin, ModelBase):
     """A ObjectType model"""
 
     fields = dict(
         items=HasMany("Item", "ObjectType"),
         sample_type=HasOne("SampleType")
     )
-
-    def save(self):
-        """Saves the Object Type to the Aquarium server. Requires
-        this Object Type to be connected to a session."""
-        return self.reload(self.session.utils.create_object_type(self))
 
     def __str__(self):
         return self._to_str('id', 'name')

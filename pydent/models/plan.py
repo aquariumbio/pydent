@@ -8,11 +8,11 @@ from pydent.models.data_associations import Upload, DataAssociatorMixin
 from pydent.relationships import (Raw, JSON, Many, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric,
                                   fields)
-
+from pydent.models.crud_mixin import SaveMixin, DeleteMixin
 
 # TODO: API_CHANGE: Plan.copy() no longer reroutes to replan
 @add_schema
-class Plan(DataAssociatorMixin, ModelBase):
+class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     """
     A Plan model
     """
@@ -159,16 +159,6 @@ class Plan(DataAssociatorMixin, ModelBase):
                 'from_id': fv_ids, 'to_id': fv_ids})
         return wires_from_server
 
-    # TODO: plan.create should be implicit in 'save'
-    def create(self):
-        """
-        Creates the Plan on the Aquarium server.
-
-        :return: Submitted Plan (self)
-        :rtype: Plan
-        """
-        return self.session.utils.create_plan(self)
-
     def submit(self, user, budget):
         """
         Submits the Plan to the Aquarium server.
@@ -288,7 +278,15 @@ class Plan(DataAssociatorMixin, ModelBase):
         else:
             del json_data['layout']
 
+        json_data['user_id'] = self.session.current_user.id
+
         return json_data
+
+    def _get_create_json(self):
+        return self.to_save_json()
+
+    def _get_update_json(self):
+        return self.to_save_json()
 
     def estimate_cost(self):
         """
@@ -314,24 +312,6 @@ class Plan(DataAssociatorMixin, ModelBase):
             operation.show(pre="  ")
         for wire in self.wires:
             wire.show(pre="  ")
-
-    def save(self):
-        """
-        Updates/patches the plan on the Aquarium server
-
-        :return: updated Plan (self)
-        :rtype: Plan
-        """
-        return self.session.utils.save_plan(self)
-
-    def delete(self):
-        """
-        Deletes the plan on the Aquarium server
-
-        :return: None
-        :rtype: None
-        """
-        return self.session.utils.delete_plan(self)
 
     def replan(self):
         """Copies or replans the plan. Returns a plan copy"""
@@ -369,7 +349,7 @@ class PlanAssociation(ModelBase):
 
 
 @add_schema
-class Wire(ModelBase):
+class Wire(DeleteMixin, ModelBase):
     """A Wire model"""
     fields = {
         "from": HasOne("FieldValue", ref="from_id"),

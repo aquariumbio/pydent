@@ -14,7 +14,7 @@ def test_upload_file(session):
         'file': open(os.path.join('temp', filename), 'rb')
     }
 
-    request = aqhttp.post("krill/upload?job={}".format(115692), files=files)
+    request = aqhttp.create("krill/upload?job={}".format(115692), files=files)
     u = Upload.load(request)
 
     dummy_item = session.Sample.find_by_name("DummyPlasmid").items[0]
