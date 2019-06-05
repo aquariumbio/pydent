@@ -65,18 +65,125 @@ class SessionInterface(object):
         self.session = session
 
 
-class UtilityInterface(SessionInterface):
+class CRUDInterface(SessionInterface):
+    """
+    Create, Update, Delete interface. Methods for communicating with
+    Aquarium's JSON controller.
+    """
+
+    __slots__ = ['aqhttp', 'session']
+
+    # def _validate_model_id(self, model):
+    #     if not hasattr(model, 'id') or model.id is None:
+    #         raise TridentRequestError("Model {} has no id.".format(model))
+
+    def _model_controller(self, method, table, model_id, model_data):
+        """
+        Method for create, updating, and deleting models.
+
+        :param method: Request method name (one of 'put', 'post', 'delete'
+        :type method: basestring
+        :param table: Table name of model (e.g. 'samples' or 'data_associations')
+        :type table: basestring
+        :param model_id: Optional model_id (not required for 'post')
+        :type model_id: int
+        :param model_data: Model data to send to server controller
+        :type model_data: dict
+        :return: json formatted server response
+        :rtype: dict
+        """
+        if model_id:
+            url = '{}/{}.json'.format(table, model_id)
+        else:
+            url = '{}.json'.format(table)
+
+        result = self.aqhttp.request(
+            method,
+            url,
+            json_data=model_data
+        )
+        return result
+
+    def model_create(self, table, model_data):
+        return self._model_controller("post", table, None, model_data)
+
+    def model_update(self, table, model_id, model_data):
+        return self._model_controller("put", table, model_id, model_data)
+
+    def model_delete(self, table, model_id):
+        if model_id is None:
+            return
+        return self._model_controller("delete", table, model_id, None)
+
+    def _json_controller(self, method, model_name, model_data, record_methods=None, record_getters=None):
+        """
+        Method for create, updating, and deleting models using Aquariums JSON controller.
+
+        :param method: Method name (e.g. "save", "delete")
+        :type method: basestring
+        :param model_name: Model name
+        :type model_name: basestring
+        :param model_data: Additional model and method data
+        :type model_data: dict
+        :param record_methods: Optional 'record_methods' key
+        :type record_methods: dict
+        :param record_getters: Optional 'record_getters' key
+        :type record_getters: dict
+        :return: json formatter response
+        :rtype: basestring
+        """
+        
+        if record_methods is None:
+            record_methods = {}
+        if record_getters is None:
+            record_getters = {}
+
+        data = {
+            "model": {
+                "model": model_name,
+                "record_methods": record_methods,
+                "record_getters": record_getters
+            }
+        }
+
+        if model_data:
+            data.update(model_data)
+
+        if method:
+            url = 'json/' + method
+        else:
+            url = 'json'
+
+        try:
+            post_response = self.aqhttp.post(
+                url,
+                json_data=data,
+            )
+            return post_response
+        except TridentRequestError as err:
+            if err.strerror.status_code == 422:
+                return None
+            raise err
+
+        result = self.aqhttp.post("json" + method, json_data=data)
+        return result
+
+    def json_delete(self, model_name, model_data, record_methods=None, record_getters=None):
+        return self._json_controller("delete", model_name, model_data, record_methods, record_getters)
+
+    def json_save(self, model_name, model_data, record_methods=None, record_getters=None):
+        return self._json_controller("save", model_name, model_data, record_methods, record_getters)
+
+    def json_post(self, model_name, model_data, record_methods=None, record_getters=None):
+        return self._json_controller(None, model_name, model_data, record_methods, record_getters)
+
+
+class UtilityInterface(CRUDInterface):
     """
     Miscellaneous requests for creating, updating, etc.
     """
 
     __slots__ = ['aqhttp', 'session']
-
-    def __json_update(self, model, **params):
-        """This update method is fairly dangerous. Be careful!"""
-        data = {"model": {"model": model.__class__.__name__}}
-        data.update(model.dump(**params))
-        return self.aqhttp.post('json/save', json_data=data)
 
     ##############################
     # Create
@@ -93,85 +200,13 @@ class UtilityInterface(SessionInterface):
             s.reload(data)
         return samples
 
-
     def create_items(self, items):
         return [self.aqhttp.get('items/make/{}/{}'.format(
             i.sample.id, i.object_type.id))
             for i in items]
 
-    def create_field_value(self, field_value):
-        data = field_value.dump()
-        result = self.aqhttp.post('field_values.json', json_data=data)
-        field_value.reload(result)
-        return field_value
-
-    def create_sample_type(self, sample_type):
-        """
-        Creates a new sample type
-        """
-        st_data = sample_type.dump(relations=('field_types'))
-        result = self.aqhttp.post('sample_types.json', json_data=st_data)
-        sample_type.reload(result)
-        return sample_type
-
-    def create_object_type(self, object_type):
-        """
-        Creates a new object type
-        """
-        ot_data = object_type.dump()
-        result = self.aqhttp.post('object_types.json', json_data=ot_data)
-        object_type.reload(result)
-        return object_type
-
-    def create_operation_type(self, operation_type):
-        """
-        Creates a new operation type
-        """
-        op_data = operation_type.dump(include={
-            'field_types': {
-                'allowable_field_types': {}
-            },
-            'protocol': {},
-            'cost_model': {},
-            'documentation': {},
-            'precondition': {}
-        })
-
-        # Format 'sample_type' and 'object_type' keys for afts
-        for ft_d, ft in zip(
-                op_data['field_types'], operation_type.field_types):
-            for aft_d, aft in zip(
-                    ft_d['allowable_field_types'], ft.allowable_field_types):
-                aft_d['sample_type'] = {'name': aft.sample_type.name}
-                aft_d['object_type'] = {'name': aft.object_type.name}
-
-        result = self.aqhttp.post('operation_types.json', json_data=op_data)
-        operation_type.reload(result)
-        return operation_type
-
-    def create_plan(self, plan):
-        """
-        Saves a plan
-        """
-        # pre_ops = plan.operations
-        # if pre_ops is None:
-        #     pre_ops = []
-        plan_data = plan.to_save_json()
-        result = self.aqhttp.post(
-            "plans.json?user_id={}".format(self.session.current_user.id),
-            json_data=plan_data)
-        plan.reload(result)
-        # post_ops = plan.operations
-        # for i in range(len(pre_ops)):
-        #     vars(pre_ops[i]).update(vars(post_ops[i]))
-        plan.uploaded_data = plan_data
-        return plan
-
     def create_upload(self, upload):
-        files = {
-            'file': upload.file
-        }
-
+        files = {'file': upload.file}
         result = self.aqhttp.post(
             "krill/upload?job={}".format(upload.job_id), files=files)
         upload.reload(result)
@@ -182,18 +217,14 @@ class UtilityInterface(SessionInterface):
         if upload is not None:
             upload_id = upload.id
         data = {
-            "model": {
-                "model": "DataAssociation",
-                "record_methods": {},
-                "record_getters": {}
-            },
             "parent_id": model_inst.id,
             "key": str(key),
             "object": json.dumps({str(key): value}),
             "parent_class": model_inst.__class__.__name__,
             "upload_id": upload_id
         }
-        result = self.aqhttp.post("json/save", json_data=data)
+        result = self.json_save("DataAssociation", data)
+
         data_association = model_inst.session.DataAssociation.find(
             result['id'])
         if data_association.id not in [da.id for da in model_inst.data_associations]:
@@ -207,53 +238,6 @@ class UtilityInterface(SessionInterface):
     ##############################
     # Save/Update
     ##############################
-
-    # TODO: save methods
-    def save_sample(self, sample):
-        pass
-
-    def save_data_associations(self, data_association):
-        pass
-
-    def save_operation(self, operation):
-        # save field_values
-        pass
-
-    def save_field_value(self, field_value):
-        pass
-
-    def save_item(self, item):
-        # data_associations
-        pass
-
-    # TODO: BOOKMARK: update_sample
-    def update_sample(self, sample):
-        for field_value in sample._fv_dict().values():
-            if isinstance(field_value, list):
-                fvs = field_value
-                existing_field_values = self.session.FieldValue.where({'parent_id': sample.id,
-                                                                       'parent_class': 'Sample'})
-                for fv in fvs:
-                    data = self.__json_update(fv)
-                    pass
-                for efv in existing_field_values:
-                    if efv.id not in [_.id for _ in fvs]:
-                        self.delete_field_value(efv)
-            elif field_value.__class__.__name__==  'FieldValue':
-                self.__json_update(field_value)
-        data = self.__json_update(sample)
-        return data
-
-
-    def save_plan(self, plan):
-        plan_data = plan.to_save_json()
-        result = self.aqhttp.put(
-            "plans/{}.json?user_id={}".format(plan.id,
-                                              self.session.current_user.id),
-            json_data=plan_data
-        )
-        plan.reload(result)
-        return plan
 
     def update_code(self, code):
         """
@@ -281,25 +265,7 @@ class UtilityInterface(SessionInterface):
     ##############################
 
     def delete_data_association(self, association):
-        data = {
-            "model": {
-                "model": "DataAssociation",
-                "record_methods": {},
-                "record_getters": {}
-            },
-        }
-        data.update(association.dump())
-        result = self.aqhttp.post("json/delete", json_data=data)
-        return result
-
-    def delete_plan(self, plan):
-        self.aqhttp.delete('plans/{}'.format(plan.id))
-
-    def delete_wire(self, wire):
-        self.aqhttp.delete('wires/{}'.format(wire.id))
-
-    def delete_field_value(self, field_value):
-        self.aqhttp.delete('field_values/{}'.format(field_value.id))
+        return self.json_delete("DataAssociation", association.dump())
 
     ##############################
     # Misc
@@ -404,6 +370,7 @@ class ModelInterface(SessionInterface):
 
     def __init__(self, model_name, aqhttp, session):
         super().__init__(aqhttp, session)
+        self.crud = CRUDInterface(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
 
     @property
@@ -430,16 +397,7 @@ class ModelInterface(SessionInterface):
         data_dict = {'model': self.model_name}
         data_dict = self._prepost_query_hook(data_dict)
         data_dict.update(data)
-
-        try:
-            post_response = self.aqhttp.post(
-                'json',
-                json_data=data_dict,
-            )
-        except TridentRequestError as err:
-            if err.strerror.status_code == 422:
-                return None
-            raise err
+        post_response = self.crud.json_post(self.model_name, data_dict)
 
         if post_response is not None:
             return self.load(post_response)
@@ -504,7 +462,6 @@ class ModelInterface(SessionInterface):
     def all(self, rest=None, **opts):
         """
         Finds all models
-
         :param rest:
         :type rest:
         :param opts: additional options ("offset", "limit", "reverse", etc.)
@@ -524,7 +481,6 @@ class ModelInterface(SessionInterface):
     def where(self, criteria, methods=None, opts=None):
         """
         Performs a query for models
-
         :param criteria: query to find models
         :type criteria: dict
         :param methods: server side methods to implement
@@ -544,7 +500,6 @@ class ModelInterface(SessionInterface):
     def last(self, num=None, query=None, opts=None):
         """
         Find the last added models
-
         :param num: number of models to return. If not provided, assumes 1
         :type num: int
         :param query: additional query to find models
@@ -563,12 +518,10 @@ class ModelInterface(SessionInterface):
         opts.update(dict(limit=num, reverse=True))
         return self.where(query, opts=opts)
 
-
     # TODO: Refactor 'first' so query is an argument, not part of kwargs
     def first(self, num=None, query=None, opts=None):
         """
         Find the first added models
-
         :param num: number of models to return. If not provided, assumes 1
         :type num: int
         :param query: additional query to find models
@@ -591,7 +544,6 @@ class ModelInterface(SessionInterface):
     def one(self, query=None, first=False, opts=None):
         """
         Return one model. Returns the last model by default. Returns None if no model is found.
-
         :param first: whether to return the first model (default: False
         :type first: bool
         :return: model

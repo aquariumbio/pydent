@@ -7,7 +7,7 @@ from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.relationships import HasOne, JSON
 from pydent.utils import make_async
-
+from pydent.models.crud_mixin import DeleteMixin
 
 class DataAssociatorMixin:
     """
@@ -90,7 +90,8 @@ class DataAssociation(ModelBase):
         return self.object.get(self.key, None)
 
     def delete(self):
-        return self.session.utils.delete_data_association(self)
+        self.session.utils.delete_data_association(self)
+        return self
 
     def __str__(self):
         return self._to_str("id", "object")

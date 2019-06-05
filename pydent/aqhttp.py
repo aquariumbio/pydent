@@ -64,14 +64,14 @@ class AqHTTP(logger.Loggable, object):
                     body = self._pprint_data(body, max_list_len=10)
                 except:
                     pass
-                msg = "BODY: {body}".format(body=body)
+                msg = msg + "\n" + "BODY: {body}".format(body=body)
             if include_text:
                 text = getattr(response, 'text', '')
                 try:
                     text = json.dumps(json.loads(text), indent=2)
                 except:
                     pass
-                msg = "TEXT: {text}".format(text=text)
+                msg = msg + "\n" + "TEXT: {text}".format(text=text)
             return msg
         return "RESPONSE: NO RESPONSE"
 
@@ -173,7 +173,9 @@ class AqHTTP(logger.Loggable, object):
         if response.status_code >= 400:
             response_info = self._format_response_info(response)
             request_status = self._format_request_status(response)
-            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, response_info]), response)
+            msg = '\n'.join(['The Aquarium server returned an error.',
+                             request_status, response_info])
+            raise TridentRequestError(msg, response)
 
         return self._response_to_json(response)
 
@@ -195,12 +197,16 @@ class AqHTTP(logger.Loggable, object):
             msg += "\nMessage:\n" + response.text
             self._error(self._format_response_info(response))
             raise TridentRequestError(msg, response)
-        if response_json and 'errors' in response_json:
-            errors = response_json['errors']
-            if isinstance(errors, list):
-                errors = "\n".join(errors)
-            msg = "Error response:\n{}".format(errors)
-            raise TridentRequestError(msg, response)
+        if response_json:
+            if 'errors' in response_json:
+                errors = response_json['errors']
+                if isinstance(errors, list):
+                    errors = "\n".join(errors)
+                msg = "Error response:\n{}".format(errors)
+                raise TridentRequestError(msg, response)
+            for k in response_json:
+                if 'error' in k:
+                    raise TridentRequestError("The Aquarium server returned an error: {}".format(response_json))
         return response_json
 
     @staticmethod
