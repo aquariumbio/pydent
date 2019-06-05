@@ -77,7 +77,7 @@ class CRUDInterface(SessionInterface):
     #     if not hasattr(model, 'id') or model.id is None:
     #         raise TridentRequestError("Model {} has no id.".format(model))
 
-    def _model_controller(self, method, table, model_id, model_data):
+    def _model_controller(self, method, table, model_id, data, params=None):
         """
         Method for create, updating, and deleting models.
 
@@ -100,20 +100,21 @@ class CRUDInterface(SessionInterface):
         result = self.aqhttp.request(
             method,
             url,
-            json_data=model_data
+            data=data,
+            params=params
         )
         return result
 
-    def model_create(self, table, model_data):
-        return self._model_controller("post", table, None, model_data)
+    def model_create(self, table, data, params=None):
+        return self._model_controller("post", table, None, data, params)
 
-    def model_update(self, table, model_id, model_data):
-        return self._model_controller("put", table, model_id, model_data)
+    def model_update(self, table, model_id, data, params=None):
+        return self._model_controller("put", table, model_id, data, params)
 
-    def model_delete(self, table, model_id):
+    def model_delete(self, table, model_id, params=None):
         if model_id is None:
             return
-        return self._model_controller("delete", table, model_id, None)
+        return self._model_controller("delete", table, model_id, None, params)
 
     def _json_controller(self, method, model_name, model_data, record_methods=None, record_getters=None):
         """

@@ -288,6 +288,12 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     def _get_update_json(self):
         return self.to_save_json()
 
+    def _get_create_params(self):
+        return {"user_id": self.session.current_user.id}
+
+    def _get_update_params(self):
+        return {"user_id": self.session.current_user.id}
+
     def estimate_cost(self):
         """
         Estimates the cost of the plan on the Aquarium server.

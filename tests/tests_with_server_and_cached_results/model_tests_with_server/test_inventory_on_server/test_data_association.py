@@ -7,13 +7,12 @@ class TestDataAssociation:
 
     def get_example_item(self, session):
         if self.samples is None:
-            samples = session.Sample.last(100, query={'user_id': session.current_user.id})
+            samples = session.Sample.first(100, query={'user_id': session.current_user.id})
             self.samples = samples
         for s in self.samples:
             if s.items:
                 return s.items[0]
-
-        return lambda: session.Item.one(first=True, query={'user_id': session.current_user.id})
+        raise Exception("Could not find item")
 
     @pytest.mark.record_mode('no')
     def test_successive_queries(self, session):

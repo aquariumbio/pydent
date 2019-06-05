@@ -72,11 +72,6 @@ class Sample(FieldValueInterface, SaveMixin, ModelBase):
         if properties is not None:
             self.update_properties(properties)
 
-    def postdata_hook(self):
-        if self.field_values:
-            for fv in self.field_values:
-                self.safe_get_field_type(fv)
-
     @property
     def identifier(self):
         """Return the identifier used by Aquarium in autocompletes"""
@@ -98,10 +93,11 @@ class Sample(FieldValueInterface, SaveMixin, ModelBase):
     def field_value_array(self, name):
         return self.get_field_value_array(name, None)
 
-    @staticmethod
-    def _property_accessor(fv):
-        if fv.field_type:
-            if fv.field_type.ftype == 'sample':
+
+    def _property_accessor(self, fv):
+        ft = self.safe_get_field_type(fv)
+        if ft:
+            if ft.ftype == 'sample':
                 return fv.sample
             else:
                 return fv.value
