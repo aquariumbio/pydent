@@ -132,7 +132,7 @@ class CRUDInterface(SessionInterface):
         :return: json formatter response
         :rtype: basestring
         """
-        
+
         if record_methods is None:
             record_methods = {}
         if record_getters is None:
