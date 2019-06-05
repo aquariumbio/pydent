@@ -66,16 +66,8 @@ class ModelBase(SchemaModel):
         return instance
 
     def __init__(self, **data):
-        # data = self.predata_hook(data)
         super().__init__(data)
         self.add_data({'rid': self._rid, "id": data.get('id', None)})
-        self.postdata_hook()
-
-    def predata_hook(self, data):
-        return data
-
-    def postdata_hook(self):
-        pass
 
     @classmethod
     def _set_data(cls, data, calling_obj):

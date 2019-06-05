@@ -204,9 +204,6 @@ class AqHTTP(logger.Loggable, object):
                     errors = "\n".join(errors)
                 msg = "Error response:\n{}".format(errors)
                 raise TridentRequestError(msg, response)
-            for k in response_json:
-                if 'error' in k:
-                    raise TridentRequestError("The Aquarium server returned an error: {}".format(response_json))
         return response_json
 
     @staticmethod

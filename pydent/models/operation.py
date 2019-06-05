@@ -54,7 +54,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
                 routing_dict[ft.routing] = None
         if fvs is not None:
             for fv in self.field_values:
-                ft = fv.field_type
+                ft = self.safe_get_field_type(fv)
                 if ft.routing is not None:
                     routing_dict[ft.routing] = fv.sid
         return routing_dict

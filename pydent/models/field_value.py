@@ -202,7 +202,7 @@ class FieldValue(FieldMixin, SaveMixin, DeleteMixin, ModelBase):
         if self.sample is not None:
             return self.sample.identifier
 
-    def get_wires(self, other=None):
+    def get_wires(self):
         if not self.role or self.parent_class != 'Operation':
             return None
         elif self.operation and self.operation.plan:

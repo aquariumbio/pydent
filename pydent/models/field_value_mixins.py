@@ -78,7 +78,13 @@ class FieldValueInterface(object):
     def get_field_value_array(self, name, role=None):
         if self.field_values is None:
             return []
-        return [fv for fv in self.field_values if fv.name == name and fv.role == role]
+        fvs = []
+        for fv in self.field_values:
+            self.safe_get_field_type(fv)
+            if fv.name == name and fv.role == role:
+                self.safe_get_field_type(fv)
+                fvs.append(fv)
+        return fvs
 
     def get_field_types(self, name=None, role=None):
         fts = self.get_metatype().field_types
