@@ -115,6 +115,12 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
     def plan(self):
         return self.plans[0]
 
+    def input_array(self, name):
+        return self.get_field_value_array(name, 'input')
+
+    def output_array(self, name):
+        return self.get_field_value_array(name, 'output')
+
     def input(self, name):
         """Returns the input :class:`FieldValue` by name"""
         return self.field_value(name, 'input')
