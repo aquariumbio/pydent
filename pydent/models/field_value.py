@@ -152,6 +152,8 @@ class FieldValue(FieldMixin, SaveMixin, DeleteMixin, ModelBase):
             "Sample", callback="find_field_parent", ref="parent_id"),
         sid=Function('get_sid'),
         child_sample_name=Function(lambda fv: fv.sid, callback_args=(fields.Callback.SELF,)),
+        wires_as_source=HasMany("Wire", ref="from_id"),
+        wires_as_dest=HasMany("Wire", ref="to_id"),
         # allowable_child_types=Function('get_allowable_child_types'),
     )
 

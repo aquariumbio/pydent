@@ -173,6 +173,7 @@ class ModelBase(SchemaModel):
         temp_model = self.__class__.load_from(data_copy, self)
         temp_model.connect_to_session(self.session)
         vars(self).update(vars(temp_model))
+
         return self
 
     @classmethod

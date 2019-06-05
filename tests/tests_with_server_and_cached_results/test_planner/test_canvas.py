@@ -38,7 +38,7 @@ def test_add_wire_sets_sample_from_destination(session):
     session.set_verbose(True)
     canvas = Planner(session)
     assert len(canvas.plan.wires) == 0
-    p = session.Sample.one(sample_type_id=session.SampleType.find_by_name("Primer").id)
+    p = session.Sample.one(query=dict(sample_type_id=session.SampleType.find_by_name("Primer").id))
     destination = canvas.create_operation_by_name(
         "Make PCR Fragment", category="Cloning")
     source = canvas.create_operation_by_name(
@@ -53,7 +53,7 @@ def test_add_wire_sets_sample_from_source(session):
     session.set_verbose(True)
     canvas = Planner(session)
     assert len(canvas.plan.wires) == 0
-    p = session.Sample.one(sample_type_id=session.SampleType.find_by_name("Primer").id)
+    p = session.Sample.one(query=dict(sample_type_id=session.SampleType.find_by_name("Primer").id))
     destination = canvas.create_operation_by_name(
         "Make PCR Fragment", category="Cloning")
     source = canvas.create_operation_by_name(
@@ -167,7 +167,7 @@ def test_layout_edges_and_nodes(session):
 
 def test_load_canvas(session):
 
-    canvas = Planner(session, plan_id=122133)
+    canvas = Planner(session.Plan.one())
     assert canvas is not None
     assert canvas.plan is not None
     assert canvas.plan.operations is not None

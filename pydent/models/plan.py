@@ -236,6 +236,12 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         :return: JSON
         :rtype: dict
         """
+        if not self.operations:
+            self.operations = []
+
+        if not self.wires:
+            self.wires = []
+
         self.validate(raise_error=True)
 
         json_data = self.dump(include={
@@ -277,8 +283,6 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             json_data['layout'] = json.loads(json_data['layout'])
         else:
             del json_data['layout']
-
-        json_data['user_id'] = self.session.current_user.id
 
         return json_data
 

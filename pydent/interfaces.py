@@ -100,7 +100,7 @@ class CRUDInterface(SessionInterface):
         result = self.aqhttp.request(
             method,
             url,
-            data=data,
+            json=data,
             params=params
         )
         return result

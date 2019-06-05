@@ -21,18 +21,6 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         ignore=("locator_id",),
         part_associations=HasMany("PartAssociation", ref="part_id"),  # TODO: add to change log
         collections=HasManyThrough("Collection", "PartAssociation"),  # TODO: add to change log
-        # provedance fields
-        # TODO: add new relationships to change log
-        field_values_as_outputs=HasMany("FieldValue", ref="child_item_id", additional_args={
-            "role": "output",
-            "parent_class": "Operation"
-        }),
-        field_values_as_inputs=HasMany("FieldValue", ref="child_item_id", additional_args={
-            "role": "input",
-            "parent_class": "Operation"
-        }),
-        operations_as_outputs=HasManyThrough("Operation", "FieldValuesAsOutput", ref="parent_id"),
-        operations_as_inputs=HasManyThrough("Operation", "FieldValuesAsInput", ref="parent_id"),
     )
     methods = ['is_part']
 
