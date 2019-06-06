@@ -257,37 +257,9 @@ def test_filter_by_sample_properties_with_inequality(session):
         assert float(primer.properties["T Anneal"]) > 64
 
 
-def test_filter_operation_by_field_values(session):
-    raise NotImplementedError()
-
-
-def test_find_sample_by_properties(session):
-    raise NotImplementedError
-
-
-def test_save_sample_exists_strict(session):
-    browser = Browser(session)
-    raise NotImplementedError
-
-
-def test_save_sample_exists_overwrite(session):
-    browser = Browser(session)
-    raise NotImplementedError
-
-
-def test_save_sample_exists(session):
-    browser = Browser(session)
-    raise NotImplementedError
-
-
-def test_save_sample(session):
-    browser = Browser(session)
-    raise NotImplementedError
-
-
 def test_update_model_with_value(session):
     browser = Browser(session)
-    example_fragment = browser.find(19698)
+    example_fragment = browser.where()
     browser = Browser(session)
     l = random.randint(0, 5000)
 
@@ -302,6 +274,7 @@ def test_update_model_with_value(session):
     assert from_browser.properties["Length"] == str(l)
 
 
+# TODO: Browser.find(ids) is not reliable
 def test_update_model_with_sample(session):
     browser = Browser(session)
     example_fragment = browser.find(19698)

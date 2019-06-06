@@ -6,6 +6,8 @@ from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInter
 from pydent.relationships import (HasOne, HasMany,
                                   HasManyThrough)
 from pydent.models.crud_mixin import JSONSaveMixin
+from warnings import warn
+
 
 @add_schema
 class Sample(FieldValueInterface, ModelBase):
@@ -147,8 +149,8 @@ class Sample(FieldValueInterface, ModelBase):
         server_fvs = self.session.FieldValue.where(dict(parent_id=self.id, parent_class="Sample"))
 
         to_remove = [fv for fv in server_fvs if fv.id not in [_fv.id for _fv in new_fvs]]
-        for fv in to_remove:
-            fv.delete()
+        if to_remove:
+            warn("Trident tried to save a Sample, but it required FieldValues to be deleted.")
         self.reload(self.session.utils.json_save("Sample", self.dump()))
         return self
 
