@@ -130,12 +130,6 @@ class Sample(FieldValueInterface, ModelBase):
             else:
                 self.set_field_value(name, None, {key: val})
 
-    # def _get_create_json(self):
-    #     return self.dump(include=('field_values',))
-    #
-    # def _get_update_json(self):
-    #     return self.dump(include=('field_values',))
-
     def create(self):
         return self.session.utils.create_samples([self])
 
@@ -147,8 +141,7 @@ class Sample(FieldValueInterface, ModelBase):
 
     def update(self):
         for fv in self.field_values:
-            if fv.id:
-                fv.reload(fv.save())
+            fv.reload(fv.save())
 
         new_fvs = self.field_values
         server_fvs = self.session.FieldValue.where(dict(parent_id=self.id, parent_class="Sample"))
