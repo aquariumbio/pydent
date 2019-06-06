@@ -162,8 +162,8 @@ class CRUDInterface(SessionInterface):
             )
             return post_response
         except TridentRequestError as err:
-            if err.strerror.status_code == 422:
-                return None
+            # if err.strerror.status_code == 422:
+            #     return None
             raise err
 
         result = self.aqhttp.post("json" + method, json_data=data)
