@@ -320,19 +320,6 @@ def test_update_model_with_sample(session):
     assert from_browser.properties["Forward Primer"].id == example_primer.id
 
 
-def test_update_model_description(session):
-
-    browser = Browser(session)
-    example_fragment = browser.find(19698)
-    browser = Browser(session)
-    d = str(uuid.uuid4())
-    example_fragment.description = d
-    browser.update_sample(example_fragment)
-
-    found = session.Sample.find(example_fragment.id)
-    assert found.description == d
-
-
 def test_retrieve_with_many(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
