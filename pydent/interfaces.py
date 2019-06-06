@@ -262,13 +262,6 @@ class UtilityInterface(CRUDInterface):
                 "Unable to update code object {}".format(code_data), result)
 
     ##############################
-    # Delete
-    ##############################
-
-    def delete_data_association(self, association):
-        return self.json_delete("DataAssociation", association.dump())
-
-    ##############################
     # Misc
     ##############################
 

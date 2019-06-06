@@ -6,22 +6,6 @@ def test_add_operation_by_name(session):
     canvas.create_operation_by_name("Yeast Transformation")
 
 
-def test_find_layout_inconsistencies(session):
-    pass
-
-
-def test_add_operation_by_id(session):
-    pass
-
-
-def test_remove_operation_by_id(session):
-    pass
-
-
-def test_find_operations_of_type(session):
-    pass
-
-
 class TestCanvasLayout:
     class FakeOp(ModelBase):
         rid = 0

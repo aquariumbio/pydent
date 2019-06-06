@@ -5,10 +5,10 @@ from pydent.marshaller import add_schema
 from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
 from pydent.relationships import (HasOne, HasMany,
                                   HasManyThrough)
-from pydent.models.crud_mixin import SaveMixin
+from pydent.models.crud_mixin import JSONSaveMixin
 
 @add_schema
-class Sample(FieldValueInterface, SaveMixin, ModelBase):
+class Sample(FieldValueInterface, ModelBase):
     """A Sample model"""
     fields = dict(
         # sample relationships
@@ -139,6 +139,26 @@ class Sample(FieldValueInterface, SaveMixin, ModelBase):
     def create(self):
         return self.session.utils.create_samples([self])
 
+    def save(self):
+        if self.id:
+            self.update()
+        else:
+            self.create()
+
+    def update(self):
+        for fv in self.field_values:
+            if fv.id:
+                fv.reload(fv.save())
+
+        new_fvs = self.field_values
+        server_fvs = self.session.FieldValue.where(dict(parent_id=self.id, parent_class="Sample"))
+
+        to_remove = [fv for fv in server_fvs if fv.id not in [_fv.id for _fv in new_fvs]]
+        for fv in to_remove:
+            fv.delete()
+        self.reload(self.session.utils.json_save("Sample", self.dump()))
+        return self
+
     def available_items(self, object_type_name=None, object_type_id=None):
         query = {"name": object_type_name, "id": object_type_id}
         query = {k: v for k, v in query.items() if v is not None}
@@ -161,7 +181,7 @@ class Sample(FieldValueInterface, SaveMixin, ModelBase):
 
 
 @add_schema
-class SampleType(FieldTypeInterface, SaveMixin, ModelBase):
+class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
     """A SampleType model"""
     fields = dict(
         samples=HasMany("Sample", "SampleType"),

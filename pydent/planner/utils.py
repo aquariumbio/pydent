@@ -9,10 +9,7 @@ def arr_to_pairs(arr):
 
 
 def _id_getter(model):
-    id = model.id
-    if id is None:
-        id = "r{}".format(model.rid)
-    return id
+    return model._primary_key
 
 
 def to_undirected(graph):
