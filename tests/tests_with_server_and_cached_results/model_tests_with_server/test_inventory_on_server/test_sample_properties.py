@@ -173,6 +173,7 @@ class TestUpdateFieldValueArrays:
         func = functools.partial(session.Sample.last, query=dict(sample_type_id=aft.sample_type_id))
         return func
 
+    @pytest.mark.record_mode('no')
     @pytest.mark.parametrize('test_server_changes', [False, True])
     @pytest.mark.parametrize('num_field_values', [2])
     # @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
@@ -188,10 +189,7 @@ class TestUpdateFieldValueArrays:
         assert len(example_sample.properties[self.FIELD_TYPE_NAME]) == num_field_values
 
         if test_server_changes:
-            if example_sample.id:
-                example_sample.update()
-            else:
-                example_sample.save()
+            example_sample.save()
 
             fvs_from_server = session.FieldValue.where({'parent_id': example_sample.id, 'name': self.FIELD_TYPE_NAME,
                                                         'parent_class': 'Sample'})

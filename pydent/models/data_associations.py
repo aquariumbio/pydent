@@ -7,7 +7,9 @@ from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.relationships import HasOne, JSON
 from pydent.utils import make_async
-from pydent.models.crud_mixin import DeleteMixin
+from pydent.models.crud_mixin import JSONDeleteMixin, JSONSaveMixin
+import json
+
 
 class DataAssociatorMixin:
     """
@@ -78,7 +80,7 @@ class DataAssociatorMixin:
 
 
 @add_schema
-class DataAssociation(ModelBase):
+class DataAssociation(JSONDeleteMixin, ModelBase):
     """A DataAssociation model"""
     fields = dict(
         object=JSON(),
@@ -88,10 +90,6 @@ class DataAssociation(ModelBase):
     @property
     def value(self):
         return self.object.get(self.key, None)
-
-    def delete(self):
-        self.session.utils.delete_data_association(self)
-        return self
 
     def __str__(self):
         return self._to_str("id", "object")
@@ -212,6 +210,9 @@ class Upload(ModelBase):
         result = requests.get(self.temp_url())
         return result.content
 
-    def save(self):
+    def create(self):
         """Save the upload to the server."""
         return self.session.utils.create_upload(self)
+
+    def save(self):
+        return self.create()

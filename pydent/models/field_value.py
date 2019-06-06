@@ -3,7 +3,7 @@ import json
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
-from pydent.models.crud_mixin import SaveMixin, DeleteMixin
+from pydent.models.crud_mixin import JSONSaveMixin, JSONDeleteMixin
 from pydent.models.field_value_mixins import FieldMixin
 from pydent.models.inventory import Item, Collection, ObjectType
 from pydent.models.sample import Sample
@@ -127,7 +127,7 @@ class FieldType(FieldMixin, ModelBase):
 
 
 @add_schema
-class FieldValue(FieldMixin, SaveMixin, DeleteMixin, ModelBase):
+class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
     """
     A FieldValue model. One of the more complex models.
 

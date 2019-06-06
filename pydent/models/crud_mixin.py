@@ -51,3 +51,26 @@ class DeleteMixin(object):
 
     def _get_delete_params(self):
         return None
+
+
+class JSONSaveMixin(object):
+
+    def save(self):
+        name = self.get_server_model_name()
+        data = self._get_save_json()
+        result = self.session.utils.json_save(name, data)
+        return result
+
+    def _get_save_json(self):
+        return self.dump()
+
+
+class JSONDeleteMixin(object):
+
+    def delete(self):
+        name = self.get_server_model_name()
+        data = self._get_delete_json()
+        return self.session.utils.json_delete(name, data)
+
+    def _get_delete_json(self):
+        return self.dump()
