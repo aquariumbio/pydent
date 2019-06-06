@@ -391,7 +391,12 @@ class ModelInterface(SessionInterface):
         data_dict = {'model': self.model_name}
         data_dict = self._prepost_query_hook(data_dict)
         data_dict.update(data)
-        post_response = self.crud.json_post(self.model_name, data_dict)
+
+        try:
+            post_response = self.crud.json_post(self.model_name, data_dict)
+        except TridentRequestError as err:
+            if err.args[1].status_code == 422:
+                return None
 
         if post_response is not None:
             return self.load(post_response)

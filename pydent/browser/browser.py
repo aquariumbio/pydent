@@ -419,7 +419,7 @@ class Browser(logger.Loggable, object):
         """
 
         def to_pk(value):
-            if issubclass(value.__class__, pydent_models.ModelBase):
+            if issubclass(value.__class__, ModelBase):
                 return value._primary_key
             return value
 
