@@ -70,11 +70,7 @@ class ModelBase(SchemaModel):
         self.add_data({'rid': self._rid, "id": data.get('id', None)})
 
     @classmethod
-    def _set_data(cls, data, calling_obj):
-        if calling_obj is not None:
-            session = calling_obj.session
-        else:
-            session = None
+    def _set_data(cls, data, session):
         instance = cls.__new__(cls, session=session)
         instance.raw = data
         cls.__init__(instance)
@@ -147,16 +143,18 @@ class ModelBase(SchemaModel):
                         "\n(3) `{name}.load_from(data, session)".format(name=cls.__name__))
 
     @classmethod
-    def load_from(cls, data, obj=None):
-        """Create a new model instance from loaded attributes"""
+    def load_from(cls, data, session=None):
+        """Create a new model instance from loaded attributes.
+
+        'obj' should have a o"""
         if isinstance(data, list):
             models = []
             for d in data:
-                model = cls._set_data(d, obj)
+                model = cls._set_data(d, session)
                 models.append(model)
             return models
         else:
-            model = cls._set_data(data, obj)
+            model = cls._set_data(data, session)
         return model
 
     # TODO: rename reload to something else, implement 'refresh' method and associated tests

@@ -162,7 +162,7 @@ class Nested(Field):
             return None
         elif self.lazy and isinstance(data, self.get_model()):
             return data
-        return self.get_model()._set_data(data, calling_obj=owner)
+        return self.get_model()._set_data(data, session=owner)
 
     # TODO: how to properly handle lazy serialization? (dict vs expected object)
     def _serialize(self, owner, obj):

@@ -350,7 +350,56 @@ class UtilityInterface(CRUDInterface):
         return items
 
 
-class ModelInterface(SessionInterface):
+from abc import ABC, abstractmethod
+
+
+class ModelInterfaceABC(ABC):
+
+    @abstractmethod
+    def find(self):
+        pass
+
+    @abstractmethod
+    def find_by_name(self):
+        pass
+
+    @abstractmethod
+    def all(self):
+        pass
+
+    @abstractmethod
+    def where(self):
+        pass
+
+    @abstractmethod
+    def first(self):
+        pass
+
+    @abstractmethod
+    def last(self):
+        pass
+
+    @abstractmethod
+    def one(self):
+        pass
+
+    @abstractmethod
+    def new(self):
+        pass
+
+    @abstractmethod
+    def load(self):
+        pass
+
+    @property
+    def model_name(self):
+        """
+        Alias for self.model.__name__
+        """
+        return self.model.__name__
+
+
+class ModelInterface(ModelInterfaceABC, SessionInterface):
     """
     Makes requests using AqHTTP that are model specific.
     Establishes a connection between a session object and an Aquarium model.
@@ -362,18 +411,24 @@ class ModelInterface(SessionInterface):
     DEFAULT_REVERSE = False
     DEFAULT_LIMIT = -1
 
-    def __init__(self, model_name, aqhttp, session):
+    def __init__(self, model_name, aqhttp, session, assigned_session=None):
+        """
+        Instantiates a new model interface. Uses aqhttp to make requests,
+        and deserializes response to models.
+
+        :param model_name: Model name (e.g. 'Sample' or 'FieldValue')
+        :type model_name: basestring
+        :param aqhttp: the AqHTTP instance
+        :type aqhttp: AqHTTP
+        :param session:
+        :type session:
+        :param assigned_session:
+        :type assigned_session:
+        """
         super().__init__(aqhttp, session)
         self.crud = CRUDInterface(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
         self._do_load = True
-
-    @property
-    def model_name(self):
-        """
-        Alias for self.model.__name__
-        """
-        return self.model.__name__
 
     def _prepost_query_hook(self, query):
         """Method for modifying the query before posting"""
@@ -409,7 +464,7 @@ class ModelInterface(SessionInterface):
         Model instances will be of class defined by self.model.
         If data is a list, will return a list of model instances.
         """
-        models = self.model.load_from(post_response, self)
+        models = self.model.load_from(post_response, self.session)
         return models
 
     def get(self, path):
@@ -460,7 +515,7 @@ class ModelInterface(SessionInterface):
             return []
         return res
 
-    def all(self, rest=None, **opts):
+    def all(self, rest=None, opts=None):
         """
         Finds all models
         :param rest:
@@ -473,6 +528,8 @@ class ModelInterface(SessionInterface):
 
         if rest is None:
             rest = {}
+        if opts is None:
+            opts = {}
         addopts = opts.pop('opts', dict())
         opts.update(addopts)
         options = {"offset": self.DEFAULT_OFFSET, "reverse": self.DEFAULT_REVERSE}
