@@ -174,7 +174,7 @@ class AqSession(object):
             return None
 
     def cache(self):
-        return WithBrowserCache(self)
+        return BrowserSession.from_session(self)
 
     def __repr__(self):
         return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__,
@@ -207,14 +207,8 @@ class BrowserSession(AqSession):
         """
         self.browser.clear()
 
-
-class WithBrowserCache(object):
-
-    def __init__(self, session):
-        self.session = BrowserSession.from_session(session)
-
     def __enter__(self):
-        return self.session
+        return self
 
     def __exit__(self, exception_type, exception_value, traceback):
-        self.session.clear()
+        pass
