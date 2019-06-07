@@ -27,9 +27,9 @@ from requests.exceptions import ReadTimeout
 
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
-from pydent.interfaces import ModelInterface, UtilityInterface
+from pydent.interfaces import QueryInterface, UtilityInterface, BrowserInterface
 from pydent.models import __all__ as allmodels
-
+from pydent.browser import Browser
 
 class AqSession(object):
     """
@@ -44,7 +44,7 @@ class AqSession(object):
 
     """
 
-    INTERFACE_CLASS = ModelInterface
+    INTERFACE_CLASS = QueryInterface
 
     def __init__(self, login, password, aquarium_url, name=None):
         """
@@ -173,6 +173,48 @@ class AqSession(object):
                     self.url, ping_function_source, ReadTimeout))
             return None
 
+    def cache(self):
+        return WithBrowserCache(self)
+
     def __repr__(self):
         return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__,
                                                   self.name, self._aqhttp)
+
+
+class BrowserSession(AqSession):
+
+    INTERFACE_CLASS = BrowserInterface
+
+    def __init__(self, login, password, aquarium_url, name=None):
+        super().__init__(login, password, aquarium_url, name=name)
+        self.browser = Browser(self)
+
+    @classmethod
+    def from_session(cls, session):
+        instance = cls.__new__(cls)
+        instance._aqhttp = session._aqhttp
+        instance._current_user = session._current_user
+        instance.initialize_interface()
+        instance.browser = Browser(instance)
+        return instance
+
+    def clear(self):
+        """
+        Clears the browser cache.
+
+        :return: None
+        :rtype: None
+        """
+        self.browser.clear()
+
+
+class WithBrowserCache(object):
+
+    def __init__(self, session):
+        self.session = BrowserSession.from_session(session)
+
+    def __enter__(self):
+        return self.session
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        self.session.clear()

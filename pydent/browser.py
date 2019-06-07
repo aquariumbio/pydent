@@ -1,16 +1,18 @@
 import re
+from collections import OrderedDict
 from difflib import get_close_matches
 
-from pydent import ModelRegistry
-from pydent import models as pydent_models
-from pydent.utils import logger
 import pandas as pd
-from collections import OrderedDict
+
+from pydent.marshaller import ModelRegistry
+from pydent import models as pydent_models
 from pydent.base import ModelBase
 # TODO: browser documentation
 # TODO: examples in sphinx
 # TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
-from pydent.interfaces import ModelInterface
+from pydent.interfaces import QueryInterface
+from pydent.utils import logger
+
 
 class BrowserException(Exception):
     """Generic browser exception"""
@@ -23,9 +25,15 @@ class Browser(logger.Loggable, object):
 
     # TODO: ability to block model callbacks to enforce cache
 
-    INTERFACE_CLASS = ModelInterface
+    INTERFACE_CLASS = QueryInterface
 
     def __init__(self, session):
+        """
+        Instantiates a new browser from a AqSession instance.
+
+        :param session: a session instance
+        :type session: AqSession
+        """
         self.session = session
         self._list_models_fxn = self.sample_list
         self.use_cache = True
@@ -38,6 +46,7 @@ class Browser(logger.Loggable, object):
     # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
 
     def set_model(self, model_name):
+        """Sets the default model of this browser"""
         ModelRegistry.get_model(model_name)
         self.model_name = model_name
         if model_name == "Sample":
@@ -46,6 +55,14 @@ class Browser(logger.Loggable, object):
             self._list_models_fxn = self._generic_list_models
 
     def interface(self, model_class=None):
+        """
+        Returns a new model query interface
+
+        :param model_class:
+        :type model_class: basestring
+        :return: Interface
+        :rtype: QueryInterface
+        """
         if model_class is None:
             model_class = self.model_name
         return self.session.model_interface(model_class, interface_class=self.INTERFACE_CLASS)
@@ -55,19 +72,16 @@ class Browser(logger.Loggable, object):
         return ['{}: {}'.format(m.id, m.name) for m in models]
 
     def sample_list(self, sample_type_id=None):
+        """Returns a sample list"""
         path = 'sample_list'
         if sample_type_id is not None:
             path += "/" + str(sample_type_id)
         return self.session.utils.aqhttp.get(path)
 
-    def reset_cache(self):
+    def clear(self):
         """Clears the model cache."""
         self.model_list_cache = {}
         self.model_cache = {}
-
-    def clear(self):
-        """Clears the model cache."""
-        return self.reset_cache()
 
     def list_models(self, *args, **kwargs):
         get_models = lambda: self._list_models_fxn(*args, **kwargs)
@@ -142,18 +156,70 @@ class Browser(logger.Loggable, object):
         return self._update_model_cache_from_list(model_class, models)
 
     def one(self, model_class=None, sample_type=None, query=None, opts=None):
+        """
+        Finds one instance of a model (or returns None)
+
+        :param model_class: the name of the model class (e.g. "Sample")
+        :type model_class: basestring
+        :param sample_type: optional sample_type name
+        :type sample_type: basestring
+        :param query: additional query to filter models
+        :type query: dict
+        :param opts: additional options
+        :type opts: dict
+        :return:
+        :rtype:
+        """
         models = self.__query_helper('one', query, model_class, sample_type, opts=opts, as_single=True)
         if not models:
             return None
         return models[0]
 
     def last(self, num=1, model_class=None, sample_type=None, query=None):
+        """
+        Finds last models. Will NOT return cached models.
+
+        :param num: number of models to return
+        :type num: int
+        :param model_class: the name of the model class (e.g. "Sample")
+        :type model_class: basestring
+        :param sample_type: optional sample_type name
+        :type sample_type: basestring
+        :param query: additional query to filter models
+        :type query: dict
+        :return:
+        :rtype:
+        """
         return self.__query_helper('last', query, model_class, sample_type, params=dict(num=num))
 
     def first(self, num=1, model_class=None, sample_type=None, query=None):
+        """
+        Finds first models. Will NOT return cached models.
+
+        :param num: number of models to return
+        :type num: int
+        :param model_class: the name of the model class (e.g. "Sample")
+        :type model_class: basestring
+        :param sample_type: optional sample_type name
+        :type sample_type: basestring
+        :param query: additional query to filter models
+        :type query: dict
+        :return:
+        :rtype:
+        """
         return self.__query_helper('first', query, model_class, sample_type, params=dict(num=num))
 
     def find(self, model_id, model_class=None):
+        """
+        Finds a model by id. Will returned cached model if possible.
+
+        :param model_id: model_id
+        :type model_id: int
+        :param model_class: the name of the model class (e.g. "Sample")
+        :type model_class: basestring
+        :return:
+        :rtype:
+        """
         if model_class is None:
             model_class = self.model_name
         if self.use_cache:
@@ -162,10 +228,11 @@ class Browser(logger.Loggable, object):
 
     def find_by_name(self, name, model_class=None, primary_key='id'):
         """
-        Find model by name.
+        Find model by name. Will return cached model if possible.
 
-        :param name:
-        :param model_class:
+        :param name: name of the model
+        :param model_class: the name of the model class (e.g. "Sample")
+        :type model_class: basestring
         :param primary_key:
         :return:
         """
@@ -175,16 +242,17 @@ class Browser(logger.Loggable, object):
         return models[0]
 
     def all(self, model_class=None, opts=None):
-        return self.__query_helper('all', model_class=model_class, opts=opts)
+        """
+        Return all models of a model_class.
 
-    # def find(self, model_id):
-    #     return self.interface.find(model_id)
-    #
-    # def find_by_name(self, model_name):
-    #     return self.interface.find_by_name(model_name)
-    #
-    # def where(self, query):
-    #     return self.interface().where(query)
+        :param model_class: the name of the model class (e.g. "Sample")
+        :type model_class: basestring
+        :param opts:
+        :type opts:
+        :return:
+        :rtype:
+        """
+        return self.__query_helper('all', model_class=model_class, opts=opts)
 
     @staticmethod
     def _match_query(query, model_dict):
@@ -468,7 +536,6 @@ class Browser(logger.Loggable, object):
                 filtered_samples.append(sample)
         return filtered_samples
 
-
         # # TODO: handle metatypes better
         # if self.model_name not in ["Operation", "Sample"]:
         #     raise BrowserException("Cannot filter_by_properties, model must be either a Operation or Sample")
@@ -631,7 +698,8 @@ class Browser(logger.Loggable, object):
                     attr=attr
                 ))
         else:
-            raise BrowserException("QUERY_TYPE '{}' for relation '{}' not recognized.".format(relation.QUERY_TYPE, relationship_name))
+            raise BrowserException(
+                "QUERY_TYPE '{}' for relation '{}' not recognized.".format(relation.QUERY_TYPE, relationship_name))
         for model in models:
             found_models = model_dict[getattr(model, attr)]
             setattr(model, relationship_name, found_models)
@@ -717,7 +785,8 @@ class Browser(logger.Loggable, object):
             relation = models[0].get_relationships().get(relationship_name, None)
             if relation is None:
                 if strict:
-                    raise BrowserException("Relation '{}' not found in relationships for {}".format(relationship_name, type(models[0])))
+                    raise BrowserException(
+                        "Relation '{}' not found in relationships for {}".format(relationship_name, type(models[0])))
                 else:
                     return []
         else:
@@ -784,7 +853,8 @@ class Browser(logger.Loggable, object):
                 new_models = self.retrieve(models, relation_name, strict=strict)
                 models_by_attr[relation_name] += new_models
                 if isinstance(relations, dict):
-                    _models_by_attr = self.recursive_retrieve(new_models, dict(relations).pop(relation_name), strict=strict)
+                    _models_by_attr = self.recursive_retrieve(new_models, dict(relations).pop(relation_name),
+                                                              strict=strict)
                     for attr in _models_by_attr:
                         _models = _models_by_attr[attr]
                         if attr in models_by_attr:
