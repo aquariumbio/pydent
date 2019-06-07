@@ -10,7 +10,7 @@ from pydent.base import ModelBase
 # TODO: browser documentation
 # TODO: examples in sphinx
 # TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
-
+from pydent.interfaces import ModelInterface
 
 class BrowserException(Exception):
     """Generic browser exception"""
@@ -22,6 +22,8 @@ class Browser(logger.Loggable, object):
     """
 
     # TODO: ability to block model callbacks to enforce cache
+
+    INTERFACE_CLASS = ModelInterface
 
     def __init__(self, session):
         self.session = session
@@ -46,7 +48,7 @@ class Browser(logger.Loggable, object):
     def interface(self, model_class=None):
         if model_class is None:
             model_class = self.model_name
-        return self.session.model_interface(model_class)
+        return self.session.model_interface(model_class, interface_class=self.INTERFACE_CLASS)
 
     def _generic_list_models(self, **query):
         models = self.where(query, self.model_name)
@@ -66,7 +68,6 @@ class Browser(logger.Loggable, object):
         get_models = lambda: self._list_models_fxn(*args, **kwargs)
 
         if self.use_cache:
-            model_list = []
             models_cache = self.model_list_cache.get('models', {})
             if self.model_name in models_cache:
                 model_list = models_cache[self.model_name]
@@ -97,9 +98,29 @@ class Browser(logger.Loggable, object):
             query.update({"sample_type_id": sample_type_id})
         if self.use_cache:
             return self.cached_where(query, model_class, primary_key=primary_key)
-        return self.interface(model_class).where(query)
+        return self.interface(model_class).where(query, **kwargs)
 
     def __query_helper(self, fname, query, model_class, sample_type=None, opts=None, params=None, as_single=False):
+        """
+        Builds a custom query for the browser.
+
+        :param fname: the function name
+        :type fname: basestring
+        :param query: the query
+        :type query: dict
+        :param model_class: the name of the model class (e.g. "Sample")
+        :type model_class: basestring
+        :param sample_type: optional sample_type name
+        :type sample_type: basestring
+        :param opts: options to send to the function
+        :type opts: dict
+        :param params: additionaly keyword arguments to send to the function
+        :type params: dict
+        :param as_single: if True, will return the first model of the array or None if array is empty
+        :type as_single: bool
+        :return: Aquarium model or list of Aquarium models
+        :rtype: ModelBase | list
+        """
         if model_class is None:
             model_class = self.model_name
         if query is None:
@@ -122,12 +143,10 @@ class Browser(logger.Loggable, object):
         return models[0]
 
     def last(self, num=1, model_class=None, sample_type=None, query=None):
-        models = self.__query_helper('last', query, model_class, sample_type, params=dict(num=num))
-        return self._update_model_cache_from_list(model_class, models)
+        return self.__query_helper('last', query, model_class, sample_type, params=dict(num=num))
 
     def first(self, num=1, model_class=None, sample_type=None, query=None):
-        models = self.__query_helper('first', query, model_class, sample_type, params=dict(num=num))
-        return self._update_model_cache_from_list(model_class, models)
+        return self.__query_helper('first', query, model_class, sample_type, params=dict(num=num))
 
     def find(self, model_id, model_class=None):
         if model_class is None:
@@ -149,6 +168,9 @@ class Browser(logger.Loggable, object):
         if not models:
             return None
         return models[0]
+
+    def all(self, model_class=None, opts=None):
+        return self.__query_helper('all', model_class=model_class, opts=opts)
 
     # def find(self, model_id):
     #     return self.interface.find(model_id)

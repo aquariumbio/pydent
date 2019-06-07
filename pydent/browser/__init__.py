@@ -15,3 +15,4 @@ Submodules
 """
 
 from pydent.browser.browser import Browser
+from pydent.browser.browser_session import BrowserSession
