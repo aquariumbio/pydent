@@ -20,3 +20,11 @@ class BrowserSession(AqSession):
         instance.browser = Browser(instance)
         return instance
 
+    def clear(self):
+        """
+        Clears the browser cache.
+
+        :return: None
+        :rtype: None
+        """
+        self.browser.clear()
