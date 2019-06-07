@@ -1,5 +1,5 @@
-from pydent.browser.browser_interface import BrowserInterface
-from pydent.browser import Browser, BrowserSession
+from pydent.interfaces import BrowserInterface
+from pydent.browser import Browser
 from copy import deepcopy
 
 
@@ -37,5 +37,28 @@ def test_BrowserSession_from_session(session):
     assert id(st1) == id(st2)
 
 
+def test_BrowserSession_clear(session):
+    bsession = BrowserSession.from_session(session)
+
+    s1 = bsession.Sample.find(4)
+    st1 = s1.sample_type
+
+    bsession.clear()
+
+    s2 = bsession.Sample.find(4)
+    st2 = bsession.SampleType.find(s1.sample_type_id)
+    assert id(s1) != id(s2)
+    assert id(st1) != id(st2)
+
+
+def test_BrowserSession_with(session):
+
+    with session.cache() as sess:
+        s1 = sess.Sample.find(4)
+        st1 = s1.sample_type
+        s2 = sess.Sample.find(4)
+        st2 = sess.SampleType.find(s1.sample_type_id)
+        assert id(s1) == id(s2)
+        assert id(st1) == id(st2)
 
 
