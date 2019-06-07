@@ -1,12 +1,13 @@
+import json
 from collections import Sequence
+from warnings import warn
 
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
 from pydent.relationships import (HasOne, HasMany,
                                   HasManyThrough)
-from pydent.models.crud_mixin import JSONSaveMixin
-from warnings import warn
 
 
 @add_schema
@@ -95,13 +96,15 @@ class Sample(FieldValueInterface, ModelBase):
     def field_value_array(self, name):
         return self.get_field_value_array(name, None)
 
-
     def _property_accessor(self, fv):
         ft = self.safe_get_field_type(fv)
         if ft:
             if ft.ftype == 'sample':
                 return fv.sample
             else:
+                if ft.ftype == 'number':
+                    if isinstance(fv.value, str):
+                        return json.loads(fv.value)
                 return fv.value
 
     @property

@@ -176,6 +176,19 @@ class ModelBase(SchemaModel):
 
         return self
 
+    def refresh(self):
+        """
+        Refresh this model from data from the server.
+
+        :return: self
+        :rtype: self
+        """
+        interface = self.create_interface()
+        interface._do_load = False
+        data = interface.find(self.id)
+        self.reload(data)
+        return self
+
     @classmethod
     def get_relationships(cls):
         grouped = cls._model_schema.grouped_fields

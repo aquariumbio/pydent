@@ -257,42 +257,6 @@ def test_filter_by_sample_properties_with_inequality(session):
         assert float(primer.properties["T Anneal"]) > 64
 
 
-def test_update_model_with_value(session):
-    browser = Browser(session)
-    example_fragment = browser.where()
-    browser = Browser(session)
-    l = random.randint(0, 5000)
-
-    example_fragment.update_properties({"Length": l})
-
-    browser.update_sample(example_fragment)
-
-    from_server = session.Sample.find(example_fragment.id)
-    from_browser = browser.find(example_fragment.id)
-
-    assert from_server.properties["Length"] == str(l)
-    assert from_browser.properties["Length"] == str(l)
-
-
-# TODO: Browser.find(ids) is not reliable
-def test_update_model_with_sample(session):
-    browser = Browser(session)
-    example_fragment = browser.find(19698)
-    browser = Browser(session)
-    l = random.randint(0, 5000)
-
-    example_primer = browser.one(sample_type="Primer")
-    example_fragment.update_properties({"Forward Primer": example_primer})
-
-    browser.update_sample(example_fragment)
-
-    from_server = session.Sample.find(example_fragment.id)
-    from_browser = browser.find(example_fragment.id)
-
-    assert from_server.properties["Forward Primer"].id == example_primer.id
-    assert from_browser.properties["Forward Primer"].id == example_primer.id
-
-
 def test_retrieve_with_many(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
@@ -557,13 +521,3 @@ def test_library_retrieve(session):
     for lib in libs:
         assert 'source' in lib._get_deserialized_data()
         assert isinstance(lib.source, pydent_models.Code)
-
-
-# TODO: test update sample with field value array
-def test_update_sample_with_field_value(session):
-
-    browser = Browser(session)
-
-    new_sample = browser.new_sample("Fragment", str(uuid.uuid4()), '', 'Trident')
-    browser.save_sample(new_sample)
-

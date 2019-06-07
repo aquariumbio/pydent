@@ -366,6 +366,7 @@ class ModelInterface(SessionInterface):
         super().__init__(aqhttp, session)
         self.crud = CRUDInterface(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
+        self._do_load = True
 
     @property
     def model_name(self):
@@ -398,8 +399,9 @@ class ModelInterface(SessionInterface):
             if err.args[1].status_code == 422:
                 return None
 
-        if post_response is not None:
+        if post_response is not None and self._do_load:
             return self.load(post_response)
+        return post_response
 
     def load(self, post_response):
         """
@@ -428,7 +430,7 @@ class ModelInterface(SessionInterface):
         """
         if model_id is None:
             raise ValueError("model_id in 'find' cannot be None")
-        return self._post_json({"id": model_id}, )
+        return self._post_json({"id": model_id})
 
     def find_by_name(self, name):
         """
