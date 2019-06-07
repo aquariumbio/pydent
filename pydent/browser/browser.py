@@ -61,8 +61,13 @@ class Browser(logger.Loggable, object):
         return self.session.utils.aqhttp.get(path)
 
     def reset_cache(self):
+        """Clears the model cache."""
         self.model_list_cache = {}
         self.model_cache = {}
+
+    def clear(self):
+        """Clears the model cache."""
+        return self.reset_cache()
 
     def list_models(self, *args, **kwargs):
         get_models = lambda: self._list_models_fxn(*args, **kwargs)
