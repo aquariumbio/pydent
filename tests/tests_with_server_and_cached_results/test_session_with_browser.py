@@ -1,3 +1,4 @@
+from pydent import BrowserSession
 from pydent.interfaces import BrowserInterface
 from pydent.browser import Browser
 from copy import deepcopy
