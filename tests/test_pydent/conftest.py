@@ -42,7 +42,7 @@ def fake_session(monkeypatch, mock_login_post):
     Returns a fake session using a fake cookie
     """
     monkeypatch.setattr(requests, "post", mock_login_post)
-    aquarium_url = "http://52.52.525.52"
+    aquarium_url = "http://52.52.53455325.52"
     session = AqSession("username", "password", aquarium_url)
     return session
 

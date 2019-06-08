@@ -164,9 +164,7 @@ class AqHTTP(logger.Loggable, object):
         if not allow_none and 'json' in kwargs:
             self._disallow_null_in_json(kwargs['json'])
 
-        response = None
-        if response is None:
-            response = requests.request(
+        response = requests.request(
                 method,
                 url_build(
                     self.aquarium_url, path),

@@ -63,6 +63,7 @@ class ModelBase(SchemaModel):
 
     def __new__(cls, *args, session=None, **kwargs):
         instance = super(ModelBase, cls).__new__(cls)
+        instance._session = None
         instance.session = session
         instance._rid = next(ModelBase.counter)
         return instance
@@ -211,8 +212,9 @@ class ModelBase(SchemaModel):
             raise NoSessionError("Cannot instantiate new model because its data parent "
                                  "session is a type '{}', not a Session object"
                                  .format(type(new_session)))
+        if self.session is not None:
+            raise Exception("Cannot set session. Model {} already has a session.".format(self))
         self._session = new_session
-        return new_session
 
     def connect_to_session(self, session):
         """Connect model instance to a session. Does nothing if session already exists."""

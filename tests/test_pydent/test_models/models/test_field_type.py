@@ -15,7 +15,6 @@ def test_field_type_constructor_with_sample_type(fake_session, monkeypatch):
         'parent_id': 5,
         'parent_class': 'SampleType'
     })
-    ft.connect_to_session(fake_session)
     assert ft.sample_type.id == 5
     assert ft.operation_type is None
 
@@ -33,7 +32,6 @@ def test_field_type_constructor_with_operation_type(fake_session, monkeypatch):
         'parent_id': 5,
         'parent_class': 'OperationType'
     })
-    ft.connect_to_session(fake_session)
     assert ft.operation_type.id == 5
     assert ft.sample_type is None
 
