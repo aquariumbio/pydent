@@ -40,7 +40,7 @@ relationships - models relationships are stored
 
 from pydent.exceptions import AquariumModelError, NoSessionError
 from pydent.marshaller import SchemaModel, ModelRegistry, fields
-from inflection import underscore, tableize
+from inflection import tableize
 import itertools
 from copy import deepcopy
 
@@ -61,7 +61,7 @@ class ModelBase(SchemaModel):
 
     def __new__(cls, *args, session=None, **kwargs):
         instance = super(ModelBase, cls).__new__(cls)
-        instance._session = session
+        instance.session = session
         instance._rid = next(ModelBase.counter)
         return instance
 
@@ -168,8 +168,7 @@ class ModelBase(SchemaModel):
         :rtype: ModelBase
         """
         data_copy = deepcopy(data)
-        temp_model = self.__class__.load_from(data_copy, self)
-        temp_model.connect_to_session(self.session)
+        temp_model = self.__class__.load_from(data_copy, self.session)
         vars(self).update(vars(temp_model))
 
         return self
@@ -203,10 +202,15 @@ class ModelBase(SchemaModel):
         """The connected session instance."""
         return self._session
 
+    @session.setter
+    def session(self, new_session):
+        assert new_session.__class__.__name__ == 'AqSession'
+        self._session = new_session
+        return new_session
+
     def connect_to_session(self, session):
         """Connect model instance to a session. Does nothing if session already exists."""
-        if self._session is None:
-            self._session = session
+        self.session = session
 
     def _check_for_session(self):
         """Raises error if model is not connected to a session"""
