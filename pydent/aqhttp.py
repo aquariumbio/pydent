@@ -100,7 +100,8 @@ class AqHTTP(logger.Loggable, object):
         try:
             res = requests.post(url_build(self.aquarium_url, "sessions.json"),
                                 json=session_data, timeout=self.timeout)
-
+            if res is None:
+                raise requests.exceptions.ConnectionError
             cookies = dict(res.cookies)
 
             # Check for remember token
@@ -126,6 +127,10 @@ class AqHTTP(logger.Loggable, object):
                 " connection is slow. Make sure the url {} is correct."
                 " Alternatively, use Session.set_timeout"
                 " to increase the request timeout.".format(self.aquarium_url))
+        except requests.exceptions.ConnectionError:
+            raise TridentLoginError(
+                "Could not contact '{}'. Login request returned no response".format(self.aquarium_url)
+            )
 
     @staticmethod
     def _serialize_request(url, method, body):
@@ -284,7 +289,7 @@ class AqHTTP(logger.Loggable, object):
         return self.request("delete", path, timeout=timeout, **kwargs)
 
     def __repr__(self):
-        return "<{}({}, {})>".format(self.__class__.__name__,
+        return "<{}(user='{}', url='{}')>".format(self.__class__.__name__,
                                      self.login, self.aquarium_url)
 
     def __str__(self):

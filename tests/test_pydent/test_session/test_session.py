@@ -75,4 +75,4 @@ def test_logged_in(monkeypatch, fake_session):
 def test_set_timeout(fake_session):
 
     fake_session.set_timeout(5)
-    assert fake_session._AqSession__aqhttp.timeout == 5
+    assert fake_session._aqhttp.timeout == 5

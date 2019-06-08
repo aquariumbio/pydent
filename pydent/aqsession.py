@@ -30,8 +30,9 @@ from pydent.base import ModelRegistry
 from pydent.interfaces import QueryInterface, UtilityInterface, BrowserInterface
 from pydent.models import __all__ as allmodels
 from pydent.browser import Browser
+from pydent.sessionabc import SessionABC
 
-class AqSession(object):
+class AqSession(SessionABC):
     """
     Holds an AqHTTP with login information.
     Creates SessionInterfaces for models.
