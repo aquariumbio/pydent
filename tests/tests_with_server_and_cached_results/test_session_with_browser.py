@@ -1,7 +1,10 @@
-from pydent import BrowserSession
-from pydent.interfaces import BrowserInterface
-from pydent.browser import Browser
 from copy import deepcopy
+
+import pytest
+
+from pydent.browser import Browser
+from pydent.interfaces import BrowserInterface
+from abc import ABC
 
 
 def test_regular_session(session):
@@ -13,11 +16,18 @@ def test_regular_session(session):
     assert id(st1) != id(st2)
 
 
+def test_raise_value_error_for_interface(session):
+    class MyClass(ABC):
+        pass
+    with pytest.raises(ValueError):
+        session.interface_class = MyClass
+
+
 def test_session_with_browser(session):
     session = deepcopy(session)
-    session.INTERFACE_CLASS = BrowserInterface
-    session.browser = Browser(session)
-    session.initialize_interface()
+    session.interface_class = BrowserInterface
+    session.init_cache()
+    session.initialize_interfaces()
 
     s1 = session.Sample.find(4)
     st1 = s1.sample_type
@@ -27,24 +37,25 @@ def test_session_with_browser(session):
     assert id(st1) == id(st2)
 
 
-def test_BrowserSession_from_session(session):
-    bsession = BrowserSession.from_session(session)
-
-    s1 = bsession.Sample.find(4)
+def test_using_cache_with_session(session):
+    session = deepcopy(session)
+    session.using_cache = True
+    s1 = session.Sample.find(4)
     st1 = s1.sample_type
-    s2 = bsession.Sample.find(4)
-    st2 = bsession.SampleType.find(s1.sample_type_id)
+    s2 = session.Sample.find(4)
+    st2 = session.SampleType.find(s1.sample_type_id)
     assert id(s1) == id(s2)
     assert id(st1) == id(st2)
 
 
-def test_BrowserSession_clear(session):
-    bsession = BrowserSession.from_session(session)
+def test_cache_clear(session):
+    bsession = session.copy()
+    bsession.using_cache = True
 
     s1 = bsession.Sample.find(4)
     st1 = s1.sample_type
 
-    bsession.clear()
+    bsession.clear_cache()
 
     s2 = bsession.Sample.find(4)
     st2 = bsession.SampleType.find(s1.sample_type_id)
@@ -52,9 +63,8 @@ def test_BrowserSession_clear(session):
     assert id(st1) != id(st2)
 
 
-def test_BrowserSession_with(session):
-
-    with session.cache() as sess:
+def test_with_temp_cache(session):
+    with session.temp_cache() as sess:
         s1 = sess.Sample.find(4)
         st1 = s1.sample_type
         s2 = sess.Sample.find(4)
@@ -62,4 +72,7 @@ def test_BrowserSession_with(session):
         assert id(s1) == id(s2)
         assert id(st1) == id(st2)
 
+        assert not s2.session is session
+        assert s2.session is sess
 
+    assert s2.session is session

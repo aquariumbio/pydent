@@ -252,7 +252,6 @@ def test_compatible_items(monkeypatch, fake_session):
         'name': 'plasmid',
         'sample_type_id': 2
     })
-    fake_fv.connect_to_session(fake_session)
     fake_fv.set_value(sample=sample)
     fake_fv.compatible_items()
 

@@ -400,7 +400,7 @@ class QueryInterfaceABC(ABC):
         return self.model.__name__
 
 
-class QueryInterface(QueryInterfaceABC, SessionInterface):
+class QueryInterface(SessionInterface, QueryInterfaceABC):
     """
     Makes requests using AqHTTP that are model specific.
     Establishes a connection between a session object and an Aquarium model.
@@ -639,7 +639,7 @@ class QueryInterface(QueryInterfaceABC, SessionInterface):
         return self.new(*args, **kwargs)
 
 
-class BrowserInterface(QueryInterfaceABC, SessionInterface):
+class BrowserInterface(SessionInterface, QueryInterfaceABC):
     __slots__ = ["aqhttp", "session", "model", "__dict__"]
     MERGE = ["methods"]
     DEFAULT_OFFSET = -1

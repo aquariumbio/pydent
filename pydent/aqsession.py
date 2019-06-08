@@ -27,7 +27,7 @@ from requests.exceptions import ReadTimeout
 
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
-from pydent.interfaces import QueryInterface, UtilityInterface, BrowserInterface
+from pydent.interfaces import QueryInterfaceABC, QueryInterface, UtilityInterface, BrowserInterface
 from pydent.models import __all__ as allmodels
 from pydent.browser import Browser
 from pydent.sessionabc import SessionABC
@@ -45,9 +45,7 @@ class AqSession(SessionABC):
 
     """
 
-    INTERFACE_CLASS = QueryInterface
-
-    def __init__(self, login, password, aquarium_url, name=None):
+    def __init__(self, login, password, aquarium_url, name=None, aqhttp=None):
         """
 
         :param login: the Aquarium login for the user
@@ -63,11 +61,31 @@ class AqSession(SessionABC):
         :type name: str or None
         """
         self.name = name
-        self._aqhttp = AqHTTP(login, password, aquarium_url)
+        self._aqhttp = None
+        if login is None and password is None and aquarium_url is None:
+            if aqhttp is not None:
+                self._aqhttp = aqhttp
+            else:
+                raise ValueError("Need either a name, password, and url OR an aqhttp instance.")
+        else:
+            self._aqhttp = AqHTTP(login, password, aquarium_url)
         self._current_user = None
-        self.initialize_interface()
+        self._interface_class = QueryInterface
+        self.initialize_interfaces()
+        self._browser = None
+        self._using_cache = False
 
-    def initialize_interface(self):
+    @property
+    def interface_class(self):
+        return self._interface_class
+
+    @interface_class.setter
+    def interface_class(self, c):
+        if not issubclass(c, QueryInterfaceABC):
+            raise ValueError("Interface {} is not a subclass of {}".format(type(c), QueryInterfaceABC))
+        self._interface_class = c
+
+    def initialize_interfaces(self):
         # initialize model interfaces
         for model_name in allmodels:
             self._register_interface(model_name)
@@ -86,11 +104,9 @@ class AqSession(SessionABC):
         """Sends a log message to the aqhttp's logger"""
         self._aqhttp._info(msg)
 
-    def _register_interface(self, model_name, interface_class=None):
+    def _register_interface(self, model_name):
         # get model interface from model class
-        if interface_class is None:
-            interface_class = self.INTERFACE_CLASS
-        model_interface = interface_class(model_name, self._aqhttp, self)
+        model_interface = self.interface_class(model_name, self._aqhttp, self)
 
         # set interface to session attribute (e.g. session.Sample calls Sample model interface)
         setattr(self, model_name, model_interface)
@@ -148,7 +164,7 @@ class AqSession(SessionABC):
     def model_interface(self, model_name, interface_class=None):
         """Returns model interface by name"""
         if interface_class is None:
-            interface_class = self.INTERFACE_CLASS
+            interface_class = self.interface_class
         return interface_class(model_name, self._aqhttp, self)
 
     @property
@@ -174,42 +190,64 @@ class AqSession(SessionABC):
                     self.url, ping_function_source, ReadTimeout))
             return None
 
-    def cache(self):
-        return BrowserSession.from_session(self)
+    @property
+    def browser(self):
+        return self._browser
 
-    def __repr__(self):
-        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__,
-                                                  self.name, self._aqhttp)
+    def init_cache(self):
+        self._browser = Browser(self)
 
-
-class BrowserSession(AqSession):
-
-    INTERFACE_CLASS = BrowserInterface
-
-    def __init__(self, login, password, aquarium_url, name=None):
-        super().__init__(login, password, aquarium_url, name=name)
-        self.browser = Browser(self)
-
-    @classmethod
-    def from_session(cls, session):
-        instance = cls.__new__(cls)
-        instance._aqhttp = session._aqhttp
-        instance._current_user = session._current_user
-        instance.initialize_interface()
-        instance.browser = Browser(instance)
-        return instance
-
-    def clear(self):
-        """
-        Clears the browser cache.
-
-        :return: None
-        :rtype: None
-        """
+    def clear_cache(self):
         self.browser.clear()
 
-    def __enter__(self):
-        return self
+    @property
+    def using_cache(self):
+        return self._using_cache
 
-    def __exit__(self, exception_type, exception_value, traceback):
-        pass
+    @using_cache.setter
+    def using_cache(self, b):
+        if b:
+            self.interface_class = BrowserInterface
+            if self.browser is None:
+                self.init_cache()
+            self.initialize_interfaces()
+            self._using_cache = True
+        else:
+            self._using_cache = False
+            self.interface_class = QueryInterface
+            self.initialize_interfaces()
+
+    def copy(self):
+        return self.__class__(None, None, None, self.name, aqhttp=self._aqhttp)
+
+    def temp_cache(self):
+        return TemporaryCache(self)
+
+    def __repr__(self):
+        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self._aqhttp)
+
+
+class TemporaryCache(object):
+
+    def __init__(self, session):
+        self.session = session
+
+        bsession = session.copy()
+        bsession.init_cache()
+        bsession.using_cache = True
+        self.bsession = bsession
+
+    def __enter__(self):
+        return self.bsession
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        # collect all models retrieved in browser
+        models = []
+        for v in self.bsession.browser.model_cache.values():
+            models += list(v.values())
+
+        # swap sessions for models
+        if self.session.browser:
+            self.session.browser.update_model_cache(models)
+        for m in models:
+            m._session = self.session
