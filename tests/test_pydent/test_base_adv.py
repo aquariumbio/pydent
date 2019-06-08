@@ -23,7 +23,7 @@ def test_attribute_missing(fake_session):
     class Book(ModelBase):
         pass
 
-    a = Author.load_from({}, fake_session.utils)
+    a = Author.load_from({}, fake_session)
     books1 = a.books
     vid = id(books1)
     books2 = a.books
