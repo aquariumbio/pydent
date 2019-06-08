@@ -43,6 +43,8 @@ from pydent.marshaller import SchemaModel, ModelRegistry, fields
 from inflection import tableize
 import itertools
 from copy import deepcopy
+from pydent.sessionabc import SessionABC
+
 
 class ModelBase(SchemaModel):
     """
@@ -70,12 +72,13 @@ class ModelBase(SchemaModel):
         self.add_data({'rid': self._rid, "id": data.get('id', None)})
 
     @classmethod
-    def _set_data(cls, data, session):
-        instance = cls.__new__(cls, session=session)
+    def _set_data(cls, data, owner):
+        if not hasattr(owner, 'session'):
+            raise NoSessionError("Cannot instantiate new model because its data parent"
+                                 " {} has no 'session' attribute".format(owner))
+        instance = cls.__new__(cls, session=owner.session)
         instance.raw = data
         cls.__init__(instance)
-        if isinstance(data, list):
-            x = 1
         ModelBase.__init__(instance, **data)
         return instance
 
@@ -143,18 +146,18 @@ class ModelBase(SchemaModel):
                         "\n(3) `{name}.load_from(data, session)".format(name=cls.__name__))
 
     @classmethod
-    def load_from(cls, data, session=None):
+    def load_from(cls, data, owner=None):
         """Create a new model instance from loaded attributes.
 
         'obj' should have a o"""
         if isinstance(data, list):
             models = []
             for d in data:
-                model = cls._set_data(d, session)
+                model = cls._set_data(d, owner)
                 models.append(model)
             return models
         else:
-            model = cls._set_data(data, session)
+            model = cls._set_data(data, owner)
         return model
 
     # TODO: rename reload to something else, implement 'refresh' method and associated tests
@@ -204,7 +207,10 @@ class ModelBase(SchemaModel):
 
     @session.setter
     def session(self, new_session):
-        assert new_session.__class__.__name__ == 'AqSession'
+        if new_session is not None and not issubclass(type(new_session), SessionABC):
+            raise NoSessionError("Cannot instantiate new model because its data parent "
+                                 "session is a type '{}', not a Session object"
+                                 .format(type(new_session)))
         self._session = new_session
         return new_session
 

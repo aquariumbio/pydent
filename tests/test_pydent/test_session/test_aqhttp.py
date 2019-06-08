@@ -61,7 +61,7 @@ Simulates an Aquarium login using a bad url. Should raise a timeout error.
 
     aquarium_url = "http://52.52.52.52:81/"
     monkeypatch.setattr(AqHTTP, "TIMEOUT", 0.01)
-    with pytest.raises(TridentTimeoutError):
+    with pytest.raises(TridentLoginError):
         AqHTTP("username", "password", aquarium_url)
 
 
@@ -107,7 +107,7 @@ def test_custom_timeout(monkeypatch, fake_response, aqhttp):
             return fake_response(method, path, {}, 200)
 
     monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
-    aqhttp.post("someurl", timeout=0.1, json={})
+    aqhttp.post("someurl", timeout=0.1, json_data={})
 
 
 def test_default_timeout(monkeypatch, fake_response, aqhttp):
@@ -124,7 +124,7 @@ def test_default_timeout(monkeypatch, fake_response, aqhttp):
             return fake_response(method, path, {}, 200)
 
     monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
-    aqhttp.post("someurl", json={})
+    aqhttp.post("someurl", json_data={})
 
 
 def test_aqhttp_repr(aqhttp):
