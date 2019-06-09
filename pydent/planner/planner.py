@@ -1353,8 +1353,8 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
             # copy over relevant wires
             for wire in copied_plan.plan.wires:
-                to_id = wire.to.operation._primary_key
-                from_id = getattr(wire, 'from').operation._primary_key
+                to_id = wire.destination.operation._primary_key
+                from_id = getattr(wire, 'source').operation._primary_key
                 if to_id in opids or from_id in opids:
                     wires.append(wire)
 
