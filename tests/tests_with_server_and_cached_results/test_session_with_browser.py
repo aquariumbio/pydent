@@ -4,6 +4,7 @@ from pydent.interfaces import BrowserInterface
 from abc import ABC
 from pydent.exceptions import ForbiddenRequestError
 
+
 def test_regular_session(session):
     s1 = session.Sample.find(4)
     st1 = s1.sample_type
@@ -79,7 +80,7 @@ def test_requests_off(session):
 
     with session.temp_cache() as sess:
         s = sess.Sample.one()
-        with sess.requests_off() as sess2:
+        with sess.temp_requests_off() as sess2:
             sess2.Sample.find(s.id)
 
             with pytest.raises(ForbiddenRequestError):
