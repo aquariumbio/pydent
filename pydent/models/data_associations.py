@@ -95,7 +95,6 @@ class DataAssociation(JSONDeleteMixin, ModelBase):
         return self._to_str("id", "object")
 
 
-# TODO: expiring_url is never updated..
 @add_schema
 class Upload(ModelBase):
     """

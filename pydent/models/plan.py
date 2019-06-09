@@ -10,7 +10,6 @@ from pydent.relationships import (Raw, JSON, Many, HasOne, HasMany,
                                   fields)
 from pydent.models.crud_mixin import SaveMixin, DeleteMixin
 
-# TODO: API_CHANGE: Plan.copy() no longer reroutes to replan
 @add_schema
 class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     """
@@ -125,7 +124,6 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         self.append_to_many('wires', wire)
         return wire
 
-    # TODO: assert incoming and outgoing wires are the same
     def _collect_wires(self):
         incoming_wires = []
         outgoing_wires = []
@@ -148,7 +146,6 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                 wire_dict[w.identifier].append(w)
         return wire_dict
 
-    # TODO: BOOKMARK: fix _get_wires upon plan loading; implement rewire_to and rewire_from; implement _merge_wires after __init__?
     def _get_wires_from_server(self, *args):
         fvs = []
         if self.operations:

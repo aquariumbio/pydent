@@ -54,9 +54,9 @@ class BaseRelationship(fields.Relationship):
         super().__init__(nested, callback, callback_args, callback_kwargs, cache=True, data_key=None, many=many,
                          allow_none=allow_none)
 
-    def fullfill(self, owner, cache=None):
+    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
         try:
-            return super().fullfill(owner, cache)
+            return super().fullfill(owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs)
         except fields.RunTimeCallbackAttributeError as e:
             return BaseRelationshipAccessor.HOLDER
 

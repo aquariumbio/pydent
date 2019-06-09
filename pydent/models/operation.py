@@ -10,11 +10,10 @@ from pydent.utils import filter_list
 from pydent.models.crud_mixin import SaveMixin
 
 
-# TODO: field_values should recognize parent_class (maybe where should ignore None field_values..)
 @add_schema
 class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
     """A Operation model"""
-    # TODO: add 'inputs' and 'outputs' as bone-fide properties
+
     fields = dict(
         field_values=HasMany("FieldValue",
                              ref="parent_id",
@@ -282,7 +281,6 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
             field_value.show(pre=pre + "  ")
 
 
-# TODO: Refactor OperationType and Library code relationships to use ONE
 @add_schema
 class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
     """

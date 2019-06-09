@@ -63,12 +63,6 @@ def test_wire(fake_plan):
     assert p.wires[0].destination.name == 'myoutput'
     print(p.wires)
 
-
-def test_count_wires(example_plan):
-    """Test whether the wire collection collects the appropriate number of wires"""
-    assert len(example_plan.wires) == 80, "There should be exactly 80 wires in this plan."
-
-
 def test_plan_copy(example_plan):
     """Copying plans should anonymize operations and wires"""
 

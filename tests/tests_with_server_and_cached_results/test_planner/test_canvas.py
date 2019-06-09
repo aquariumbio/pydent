@@ -243,6 +243,10 @@ def test_quick_wire_to_input_array(session):
     ops = canvas.quick_create_chain("Purify Gel Slice", "Assemble Plasmid", category="Cloning")
     canvas.quick_create_chain("Purify Gel Slice", ops[-1], category="Cloning")
 
+    assert len(canvas.plan.operations) == 3
+    assert len(canvas.plan.wires) == 2
+
+
 def test_quick_wire_to_input_array_and_then_set_sample(session):
     canvas = Planner(session)
 

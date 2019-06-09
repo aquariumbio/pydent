@@ -15,9 +15,6 @@ def test_wire_create_and_dump(session):
     assert w.source
     assert w.destination
 
-    assert getattr(w, 'from')
-    assert getattr(w, 'to')
-
     assert w.from_id == output_fv.id
     assert w.to_id == input_fv.id
 

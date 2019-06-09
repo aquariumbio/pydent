@@ -58,7 +58,6 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         if not self.is_part:
             return None
 
-        # TODO: to be tested
         assoc_list = self.session.PartAssociation.where({'part_id': self.id})
         if not assoc_list:
             return
@@ -116,7 +115,9 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
         part_associations=HasMany("PartAssociation", "Collection"),
         parts=HasManyThrough("Item", "PartAssociation", ref="part_id")
     )
-    methods = ["dimensions"]
+    query_hook = {
+        "methods": ["dimensions"]
+    }
 
     @property
     def matrix(self):

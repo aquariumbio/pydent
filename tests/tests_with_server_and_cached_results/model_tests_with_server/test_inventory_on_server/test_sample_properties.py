@@ -173,10 +173,10 @@ class TestUpdateFieldValueArrays:
         func = functools.partial(session.Sample.last, query=dict(sample_type_id=aft.sample_type_id))
         return func
 
+    @pytest.mark.skip('updating field_value_array is not implemented for trident')
     @pytest.mark.record_mode('no')
     @pytest.mark.parametrize('test_server_changes', [False, True])
     @pytest.mark.parametrize('num_field_values', [2])
-    # @pytest.mark.parametrize("num_field_values", list(range(10)), ids=["{} field values".format(x) for x in range(10)])
     def test_local_changes(self, session, num_field_values, example_sample, get_samples, test_server_changes):
 
         value_samples = get_samples(num_field_values)
@@ -195,6 +195,7 @@ class TestUpdateFieldValueArrays:
                                                         'parent_class': 'Sample'})
             assert len(fvs_from_server) == num_field_values
 
+@pytest.mark.skip('Updating field_value_arrays is not implemented for trident')
 @pytest.mark.record_mode('no')
 @pytest.mark.parametrize("num_field_values", list(range(3)), ids=["{} field values".format(x) for x in range(3)])
 def test_update_properties_using_array(session, num_field_values):

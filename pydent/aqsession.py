@@ -253,6 +253,7 @@ class AqSession(SessionABC):
 
     @staticmethod
     def _swap_sessions(from_session, to_session):
+        """Moves models from one sesssion to another."""
         models = from_session.browser.models
         if to_session.browser:
             to_session.browser.update_cache(models)

@@ -155,10 +155,11 @@ class Planner(logger.Loggable, AFTMatcher, object):
             self._browser = Browser(self.session)
             if plan_id is not None:
                 # load an existing plan
-                self.plan = self._browser.find(plan_id, 'Plan')
-                if self.plan is None:
+                plan = self._browser.find(plan_id, 'Plan')
+                if plan is None:
                     raise PlannerException(
                         "Could not find plan with id={}".format(plan_id))
+                self.plan = plan
             else:
                 # create a new plan
                 self.plan = self.session.Plan.new()

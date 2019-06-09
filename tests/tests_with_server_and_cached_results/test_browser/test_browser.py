@@ -194,69 +194,6 @@ def test_set_model(session):
         assert isinstance(op_type, pydent_models.OperationType)
 
 
-def test_filter_by_sample_properties(session):
-    browser = Browser(session)
-
-    fvs = session.FieldValue.where("name = 'T Anneal' AND value = 64", opts={"limit": 5})
-    neg_fvs = session.FieldValue.where("name = 'T Anneal' AND value < 64", opts={"limit": 5})
-    assert fvs
-    assert neg_fvs
-
-    primers = session.Sample.where({"id": [fv.parent_id for fv in fvs]})
-    neg_primers = session.Sample.where({"id": [fv.parent_id for fv in neg_fvs]})
-    assert primers
-    assert neg_primers
-
-    filtered_primers = browser.filter_by_properties(primers + neg_primers, {"T Anneal": 64})
-
-    assert len(primers) == len(filtered_primers)
-    for primer in filtered_primers:
-        assert primer.properties["T Anneal"] == '64'
-
-
-
-def test_filter_by_sample_properties_array(session, example_fragment):
-
-    browser = Browser(session)
-
-    from copy import deepcopy
-
-    example_fragment_copy = browser.new_sample("Fragment", '', '', '', properties=example_fragment.properties)
-    example_fragment_copy.id = 12321512
-    example_fragment
-
-        # example_fragment_copy.field_values.append(new_fv)
-
-    frags_to_search = [example_fragment, example_fragment_copy]
-
-    browser._update_model_cache(frags_to_search)
-    browser._update_model_cache(example_fragment.field_values)
-    browser._update_model_cache(example_fragment_copy.field_values)
-    fragments = example_fragment.properties['Fragment Mix Array']
-
-    find_one = browser.filter_by_properties(frags_to_search, {
-        "Fragment Mix Array": fragments
-    })
-    assert len(find_one) == 2
-
-    find_none = browser.filter_by_properties(frags_to_search, {
-        "Fragment Mix Array": fragments[:-1]
-    })
-
-    assert len(find_none) == 0
-
-def test_filter_by_sample_properties_with_inequality(session):
-    browser = Browser(session)
-    primers = browser.search(".*gfp.*", sample_type="Primer")
-
-    filtered_primers = browser.filter_by_properties(primers, "value > 64")
-
-    assert len(filtered_primers) > 0
-
-    for primer in filtered_primers:
-        assert float(primer.properties["T Anneal"]) > 64
-
-
 def test_retrieve_with_many(session):
     browser = Browser(session)
     samples = browser.search(".*mcherry.*", sample_type='Fragment')[:30]
@@ -387,14 +324,14 @@ def test_retrieve(session):
     assert samples[0]._get_deserialized_data()['sample_type'].id, session.SampleType.find_by_name("Fragment").id
 
 
-def test_retrieve_with_HasOneFromMany(session):
-
-    browser = Browser(session)
-
-    ots = browser.last(10, 'OperationType')
-    assert len(ots) == 10
-    browser.retrieve(ots, 'protocol')
-    assert 'protocol' in ots[0]._get_deserialized_data()
+# def test_retrieve_with_HasOneFromMany(session):
+#
+#     browser = Browser(session)
+#
+#     ots = browser.last(10, 'OperationType')
+#     assert len(ots) == 10
+#     browser.retrieve(ots, 'protocol')
+#     assert 'protocol' in ots[0]._get_deserialized_data()
 
 
 def test_recursive_retrieve(session):
@@ -496,28 +433,27 @@ def test_retrieve_with_new_samples(session):
 
     assert fvs == fvs2
 
+# def test_operation_type_retrieve(session):
+#
+#     ots = session.OperationType.last(10)
+#
+#     browser = Browser(session)
+#
+#     accessors = ['protocol', 'precondition']
+#     for accessor in accessors:
+#         browser.retrieve(ots, accessor)
+#         for ot in ots:
+#             assert accessor in ot._get_deserialized_data()
+#             assert isinstance(getattr(ot, accessor), pydent_models.Code)
 
-def test_operation_type_retrieve(session):
 
-    ots = session.OperationType.last(10)
-
-    browser = Browser(session)
-
-    accessors = ['protocol', 'precondition']
-    for accessor in accessors:
-        browser.retrieve(ots, accessor)
-        for ot in ots:
-            assert accessor in ot._get_deserialized_data()
-            assert isinstance(getattr(ot, accessor), pydent_models.Code)
-
-
-def test_library_retrieve(session):
-
-    libs = session.Library.last(10)
-
-    browser = Browser(session)
-
-    browser.retrieve(libs, 'source')
-    for lib in libs:
-        assert 'source' in lib._get_deserialized_data()
-        assert isinstance(lib.source, pydent_models.Code)
+# def test_library_retrieve(session):
+#
+#     libs = session.Library.last(10)
+#
+#     browser = Browser(session)
+#
+#     browser.retrieve(libs, 'source')
+#     for lib in libs:
+#         assert 'source' in lib._get_deserialized_data()
+#         assert isinstance(lib.source, pydent_models.Code)
