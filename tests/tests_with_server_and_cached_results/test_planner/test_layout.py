@@ -1,8 +1,10 @@
 from pydent.planner import Planner, PlannerLayout
 from pydent import ModelBase
 
+
 def test_add_operation_by_name(session):
-    canvas = Planner(session, plan_id=121080)
+    plan = session.Plan.one()
+    canvas = Planner(plan)
     canvas.create_operation_by_name("Yeast Transformation")
 
 

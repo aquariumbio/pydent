@@ -7,8 +7,6 @@ def test_constructor(fake_session):
     )
     w.print()
 
-    assert w.to
-    assert getattr(w, 'from')
     assert w.source
     assert w.destination
 

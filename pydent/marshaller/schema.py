@@ -28,7 +28,6 @@ class DynamicSchema(metaclass=SchemaRegistry):
         for field_name, field in cls.fields.items():
             field.register(field_name, cls.model_class)
 
-    # TODO: is 'update' the best way to handle setting the values?
     @classmethod
     def init_data_accessors(cls, instance, data, add_extra=True):
         """Initializes data accessors.

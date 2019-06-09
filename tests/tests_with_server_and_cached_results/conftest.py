@@ -11,11 +11,6 @@ from pydent import AqSession
 # VCR setup
 ###########
 
-
-# TODO: tests: completly deterministic tests
-# TODO: tests: parameter or config file for recording mode
-# TODO: tests: ignore header in vcr recordings
-
 def hash_response(r):
     """Hash function for request matcher. Defines what vcr will consider
     to be the same request."""
@@ -52,7 +47,7 @@ myvcr.match_on = ['matcher']
 here = os.path.abspath(os.path.dirname(__file__))
 fixtures_path = os.path.join(here, "fixtures/vcr_cassettes")
 
-USE_VCR = True
+USE_VCR = False
 
 
 @pytest.hookimpl(hookwrapper=True)
@@ -67,7 +62,7 @@ def pytest_pyfunc_call(pyfuncitem):
     for marker in markers:
         record_modes += marker.args
 
-    if 'no' not in record_modes:
+    if 'no' not in record_modes and USE_VCR:
         myvcr.record_mode = record_modes[0]
         with myvcr.use_cassette(os.path.join(fixtures_path, cassette_name) + ".yaml"):
             outcome = yield # runs the test

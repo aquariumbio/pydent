@@ -322,7 +322,6 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         # if not self.field_type.part:
         #     self._validate_sample_and_item(sample, item)
 
-    # TODO: have field_value resolve the ids when it is dumped? Or how does this work?
     def _set_helper(self, value=None, sample=None, item=None, object_type=None, row=None, column=None):
         self._validate(value, sample, item, object_type, row, column)
         if row is not None:
@@ -418,15 +417,13 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         setattr(self, self.get_parent_key(), model)
         return self
 
-    # TODO: rename set_operation, or re-implement?
-    def set_as_operation_field_value(self, operation):
+    def set_operation(self, operation):
         self.parent_class = "Operation"
         if hasattr(operation, 'id'):
             self.parent_id = operation.id
         self.operation = operation
 
-    # TODO: rename set_sample, or re-implement?
-    def set_as_sample_field_value(self, sample):
+    def set_sample(self, sample):
         self.parent_class = "Sample"
         if hasattr(sample, 'id'):
             self.parent_id = sample.id

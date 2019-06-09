@@ -78,9 +78,6 @@ class Field(FieldABC):
                 raise AllowNoneFieldValidationError("None is not allowed for field '{}'".format(self.data_key))
             return None
         if self.many:
-            # TODO: This if statement patches a bug in which accessing many attibutes returned different lists
-            # return [self._deserialize(owner, d) for d in data]
-            # deserialize in place
             for i, x in enumerate(data):
                 data[i] = self._deserialize(owner, x)
             return data
@@ -156,7 +153,6 @@ class Nested(Field):
     def get_model(self):
         return ModelRegistry.get_model(self.nested)
 
-    # TODO: how to properly handle lazy deserialization? (dict vs expected object)
     def _deserialize(self, owner, data):
         if data is None and self.allow_none:
             return None
@@ -164,7 +160,6 @@ class Nested(Field):
             return data
         return self.get_model()._set_data(data, owner)
 
-    # TODO: how to properly handle lazy serialization? (dict vs expected object)
     def _serialize(self, owner, obj):
         if obj is None and self.allow_none:
             return None
@@ -231,11 +226,14 @@ class Callback(Field):
             args=make_signature_str(args, kwargs)
         )
 
-    def get_callback_args(self, owner):
+    def get_callback_args(self, owner, extra_args=None):
         """Processes the callback args"""
         args = []
+        callback_args = list(self.callback_args)
+        if extra_args:
+            callback_args += list(extra_args)
         try:
-            for a in self.callback_args:
+            for a in callback_args:
                 if a is self.SELF:
                     args.append(owner)
                 elif callable(a):
@@ -250,11 +248,14 @@ class Callback(Field):
                 )) from e
         return args
 
-    def get_callback_kwargs(self, owner):
+    def get_callback_kwargs(self, owner, extra_kwargs):
         """Processes the callback kwargs"""
         kwargs = {}
+        callback_kwargs = dict(self.callback_kwargs)
+        if extra_kwargs:
+            callback_kwargs.update(extra_kwargs)
         try:
-            for k, v in self.callback_kwargs.items():
+            for k, v in callback_kwargs.items():
                 if callable(v):
                     kwargs[k] = v(owner)
                 elif v is self.SELF:
@@ -270,7 +271,7 @@ class Callback(Field):
                 )) from e
         return kwargs
 
-    def fullfill(self, owner, cache=None):
+    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
         """Calls the callback function using the owner object. A
         Callback.SELF arg value will be replaced to be equivalent to the
         owner instance model.
@@ -286,8 +287,8 @@ class Callback(Field):
         else:
             func = getattr(owner, self.callback)
 
-        callback_args = self.get_callback_args(owner)
-        callback_kwargs = self.get_callback_kwargs(owner)
+        callback_args = self.get_callback_args(owner, extra_args=extra_args)
+        callback_kwargs = self.get_callback_kwargs(owner, extra_kwargs=extra_kwargs)
 
         try:
             val = func(*tuple(callback_args), **callback_kwargs)

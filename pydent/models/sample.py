@@ -20,30 +20,6 @@ class Sample(FieldValueInterface, ModelBase):
         field_values=HasMany("FieldValue",
                              ref="parent_id",
                              additional_args={"parent_class": "Sample"}),
-
-        # TODO: add new sample relationships to change log
-        field_values_as_properties=HasMany("FieldValue",
-                                           ref="child_sample_id",
-                                           additional_args={
-                                               "parent_class": "Sample"
-                                           }),
-        field_values_as_outputs=HasMany("FieldValue",
-                                        ref="child_sample_id",
-                                        additional_args={
-                                            "parent_class": "Operation",
-                                            "role": "output"
-                                        }
-                                        ),
-        field_values_as_inputs=HasMany("FieldValue",
-                                       ref="child_sample_id",
-                                       additional_args={
-                                           "parent_class": "Operation",
-                                           "role": "input"
-                                       }
-                                       ),
-        operations_as_outputs=HasManyThrough("Operation", "FieldValuesAsOutput"),
-        operations_as_inputs=HasManyThrough("Operation", "FieldValuesAsInput"),
-        parent_samples=HasManyThrough("Sample", "FieldValuesAsProperty")
     )
 
     METATYPE = "sample_type"
