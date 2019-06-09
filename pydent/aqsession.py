@@ -203,6 +203,17 @@ class AqSession(SessionABC):
         self.browser.clear()
 
     @property
+    def using_requests(self):
+        return self._aqhttp._using_requests
+
+    @using_requests.setter
+    def using_requests(self, b):
+        if b:
+            self._aqhttp.on()
+        else:
+            self._aqhttp.off()
+
+    @property
     def using_cache(self):
         return self._using_cache
 
@@ -223,17 +234,17 @@ class AqSession(SessionABC):
         instance = self.__class__(None, None, None, self.name, aqhttp=self._aqhttp)
         return instance
 
-    def temp_cache(self):
-        return TemporaryCache(self)
+    def temp_cache(self, with_cache=True):
+        return TemporarySession(self, with_cache=with_cache)
 
-    def requests_off(self):
+    def temp_requests_off(self):
         return RequestsOff(self)
 
     def __repr__(self):
         return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self._aqhttp)
 
 
-class TemporarySession(ABC):
+class TemporarySessionABC(ABC):
 
     @abstractmethod
     def __enter__(self):
@@ -252,15 +263,13 @@ class TemporarySession(ABC):
             m._session = to_session
 
 
-class TemporaryCache(TemporarySession):
+class TemporarySession(TemporarySessionABC):
 
-    def __init__(self, session):
+    def __init__(self, session, with_cache=True):
         self.session = session
 
         bsession = session.copy()
-        bsession.using_cache = True
-        if session.browser:
-            bsession.browser.update_cache(session.browser.models)
+        bsession.using_cache = with_cache
         self.bsession = bsession
 
     def __enter__(self):
@@ -270,11 +279,10 @@ class TemporaryCache(TemporarySession):
         self.swap_sessions(self.bsession, self.session)
 
 
-class RequestsOff(TemporarySession):
+class RequestsOff(TemporarySessionABC):
 
     def __init__(self, session):
         self.session = session
-
 
         bsession = session.copy()
         bsession.using_cache = True
