@@ -3,6 +3,43 @@ import pytest
 from pydent import models
 from pydent.exceptions import TridentRequestError
 
+
+
+@pytest.mark.record_mode('no')
+def test_plans_and_convert_to_save_json(session):
+    plans = session.Plan.last(20)
+    with session.with_cache() as sess:
+        sess.browser.recursive_retrieve(plans, {
+                'operations': 'field_values'
+            })
+
+        for p in plans:
+            p.to_save_json()
+
+
+    # browser = Browser(session)
+    #
+    # starting_requests = session._aqhttp.num_requests
+    # browser.recursive_retrieve(plans, {'operations': 'field_values'})
+    # ending_requests = session._aqhttp.num_requests
+    #
+    # print(ending_requests - starting_requests)
+    # with session.temp_cache() as sess:
+    #     plans = sess.Plan.last(10)
+    #     plans += sess.Plan.first(10)
+    #
+    #     sess.browser.recursive_retrieve(plans, {
+    #         'operations': {
+    #             'field_values'
+    #         }
+    #     })
+        # for p in plans:
+        #     for op in p.operations:
+        #         op.field_values
+
+        # for p in plans:
+        #     p.to_save_json()
+
 @pytest.mark.record('no')
 def test_submit_order_primer(session):
     order_primer = session.OperationType.where(

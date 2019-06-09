@@ -1,6 +1,7 @@
 from pydent.models import Plan
 import pytest
 
+
 def test_plan_constructor(fake_session):
     g = fake_session.Plan.new()
     assert g.name is not None
@@ -50,6 +51,7 @@ def fake_plan(fake_session):
     op2.field_values = [dest]
 
     return p, src, dest
+
 
 def test_wire(fake_plan):
     p, src, dest = fake_plan

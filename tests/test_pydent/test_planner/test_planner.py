@@ -1,11 +1,12 @@
 import pytest
 from pydent.planner import Planner
 import dill
-
+from os.path import dirname, abspath, join
 
 @pytest.fixture(scope='function')
 def fake_planner(fake_session):
-    with open('multiplan.pkl', 'rb') as f:
+    here = dirname(abspath(__file__))
+    with open(join(here, 'multiplan.pkl'), 'rb') as f:
         canvas = dill.load(f)
     return canvas
 
@@ -31,7 +32,7 @@ def test_copy_planner(fake_planner):
 # TODO: len of operations and wires remains the same
 def test_split_planner(fake_planner):
     plans = fake_planner.split()
-    assert len(plans) == 3
+    assert len(plans) == 4
 
 
 def test_combine_plans(fake_planner):
