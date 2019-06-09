@@ -370,4 +370,8 @@ class Alias(Callback):
         """
 
         self.alias = field_name
-        super().__init__(lambda s: getattr(s, field_name), callback_args=(Callback.SELF,), always_dump=True, data_key=field_name)
+        super().__init__(self.alias_callback, callback_args=(Callback.SELF, self.alias), always_dump=True, data_key=field_name)
+
+    @staticmethod
+    def alias_callback(m, field_name):
+        return getattr(m, field_name)

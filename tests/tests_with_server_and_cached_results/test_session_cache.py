@@ -62,12 +62,11 @@ def test_cache_clear(session):
 
 
 def test_with_temp_cache(session):
-    with session.temp_cache() as sess:
+    with session.with_cache() as sess:
         s1 = sess.Sample.one()
         st1 = s1.sample_type
         s2 = sess.Sample.one()
         st2 = sess.SampleType.find(s1.sample_type_id)
-        assert id(s1) == id(s2)
         assert id(st1) == id(st2)
 
         assert not s2.session is session
@@ -78,9 +77,9 @@ def test_with_temp_cache(session):
 
 def test_requests_off(session):
 
-    with session.temp_cache() as sess:
+    with session.with_cache() as sess:
         s = sess.Sample.one()
-        with sess.temp_requests_off() as sess2:
+        with sess.with_requests_off() as sess2:
             sess2.Sample.find(s.id)
 
             with pytest.raises(ForbiddenRequestError):
@@ -88,3 +87,5 @@ def test_requests_off(session):
 
             with pytest.raises(ForbiddenRequestError):
                 sess2.Sample.last(2)
+
+    session.Sample.one()
