@@ -301,7 +301,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         self._info("{} created".format(ot.name))
         return op
 
-    def create_operation_by_id(self, ot_id):
+    def create_operation_by_type_id(self, ot_id):
         # ot = self.browser.find('OperationType', ot_id)
         ot = self.session.OperationType.find(ot_id)
         return self.create_operation_by_type(ot)
@@ -471,13 +471,6 @@ class Planner(logger.Loggable, AFTMatcher, object):
         """
         self._info("QUICK CREATE CHAIN {}".format(op_or_otnames))
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
-        # self.browser.recursive_retrieve(
-        #     ops, {
-        #         'operation_type': {
-        #             "field_types": "allowable_field_types"
-        #         }
-        #     }
-        # )
         if any([op for op in ops if op is None]):
             raise Exception("Could not find some operations: {}".format(ops))
         pairs = arr_to_pairs(ops)

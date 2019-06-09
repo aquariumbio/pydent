@@ -195,6 +195,7 @@ class TestUpdateFieldValueArrays:
                                                         'parent_class': 'Sample'})
             assert len(fvs_from_server) == num_field_values
 
+
 @pytest.mark.skip('Updating field_value_arrays is not implemented for trident')
 @pytest.mark.record_mode('no')
 @pytest.mark.parametrize("num_field_values", list(range(3)), ids=["{} field values".format(x) for x in range(3)])
