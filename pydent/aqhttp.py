@@ -15,7 +15,8 @@ import json
 import requests
 
 from pydent.exceptions import (TridentRequestError, TridentLoginError,
-                               TridentTimeoutError, TridentJSONDataIncomplete)
+                               TridentTimeoutError, TridentJSONDataIncomplete,
+                               ForbiddenRequestError)
 from pydent.utils import url_build, logger
 
 
@@ -48,6 +49,13 @@ class AqHTTP(logger.Loggable, object):
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
         self.init_logger("AqHTTP@{}".format(aquarium_url))
+        self._requests_on = True
+
+    def on(self):
+        self._requests_on = True
+
+    def off(self):
+        self._requests_on = False
 
     def _format_response_info(self, response, include_text=False, include_body=True):
         if response is not None:
@@ -159,6 +167,9 @@ class AqHTTP(logger.Loggable, object):
         :return: json
         :rtype: dict
         """
+        if not self._requests_on:
+            raise ForbiddenRequestError("Attempted a request when requests have been turned OFF.")
+
         if timeout is None:
             timeout = self.timeout
         if not allow_none and 'json' in kwargs:

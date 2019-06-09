@@ -339,7 +339,11 @@ class ModelBase(SchemaModel):
         if not self.__class__.__name__.endswith('Type'):
             setattr(self, self.PRIMARY_KEY, None)
             setattr(self, 'rid', next(self.counter))
+            self.updated_at = None
+            self.created_at = None
             self.raw = {}
+        return self
+
 
     def _anonymize_field_keys(self, keep=None):
         for name, relation in self.get_relationships().items():

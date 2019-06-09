@@ -56,15 +56,15 @@ def fake_response():
             self.method = method
             self.body = {}
 
-    class FakeResponse(requests.Response):
-
-        def __init__(self, method, url, body, status_code):
-            self.status_code = status_code
-            self.request = FakeRequest(status_code=status_code, url=url, method=method)
-            self.body = body
-
-        def json(self):
-            return json.load(self.body)
+    # class FakeResponse(requests.Response):
+    #
+    #     def __init__(self, method, url, body, status_code):
+    #         self.status_code = status_code
+    #         self.request = FakeRequest(status_code=status_code, url=url, method=method)
+    #         self.body = body
+    #
+    #     def json(self):
+    #         return json.load(self.body)
 
     def make_response(method, url, body, status_code):
         response = requests.Response()

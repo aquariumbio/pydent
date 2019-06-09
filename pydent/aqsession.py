@@ -25,12 +25,14 @@ from decimal import Decimal
 
 from requests.exceptions import ReadTimeout
 
+from abc import ABC, abstractmethod
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
 from pydent.interfaces import QueryInterfaceABC, QueryInterface, UtilityInterface, BrowserInterface
 from pydent.models import __all__ as allmodels
 from pydent.browser import Browser
 from pydent.sessionabc import SessionABC
+
 
 class AqSession(SessionABC):
     """
@@ -218,36 +220,72 @@ class AqSession(SessionABC):
             self.initialize_interfaces()
 
     def copy(self):
-        return self.__class__(None, None, None, self.name, aqhttp=self._aqhttp)
+        instance = self.__class__(None, None, None, self.name, aqhttp=self._aqhttp)
+        return instance
 
     def temp_cache(self):
         return TemporaryCache(self)
+
+    def requests_off(self):
+        return RequestsOff(self)
 
     def __repr__(self):
         return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self._aqhttp)
 
 
-class TemporaryCache(object):
+class TemporarySession(ABC):
+
+    @abstractmethod
+    def __enter__(self):
+        pass
+
+    @abstractmethod
+    def __exit__(self):
+        pass
+
+    @staticmethod
+    def swap_sessions(from_session, to_session):
+        models = from_session.browser.models
+        if to_session.browser:
+            to_session.browser.update_cache(models)
+        for m in models:
+            m._session = to_session
+
+
+class TemporaryCache(TemporarySession):
 
     def __init__(self, session):
         self.session = session
 
         bsession = session.copy()
-        bsession.init_cache()
         bsession.using_cache = True
+        if session.browser:
+            bsession.browser.update_cache(session.browser.models)
         self.bsession = bsession
 
     def __enter__(self):
         return self.bsession
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        # collect all models retrieved in browser
-        models = []
-        for v in self.bsession.browser.model_cache.values():
-            models += list(v.values())
+        self.swap_sessions(self.bsession, self.session)
 
-        # swap sessions for models
-        if self.session.browser:
-            self.session.browser.update_model_cache(models)
-        for m in models:
-            m._session = self.session
+
+class RequestsOff(TemporarySession):
+
+    def __init__(self, session):
+        self.session = session
+
+
+        bsession = session.copy()
+        bsession.using_cache = True
+        if session.browser:
+            bsession.browser.update_cache(session.browser.models)
+        self.aqhttp = bsession._aqhttp
+        self.bsession = bsession
+
+    def __enter__(self):
+        self.bsession._aqhttp.off()
+        return self.bsession
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.swap_sessions(self.bsession, self.session)
