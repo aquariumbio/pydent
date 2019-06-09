@@ -1,12 +1,12 @@
 import pytest
 from pydent.planner import Planner, PlannerException
 from pydent.planner.utils import get_subgraphs
-import json
+
 
 def test_canvas_create(session):
     canvas = Planner(session)
     canvas.create()
-    print(canvas.plan.id)
+    assert canvas.plan.id
 
 
 def test_raises_exception_wiring_with_no_afts(session):
@@ -342,9 +342,10 @@ def test_set_input_array(session):
     assert op.input_array("Fragment")[1].sample == frags[1], "Input array 1 should have fragment 1"
 
 
-def test_cached(session):
+def test_plan_validate_with_no_errors(session):
+    """An easy to pass test. A plan that is complete should always pass the validation method."""
     session.set_verbose(True)
-    canvas = Planner(session, plan_id=136974)
-
+    plan = session.Plan.one(query='status != "planning"')
+    assert plan
+    canvas = Planner(plan)
     canvas.validate()
-

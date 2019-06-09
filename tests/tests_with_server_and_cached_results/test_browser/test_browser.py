@@ -204,20 +204,6 @@ def test_retrieve_with_many(session):
     assert len(samples[0]._get_deserialized_data()['items']) > 0, "Items should have been found."
 
 
-def test_retrieve_query_with_field_values(session):
-    """The retrieve helper method should use the relationship definition
-    of the callback_args to query FieldValues based on their parent_id
-    AND parent_class."""
-    browser = Browser(session)
-    sample = session.Sample.one()
-    relation = sample.relationships['field_values']
-    query = relation.build_query._collect_callback_args([sample], relation)
-    assert query == {
-        'parent_class': ['Sample'],
-        'parent_id': [sample.id]
-    }
-
-
 def test_retrieve_with_many_field_values(session):
     browser = Browser(session)
     session.set_verbose(True)
@@ -402,6 +388,7 @@ def test_retrieve_with_new_operations(session):
         ots_arr2.append(op.operation_type.id)
 
     assert ots_arr1 == ots_arr2
+
 
 def test_retrieve_with_new_samples(session):
     """We expect when we create new models for the model relationships to be maintained"""
