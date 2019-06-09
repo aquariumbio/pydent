@@ -2,6 +2,7 @@
 
 ## Installation
 
+1. Document AqSession, Browser, AqSession.cache, Planner
 1. move code to 'src' for better installation practices
 1. try 'poetry' installation package (trident is a library, not an application; pipenv handles applications 
 well but not libraries)
