@@ -26,6 +26,9 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         layout=JSON(),
         status=Raw(default="planning")
     )
+    query_hook = {
+        'include': 'wires'
+    }
 
     def __init__(self, name="MyPlan", status="planning"):
         super().__init__(
@@ -211,21 +214,20 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         for op in self.operations:
             for fv in op.field_values:
                 field_values.append(fv)
-        fv_rids = [fv.rid for fv in field_values]
-
+        fv_keys = [fv._primary_key for fv in field_values]
         for wire in self.wires:
             for _fvtype in ['source', 'destination']:
                 field_value = getattr(wire, _fvtype)
-                if field_value.rid not in fv_rids:
+                if field_value._primary_key not in fv_keys:
                     msg = "The FieldValue of a wire Wire(rid={}).{} is missing from the list" \
-                          " of FieldValues in the plan. Did you forget to add an operation to " \
-                          " the plan?".format(
-                        wire.rid, _fvtype,
+                              " of FieldValues in the plan. Did you forget to add an operation to " \
+                              " the plan?".format(
+                            wire._primary_key, _fvtype,
                     )
                     errors.append(msg)
         if raise_error and errors:
-            msg = '\n'.join(["({}) - {}".format(i, e) for i, e in enumerate(errors)])
-            raise AquariumModelError("Plan {} had the following errors:\n{}".format(msg))
+            msg = '\n'.join(["(ErrNo {}) - {}".format(i, e) for i, e in enumerate(errors)])
+            raise AquariumModelError("Plan {} had the following errors:\n{}".format(self, msg))
         return errors
 
     def to_save_json(self):
@@ -361,11 +363,10 @@ class PlanAssociation(ModelBase):
 @add_schema
 class Wire(DeleteMixin, ModelBase):
     """A Wire model"""
+
     fields = {
-        "from": HasOne("FieldValue", ref="from_id"),
-        "to": HasOne("FieldValue", ref="to_id"),
-        "source": fields.Alias("from"),
-        "destination": fields.Alias("to")
+        "source": HasOne("FieldValue", ref="from_id"),
+        "destination":  HasOne("FieldValue", ref="to_id"),
     }
 
     WIRABLE_PARENT_CLASSES = ['Operation']
@@ -402,9 +403,9 @@ class Wire(DeleteMixin, ModelBase):
                 raise AquariumModelError("Cannot wire an '{}' FieldValue as a destination".format(destination.role))
 
         super().__init__(**{
-            "from": source,
+            "source": source,
             "from_id": from_id,
-            "to": destination,
+            "destination": destination,
             "to_id": to_id
         }, active=True)
 

@@ -22,7 +22,9 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         part_associations=HasMany("PartAssociation", ref="part_id"),  # TODO: add to change log
         collections=HasManyThrough("Collection", "PartAssociation"),  # TODO: add to change log
     )
-    methods = ['is_part']
+    query_hook = {
+        'methods': ['is_part']
+    }
 
     def __init__(self=None, sample_id=None, sample=None, object_type=None, object_type_id=None):
         super().__init__(

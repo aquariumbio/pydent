@@ -407,7 +407,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
     """
 
     __slots__ = ["aqhttp", "session", "model", "__dict__"]
-    MERGE = ["methods"]
+    MERGE = "query_hook"
     DEFAULT_OFFSET = -1
     DEFAULT_REVERSE = False
     DEFAULT_LIMIT = -1
@@ -433,11 +433,25 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
 
     def _prepost_query_hook(self, query):
         """Method for modifying the query before posting"""
+
         additional_query = {}
-        for attr in self.MERGE:
-            if hasattr(self.model, attr):
-                additional_query[attr] = getattr(self.model, attr)
-        query.update(additional_query)
+        if hasattr(self.model, self.MERGE):
+            additional_query = getattr(self.model, self.MERGE)
+
+        # update and merge
+        for k, v in additional_query.items():
+            if k not in query:
+                query[k] = v
+            elif isinstance(query[k], list):
+                if isinstance(v, list):
+                    query[k] += v
+                else:
+                    query[k].append(v)
+            elif isinstance(query[k], dict):
+                if isinstance(v, dict):
+                    query[k].update(v)
+                else:
+                    raise ValueError("Cannot update query {} with {}:{}".format(query, k, v))
         return query
 
     def _post_json(self, data):
@@ -447,7 +461,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         """
         data_dict = {'model': self.model_name}
         data_dict = self._prepost_query_hook(data_dict)
-        data_dict.update(data)
+        data_dict.update({k: v for k, v in data.items() if v})
 
         try:
             post_response = self.crud.json_post(self.model_name, data_dict)
@@ -480,23 +494,30 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
             raise err
         return self.load(response)
 
-    def find(self, model_id):
+    def find(self, model_id, include=None, opts=None):
         """
         Finds model by id
         """
         if model_id is None:
             raise ValueError("model_id in 'find' cannot be None")
-        return self._post_json({"id": model_id})
+        return self._post_json({
+            "id": model_id,
+            "include": include,
+            "options": opts})
 
-    def find_by_name(self, name):
+    def find_by_name(self, name, include=None, opts=None):
         """
         Finds model by name
         """
         if name is None:
             raise ValueError("name in 'find_by_name' cannot be None")
-        return self._post_json({"method": "find_by_name", "arguments": [name]})
+        return self._post_json({
+            "method": "find_by_name",
+            "arguments": [name],
+            "include": include,
+            "options": opts})
 
-    def array_query(self, method, args, rest, opts=None):
+    def array_query(self, method, args, rest=None, include=None, opts=None):
         """
         Finds models based on a query
         """
@@ -506,38 +527,40 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         options.update(opts)
         if options.get('limit', None) == 0:
             return []
+        if args is None:
+            args = []
         query = {"model": self.model.__name__,
                  "method": method,
                  "arguments": args,
+                 "include": include,
                  "options": options}
-        query.update(rest)
+        if rest:
+            query.update(rest)
         res = self._post_json(query)
         if res is None:
             return []
         return res
 
-    def all(self, rest=None, opts=None):
+    def all(self, include=None, opts=None):
         """
         Finds all models
-        :param rest:
-        :type rest:
+        :param include:
+        :type include:
         :param opts: additional options ("offset", "limit", "reverse", etc.)
         :type opts: dict
         :return:
         :rtype:
         """
 
-        if rest is None:
-            rest = {}
         if opts is None:
             opts = {}
         addopts = opts.pop('opts', dict())
         opts.update(addopts)
         options = {"offset": self.DEFAULT_OFFSET, "reverse": self.DEFAULT_REVERSE}
         options.update(opts)
-        return self.array_query("all", [], rest, options)
+        return self.array_query(method="all", args=None, rest=None, include=include, opts=options)
 
-    def where(self, criteria, methods=None, opts=None):
+    def where(self, criteria, methods=None, include=None, opts=None):
         """
         Performs a query for models
         :param criteria: query to find models
@@ -553,10 +576,10 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         rest = {}
         if methods is not None:
             rest = {"methods": methods}
-        return self.array_query("where", criteria, rest, opts)
+        return self.array_query(method="where", args=criteria, rest=rest, include=include, opts=opts)
 
     # TODO: Refactor 'last' so query is an argument, not part of kwargs
-    def last(self, num=None, query=None, opts=None):
+    def last(self, num=None, query=None, include=None, opts=None):
         """
         Find the last added models
         :param num: number of models to return. If not provided, assumes 1
@@ -575,10 +598,10 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         if opts is None:
             opts = dict()
         opts.update(dict(limit=num, reverse=True))
-        return self.where(query, opts=opts)
+        return self.where(query, include=include, opts=opts)
 
     # TODO: Refactor 'first' so query is an argument, not part of kwargs
-    def first(self, num=None, query=None, opts=None):
+    def first(self, num=None, query=None, include=None, opts=None):
         """
         Find the first added models
         :param num: number of models to return. If not provided, assumes 1
@@ -597,10 +620,10 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         if opts is None:
             opts = dict()
         opts.update(dict(limit=num, reverse=False))
-        return self.where(query, opts=opts)
+        return self.where(query, include=include, opts=opts)
 
     # TODO: Refactor 'one' so query is an argument, not part of kwargs
-    def one(self, query=None, first=False, opts=None):
+    def one(self, query=None, first=False, include=None, opts=None):
         """
         Return one model. Returns the last model by default. Returns None if no model is found.
         :param first: whether to return the first model (default: False
@@ -609,9 +632,9 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         :rtype: ModelBase
         """
         if not first:
-            res = self.last(1, query=query, opts=opts)
+            res = self.last(1, query=query, include=include, opts=opts)
         else:
-            res = self.first(1, query=query, opts=opts)
+            res = self.first(1, query=query, include=include, opts=opts)
         if not res:
             return None
         else:
