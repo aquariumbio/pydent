@@ -32,6 +32,7 @@ from pydent.interfaces import QueryInterfaceABC, QueryInterface, UtilityInterfac
 from pydent.models import __all__ as allmodels
 from pydent.browser import Browser
 from pydent.sessionabc import SessionABC
+from copy import copy
 
 
 class AqSession(SessionABC):
@@ -231,69 +232,52 @@ class AqSession(SessionABC):
             self.initialize_interfaces()
 
     def copy(self):
-        instance = self.__class__(None, None, None, self.name, aqhttp=self._aqhttp)
+        instance = self.__class__(None, None, None, self.name, aqhttp=copy(self._aqhttp))
+        instance.using_requests = self.using_requests
+        instance.using_cache = self.using_cache
         return instance
 
-    def temp_cache(self, with_cache=True):
-        return TemporarySession(self, with_cache=with_cache)
+    def with_cache(self, using_requests=None, using_models=False, timeout=None):
+        return self(
+            using_cache=True,
+            using_models=using_models,
+            using_requests=using_requests,
+            timeout=timeout)
 
-    def temp_requests_off(self):
-        return RequestsOff(self)
-
-    def __repr__(self):
-        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self._aqhttp)
-
-
-class TemporarySessionABC(ABC):
-
-    @abstractmethod
-    def __enter__(self):
-        pass
-
-    @abstractmethod
-    def __exit__(self):
-        pass
+    def with_requests_off(self, using_cache=None, using_models=True, timeout=None):
+        return self(
+            using_cache=using_cache,
+            using_models=using_models,
+            using_requests=False,
+            timeout=timeout)
 
     @staticmethod
-    def swap_sessions(from_session, to_session):
+    def _swap_sessions(from_session, to_session):
         models = from_session.browser.models
         if to_session.browser:
             to_session.browser.update_cache(models)
         for m in models:
             m._session = to_session
 
-
-class TemporarySession(TemporarySessionABC):
-
-    def __init__(self, session, with_cache=True):
-        self.session = session
-
-        bsession = session.copy()
-        bsession.using_cache = with_cache
-        self.bsession = bsession
-
-    def __enter__(self):
-        return self.bsession
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.swap_sessions(self.bsession, self.session)
-
-
-class RequestsOff(TemporarySessionABC):
-
-    def __init__(self, session):
-        self.session = session
-
-        bsession = session.copy()
-        bsession.using_cache = True
-        if session.browser:
-            bsession.browser.update_cache(session.browser.models)
-        self.aqhttp = bsession._aqhttp
-        self.bsession = bsession
+    def __call__(self, using_cache=None, using_requests=None, timeout=None, using_models=None):
+        new_session = self.copy()
+        new_session.parent_session = self
+        if using_cache is not None:
+            new_session.using_cache = using_cache
+        if using_requests is not None:
+            new_session.using_requests = using_requests
+        if timeout is not None:
+            new_session.set_timeout(timeout)
+        if using_models and self.browser:
+            new_session.browser.update_cache(self.browser.models)
+        return new_session
 
     def __enter__(self):
-        self.bsession._aqhttp.off()
-        return self.bsession
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.swap_sessions(self.bsession, self.session)
+        if hasattr(self, 'parent_session'):
+            self._swap_sessions(self, self.parent_session)
+
+    def __repr__(self):
+        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self._aqhttp)

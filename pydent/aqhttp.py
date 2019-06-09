@@ -50,6 +50,7 @@ class AqHTTP(logger.Loggable, object):
         self._login(login, password)
         self.init_logger("AqHTTP@{}".format(aquarium_url))
         self._using_requests = True
+        self.num_requests = 0
 
     def on(self):
         self._using_requests = True
@@ -167,18 +168,22 @@ class AqHTTP(logger.Loggable, object):
         :return: json
         :rtype: dict
         """
+
+        url = url_build(self.aquarium_url, path)
         if not self._using_requests:
-            raise ForbiddenRequestError("Attempted a request when requests have been turned OFF.")
+            raise ForbiddenRequestError("Attempted a request ({} {}) when requests have been turned OFF.\nDATA: {}".format(
+                method.upper(), url, kwargs['json']
+            ))
 
         if timeout is None:
             timeout = self.timeout
         if not allow_none and 'json' in kwargs:
             self._disallow_null_in_json(kwargs['json'])
 
+        self.num_requests += 1
         response = requests.request(
                 method,
-                url_build(
-                    self.aquarium_url, path),
+                url,
                 timeout=timeout,
                 cookies=self.cookies,
                 **kwargs)
