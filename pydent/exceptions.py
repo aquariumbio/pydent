@@ -8,8 +8,14 @@ from requests.exceptions import RequestException, ConnectTimeout
 class TridentRequestError(IOError):
     """There was an ambiguous exception that occurred handling your request."""
 
+
 class AquariumError(IOError):
     """Aquarium raised an error"""
+
+
+class ForbiddenRequestError(Exception):
+    """Raised when Trident attempts to make a request after requests have been
+    explicitly turned off."""
 
 
 class TridentJSONDataIncomplete(RequestException):

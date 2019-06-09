@@ -652,6 +652,7 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
         self.crud = CRUDInterface(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
         self._do_load = True
+        self._preload_field_values = None
 
     @property
     def browser(self):

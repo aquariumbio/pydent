@@ -45,6 +45,13 @@ class Browser(logger.Loggable, object):
     # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
     # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
 
+    @property
+    def models(self):
+        models = []
+        for v in self.model_cache.values():
+            models += list(v.values())
+        return models
+
     def set_model(self, model_name):
         """Sets the default model of this browser"""
         ModelRegistry.get_model(model_name)

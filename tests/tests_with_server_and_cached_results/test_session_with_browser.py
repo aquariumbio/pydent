@@ -1,11 +1,8 @@
 from copy import deepcopy
-
 import pytest
-
-from pydent.browser import Browser
 from pydent.interfaces import BrowserInterface
 from abc import ABC
-
+from pydent.exceptions import ForbiddenRequestError
 
 def test_regular_session(session):
     s1 = session.Sample.find(4)
@@ -65,9 +62,9 @@ def test_cache_clear(session):
 
 def test_with_temp_cache(session):
     with session.temp_cache() as sess:
-        s1 = sess.Sample.find(4)
+        s1 = sess.Sample.one()
         st1 = s1.sample_type
-        s2 = sess.Sample.find(4)
+        s2 = sess.Sample.one()
         st2 = sess.SampleType.find(s1.sample_type_id)
         assert id(s1) == id(s2)
         assert id(st1) == id(st2)
@@ -76,3 +73,17 @@ def test_with_temp_cache(session):
         assert s2.session is sess
 
     assert s2.session is session
+
+
+def test_requests_off(session):
+
+    with session.temp_cache() as sess:
+        s = sess.Sample.one()
+        with sess.requests_off() as sess2:
+            sess2.Sample.find(s.id)
+
+            with pytest.raises(ForbiddenRequestError):
+                sess2.Sample.one()
+
+            with pytest.raises(ForbiddenRequestError):
+                sess2.Sample.last(2)
