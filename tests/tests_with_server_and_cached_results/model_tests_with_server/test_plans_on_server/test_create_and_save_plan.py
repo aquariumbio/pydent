@@ -12,8 +12,6 @@ def test_submit_order_primer(session):
 
     p = session.Plan.new(name="MyOrderPrimerTest")
     p.add_operation(order_primer_op)
-    p.connect_to_session(session)
-    # p.add_operation(order_primer_op)
 
     p.create()
 

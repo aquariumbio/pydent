@@ -224,7 +224,7 @@ class AqSession(SessionABC):
         return TemporaryCache(self)
 
     def __repr__(self):
-        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self._aqhttp)
+        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self._aqhttp)
 
 
 class TemporaryCache(object):

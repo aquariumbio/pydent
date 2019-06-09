@@ -132,7 +132,9 @@ class ModelBase(SchemaModel):
                 if val is None:
                     val = []
                     setattr(self, name, val)
-                getattr(self, name).append(model)
+
+                if model.rid not in [m.rid for m in getattr(self, name)]:
+                    getattr(self, name).append(model)
         return self
 
     @classmethod
