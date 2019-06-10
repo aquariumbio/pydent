@@ -77,6 +77,7 @@ class AqSession(SessionABC):
         self.initialize_interfaces()
         self._browser = None
         self._using_cache = False
+        self.init_cache()
 
     @property
     def interface_class(self):

@@ -141,7 +141,7 @@ def test_quick_chain_to_existing_operation_too_many_times(session):
 
 def test_canvas_chaining(session):
     canvas = Planner(session)
-    canvas._browser.set_verbose(True)
+    canvas.browser.set_verbose(True)
     ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
                                     "Plate Transformed Cells", "Check Plate",
                                     category="Cloning")

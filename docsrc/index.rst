@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Trident Documentation
-=====================
+Overview
+========
 
 Trident is the Python scripting API for Aquarium, the software that runs the 
 `UW BIOFAB <http://www.uwbiofab.org>`_.
@@ -44,23 +44,18 @@ Links:
    <a href="http://www.uwbiofab.org" target="_blank">UW BIOFAB</a>
 
 
-Read the **publication**:
-
-User guide
------------------
-
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
+   :hidden:
 
-   self
-   overview
-   intro
-   quickstart
-   browsing
+   installation
+   basic_usage
+   querying
    planning
    developer_notes
    tests
    developer/api_reference
+   contributing
    versions
 
 

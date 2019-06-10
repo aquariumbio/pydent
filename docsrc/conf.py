@@ -19,6 +19,7 @@
 
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('..'))
 import pydent
 
@@ -98,17 +99,22 @@ pygments_style = 'sphinx'
 todo_include_todos = False
 
 
-html_context = {'version': version, 'github': pydent.__url__, 'pypi': pydent.__pypi__, 'articles': [1,2,3]}
+html_context = {
+    'version': version,
+    'github': pydent.__url__,
+    'pypi': pydent.__pypi__,
+    'aquarium_page': 'https://www.aquarium.bio/'
+}
 
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-import guzzle_sphinx_theme
+import sphinx_bootstrap_theme
 
-html_theme_path = guzzle_sphinx_theme.html_theme_path()
-html_theme = 'guzzle_sphinx_theme'
+html_theme = 'bootstrap'
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # Register the theme as an extension to generate a sitemap.xml
 extensions.append("guzzle_sphinx_theme")
@@ -116,7 +122,38 @@ extensions.append("guzzle_sphinx_theme")
 # Guzzle theme options (see theme.conf for more information)
 html_theme_options = {
     # Set the name of the project to appear in the sidebar
-    "project_nav_name": "Trident",
+    'navbar_title': 'Trident',
+    'navbar_site_name': 'Trident',
+
+    # Render the next and previous page links in navbar. (Default: true)
+    'navbar_sidebarrel': False,
+
+    # Render the current pages TOC in the navbar. (Default: true)
+    'navbar_pagenav': False,
+
+    # Tab name for the current pages TOC. (Default: "Page")
+    'navbar_pagenav_name': "Page",
+
+    # Location of link to source.
+    # Options are "nav" (default), "footer" or anything else to exclude.
+    'source_link_position': "nav",
+
+    # Bootswatch (http://bootswatch.com/) theme.
+    #
+    # Options are nothing (default) or the name of a valid theme
+    # such as "cosmo" or "sandstone".
+    #
+    # The set of valid themes depend on the version of Bootstrap
+    # that's used (the next config option).
+    #
+    # Currently, the supported themes are:
+    # - Bootstrap 2: https://bootswatch.com/2
+    # - Bootstrap 3: https://bootswatch.com/3
+    'bootswatch_theme': "cosmo",
+
+    # Choose Bootstrap version.
+    # Values: "3" (default) or "2" (in quotes)
+    'bootstrap_version': "3",
 }
 
 
@@ -131,10 +168,10 @@ html_static_path = ['_static']
 #     'index':    ['sidebar.html', 'globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
 #     '**':       ['sidebar.html', 'localtoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html']
 # }
-html_sidebars = {
-    'index':    ['sidebar.html', 'globaltoc.html', 'searchbox.html'],
-    '**':       ['sidebar.html', 'globaltoc.html', 'searchbox.html']
-}
+# html_sidebars = {
+#     'index':    ['sidebar.html'],
+#     '**':       ['sidebar.html']
+# }
 
 # -- Options for HTMLHelp output ------------------------------------------
 
@@ -192,7 +229,7 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-def setup(app):
-    app.add_stylesheet('css/custom.css')
-
+# def setup(app):
+#     app.add_stylesheet('css/custom.css')
+#
 

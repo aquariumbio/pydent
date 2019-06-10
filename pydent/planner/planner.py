@@ -152,10 +152,10 @@ class Planner(logger.Loggable, AFTMatcher, object):
         if issubclass(type(session_or_plan), AqSession):
             # initialize with session
             self.session = session_or_plan
-            self._browser = Browser(self.session)
+
             if plan_id is not None:
                 # load an existing plan
-                plan = self._browser.find(plan_id, 'Plan')
+                plan = self.browser.find(plan_id, 'Plan')
                 if plan is None:
                     raise PlannerException(
                         "Could not find plan with id={}".format(plan_id))
@@ -167,9 +167,12 @@ class Planner(logger.Loggable, AFTMatcher, object):
             # initialize with Plan
             plan = session_or_plan
             self.session = plan.session
-            self._browser = Browser(self.session)
             self.plan = plan
         self.init_logger("Planner@plan_rid={}".format(self.plan.rid))
+
+    @property
+    def browser(self):
+        return self.session.browser
 
     @classmethod
     def _check_plans_for_single_session(cls, models):
@@ -178,19 +181,6 @@ class Planner(logger.Loggable, AFTMatcher, object):
             raise PlannerException("Plans have different session ids")
         if models:
             return models[0].session
-
-
-    @classmethod
-    def from_plans(cls, plans):
-        session = cls._check_plans_for_single_session(plans)
-        browser = Browser(session)
-        cls.cache_plans(browser, plans)
-        planners = []
-        for plan in plans:
-            planner = cls.__new__(plan)
-            planner._browser = browser
-            planners.append(planner)
-        return planners
 
     @staticmethod
     def _cache_query():
@@ -229,8 +219,8 @@ class Planner(logger.Loggable, AFTMatcher, object):
     def cache(self):
         # ots = self.browser.where('OperationType', {'deployed': True})
         # self.browser.retrieve(ots, 'field_types')
-        self._browser.update_cache([self.plan], recursive=True)
-        results = self._browser.recursive_retrieve([self.plan], self.cache_query())
+        self.browser.update_cache([self.plan], recursive=True)
+        results = self.browser.recursive_retrieve([self.plan], self.cache_query())
 
 
     @classmethod
@@ -249,7 +239,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         return plans
 
     def cache(self):
-        self.cache_plans(self._browser, [self.plan])
+        self.cache_plans(self.browser, [self.plan])
 
     @property
     def name(self):
@@ -790,7 +780,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
     def reserved_items(self, items):
         """Returns a dictionary of item_ids and the array of field_values that use them"""
-        browser = self._browser
+        browser = self.browser
         item_ids = [i.id for i in items]
         server_fvs = browser.where({"child_item_id": item_ids}, model_class='FieldValue')
         browser.retrieve(server_fvs, 'operation')
@@ -833,7 +823,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
          one-shot yeast competent cell aliquots"""
         # collect items of that type used
         items = []
-        browser = self._browser
+        browser = self.browser
         for op in self.plan.operations:
             for i in op.inputs:
                 item = i.item
