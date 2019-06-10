@@ -128,7 +128,7 @@ class PlannerLayout(object):
         """Returns a sub-layout containing only the operations"""
         return self.subgraph(self.ops_to_nodes(ops))
 
-    def get_independeget_subgraphsnt_layouts(self):
+    def get_independent_layouts(self):
         """
         Finds all independent subgraphs.
 
