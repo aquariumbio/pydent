@@ -30,7 +30,7 @@ nitty gritty details
 * `HasOne` relationship will automatically set the corresponding model reference when setting attributes. E.g. `sample.sample_type = myst` will also automatically set `sample.sample_type_id = myst.id` since this is defined in the `HasOne` field. Similar tracking is not implemented for other relationships.
 
 testing
-~~~~~~
+~~~~~~~
 
   * vcrpy` is used to cache and store queries for deterministic testing.
   * Improved documentation.

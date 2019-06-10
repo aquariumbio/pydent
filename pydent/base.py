@@ -319,12 +319,15 @@ class ModelBase(SchemaModel):
     def __str__(self):
         return self._to_str('id', 'rid')
 
-    def _to_str(self, *attributes):
+    def _to_str(self, *attributes, **kwargs):
         if 'rid' not in attributes:
             attributes = list(attributes)
             attributes.append('rid')
+        data = self._get_data()
+        data.update(kwargs)
+        attributes = list(attributes) + list(kwargs)
         return "<{} {}>".format(self.__class__.__name__, ' '.join([
-            "{}={}".format(k, self._get_data().get(k, None)) for k in attributes
+            "{}={}".format(k, data.get(k, None)) for k in attributes
         ]))
 
     # TODO: anonymize the keys for relationships as well
