@@ -56,10 +56,10 @@ def test_split_planner(planner_example):
 
 
 @pytest.mark.record_mode('no')
-def test_combine_plans(fake_planner):
-    plans = fake_planner.split()
+def test_combine_plans(planner_example):
+    plans = planner_example.split()
     combined = Planner.combine(plans)
 
-    assert len(combined.plan.operations) == len(fake_planner.plan.operations), 'number of operations should remain the same'
-    assert len(combined.plan.wires) == len(fake_planner.plan.wires), 'number of wires should remain the same'
+    assert len(combined.plan.operations) == len(planner_example.plan.operations), 'number of operations should remain the same'
+    assert len(combined.plan.wires) == len(planner_example.plan.wires), 'number of wires should remain the same'
 
