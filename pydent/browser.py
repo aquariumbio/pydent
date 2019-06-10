@@ -333,7 +333,7 @@ class Browser(logger.Loggable, object):
             arr.append(model)
 
         for clstype in grouped_by_type:
-            self._update_model_cache_helper(clstype, {m.id: m for m in grouped_by_type[clstype]})
+            self._update_model_cache_helper(clstype, {m._primary_key: m for m in grouped_by_type[clstype]})
 
     # TODO: support unsaved models as well
     def cached_find(self, model_class, id):

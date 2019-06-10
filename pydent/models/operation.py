@@ -280,6 +280,8 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         for field_value in self.field_values:
             field_value.show(pre=pre + "  ")
 
+    def __str__(self):
+        return self._to_str(operation_type_name=self.operation_type.name)
 
 @add_schema
 class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
