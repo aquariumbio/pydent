@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.marshaller.schema &#8212; Trident 1.0.0a2 documentation</title>
+    <title>pydent.marshaller.schema &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -146,7 +146,6 @@
         <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">field</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span><span class="p">)</span></div>
 
-    <span class="c1"># TODO: is &#39;update&#39; the best way to handle setting the values?</span>
 <div class="viewcode-block" id="DynamicSchema.init_data_accessors"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.init_data_accessors">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">init_data_accessors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">add_extra</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initializes data accessors.</span>
@@ -173,15 +172,15 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">e</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;can&#39;t set attribute &#39;</span><span class="si">{key}</span><span class="s2">&#39; (accessor &#39;</span><span class="si">{objtype}</span><span class="s2">.</span><span class="si">{key}</span><span class="s2">&#39; is a </span><span class="si">{accessor}</span><span class="s2"> type) for &#39;</span><span class="si">{objtype}</span><span class="s2">&#39;&quot;</span>
-                                     <span class="s2">&quot; because:</span><span class="se">\n</span><span class="si">{e}</span><span class="s2">&quot;</span>
-                <span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">key</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
-                    <span class="n">objtype</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
-                    <span class="n">accessor</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                    <span class="n">e</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                <span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span></div>
+                <span class="k">raise</span> <span class="n">e</span></div>
+                <span class="c1"># raise AttributeError(&quot;can&#39;t set attribute &#39;{key}&#39; (accessor &#39;{objtype}.{key}&#39; is a {accessor} type) for &#39;{objtype}&#39;&quot;</span>
+                <span class="c1">#                      &quot; because:\n{e}&quot;</span>
+                <span class="c1"># .format(</span>
+                <span class="c1">#     key=k,</span>
+                <span class="c1">#     objtype=instance.__class__,</span>
+                <span class="c1">#     accessor=instance.__class__.__dict__.get(k, None),</span>
+                <span class="c1">#     e=&quot;{}: {}&quot;.format(e.__class__.__name__, e)</span>
+                <span class="c1"># )) from e</span>
 
 <div class="viewcode-block" id="DynamicSchema.validate_callbacks"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.validate_callbacks">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">validate_callbacks</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -309,7 +308,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

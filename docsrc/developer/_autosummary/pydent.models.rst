@@ -9,40 +9,6 @@ pydent.models
 
    
    
-   .. rubric:: Classes
-
-   .. autosummary::
-   
-      Account
-      AllowableFieldType
-      Budget
-      Code
-      Collection
-      DataAssociation
-      DataAssociatorMixin
-      FieldMixin
-      FieldType
-      FieldValue
-      Group
-      Invoice
-      Item
-      Job
-      JobAssociation
-      Library
-      Membership
-      ObjectType
-      Operation
-      OperationType
-      PartAssociation
-      Plan
-      PlanAssociation
-      Sample
-      SampleType
-      Upload
-      User
-      UserBudgetAssociation
-      Wire
-   
    
 
    

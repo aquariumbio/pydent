@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.models &#8212; Trident 1.0.0a2 documentation</title>
+    <title>pydent.models &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -182,105 +182,9 @@ class SampleType(Base):</p>
 </dl>
 </div></blockquote>
 </div></blockquote>
-<p class="rubric">Classes</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Account" title="pydent.models.Account"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Account</span></code></a>(**data)</td>
-<td>An Account model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.AllowableFieldType" title="pydent.models.AllowableFieldType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AllowableFieldType</span></code></a>([field_type,&nbsp;…])</td>
-<td>A AllowableFieldType model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Budget" title="pydent.models.Budget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Budget</span></code></a>(**data)</td>
-<td>A Budget model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Code" title="pydent.models.Code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Code</span></code></a>(**data)</td>
-<td>A Code model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Collection" title="pydent.models.Collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Collection</span></code></a>(**data)</td>
-<td>A Collection model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataAssociation</span></code></a>(**data)</td>
-<td>A DataAssociation model</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataAssociatorMixin</span></code></td>
-<td>Mixin for handling data associations</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldMixin</span></code></td>
-<td>Mixin for finding FieldType and FieldValue relationships</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldType</span></code></a>([name,&nbsp;ftype,&nbsp;array,&nbsp;choices,&nbsp;…])</td>
-<td>A FieldType model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldValue</span></code></a>([name,&nbsp;role,&nbsp;parent_class,&nbsp;…])</td>
-<td>A FieldValue model.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Group" title="pydent.models.Group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code></a>(**data)</td>
-<td>A Group model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Invoice" title="pydent.models.Invoice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Invoice</span></code></a>(**data)</td>
-<td>A Invoice model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Item</span></code></a>([sample_id,&nbsp;sample,&nbsp;object_type,&nbsp;…])</td>
-<td>Defines a proxy object for an Item model in Aquarium.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Job" title="pydent.models.Job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Job</span></code></a>(**data)</td>
-<td>A Job model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.JobAssociation" title="pydent.models.JobAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JobAssociation</span></code></a>(**data)</td>
-<td>A JobAssociation model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Library" title="pydent.models.Library"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Library</span></code></a>(**data)</td>
-<td>A Library model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Membership" title="pydent.models.Membership"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Membership</span></code></a>(**data)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.ObjectType" title="pydent.models.ObjectType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectType</span></code></a>(**data)</td>
-<td>A ObjectType model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Operation</span></code></a>([operation_type_id,&nbsp;…])</td>
-<td>A Operation model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OperationType</span></code></a>(**data)</td>
-<td>Represents an OperationType, which is the definition of a protocol in Aquarium.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PartAssociation" title="pydent.models.PartAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PartAssociation</span></code></a>([part_id,&nbsp;collection_id,&nbsp;…])</td>
-<td>Represents a PartAssociation linking a part to a collection.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plan</span></code></a>([name,&nbsp;status])</td>
-<td>A Plan model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.PlanAssociation" title="pydent.models.PlanAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></a>([plan_id,&nbsp;operation_id])</td>
-<td>A PlanAssociation model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></a>([name,&nbsp;project,&nbsp;description,&nbsp;…])</td>
-<td>A Sample model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleType</span></code></a>(**data)</td>
-<td>A SampleType model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></a>([job_id,&nbsp;file])</td>
-<td>An Upload model</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.User" title="pydent.models.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a>()</td>
-<td>A User model</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.models.UserBudgetAssociation" title="pydent.models.UserBudgetAssociation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UserBudgetAssociation</span></code></a>()</td>
-<td>An association model between a User and a Budget</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.models.Wire" title="pydent.models.Wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wire</span></code></a>([source,&nbsp;destination])</td>
-<td>A Wire model</td>
-</tr>
-</tbody>
-</table>
 <dl class="class">
 <dt id="pydent.models.Account">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Account</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Account" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Account</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/user.html#Account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Account" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>An Account model</p>
 <dl class="method">
@@ -461,8 +365,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Account.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -475,6 +380,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Account.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Account.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -518,7 +439,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.AllowableFieldType">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">AllowableFieldType</code><span class="sig-paren">(</span><em>field_type=None</em>, <em>object_type=None</em>, <em>sample_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#AllowableFieldType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.AllowableFieldType" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">AllowableFieldType</code><span class="sig-paren">(</span><em>field_type=None</em>, <em>object_type=None</em>, <em>sample_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#AllowableFieldType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.AllowableFieldType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A AllowableFieldType model</p>
 <dl class="method">
@@ -699,8 +620,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.AllowableFieldType.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -713,6 +635,22 @@ models in model relationships.</p>
 <dt id="pydent.models.AllowableFieldType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.AllowableFieldType.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -756,7 +694,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Budget">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Budget</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Budget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Budget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Budget</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/user.html#Budget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Budget" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Budget model</p>
 <dl class="method">
@@ -937,8 +875,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Budget.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -951,6 +890,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Budget.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Budget.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -994,7 +949,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Code">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Code</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Code" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Code</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/code.html#Code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Code" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Code model</p>
 <dl class="method">
@@ -1175,8 +1130,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Code.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1189,6 +1145,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Code.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Code.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1232,8 +1204,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Collection">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Collection</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Collection</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#Collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.data_associations.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Collection model</p>
 <dl class="method">
 <dt id="pydent.models.Collection._check_for_session">
@@ -1314,6 +1286,12 @@ find models in model relationships.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.as_item">
+<code class="descname">as_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#Collection.as_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection.as_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Item object with the ID of this Collection</p>
 </dd></dl>
 
 <dl class="method">
@@ -1471,8 +1449,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Collection.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1496,8 +1475,24 @@ models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Collection.part">
-<code class="descname">part</code><span class="sig-paren">(</span><em>row</em>, <em>col</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Collection.part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection.part" title="Permalink to this definition">¶</a></dt>
+<code class="descname">part</code><span class="sig-paren">(</span><em>row</em>, <em>col</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#Collection.part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection.part" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the part Item at (row, col) of this Collection (zero-based).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1541,8 +1536,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.DataAssociation">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">DataAssociation</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#DataAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.DataAssociation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">DataAssociation</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/data_associations.html#DataAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.DataAssociation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONDeleteMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A DataAssociation model</p>
 <dl class="method">
 <dt id="pydent.models.DataAssociation._check_for_session">
@@ -1722,8 +1717,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.DataAssociation.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1736,6 +1732,22 @@ models in model relationships.</p>
 <dt id="pydent.models.DataAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.DataAssociation.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1779,8 +1791,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.FieldType">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">FieldType</code><span class="sig-paren">(</span><em>name=None</em>, <em>ftype=None</em>, <em>array=None</em>, <em>choices=None</em>, <em>operation_type=None</em>, <em>preferred_field_type_id=None</em>, <em>preferred_operation_type_id=None</em>, <em>required=None</em>, <em>routing=None</em>, <em>role=None</em>, <em>parent_class=None</em>, <em>parent_id=None</em>, <em>sample_type=None</em>, <em>aft_stype_and_objtype=()</em>, <em>allowable_field_types=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">FieldType</code><span class="sig-paren">(</span><em>name=None</em>, <em>ftype=None</em>, <em>array=None</em>, <em>choices=None</em>, <em>operation_type=None</em>, <em>preferred_field_type_id=None</em>, <em>preferred_operation_type_id=None</em>, <em>required=None</em>, <em>routing=None</em>, <em>role=None</em>, <em>parent_class=None</em>, <em>parent_id=None</em>, <em>sample_type=None</em>, <em>aft_stype_and_objtype=()</em>, <em>allowable_field_types=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#FieldType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.field_value_mixins.FieldMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A FieldType model</p>
 <dl class="method">
 <dt id="pydent.models.FieldType._check_for_session">
@@ -1943,7 +1955,7 @@ If parent_class does not match the expected nested model name
 
 <dl class="method">
 <dt id="pydent.models.FieldType.initialize_field_value">
-<code class="descname">initialize_field_value</code><span class="sig-paren">(</span><em>field_value=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldType.initialize_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldType.initialize_field_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">initialize_field_value</code><span class="sig-paren">(</span><em>field_value=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#FieldType.initialize_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldType.initialize_field_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates or initializes a new <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> from this FieldType</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1986,8 +1998,9 @@ If parent_class does not match the expected nested model name
 
 <dl class="classmethod">
 <dt id="pydent.models.FieldType.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2000,6 +2013,22 @@ If parent_class does not match the expected nested model name
 <dt id="pydent.models.FieldType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldType.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2043,9 +2072,13 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.FieldValue">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">FieldValue</code><span class="sig-paren">(</span><em>name=None</em>, <em>role=None</em>, <em>parent_class=None</em>, <em>parent_id=None</em>, <em>field_type=None</em>, <em>sample=None</em>, <em>value=None</em>, <em>item=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">FieldValue</code><span class="sig-paren">(</span><em>name=None</em>, <em>role=None</em>, <em>parent_class=None</em>, <em>parent_id=None</em>, <em>field_type=None</em>, <em>sample=None</em>, <em>value=None</em>, <em>item=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#FieldValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.field_value_mixins.FieldMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONSaveMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONDeleteMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A FieldValue model. One of the more complex models.</p>
+<p>Change Log:
+* 2019_06_03 FieldValues no longer have ‘wires_as_source’ or ‘wires_as_dest’ fields. Wires may only be accessed
+via plans only or via the FieldValue instance method ‘get_wires,’ which accesses the FieldValues operation
+and its Plan to obtain wires.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2143,13 +2176,13 @@ find models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.FieldValue.choose_item">
-<code class="descname">choose_item</code><span class="sig-paren">(</span><em>first=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldValue.choose_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.choose_item" title="Permalink to this definition">¶</a></dt>
+<code class="descname">choose_item</code><span class="sig-paren">(</span><em>first=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#FieldValue.choose_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.choose_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the item associated with the field value</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.FieldValue.compatible_items">
-<code class="descname">compatible_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldValue.compatible_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.compatible_items" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compatible_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#FieldValue.compatible_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.compatible_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find items compatible with the field value</p>
 </dd></dl>
 
@@ -2231,10 +2264,10 @@ If parent_class does not match the expected nested model name
 (OperationType or SampleType), callback will return None</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="pydent.models.FieldValue.incoming_wires">
-<code class="descname">incoming_wires</code><a class="headerlink" href="#pydent.models.FieldValue.incoming_wires" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias of ‘wires_as_dest’</p>
+<dl class="method">
+<dt id="pydent.models.FieldValue.get_sid">
+<code class="descname">get_sid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#FieldValue.get_sid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.get_sid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The FieldValues sample identifier.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -2264,8 +2297,9 @@ If parent_class does not match the expected nested model name
 
 <dl class="classmethod">
 <dt id="pydent.models.FieldValue.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2280,10 +2314,20 @@ If parent_class does not match the expected nested model name
 <dd><p>Callback that always returns None</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="pydent.models.FieldValue.outgoing_wires">
-<code class="descname">outgoing_wires</code><a class="headerlink" href="#pydent.models.FieldValue.outgoing_wires" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias of ‘wires_as_source’</p>
+<dl class="method">
+<dt id="pydent.models.FieldValue.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2306,7 +2350,7 @@ If parent_class does not match the expected nested model name
 
 <dl class="method">
 <dt id="pydent.models.FieldValue.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldValue.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.reset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#FieldValue.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the inputs of the field_value</p>
 </dd></dl>
 
@@ -2318,7 +2362,7 @@ If parent_class does not match the expected nested model name
 
 <dl class="method">
 <dt id="pydent.models.FieldValue.set_field_type">
-<code class="descname">set_field_type</code><span class="sig-paren">(</span><em>field_type</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#FieldValue.set_field_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.set_field_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_field_type</code><span class="sig-paren">(</span><em>field_type</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/field_value.html#FieldValue.set_field_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.set_field_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets properties from a field_type</p>
 </dd></dl>
 
@@ -2339,7 +2383,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Group">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Group" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/user.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Group model</p>
 <dl class="method">
@@ -2520,8 +2564,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Group.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2534,6 +2579,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Group.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Group.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2577,7 +2638,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Invoice">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Invoice</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Invoice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Invoice" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Invoice</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/user.html#Invoice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Invoice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Invoice model</p>
 <dl class="method">
@@ -2758,8 +2819,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Invoice.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2772,6 +2834,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Invoice.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Invoice.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -2815,8 +2893,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Item">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>sample_id=None</em>, <em>sample=None</em>, <em>object_type=None</em>, <em>object_type_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>sample_id=None</em>, <em>sample=None</em>, <em>object_type=None</em>, <em>object_type_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#Item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.data_associations.DataAssociatorMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.SaveMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>Defines a proxy object for an Item model in Aquarium.
 An Item is a physical object in the lab.</p>
 <dl class="method">
@@ -2902,7 +2980,7 @@ An Item is a physical object in the lab.</p>
 
 <dl class="method">
 <dt id="pydent.models.Item.as_collection">
-<code class="descname">as_collection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item.as_collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item.as_collection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">as_collection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#Item.as_collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item.as_collection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Collection object with the ID of this Item, which must be a
 collection.</p>
 <p>Returns None if this Item is not a collection.</p>
@@ -3078,13 +3156,14 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Item.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Item.make">
-<code class="descname">make</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item.make"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item.make" title="Permalink to this definition">¶</a></dt>
+<code class="descname">make</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#Item.make"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item.make" title="Permalink to this definition">¶</a></dt>
 <dd><p>Makes the Item on the Aquarium server. Requires
 this Item to be connected to a session.</p>
 </dd></dl>
@@ -3099,6 +3178,22 @@ this Item to be connected to a session.</p>
 <dt id="pydent.models.Item.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3121,7 +3216,7 @@ this Item to be connected to a session.</p>
 
 <dl class="method">
 <dt id="pydent.models.Item.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Item.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item.save" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#Item.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>A synonym for <cite>make</cite></p>
 </dd></dl>
 
@@ -3148,7 +3243,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Job">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Job" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Job model</p>
 <dl class="method">
@@ -3329,8 +3424,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Job.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3343,6 +3439,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Job.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Job.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3386,7 +3498,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.JobAssociation">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">JobAssociation</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#JobAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.JobAssociation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">JobAssociation</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/job.html#JobAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.JobAssociation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A JobAssociation model</p>
 <dl class="method">
@@ -3567,8 +3679,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.JobAssociation.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3581,6 +3694,22 @@ models in model relationships.</p>
 <dt id="pydent.models.JobAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3624,7 +3753,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Library">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Library</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Library" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Library</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/code.html#Library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Library" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Library model</p>
 <dl class="method">
@@ -3710,7 +3839,7 @@ find models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Library.code">
-<code class="descname">code</code><span class="sig-paren">(</span><em>accessor</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Library.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Library.code" title="Permalink to this definition">¶</a></dt>
+<code class="descname">code</code><span class="sig-paren">(</span><em>accessor</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/code.html#Library.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Library.code" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reminant from previous API</p>
 </dd></dl>
 
@@ -3811,8 +3940,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Library.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3825,6 +3955,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Library.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Library.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3868,7 +4014,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Membership">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Membership</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Membership"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Membership" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Membership</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/user.html#Membership"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Membership" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <dl class="method">
 <dt id="pydent.models.Membership._check_for_session">
@@ -4048,8 +4194,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Membership.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4062,6 +4209,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Membership.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Membership.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4105,8 +4268,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.ObjectType">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">ObjectType</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#ObjectType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.ObjectType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">ObjectType</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#ObjectType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.ObjectType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.SaveMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A ObjectType model</p>
 <dl class="method">
 <dt id="pydent.models.ObjectType._check_for_session">
@@ -4286,8 +4449,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.ObjectType.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4300,6 +4464,22 @@ models in model relationships.</p>
 <dt id="pydent.models.ObjectType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.ObjectType.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4318,13 +4498,6 @@ models in model relationships.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.ObjectType.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#ObjectType.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.ObjectType.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves the Object Type to the Aquarium server. Requires
-this Object Type to be connected to a session.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4350,8 +4523,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Operation">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>operation_type_id=None</em>, <em>operation_type=None</em>, <em>status=None</em>, <em>x=0</em>, <em>y=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>operation_type_id=None</em>, <em>operation_type=None</em>, <em>status=None</em>, <em>x=0</em>, <em>y=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.field_value_mixins.FieldValueInterface</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.data_associations.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Operation model</p>
 <dl class="method">
 <dt id="pydent.models.Operation._check_for_session">
@@ -4396,37 +4569,8 @@ find models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Operation.add_to_field_value_array">
-<code class="descname">add_to_field_value_array</code><span class="sig-paren">(</span><em>name</em>, <em>role</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.add_to_field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.add_to_field_value_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates and adds a new <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a>. When setting values to
-items/samples/containers, the item/sample/container must be saved.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>string</em>) – name of the FieldType/FieldValue</li>
-<li><strong>role</strong> (<em>string</em>) – role of the FieldValue (“input” or “output”)</li>
-<li><strong>sample</strong> (<a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><em>Sample</em></a>) – an existing Sample</li>
-<li><strong>item</strong> (<a class="reference internal" href="#pydent.models.Item" title="pydent.models.Item"><em>Item</em></a>) – an existing Item</li>
-<li><strong>value</strong> (<em>string|integer</em>) – a string or number value</li>
-<li><strong>container</strong> (<a class="reference internal" href="#pydent.models.ObjectType" title="pydent.models.ObjectType"><em>ObjectType</em></a>) – an existing ObjectType</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the newly created FieldValue</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Operation.add_to_input_array">
-<code class="descname">add_to_input_array</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.add_to_input_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.add_to_input_array" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_to_input_array</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.add_to_input_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.add_to_input_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates and adds a new input <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a>.
 When setting values to items/samples/containers, the
 item/sample/container must be saved.</p>
@@ -4455,7 +4599,7 @@ item/sample/container must be saved.</p>
 
 <dl class="method">
 <dt id="pydent.models.Operation.add_to_output_array">
-<code class="descname">add_to_output_array</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.add_to_output_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.add_to_output_array" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_to_output_array</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.add_to_output_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.add_to_output_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates and adds a new output <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a>.
 When setting values to items/samples/containers, the
 item/sample/container must be saved.</p>
@@ -4638,14 +4782,14 @@ there is only ONE instance of inventory that is referred to by its rid.</p>
 
 <dl class="method">
 <dt id="pydent.models.Operation.field_value">
-<code class="descname">field_value</code><span class="sig-paren">(</span><em>name</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.field_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">field_value</code><span class="sig-paren">(</span><em>name</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.field_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> with name and role.
 Return None if not found.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Operation.field_value_array">
-<code class="descname">field_value_array</code><span class="sig-paren">(</span><em>name</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.field_value_array" title="Permalink to this definition">¶</a></dt>
+<code class="descname">field_value_array</code><span class="sig-paren">(</span><em>name</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.field_value_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array with name and role.</p>
 </dd></dl>
 
@@ -4664,20 +4808,20 @@ models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Operation.init_field_values">
-<code class="descname">init_field_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.init_field_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.init_field_values" title="Permalink to this definition">¶</a></dt>
+<code class="descname">init_field_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.init_field_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.init_field_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> from the <a class="reference internal" href="#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldType</span></code></a> of the
 parent <a class="reference internal" href="#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> type.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Operation.input">
-<code class="descname">input</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.input" title="Permalink to this definition">¶</a></dt>
+<code class="descname">input</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the input <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> by name</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydent.models.Operation.input_array">
-<code class="descname">input_array</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.input_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.input_array" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pydent.models.Operation.inputs">
+<code class="descname">inputs</code><a class="headerlink" href="#pydent.models.Operation.inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of all input <code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValues</span></code></p>
 </dd></dl>
 
@@ -4708,8 +4852,9 @@ parent <a class="reference internal" href="#pydent.models.Operation" title="pyde
 
 <dl class="classmethod">
 <dt id="pydent.models.Operation.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4726,14 +4871,30 @@ parent <a class="reference internal" href="#pydent.models.Operation" title="pyde
 
 <dl class="method">
 <dt id="pydent.models.Operation.output">
-<code class="descname">output</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.output" title="Permalink to this definition">¶</a></dt>
+<code class="descname">output</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the output <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> by name</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydent.models.Operation.output_array">
-<code class="descname">output_array</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.output_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.output_array" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pydent.models.Operation.outputs">
+<code class="descname">outputs</code><a class="headerlink" href="#pydent.models.Operation.outputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of all output <code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValues</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4761,67 +4922,8 @@ parent <a class="reference internal" href="#pydent.models.Operation" title="pyde
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Operation.set_field_value">
-<code class="descname">set_field_value</code><span class="sig-paren">(</span><em>name</em>, <em>role</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_field_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the a <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> to a value. When setting values to
-items/samples/containers, the item/sample/container must be saved.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>string</em>) – name of the FieldValue/FieldType</li>
-<li><strong>role</strong> (<em>string</em>) – role of the FieldValue (“input” or “output”)</li>
-<li><strong>sample</strong> (<a class="reference internal" href="#pydent.models.Sample" title="pydent.models.Sample"><em>Sample</em></a>) – an existing Sample</li>
-<li><strong>item</strong> (<a class="reference internal" href="#pydent.models.Item" title="pydent.models.Item"><em>Item</em></a>) – an existing Item</li>
-<li><strong>value</strong> (<em>string|integer</em>) – a string or number value</li>
-<li><strong>container</strong> (<a class="reference internal" href="#pydent.models.ObjectType" title="pydent.models.ObjectType"><em>ObjectType</em></a>) – an existing ObjectType</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the existing FieldValue modified</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Operation.set_field_value_array">
-<code class="descname">set_field_value_array</code><span class="sig-paren">(</span><em>name</em>, <em>role</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_field_value_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array using values. Values should be a list of
-dictionaries containing sample, item, container, or values keys.
-When setting values to items/samples/containers, the
-item/sample/container must be saved.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>string</em>) – name of the FieldType/FieldValues being modified</li>
-<li><strong>role</strong> (<em>string</em>) – role of the FieldType/FieldValue being modified
-(“input” or “output”)</li>
-<li><strong>values</strong> (<em>list</em>) – list of dictionary of values to set
-(e.g. [{“sample”: mysample}, {“item”: myitem}])</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the list of modified FieldValues</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Operation.set_input">
-<code class="descname">set_input</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_input" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_input</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em>, <em>object_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.set_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets a input <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> to a value. When setting values to
 items/samples/containers, the item/sample/container must be saved.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -4849,7 +4951,7 @@ items/samples/containers, the item/sample/container must be saved.</p>
 
 <dl class="method">
 <dt id="pydent.models.Operation.set_input_array">
-<code class="descname">set_input_array</code><span class="sig-paren">(</span><em>name</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_input_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_input_array" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_input_array</code><span class="sig-paren">(</span><em>name</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.set_input_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_input_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets input <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array using values.
 Values should be a list of dictionaries containing sample, item,
 container, or values keys.
@@ -4878,7 +4980,7 @@ item/sample/container must be saved.</p>
 
 <dl class="method">
 <dt id="pydent.models.Operation.set_output">
-<code class="descname">set_output</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_output" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_output</code><span class="sig-paren">(</span><em>name</em>, <em>sample=None</em>, <em>item=None</em>, <em>value=None</em>, <em>container=None</em>, <em>object_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.set_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets a output <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> to a value. When setting values to
 items/samples/containers, the item/sample/container must be saved.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -4906,7 +5008,7 @@ items/samples/containers, the item/sample/container must be saved.</p>
 
 <dl class="method">
 <dt id="pydent.models.Operation.set_output_array">
-<code class="descname">set_output_array</code><span class="sig-paren">(</span><em>name</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.set_output_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_output_array" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_output_array</code><span class="sig-paren">(</span><em>name</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.set_output_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.set_output_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets output <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> array using values.
 Values should be a list of dictionaries containing sample, item,
 container, or values keys.
@@ -4935,7 +5037,7 @@ item/sample/container must be saved.</p>
 
 <dl class="method">
 <dt id="pydent.models.Operation.show">
-<code class="descname">show</code><span class="sig-paren">(</span><em>pre=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Operation.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.show" title="Permalink to this definition">¶</a></dt>
+<code class="descname">show</code><span class="sig-paren">(</span><em>pre=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#Operation.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Operation.show" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print the operation nicely</p>
 </dd></dl>
 
@@ -4956,8 +5058,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.OperationType">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">OperationType</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#OperationType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">OperationType</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#OperationType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.field_value_mixins.FieldTypeInterface</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.SaveMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>Represents an OperationType, which is the definition of a protocol in
 Aquarium.</p>
 <dl class="method">
@@ -5138,8 +5240,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.OperationType.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5152,6 +5255,22 @@ models in model relationships.</p>
 <dt id="pydent.models.OperationType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.OperationType.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5174,7 +5293,7 @@ models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.OperationType.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#OperationType.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType.save" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/operation.html#OperationType.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the Operation Type to the Aquarium server. Requires
 this Operation Type to be connected to a session.</p>
 </dd></dl>
@@ -5202,7 +5321,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.PartAssociation">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">PartAssociation</code><span class="sig-paren">(</span><em>part_id=None</em>, <em>collection_id=None</em>, <em>row=None</em>, <em>column=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#PartAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.PartAssociation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">PartAssociation</code><span class="sig-paren">(</span><em>part_id=None</em>, <em>collection_id=None</em>, <em>row=None</em>, <em>column=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/inventory.html#PartAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.PartAssociation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>Represents a PartAssociation linking a part to a collection.</p>
 <p>Aquarium definition has the collection as an Item. Not sure why this isn’t a Collection.</p>
@@ -5384,8 +5503,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.PartAssociation.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5398,6 +5518,22 @@ models in model relationships.</p>
 <dt id="pydent.models.PartAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PartAssociation.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5441,8 +5577,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Plan">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Plan</code><span class="sig-paren">(</span><em>name='MyPlan'</em>, <em>status='planning'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.DataAssociatorMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Plan</code><span class="sig-paren">(</span><em>name='MyPlan'</em>, <em>status='planning'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.data_associations.DataAssociatorMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.SaveMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.DeleteMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Plan model</p>
 <dl class="method">
 <dt id="pydent.models.Plan._check_for_session">
@@ -5460,6 +5596,12 @@ find models in model relationships.</p>
 <dt id="pydent.models.Plan._get_data">
 <code class="descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan._get_wire_dict">
+<code class="descname">_get_wire_dict</code><span class="sig-paren">(</span><em>wires</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan._get_wire_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan._get_wire_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all wires in the plan grouped by the wire identifier</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5488,7 +5630,7 @@ find models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Plan.add_operation">
-<code class="descname">add_operation</code><span class="sig-paren">(</span><em>operation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.add_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.add_operation" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_operation</code><span class="sig-paren">(</span><em>operation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.add_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.add_operation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds an operation to the Plan</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -5506,7 +5648,7 @@ find models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Plan.add_operations">
-<code class="descname">add_operations</code><span class="sig-paren">(</span><em>operations</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.add_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.add_operations" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_operations</code><span class="sig-paren">(</span><em>operations</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.add_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.add_operations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds multiple operations to the Plan</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -5652,40 +5794,8 @@ there is only ONE instance of inventory that is referred to by its rid.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.models.Plan.create">
-<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates the Plan on the Aquarium server.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Submitted Plan (self)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan">Plan</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Plan.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes the plan on the Aquarium server</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.models.Plan.download_files">
-<code class="descname">download_files</code><span class="sig-paren">(</span><em>outdir=None</em>, <em>overwrite=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.download_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.download_files" title="Permalink to this definition">¶</a></dt>
+<code class="descname">download_files</code><span class="sig-paren">(</span><em>outdir=None</em>, <em>overwrite=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.download_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.download_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads all uploads associated with the plan. Downloads happen
 ansynchrounously.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -5732,7 +5842,7 @@ ansynchrounously.</p>
 
 <dl class="method">
 <dt id="pydent.models.Plan.estimate_cost">
-<code class="descname">estimate_cost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.estimate_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.estimate_cost" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimate_cost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.estimate_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.estimate_cost" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the cost of the plan on the Aquarium server.
 This is necessary before plan submission.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -5760,9 +5870,33 @@ This is necessary before plan submission.</p>
 models in model relationships.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydent.models.Plan.find_wires">
+<code class="descname">find_wires</code><span class="sig-paren">(</span><em>src</em>, <em>dest</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.find_wires"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.find_wires" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the wire between a source and destination FieldValues</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><em>FieldValue</em></a>) – source FieldValue</li>
+<li><strong>dest</strong> (<a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><em>FieldValue</em></a>) – destination FieldValue</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of wires between src and dest FieldValues (determined by rid)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of wires</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="pydent.models.Plan.interface">
-<em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.interface" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">interface</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
 </dd></dl>
@@ -5787,8 +5921,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Plan.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5801,6 +5936,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Plan.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -5823,24 +5974,8 @@ models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Plan.replan">
-<code class="descname">replan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.replan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.replan" title="Permalink to this definition">¶</a></dt>
+<code class="descname">replan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.replan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.replan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copies or replans the plan. Returns a plan copy</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Plan.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates/patches the plan on the Aquarium server</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">updated Plan (self)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pydent.models.Plan" title="pydent.models.Plan">Plan</a></td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -5851,19 +5986,19 @@ models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Plan.show">
-<code class="descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.show" title="Permalink to this definition">¶</a></dt>
+<code class="descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.show" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print the plan nicely</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Plan.step">
-<code class="descname">step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.step" title="Permalink to this definition">¶</a></dt>
+<code class="descname">step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Steps a plan</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Plan.submit">
-<code class="descname">submit</code><span class="sig-paren">(</span><em>user</em>, <em>budget</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.submit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">submit</code><span class="sig-paren">(</span><em>user</em>, <em>budget</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.submit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submits the Plan to the Aquarium server.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -5887,7 +6022,7 @@ models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Plan.to_save_json">
-<code class="descname">to_save_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Plan.to_save_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.to_save_json" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_save_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.to_save_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.to_save_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the json representation of the plan for saving and creating
 Plans on the Aquarium server.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -5897,6 +6032,24 @@ Plans on the Aquarium server.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><em>raise_error=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the plan.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>raise_error</strong> (<em>boolean</em>) – If True, raises an AquariumModelException. If false, returns the error messages.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of error messages</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array</td>
 </tr>
 </tbody>
 </table>
@@ -5915,11 +6068,38 @@ Plans on the Aquarium server.</p>
 find models in model relationships.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydent.models.Plan.wire">
+<code class="descname">wire</code><span class="sig-paren">(</span><em>src</em>, <em>dest</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Plan.wire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new wire between src and dest FieldValues. Returns the new wire
+if it does not exist in the plan. If the wire already exists and
+error_if_exists is True, then the existing wire is returned. Else an exception is raised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>src</strong> (<a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><em>FieldValue</em></a>) – source field value (the input of the wire)</li>
+<li><strong>dest</strong> (<a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><em>FieldValue</em></a>) – destination field value (the output of the wire)</li>
+<li><strong>error_if_exists</strong> (<em>boolean</em>) – Raise an error if the Wire already exists in the plan.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Newly created wire or existing wire (if exists and error_if_exists == False)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pydent.models.Wire" title="pydent.models.Wire">Wire</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="pydent.models.PlanAssociation">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">PlanAssociation</code><span class="sig-paren">(</span><em>plan_id=None</em>, <em>operation_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#PlanAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.PlanAssociation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">PlanAssociation</code><span class="sig-paren">(</span><em>plan_id=None</em>, <em>operation_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#PlanAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.PlanAssociation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A PlanAssociation model</p>
 <dl class="method">
@@ -6100,8 +6280,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.PlanAssociation.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6114,6 +6295,22 @@ models in model relationships.</p>
 <dt id="pydent.models.PlanAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PlanAssociation.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6157,8 +6354,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Sample">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>name=None</em>, <em>project=None</em>, <em>description=None</em>, <em>sample_type=None</em>, <em>sample_type_id=None</em>, <em>properties=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>name=None</em>, <em>project=None</em>, <em>description=None</em>, <em>sample_type=None</em>, <em>sample_type_id=None</em>, <em>properties=None</em>, <em>field_values=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/sample.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.field_value_mixins.FieldValueInterface</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Sample model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -6185,23 +6382,6 @@ find models in model relationships.</p>
 <dt id="pydent.models.Sample._flatten_deserialized_data">
 <em class="property">classmethod </em><code class="descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em>models</em>, <em>memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.Sample._fv_dict">
-<code class="descname">_fv_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample._fv_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample._fv_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns field_values grouped by their field_type name. If the field_type is an array,
-then the value will be a list of FieldValues (or empty list). Otherwise the value will be a FieldValue or None.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dictionary of field_values</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
@@ -6281,7 +6461,7 @@ then the value will be a list of FieldValues (or empty list). Otherwise the valu
 
 <dl class="method">
 <dt id="pydent.models.Sample.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample.copy" title="Permalink to this definition">¶</a></dt>
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/sample.html#Sample.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of this sample.</p>
 </dd></dl>
 
@@ -6305,6 +6485,26 @@ then the value will be a list of FieldValues (or empty list). Otherwise the valu
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Sample.field_value">
+<code class="descname">field_value</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/sample.html#Sample.field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample.field_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> associated with the sample by its name. If the there is more than one FieldValue
+with the same name (as in field_value arrays), it will return the first FieldValue.
+See the <a href="#id1"><span class="problematic" id="id2">:method:`Sample.field_value_array`</span></a> method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) – name of the field value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the field value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></td>
 </tr>
 </tbody>
 </table>
@@ -6356,8 +6556,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Sample.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6370,6 +6571,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Sample.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Sample.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6390,13 +6607,6 @@ models in model relationships.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydent.models.Sample.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves the Sample to the Aquarium server. Requires
-this Sample to be connected to a session.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="pydent.models.Sample.session">
 <code class="descname">session</code><a class="headerlink" href="#pydent.models.Sample.session" title="Permalink to this definition">¶</a></dt>
@@ -6405,13 +6615,13 @@ this Sample to be connected to a session.</p>
 
 <dl class="method">
 <dt id="pydent.models.Sample.update_properties">
-<code class="descname">update_properties</code><span class="sig-paren">(</span><em>prop_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Sample.update_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample.update_properties" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_properties</code><span class="sig-paren">(</span><em>prop_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/sample.html#Sample.update_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Sample.update_properties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the FieldValues properties for this sample.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop_dict</strong> (<em>dict</em>) – values to update</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop_dict</strong> – values to update</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">self</td>
 </tr>
@@ -6438,8 +6648,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.SampleType">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">SampleType</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#SampleType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.SampleType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">SampleType</code><span class="sig-paren">(</span><em>**data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/sample.html#SampleType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.SampleType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.field_value_mixins.FieldTypeInterface</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONSaveMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A SampleType model</p>
 <dl class="method">
 <dt id="pydent.models.SampleType._check_for_session">
@@ -6579,12 +6789,6 @@ there is only ONE instance of inventory that is referred to by its rid.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydent.models.SampleType.field_type">
-<code class="descname">field_type</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#SampleType.field_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.SampleType.field_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the field_type by name</p>
-</dd></dl>
-
 <dl class="classmethod">
 <dt id="pydent.models.SampleType.find">
 <em class="property">classmethod </em><code class="descname">find</code><span class="sig-paren">(</span><em>session</em>, <em>model_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.find" title="Permalink to this definition">¶</a></dt>
@@ -6625,8 +6829,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.SampleType.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6639,6 +6844,22 @@ models in model relationships.</p>
 <dt id="pydent.models.SampleType.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.SampleType.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -6657,13 +6878,6 @@ models in model relationships.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.models.SampleType.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#SampleType.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.SampleType.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves the Sample Type to the Aquarium server. Requires
-this Sample Type to be connected to a session.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6689,7 +6903,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Upload">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Upload</code><span class="sig-paren">(</span><em>job_id=None</em>, <em>file=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Upload</code><span class="sig-paren">(</span><em>job_id=None</em>, <em>file=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/data_associations.html#Upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>An Upload model</p>
 <p>Create a new upload</p>
@@ -6713,7 +6927,7 @@ find models in model relationships.</p>
 
 <dl class="staticmethod">
 <dt id="pydent.models.Upload._download_file_from_url">
-<em class="property">static </em><code class="descname">_download_file_from_url</code><span class="sig-paren">(</span><em>url</em>, <em>outpath</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload._download_file_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload._download_file_from_url" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">_download_file_from_url</code><span class="sig-paren">(</span><em>url</em>, <em>outpath</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/data_associations.html#Upload._download_file_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload._download_file_from_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads a file from a url</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -6737,7 +6951,7 @@ find models in model relationships.</p>
 
 <dl class="staticmethod">
 <dt id="pydent.models.Upload._download_files">
-<em class="property">static </em><code class="descname">_download_files</code><span class="sig-paren">(</span><em>uploads</em>, <em>outdir</em>, <em>overwrite</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload._download_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload._download_files" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">_download_files</code><span class="sig-paren">(</span><em>uploads</em>, <em>outdir</em>, <em>overwrite</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/data_associations.html#Upload._download_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload._download_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads uploaded file from list of <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a> models.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -6837,7 +7051,7 @@ find models in model relationships.</p>
 
 <dl class="staticmethod">
 <dt id="pydent.models.Upload.async_download">
-<em class="property">static </em><code class="descname">async_download</code><span class="sig-paren">(</span><em>uploads</em>, <em>outdir=None</em>, <em>overwrite=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload.async_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload.async_download" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">async_download</code><span class="sig-paren">(</span><em>uploads</em>, <em>outdir=None</em>, <em>overwrite=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/data_associations.html#Upload.async_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload.async_download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asynchronously downloads from list of <a class="reference internal" href="#pydent.models.Upload" title="pydent.models.Upload"><code class="xref py py-class docutils literal notranslate"><span class="pre">Upload</span></code></a> models.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -6893,9 +7107,23 @@ there is only ONE instance of inventory that is referred to by its rid.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Upload.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/data_associations.html#Upload.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the upload to the server.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.models.Upload.data">
+<code class="descname">data</code><a class="headerlink" href="#pydent.models.Upload.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the data associated with the upload.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Upload.download">
-<code class="descname">download</code><span class="sig-paren">(</span><em>outdir=None</em>, <em>filename=None</em>, <em>overwrite=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Upload.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload.download" title="Permalink to this definition">¶</a></dt>
-<dd><p>Downloads the uploaded file</p>
+<code class="descname">download</code><span class="sig-paren">(</span><em>outdir=None</em>, <em>filename=None</em>, <em>overwrite=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/data_associations.html#Upload.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Upload.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads the uploaded file to the specified output directory. If
+no output directory is specified, the file will be downloaded to the
+current directory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -6979,8 +7207,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Upload.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6993,6 +7222,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Upload.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Upload.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -7036,7 +7281,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.User">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">User</code><a class="reference internal" href="../../_modules/pydent/models.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.User" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">User</code><a class="reference internal" href="../../_modules/pydent/models/user.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.User" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A User model</p>
 <dl class="method">
@@ -7217,8 +7462,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.User.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7231,6 +7477,22 @@ models in model relationships.</p>
 <dt id="pydent.models.User.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.User.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -7274,7 +7536,7 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.UserBudgetAssociation">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">UserBudgetAssociation</code><a class="reference internal" href="../../_modules/pydent/models.html#UserBudgetAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.UserBudgetAssociation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">UserBudgetAssociation</code><a class="reference internal" href="../../_modules/pydent/models/user.html#UserBudgetAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.UserBudgetAssociation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>An association model between a User and a Budget</p>
 <dl class="method">
@@ -7455,8 +7717,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.UserBudgetAssociation.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7469,6 +7732,22 @@ models in model relationships.</p>
 <dt id="pydent.models.UserBudgetAssociation.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.UserBudgetAssociation.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -7512,8 +7791,8 @@ find models in model relationships.</p>
 
 <dl class="class">
 <dt id="pydent.models.Wire">
-<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Wire</code><span class="sig-paren">(</span><em>source=None</em>, <em>destination=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Wire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Wire" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="descclassname">pydent.models.</code><code class="descname">Wire</code><span class="sig-paren">(</span><em>source=None</em>, <em>destination=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Wire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.DeleteMixin</span></code>, <a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Wire model</p>
 <dl class="method">
 <dt id="pydent.models.Wire._check_for_session">
@@ -7629,6 +7908,21 @@ there is only ONE instance of inventory that is referred to by its rid.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Wire.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Wire.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Wire.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permanently deletes the wire instance on the Aquarium server.
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Wire.does_wire">
+<code class="descname">does_wire</code><span class="sig-paren">(</span><em>source</em>, <em>destination</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Wire.does_wire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Wire.does_wire" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether this Wire is a wire between the source and destination FieldValues.</p>
+<p>If any of the source or destination FieldValues are None, returns False.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Wire.dump">
 <code class="descname">dump</code><span class="sig-paren">(</span><em>only=None</em>, <em>include=None</em>, <em>ignore=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.dump" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump/serializes the model to a json-like dictionary.</p>
@@ -7693,8 +7987,9 @@ models in model relationships.</p>
 
 <dl class="classmethod">
 <dt id="pydent.models.Wire.load_from">
-<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>obj=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.load_from" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new model instance from loaded attributes</p>
+<em class="property">classmethod </em><code class="descname">load_from</code><span class="sig-paren">(</span><em>data</em>, <em>owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7707,6 +8002,22 @@ models in model relationships.</p>
 <dt id="pydent.models.Wire.no_getter">
 <code class="descname">no_getter</code><span class="sig-paren">(</span><em>*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.no_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Wire.refresh">
+<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -7735,7 +8046,7 @@ models in model relationships.</p>
 
 <dl class="method">
 <dt id="pydent.models.Wire.show">
-<code class="descname">show</code><span class="sig-paren">(</span><em>pre=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models.html#Wire.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Wire.show" title="Permalink to this definition">¶</a></dt>
+<code class="descname">show</code><span class="sig-paren">(</span><em>pre=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/models/plan.html#Wire.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Wire.show" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show the wire nicely</p>
 </dd></dl>
 
@@ -7789,7 +8100,7 @@ find models in model relationships.</p>
         <li class="right" >
           <a href="pydent.interfaces.html" title="pydent.interfaces"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

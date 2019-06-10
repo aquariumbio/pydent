@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.aqhttp &#8212; Trident 1.0.0a2 documentation</title>
+    <title>pydent.aqhttp &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -133,7 +133,8 @@
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="kn">from</span> <span class="nn">pydent.exceptions</span> <span class="k">import</span> <span class="p">(</span><span class="n">TridentRequestError</span><span class="p">,</span> <span class="n">TridentLoginError</span><span class="p">,</span>
-                               <span class="n">TridentTimeoutError</span><span class="p">,</span> <span class="n">TridentJSONDataIncomplete</span><span class="p">)</span>
+                               <span class="n">TridentTimeoutError</span><span class="p">,</span> <span class="n">TridentJSONDataIncomplete</span><span class="p">,</span>
+                               <span class="n">ForbiddenRequestError</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">url_build</span><span class="p">,</span> <span class="n">logger</span>
 
 
@@ -166,6 +167,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">TIMEOUT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_login</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init_logger</span><span class="p">(</span><span class="s2">&quot;AqHTTP@</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aquarium_url</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_using_requests</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_requests</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">on</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_using_requests</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">off</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_using_requests</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">_format_response_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">include_text</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_body</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -182,14 +191,14 @@
                     <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pprint_data</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">max_list_len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="k">pass</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;BODY: </span><span class="si">{body}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;BODY: </span><span class="si">{body}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">include_text</span><span class="p">:</span>
                 <span class="n">text</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="k">pass</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;TEXT: </span><span class="si">{text}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;TEXT: </span><span class="si">{text}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">msg</span>
         <span class="k">return</span> <span class="s2">&quot;RESPONSE: NO RESPONSE&quot;</span>
 
@@ -218,7 +227,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url_build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="s2">&quot;sessions.json&quot;</span><span class="p">),</span>
                                 <span class="n">json</span><span class="o">=</span><span class="n">session_data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
-
+            <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span>
             <span class="n">cookies</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">cookies</span><span class="p">)</span>
 
             <span class="c1"># Check for remember token</span>
@@ -243,7 +253,11 @@
                 <span class="s2">&quot;Either Aquarium took too long to respond during login or your internet&quot;</span>
                 <span class="s2">&quot; connection is slow. Make sure the url </span><span class="si">{}</span><span class="s2"> is correct.&quot;</span>
                 <span class="s2">&quot; Alternatively, use Session.set_timeout&quot;</span>
-                <span class="s2">&quot; to increase the request timeout.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">))</span></div>
+                <span class="s2">&quot; to increase the request timeout.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TridentLoginError</span><span class="p">(</span>
+                <span class="s2">&quot;Could not contact &#39;</span><span class="si">{}</span><span class="s2">&#39;. Login request returned no response&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">)</span>
+            <span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
@@ -272,17 +286,22 @@
 <span class="sd">        :return: json</span>
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">url_build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_using_requests</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ForbiddenRequestError</span><span class="p">(</span><span class="s2">&quot;Attempted a request (</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">) when requests have been turned OFF.</span><span class="se">\n</span><span class="s2">DATA: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">url</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span>
+            <span class="p">))</span>
+
         <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_none</span> <span class="ow">and</span> <span class="s1">&#39;json&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_disallow_null_in_json</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">])</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_requests</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
                 <span class="n">method</span><span class="p">,</span>
-                <span class="n">url_build</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="n">path</span><span class="p">),</span>
+                <span class="n">url</span><span class="p">,</span>
                 <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
                 <span class="n">cookies</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cookies</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -291,7 +310,9 @@
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">:</span>
             <span class="n">response_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_response_info</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
             <span class="n">request_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_request_status</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;The Aquarium server returned an error.&#39;</span><span class="p">,</span> <span class="n">request_status</span><span class="p">,</span> <span class="n">response_info</span><span class="p">]),</span> <span class="n">response</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;The Aquarium server returned an error.&#39;</span><span class="p">,</span>
+                             <span class="n">request_status</span><span class="p">,</span> <span class="n">response_info</span><span class="p">])</span>
+            <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_to_json</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div>
 
@@ -313,12 +334,13 @@
             <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Message:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_format_response_info</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
             <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">response_json</span> <span class="ow">and</span> <span class="s1">&#39;errors&#39;</span> <span class="ow">in</span> <span class="n">response_json</span><span class="p">:</span>
-            <span class="n">errors</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="n">errors</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error response:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response_json</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;errors&#39;</span> <span class="ow">in</span> <span class="n">response_json</span><span class="p">:</span>
+                <span class="n">errors</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">errors</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error response:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response_json</span></div>
 
 <div class="viewcode-block" id="AqHTTP._disallow_null_in_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._disallow_null_in_json">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -399,7 +421,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2">(user=&#39;</span><span class="si">{}</span><span class="s2">&#39;, url=&#39;</span><span class="si">{}</span><span class="s2">&#39;)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                                      <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -420,7 +442,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
