@@ -1,0 +1,16 @@
+{% extends "!layout.html" %}
+{% block header %}
+    {% if pagename == 'index' %}
+        <div class="container">
+          <div class="jumbotron">
+            <h1>Trident</h1>
+              <p><a href="{{ aquarium_page }}">Aquarium's</a> Python API for
+                  planning, executing, and analyzing scientific experiments.
+              </p>
+              <hr class="my-4">
+              <a class="btn btn-primary btn-lg" href="#" role="button">See some examples</a>
+          </div>
+        </div>
+        {{ super() }}
+    {% endif %}
+{% endblock %}
