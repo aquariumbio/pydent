@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.marshaller.fields &#8212; Trident 1.0.0a1 documentation</title>
+    <title>pydent.marshaller.fields &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.marshaller.exceptions.html" title="pydent.marshaller.exceptions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pydent.marshaller.html" accesskey="U">pydent.marshaller</a> &#187;</li> 
       </ul>
@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -80,8 +80,8 @@
     
       <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../browsing.html">Model browsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
@@ -188,7 +188,7 @@ a different attribute key.</p>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -208,13 +208,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -292,7 +292,7 @@ nested should return this field’s descriptor.
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Callback.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.fullfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.fullfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -312,13 +312,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Callback.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.get_callback_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.get_callback_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Callback.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.get_callback_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.get_callback_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -530,7 +530,7 @@ nested should return this field’s descriptor.</p>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Relationship.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -550,13 +550,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Relationship.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Relationship.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -622,7 +622,7 @@ descriptor (i.e. accessor)</p>
         <li class="right" >
           <a href="pydent.marshaller.exceptions.html" title="pydent.marshaller.exceptions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pydent.marshaller.html" >pydent.marshaller</a> &#187;</li> 
       </ul>

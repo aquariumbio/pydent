@@ -4,14 +4,15 @@ Planner
 
 import random
 import webbrowser
-from collections import defaultdict
+from collections import defaultdict, Sequence
 from functools import wraps
 from uuid import uuid4
 
 import networkx as nx
 
+from pydent.aqsession import AqSession
 from pydent.browser import Browser
-from pydent.models import FieldValue, Operation
+from pydent.models import FieldValue, Operation, Plan
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
 from pydent.utils import make_async, logger, empty_copy
@@ -53,7 +54,80 @@ def plan_verification_wrapper(fxn):
     return wrapper
 
 
-class Planner(logger.Loggable, object):
+class AFTMatcher(object):
+
+    @staticmethod
+    def _resolve_to_field_types(model, role=None):
+        if isinstance(model, FieldValue):
+            if model.role == role:
+                return [model.field_type]
+            else:
+                msg = "Planner attempted to find matching" \
+                      " allowable_field_types for" \
+                      " an input FieldValue but found an output FieldValue"
+                raise PlannerException(msg)
+        elif isinstance(model, Operation):
+            return [ft for ft in model.get_field_types() if ft.role == role]
+        else:
+            raise PlannerException(
+                "Cannot resolve inputs, type must be a FieldValue or Operation, not a \"{}\"".format(type(model)))
+
+
+    @classmethod
+    def _collect_matching_afts(cls, source, destination):
+        """
+
+        :param source: a field value or operation source
+        :type source: FieldValue|Operation
+        :param destination: a field value or operation destination
+        :type destination: FieldValue|Operation
+        :return: tuple of matching allowable_field_type (aft) pairs, matching field_value inputs and matching field_value outputs
+        :rtype: tuple
+        """
+        """Find matching AllowableFieldTypes"""
+        dest_fts = cls._resolve_to_field_types(destination, role='input')
+        src_fts = cls._resolve_to_field_types(source, role='output')
+
+        matching_afts = []
+        matching_inputs = []
+        matching_outputs = []
+        for src in src_fts:
+            for dest in dest_fts:
+                io_matching_afts = cls._find_matching_afts(src, dest)
+                if len(io_matching_afts) > 0:
+                    if dest not in matching_inputs:
+                        matching_inputs.append(dest)
+                    if src not in matching_outputs:
+                        matching_outputs.append(src)
+                matching_afts += io_matching_afts
+        return matching_afts, matching_inputs, matching_outputs
+
+    @staticmethod
+    def _find_matching_afts(src_ft, dest_ft):
+        """Finds matching afts between two FieldTypes"""
+        afts = []
+        src_afts = src_ft.allowable_field_types
+        dest_afts = dest_ft.allowable_field_types
+
+        # check whether the field_type handles collections
+        input_handles_collections = dest_ft.part is True
+        output_handles_collections = dest_ft.part is True
+        if input_handles_collections != output_handles_collections:
+            return []
+
+        for dest_aft in dest_afts:
+            for src_aft in src_afts:
+                out_object_type_id = src_aft.object_type_id
+                in_object_type_id = dest_aft.object_type_id
+                out_sample_type_id = src_aft.sample_type_id
+                in_sample_type_id = dest_aft.sample_type_id
+                if (out_object_type_id == in_object_type_id
+                        and out_sample_type_id == in_sample_type_id):
+                    afts.append((src_aft, dest_aft))
+        return afts
+
+
+class Planner(logger.Loggable, AFTMatcher, object):
     """A user-interface for making experimental plans and layouts."""
 
     class ITEM_SELECTION_PREFERENCE:
@@ -74,29 +148,49 @@ class Planner(logger.Loggable, object):
         _DEFAULT = LAST
         _CHOICES = [FIRST, LAST, RANDOM]
 
-    def __init__(self, session, plan_id=None):
-        self.session = session
-        self._browser = Browser(session)
-
-        if plan_id is not None:
-            plan = self._browser.find(plan_id, 'Plan')
-            if plan is None:
-                raise PlannerException(
-                    "Could not find plan with id={}".format(plan_id))
+    def __init__(self, session_or_plan=None, plan_id=None):
+        if issubclass(type(session_or_plan), AqSession):
+            # initialize with session
+            self.session = session_or_plan
+            self._browser = Browser(self.session)
+            if plan_id is not None:
+                # load an existing plan
+                plan = self._browser.find(plan_id, 'Plan')
+                if plan is None:
+                    raise PlannerException(
+                        "Could not find plan with id={}".format(plan_id))
+                self.plan = plan
+            else:
+                # create a new plan
+                self.plan = self.session.Plan.new()
+        elif issubclass(type(session_or_plan), Plan):
+            # initialize with Plan
+            plan = session_or_plan
+            self.session = plan.session
+            self._browser = Browser(self.session)
             self.plan = plan
-        else:
-            self.plan = session.Plan.new()
         self.init_logger("Planner@plan_rid={}".format(self.plan.rid))
 
     @classmethod
-    def from_plans(cls, session, plans):
+    def _check_plans_for_single_session(cls, models):
+        session_ids = set([id(m.session) for m in models])
+        if len(session_ids) > 1:
+            raise PlannerException("Plans have different session ids")
+        if models:
+            return models[0].session
+
+
+    @classmethod
+    def from_plans(cls, plans):
+        session = cls._check_plans_for_single_session(plans)
         browser = Browser(session)
         cls.cache_plans(browser, plans)
+        planners = []
         for plan in plans:
-            planner = cls.__new__()
+            planner = cls.__new__(plan)
             planner._browser = browser
-            planner.session = session
-            planner.plan = plan
+            planners.append(planner)
+        return planners
 
     @staticmethod
     def _cache_query():
@@ -187,6 +281,12 @@ class Planner(logger.Loggable, object):
 
     # TODO: fix this 'set_timeout' to not be global
     def save(self):
+        if not self.plan.id:
+            self.create()
+        else:
+            self.update()
+
+    def update(self):
         """Save the plan on Aquarium"""
         prev_timeout = self.session._AqSession__aqhttp.timeout
         self.session.set_timeout(60)
@@ -201,7 +301,7 @@ class Planner(logger.Loggable, object):
         self._info("{} created".format(ot.name))
         return op
 
-    def create_operation_by_id(self, ot_id):
+    def create_operation_by_type_id(self, ot_id):
         # ot = self.browser.find('OperationType', ot_id)
         ot = self.session.OperationType.find(ot_id)
         return self.create_operation_by_type(ot)
@@ -221,7 +321,7 @@ class Planner(logger.Loggable, object):
         return self.create_operation_by_type(ots[0])
 
     @staticmethod
-    def models_are_equal(model1, model2):
+    def _model_are_equal(model1, model2):
         if model1.id is None and model2.id is None:
             if model1._primary_key == model2._primary_key:
                 return True
@@ -237,8 +337,8 @@ class Planner(logger.Loggable, object):
     @plan_verification_wrapper
     def get_wire(self, fv1, fv2):
         for wire in self.plan.wires:
-            if (self.models_are_equal(wire.source, fv1)
-                    and self.models_are_equal(wire.destination, fv2)):
+            if (self._model_are_equal(wire.source, fv1)
+                    and self._model_are_equal(wire.destination, fv2)):
                 self._info("found wire from {} to {}".format(fv1.name, fv2.name))
                 return wire
 
@@ -271,7 +371,7 @@ class Planner(logger.Loggable, object):
     def get_outgoing_wires(self, fv):
         wires = []
         for wire in self.plan.wires:
-            if self.models_are_equal(wire.source, fv):
+            if self._model_are_equal(wire.source, fv):
                 wires.append(wire)
         return wires
 
@@ -279,7 +379,7 @@ class Planner(logger.Loggable, object):
     def get_incoming_wires(self, fv):
         wires = []
         for wire in self.plan.wires:
-            if self.models_are_equal(wire.destination, fv):
+            if self._model_are_equal(wire.destination, fv):
                 wires.append(wire)
         return wires
 
@@ -306,98 +406,6 @@ class Planner(logger.Loggable, object):
         for input in op.inputs:
             ops += [fv.operation for fv in self.get_fv_predecessors(input)]
         return ops
-
-    @classmethod
-    def _resolve_source_to_outputs(cls, source):
-        """
-        Resolves a FieldValue or Operation to its sample output FieldValues
-        """
-        if isinstance(source, FieldValue):
-            if source.role == "output":
-                outputs = [source]
-            else:
-                msg = "Planner attempted to find matching" \
-                      " allowable_field_types for an output FieldValue but" \
-                      " found an input FieldValue"
-                raise PlannerException(msg)
-        elif isinstance(source, Operation):
-            outputs = [
-                fv for fv in source.outputs if fv.field_type.ftype == 'sample']
-        return outputs
-
-    @classmethod
-    def _resolve_destination_to_inputs(cls, destination):
-        """
-        Resolves a FieldValue or Operation to its sample input FieldValues
-        """
-        if isinstance(destination, FieldValue):
-            if destination.role == "input":
-                return [destination]
-            else:
-                msg = "Planner attempted to find matching" \
-                      " allowable_field_types for" \
-                      " an input FieldValue but found an output FieldValue"
-                raise PlannerException(msg)
-        elif isinstance(destination, Operation):
-            inputs = [fv for fv in destination.inputs
-                      if fv.field_type.ftype == 'sample']
-            return inputs
-        else:
-            raise PlannerException(
-                "Cannot resolve inputs, type must be a FieldValue or Operation, not a \"{}\"".format(type(destination)))
-
-    @classmethod
-    def _collect_matching_afts(cls, source, destination):
-        """
-
-        :param source: a field value or operation source
-        :type source: FieldValue|Operation
-        :param destination: a field value or operation destination
-        :type destination: FieldValue|Operation
-        :return: tuple of matching allowable_field_type (aft) pairs, matching field_value inputs and matching field_value outputs
-        :rtype: tuple
-        """
-        """Find matching AllowableFieldTypes"""
-        inputs = cls._resolve_destination_to_inputs(destination)
-        outputs = cls._resolve_source_to_outputs(source)
-
-        matching_afts = []
-        matching_inputs = []
-        matching_outputs = []
-        for output in outputs:
-            for input in inputs:
-                io_matching_afts = cls._find_matching_afts(output, input)
-                if len(io_matching_afts) > 0:
-                    if input not in matching_inputs:
-                        matching_inputs.append(input)
-                    if output not in matching_outputs:
-                        matching_outputs.append(output)
-                matching_afts += io_matching_afts
-        return matching_afts, matching_inputs, matching_outputs
-
-    @staticmethod
-    def _find_matching_afts(output, input):
-        """Finds matching afts between two FieldValues"""
-        afts = []
-        output_afts = output.field_type.allowable_field_types
-        input_afts = input.field_type.allowable_field_types
-
-        # check whether the field_type handles collections
-        input_handles_collections = input.field_type.part is True
-        output_handles_collections = input.field_type.part is True
-        if input_handles_collections != output_handles_collections:
-            return []
-
-        for input_aft in input_afts:
-            for output_aft in output_afts:
-                out_object_type_id = output_aft.object_type_id
-                in_object_type_id = input_aft.object_type_id
-                out_sample_type_id = output_aft.sample_type_id
-                in_sample_type_id = input_aft.sample_type_id
-                if (out_object_type_id == in_object_type_id
-                        and out_sample_type_id == in_sample_type_id):
-                    afts.append((output_aft, input_aft))
-        return afts
 
     def quick_create_operation_by_name(self, otname):
         try:
@@ -463,13 +471,6 @@ class Planner(logger.Loggable, object):
         """
         self._info("QUICK CREATE CHAIN {}".format(op_or_otnames))
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
-        # self.browser.recursive_retrieve(
-        #     ops, {
-        #         'operation_type': {
-        #             "field_types": "allowable_field_types"
-        #         }
-        #     }
-        # )
         if any([op for op in ops if op is None]):
             raise Exception("Could not find some operations: {}".format(ops))
         pairs = arr_to_pairs(ops)
@@ -494,7 +495,7 @@ class Planner(logger.Loggable, object):
             for fv in existing_fvs:
                 if fv.sample is None and not self.get_incoming_wires(fv):
                     return fv
-            fv = op.add_to_field_value_array(field_type.name, "input")
+            fv = op.new_field_value(field_type.name, "input")
             return fv
 
     # TODO: way to select preference for afts in quick_wire?
@@ -520,10 +521,10 @@ class Planner(logger.Loggable, object):
             raise PlannerException(
                 "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}\n"
                 "Instead, try to use `add_wire` method to wire together two FieldValues.".format(
-                    ', '.join([fv.name for fv in model_inputs]),
-                    model_inputs[0].operation.operation_type.name,
-                    ', '.join([fv.name for fv in model_outputs]),
-                    model_outputs[0].operation.operation_type.name))
+                    ', '.join([ft.name for ft in model_inputs]),
+                    model_inputs[0].operation_type.name,
+                    ', '.join([ft.name for ft in model_outputs]),
+                    model_outputs[0].operation_type.name))
         elif len(afts) > 0:
             for aft1, aft2 in afts:
 
@@ -536,15 +537,14 @@ class Planner(logger.Loggable, object):
                 else:
                     input_fv = destination.input(input_ft.name)
                 output_fv = source.output(output_ft.name)
+
                 return self.add_wire(output_fv, input_fv)
 
         elif len(afts) == 0:
             raise PlannerException(
-                "Cannot quick wire. No possible wiring found between inputs [{}] for {} and outputs [{}] for {}".format(
-                    ', '.join([fv.name for fv in model_inputs]),
-                    model_inputs[0].operation.operation_type.name,
-                    ', '.join([fv.name for fv in model_outputs]),
-                    model_outputs[0].operation.operation_type.name))
+                "Cannot quick wire. No possible wiring found between inputs {} and {}".format(
+                    source, destination
+                ))
 
     def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""
@@ -670,13 +670,13 @@ class Planner(logger.Loggable, object):
         if fv.field_type.array and fv.role == "input":
             other_fvs = fv.operation.input_array(fv.name)
             for pos, other_fv in enumerate(other_fvs):
-                if cls.models_are_equal(other_fv, fv):
+                if cls._model_are_equal(other_fv, fv):
                     routing_id += str(pos)
                     return routing_id
         return routing_id
 
     @staticmethod
-    def get_routing_dict(op):
+    def get_sample_routing_of_operation(op):
         routing_dict = {}
         for fv in op.field_values:
             routing = fv.field_type.routing
@@ -713,7 +713,7 @@ class Planner(logger.Loggable, object):
             sample=sample, item=item, container=container, value=value, row=None, column=None)
         if not field_value.field_type.array:
             routing = field_value.field_type.routing
-            fvs = self.get_routing_dict(field_value.operation)[routing]
+            fvs = self.get_sample_routing_of_operation(field_value.operation)[routing]
             if field_value.field_type.ftype == 'sample':
                 for fv in fvs:
                     fv.set_value(sample=sample)
@@ -926,7 +926,7 @@ class Planner(logger.Loggable, object):
         return item
 
     @plan_verification_wrapper
-    def set_inputs_with_sample(self, operation, sample, routing=None, setter=None):
+    def set_inputs_using_sample_properties(self, operation, sample, routing=None, setter=None):
         """Map the sample field values to the operation inputs. Optionally, a routing dictionary may
         be passed to indicate the mapping between the sample field values and operation inputs.
 
@@ -975,7 +975,7 @@ class Planner(logger.Loggable, object):
             setter = self.set_field_value
         setter(fv, sample=sample)
         op = fv.operation
-        self.set_inputs_with_sample(op, sample, routing=routing, setter=setter)
+        self.set_inputs_using_sample_properties(op, sample, routing=routing, setter=setter)
 
     @staticmethod
     def _json_update(model, **params):
@@ -983,7 +983,7 @@ class Planner(logger.Loggable, object):
         aqhttp = model.session._AqSession__aqhttp
         data = {"model": {"model": model.__class__.__name__}}
         data.update(model.dump(**params))
-        model_data = aqhttp.post('json/save', json_data=data)
+        model_data = aqhttp.create('json/save', json_data=data)
         model.reload(model_data)
         return model
 
@@ -1074,6 +1074,10 @@ class Planner(logger.Loggable, object):
 
     @property
     def layout(self):
+        return PlannerLayout.from_plan(self.plan)
+
+    @property
+    def graph(self):
         return PlannerLayout.from_plan(self.plan)
 
     @staticmethod
@@ -1296,6 +1300,12 @@ class Planner(logger.Loggable, object):
 
     @staticmethod
     def combine(plans):
+        """
+        Merges a list of plans into a single plan by combining operations and wires.
+
+        :param plans: list of Aquarium Plans instances
+        :return: new Plan
+        """
         copied_plans = [deepcopy(c) for c in plans]
 
         sessions = set([p.session for p in plans])
@@ -1337,8 +1347,8 @@ class Planner(logger.Loggable, object):
 
             # copy over relevant wires
             for wire in copied_plan.plan.wires:
-                to_id = wire.to.operation._primary_key
-                from_id = getattr(wire, 'from').operation._primary_key
+                to_id = wire.destination.operation._primary_key
+                from_id = getattr(wire, 'source').operation._primary_key
                 if to_id in opids or from_id in opids:
                     wires.append(wire)
 

@@ -9,7 +9,8 @@ from pydent.marshaller.fields import Field, Callback, Relationship
 from pydent.marshaller.registry import ModelRegistry
 
 
-class TestSpeec(object):
+@pytest.mark.benchmark
+class TestSpeed(object):
 
     def EmptyModel(self, base):
 
@@ -190,7 +191,7 @@ class TestSpeec(object):
         for i in range(100):
             self.complex(model, self.random_data())
 
-
+@pytest.mark.benchmark
 class TestBenchmarkRelationships(object):
 
     @pytest.fixture(scope="function")

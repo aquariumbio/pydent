@@ -78,13 +78,6 @@ class SchemaModel(metaclass=ModelRegistry):
         if data is not None:
             self.__class__.model_schema.init_data_accessors(self, data)
 
-    # def _set_data(self, data):
-    #     """Sets the model's data to exactly the data passed in."""
-    #
-    #     setattr(self, ModelRegistry._data_key, data)
-    #     setattr(self, ModelRegistry._deserialized_key, {})
-    #     self.add_data(data)
-
     def _get_data(self):
         """Return the model's data"""
         return getattr(self, self.__class__._data_key)

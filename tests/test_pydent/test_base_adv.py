@@ -1,11 +1,12 @@
 from pydent.marshaller import add_schema
 from pydent.relationships import HasMany
-from pydent import ModelBase, pprint
-from pydent.models import (AllowableFieldType, FieldType,
+from pydent import ModelBase
+from pydent.models import (AllowableFieldType,
                            ObjectType, OperationType, SampleType)
 
 
 def test_attribute_missing(fake_session):
+
     @add_schema
     class Author(ModelBase):
         fields = dict(books=HasMany("Book", ref="book_id", callback="foo"))
@@ -16,14 +17,23 @@ def test_attribute_missing(fake_session):
             )
 
         def foo(self, *args):
-            print(args)
+            return []
 
+    @add_schema
     class Book(ModelBase):
         pass
 
-    a = Author.load_from({}, fake_session.utils)
-    print(a.books)
-    print(a.dump())
+    a = Author.load_from({}, fake_session)
+    books1 = a.books
+    vid = id(books1)
+    books2 = a.books
+    vid2 = id(books2)
+
+    vid3 = id(a.__deserialized_data['books'])
+    vid4 = id(a.__serialized_data['books'])
+    books3 = a.books
+    assert id(books1) == id(books2), "books attribute ids must be identical"
+    assert id(books2) == id(books3)
 
 
 def test_nested_dump_relations():

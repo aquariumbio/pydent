@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.planner.planner &#8212; Trident 1.0.0a1 documentation</title>
+    <title>pydent.planner.planner &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="../pydent.planner.html" title="pydent.planner"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pydent.planner.html" accesskey="U">pydent.planner</a> &#187;</li> 
       </ul>
@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -80,8 +80,8 @@
     
       <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../browsing.html">Model browsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
@@ -151,7 +151,10 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.planner.planner.Planner" title="pydent.planner.planner.Planner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Planner</span></code></a>(session[,&nbsp;plan_id])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">AFTMatcher</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.planner.planner.Planner" title="pydent.planner.planner.Planner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Planner</span></code></a>([session_or_plan,&nbsp;plan_id])</td>
 <td>A user-interface for making experimental plans and layouts.</td>
 </tr>
 </tbody>
@@ -170,12 +173,12 @@
 </table>
 <dl class="class">
 <dt id="pydent.planner.planner.Planner">
-<em class="property">class </em><code class="descclassname">pydent.planner.planner.</code><code class="descname">Planner</code><span class="sig-paren">(</span><em>session</em>, <em>plan_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.utils.logger.Loggable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">pydent.planner.planner.</code><code class="descname">Planner</code><span class="sig-paren">(</span><em>session_or_plan=None</em>, <em>plan_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.utils.logger.Loggable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.planner.planner.AFTMatcher</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A user-interface for making experimental plans and layouts.</p>
 <dl class="classmethod">
 <dt id="pydent.planner.planner.Planner._collect_matching_afts">
-<em class="property">classmethod </em><code class="descname">_collect_matching_afts</code><span class="sig-paren">(</span><em>source</em>, <em>destination</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner._collect_matching_afts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner._collect_matching_afts" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">_collect_matching_afts</code><span class="sig-paren">(</span><em>source</em>, <em>destination</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.planner.Planner._collect_matching_afts" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -198,8 +201,8 @@
 
 <dl class="staticmethod">
 <dt id="pydent.planner.planner.Planner._find_matching_afts">
-<em class="property">static </em><code class="descname">_find_matching_afts</code><span class="sig-paren">(</span><em>output</em>, <em>input</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner._find_matching_afts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner._find_matching_afts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds matching afts between two FieldValues</p>
+<em class="property">static </em><code class="descname">_find_matching_afts</code><span class="sig-paren">(</span><em>src_ft</em>, <em>dest_ft</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.planner.Planner._find_matching_afts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds matching afts between two FieldTypes</p>
 </dd></dl>
 
 <dl class="staticmethod">
@@ -212,18 +215,6 @@
 <dt id="pydent.planner.planner.Planner._op_to_hash">
 <em class="property">classmethod </em><code class="descname">_op_to_hash</code><span class="sig-paren">(</span><em>op</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner._op_to_hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner._op_to_hash" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turns a operation into a hash using the operation_type_id, item_id, and sample_id</p>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="pydent.planner.planner.Planner._resolve_destination_to_inputs">
-<em class="property">classmethod </em><code class="descname">_resolve_destination_to_inputs</code><span class="sig-paren">(</span><em>destination</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner._resolve_destination_to_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner._resolve_destination_to_inputs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resolves a FieldValue or Operation to its sample input FieldValues</p>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="pydent.planner.planner.Planner._resolve_source_to_outputs">
-<em class="property">classmethod </em><code class="descname">_resolve_source_to_outputs</code><span class="sig-paren">(</span><em>source</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner._resolve_source_to_outputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner._resolve_source_to_outputs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resolves a FieldValue or Operation to its sample output FieldValues</p>
 </dd></dl>
 
 <dl class="method">
@@ -301,6 +292,22 @@ Returns None if the FieldType is not an array. If there are no current
 <code class="descname">annotate_operations</code><span class="sig-paren">(</span><em>ops</em>, <em>markdown</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.annotate_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.annotate_operations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotates above the operations. Estimates the x-midpoint and y and makes a
 text annotation at that location.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pydent.planner.planner.Planner.combine">
+<em class="property">static </em><code class="descname">combine</code><span class="sig-paren">(</span><em>plans</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.combine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.combine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges a list of plans into a single plan by combining operations and wires.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plans</strong> – list of Aquarium Plans instances</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">new Plan</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -450,12 +457,6 @@ Sample inputs and outputs will be set along the wire if possible.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.planner.planner.Planner.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the plan on Aquarium</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.planner.planner.Planner.set_input_field_value_array">
 <code class="descname">set_input_field_value_array</code><span class="sig-paren">(</span><em>op</em>, <em>field_value_name</em>, <em>sample=None</em>, <em>item=None</em>, <em>container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.set_input_field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.set_input_field_value_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the first ‘empty’ (no incoming wires and no sample set) field value and set the field value.
@@ -484,8 +485,8 @@ If there are no empty field values in the array, create a new field value and se
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.planner.planner.Planner.set_inputs_with_sample">
-<code class="descname">set_inputs_with_sample</code><span class="sig-paren">(</span><em>operation</em>, <em>sample</em>, <em>routing=None</em>, <em>setter=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.set_inputs_with_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.set_inputs_with_sample" title="Permalink to this definition">¶</a></dt>
+<dt id="pydent.planner.planner.Planner.set_inputs_using_sample_properties">
+<code class="descname">set_inputs_using_sample_properties</code><span class="sig-paren">(</span><em>operation</em>, <em>sample</em>, <em>routing=None</em>, <em>setter=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.set_inputs_using_sample_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.set_inputs_using_sample_properties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map the sample field values to the operation inputs. Optionally, a routing dictionary may
 be passed to indicate the mapping between the sample field values and operation inputs.</p>
 <p>For example, the following would map the “Integrant” sample field value to the “Template”
@@ -574,6 +575,12 @@ field values will remain to avoid re-creating samples and items.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.planner.planner.Planner.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the plan on Aquarium</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.planner.planner.Planner.validate">
 <code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.validate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validates sample routes in the plan.</p>
@@ -647,7 +654,7 @@ as arguments exist in the plan.</p>
         <li class="right" >
           <a href="../pydent.planner.html" title="pydent.planner"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../pydent.planner.html" >pydent.planner</a> &#187;</li> 
       </ul>

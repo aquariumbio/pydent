@@ -42,7 +42,7 @@ def fake_session(monkeypatch, mock_login_post):
     Returns a fake session using a fake cookie
     """
     monkeypatch.setattr(requests, "post", mock_login_post)
-    aquarium_url = "http://52.52.525.52"
+    aquarium_url = "http://52.52.53455325.52"
     session = AqSession("username", "password", aquarium_url)
     return session
 
@@ -56,15 +56,15 @@ def fake_response():
             self.method = method
             self.body = {}
 
-    class FakeResponse(requests.Response):
-
-        def __init__(self, method, url, body, status_code):
-            self.status_code = status_code
-            self.request = FakeRequest(status_code=status_code, url=url, method=method)
-            self.body = body
-
-        def json(self):
-            return json.load(self.body)
+    # class FakeResponse(requests.Response):
+    #
+    #     def __init__(self, method, url, body, status_code):
+    #         self.status_code = status_code
+    #         self.request = FakeRequest(status_code=status_code, url=url, method=method)
+    #         self.body = body
+    #
+    #     def json(self):
+    #         return json.load(self.body)
 
     def make_response(method, url, body, status_code):
         response = requests.Response()

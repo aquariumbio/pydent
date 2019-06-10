@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.interfaces &#8212; Trident 1.0.0a1 documentation</title>
+    <title>pydent.interfaces &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -71,8 +71,8 @@
     
       <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../browsing.html">Model browsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../planning.html">Experiment Planning</a></li>
@@ -159,7 +159,7 @@
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">url_build</span>
 
 
-<div class="viewcode-block" id="SessionInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.SessionInterface">[docs]</a><span class="k">class</span> <span class="nc">SessionInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SessionInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.SessionInterface">[docs]</a><span class="k">class</span> <span class="nc">SessionInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic session interface.</span>
 
@@ -183,175 +183,182 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span></div>
 
 
-<div class="viewcode-block" id="UtilityInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface">[docs]</a><span class="k">class</span> <span class="nc">UtilityInterface</span><span class="p">(</span><span class="n">SessionInterface</span><span class="p">):</span>
+<div class="viewcode-block" id="CRUDInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.CRUDInterface">[docs]</a><span class="k">class</span> <span class="nc">CRUDInterface</span><span class="p">(</span><span class="n">SessionInterface</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Miscellaneous requests for creating, updating, etc.</span>
+<span class="sd">    Create, Update, Delete interface. Methods for communicating with</span>
+<span class="sd">    Aquarium&#39;s JSON controller.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;aqhttp&#39;</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">]</span>
 
+    <span class="c1"># def _validate_model_id(self, model):</span>
+    <span class="c1">#     if not hasattr(model, &#39;id&#39;) or model.id is None:</span>
+    <span class="c1">#         raise TridentRequestError(&quot;Model {} has no id.&quot;.format(model))</span>
+
+<div class="viewcode-block" id="CRUDInterface._model_controller"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.CRUDInterface._model_controller">[docs]</a>    <span class="k">def</span> <span class="nf">_model_controller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method for create, updating, and deleting models.</span>
+
+<span class="sd">        :param method: Request method name (one of &#39;put&#39;, &#39;post&#39;, &#39;delete&#39;</span>
+<span class="sd">        :type method: basestring</span>
+<span class="sd">        :param table: Table name of model (e.g. &#39;samples&#39; or &#39;data_associations&#39;)</span>
+<span class="sd">        :type table: basestring</span>
+<span class="sd">        :param model_id: Optional model_id (not required for &#39;post&#39;)</span>
+<span class="sd">        :type model_id: int</span>
+<span class="sd">        :param model_data: Model data to send to server controller</span>
+<span class="sd">        :type model_data: dict</span>
+<span class="sd">        :return: json formatted server response</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">model_id</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">.json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">model_id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="k">def</span> <span class="nf">model_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_controller</span><span class="p">(</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">model_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_controller</span><span class="p">(</span><span class="s2">&quot;put&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">model_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">model_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_controller</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CRUDInterface._json_controller"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.CRUDInterface._json_controller">[docs]</a>    <span class="k">def</span> <span class="nf">_json_controller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_data</span><span class="p">,</span> <span class="n">record_methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">record_getters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method for create, updating, and deleting models using Aquariums JSON controller.</span>
+
+<span class="sd">        :param method: Method name (e.g. &quot;save&quot;, &quot;delete&quot;)</span>
+<span class="sd">        :type method: basestring</span>
+<span class="sd">        :param model_name: Model name</span>
+<span class="sd">        :type model_name: basestring</span>
+<span class="sd">        :param model_data: Additional model and method data</span>
+<span class="sd">        :type model_data: dict</span>
+<span class="sd">        :param record_methods: Optional &#39;record_methods&#39; key</span>
+<span class="sd">        :type record_methods: dict</span>
+<span class="sd">        :param record_getters: Optional &#39;record_getters&#39; key</span>
+<span class="sd">        :type record_getters: dict</span>
+<span class="sd">        :return: json formatter response</span>
+<span class="sd">        :rtype: basestring</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">record_methods</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">record_methods</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">record_getters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">record_getters</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+                <span class="s2">&quot;record_methods&quot;</span><span class="p">:</span> <span class="n">record_methods</span><span class="p">,</span>
+                <span class="s2">&quot;record_getters&quot;</span><span class="p">:</span> <span class="n">record_getters</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">model_data</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">model_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">method</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;json/&#39;</span> <span class="o">+</span> <span class="n">method</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">post_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="n">url</span><span class="p">,</span>
+                <span class="n">json_data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">post_response</span>
+        <span class="k">except</span> <span class="n">TridentRequestError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="c1"># if err.strerror.status_code == 422:</span>
+            <span class="c1">#     return None</span>
+            <span class="k">raise</span> <span class="n">err</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;json&quot;</span> <span class="o">+</span> <span class="n">method</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="k">def</span> <span class="nf">json_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_data</span><span class="p">,</span> <span class="n">record_methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">record_getters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json_controller</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_data</span><span class="p">,</span> <span class="n">record_methods</span><span class="p">,</span> <span class="n">record_getters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">json_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_data</span><span class="p">,</span> <span class="n">record_methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">record_getters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json_controller</span><span class="p">(</span><span class="s2">&quot;save&quot;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_data</span><span class="p">,</span> <span class="n">record_methods</span><span class="p">,</span> <span class="n">record_getters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">json_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_data</span><span class="p">,</span> <span class="n">record_methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">record_getters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json_controller</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_data</span><span class="p">,</span> <span class="n">record_methods</span><span class="p">,</span> <span class="n">record_getters</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UtilityInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface">[docs]</a><span class="k">class</span> <span class="nc">UtilityInterface</span><span class="p">(</span><span class="n">CRUDInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Miscellaneous and specialized requests for creating, updating, etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;aqhttp&#39;</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">]</span>
+
+    <span class="c1">##############################</span>
+    <span class="c1"># Create</span>
+    <span class="c1">##############################</span>
+
     <span class="c1"># TODO: have ability to save new properties</span>
     <span class="k">def</span> <span class="nf">create_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samples</span><span class="p">):</span>
-        <span class="n">json</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;field_values&quot;</span><span class="p">})</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;browser/create_samples&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;samples&quot;</span><span class="p">:</span> <span class="n">json</span><span class="p">})</span>
+        <span class="n">json</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;field_values&quot;</span><span class="p">,))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">]</span>
+
+        <span class="n">updated_sample_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;browser/create_samples&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;samples&quot;</span><span class="p">:</span> <span class="n">json</span><span class="p">})</span>
+        <span class="n">updated_samples</span> <span class="o">=</span> <span class="n">updated_sample_data</span><span class="p">[</span><span class="s1">&#39;samples&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">updated_samples</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">updated_samples</span><span class="p">):</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">samples</span>
 
     <span class="k">def</span> <span class="nf">create_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;items/make/</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">i</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">object_type</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
 
-<div class="viewcode-block" id="UtilityInterface.create_sample_type"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.create_sample_type">[docs]</a>    <span class="k">def</span> <span class="nf">create_sample_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new sample type</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">st_data</span> <span class="o">=</span> <span class="n">sample_type</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">relations</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;field_types&#39;</span><span class="p">))</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;sample_types.json&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">st_data</span><span class="p">)</span>
-        <span class="n">sample_type</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sample_type</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.create_object_type"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.create_object_type">[docs]</a>    <span class="k">def</span> <span class="nf">create_object_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new object type</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ot_data</span> <span class="o">=</span> <span class="n">object_type</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;object_types.json&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">ot_data</span><span class="p">)</span>
-        <span class="n">object_type</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">object_type</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.create_operation_type"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.create_operation_type">[docs]</a>    <span class="k">def</span> <span class="nf">create_operation_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new operation type</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">op_data</span> <span class="o">=</span> <span class="n">operation_type</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span>
-            <span class="s1">&#39;field_types&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;allowable_field_types&#39;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;protocol&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;cost_model&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;documentation&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;precondition&#39;</span><span class="p">:</span> <span class="p">{}</span>
-        <span class="p">})</span>
-
-        <span class="c1"># Format &#39;sample_type&#39; and &#39;object_type&#39; keys for afts</span>
-        <span class="k">for</span> <span class="n">ft_d</span><span class="p">,</span> <span class="n">ft</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-                <span class="n">op_data</span><span class="p">[</span><span class="s1">&#39;field_types&#39;</span><span class="p">],</span> <span class="n">operation_type</span><span class="o">.</span><span class="n">field_types</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">aft_d</span><span class="p">,</span> <span class="n">aft</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-                    <span class="n">ft_d</span><span class="p">[</span><span class="s1">&#39;allowable_field_types&#39;</span><span class="p">],</span> <span class="n">ft</span><span class="o">.</span><span class="n">allowable_field_types</span><span class="p">):</span>
-                <span class="n">aft_d</span><span class="p">[</span><span class="s1">&#39;sample_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">aft</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
-                <span class="n">aft_d</span><span class="p">[</span><span class="s1">&#39;object_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">aft</span><span class="o">.</span><span class="n">object_type</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
-
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;operation_types.json&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">op_data</span><span class="p">)</span>
-        <span class="n">operation_type</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">operation_type</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.estimate_plan_cost"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.estimate_plan_cost">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_plan_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Estimates the plan cost</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;launcher/estimate&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
-        <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">cost</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;costs&#39;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">cost</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">operation</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
-                    <span class="n">operation</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
-                    <span class="n">total</span> <span class="o">+=</span> <span class="p">(</span><span class="n">cost</span><span class="p">[</span><span class="s1">&#39;labor&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">cost</span><span class="p">[</span><span class="s1">&#39;labor_rate&#39;</span><span class="p">]</span> <span class="o">+</span>
-                              <span class="n">cost</span><span class="p">[</span><span class="s1">&#39;materials&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">cost</span><span class="p">[</span><span class="s1">&#39;markup_rate&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">total</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.create_plan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.create_plan">[docs]</a>    <span class="k">def</span> <span class="nf">create_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Saves a plan</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pre_ops = plan.operations</span>
-        <span class="c1"># if pre_ops is None:</span>
-        <span class="c1">#     pre_ops = []</span>
-        <span class="n">plan_data</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">create_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">upload</span><span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">upload</span><span class="o">.</span><span class="n">file</span><span class="p">}</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="s2">&quot;plans.json?user_id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-            <span class="n">json_data</span><span class="o">=</span><span class="n">plan_data</span><span class="p">)</span>
-        <span class="n">plan</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="c1"># post_ops = plan.operations</span>
-        <span class="c1"># for i in range(len(pre_ops)):</span>
-        <span class="c1">#     vars(pre_ops[i]).update(vars(post_ops[i]))</span>
-        <span class="k">return</span> <span class="n">plan</span></div>
+            <span class="s2">&quot;krill/upload?job=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">upload</span><span class="o">.</span><span class="n">job_id</span><span class="p">),</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
+        <span class="n">upload</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">upload</span>
 
-    <span class="k">def</span> <span class="nf">save_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">):</span>
-        <span class="n">plan_data</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-            <span class="s2">&quot;plans/</span><span class="si">{}</span><span class="s2">.json?user_id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                                              <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-            <span class="n">json_data</span><span class="o">=</span><span class="n">plan_data</span>
-        <span class="p">)</span>
-        <span class="n">plan</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">plan</span>
+    <span class="k">def</span> <span class="nf">create_data_association</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_inst</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">upload_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">upload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload_id</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;parent_id&quot;</span><span class="p">:</span> <span class="n">model_inst</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+            <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">value</span><span class="p">}),</span>
+            <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="n">model_inst</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot;upload_id&quot;</span><span class="p">:</span> <span class="n">upload_id</span>
+        <span class="p">}</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_save</span><span class="p">(</span><span class="s2">&quot;DataAssociation&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">step_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan_id</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s1">&#39;operations/step?plan_id=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_id</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">data_association</span> <span class="o">=</span> <span class="n">model_inst</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">DataAssociation</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">data_association</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">da</span> <span class="ow">in</span> <span class="n">model_inst</span><span class="o">.</span><span class="n">data_associations</span><span class="p">]:</span>
+            <span class="n">model_inst</span><span class="o">.</span><span class="n">data_associations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_association</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">data_association</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">da</span> <span class="ow">in</span> <span class="n">model_inst</span><span class="o">.</span><span class="n">data_associations</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">da</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">data_association</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">da</span>
 
-    <span class="k">def</span> <span class="nf">delete_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;plans/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="c1">##############################</span>
+    <span class="c1"># Save/Update</span>
+    <span class="c1">##############################</span>
 
-    <span class="k">def</span> <span class="nf">delete_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wire</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;wires/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">delete_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;field_values/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_value</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-<div class="viewcode-block" id="UtilityInterface.replan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.replan">[docs]</a>    <span class="k">def</span> <span class="nf">replan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Copies a plan</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s1">&#39;plans/replan/</span><span class="si">{plan_id}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_id</span><span class="o">=</span><span class="n">plan_id</span><span class="p">))</span>
-        <span class="n">plan_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Plan</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">plan_copy</span></div>
-
-    <span class="k">def</span> <span class="nf">start_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">):</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s1">&#39;krill/start?job=</span><span class="si">{job_id}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">result</span>
-
-<div class="viewcode-block" id="UtilityInterface.batch_operations"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.batch_operations">[docs]</a>    <span class="k">def</span> <span class="nf">batch_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_ids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Batches operations from a list of operation_ids</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;operations/batch&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">operation_ids</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.unbatch_operations"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.unbatch_operations">[docs]</a>    <span class="k">def</span> <span class="nf">unbatch_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_ids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Unbatches operations from a list of operation_ids</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;operations/batch&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">operation_ids</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.set_operation_status"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.set_operation_status">[docs]</a>    <span class="k">def</span> <span class="nf">set_operation_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets an operation&#39;s status</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;operations/</span><span class="si">{oid}</span><span class="s1">/status/</span><span class="si">{status}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">oid</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span>
-            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.job_debug"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.job_debug">[docs]</a>    <span class="k">def</span> <span class="nf">job_debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Runs debug on a job with id=job_id</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;krill/debug/</span><span class="si">{jid}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jid</span><span class="o">=</span><span class="n">job_id</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.submit_plan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.submit_plan">[docs]</a>    <span class="k">def</span> <span class="nf">submit_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Submits a plan</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">user_query</span> <span class="o">=</span> <span class="s2">&quot;&amp;user_id=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">budget_query</span> <span class="o">=</span> <span class="s2">&quot;?budget_id=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">budget</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;plans/start/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span>
-                                 <span class="n">budget_query</span> <span class="o">+</span> <span class="n">user_query</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span></div>
-
-<div class="viewcode-block" id="UtilityInterface.update_code"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.update_code">[docs]</a>    <span class="k">def</span> <span class="nf">update_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+<div class="viewcode-block" id="UtilityInterface.update_code"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.update_code">[docs]</a>    <span class="k">def</span> <span class="nf">update_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates code for a operation_type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -372,7 +379,82 @@
             <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span>
                 <span class="s2">&quot;Unable to update code object </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code_data</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UtilityInterface.compatible_items"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.UtilityInterface.compatible_items">[docs]</a>    <span class="k">def</span> <span class="nf">compatible_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">object_type_id</span><span class="p">):</span>
+    <span class="c1">##############################</span>
+    <span class="c1"># Misc</span>
+    <span class="c1">##############################</span>
+
+<div class="viewcode-block" id="UtilityInterface.estimate_plan_cost"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.estimate_plan_cost">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_plan_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Estimates the plan cost</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;launcher/estimate&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cost</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;costs&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">cost</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">operation</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="n">operation</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
+                    <span class="n">total</span> <span class="o">+=</span> <span class="p">(</span><span class="n">cost</span><span class="p">[</span><span class="s1">&#39;labor&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">cost</span><span class="p">[</span><span class="s1">&#39;labor_rate&#39;</span><span class="p">]</span> <span class="o">+</span>
+                              <span class="n">cost</span><span class="p">[</span><span class="s1">&#39;materials&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">cost</span><span class="p">[</span><span class="s1">&#39;markup_rate&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">total</span></div>
+
+    <span class="k">def</span> <span class="nf">step_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;operations/step?plan_id=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_id</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="UtilityInterface.replan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.replan">[docs]</a>    <span class="k">def</span> <span class="nf">replan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copies a plan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;plans/replan/</span><span class="si">{plan_id}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_id</span><span class="o">=</span><span class="n">plan_id</span><span class="p">))</span>
+        <span class="n">plan_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Plan</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plan_copy</span></div>
+
+    <span class="k">def</span> <span class="nf">start_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;krill/start?job=</span><span class="si">{job_id}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+<div class="viewcode-block" id="UtilityInterface.batch_operations"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.batch_operations">[docs]</a>    <span class="k">def</span> <span class="nf">batch_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Batches operations from a list of operation_ids</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;operations/batch&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">operation_ids</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UtilityInterface.unbatch_operations"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.unbatch_operations">[docs]</a>    <span class="k">def</span> <span class="nf">unbatch_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unbatches operations from a list of operation_ids</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;operations/batch&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">operation_ids</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UtilityInterface.set_operation_status"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.set_operation_status">[docs]</a>    <span class="k">def</span> <span class="nf">set_operation_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets an operation&#39;s status</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;operations/</span><span class="si">{oid}</span><span class="s1">/status/</span><span class="si">{status}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UtilityInterface.job_debug"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.job_debug">[docs]</a>    <span class="k">def</span> <span class="nf">job_debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs debug on a job with id=job_id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;krill/debug/</span><span class="si">{jid}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jid</span><span class="o">=</span><span class="n">job_id</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="UtilityInterface.submit_plan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.submit_plan">[docs]</a>    <span class="k">def</span> <span class="nf">submit_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Submits a plan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_query</span> <span class="o">=</span> <span class="s2">&quot;&amp;user_id=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">budget_query</span> <span class="o">=</span> <span class="s2">&quot;?budget_id=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">budget</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;plans/start/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span>
+                                 <span class="n">budget_query</span> <span class="o">+</span> <span class="n">user_query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="UtilityInterface.compatible_items"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.compatible_items">[docs]</a>    <span class="k">def</span> <span class="nf">compatible_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">object_type_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find items compatible with the field value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -383,121 +465,142 @@
         <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">items</span></div>
-
-    <span class="c1"># TODO: fix delete association</span>
-    <span class="k">def</span> <span class="nf">delete_data_association</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">association</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;DataAssociation&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;record_methods&quot;</span><span class="p">:</span> <span class="p">{},</span>
-                <span class="s2">&quot;record_getters&quot;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">},</span>
-        <span class="p">}</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">association</span><span class="o">.</span><span class="n">dump</span><span class="p">())</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;json/delete&quot;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span>
-
-    <span class="k">def</span> <span class="nf">create_data_association</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_inst</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">upload_id</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">upload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">upload_id</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">id</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;DataAssociation&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;record_methods&quot;</span><span class="p">:</span> <span class="p">{},</span>
-                <span class="s2">&quot;record_getters&quot;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;parent_id&quot;</span><span class="p">:</span> <span class="n">model_inst</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-            <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">value</span><span class="p">}),</span>
-            <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="n">model_inst</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-            <span class="s2">&quot;upload_id&quot;</span><span class="p">:</span> <span class="n">upload_id</span>
-        <span class="p">}</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;json/save&quot;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">data_association</span> <span class="o">=</span> <span class="n">model_inst</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">DataAssociation</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
-            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
-        <span class="n">model_inst</span><span class="o">.</span><span class="n">data_associations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_association</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data_association</span>
-
-    <span class="k">def</span> <span class="nf">create_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">upload</span><span class="p">):</span>
-        <span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">upload</span><span class="o">.</span><span class="n">file</span>
-        <span class="p">}</span>
-
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="s2">&quot;krill/upload?job=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">upload</span><span class="o">.</span><span class="n">job_id</span><span class="p">),</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
-        <span class="n">upload</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">upload</span>
-
-    <span class="k">def</span> <span class="nf">__json_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;This update method is fairly dangerous. Be careful!&quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}}</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;json/save&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">items</span></div></div>
 
 
-<div class="viewcode-block" id="ModelInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface">[docs]</a><span class="k">class</span> <span class="nc">ModelInterface</span><span class="p">(</span><span class="n">SessionInterface</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Makes requests using AqHTTP that are model specific.</span>
-<span class="sd">    Establishes a connection between a session object and an Aquarium model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aqhttp&quot;</span><span class="p">,</span> <span class="s2">&quot;session&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;__dict__&quot;</span><span class="p">]</span>
-    <span class="n">MERGE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;methods&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+<div class="viewcode-block" id="QueryInterfaceABC"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterfaceABC">[docs]</a><span class="k">class</span> <span class="nc">QueryInterfaceABC</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interface that is used by models to find other models.&quot;&quot;&quot;</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">find_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Alias for self.model.__name__</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span></div>
 
-<div class="viewcode-block" id="ModelInterface._prepost_query_hook"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface._prepost_query_hook">[docs]</a>    <span class="k">def</span> <span class="nf">_prepost_query_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+
+<div class="viewcode-block" id="QueryInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface">[docs]</a><span class="k">class</span> <span class="nc">QueryInterface</span><span class="p">(</span><span class="n">SessionInterface</span><span class="p">,</span> <span class="n">QueryInterfaceABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes requests using AqHTTP that are model specific.</span>
+<span class="sd">    Establishes a connection between a session object and an Aquarium model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aqhttp&quot;</span><span class="p">,</span> <span class="s2">&quot;session&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;__dict__&quot;</span><span class="p">]</span>
+    <span class="n">MERGE</span> <span class="o">=</span> <span class="s2">&quot;query_hook&quot;</span>
+    <span class="n">DEFAULT_OFFSET</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">DEFAULT_REVERSE</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">DEFAULT_LIMIT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">assigned_session</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiates a new model interface. Uses aqhttp to make requests,</span>
+<span class="sd">        and deserializes response to models.</span>
+
+<span class="sd">        :param model_name: Model name (e.g. &#39;Sample&#39; or &#39;FieldValue&#39;)</span>
+<span class="sd">        :type model_name: basestring</span>
+<span class="sd">        :param aqhttp: the AqHTTP instance</span>
+<span class="sd">        :type aqhttp: AqHTTP</span>
+<span class="sd">        :param session:</span>
+<span class="sd">        :type session:</span>
+<span class="sd">        :param assigned_session:</span>
+<span class="sd">        :type assigned_session:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crud</span> <span class="o">=</span> <span class="n">CRUDInterface</span><span class="p">(</span><span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_do_load</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="QueryInterface._prepost_query_hook"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface._prepost_query_hook">[docs]</a>    <span class="k">def</span> <span class="nf">_prepost_query_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for modifying the query before posting&quot;&quot;&quot;</span>
+
         <span class="n">additional_query</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MERGE</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
-                <span class="n">additional_query</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-        <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_query</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MERGE</span><span class="p">):</span>
+            <span class="n">additional_query</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MERGE</span><span class="p">)</span>
+
+        <span class="c1"># update and merge</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">additional_query</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
+                <span class="n">query</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">query</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">query</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">query</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot update query </span><span class="si">{}</span><span class="s2"> with </span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">query</span></div>
 
-<div class="viewcode-block" id="ModelInterface._post_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface._post_json">[docs]</a>    <span class="k">def</span> <span class="nf">_post_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface._post_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface._post_json">[docs]</a>    <span class="k">def</span> <span class="nf">_post_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Posts a json request to session for this interface.</span>
 <span class="sd">        Attaches raw json and this session instance to the models it retrieves.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">}</span>
         <span class="n">data_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepost_query_hook</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
-        <span class="n">data_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">data_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="p">})</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">post_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-                <span class="s1">&#39;json&#39;</span><span class="p">,</span>
-                <span class="n">json_data</span><span class="o">=</span><span class="n">data_dict</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="n">post_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crud</span><span class="o">.</span><span class="n">json_post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">TridentRequestError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">err</span><span class="o">.</span><span class="n">strerror</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">422</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">err</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">422</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
-            <span class="k">raise</span> <span class="n">err</span>
 
-        <span class="k">if</span> <span class="n">post_response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">post_response</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">post_response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_load</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">post_response</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">post_response</span></div>
 
-<div class="viewcode-block" id="ModelInterface.load"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post_response</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.load"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post_response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loads model instance(s) from data.</span>
 <span class="sd">        Model instances will be of class defined by self.model.</span>
 <span class="sd">        If data is a list, will return a list of model instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_from</span><span class="p">(</span><span class="n">post_response</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_from</span><span class="p">(</span><span class="n">post_response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">models</span></div>
 
-<div class="viewcode-block" id="ModelInterface.get"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.get"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Makes a generic get request</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -509,64 +612,75 @@
             <span class="k">raise</span> <span class="n">err</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelInterface.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds model by id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">model_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;model_id in &#39;find&#39; cannot be None&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_json</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">model_id</span><span class="p">},</span> <span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_json</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">model_id</span><span class="p">,</span>
+            <span class="s2">&quot;include&quot;</span><span class="p">:</span> <span class="n">include</span><span class="p">,</span>
+            <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="n">opts</span><span class="p">})</span></div>
 
-<div class="viewcode-block" id="ModelInterface.find_by_name"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.find_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.find_by_name"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.find_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds model by name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;name in &#39;find_by_name&#39; cannot be None&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_json</span><span class="p">({</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;find_by_name&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">name</span><span class="p">]})</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_json</span><span class="p">({</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;find_by_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">name</span><span class="p">],</span>
+            <span class="s2">&quot;include&quot;</span><span class="p">:</span> <span class="n">include</span><span class="p">,</span>
+            <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="n">opts</span><span class="p">})</span></div>
 
-<div class="viewcode-block" id="ModelInterface.array_query"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.array_query">[docs]</a>    <span class="k">def</span> <span class="nf">array_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">rest</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.array_query"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.array_query">[docs]</a>    <span class="k">def</span> <span class="nf">array_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">rest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds models based on a query</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_OFFSET</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_LIMIT</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_REVERSE</span><span class="p">}</span>
         <span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;limit&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                  <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                  <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span>
+                 <span class="s2">&quot;include&quot;</span><span class="p">:</span> <span class="n">include</span><span class="p">,</span>
                  <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="n">options</span><span class="p">}</span>
-        <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rest</span><span class="p">:</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_json</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="ModelInterface.all"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.all"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds all models</span>
-
-<span class="sd">        :param rest:</span>
-<span class="sd">        :type rest:</span>
+<span class="sd">        :param include:</span>
+<span class="sd">        :type include:</span>
 <span class="sd">        :param opts: additional options (&quot;offset&quot;, &quot;limit&quot;, &quot;reverse&quot;, etc.)</span>
 <span class="sd">        :type opts: dict</span>
 <span class="sd">        :return:</span>
 <span class="sd">        :rtype:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">rest</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">rest</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">addopts</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;opts&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span>
         <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">addopts</span><span class="p">)</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_OFFSET</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_REVERSE</span><span class="p">}</span>
         <span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_query</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="n">rest</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_query</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">options</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelInterface.where"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.where"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs a query for models</span>
-
 <span class="sd">        :param criteria: query to find models</span>
 <span class="sd">        :type criteria: dict</span>
 <span class="sd">        :param methods: server side methods to implement</span>
@@ -576,21 +690,16 @@
 <span class="sd">        :return: list of models</span>
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">addopts</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;opts&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span>
-        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">addopts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">rest</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">methods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rest</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;methods&quot;</span><span class="p">:</span> <span class="n">methods</span><span class="p">}</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
-        <span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_query</span><span class="p">(</span><span class="s2">&quot;where&quot;</span><span class="p">,</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">rest</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_query</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;where&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">criteria</span><span class="p">,</span> <span class="n">rest</span><span class="o">=</span><span class="n">rest</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span></div>
 
     <span class="c1"># TODO: Refactor &#39;last&#39; so query is an argument, not part of kwargs</span>
-<div class="viewcode-block" id="ModelInterface.last"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.last">[docs]</a>    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.last"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.last">[docs]</a>    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the last added models</span>
-
 <span class="sd">        :param num: number of models to return. If not provided, assumes 1</span>
 <span class="sd">        :type num: int</span>
 <span class="sd">        :param query: additional query to find models</span>
@@ -604,14 +713,15 @@
             <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">num</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">num</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span></div>
-
+        <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span></div>
 
     <span class="c1"># TODO: Refactor &#39;first&#39; so query is an argument, not part of kwargs</span>
-<div class="viewcode-block" id="ModelInterface.first"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.first">[docs]</a>    <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.first"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.first">[docs]</a>    <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the first added models</span>
-
 <span class="sd">        :param num: number of models to return. If not provided, assumes 1</span>
 <span class="sd">        :type num: int</span>
 <span class="sd">        :param query: additional query to find models</span>
@@ -625,19 +735,28 @@
             <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">num</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">num</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span></div>
 
     <span class="c1"># TODO: Refactor &#39;one&#39; so query is an argument, not part of kwargs</span>
-<div class="viewcode-block" id="ModelInterface.one"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.one">[docs]</a>    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.one"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.one">[docs]</a>    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return one model. Returns the last model by default. Returns None if no model is found.</span>
-
 <span class="sd">        :param first: whether to return the first model (default: False</span>
 <span class="sd">        :type first: bool</span>
 <span class="sd">        :return: model</span>
 <span class="sd">        :rtype: ModelBase</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">first</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
     <span class="c1"># TODO: implement &#39;patch&#39; or &#39;update&#39;? Would this be too dangerous?</span>
     <span class="c1"># def patch(self, model_id, json_data):</span>
@@ -649,7 +768,7 @@
     <span class="c1">#         model_id=model_id, models=models_name), json_data=json_data)</span>
     <span class="c1">#     return result</span>
 
-<div class="viewcode-block" id="ModelInterface.new"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.interfaces.ModelInterface.new">[docs]</a>    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryInterface.new"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.new">[docs]</a>    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a new model instance. Attach a session by calling __new__ with session kwargs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -659,6 +778,63 @@
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BrowserInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.BrowserInterface">[docs]</a><span class="k">class</span> <span class="nc">BrowserInterface</span><span class="p">(</span><span class="n">SessionInterface</span><span class="p">,</span> <span class="n">QueryInterfaceABC</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aqhttp&quot;</span><span class="p">,</span> <span class="s2">&quot;session&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;__dict__&quot;</span><span class="p">]</span>
+    <span class="n">MERGE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;methods&quot;</span><span class="p">]</span>
+    <span class="n">DEFAULT_OFFSET</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">DEFAULT_REVERSE</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">DEFAULT_LIMIT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="c1"># TODO: browser should use standard session</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crud</span> <span class="o">=</span> <span class="n">CRUDInterface</span><span class="p">(</span><span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_do_load</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_preload_field_values</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span>
+
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">find_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bowser</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">criteria</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="n">methods</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">one</span><span class="p">(</span><span class="n">model_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">model_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">update_cache</span><span class="p">([</span><span class="n">instance</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">instance</span>
+
+    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">model_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">)</span>
+
+    <span class="c1"># TODO: load_from using new session</span>
+<div class="viewcode-block" id="BrowserInterface.load"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.BrowserInterface.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post_response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads model instance(s) from data.</span>
+<span class="sd">        Model instances will be of class defined by self.model.</span>
+<span class="sd">        If data is a list, will return a list of model instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_from</span><span class="p">(</span><span class="n">post_response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">models</span></div></div>
 </pre></div>
 
           </div>
@@ -675,7 +851,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

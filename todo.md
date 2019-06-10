@@ -1,5 +1,15 @@
 # TODO
 
+## Installation
+
+1. Document AqSession, Browser, AqSession.cache, Planner
+1. move code to 'src' for better installation practices
+1. try 'poetry' installation package (trident is a library, not an application; pipenv handles applications 
+well but not libraries)
+1. tox tests under different python and aquarium environments
+1. remove unused modules and dependencies
+
+## Other
 1. Quick create is too ambiguous
 1. Canvas should check fv and op before manipulating
 1. quick create should have options to specify field_value

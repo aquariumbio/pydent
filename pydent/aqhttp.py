@@ -15,7 +15,8 @@ import json
 import requests
 
 from pydent.exceptions import (TridentRequestError, TridentLoginError,
-                               TridentTimeoutError, TridentJSONDataIncomplete)
+                               TridentTimeoutError, TridentJSONDataIncomplete,
+                               ForbiddenRequestError)
 from pydent.utils import url_build, logger
 
 
@@ -48,6 +49,14 @@ class AqHTTP(logger.Loggable, object):
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
         self.init_logger("AqHTTP@{}".format(aquarium_url))
+        self._using_requests = True
+        self.num_requests = 0
+
+    def on(self):
+        self._using_requests = True
+
+    def off(self):
+        self._using_requests = False
 
     def _format_response_info(self, response, include_text=False, include_body=True):
         if response is not None:
@@ -64,14 +73,14 @@ class AqHTTP(logger.Loggable, object):
                     body = self._pprint_data(body, max_list_len=10)
                 except:
                     pass
-                msg = "BODY: {body}".format(body=body)
+                msg = msg + "\n" + "BODY: {body}".format(body=body)
             if include_text:
                 text = getattr(response, 'text', '')
                 try:
                     text = json.dumps(json.loads(text), indent=2)
                 except:
                     pass
-                msg = "TEXT: {text}".format(text=text)
+                msg = msg + "\n" + "TEXT: {text}".format(text=text)
             return msg
         return "RESPONSE: NO RESPONSE"
 
@@ -100,7 +109,8 @@ class AqHTTP(logger.Loggable, object):
         try:
             res = requests.post(url_build(self.aquarium_url, "sessions.json"),
                                 json=session_data, timeout=self.timeout)
-
+            if res is None:
+                raise requests.exceptions.ConnectionError
             cookies = dict(res.cookies)
 
             # Check for remember token
@@ -126,6 +136,10 @@ class AqHTTP(logger.Loggable, object):
                 " connection is slow. Make sure the url {} is correct."
                 " Alternatively, use Session.set_timeout"
                 " to increase the request timeout.".format(self.aquarium_url))
+        except requests.exceptions.ConnectionError:
+            raise TridentLoginError(
+                "Could not contact '{}'. Login request returned no response".format(self.aquarium_url)
+            )
 
     @staticmethod
     def _serialize_request(url, method, body):
@@ -154,17 +168,22 @@ class AqHTTP(logger.Loggable, object):
         :return: json
         :rtype: dict
         """
+
+        url = url_build(self.aquarium_url, path)
+        if not self._using_requests:
+            raise ForbiddenRequestError("Attempted a request ({} {}) when requests have been turned OFF.\nDATA: {}".format(
+                method.upper(), url, kwargs['json']
+            ))
+
         if timeout is None:
             timeout = self.timeout
         if not allow_none and 'json' in kwargs:
             self._disallow_null_in_json(kwargs['json'])
 
-        response = None
-        if response is None:
-            response = requests.request(
+        self.num_requests += 1
+        response = requests.request(
                 method,
-                url_build(
-                    self.aquarium_url, path),
+                url,
                 timeout=timeout,
                 cookies=self.cookies,
                 **kwargs)
@@ -173,7 +192,9 @@ class AqHTTP(logger.Loggable, object):
         if response.status_code >= 400:
             response_info = self._format_response_info(response)
             request_status = self._format_request_status(response)
-            raise TridentRequestError('\n'.join(['The Aquarium server returned an error.', request_status, response_info]), response)
+            msg = '\n'.join(['The Aquarium server returned an error.',
+                             request_status, response_info])
+            raise TridentRequestError(msg, response)
 
         return self._response_to_json(response)
 
@@ -195,12 +216,13 @@ class AqHTTP(logger.Loggable, object):
             msg += "\nMessage:\n" + response.text
             self._error(self._format_response_info(response))
             raise TridentRequestError(msg, response)
-        if response_json and 'errors' in response_json:
-            errors = response_json['errors']
-            if isinstance(errors, list):
-                errors = "\n".join(errors)
-            msg = "Error response:\n{}".format(errors)
-            raise TridentRequestError(msg, response)
+        if response_json:
+            if 'errors' in response_json:
+                errors = response_json['errors']
+                if isinstance(errors, list):
+                    errors = "\n".join(errors)
+                msg = "Error response:\n{}".format(errors)
+                raise TridentRequestError(msg, response)
         return response_json
 
     @staticmethod
@@ -281,7 +303,7 @@ class AqHTTP(logger.Loggable, object):
         return self.request("delete", path, timeout=timeout, **kwargs)
 
     def __repr__(self):
-        return "<{}({}, {})>".format(self.__class__.__name__,
+        return "<{}(user='{}', url='{}')>".format(self.__class__.__name__,
                                      self.login, self.aquarium_url)
 
     def __str__(self):

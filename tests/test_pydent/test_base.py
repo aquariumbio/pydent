@@ -156,8 +156,7 @@ def test_base_constructor_with_marshaller(mymodel):
 
 
 def test_connect_to_session(mymodel, fake_session):
-    """Upon instantiation, modelbases should have no session Connect to
-    session should connect to a new session. Connecting to other sessions
+    """Connecting to other sessions
     afterward should not be allowed."""
     m = mymodel()
     assert m.session is None
@@ -168,9 +167,9 @@ def test_connect_to_session(mymodel, fake_session):
 
     # attempt to connect to another session
     fake_session2 = copy.copy(fake_session)
-    m.connect_to_session(fake_session2)
-    assert not m.session == fake_session2
-    assert m.session == fake_session
+
+    with pytest.raises(Exception):
+        m.connect_to_session(fake_session2)
 
 
 def test_empty_relationships(mymodel):

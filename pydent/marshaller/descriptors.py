@@ -78,13 +78,6 @@ class DataAccessor(object):
     def get_val(self, obj):
         access_data = getattr(obj, self.accessor)
         return access_data.get(self.name, self.default)
-        try:
-            return getattr(obj, self.accessor).get(self.name, self.default)
-        except Exception as e:
-            raise Exception("Error retrieving attribute '{}' from '{}' because:\n".format(
-                self.name,
-                obj.__class__,
-            ) + "{}: ".format(e.__class__.__name__) + str(e)) from e
 
     def __get__(self, obj, objtype):
         val = self.get_val(obj)
@@ -178,7 +171,7 @@ class CallbackAccessor(MarshallingAccessor):
     def __get__(self, obj, objtype):
         val = self.get_val(obj)
         if val is self.HOLDER:
-            return self.field.fullfill(obj)
+            val = self.field.fullfill(obj)
         return val
 
     def __set__(self, obj, val):

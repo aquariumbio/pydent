@@ -1,7 +1,7 @@
 
 from pydent.base import ModelRegistry
 from pydent.aqhttp import AqHTTP
-from pydent.interfaces import ModelInterface, UtilityInterface
+from pydent.interfaces import QueryInterface, UtilityInterface
 from pydent.models import User
 from pydent.models import __all__ as all_models
 
@@ -21,7 +21,7 @@ def test_access_models_interface(fake_session):
     # model interfaces
     for model_name in all_models:
         interface = getattr(fake_session, model_name)
-        assert isinstance(interface, ModelInterface)
+        assert isinstance(interface, QueryInterface)
 
 
 def test_access_utils_interface(fake_session):
@@ -75,4 +75,4 @@ def test_logged_in(monkeypatch, fake_session):
 def test_set_timeout(fake_session):
 
     fake_session.set_timeout(5)
-    assert fake_session._AqSession__aqhttp.timeout == 5
+    assert fake_session._aqhttp.timeout == 5

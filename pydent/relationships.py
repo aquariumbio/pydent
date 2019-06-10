@@ -54,9 +54,9 @@ class BaseRelationship(fields.Relationship):
         super().__init__(nested, callback, callback_args, callback_kwargs, cache=True, data_key=None, many=many,
                          allow_none=allow_none)
 
-    def fullfill(self, owner, cache=None):
+    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
         try:
-            return super().fullfill(owner, cache)
+            return super().fullfill(owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs)
         except fields.RunTimeCallbackAttributeError as e:
             return BaseRelationshipAccessor.HOLDER
 
@@ -219,36 +219,6 @@ class HasOne(HasMixin, One):
         return val
 
 
-class HasManyThrough(HasMixin, Many):
-    """
-    A relationship using an intermediate association model.
-    Establishes a Many-to-Many relationship with another model
-    """
-
-    def __init__(self, nested, through, attr="id", ref=None, additional_args=None, callback=None, callback_kwargs=None,
-                 **kwargs):
-        self.set_ref(nested=nested, attr=attr, ref=ref)
-
-        # e.g. PlanAssociation >> plan_associations
-        through_model_attr = inflection.pluralize(
-            inflection.underscore(through))
-        self.through_model_attr = through_model_attr
-
-        if additional_args is None:
-            additional_args = {}
-
-        def callback_args(slf):
-            through_model = getattr(slf, through_model_attr)
-            if through_model is None:
-                return None
-            query = {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
-            query.update(additional_args)
-            return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
-
-        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
-                         **kwargs)
-
-
 class HasMany(HasMixin, Many):
     """
     A relationship that establishes a One-to-Many relationship with another model.
@@ -290,6 +260,36 @@ class HasMany(HasMixin, Many):
             query = {self.ref: getattr(slf, self.attr)}
             query.update(additional_args)
             return query
+
+        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)
+
+
+class HasManyThrough(HasMixin, Many):
+    """
+    A relationship using an intermediate association model.
+    Establishes a Many-to-Many relationship with another model
+    """
+
+    def __init__(self, nested, through, attr="id", ref=None, additional_args=None, callback=None, callback_kwargs=None,
+                 **kwargs):
+        self.set_ref(nested=nested, attr=attr, ref=ref)
+
+        # e.g. PlanAssociation >> plan_associations
+        through_model_attr = inflection.pluralize(
+            inflection.underscore(through))
+        self.through_model_attr = through_model_attr
+
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            through_model = getattr(slf, through_model_attr)
+            if through_model is None:
+                return None
+            query = {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
+            query.update(additional_args)
+            return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
 
         super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
                          **kwargs)
