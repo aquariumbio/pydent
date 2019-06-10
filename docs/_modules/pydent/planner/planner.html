@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.planner.planner &#8212; Trident 1.0.0a1 documentation</title>
+    <title>pydent.planner.planner &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -71,8 +71,8 @@
     
       <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../browsing.html">Model browsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
@@ -122,14 +122,15 @@
 
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">Sequence</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
 <span class="kn">from</span> <span class="nn">uuid</span> <span class="k">import</span> <span class="n">uuid4</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
+<span class="kn">from</span> <span class="nn">pydent.aqsession</span> <span class="k">import</span> <span class="n">AqSession</span>
 <span class="kn">from</span> <span class="nn">pydent.browser</span> <span class="k">import</span> <span class="n">Browser</span>
-<span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">FieldValue</span><span class="p">,</span> <span class="n">Operation</span>
+<span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">FieldValue</span><span class="p">,</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Plan</span>
 <span class="kn">from</span> <span class="nn">pydent.planner.layout</span> <span class="k">import</span> <span class="n">PlannerLayout</span>
 <span class="kn">from</span> <span class="nn">pydent.planner.utils</span> <span class="k">import</span> <span class="n">arr_to_pairs</span><span class="p">,</span> <span class="n">_id_getter</span><span class="p">,</span> <span class="n">get_subgraphs</span>
 <span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">make_async</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">empty_copy</span>
@@ -171,7 +172,80 @@
     <span class="k">return</span> <span class="n">wrapper</span></div>
 
 
-<div class="viewcode-block" id="Planner"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner">[docs]</a><span class="k">class</span> <span class="nc">Planner</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">Loggable</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">AFTMatcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_resolve_to_field_types</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">FieldValue</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">role</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">field_type</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Planner attempted to find matching&quot;</span> \
+                      <span class="s2">&quot; allowable_field_types for&quot;</span> \
+                      <span class="s2">&quot; an input FieldValue but found an output FieldValue&quot;</span>
+                <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Operation</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">ft</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_field_types</span><span class="p">()</span> <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">role</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot resolve inputs, type must be a FieldValue or Operation, not a </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)))</span>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_collect_matching_afts</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param source: a field value or operation source</span>
+<span class="sd">        :type source: FieldValue|Operation</span>
+<span class="sd">        :param destination: a field value or operation destination</span>
+<span class="sd">        :type destination: FieldValue|Operation</span>
+<span class="sd">        :return: tuple of matching allowable_field_type (aft) pairs, matching field_value inputs and matching field_value outputs</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Find matching AllowableFieldTypes&quot;&quot;&quot;</span>
+        <span class="n">dest_fts</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_resolve_to_field_types</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;input&#39;</span><span class="p">)</span>
+        <span class="n">src_fts</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_resolve_to_field_types</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
+
+        <span class="n">matching_afts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">matching_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">matching_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">src_fts</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dest</span> <span class="ow">in</span> <span class="n">dest_fts</span><span class="p">:</span>
+                <span class="n">io_matching_afts</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_find_matching_afts</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">io_matching_afts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">dest</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">matching_inputs</span><span class="p">:</span>
+                        <span class="n">matching_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">src</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">matching_outputs</span><span class="p">:</span>
+                        <span class="n">matching_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+                <span class="n">matching_afts</span> <span class="o">+=</span> <span class="n">io_matching_afts</span>
+        <span class="k">return</span> <span class="n">matching_afts</span><span class="p">,</span> <span class="n">matching_inputs</span><span class="p">,</span> <span class="n">matching_outputs</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_find_matching_afts</span><span class="p">(</span><span class="n">src_ft</span><span class="p">,</span> <span class="n">dest_ft</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Finds matching afts between two FieldTypes&quot;&quot;&quot;</span>
+        <span class="n">afts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">src_afts</span> <span class="o">=</span> <span class="n">src_ft</span><span class="o">.</span><span class="n">allowable_field_types</span>
+        <span class="n">dest_afts</span> <span class="o">=</span> <span class="n">dest_ft</span><span class="o">.</span><span class="n">allowable_field_types</span>
+
+        <span class="c1"># check whether the field_type handles collections</span>
+        <span class="n">input_handles_collections</span> <span class="o">=</span> <span class="n">dest_ft</span><span class="o">.</span><span class="n">part</span> <span class="ow">is</span> <span class="kc">True</span>
+        <span class="n">output_handles_collections</span> <span class="o">=</span> <span class="n">dest_ft</span><span class="o">.</span><span class="n">part</span> <span class="ow">is</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">input_handles_collections</span> <span class="o">!=</span> <span class="n">output_handles_collections</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">dest_aft</span> <span class="ow">in</span> <span class="n">dest_afts</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">src_aft</span> <span class="ow">in</span> <span class="n">src_afts</span><span class="p">:</span>
+                <span class="n">out_object_type_id</span> <span class="o">=</span> <span class="n">src_aft</span><span class="o">.</span><span class="n">object_type_id</span>
+                <span class="n">in_object_type_id</span> <span class="o">=</span> <span class="n">dest_aft</span><span class="o">.</span><span class="n">object_type_id</span>
+                <span class="n">out_sample_type_id</span> <span class="o">=</span> <span class="n">src_aft</span><span class="o">.</span><span class="n">sample_type_id</span>
+                <span class="n">in_sample_type_id</span> <span class="o">=</span> <span class="n">dest_aft</span><span class="o">.</span><span class="n">sample_type_id</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">out_object_type_id</span> <span class="o">==</span> <span class="n">in_object_type_id</span>
+                        <span class="ow">and</span> <span class="n">out_sample_type_id</span> <span class="o">==</span> <span class="n">in_sample_type_id</span><span class="p">):</span>
+                    <span class="n">afts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">src_aft</span><span class="p">,</span> <span class="n">dest_aft</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">afts</span>
+
+
+<div class="viewcode-block" id="Planner"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner">[docs]</a><span class="k">class</span> <span class="nc">Planner</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">Loggable</span><span class="p">,</span> <span class="n">AFTMatcher</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A user-interface for making experimental plans and layouts.&quot;&quot;&quot;</span>
 
     <span class="k">class</span> <span class="nc">ITEM_SELECTION_PREFERENCE</span><span class="p">:</span>
@@ -192,29 +266,49 @@
         <span class="n">_DEFAULT</span> <span class="o">=</span> <span class="n">LAST</span>
         <span class="n">_CHOICES</span> <span class="o">=</span> <span class="p">[</span><span class="n">FIRST</span><span class="p">,</span> <span class="n">LAST</span><span class="p">,</span> <span class="n">RANDOM</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">plan_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">plan_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">plan_id</span><span class="p">,</span> <span class="s1">&#39;Plan&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">plan</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span>
-                    <span class="s2">&quot;Could not find plan with id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_id</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_or_plan</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plan_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">session_or_plan</span><span class="p">),</span> <span class="n">AqSession</span><span class="p">):</span>
+            <span class="c1"># initialize with session</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session_or_plan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">plan_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># load an existing plan</span>
+                <span class="n">plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">plan_id</span><span class="p">,</span> <span class="s1">&#39;Plan&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">plan</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span>
+                        <span class="s2">&quot;Could not find plan with id=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_id</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="n">plan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># create a new plan</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Plan</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">session_or_plan</span><span class="p">),</span> <span class="n">Plan</span><span class="p">):</span>
+            <span class="c1"># initialize with Plan</span>
+            <span class="n">plan</span> <span class="o">=</span> <span class="n">session_or_plan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">session</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="n">plan</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Plan</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init_logger</span><span class="p">(</span><span class="s2">&quot;Planner@plan_rid=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">rid</span><span class="p">))</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_plans</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">plans</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_check_plans_for_single_session</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">models</span><span class="p">):</span>
+        <span class="n">session_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="nb">id</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">session</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">session_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span><span class="s2">&quot;Plans have different session ids&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">models</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">session</span>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_plans</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plans</span><span class="p">):</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_check_plans_for_single_session</span><span class="p">(</span><span class="n">plans</span><span class="p">)</span>
         <span class="n">browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">cache_plans</span><span class="p">(</span><span class="n">browser</span><span class="p">,</span> <span class="n">plans</span><span class="p">)</span>
+        <span class="n">planners</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">plan</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">:</span>
-            <span class="n">planner</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">()</span>
+            <span class="n">planner</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">plan</span><span class="p">)</span>
             <span class="n">planner</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="n">browser</span>
-            <span class="n">planner</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
-            <span class="n">planner</span><span class="o">.</span><span class="n">plan</span> <span class="o">=</span> <span class="n">plan</span>
+            <span class="n">planners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">planner</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">planners</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_cache_query</span><span class="p">():</span>
@@ -304,7 +398,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></div>
 
     <span class="c1"># TODO: fix this &#39;set_timeout&#39; to not be global</span>
-<div class="viewcode-block" id="Planner.save"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Planner.update"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the plan on Aquarium&quot;&quot;&quot;</span>
         <span class="n">prev_timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">_AqSession__aqhttp</span><span class="o">.</span><span class="n">timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
@@ -319,7 +419,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> created&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ot</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">op</span>
 
-    <span class="k">def</span> <span class="nf">create_operation_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ot_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_operation_by_type_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ot_id</span><span class="p">):</span>
         <span class="c1"># ot = self.browser.find(&#39;OperationType&#39;, ot_id)</span>
         <span class="n">ot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">ot_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_operation_by_type</span><span class="p">(</span><span class="n">ot</span><span class="p">)</span>
@@ -339,7 +439,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_operation_by_type</span><span class="p">(</span><span class="n">ots</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">models_are_equal</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="n">model2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_model_are_equal</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="n">model2</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">model1</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model2</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">model1</span><span class="o">.</span><span class="n">_primary_key</span> <span class="o">==</span> <span class="n">model2</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">True</span>
@@ -355,8 +455,8 @@
     <span class="nd">@plan_verification_wrapper</span>
     <span class="k">def</span> <span class="nf">get_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fv1</span><span class="p">,</span> <span class="n">fv2</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">models_are_equal</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">fv1</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">models_are_equal</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span> <span class="n">fv2</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_are_equal</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">fv1</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_are_equal</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span> <span class="n">fv2</span><span class="p">)):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;found wire from </span><span class="si">{}</span><span class="s2"> to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fv1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">fv2</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
                 <span class="k">return</span> <span class="n">wire</span>
 
@@ -389,7 +489,7 @@
     <span class="k">def</span> <span class="nf">get_outgoing_wires</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
         <span class="n">wires</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">models_are_equal</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_are_equal</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
                 <span class="n">wires</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">wires</span>
 
@@ -397,7 +497,7 @@
     <span class="k">def</span> <span class="nf">get_incoming_wires</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
         <span class="n">wires</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">models_are_equal</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_are_equal</span><span class="p">(</span><span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
                 <span class="n">wires</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">wires</span>
 
@@ -424,98 +524,6 @@
         <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
             <span class="n">ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">fv</span><span class="o">.</span><span class="n">operation</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fv_predecessors</span><span class="p">(</span><span class="nb">input</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">ops</span>
-
-<div class="viewcode-block" id="Planner._resolve_source_to_outputs"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner._resolve_source_to_outputs">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_resolve_source_to_outputs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resolves a FieldValue or Operation to its sample output FieldValues</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">FieldValue</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s2">&quot;output&quot;</span><span class="p">:</span>
-                <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Planner attempted to find matching&quot;</span> \
-                      <span class="s2">&quot; allowable_field_types for an output FieldValue but&quot;</span> \
-                      <span class="s2">&quot; found an input FieldValue&quot;</span>
-                <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">Operation</span><span class="p">):</span>
-            <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">fv</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">outputs</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">ftype</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">outputs</span></div>
-
-<div class="viewcode-block" id="Planner._resolve_destination_to_inputs"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner._resolve_destination_to_inputs">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_resolve_destination_to_inputs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resolves a FieldValue or Operation to its sample input FieldValues</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">FieldValue</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">destination</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">[</span><span class="n">destination</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Planner attempted to find matching&quot;</span> \
-                      <span class="s2">&quot; allowable_field_types for&quot;</span> \
-                      <span class="s2">&quot; an input FieldValue but found an output FieldValue&quot;</span>
-                <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">Operation</span><span class="p">):</span>
-            <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fv</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">destination</span><span class="o">.</span><span class="n">inputs</span>
-                      <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">ftype</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">]</span>
-            <span class="k">return</span> <span class="n">inputs</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot resolve inputs, type must be a FieldValue or Operation, not a </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">destination</span><span class="p">)))</span></div>
-
-<div class="viewcode-block" id="Planner._collect_matching_afts"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner._collect_matching_afts">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_collect_matching_afts</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">        :param source: a field value or operation source</span>
-<span class="sd">        :type source: FieldValue|Operation</span>
-<span class="sd">        :param destination: a field value or operation destination</span>
-<span class="sd">        :type destination: FieldValue|Operation</span>
-<span class="sd">        :return: tuple of matching allowable_field_type (aft) pairs, matching field_value inputs and matching field_value outputs</span>
-<span class="sd">        :rtype: tuple</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="sd">&quot;&quot;&quot;Find matching AllowableFieldTypes&quot;&quot;&quot;</span>
-        <span class="n">inputs</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_resolve_destination_to_inputs</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_resolve_source_to_outputs</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-
-        <span class="n">matching_afts</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">matching_inputs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">matching_outputs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
-            <span class="k">for</span> <span class="nb">input</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
-                <span class="n">io_matching_afts</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_find_matching_afts</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="nb">input</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">io_matching_afts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">input</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">matching_inputs</span><span class="p">:</span>
-                        <span class="n">matching_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">output</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">matching_outputs</span><span class="p">:</span>
-                        <span class="n">matching_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-                <span class="n">matching_afts</span> <span class="o">+=</span> <span class="n">io_matching_afts</span>
-        <span class="k">return</span> <span class="n">matching_afts</span><span class="p">,</span> <span class="n">matching_inputs</span><span class="p">,</span> <span class="n">matching_outputs</span></div>
-
-<div class="viewcode-block" id="Planner._find_matching_afts"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner._find_matching_afts">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_find_matching_afts</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Finds matching afts between two FieldValues&quot;&quot;&quot;</span>
-        <span class="n">afts</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">output_afts</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">allowable_field_types</span>
-        <span class="n">input_afts</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">allowable_field_types</span>
-
-        <span class="c1"># check whether the field_type handles collections</span>
-        <span class="n">input_handles_collections</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">part</span> <span class="ow">is</span> <span class="kc">True</span>
-        <span class="n">output_handles_collections</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">part</span> <span class="ow">is</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">input_handles_collections</span> <span class="o">!=</span> <span class="n">output_handles_collections</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">input_aft</span> <span class="ow">in</span> <span class="n">input_afts</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">output_aft</span> <span class="ow">in</span> <span class="n">output_afts</span><span class="p">:</span>
-                <span class="n">out_object_type_id</span> <span class="o">=</span> <span class="n">output_aft</span><span class="o">.</span><span class="n">object_type_id</span>
-                <span class="n">in_object_type_id</span> <span class="o">=</span> <span class="n">input_aft</span><span class="o">.</span><span class="n">object_type_id</span>
-                <span class="n">out_sample_type_id</span> <span class="o">=</span> <span class="n">output_aft</span><span class="o">.</span><span class="n">sample_type_id</span>
-                <span class="n">in_sample_type_id</span> <span class="o">=</span> <span class="n">input_aft</span><span class="o">.</span><span class="n">sample_type_id</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">out_object_type_id</span> <span class="o">==</span> <span class="n">in_object_type_id</span>
-                        <span class="ow">and</span> <span class="n">out_sample_type_id</span> <span class="o">==</span> <span class="n">in_sample_type_id</span><span class="p">):</span>
-                    <span class="n">afts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">output_aft</span><span class="p">,</span> <span class="n">input_aft</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">afts</span></div>
 
     <span class="k">def</span> <span class="nf">quick_create_operation_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">otname</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -581,13 +589,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="s2">&quot;QUICK CREATE CHAIN </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">op_or_otnames</span><span class="p">))</span>
         <span class="n">ops</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_op</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">op_or_otnames</span><span class="p">]</span>
-        <span class="c1"># self.browser.recursive_retrieve(</span>
-        <span class="c1">#     ops, {</span>
-        <span class="c1">#         &#39;operation_type&#39;: {</span>
-        <span class="c1">#             &quot;field_types&quot;: &quot;allowable_field_types&quot;</span>
-        <span class="c1">#         }</span>
-        <span class="c1">#     }</span>
-        <span class="c1"># )</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">op</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ops</span> <span class="k">if</span> <span class="n">op</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find some operations: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ops</span><span class="p">))</span>
         <span class="n">pairs</span> <span class="o">=</span> <span class="n">arr_to_pairs</span><span class="p">(</span><span class="n">ops</span><span class="p">)</span>
@@ -612,7 +613,7 @@
             <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">existing_fvs</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">sample</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_incoming_wires</span><span class="p">(</span><span class="n">fv</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">fv</span>
-            <span class="n">fv</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">add_to_field_value_array</span><span class="p">(</span><span class="n">field_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">)</span>
+            <span class="n">fv</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">new_field_value</span><span class="p">(</span><span class="n">field_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">fv</span></div>
 
     <span class="c1"># TODO: way to select preference for afts in quick_wire?</span>
@@ -638,10 +639,10 @@
             <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span>
                 <span class="s2">&quot;Cannot quick wire. Ambiguous wiring between inputs [</span><span class="si">{}</span><span class="s2">] for </span><span class="si">{}</span><span class="s2"> and outputs [</span><span class="si">{}</span><span class="s2">] for </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;Instead, try to use `add_wire` method to wire together two FieldValues.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">fv</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">model_inputs</span><span class="p">]),</span>
-                    <span class="n">model_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">fv</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">model_outputs</span><span class="p">]),</span>
-                    <span class="n">model_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">model_inputs</span><span class="p">]),</span>
+                    <span class="n">model_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">model_outputs</span><span class="p">]),</span>
+                    <span class="n">model_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">afts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">aft1</span><span class="p">,</span> <span class="n">aft2</span> <span class="ow">in</span> <span class="n">afts</span><span class="p">:</span>
 
@@ -654,15 +655,14 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">input_fv</span> <span class="o">=</span> <span class="n">destination</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">input_ft</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="n">output_fv</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">output_ft</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_wire</span><span class="p">(</span><span class="n">output_fv</span><span class="p">,</span> <span class="n">input_fv</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">afts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PlannerException</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot quick wire. No possible wiring found between inputs [</span><span class="si">{}</span><span class="s2">] for </span><span class="si">{}</span><span class="s2"> and outputs [</span><span class="si">{}</span><span class="s2">] for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">fv</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">model_inputs</span><span class="p">]),</span>
-                    <span class="n">model_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">fv</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">model_outputs</span><span class="p">]),</span>
-                    <span class="n">model_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+                <span class="s2">&quot;Cannot quick wire. No possible wiring found between inputs </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">source</span><span class="p">,</span> <span class="n">destination</span>
+                <span class="p">))</span></div>
 
 <div class="viewcode-block" id="Planner.quick_wire_by_name"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.quick_wire_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">quick_wire_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">otname1</span><span class="p">,</span> <span class="n">otname2</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wires together the last added operations.&quot;&quot;&quot;</span>
@@ -788,13 +788,13 @@
         <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">array</span> <span class="ow">and</span> <span class="n">fv</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span>
             <span class="n">other_fvs</span> <span class="o">=</span> <span class="n">fv</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="n">fv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">other_fv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">other_fvs</span><span class="p">):</span>
-                <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">models_are_equal</span><span class="p">(</span><span class="n">other_fv</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_are_equal</span><span class="p">(</span><span class="n">other_fv</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
                     <span class="n">routing_id</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
                     <span class="k">return</span> <span class="n">routing_id</span>
         <span class="k">return</span> <span class="n">routing_id</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_routing_dict</span><span class="p">(</span><span class="n">op</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_sample_routing_of_operation</span><span class="p">(</span><span class="n">op</span><span class="p">):</span>
         <span class="n">routing_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
             <span class="n">routing</span> <span class="o">=</span> <span class="n">fv</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">routing</span>
@@ -831,7 +831,7 @@
             <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
             <span class="n">routing</span> <span class="o">=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">routing</span>
-            <span class="n">fvs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_routing_dict</span><span class="p">(</span><span class="n">field_value</span><span class="o">.</span><span class="n">operation</span><span class="p">)[</span><span class="n">routing</span><span class="p">]</span>
+            <span class="n">fvs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sample_routing_of_operation</span><span class="p">(</span><span class="n">field_value</span><span class="o">.</span><span class="n">operation</span><span class="p">)[</span><span class="n">routing</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">ftype</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">fvs</span><span class="p">:</span>
                     <span class="n">fv</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
@@ -1043,8 +1043,8 @@
             <span class="n">fv</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">item</span></div>
 
-<div class="viewcode-block" id="Planner.set_inputs_with_sample"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_inputs_with_sample">[docs]</a>    <span class="nd">@plan_verification_wrapper</span>
-    <span class="k">def</span> <span class="nf">set_inputs_with_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">routing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Planner.set_inputs_using_sample_properties"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_inputs_using_sample_properties">[docs]</a>    <span class="nd">@plan_verification_wrapper</span>
+    <span class="k">def</span> <span class="nf">set_inputs_using_sample_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">routing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Map the sample field values to the operation inputs. Optionally, a routing dictionary may</span>
 <span class="sd">        be passed to indicate the mapping between the sample field values and operation inputs.</span>
 
@@ -1093,7 +1093,7 @@
             <span class="n">setter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value</span>
         <span class="n">setter</span><span class="p">(</span><span class="n">fv</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
         <span class="n">op</span> <span class="o">=</span> <span class="n">fv</span><span class="o">.</span><span class="n">operation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_inputs_with_sample</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">routing</span><span class="o">=</span><span class="n">routing</span><span class="p">,</span> <span class="n">setter</span><span class="o">=</span><span class="n">setter</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_inputs_using_sample_properties</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">routing</span><span class="o">=</span><span class="n">routing</span><span class="p">,</span> <span class="n">setter</span><span class="o">=</span><span class="n">setter</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Planner._json_update"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner._json_update">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_json_update</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
@@ -1101,7 +1101,7 @@
         <span class="n">aqhttp</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">_AqSession__aqhttp</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}}</span>
         <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">))</span>
-        <span class="n">model_data</span> <span class="o">=</span> <span class="n">aqhttp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;json/save&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">model_data</span> <span class="o">=</span> <span class="n">aqhttp</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;json/save&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="n">model</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">model_data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">model</span></div>
 
@@ -1192,6 +1192,10 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PlannerLayout</span><span class="o">.</span><span class="n">from_plan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">PlannerLayout</span><span class="o">.</span><span class="n">from_plan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -1412,8 +1416,14 @@
     <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Planner.combine"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.combine">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="n">plans</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Merges a list of plans into a single plan by combining operations and wires.</span>
+
+<span class="sd">        :param plans: list of Aquarium Plans instances</span>
+<span class="sd">        :return: new Plan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">copied_plans</span> <span class="o">=</span> <span class="p">[</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">]</span>
 
         <span class="n">sessions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">session</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">])</span>
@@ -1427,7 +1437,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span><span class="p">))</span>
             <span class="n">new_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span> <span class="o">+=</span> <span class="n">p</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">operations</span>
             <span class="n">new_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span> <span class="o">+=</span> <span class="n">p</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span>
-        <span class="k">return</span> <span class="n">new_plan</span>
+        <span class="k">return</span> <span class="n">new_plan</span></div>
 
 <div class="viewcode-block" id="Planner.split"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Split the plan into several distinct plans, if possible. This first convert the plan</span>
@@ -1455,8 +1465,8 @@
 
             <span class="c1"># copy over relevant wires</span>
             <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="n">copied_plan</span><span class="o">.</span><span class="n">plan</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-                <span class="n">to_id</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">_primary_key</span>
-                <span class="n">from_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wire</span><span class="p">,</span> <span class="s1">&#39;from&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">_primary_key</span>
+                <span class="n">to_id</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">_primary_key</span>
+                <span class="n">from_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wire</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">_primary_key</span>
                 <span class="k">if</span> <span class="n">to_id</span> <span class="ow">in</span> <span class="n">opids</span> <span class="ow">or</span> <span class="n">from_id</span> <span class="ow">in</span> <span class="n">opids</span><span class="p">:</span>
                     <span class="n">wires</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
 
@@ -1496,7 +1506,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 1.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

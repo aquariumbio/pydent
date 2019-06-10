@@ -15,7 +15,6 @@ def test_field_type_constructor_with_sample_type(fake_session, monkeypatch):
         'parent_id': 5,
         'parent_class': 'SampleType'
     })
-    ft.connect_to_session(fake_session)
     assert ft.sample_type.id == 5
     assert ft.operation_type is None
 
@@ -33,7 +32,6 @@ def test_field_type_constructor_with_operation_type(fake_session, monkeypatch):
         'parent_id': 5,
         'parent_class': 'OperationType'
     })
-    ft.connect_to_session(fake_session)
     assert ft.operation_type.id == 5
     assert ft.sample_type is None
 
@@ -53,7 +51,7 @@ def test_field_type_constructor2(fake_session):
 
 def test_field_type_is_parameter(fake_session):
     ft = FieldType.load_from({"ftype": "sample"}, fake_session)
-    assert not ft.is_parameter
+    assert not ft.is_parameter()
 
     ft.ftype = "string"
     assert ft.is_parameter
@@ -69,7 +67,16 @@ def test_initialize_field_value(fake_session):
                  'id': 1
              }
          ]})
-    fv = ft.initialize_field_value()
+
+    fake_sample = fake_session.Sample.load(
+        {
+            'id': 6
+        }
+    )
+    fv = ft.initialize_field_value(parent=fake_sample)
+    assert fv.parent_id == 6
+    assert fv.parent_class == 'Sample'
+
     assert fv.field_type == ft
     assert fv.field_type_id == ft.id
     assert fv.role == ft.role

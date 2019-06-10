@@ -40,9 +40,11 @@ relationships - models relationships are stored
 
 from pydent.exceptions import AquariumModelError, NoSessionError
 from pydent.marshaller import SchemaModel, ModelRegistry, fields
-from inflection import underscore
+from inflection import tableize
 import itertools
 from copy import deepcopy
+from pydent.sessionabc import SessionABC
+
 
 class ModelBase(SchemaModel):
     """
@@ -55,12 +57,14 @@ class ModelBase(SchemaModel):
     """
     PRIMARY_KEY = 'id'
     GLOBAL_KEY = 'rid'
+    SERVER_MODEL_NAME = None
     DEFAULT_COPY_KEEP_UNANONYMOUS = ['Item', 'Sample', 'Collection']
     counter = itertools.count()
 
     def __new__(cls, *args, session=None, **kwargs):
         instance = super(ModelBase, cls).__new__(cls)
-        instance._session = session
+        instance._session = None
+        instance.session = session
         instance._rid = next(ModelBase.counter)
         return instance
 
@@ -69,29 +73,25 @@ class ModelBase(SchemaModel):
         self.add_data({'rid': self._rid, "id": data.get('id', None)})
 
     @classmethod
-    def _set_data(cls, data, calling_obj):
-        if calling_obj is not None:
-            session = calling_obj.session
-        else:
-            session = None
-        instance = cls.__new__(cls, session=session)
+    def _set_data(cls, data, owner):
+        if not hasattr(owner, 'session'):
+            raise NoSessionError("Cannot instantiate new model because its data parent"
+                                 " {} has no 'session' attribute".format(owner))
+        instance = cls.__new__(cls, session=owner.session)
         instance.raw = data
         cls.__init__(instance)
         ModelBase.__init__(instance, **data)
         return instance
-    # def __init__(self, **kwargs):
-    #     self.add_data(kwargs)
 
-    # def setup(self):
-    #     self._session = None
-    #
-    # @classmethod
-    # def model_factory(cls, data):
-    #     instance = cls._set_data(data)
+    @classmethod
+    def get_server_model_name(cls):
+        if cls.SERVER_MODEL_NAME is None:
+            return cls.__name__
+        return cls.SERVER_MODEL_NAME
 
-    # def __init__(self, **model_args):
-    #     model_args.update({"rid": self._rid})
-    #     super().__init__(model_args)
+    @classmethod
+    def get_tableized_name(cls):
+        return tableize(cls.get_server_model_name())
 
     @property
     def rid(self):
@@ -132,16 +132,10 @@ class ModelBase(SchemaModel):
                 if val is None:
                     val = []
                     setattr(self, name, val)
-                getattr(self, name).append(model)
-        return self
 
-    def set_model_attribute(self, model, attr=None):
-        if attr is None:
-            attr = ModelBase.PRIMARY_KEY
-        model_name = underscore(model.__class__.__name__)
-        if hasattr(model, attr):
-            setattr(self, model_name + "_" + attr, getattr(model, attr))
-        return model
+                if model.rid not in [m.rid for m in getattr(self, name)]:
+                    getattr(self, name).append(model)
+        return self
 
     @classmethod
     def load(cls, *args, **kwargs):
@@ -155,18 +149,21 @@ class ModelBase(SchemaModel):
                         "\n(3) `{name}.load_from(data, session)".format(name=cls.__name__))
 
     @classmethod
-    def load_from(cls, data, obj=None):
-        """Create a new model instance from loaded attributes"""
+    def load_from(cls, data, owner=None):
+        """Create a new model instance from loaded attributes.
+
+        'obj' should have a o"""
         if isinstance(data, list):
             models = []
             for d in data:
-                model = cls._set_data(d, obj)
+                model = cls._set_data(d, owner)
                 models.append(model)
             return models
         else:
-            model = cls._set_data(data, obj)
+            model = cls._set_data(data, owner)
         return model
 
+    # TODO: rename reload to something else, implement 'refresh' method and associated tests
     def reload(self, data):
         """
         Reload model attributes from new data
@@ -176,9 +173,23 @@ class ModelBase(SchemaModel):
         :return: model instance
         :rtype: ModelBase
         """
-        temp_model = self.__class__.load_from(data, self)
-        temp_model.connect_to_session(self.session)
+        data_copy = deepcopy(data)
+        temp_model = self.__class__.load_from(data_copy, self.session)
         vars(self).update(vars(temp_model))
+
+        return self
+
+    def refresh(self):
+        """
+        Refresh this model from data from the server.
+
+        :return: self
+        :rtype: self
+        """
+        interface = self.create_interface()
+        interface._do_load = False
+        data = interface.find(self.id)
+        self.reload(data)
         return self
 
     @classmethod
@@ -197,10 +208,19 @@ class ModelBase(SchemaModel):
         """The connected session instance."""
         return self._session
 
+    @session.setter
+    def session(self, new_session):
+        if new_session is not None and not issubclass(type(new_session), SessionABC):
+            raise NoSessionError("Cannot instantiate new model because its data parent "
+                                 "session is a type '{}', not a Session object"
+                                 .format(type(new_session)))
+        if self.session is not None:
+            raise Exception("Cannot set session. Model {} already has a session.".format(self))
+        self._session = new_session
+
     def connect_to_session(self, session):
         """Connect model instance to a session. Does nothing if session already exists."""
-        if self._session is None:
-            self._session = session
+        self.session = session
 
     def _check_for_session(self):
         """Raises error if model is not connected to a session"""
@@ -248,7 +268,7 @@ class ModelBase(SchemaModel):
         interface = cls.interface(session)
         query = dict(query)
         query.update(kwargs)
-        return interface.one(**query)
+        return interface.one(query)
 
     def one_callback(self, model_name, *args, **kwargs):
         self._check_for_session()
@@ -319,7 +339,11 @@ class ModelBase(SchemaModel):
         if not self.__class__.__name__.endswith('Type'):
             setattr(self, self.PRIMARY_KEY, None)
             setattr(self, 'rid', next(self.counter))
+            self.updated_at = None
+            self.created_at = None
             self.raw = {}
+        return self
+
 
     def _anonymize_field_keys(self, keep=None):
         for name, relation in self.get_relationships().items():

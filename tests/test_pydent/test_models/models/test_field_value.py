@@ -35,7 +35,8 @@ def test_constructor_with_value(fake_session):
         parent_class="Operation",
         value=400,
         field_type=fake_session.FieldType(
-            choices='400'
+            choices='400',
+            parent_class='OperationType'
         )
     )
     assert fv.value == 400
@@ -251,7 +252,6 @@ def test_compatible_items(monkeypatch, fake_session):
         'name': 'plasmid',
         'sample_type_id': 2
     })
-    fake_fv.connect_to_session(fake_session)
     fake_fv.set_value(sample=sample)
     fake_fv.compatible_items()
 

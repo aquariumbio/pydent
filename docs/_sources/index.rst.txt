@@ -8,9 +8,9 @@ Trident Documentation
 
 Trident is the Python scripting API for Aquarium, the software that runs the 
 `UW BIOFAB <http://www.uwbiofab.org>`_.
-The `code respository <https://github.com/klavinslab/trident>`_ is freely available to members of the
-`Klavins lab <https://github.com/klavinslab/>`_ GitHub
-organization, which consists of lab members and collaborators.
+The `code respository <https://github.com/klavinslab/trident>`_ is freely available to all.
+
+`Klavins lab <https://github.com/klavinslab/>`_ Github
 
 Links:
 ~~~~~~
@@ -53,8 +53,8 @@ User guide
    :maxdepth: 3
 
    self
-   intro
    overview
+   intro
    quickstart
    browsing
    planning

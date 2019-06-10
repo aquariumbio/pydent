@@ -1,4 +1,5 @@
-from pydent.models import (FieldValue, Operation, Plan)
+from pydent.models import Plan
+import pytest
 
 
 def test_plan_constructor(fake_session):
@@ -37,38 +38,30 @@ def test_add_operations(fake_session):
     assert p.operations == [op, op2]
 
 
-def test_wire(fake_session):
+@pytest.fixture(scope='function')
+def fake_plan(fake_session):
     p = fake_session.Plan.new()
-    src = fake_session.FieldValue.load({'name': 'myinput'})
-    dest = fake_session.FieldValue.load({'name': 'myoutput'})
+
+    op1 = fake_session.Operation.load({})
+    op2 = fake_session.Operation.load({})
+
+    src = fake_session.FieldValue.load({'name': 'myinput', 'parent_class': 'Operation', 'operation': op1, 'role': 'output'})
+    dest = fake_session.FieldValue.load({'name': 'myoutput', 'parent_class': 'Operation', 'operation': op2, 'role': 'input'})
+    op1.field_values = [src]
+    op2.field_values = [dest]
+
+    return p, src, dest
+
+
+def test_wire(fake_plan):
+    p, src, dest = fake_plan
+
+    p.add_operations([src.operation, dest.operation])
     p.wire(src, dest)
     assert len(p.wires) == 1
     assert p.wires[0].source.name == 'myinput'
     assert p.wires[0].destination.name == 'myoutput'
     print(p.wires)
-
-
-# def test_est_costs(session):
-#    p = session.Plan.find(79147)
-#    assert p, "Plan 79147 not found"
-#    cost = p.estimate_cost()
-#    print(cost)
-
-
-def test_add_wire(fake_session):
-
-    p = fake_session.Plan.new()
-    assert p.wires == []
-    fv1 = fake_session.FieldValue.new(name="input")
-    fv2 = fake_session.FieldValue.new(name="output")
-    p.wire(fv1, fv2)
-    assert len(p.wires) == 1
-
-
-def test_count_wires(example_plan):
-    """Test whether the wire collection collects the appropriate number of wires"""
-    assert len(example_plan.wires) == 80, "There should be exactly 80 wires in this plan."
-
 
 def test_plan_copy(example_plan):
     """Copying plans should anonymize operations and wires"""

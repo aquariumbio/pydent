@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>Version History &#8212; Trident 1.0.0a1 documentation</title>
+    <title>Version History &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="developer/_autosummary/_autosummary/pydent.utils.logger.html" title="pydent.utils.logger"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Trident 1.0.0a1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Trident 0.1.0a3 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="container-wrapper">
@@ -61,7 +61,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a1</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -74,8 +74,8 @@
     
       <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Intro to Programmatic Science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="browsing.html">Model browsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="planning.html">Experiment Planning</a></li>
@@ -125,7 +125,47 @@
 <h1>Version History<a class="headerlink" href="#version-history" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
 <h2>0.1.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>place holder</p>
+<ul class="simple">
+<li>Planner class</li>
+<li>Browser class</li>
+<li>new queries (one, last, first)</li>
+<li>removed requirement of Marshmallow serialization/deserialization dependency, replaced by faster code</li>
+<li>Removed <cite>marshmallow</cite> as a serialization/deserialization library. A custom library is now used that avoids unnecessary field validation. As a result, model <cite>load</cite> and <cite>dump</cite> is faster.</li>
+<li><cite>Browser</cite> - a convinience method for browsing Samples and other models. Includes cacheing and query bundling to reduce number of queries and increase script speed.</li>
+</ul>
+<div class="section" id="nitty-gritty-details">
+<h3>nitty gritty details<a class="headerlink" href="#nitty-gritty-details" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Continuous validation - Cannot set Nested/Relationship attributes to arbitrary values. E.g. <cite>sample_type.sample = 5</cite> will raise an Exception, but setting <cite>sample_type.sample = mysample</cite> will not.</li>
+<li>Automatic setting of primary_keys (TODO):<ul>
+<li><cite>sample_type.sample = mysample</cite> will also automatically set the <cite>sample_id</cite> attribute, since this is defined in the HasOne relationship as an attribute_key. But setting <cite>sample_type.sample.id = 5</cite> will not change the <cite>sample_id</cite> key.</li>
+</ul>
+</li>
+<li>setting <cite>None</cite> will no longer trigger a query attempt. In previous versions, a relationship whose value was set to <cite>None</cite> would intialize a query attempt anytime <cite>getattr</cite> accessed a model attribute, using round-about exception handling to avoid errors; this made it impossible to set a relationship attribute to <cite>None.</cite> Now, a query will only be initiated if the key does not exist in the models underlying data. This means that data received from Aquarium will be used as expected (i.e. setting <cite>{“sample”: None}</cite> will not try to initiate a query next time <cite>model.sample</cite> is called).<ul>
+<li>tldr;
+* Use: <cite>del model.attr</cite> will reset model to trigger a query
+* Settings <cite>model.attr = None</cite> will not trigger a query next time <cite>model.attr</cite> is called.
+* Data used to load models will be used as is (e.g. <cite>{‘sample’: None}</cite> will not initiate a query if <cite>model.sample</cite> is called)</li>
+</ul>
+</li>
+<li>Setting FieldValue (TODO)<ul>
+<li><cite>FieldValue.set_value</cite> now handles None values. In previous version, None values passed into set_field_value would be ignored, making it difficult to <em>reset</em> a FieldValue. For example <cite>field_value.set_value(sample=None)</cite> will now reset the sample value for the FieldValue instead of being ignored.</li>
+</ul>
+</li>
+<li><cite>primary_key</cite> will return an <cite>id</cite>. If <cite>id==None</cite>, then the <cite>rid</cite> is returned (e.g. <cite>rid1023</cite>)</li>
+<li><cite>HasOne</cite> relationship will automatically set the corresponding model reference when setting attributes. E.g. <cite>sample.sample_type = myst</cite> will also automatically set <cite>sample.sample_type_id = myst.id</cite> since this is defined in the <cite>HasOne</cite> field. Similar tracking is not implemented for other relationships.</li>
+</ul>
+</div>
+<div class="section" id="testing">
+<h3>testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>vcrpy` is used to cache and store queries for deterministic testing.</li>
+<li>Improved documentation.</li>
+<li>Testing pytest-benchmarks (TODO: store previous versions)</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="id2">
 <h2>0.0.0<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
@@ -164,7 +204,7 @@
         <li class="right" >
           <a href="developer/_autosummary/_autosummary/pydent.utils.logger.html" title="pydent.utils.logger"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Trident 1.0.0a1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Trident 0.1.0a3 documentation</a> &#187;</li> 
       </ul>
     </div>
 <script type="text/javascript">

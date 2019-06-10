@@ -9,7 +9,7 @@ from uuid import uuid4
 class TestDump(object):
 
     def test_dump_empty_data(self, base):
-
+        """Dump should produce an empty dictionary"""
         @add_schema
         class MyModel(base):
             pass
@@ -18,7 +18,7 @@ class TestDump(object):
         assert model.dump() == {}
 
     def test_dump_empty_data_with_non_tracked_attrs(self, base):
-
+        """Expect that non-tracked attributes are excluded from the dump"""
         @add_schema
         class MyModel(base):
             pass
@@ -28,7 +28,7 @@ class TestDump(object):
         assert model.dump() == {}
 
     def test_dump_loaded_data(self, base):
-
+        """Manually set data should appear in the dump"""
         @add_schema
         class MyModel(base):
             pass
@@ -37,7 +37,7 @@ class TestDump(object):
         assert model.dump() == {"id": 5, 'name': 'MyName'}
 
     def test_dump_loaded_data_and_overwrite(self, base):
-
+        """Manually set data can be overridden by setting attributes"""
         @add_schema
         class MyModel(base):
             pass
@@ -47,7 +47,7 @@ class TestDump(object):
         assert model.dump() == {"id": 6, 'name': 'MyName'}
 
     def test_dump_empty_field(self, base):
-
+        """Empty fields should return an empty dictionary"""
         @add_schema
         class MyModel(base):
             fields = dict(field=Field())
@@ -97,7 +97,8 @@ class TestDump(object):
         print(model._get_data())
 
     def test_alias(self, base):
-
+        """Expect that alias fields refer to exactly the attribute set in the alias.
+        That means, the 'source' field should refer to the 'field' attribute."""
         @add_schema
         class MyModel(base):
             fields = {
@@ -128,7 +129,7 @@ class TestDump(object):
 
 
     def test_dump_marshalling_field(self, base):
-
+        """Expect the custom HTMLTag field to be properly serialized/deserialized."""
         class HTMLTag(Field):
 
             def serialize(self, caller, val):
@@ -147,7 +148,8 @@ class TestDump(object):
         assert model.dump() == {'h1': '<h1>This is a Heading 1 Title</h1>'}
 
     def test_always_dump(self, base):
-
+        """Expect that fields with 'always_dump' are, by default, dumped as empty
+        constructors event when they are empty"""
         @add_schema
         class MyModel(base):
             fields = dict(
@@ -164,8 +166,25 @@ class TestDump(object):
         assert m.dump(include='field1') == {"field1": 100, "field2": 100}
         assert m.dump(ignore='field2') == {}
 
+    def test_empty_list_field(self, base):
+        """Expect """
+        @add_schema
+        class ModelWithList(base):
+            fields = dict(
+                mylist=Field()
+            )
+
+        model = ModelWithList()
+        model.mylist = []
+        assert model.mylist == []
+        model.mylist.append(5)
+        assert model.mylist == [5]
+
+
+
 
 class TestNested(object):
+    """Tests for nested serialization/deserialization"""
 
     @pytest.fixture(scope="function")
     def Company(self, base):

@@ -31,8 +31,7 @@ License
 Contributing
 ------------
 
-It is recommended you install Trident using pipenv.
-`Pipenv <https://docs.pipenv.org/>`__ is now the officially
+It is recommended you install Trident using `Pipenv <https://docs.pipenv.org/>`__ is now the officially
 recommended Python packaging tool from Python.org. This avoids low level
 management of pip and virtualenv.
 
@@ -67,9 +66,6 @@ docs directory, which contains generated documentation files:
 ::
 
     make hooks
-
-Notes on Pipfile.lock
-~~~~~~~~~~~~~~~~~~~~~
 
 Please do not commit changes to your Pipfile.lock unless you are sure
 those dependencies are the ones you want people using in their version
