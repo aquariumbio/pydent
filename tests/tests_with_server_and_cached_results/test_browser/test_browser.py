@@ -420,6 +420,17 @@ def test_retrieve_with_new_samples(session):
 
     assert fvs == fvs2
 
+def test_update_model_cache_without_id(session):
+    """We expect to be able to update the model cache with a newly created item.
+    The model key should be equivalent to the record id ('rid')"""
+    browser = Browser(session)
+
+    s = session.Sample.new()
+    browser.update_cache([s])
+
+    assert None not in browser.model_cache['Sample']
+    assert s._primary_key in browser.model_cache['Sample']
+
 # def test_operation_type_retrieve(session):
 #
 #     ots = session.OperationType.last(10)
