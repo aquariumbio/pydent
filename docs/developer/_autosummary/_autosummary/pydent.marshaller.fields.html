@@ -1,24 +1,11 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  
-  <!-- Licensed under the Apache 2.0 License -->
-  <link rel="stylesheet" type="text/css" href="../../../_static/fonts/open-sans/stylesheet.css" />
-  <!-- Licensed under the SIL Open Font License -->
-  <link rel="stylesheet" type="text/css" href="../../../_static/fonts/source-serif-pro/source-serif-pro.css" />
-  <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap.min.css" />
-  <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+    <meta charset="utf-8" />
     <title>pydent.marshaller.fields &#8212; Trident 0.1.0a3 documentation</title>
-    <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
@@ -28,237 +15,209 @@
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="pydent.marshaller.registry" href="pydent.marshaller.registry.html" />
     <link rel="prev" title="pydent.marshaller.exceptions" href="pydent.marshaller.exceptions.html" />
-  
-   
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pydent.marshaller.registry.html" title="pydent.marshaller.registry"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pydent.marshaller.exceptions.html" title="pydent.marshaller.exceptions"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../pydent.marshaller.html" accesskey="U">pydent.marshaller</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="container-wrapper">
+    
 
-      <div id="mobile-toggle">
-        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a3</b></span>
       </div>
-  <div id="left-column">
-    <div class="sphinxsidebar"><a href="http://klavinslab.org/trident" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 
-<div>
-    <div>
-        <h1 align="center"><a href="../../../index.html">Trident</a>
-        </h1>
-    </div>
-</div>
-
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
-<div>
-
-</div>
-<div class="sidebar-block">
-  <div class="sidebar-wrapper">
-    <h2>Table Of Contents</h2>
-  </div>
-  <div class="sidebar-toc">
-    
-    
-      <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Trident Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../browsing.html">Model browsing</a></li>
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querying.html">Making Queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer_notes.html">Developer Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tests.html">Tests</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#submodules">Submodules</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
 </ul>
-
-    
-  </div>
-</div>
-<div class="sidebar-block">
-  <div class="sidebar-wrapper">
-    <div id="main-search">
-      <form class="form-inline" action="../../../search.html" method="GET" role="form">
-        <div class="input-group">
-          <input name="q" type="text" class="form-control" placeholder="Search...">
-        </div>
-        <input type="hidden" name="check_keywords" value="yes" />
-        <input type="hidden" name="area" value="default" />
-      </form>
-    </div>
-  </div>
-</div>
-      
-    </div>
-  </div>
-        <div id="right-column">
-          
-          <div role="navigation" aria-label="breadcrumbs navigation">
-            <ol class="breadcrumb">
-              <li><a href="../../../index.html">Docs</a></li>
+</ul>
+</li>
               
-                <li><a href="../../api_reference.html">API Reference</a></li>
-              
-                <li><a href="../pydent.marshaller.html">pydent.marshaller</a></li>
-              
-              <li>pydent.marshaller.fields</li>
-            </ol>
-          </div>
-          
-          <div class="document clearer body">
             
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../../../_sources/developer/_autosummary/_autosummary/pydent.marshaller.fields.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
   <div class="section" id="module-pydent.marshaller.fields">
 <span id="pydent-marshaller-fields"></span><h1>pydent.marshaller.fields<a class="headerlink" href="#module-pydent.marshaller.fields" title="Permalink to this headline">¶</a></h1>
 <p>Fields</p>
 <p class="rubric">Classes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.marshaller.fields.Alias" title="pydent.marshaller.fields.Alias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Alias</span></code></a>(field_name)</td>
-<td>A shallow alias to another field.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Alias" title="pydent.marshaller.fields.Alias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Alias</span></code></a>(field_name)</p></td>
+<td><p>A shallow alias to another field.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callback</span></code></a>(callback[,&nbsp;callback_args,&nbsp;…])</td>
-<td>Make a callback when called.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callback</span></code></a>(callback[, callback_args, …])</p></td>
+<td><p>Make a callback when called.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.marshaller.fields.Field" title="pydent.marshaller.fields.Field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Field</span></code></a>([many,&nbsp;data_key,&nbsp;allow_none,&nbsp;default])</td>
-<td>A serialization/deserialization field.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Field" title="pydent.marshaller.fields.Field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Field</span></code></a>([many, data_key, allow_none, default])</p></td>
+<td><p>A serialization/deserialization field.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.marshaller.fields.FieldABC" title="pydent.marshaller.fields.FieldABC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldABC</span></code></a></td>
-<td>Field abstract base class</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.fields.FieldABC" title="pydent.marshaller.fields.FieldABC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldABC</span></code></a></p></td>
+<td><p>Field abstract base class</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.marshaller.fields.Nested" title="pydent.marshaller.fields.Nested"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Nested</span></code></a>(nested[,&nbsp;many,&nbsp;data_key,&nbsp;allow_none,&nbsp;…])</td>
-<td>Represents a field that returns another nested instance.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Nested" title="pydent.marshaller.fields.Nested"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Nested</span></code></a>(nested[, many, data_key, allow_none, …])</p></td>
+<td><p>Represents a field that returns another nested instance.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.marshaller.fields.Relationship" title="pydent.marshaller.fields.Relationship"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Relationship</span></code></a>(nested,&nbsp;callback[,&nbsp;…])</td>
-<td>A composition (Callback/Nested) field that uses a callback to retrieve a model.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Relationship" title="pydent.marshaller.fields.Relationship"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Relationship</span></code></a>(nested, callback[, …])</p></td>
+<td><p>A composition (Callback/Nested) field that uses a callback to retrieve a model.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="class">
 <dt id="pydent.marshaller.fields.Alias">
-<em class="property">class </em><code class="descclassname">pydent.marshaller.fields.</code><code class="descname">Alias</code><span class="sig-paren">(</span><em>field_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Alias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Alias" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.marshaller.fields.</code><code class="sig-name descname">Alias</code><span class="sig-paren">(</span><em class="sig-param">field_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Alias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Alias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback</span></code></a></p>
 <p>A shallow alias to another field.</p>
 <p>Alias field initialize. Exposes a shallow alias to another field that can be accessed by
 a different attribute key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field_name</strong> (<em>basestring</em>) – the key of the other field</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>field_name</strong> (<em>basestring</em>) – the key of the other field</p>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="pydent.marshaller.fields.Alias.ACCESSOR">
-<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Alias.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Alias.ACCESSOR" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.CallbackAccessor" title="pydent.marshaller.descriptors.CallbackAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.CallbackAccessor</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydent.marshaller.fields.Alias._Callback__FLAGS">
-<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.marshaller.fields.Alias._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.marshaller.fields.Alias._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Callback.__FLAGS</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fullfill</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">cache=None</em>, <em class="sig-param">extra_args=None</em>, <em class="sig-param">extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>function result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>any</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_callback_args</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_callback_kwargs</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.register">
-<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.register" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.register" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers the field to a nested class. Instantiates the corresponding
 descriptor (i.e. accessor)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
-<li><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pydent.marshaller.fields.Callback">
-<em class="property">class </em><code class="descclassname">pydent.marshaller.fields.</code><code class="descname">Callback</code><span class="sig-paren">(</span><em>callback</em>, <em>callback_args=None</em>, <em>callback_kwargs=None</em>, <em>cache=False</em>, <em>data_key=None</em>, <em>many=None</em>, <em>allow_none=None</em>, <em>always_dump=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.marshaller.fields.</code><code class="sig-name descname">Callback</code><span class="sig-paren">(</span><em class="sig-param">callback</em>, <em class="sig-param">callback_args=None</em>, <em class="sig-param">callback_kwargs=None</em>, <em class="sig-param">cache=False</em>, <em class="sig-param">data_key=None</em>, <em class="sig-param">many=None</em>, <em class="sig-param">allow_none=None</em>, <em class="sig-param">always_dump=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.fields.Field" title="pydent.marshaller.fields.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Field</span></code></a></p>
 <p>Make a callback when called.</p>
 <p>A Callback field initializer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>callback</strong> – name of the callback function or a callable. If a name, the name should exist</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>callback</strong> – name of the callback function or a callable. If a name, the name should exist</p>
+</dd>
+</dl>
 <p>as a function in the owner instance. Invalid callback signatures are captures on class creation.
 :type callback: callable|basestring
 :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
@@ -280,94 +239,85 @@ nested should return this field’s descriptor.
 :type always_dump: bool</p>
 <dl class="attribute">
 <dt id="pydent.marshaller.fields.Callback.ACCESSOR">
-<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Callback.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Callback.ACCESSOR" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.CallbackAccessor" title="pydent.marshaller.descriptors.CallbackAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.CallbackAccessor</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydent.marshaller.fields.Callback._Callback__FLAGS">
-<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.marshaller.fields.Callback._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.marshaller.fields.Callback._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Callback.__FLAGS</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Callback.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.fullfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fullfill</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">cache=None</em>, <em class="sig-param">extra_args=None</em>, <em class="sig-param">extra_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.fullfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>function result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>any</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Callback.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.get_callback_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_callback_args</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.get_callback_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Callback.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.get_callback_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_callback_kwargs</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Callback.get_callback_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Callback.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Callback.register">
-<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Callback.register" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Callback.register" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers the field to a nested class. Instantiates the corresponding
 descriptor (i.e. accessor)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
-<li><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pydent.marshaller.fields.Field">
-<em class="property">class </em><code class="descclassname">pydent.marshaller.fields.</code><code class="descname">Field</code><span class="sig-paren">(</span><em>many=None</em>, <em>data_key=None</em>, <em>allow_none=None</em>, <em>default=&lt;Placeholders.DEFAULT: 4&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Field" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.marshaller.fields.</code><code class="sig-name descname">Field</code><span class="sig-paren">(</span><em class="sig-param">many=None</em>, <em class="sig-param">data_key=None</em>, <em class="sig-param">allow_none=None</em>, <em class="sig-param">default=&lt;Placeholders.DEFAULT: 4&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.fields.FieldABC" title="pydent.marshaller.fields.FieldABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.FieldABC</span></code></a></p>
 <p>A serialization/deserialization field.</p>
 <p>A standard field. Performs no functions on serialized and
 deserialized data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>many</strong> (<em>bool</em>) – whether to treat serializations and deserializations as a per-item basis in a list</li>
-<li><strong>data_key</strong> – the data_key, or attribute name, of this field. Calling this as an attribute to the registered</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>many</strong> (<em>bool</em>) – whether to treat serializations and deserializations as a per-item basis in a list</p></li>
+<li><p><strong>data_key</strong> – the data_key, or attribute name, of this field. Calling this as an attribute to the registered</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>nested should return this field’s descriptor.
 :type data_key: basestring
 :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
@@ -376,63 +326,55 @@ deserialized data.</p>
 and self.allow_none == False</p>
 <dl class="attribute">
 <dt id="pydent.marshaller.fields.Field.ACCESSOR">
-<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Field.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Field.ACCESSOR" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.MarshallingAccessor" title="pydent.marshaller.descriptors.MarshallingAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.MarshallingAccessor</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Field.register">
-<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Field.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Field.register" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Field.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Field.register" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers the field to a nested class. Instantiates the corresponding
 descriptor (i.e. accessor)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
-<li><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pydent.marshaller.fields.FieldABC">
-<em class="property">class </em><code class="descclassname">pydent.marshaller.fields.</code><code class="descname">FieldABC</code><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#FieldABC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.FieldABC" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.marshaller.fields.</code><code class="sig-name descname">FieldABC</code><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#FieldABC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.FieldABC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Field abstract base class</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="pydent.marshaller.fields.Nested">
-<em class="property">class </em><code class="descclassname">pydent.marshaller.fields.</code><code class="descname">Nested</code><span class="sig-paren">(</span><em>nested</em>, <em>many=None</em>, <em>data_key=None</em>, <em>allow_none=None</em>, <em>lazy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Nested"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Nested" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.marshaller.fields.</code><code class="sig-name descname">Nested</code><span class="sig-paren">(</span><em class="sig-param">nested</em>, <em class="sig-param">many=None</em>, <em class="sig-param">data_key=None</em>, <em class="sig-param">allow_none=None</em>, <em class="sig-param">lazy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Nested"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Nested" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.fields.Field" title="pydent.marshaller.fields.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Field</span></code></a></p>
 <p>Represents a field that returns another nested instance.</p>
 <p>Nested relationship initializer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nested</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested name of nested field. Should exist in the ModelRegistery.</li>
-<li><strong>many</strong> (<em>bool</em>) – whether to treat serializations and deserializations as a per-item basis in a list</li>
-<li><strong>data_key</strong> – the data_key, or attribute name, of this field. Calling this as an attribute to the registered</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nested</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested name of nested field. Should exist in the ModelRegistery.</p></li>
+<li><p><strong>many</strong> (<em>bool</em>) – whether to treat serializations and deserializations as a per-item basis in a list</p></li>
+<li><p><strong>data_key</strong> – the data_key, or attribute name, of this field. Calling this as an attribute to the registered</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>nested should return this field’s descriptor.
 :type data_key: basestring
 :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
@@ -443,73 +385,62 @@ recieved by <cite>serialize</cite> is not the expected nested, return that data.
 :type lazy:</p>
 <dl class="attribute">
 <dt id="pydent.marshaller.fields.Nested.ACCESSOR">
-<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Nested.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Nested.ACCESSOR" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.MarshallingAccessor" title="pydent.marshaller.descriptors.MarshallingAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.MarshallingAccessor</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Nested.register">
-<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Nested.register" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Nested.register" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers the field to a nested class. Instantiates the corresponding
 descriptor (i.e. accessor)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
-<li><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pydent.marshaller.fields.Relationship">
-<em class="property">class </em><code class="descclassname">pydent.marshaller.fields.</code><code class="descname">Relationship</code><span class="sig-paren">(</span><em>nested</em>, <em>callback</em>, <em>callback_args=None</em>, <em>callback_kwargs=None</em>, <em>cache=True</em>, <em>data_key=None</em>, <em>many=None</em>, <em>allow_none=None</em>, <em>always_dump=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Relationship"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Relationship" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.marshaller.fields.</code><code class="sig-name descname">Relationship</code><span class="sig-paren">(</span><em class="sig-param">nested</em>, <em class="sig-param">callback</em>, <em class="sig-param">callback_args=None</em>, <em class="sig-param">callback_kwargs=None</em>, <em class="sig-param">cache=True</em>, <em class="sig-param">data_key=None</em>, <em class="sig-param">many=None</em>, <em class="sig-param">allow_none=None</em>, <em class="sig-param">always_dump=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/marshaller/fields.html#Relationship"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Relationship" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback</span></code></a></p>
 <p>A composition (Callback/Nested) field that uses a callback to retrieve a model.</p>
 <p>Relationship initializer</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nested</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested name of nested field. Should exist in the ModelRegistery.</li>
-<li><strong>callback</strong> – name of the callback function or a callable. If a name, the name should exist</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nested</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested name of nested field. Should exist in the ModelRegistery.</p></li>
+<li><p><strong>callback</strong> – name of the callback function or a callable. If a name, the name should exist</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>as a function in the owner instance. Invalid callback signatures are captures on class creation.
 :type callback: callable|basestring
 :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or</p>
 <blockquote>
-<div>values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
-replace any arguments that are <cite>Callback.SElF</cite></div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>callback_kwargs</strong> (<em>dict</em>) – a dictionary of kwargs to use in the callback</li>
-<li><strong>cache</strong> – whether to cache the result using <cite>setattr</cite> on the owner instance. This will initialize the</li>
+<div><p>values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
+replace any arguments that are <cite>Callback.SElF</cite></p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>callback_kwargs</strong> (<em>dict</em>) – a dictionary of kwargs to use in the callback</p></li>
+<li><p><strong>cache</strong> – whether to cache the result using <cite>setattr</cite> on the owner instance. This will initialize the</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>serialization and deserialization procedures detailed in the corresponding field/descriptor.
 :type cache: bool
 :param many: whether to treat serializations and deserializations as a per-item basis in a list
@@ -518,71 +449,66 @@ replace any arguments that are <cite>Callback.SElF</cite></div></blockquote>
 nested should return this field’s descriptor.</p>
 <dl class="attribute">
 <dt id="pydent.marshaller.fields.Relationship.ACCESSOR">
-<code class="descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Relationship.ACCESSOR" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ACCESSOR</code><a class="headerlink" href="#pydent.marshaller.fields.Relationship.ACCESSOR" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.RelationshipAccessor" title="pydent.marshaller.descriptors.RelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.RelationshipAccessor</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pydent.marshaller.fields.Relationship._Callback__FLAGS">
-<code class="descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.marshaller.fields.Relationship._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_Callback__FLAGS</code><a class="headerlink" href="#pydent.marshaller.fields.Relationship._Callback__FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Callback.__FLAGS</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Relationship.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fullfill</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">cache=None</em>, <em class="sig-param">extra_args=None</em>, <em class="sig-param">extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">function result</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">any</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the owning object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>function result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>any</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Relationship.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_callback_args</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Relationship.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_callback_kwargs</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Relationship.register">
-<code class="descname">register</code><span class="sig-paren">(</span><em>name</em>, <em>objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.register" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Relationship.register" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers the field to a nested class. Instantiates the corresponding
 descriptor (i.e. accessor)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>basestring</em>) – name of the field</li>
-<li><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel" title="pydent.marshaller.base.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -590,51 +516,21 @@ descriptor (i.e. accessor)</p>
 </div>
 
 
-          </div>
-            
-  <div class="footer-relations">
-    
-      <div class="pull-left">
-        <a class="btn btn-default" href="pydent.marshaller.exceptions.html" title="previous chapter (use the left arrow)">pydent.marshaller.exceptions</a>
-      </div>
-    
-      <div class="pull-right">
-        <a class="btn btn-default" href="pydent.marshaller.registry.html" title="next chapter (use the right arrow)">pydent.marshaller.registry</a>
-      </div>
     </div>
-    <div class="clearer"></div>
-  
-        </div>
-        <div class="clearfix"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pydent.marshaller.registry.html" title="pydent.marshaller.registry"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="pydent.marshaller.exceptions.html" title="pydent.marshaller.exceptions"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../pydent.marshaller.html" >pydent.marshaller</a> &#187;</li> 
-      </ul>
-    </div>
-<script type="text/javascript">
-  $("#mobile-toggle a").click(function () {
-    $("#left-column").toggle();
-  });
-</script>
-<script type="text/javascript" src="../../../_static/js/bootstrap.js"></script>
-  <div class="footer">
-    &copy; Copyright 2017, University of Washington. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+      
   </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.0.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

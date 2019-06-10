@@ -34,6 +34,7 @@ docs:
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/html/index.html.\n\033[0m"
 
 	touch docs/.nojekyll
+	open ./docs/index.html
 
 
 doctest:

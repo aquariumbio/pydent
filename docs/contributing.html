@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Contributing &#8212; Trident 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Version History" href="versions.html" />
+    <link rel="prev" title="pydent.utils.logger" href="developer/_autosummary/_autosummary/pydent.utils.logger.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querying.html">Making Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_notes.html">Developer Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/api_reference.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versions.html">Version History</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/contributing.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="running-tests">
+<h2>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<p>Tests are written to run with pytest.</p>
+<p>To run tests, first install trident’s dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
+</pre></div>
+</div>
+<p>To run tests, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">tests</span>
+</pre></div>
+</div>
+<p>To run doctests located in <cite>user/examples</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">doctest</span>
+</pre></div>
+</div>
+<div class="section" id="coverage">
+<h3>coverage<a class="headerlink" href="#coverage" title="Permalink to this headline">¶</a></h3>
+<p>Covering all of the models and endpoints for Trident is very difficult.
+Tests coverage is not 100%.</p>
+<p>For the most part, the <cite>Marshaller</cite>, <cite>utilities</cite>, <cite>aqhttp</cite>, <cite>aqsession</cite>, and
+<cite>baseclass</cite> have near 100% coverage.</p>
+<p>For testing of specific Aquarium models, tests are found in
+‘tests/test_models/models.’ Many of these model tests use ‘monkeypatch’
+to <em>intercept</em> requests and return expected information.
+Writing these tests take a long time and so not all model tests are comprehensive.</p>
+</div>
+<div class="section" id="request-recording">
+<h3>Request recording<a class="headerlink" href="#request-recording" title="Permalink to this headline">¶</a></h3>
+<p>By default, live requests are recorded automatically via
+<a class="reference external" href="https://vcrpy.readthedocs.io/en/latest/installation.html">VCRpy</a></p>
+<p>Information about each request is stored in a <strong>fixtures/vcr_cassettes/*.yaml</strong>
+and retrieved on a as-needed basis.</p>
+</div>
+<div class="section" id="testing-sessions">
+<h3>Testing sessions<a class="headerlink" href="#testing-sessions" title="Permalink to this headline">¶</a></h3>
+<p>In ‘tests/conftest.py’ two fixtures are defined <cite>fake_session</cite> and
+<cite>session.</cite> <cite>fake_session</cite> contains a fake AqSession in which the
+login information has been faked. <cite>session</cite> contains a potentially
+live connection to Aquarium using login information located in
+‘tests/secrets/config.json.secret’</p>
+<p>Though we should not run tests against a production or nursery server,
+to run live tests with an Aquarium server, replace the
+<cite>tests/secrets/config.json.secret.template</cite> and a new
+<cite>tests/secrets/config.json.secret</cite> containing your login information</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;login&quot;</span><span class="p">:</span> <span class="s2">&quot;yourlogin&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;aquarium_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://aquarium.org&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="installing-dependencies">
+<h2>Installing dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>It is recommended you install Trident using <a class="reference external" href="https://docs.pipenv.org/">Pipenv</a> is now the officially
+recommended Python packaging tool from Python.org. This avoids low level
+management of pip and virtualenv.</p>
+<p>To install a new dependency to trident, while in the trident root
+directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="p">[</span><span class="n">name_of_dependency</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>To freeze the requirements to the <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">lock</span>
+</pre></div>
+</div>
+<p>To install trident’s dependencies to its virtual environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>To install trident’s dependencies plus developer dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipenv</span> <span class="n">install</span> <span class="o">--</span><span class="n">dev</span>
+</pre></div>
+</div>
+<p>Before making any changes, install the git hooks to help prevent changes to the
+docs directory, which contains generated documentation files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">hooks</span>
+</pre></div>
+</div>
+<p>Please do not commit changes to your Pipfile.lock unless you are sure
+those dependencies are the ones you want people using in their version
+of trident.</p>
+<div class="section" id="notes-on-ides-pipenv">
+<h3>Notes on IDEs + pipenv<a class="headerlink" href="#notes-on-ides-pipenv" title="Permalink to this headline">¶</a></h3>
+<p>IDEs often default to a particular python interpreter, meaning they can
+bypass the pipenv environment for trident. If running tests through tox
+or py.tests in your IDE, make sure to set your interpreter to the python
+located in your ~/.virtualenv/[project]/</p>
+<p>Which environment you are using can be found by running
+<code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">--venv</span></code></p>
+</div>
+<div class="section" id="makefile">
+<h3>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> contains entry points for running common tasks such as
+installation of developer dependencies, testing, testing coverage,
+updating documentation. These tasks will utilize the dependency
+environment located in the <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> For more information
+regarding pipenv and Pipfile.lock, see <a class="reference external" href="https://docs.pipenv.org/">https://docs.pipenv.org/</a>.</p>
+<p>A breakdown the current tasks are below.</p>
+</div>
+<div class="section" id="make">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span></code><a class="headerlink" href="#make" title="Permalink to this headline">¶</a></h3>
+<p>This command runs the <code class="docutils literal notranslate"><span class="pre">init</span></code> command and will essentially install
+developer dependencies for trident.</p>
+</div>
+<div class="section" id="make-test">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code><a class="headerlink" href="#make-test" title="Permalink to this headline">¶</a></h3>
+<p>This will run all the pytests located in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder. It will
+also test the creation of the sphinx documentation.</p>
+<p>These tests are governed by
+<a class="reference external" href="https://tox.readthedocs.io/en/latest/">tox</a>, a testing automation
+package (see the <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file)</p>
+</div>
+<div class="section" id="make-coverage">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">coverage</span></code><a class="headerlink" href="#make-coverage" title="Permalink to this headline">¶</a></h3>
+<p>This will run testing coverage for the pydent directory.</p>
+</div>
+<div class="section" id="make-pylint">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">pylint</span></code><a class="headerlink" href="#make-pylint" title="Permalink to this headline">¶</a></h3>
+<p>This will run pylint in the pipenv environment.</p>
+</div>
+<div class="section" id="make-docs">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code><a class="headerlink" href="#make-docs" title="Permalink to this headline">¶</a></h3>
+<p>This will use sphinx (<a class="reference external" href="http://www.sphinx-doc.org/en/stable/">http://www.sphinx-doc.org/en/stable/</a>) to
+autogenerate documentation from trident’s docstrings using source
+documents located in <code class="docutils literal notranslate"><span class="pre">docsrc</span></code>. Documentation will be built in <code class="docutils literal notranslate"><span class="pre">docs</span></code>.</p>
+</div>
+<div class="section" id="make-doctest">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">doctest</span></code><a class="headerlink" href="#make-doctest" title="Permalink to this headline">¶</a></h3>
+<p>Runs api tests contained in the <code class="docutils literal notranslate"><span class="pre">docsrc</span></code>.</p>
+</div>
+<div class="section" id="make-testdeploy">
+<h3><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testdeploy</span></code><a class="headerlink" href="#make-testdeploy" title="Permalink to this headline">¶</a></h3>
+<p>Deploys release to PyPi test server</p>
+</div>
+</div>
+<div class="section" id="continuous-integration">
+<h2>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
+<p>Continuous integration is maintained by CircleCI. Tagging a new release will initiate
+CircleCI to deploy onto PyPI. Be sure to increment the version number in pydent/__version__.py
+to match the release version. All version tags should have a ‘x.y.z’ format
+(NOT ‘vX.Y.Z’; no ‘v’ prefix).</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>Documentation is pulled from the code to create the
+documentation using sphinx. Errors in the documentation will result in
+errors when running the documentation tests, so please write
+documentation correctly.</p>
+<div class="section" id="doc-style">
+<h3>doc style<a class="headerlink" href="#doc-style" title="Permalink to this headline">¶</a></h3>
+<p>For most methods, classes, and modules, use the form:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aqhttp</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Initializer for SessionInterface</span>
+
+<span class="sd">:param aqhttp: aqhttp instance for this interface</span>
+<span class="sd">:type aqhttp: AqHTTP</span>
+<span class="sd">:param session: session instance for this interface</span>
+<span class="sd">:type session: AqSession</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">aqhttp</span> <span class="o">=</span> <span class="n">aqhttp</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+</pre></div>
+</div>
+<p>If a method returns a value use the <code class="docutils literal notranslate"><span class="pre">:returns</span></code> tag to describe the returned
+values, and if it throws an exception use the <code class="docutils literal notranslate"><span class="pre">:raises</span></code> tag to list the
+exception classes thrown.</p>
+</div>
+</div>
+<div class="section" id="making-a-release">
+<h2>Making a Release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Make sure tests clear</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">test</span>
+<span class="n">make</span> <span class="n">doctest</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Update documentation</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">hooks</span>
+<span class="n">make</span> <span class="n">docs</span>
+</pre></div>
+</div>
+<ol class="arabic" start="3">
+<li><p>Commit changes to github.</p></li>
+<li><p>Make a release on github.</p>
+<blockquote>
+<div><p>make testdeploy</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Then commit on github. Make a new release on github. Release to PyPi using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">deploy</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
