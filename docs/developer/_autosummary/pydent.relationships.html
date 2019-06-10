@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.relationships &#8212; Trident 1.0.0a2 documentation</title>
+    <title>pydent.relationships &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.models.html" title="pydent.models"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -215,7 +215,7 @@ fallback to None. If successful, deserialize data to the nested model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.BaseRelationship.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#BaseRelationship.fullfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.BaseRelationship.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#BaseRelationship.fullfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.BaseRelationship.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -235,13 +235,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.BaseRelationship.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.BaseRelationship.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.BaseRelationship.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.BaseRelationship.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.BaseRelationship.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.BaseRelationship.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -309,7 +309,7 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.Function.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -329,13 +329,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.Function.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.Function.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -423,7 +423,7 @@ built from the ‘ref_model’ and ‘attr’ parameters</li>
 
 <dl class="method">
 <dt id="pydent.relationships.HasMany.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -443,13 +443,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasMany.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.HasMany.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -529,7 +529,7 @@ to find other models.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasManyGeneric.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -549,13 +549,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasManyGeneric.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.HasManyGeneric.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyGeneric.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -635,7 +635,7 @@ Establishes a Many-to-Many relationship with another model</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasManyThrough.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -655,13 +655,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasManyThrough.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.HasManyThrough.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasManyThrough.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -787,7 +787,7 @@ automatically assigns attribute as in the following:</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasOne.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -807,13 +807,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasOne.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.HasOne.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOne.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -924,7 +924,7 @@ built from the ‘ref_model’ and ‘attr’ parameters</li>
 
 <dl class="method">
 <dt id="pydent.relationships.HasOneFromMany.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -944,13 +944,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.HasOneFromMany.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.HasOneFromMany.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasOneFromMany.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -1082,7 +1082,7 @@ Subclass of <code class="xref py py-class docutils literal notranslate"><span cl
 
 <dl class="method">
 <dt id="pydent.relationships.Many.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -1102,13 +1102,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.Many.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.Many.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Many.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -1180,7 +1180,7 @@ Subclass of <code class="xref py py-class docutils literal notranslate"><span cl
 
 <dl class="method">
 <dt id="pydent.relationships.One.fullfill">
-<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.fullfill" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fullfill</code><span class="sig-paren">(</span><em>owner</em>, <em>cache=None</em>, <em>extra_args=None</em>, <em>extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.fullfill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls the callback function using the owner object. A
 Callback.SELF arg value will be replaced to be equivalent to the
 owner instance model.</p>
@@ -1200,13 +1200,13 @@ owner instance model.</p>
 
 <dl class="method">
 <dt id="pydent.relationships.One.get_callback_args">
-<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_args</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.get_callback_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback args</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.One.get_callback_kwargs">
-<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_callback_kwargs</code><span class="sig-paren">(</span><em>owner</em>, <em>extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.One.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes the callback kwargs</p>
 </dd></dl>
 
@@ -1309,7 +1309,7 @@ descriptor (i.e. accessor)</p>
         <li class="right" >
           <a href="pydent.models.html" title="pydent.models"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

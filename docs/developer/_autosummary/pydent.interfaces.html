@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.interfaces &#8212; Trident 1.0.0a2 documentation</title>
+    <title>pydent.interfaces &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="pydent.exceptions.html" title="pydent.exceptions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" accesskey="U">API Reference</a> &#187;</li> 
       </ul>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -162,195 +162,274 @@ session1.User
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.ModelInterface" title="pydent.interfaces.ModelInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelInterface</span></code></a>(model_name,&nbsp;aqhttp,&nbsp;session)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.BrowserInterface" title="pydent.interfaces.BrowserInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrowserInterface</span></code></a>(model_name,&nbsp;aqhttp,&nbsp;session)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.interfaces.CRUDInterface" title="pydent.interfaces.CRUDInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CRUDInterface</span></code></a>(aqhttp,&nbsp;session)</td>
+<td>Create, Update, Delete interface.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.QueryInterface" title="pydent.interfaces.QueryInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QueryInterface</span></code></a>(model_name,&nbsp;aqhttp,&nbsp;session)</td>
 <td>Makes requests using AqHTTP that are model specific.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SessionInterface</span></code></a>(aqhttp,&nbsp;session)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.interfaces.QueryInterfaceABC" title="pydent.interfaces.QueryInterfaceABC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QueryInterfaceABC</span></code></a></td>
+<td>Interface that is used by models to find other models.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SessionInterface</span></code></a>(aqhttp,&nbsp;session)</td>
 <td>Generic session interface.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.interfaces.UtilityInterface" title="pydent.interfaces.UtilityInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UtilityInterface</span></code></a>(aqhttp,&nbsp;session)</td>
-<td>Miscellaneous requests for creating, updating, etc.</td>
+<tr class="row-even"><td><a class="reference internal" href="#pydent.interfaces.UtilityInterface" title="pydent.interfaces.UtilityInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UtilityInterface</span></code></a>(aqhttp,&nbsp;session)</td>
+<td>Miscellaneous and specialized requests for creating, updating, etc.</td>
 </tr>
 </tbody>
 </table>
 <dl class="class">
-<dt id="pydent.interfaces.ModelInterface">
-<em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">ModelInterface</code><span class="sig-paren">(</span><em>model_name</em>, <em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
-<p>Makes requests using AqHTTP that are model specific.
-Establishes a connection between a session object and an Aquarium model.</p>
+<dt id="pydent.interfaces.BrowserInterface">
+<em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">BrowserInterface</code><span class="sig-paren">(</span><em>model_name</em>, <em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#BrowserInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.BrowserInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a>, <a class="reference internal" href="#pydent.interfaces.QueryInterfaceABC" title="pydent.interfaces.QueryInterfaceABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.QueryInterfaceABC</span></code></a></p>
 <dl class="method">
-<dt id="pydent.interfaces.ModelInterface._post_json">
-<code class="descname">_post_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface._post_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface._post_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Posts a json request to session for this interface.
-Attaches raw json and this session instance to the models it retrieves.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface._prepost_query_hook">
-<code class="descname">_prepost_query_hook</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface._prepost_query_hook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface._prepost_query_hook" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for modifying the query before posting</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.all">
-<code class="descname">all</code><span class="sig-paren">(</span><em>rest=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.all" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds all models</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>rest</strong> – </li>
-<li><strong>opts</strong> (<em>dict</em>) – additional options (“offset”, “limit”, “reverse”, etc.)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.array_query">
-<code class="descname">array_query</code><span class="sig-paren">(</span><em>method</em>, <em>args</em>, <em>rest</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.array_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.array_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds models based on a query</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.find">
-<code class="descname">find</code><span class="sig-paren">(</span><em>model_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.find" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds model by id</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.find_by_name">
-<code class="descname">find_by_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.find_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.find_by_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds model by name</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.first">
-<code class="descname">first</code><span class="sig-paren">(</span><em>num=None</em>, <em>query=None</em>, <em>**opts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.first" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find the first added models</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>num</strong> (<em>int</em>) – number of models to return. If not provided, assumes 1</li>
-<li><strong>query</strong> (<em>dict</em>) – additional query to find models</li>
-<li><strong>opts</strong> (<em>dict</em>) – additional options (“offset”, “limit”, “reverse”, etc.)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of models</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes a generic get request</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.last">
-<code class="descname">last</code><span class="sig-paren">(</span><em>num=None</em>, <em>query=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.last" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find the last added models</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>num</strong> (<em>int</em>) – number of models to return. If not provided, assumes 1</li>
-<li><strong>query</strong> (<em>dict</em>) – additional query to find models</li>
-<li><strong>opts</strong> (<em>dict</em>) – additional options (“offset”, “limit”, “reverse”, etc.)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of models</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.load">
-<code class="descname">load</code><span class="sig-paren">(</span><em>post_response</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.load" title="Permalink to this definition">¶</a></dt>
+<dt id="pydent.interfaces.BrowserInterface.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>post_response</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#BrowserInterface.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.BrowserInterface.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads model instance(s) from data.
 Model instances will be of class defined by self.model.
 If data is a list, will return a list of model instances.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pydent.interfaces.ModelInterface.model_name">
-<code class="descname">model_name</code><a class="headerlink" href="#pydent.interfaces.ModelInterface.model_name" title="Permalink to this definition">¶</a></dt>
+<dt id="pydent.interfaces.BrowserInterface.model_name">
+<code class="descname">model_name</code><a class="headerlink" href="#pydent.interfaces.BrowserInterface.model_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for self.model.__name__</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.new">
-<code class="descname">new</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.new" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new model instance. Attach a session by calling __new__ with session kwargs.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pydent.interfaces.ModelInterface.one">
-<code class="descname">one</code><span class="sig-paren">(</span><em>query=None</em>, <em>first=False</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.one" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return one model. Returns the last model by default. Returns None if no model is found.</p>
+<dl class="class">
+<dt id="pydent.interfaces.CRUDInterface">
+<em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">CRUDInterface</code><span class="sig-paren">(</span><em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#CRUDInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.CRUDInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
+<p>Create, Update, Delete interface. Methods for communicating with
+Aquarium’s JSON controller.</p>
+<p>Initializer for SessionInterface</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>first</strong> (<em>bool</em>) – whether to return the first model (default: False</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">model</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pydent.base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>aqhttp</strong> (<a class="reference internal" href="pydent.aqhttp.html#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><em>AqHTTP</em></a>) – aqhttp instance for this interface</li>
+<li><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) – session instance for this interface</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
 <dl class="method">
-<dt id="pydent.interfaces.ModelInterface.where">
-<code class="descname">where</code><span class="sig-paren">(</span><em>criteria</em>, <em>methods=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#ModelInterface.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.ModelInterface.where" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs a query for models</p>
+<dt id="pydent.interfaces.CRUDInterface._json_controller">
+<code class="descname">_json_controller</code><span class="sig-paren">(</span><em>method</em>, <em>model_name</em>, <em>model_data</em>, <em>record_methods=None</em>, <em>record_getters=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#CRUDInterface._json_controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.CRUDInterface._json_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for create, updating, and deleting models using Aquariums JSON controller.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>criteria</strong> (<em>dict</em>) – query to find models</li>
-<li><strong>methods</strong> (<em>list</em>) – server side methods to implement</li>
-<li><strong>opts</strong> (<em>dict</em>) – additional options (“offset”, “limit”, “reverse”, etc.)</li>
+<li><strong>method</strong> (<em>basestring</em>) – Method name (e.g. “save”, “delete”)</li>
+<li><strong>model_name</strong> (<em>basestring</em>) – Model name</li>
+<li><strong>model_data</strong> (<em>dict</em>) – Additional model and method data</li>
+<li><strong>record_methods</strong> (<em>dict</em>) – Optional ‘record_methods’ key</li>
+<li><strong>record_getters</strong> (<em>dict</em>) – Optional ‘record_getters’ key</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of models</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">json formatter response</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">basestring</p>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.CRUDInterface._model_controller">
+<code class="descname">_model_controller</code><span class="sig-paren">(</span><em>method</em>, <em>table</em>, <em>model_id</em>, <em>data</em>, <em>params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#CRUDInterface._model_controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.CRUDInterface._model_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for create, updating, and deleting models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>method</strong> (<em>basestring</em>) – Request method name (one of ‘put’, ‘post’, ‘delete’</li>
+<li><strong>table</strong> (<em>basestring</em>) – Table name of model (e.g. ‘samples’ or ‘data_associations’)</li>
+<li><strong>model_id</strong> (<em>int</em>) – Optional model_id (not required for ‘post’)</li>
+<li><strong>model_data</strong> (<em>dict</em>) – Model data to send to server controller</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">json formatted server response</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydent.interfaces.QueryInterface">
+<em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">QueryInterface</code><span class="sig-paren">(</span><em>model_name</em>, <em>aqhttp</em>, <em>session</em>, <em>assigned_session=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a>, <a class="reference internal" href="#pydent.interfaces.QueryInterfaceABC" title="pydent.interfaces.QueryInterfaceABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.QueryInterfaceABC</span></code></a></p>
+<p>Makes requests using AqHTTP that are model specific.
+Establishes a connection between a session object and an Aquarium model.</p>
+<p>Instantiates a new model interface. Uses aqhttp to make requests,
+and deserializes response to models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model_name</strong> (<em>basestring</em>) – Model name (e.g. ‘Sample’ or ‘FieldValue’)</li>
+<li><strong>aqhttp</strong> (<a class="reference internal" href="pydent.aqhttp.html#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><em>AqHTTP</em></a>) – the AqHTTP instance</li>
+<li><strong>session</strong> – </li>
+<li><strong>assigned_session</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface._post_json">
+<code class="descname">_post_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface._post_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface._post_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Posts a json request to session for this interface.
+Attaches raw json and this session instance to the models it retrieves.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface._prepost_query_hook">
+<code class="descname">_prepost_query_hook</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface._prepost_query_hook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface._prepost_query_hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for modifying the query before posting</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.all">
+<code class="descname">all</code><span class="sig-paren">(</span><em>include=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all models
+:param include:
+:type include:
+:param opts: additional options (“offset”, “limit”, “reverse”, etc.)
+:type opts: dict
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.array_query">
+<code class="descname">array_query</code><span class="sig-paren">(</span><em>method</em>, <em>args</em>, <em>rest=None</em>, <em>include=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.array_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.array_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds models based on a query</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.find">
+<code class="descname">find</code><span class="sig-paren">(</span><em>model_id</em>, <em>include=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds model by id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.find_by_name">
+<code class="descname">find_by_name</code><span class="sig-paren">(</span><em>name</em>, <em>include=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.find_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.find_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds model by name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.first">
+<code class="descname">first</code><span class="sig-paren">(</span><em>num=None</em>, <em>query=None</em>, <em>include=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.first" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the first added models
+:param num: number of models to return. If not provided, assumes 1
+:type num: int
+:param query: additional query to find models
+:type query: dict
+:param opts: additional options (“offset”, “limit”, “reverse”, etc.)
+:type opts: dict
+:return: list of models
+:rtype: list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a generic get request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.last">
+<code class="descname">last</code><span class="sig-paren">(</span><em>num=None</em>, <em>query=None</em>, <em>include=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.last" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the last added models
+:param num: number of models to return. If not provided, assumes 1
+:type num: int
+:param query: additional query to find models
+:type query: dict
+:param opts: additional options (“offset”, “limit”, “reverse”, etc.)
+:type opts: dict
+:return: list of models
+:rtype: list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>post_response</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads model instance(s) from data.
+Model instances will be of class defined by self.model.
+If data is a list, will return a list of model instances.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.interfaces.QueryInterface.model_name">
+<code class="descname">model_name</code><a class="headerlink" href="#pydent.interfaces.QueryInterface.model_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for self.model.__name__</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.new">
+<code class="descname">new</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new model instance. Attach a session by calling __new__ with session kwargs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.one">
+<code class="descname">one</code><span class="sig-paren">(</span><em>query=None</em>, <em>first=False</em>, <em>include=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return one model. Returns the last model by default. Returns None if no model is found.
+:param first: whether to return the first model (default: False
+:type first: bool
+:return: model
+:rtype: ModelBase</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.QueryInterface.where">
+<code class="descname">where</code><span class="sig-paren">(</span><em>criteria</em>, <em>methods=None</em>, <em>include=None</em>, <em>opts=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterface.where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterface.where" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a query for models
+:param criteria: query to find models
+:type criteria: dict
+:param methods: server side methods to implement
+:type methods: list
+:param opts: additional options (“offset”, “limit”, “reverse”, etc.)
+:type opts: dict
+:return: list of models
+:rtype: list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydent.interfaces.QueryInterfaceABC">
+<em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">QueryInterfaceABC</code><a class="reference internal" href="../../_modules/pydent/interfaces.html#QueryInterfaceABC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.QueryInterfaceABC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Interface that is used by models to find other models.</p>
+<dl class="attribute">
+<dt id="pydent.interfaces.QueryInterfaceABC.model_name">
+<code class="descname">model_name</code><a class="headerlink" href="#pydent.interfaces.QueryInterfaceABC.model_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for self.model.__name__</p>
 </dd></dl>
 
 </dd></dl>
@@ -381,8 +460,8 @@ http requests.</p>
 <dl class="class">
 <dt id="pydent.interfaces.UtilityInterface">
 <em class="property">class </em><code class="descclassname">pydent.interfaces.</code><code class="descname">UtilityInterface</code><span class="sig-paren">(</span><em>aqhttp</em>, <em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#UtilityInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
-<p>Miscellaneous requests for creating, updating, etc.</p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.interfaces.CRUDInterface" title="pydent.interfaces.CRUDInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.CRUDInterface</span></code></a></p>
+<p>Miscellaneous and specialized requests for creating, updating, etc.</p>
 <p>Initializer for SessionInterface</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -397,9 +476,56 @@ http requests.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pydent.interfaces.UtilityInterface._UtilityInterface__json_update">
-<code class="descname">_UtilityInterface__json_update</code><span class="sig-paren">(</span><em>model</em>, <em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.interfaces.UtilityInterface._UtilityInterface__json_update" title="Permalink to this definition">¶</a></dt>
-<dd><p>This update method is fairly dangerous. Be careful!</p>
+<dt id="pydent.interfaces.UtilityInterface._json_controller">
+<code class="descname">_json_controller</code><span class="sig-paren">(</span><em>method</em>, <em>model_name</em>, <em>model_data</em>, <em>record_methods=None</em>, <em>record_getters=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.interfaces.UtilityInterface._json_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for create, updating, and deleting models using Aquariums JSON controller.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>method</strong> (<em>basestring</em>) – Method name (e.g. “save”, “delete”)</li>
+<li><strong>model_name</strong> (<em>basestring</em>) – Model name</li>
+<li><strong>model_data</strong> (<em>dict</em>) – Additional model and method data</li>
+<li><strong>record_methods</strong> (<em>dict</em>) – Optional ‘record_methods’ key</li>
+<li><strong>record_getters</strong> (<em>dict</em>) – Optional ‘record_getters’ key</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">json formatter response</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">basestring</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.interfaces.UtilityInterface._model_controller">
+<code class="descname">_model_controller</code><span class="sig-paren">(</span><em>method</em>, <em>table</em>, <em>model_id</em>, <em>data</em>, <em>params=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.interfaces.UtilityInterface._model_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for create, updating, and deleting models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>method</strong> (<em>basestring</em>) – Request method name (one of ‘put’, ‘post’, ‘delete’</li>
+<li><strong>table</strong> (<em>basestring</em>) – Table name of model (e.g. ‘samples’ or ‘data_associations’)</li>
+<li><strong>model_id</strong> (<em>int</em>) – Optional model_id (not required for ‘post’)</li>
+<li><strong>model_data</strong> (<em>dict</em>) – Model data to send to server controller</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">json formatted server response</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -412,30 +538,6 @@ http requests.</p>
 <dt id="pydent.interfaces.UtilityInterface.compatible_items">
 <code class="descname">compatible_items</code><span class="sig-paren">(</span><em>sample_id</em>, <em>object_type_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#UtilityInterface.compatible_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.compatible_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find items compatible with the field value.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.UtilityInterface.create_object_type">
-<code class="descname">create_object_type</code><span class="sig-paren">(</span><em>object_type</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#UtilityInterface.create_object_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.create_object_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new object type</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.UtilityInterface.create_operation_type">
-<code class="descname">create_operation_type</code><span class="sig-paren">(</span><em>operation_type</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#UtilityInterface.create_operation_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.create_operation_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new operation type</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.UtilityInterface.create_plan">
-<code class="descname">create_plan</code><span class="sig-paren">(</span><em>plan</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#UtilityInterface.create_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.create_plan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves a plan</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.interfaces.UtilityInterface.create_sample_type">
-<code class="descname">create_sample_type</code><span class="sig-paren">(</span><em>sample_type</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/interfaces.html#UtilityInterface.create_sample_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.UtilityInterface.create_sample_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new sample type</p>
 </dd></dl>
 
 <dl class="method">
@@ -517,7 +619,7 @@ http requests.</p>
         <li class="right" >
           <a href="pydent.exceptions.html" title="pydent.exceptions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_reference.html" >API Reference</a> &#187;</li> 
       </ul>
     </div>

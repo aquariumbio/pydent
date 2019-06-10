@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.utils.logger &#8212; Trident 0.1.0a3 documentation</title>
+    <title>pydent.models.code &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -26,8 +26,6 @@
     <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Version History" href="../../../versions.html" />
-    <link rel="prev" title="pydent.utils.async_requests" href="pydent.utils.async_requests.html" />
   
    
 
@@ -41,15 +39,8 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="../../../versions.html" title="Version History"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pydent.utils.async_requests.html" title="pydent.utils.async_requests"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../pydent.utils.html" accesskey="U">pydent.utils</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="container-wrapper">
@@ -78,7 +69,7 @@
   <div class="sidebar-toc">
     
     
-      <ul class="current">
+      <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Trident Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Intro to Programmatic Science</a></li>
@@ -87,10 +78,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer_notes.html">Developer Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tests.html">Tests</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#submodules">Submodules</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
 </ul>
 
@@ -119,92 +107,65 @@
             <ol class="breadcrumb">
               <li><a href="../../../index.html">Docs</a></li>
               
-                <li><a href="../../api_reference.html">API Reference</a></li>
+                <li><a href="../../index.html">Module code</a></li>
               
-                <li><a href="../pydent.utils.html">pydent.utils</a></li>
-              
-              <li>pydent.utils.logger</li>
+              <li>pydent.models.code</li>
             </ol>
           </div>
           
           <div class="document clearer body">
             
-  <div class="section" id="module-pydent.utils.logger">
-<span id="pydent-utils-logger"></span><h1>pydent.utils.logger<a class="headerlink" href="#module-pydent.utils.logger" title="Permalink to this headline">¶</a></h1>
-<p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pydent.utils.logger.condense_long_lists" title="pydent.utils.logger.condense_long_lists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">condense_long_lists</span></code></a>(d[,&nbsp;max_list_len])</td>
-<td>Condense the long lists in a dictionary</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pydent.utils.logger.new_logger" title="pydent.utils.logger.new_logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_logger</span></code></a>(name[,&nbsp;level])</td>
-<td>Instantiate a new logger with the given name.</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Classes</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">Loggable</span></code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<dl class="function">
-<dt id="pydent.utils.logger.condense_long_lists">
-<code class="descclassname">pydent.utils.logger.</code><code class="descname">condense_long_lists</code><span class="sig-paren">(</span><em>d</em>, <em>max_list_len=20</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/utils/logger.html#condense_long_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.utils.logger.condense_long_lists" title="Permalink to this definition">¶</a></dt>
-<dd><p>Condense the long lists in a dictionary</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>d</strong> (<em>dict</em>) – dictionary to condense</li>
-<li><strong>max_len</strong> (<em>int</em>) – max length of lists to display</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+  <h1>Source code for pydent.models.code</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
 
-<dl class="function">
-<dt id="pydent.utils.logger.new_logger">
-<code class="descclassname">pydent.utils.logger.</code><code class="descname">new_logger</code><span class="sig-paren">(</span><em>name</em>, <em>level=40</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/utils/logger.html#new_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.utils.logger.new_logger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Instantiate a new logger with the given name. If channel handler exists, do not create a new one.</p>
-</dd></dl>
+<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">add_schema</span>
+<span class="kn">from</span> <span class="nn">pydent.relationships</span> <span class="k">import</span> <span class="n">HasOne</span><span class="p">,</span> <span class="n">One</span><span class="p">,</span> <span class="n">HasManyGeneric</span><span class="p">,</span> <span class="n">HasOneFromMany</span>
 
-</div>
 
+<div class="viewcode-block" id="Code"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Code">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Code</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Code model&quot;&quot;&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">),</span>
+        <span class="n">operation_type</span><span class="o">=</span><span class="n">One</span><span class="p">(</span>
+            <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_parent&quot;</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+        <span class="n">library</span><span class="o">=</span><span class="n">One</span><span class="p">(</span><span class="s2">&quot;Library&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_parent&quot;</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_class</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">parent_class</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_class</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">model_interface</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent_class</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># since they may not always be tied to specific parent</span>
+        <span class="c1"># controllers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">update_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Library"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Library">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Library</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Library model&quot;&quot;&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">codes</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">),</span>
+        <span class="n">source</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
+                              <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
+                                  <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;Library&quot;</span><span class="p">,</span>
+                                  <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span>
+                              <span class="p">}),</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="Library.code"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Library.code">[docs]</a>    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reminant from previous API&quot;&quot;&quot;</span>
+        <span class="c1"># raise DeprecationWarning(&quot;This method is depreciated. Use &#39;.source&#39; directly&quot;)</span>
+        <span class="k">if</span> <span class="n">accessor</span> <span class="o">==</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+</pre></div>
 
           </div>
             
-  <div class="footer-relations">
-    
-      <div class="pull-left">
-        <a class="btn btn-default" href="pydent.utils.async_requests.html" title="previous chapter (use the left arrow)">pydent.utils.async_requests</a>
-      </div>
-    
-      <div class="pull-right">
-        <a class="btn btn-default" href="../../../versions.html" title="next chapter (use the right arrow)">Version History</a>
-      </div>
-    </div>
-    <div class="clearer"></div>
-  
         </div>
         <div class="clearfix"></div>
     </div>
@@ -217,15 +178,8 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="../../../versions.html" title="Version History"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="pydent.utils.async_requests.html" title="pydent.utils.async_requests"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../api_reference.html" >API Reference</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../pydent.utils.html" >pydent.utils</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
 <script type="text/javascript">

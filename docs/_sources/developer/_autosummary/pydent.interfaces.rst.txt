@@ -13,7 +13,10 @@ pydent.interfaces
 
    .. autosummary::
    
-      ModelInterface
+      BrowserInterface
+      CRUDInterface
+      QueryInterface
+      QueryInterfaceABC
       SessionInterface
       UtilityInterface
    

@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/bootstrap-theme.min.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-    <title>pydent.relationships &#8212; Trident 1.0.0a2 documentation</title>
+    <title>pydent.relationships &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="../../_static/guzzle.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">1.0.0a2</a></p>
+<p align="center" class="sidebar-subtitle">Trident version: <a href="https://pypi.org/project/pydent/">0.1.0a3</a></p>
 <div>
 
 </div>
@@ -172,9 +172,9 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="n">many</span><span class="p">,</span>
                          <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseRelationship.fullfill"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.fullfill">[docs]</a>    <span class="k">def</span> <span class="nf">fullfill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseRelationship.fullfill"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.fullfill">[docs]</a>    <span class="k">def</span> <span class="nf">fullfill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fullfill</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fullfill</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="n">extra_args</span><span class="p">,</span> <span class="n">extra_kwargs</span><span class="o">=</span><span class="n">extra_kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">fields</span><span class="o">.</span><span class="n">RunTimeCallbackAttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">BaseRelationshipAccessor</span><span class="o">.</span><span class="n">HOLDER</span></div>
 
@@ -337,36 +337,6 @@
         <span class="k">return</span> <span class="n">val</span></div>
 
 
-<div class="viewcode-block" id="HasManyThrough"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyThrough">[docs]</a><span class="k">class</span> <span class="nc">HasManyThrough</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">Many</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A relationship using an intermediate association model.</span>
-<span class="sd">    Establishes a Many-to-Many relationship with another model</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">through</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">nested</span><span class="o">=</span><span class="n">nested</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
-
-        <span class="c1"># e.g. PlanAssociation &gt;&gt; plan_associations</span>
-        <span class="n">through_model_attr</span> <span class="o">=</span> <span class="n">inflection</span><span class="o">.</span><span class="n">pluralize</span><span class="p">(</span>
-            <span class="n">inflection</span><span class="o">.</span><span class="n">underscore</span><span class="p">(</span><span class="n">through</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">through_model_attr</span> <span class="o">=</span> <span class="n">through_model_attr</span>
-
-        <span class="k">if</span> <span class="n">additional_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">additional_args</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">def</span> <span class="nf">callback_args</span><span class="p">(</span><span class="n">slf</span><span class="p">):</span>
-            <span class="n">through_model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">through_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)]}</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_args</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)]}</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span>
-                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="HasMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMany">[docs]</a><span class="k">class</span> <span class="nc">HasMany</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">Many</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A relationship that establishes a One-to-Many relationship with another model.</span>
@@ -408,6 +378,36 @@
             <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)}</span>
             <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_args</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">query</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HasManyThrough"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyThrough">[docs]</a><span class="k">class</span> <span class="nc">HasManyThrough</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">Many</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A relationship using an intermediate association model.</span>
+<span class="sd">    Establishes a Many-to-Many relationship with another model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">through</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">nested</span><span class="o">=</span><span class="n">nested</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
+
+        <span class="c1"># e.g. PlanAssociation &gt;&gt; plan_associations</span>
+        <span class="n">through_model_attr</span> <span class="o">=</span> <span class="n">inflection</span><span class="o">.</span><span class="n">pluralize</span><span class="p">(</span>
+            <span class="n">inflection</span><span class="o">.</span><span class="n">underscore</span><span class="p">(</span><span class="n">through</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">through_model_attr</span> <span class="o">=</span> <span class="n">through_model_attr</span>
+
+        <span class="k">if</span> <span class="n">additional_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">additional_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">def</span> <span class="nf">callback_args</span><span class="p">(</span><span class="n">slf</span><span class="p">):</span>
+            <span class="n">through_model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">through_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)]}</span>
+            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_args</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)]}</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span>
                          <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
@@ -486,7 +486,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 1.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Trident 0.1.0a3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
