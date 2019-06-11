@@ -110,7 +110,7 @@ def test_canvas_add_op(session):
 def test_canvas_quick_create_chain(session):
     canvas = Planner(session)
 
-    canvas.quick_create_chain("Yeast Transformation",
+    canvas.chain("Yeast Transformation",
                               "Check Yeast Plate",
                               "Yeast Overnight Suspension")
     assert len(canvas.plan.operations) == 3
@@ -119,43 +119,43 @@ def test_canvas_quick_create_chain(session):
 
 def test_chain_run_gel(session):
     canvas = Planner(session)
-    canvas.quick_create_chain(
+    canvas.chain(
         "Make PCR Fragment", "Run Gel", category="Cloning")
 
 
 def test_quick_chain_to_existing_operation(session):
     canvas = Planner(session)
     op = canvas.create_operation_by_name("Yeast Transformation")
-    canvas.quick_create_chain(op, "Check Yeast Plate")
+    canvas.chain(op, "Check Yeast Plate")
     assert len(canvas.plan.wires) == 1
 
 
 def test_quick_chain_to_existing_operation_too_many_times(session):
     canvas = Planner(session)
     op = canvas.create_operation_by_name("Yeast Transformation")
-    op1 = canvas.quick_create_chain(op, "Check Yeast Plate")[-1]
+    op1 = canvas.chain(op, "Check Yeast Plate")[-1]
     with pytest.raises(PlannerException):
-        canvas.quick_create_chain("Yeast Transformation", op1)
+        canvas.chain("Yeast Transformation", op1)
     assert len(canvas.plan.wires) == 1
 
 
 def test_canvas_chaining(session):
     canvas = Planner(session)
     canvas.browser.set_verbose(True)
-    ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+    ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                     "Plate Transformed Cells", "Check Plate",
-                                    category="Cloning")
+                       category="Cloning")
     assert len(canvas.plan.wires) == 3
     new_ops = []
     for i in range(3):
-        new_ops += canvas.quick_create_chain(
+        new_ops += canvas.chain(
             ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR")[1:]
     assert len(canvas.plan.wires) == 2 * 3 + 3
 
 
 def test_layout_edges_and_nodes(session):
     canvas = Planner(session)
-    canvas.quick_create_chain("Yeast Transformation",
+    canvas.chain("Yeast Transformation",
                               "Check Yeast Plate", "Yeast Overnight Suspension")
     G = canvas.layout.G
     edges = list(G.edges)
@@ -206,7 +206,7 @@ def test_annotate_layout(session):
 
     canvas = Planner(session)
 
-    ops = canvas.quick_create_chain("Make PCR Fragment", "Run Gel", category="Cloning")
+    ops = canvas.chain("Make PCR Fragment", "Run Gel", category="Cloning")
     canvas.layout.topo_sort()
     canvas.layout.move(100, 200)
 
@@ -227,7 +227,7 @@ def test_annotate_layout(session):
 def test_routing_graph(session):
 
     canvas = Planner(session)
-    ops = canvas.quick_create_chain("Rehydrate Primer",
+    ops = canvas.chain("Rehydrate Primer",
                                     "Make PCR Fragment",
                                     "Run Gel",
                                     "Extract Gel Slice",
@@ -240,8 +240,8 @@ def test_routing_graph(session):
 
 def test_quick_wire_to_input_array(session):
     canvas = Planner(session)
-    ops = canvas.quick_create_chain("Purify Gel Slice", "Assemble Plasmid", category="Cloning")
-    canvas.quick_create_chain("Purify Gel Slice", ops[-1], category="Cloning")
+    ops = canvas.chain("Purify Gel Slice", "Assemble Plasmid", category="Cloning")
+    canvas.chain("Purify Gel Slice", ops[-1], category="Cloning")
 
     assert len(canvas.plan.operations) == 3
     assert len(canvas.plan.wires) == 2
@@ -294,7 +294,7 @@ def test_quick_wire_to_input_array_with_set_sample(session):
     canvas.quick_wire(purify1, assemble)
     canvas.quick_wire(purify2, assemble)
 
-    canvas.quick_create_chain("Purify Gel Slice", assemble, category="Cloning")
+    canvas.chain("Purify Gel Slice", assemble, category="Cloning")
 
     input_array = assemble.input_array("Fragment")
 
@@ -308,7 +308,7 @@ def test_quick_wire_to_input_array_with_set_sample(session):
 def test_set_output_and_propogate(session):
     session.set_verbose(True)
     canvas = Planner(session)
-    ops = canvas.quick_create_chain("Rehydrate Primer",
+    ops = canvas.chain("Rehydrate Primer",
                                         "Make PCR Fragment",
                                         "Run Gel",
                                         "Extract Gel Slice",
@@ -316,7 +316,7 @@ def test_set_output_and_propogate(session):
                                         "Assemble Plasmid", category="Cloning")
 
     example_fragment = session.Sample.find_by_name("SV40-dCas9-split")
-    canvas.set_output(ops[1].outputs[0], sample=example_fragment, setter=canvas.set_field_value_and_propogate)
+    canvas.set_output_sample(ops[1].outputs[0], sample=example_fragment, setter=canvas.set_field_value_and_propogate)
 
     canvas.validate()
 

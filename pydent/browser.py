@@ -30,6 +30,7 @@ class Browser(logger.Loggable, object):
     # TODO: ability to block model callbacks to enforce cache
 
     INTERFACE_CLASS = QueryInterface
+    ACCEPTED_GET_RELATION_TYPES = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric"]
 
     def __init__(self, session):
         """
@@ -677,9 +678,8 @@ class Browser(logger.Loggable, object):
                 raise BrowserException(
                     'Cannot add new relationship "{}" because it already exists in the model definition'.format(
                         relationship_name))
-        accepted_types = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric"]
         # TODO: add relationship handler for Many and One
-        if relation.__class__.__name__ not in accepted_types:
+        if relation.__class__.__name__ not in self.ACCEPTED_GET_RELATION_TYPES:
             raise BrowserException(
                 "retrieve is not supported for the \"{}\" relationship".format(relation.__class__.__name__))
         self._info('RETRIEVE {}: {}'.format(relationship_name, relation))
@@ -751,14 +751,19 @@ class Browser(logger.Loggable, object):
         else:
             raise BrowserException("Type {} for is not recognized for recursive_retrieve".format(type(relations)))
 
-    def get(self, models, relations, strict=True):
+    def get(self, models, relations=None, strict=True):
         if isinstance(models, ModelBase):
             models = [models]
+        elif isinstance(models, str):
+            models = list(self.model_cache.get(models, {}).values())
 
-        if isinstance(relations, dict):
-            return self.recursive_retrieve(models, relations, strict=strict)
+        if relations:
+            if isinstance(relations, str):
+                return self.retrieve(models, relations, strict=strict)
+            else:
+                return self.recursive_retrieve(models, relations, strict=strict)
         else:
-            return self.retrieve(models, relations, strict=strict)
+            return models
 
     def samples_to_df(self, samples):
         """

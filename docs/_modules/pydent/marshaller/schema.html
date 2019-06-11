@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,182 +125,187 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.schema</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Model serialization/deserialization schema</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span>&quot;&quot;&quot;
+Model serialization/deserialization schema
+&quot;&quot;&quot;
 
-<span class="kn">import</span> <span class="nn">inspect</span>
+import inspect
 
-<span class="kn">from</span> <span class="nn">pydent.marshaller.descriptors</span> <span class="k">import</span> <span class="n">DataAccessor</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.exceptions</span> <span class="k">import</span> <span class="n">MultipleValidationError</span><span class="p">,</span> <span class="n">CallbackValidationError</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.fields</span> <span class="k">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Callback</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.registry</span> <span class="k">import</span> <span class="n">SchemaRegistry</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.utils</span> <span class="k">import</span> <span class="n">make_signature_str</span>
+from pydent.marshaller.descriptors import DataAccessor
+from pydent.marshaller.exceptions import MultipleValidationError, CallbackValidationError
+from pydent.marshaller.fields import Field, Callback
+from pydent.marshaller.registry import SchemaRegistry
+from pydent.marshaller.utils import make_signature_str
 
 
-<div class="viewcode-block" id="DynamicSchema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema">[docs]</a><span class="k">class</span> <span class="nc">DynamicSchema</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">SchemaRegistry</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A dynamically added schema. Should be added using &#39;@add_schema` decorator.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DynamicSchema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema">[docs]</a>class DynamicSchema(metaclass=SchemaRegistry):
+    &quot;&quot;&quot;
+    A dynamically added schema. Should be added using &#39;@add_schema` decorator.
+    &quot;&quot;&quot;
 
-    <span class="n">ignore</span> <span class="o">=</span> <span class="p">()</span>
+    ignore = ()
+    fields = dict()
 
-<div class="viewcode-block" id="DynamicSchema.init_field_accessors"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.init_field_accessors">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">init_field_accessors</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initializes callback accessors.</span>
+    @classmethod
+    def _get_model_fields(cls):
+        return cls.fields
 
-<span class="sd">        :return:</span>
-<span class="sd">        :rtype:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span><span class="p">)</span></div>
+<div class="viewcode-block" id="DynamicSchema.init_field_accessors"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.init_field_accessors">[docs]</a>    @classmethod
+    def init_field_accessors(cls):
+        &quot;&quot;&quot;Initializes callback accessors.
 
-<div class="viewcode-block" id="DynamicSchema.init_data_accessors"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.init_data_accessors">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">init_data_accessors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">add_extra</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initializes data accessors.</span>
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        for field_name, field in cls._get_model_fields().items():
+            field.register(field_name, cls.model_class)</div>
 
-<span class="sd">        :param instance:</span>
-<span class="sd">        :type instance:</span>
-<span class="sd">        :param data:</span>
-<span class="sd">        :type data:</span>
-<span class="sd">        :return:</span>
-<span class="sd">        :rtype:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="vm">__class__</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Instance and model class are different&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ignore</span><span class="p">:</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">add_extra</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Expected field missing. Cannot initialize accessor for &#39;</span><span class="si">{}</span><span class="s2">&#39; for &#39;</span><span class="si">{}</span><span class="s2">&#39; because it is not a field.&quot;</span>
-                    <span class="s2">&quot; It may be missing from the &#39;field&#39; dictionary.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
-                <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">DataAccessor</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span><span class="o">.</span><span class="n">_data_key</span><span class="p">))</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="nb">setattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">e</span></div>
-                <span class="c1"># raise AttributeError(&quot;can&#39;t set attribute &#39;{key}&#39; (accessor &#39;{objtype}.{key}&#39; is a {accessor} type) for &#39;{objtype}&#39;&quot;</span>
-                <span class="c1">#                      &quot; because:\n{e}&quot;</span>
-                <span class="c1"># .format(</span>
-                <span class="c1">#     key=k,</span>
-                <span class="c1">#     objtype=instance.__class__,</span>
-                <span class="c1">#     accessor=instance.__class__.__dict__.get(k, None),</span>
-                <span class="c1">#     e=&quot;{}: {}&quot;.format(e.__class__.__name__, e)</span>
-                <span class="c1"># )) from e</span>
+<div class="viewcode-block" id="DynamicSchema.init_data_accessors"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.init_data_accessors">[docs]</a>    @classmethod
+    def init_data_accessors(cls, instance, data, add_extra=True):
+        &quot;&quot;&quot;Initializes data accessors.
 
-<div class="viewcode-block" id="DynamicSchema.validate_callbacks"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.validate_callbacks">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">validate_callbacks</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Validates expected callback signature found in any callback in the</span>
-<span class="sd">        registered model fields.</span>
+        :param instance:
+        :type instance:
+        :param data:
+        :type data:
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        if cls.model_class is not instance.__class__:
+            raise Exception(&quot;Instance and model class are different&quot;)
+        for k, v in dict(data).items():
+            if k in cls.ignore:
+                data.pop(k, None)
+                continue
+            if not add_extra and k not in cls.model_class.fields:
+                raise AttributeError(
+                    &quot;Expected field missing. Cannot initialize accessor for &#39;{}&#39; for &#39;{}&#39; because it is not a field.&quot;
+                    &quot; It may be missing from the &#39;field&#39; dictionary.&quot;.format(k, cls.model_class))
+            if k not in cls.model_class.__dict__:
+                setattr(cls.model_class, k, DataAccessor(k, cls.model_class._data_key))
+            try:
+                setattr(instance, k, v)
+            except AttributeError as e:
+                raise e</div>
+                # raise AttributeError(&quot;can&#39;t set attribute &#39;{key}&#39; (accessor &#39;{objtype}.{key}&#39; is a {accessor} type) for &#39;{objtype}&#39;&quot;
+                #                      &quot; because:\n{e}&quot;
+                # .format(
+                #     key=k,
+                #     objtype=instance.__class__,
+                #     accessor=instance.__class__.__dict__.get(k, None),
+                #     e=&quot;{}: {}&quot;.format(e.__class__.__name__, e)
+                # )) from e
 
-<span class="sd">        :return: None</span>
-<span class="sd">        :rtype: None</span>
-<span class="sd">        :raises: ModelValidationError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">missing_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">not_callable</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">wrong_signature</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">model_class</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_class</span>
-        <span class="k">for</span> <span class="n">rname</span><span class="p">,</span> <span class="n">callback_field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">grouped_fields</span><span class="p">[</span><span class="n">Callback</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">callback_func</span> <span class="o">=</span> <span class="n">callback_field</span><span class="o">.</span><span class="n">callback</span>
-            <span class="k">if</span> <span class="n">callback_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">missing_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="s2">&quot;Callback for </span><span class="si">{model}</span><span class="s2">.</span><span class="si">{name}</span><span class="s2"> cannot be None&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_class</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">rname</span><span class="p">))</span>
-                <span class="k">continue</span>
-            <span class="n">error_prefix</span> <span class="o">=</span> <span class="s2">&quot;Callback &#39;</span><span class="si">{callback}</span><span class="s2">&#39; for relationship &#39;</span><span class="si">{model}</span><span class="s2">.</span><span class="si">{name}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">callback</span><span class="o">=</span><span class="n">callback_func</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model_class</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">rname</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback_func</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">callback_func</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">callback_func</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">missing_callbacks</span><span class="p">:</span>
-                    <span class="n">missing_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_prefix</span> <span class="o">+</span> <span class="s2">&quot; is missing.&quot;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">args_to_send</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">callback_field</span><span class="o">.</span><span class="n">callback_args</span><span class="p">)</span>
-                <span class="n">kwargs_to_send</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">callback_field</span><span class="o">.</span><span class="n">callback_kwargs</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">callback_func</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                    <span class="n">callback_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">callback_func</span><span class="p">)</span>
-                    <span class="n">args_to_send</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;self&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">args_to_send</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback_func</span><span class="p">):</span>
-                    <span class="n">not_callable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_prefix</span> <span class="o">+</span> <span class="s2">&quot; is not callable.&quot;</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">callback_func</span><span class="p">)</span>
-                    <span class="n">expected_args</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">args</span>
-                    <span class="n">expected_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-                    <span class="k">if</span> <span class="n">signature</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span>
-                        <span class="n">default_args</span> <span class="o">=</span> <span class="n">expected_args</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="o">.</span><span class="n">defaults</span><span class="p">):]</span>
-                        <span class="n">expected_args</span> <span class="o">=</span> <span class="n">expected_args</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="o">.</span><span class="n">defaults</span><span class="p">)]</span>
-                        <span class="n">expected_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">default_args</span><span class="p">,</span> <span class="n">signature</span><span class="o">.</span><span class="n">defaults</span><span class="p">))</span>
+<div class="viewcode-block" id="DynamicSchema.validate_callbacks"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.validate_callbacks">[docs]</a>    @classmethod
+    def validate_callbacks(cls):
+        &quot;&quot;&quot;Validates expected callback signature found in any callback in the
+        registered model fields.
 
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_args</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args_to_send</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">signature</span><span class="o">.</span><span class="n">varargs</span><span class="p">:</span>
-                        <span class="n">wrong_signature</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="n">error_prefix</span> <span class="o">+</span> <span class="s2">&quot; expects arguments </span><span class="si">{receive_args}</span><span class="s2"> but would receive arguments </span><span class="si">{sent_args}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                <span class="n">receive_args</span><span class="o">=</span><span class="n">make_signature_str</span><span class="p">(</span><span class="n">expected_args</span><span class="p">,</span> <span class="n">expected_kwargs</span><span class="p">),</span>
-                                <span class="n">sent_args</span><span class="o">=</span><span class="n">make_signature_str</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">args_to_send</span><span class="p">),</span> <span class="n">kwargs_to_send</span><span class="p">))</span>
-                            <span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs_to_send</span><span class="p">:</span>
-                            <span class="n">invalid_keys</span> <span class="o">=</span> <span class="p">[]</span>
-                            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expected_kwargs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">signature</span><span class="o">.</span><span class="n">varkw</span><span class="p">:</span>
-                                <span class="n">invalid_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">invalid_keys</span><span class="p">:</span>
-                                <span class="n">wrong_signature</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_prefix</span> <span class="o">+</span>
-                                                       <span class="s2">&quot; does not recognize named key(s) </span><span class="si">{invalid_keys}</span><span class="s2"> from signature </span><span class="si">{receive_args}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                                           <span class="n">invalid_keys</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                                                               <span class="p">[</span><span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">invalid_keys</span><span class="p">]),</span>
-                                                           <span class="n">receive_args</span><span class="o">=</span><span class="n">make_signature_str</span><span class="p">(</span><span class="n">expected_args</span><span class="p">,</span>
-                                                                                           <span class="n">expected_kwargs</span><span class="p">),</span>
-                                                       <span class="p">))</span>
-                                <span class="n">wrong_signature</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">callback_func</span><span class="p">)</span>
+        :return: None
+        :rtype: None
+        :raises: ModelValidationError
+        &quot;&quot;&quot;
+        missing_callbacks = []
+        not_callable = []
+        wrong_signature = []
+        model_class = cls.model_class
+        for rname, callback_field in cls.grouped_fields[Callback.__name__].items():
+            callback_func = callback_field.callback
+            if callback_func is None:
+                missing_callbacks.append(
+                    &quot;Callback for {model}.{name} cannot be None&quot;.format(model=model_class.__name__, name=rname))
+                continue
+            error_prefix = &quot;Callback &#39;{callback}&#39; for relationship &#39;{model}.{name}&#39;&quot;.format(
+                callback=callback_func, model=model_class.__name__, name=rname)
+            if not callable(callback_func) and not hasattr(model_class, callback_func):
+                if callback_func not in missing_callbacks:
+                    missing_callbacks.append(error_prefix + &quot; is missing.&quot;)
+            else:
+                args_to_send = list(callback_field.callback_args)
+                kwargs_to_send = dict(callback_field.callback_kwargs)
+                if isinstance(callback_func, str):
+                    callback_func = getattr(model_class, callback_func)
+                    args_to_send = [&#39;self&#39;] + args_to_send
+                if not callable(callback_func):
+                    not_callable.append(error_prefix + &quot; is not callable.&quot;)
+                else:
+                    signature = inspect.getfullargspec(callback_func)
+                    expected_args = signature.args
+                    expected_kwargs = {}
+                    if signature.defaults:
+                        default_args = expected_args[-len(signature.defaults):]
+                        expected_args = expected_args[:-len(signature.defaults)]
+                        expected_kwargs = dict(zip(default_args, signature.defaults))
 
-        <span class="k">with</span> <span class="n">MultipleValidationError</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">missing_callbacks</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">missing_callbacks</span><span class="p">:</span>
-                    <span class="n">e</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">CallbackValidationError</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">not_callable</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">not_callable</span><span class="p">:</span>
-                    <span class="n">e</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">CallbackValidationError</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">wrong_signature</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wrong_signature</span><span class="p">:</span>
-                    <span class="n">e</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">CallbackValidationError</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></div>
+                    if len(expected_args) != len(args_to_send) and not signature.varargs:
+                        wrong_signature.append(
+                            error_prefix + &quot; expects arguments {receive_args} but would receive arguments {sent_args}.&quot;.format(
+                                receive_args=make_signature_str(expected_args, expected_kwargs),
+                                sent_args=make_signature_str(list(args_to_send), kwargs_to_send))
+                            )
+                    else:
+                        for k in kwargs_to_send:
+                            invalid_keys = []
+                            if k not in expected_kwargs and not signature.varkw:
+                                invalid_keys.append(k)
+                            if invalid_keys:
+                                wrong_signature.append(error_prefix +
+                                                       &quot; does not recognize named key(s) {invalid_keys} from signature {receive_args}.&quot;.format(
+                                                           invalid_keys=&#39;, &#39;.join(
+                                                               [&#39;&quot;{}&quot;&#39;.format(key) for key in invalid_keys]),
+                                                           receive_args=make_signature_str(expected_args,
+                                                                                           expected_kwargs),
+                                                       ))
+                                wrong_signature.append(callback_func)
 
-<div class="viewcode-block" id="DynamicSchema.register"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.register">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_class</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Registers the schema to a model class. Saves the schema class to the</span>
-<span class="sd">        class attribute.</span>
+        with MultipleValidationError(&#39;&#39;) as e:
+            if missing_callbacks:
+                for w in missing_callbacks:
+                    e.r(CallbackValidationError(w))
+            if not_callable:
+                for w in not_callable:
+                    e.r(CallbackValidationError(w))
+            if wrong_signature:
+                for w in wrong_signature:
+                    e.r(CallbackValidationError(w))</div>
 
-<span class="sd">        :param model_class: a model class</span>
-<span class="sd">        :type model_class: type</span>
-<span class="sd">        :return: None</span>
-<span class="sd">        :rtype: None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="s2">&quot;_model_schema&quot;</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span>
+<div class="viewcode-block" id="DynamicSchema.register"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.register">[docs]</a>    @classmethod
+    def register(cls, model_class):
+        &quot;&quot;&quot;Registers the schema to a model class. Saves the schema class to the
+        class attribute.
 
-        <span class="n">schema_fields</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">ignored_fields</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">fields_key</span> <span class="o">=</span> <span class="n">model_class</span><span class="o">.</span><span class="n">_fields_key</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">fields_key</span><span class="p">):</span>
-            <span class="n">model_fields</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">fields_key</span><span class="p">)</span>
+        :param model_class: a model class
+        :type model_class: type
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
+        setattr(model_class, &quot;_model_schema&quot;, cls)
 
-            <span class="n">ignore</span> <span class="o">=</span> <span class="n">model_fields</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="p">())</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ignore</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">ignore</span> <span class="o">=</span> <span class="p">(</span><span class="n">ignore</span><span class="p">,)</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">ignore</span> <span class="o">=</span> <span class="n">ignore</span>
+        schema_fields = {}
+        ignored_fields = {}
+        fields_key = model_class._fields_key
+        if hasattr(model_class, fields_key):
+            model_fields = getattr(model_class, fields_key)
 
-            <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">model_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ignore</span><span class="p">:</span>
-                    <span class="n">ignored_fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
-                <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">Field</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">data_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">field</span><span class="o">.</span><span class="n">data_key</span> <span class="o">=</span> <span class="n">field_name</span>
-                    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">Field</span><span class="p">):</span>
-                        <span class="n">schema_fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">fields_key</span><span class="p">,</span> <span class="n">schema_fields</span><span class="p">)</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="s2">&quot;_ignored_fields&quot;</span><span class="p">,</span> <span class="n">ignored_fields</span><span class="p">)</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;_fields&quot;</span><span class="p">,</span> <span class="n">schema_fields</span><span class="p">)</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;_ignored_fields&quot;</span><span class="p">,</span> <span class="n">ignored_fields</span><span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">init_field_accessors</span><span class="p">()</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">validate_callbacks</span><span class="p">()</span></div></div>
+            ignore = model_fields.pop(&#39;ignore&#39;, ())
+            if isinstance(ignore, str):
+                ignore = (ignore,)
+            cls.ignore = ignore
+
+            for field_name, field in model_fields.items():
+                if field_name in cls.ignore:
+                    ignored_fields[field_name] = field
+                elif issubclass(type(field), Field):
+                    if field.data_key is None:
+                        field.data_key = field_name
+                    if issubclass(type(field), Field):
+                        schema_fields[field_name] = field
+            setattr(model_class, fields_key, schema_fields)
+            setattr(model_class, &quot;_ignored_fields&quot;, ignored_fields)
+        setattr(cls, &quot;_fields&quot;, schema_fields)
+        setattr(cls, &quot;_ignored_fields&quot;, ignored_fields)
+        cls.init_field_accessors()
+        cls.validate_callbacks()</div></div>
 </pre></div>
 
     </div>

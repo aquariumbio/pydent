@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">Version History</a><ul>
@@ -125,454 +125,456 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Aquarium model baseclass</span>
-
-<span class="sd">This module contains the base classes for Trident models.</span>
-<span class="sd">Trident models load from JSON and dump to JSON.</span>
-<span class="sd">This is accomplished by adding the ``@add_schema`` decorator to classes inherited</span>
-<span class="sd">by the Base class.</span>
-<span class="sd">Using ``@add_schema`` dynamically creates a model schema that handles dumping and</span>
-<span class="sd">loading.</span>
-
-<span class="sd">Features of Trident models:</span>
-
-<span class="sd">    load - models can be loaded from JSON data. Hierarchical JSON is loaded</span>
-<span class="sd">    intelligently.</span>
-
-<span class="sd">.. code-block:: python</span>
-
-<span class="sd">    Sample.load({&quot;name&quot;: &quot;MyPrimer&quot;, &quot;sample_type&quot;: {&quot;name&quot;: &quot;Primer&quot;, ...} })</span>
-<span class="sd">    # =&gt; &lt;Sample(name=&quot;MyPrimer&quot;, sample_type=&lt;SampleType(name=&quot;Primer&quot;)&gt;)&gt;</span>
-
-<span class="sd">dump - models can be dumped to JSON. Dependent models and relationships can be</span>
-<span class="sd">       dumped as well.</span>
-
-<span class="sd">.. code-block:: python</span>
-
-<span class="sd">    s.dump(include=(&quot;sample_type&quot;))</span>
-
-<span class="sd">relationships - models relationships are stored</span>
-
-<span class="sd">.. code-block:: python</span>
-
-<span class="sd">    s = Sample.load(</span>
-<span class="sd">        {&quot;name&quot;: &quot;MyPrimer&quot;,</span>
-<span class="sd">        &quot;sample_type_id&quot;: 1}</span>
-<span class="sd">    )</span>
-
-<span class="sd">    primer_type = s.sample_type</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">pydent.exceptions</span> <span class="k">import</span> <span class="n">AquariumModelError</span><span class="p">,</span> <span class="n">NoSessionError</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">SchemaModel</span><span class="p">,</span> <span class="n">ModelRegistry</span><span class="p">,</span> <span class="n">fields</span>
-<span class="kn">from</span> <span class="nn">inflection</span> <span class="k">import</span> <span class="n">tableize</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">pydent.sessionabc</span> <span class="k">import</span> <span class="n">SessionABC</span>
-
-
-<div class="viewcode-block" id="ModelBase"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase">[docs]</a><span class="k">class</span> <span class="nc">ModelBase</span><span class="p">(</span><span class="n">SchemaModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base class for Aquarium models.</span>
-<span class="sd">    Subclass of :class:`pydent.marshaller.MarshallerBase`</span>
-
-<span class="sd">    - creates instances from JSON using `load`</span>
-<span class="sd">    - contains a reference to the :class:`pydent.session.aqsession.AqSession`</span>
-<span class="sd">      instance that loaded this model</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">PRIMARY_KEY</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
-    <span class="n">GLOBAL_KEY</span> <span class="o">=</span> <span class="s1">&#39;rid&#39;</span>
-    <span class="n">SERVER_MODEL_NAME</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">DEFAULT_COPY_KEEP_UNANONYMOUS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Item&#39;</span><span class="p">,</span> <span class="s1">&#39;Sample&#39;</span><span class="p">,</span> <span class="s1">&#39;Collection&#39;</span><span class="p">]</span>
-    <span class="n">counter</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">_rid</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">ModelBase</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">instance</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_data</span><span class="p">({</span><span class="s1">&#39;rid&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rid</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)})</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_set_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">NoSessionError</span><span class="p">(</span><span class="s2">&quot;Cannot instantiate new model because its data parent&quot;</span>
-                                 <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> has no &#39;session&#39; attribute&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">owner</span><span class="p">))</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">owner</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
-        <span class="n">ModelBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">instance</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_server_model_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">SERVER_MODEL_NAME</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">SERVER_MODEL_NAME</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_tableized_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">tableize</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_server_model_name</span><span class="p">())</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rid</span>
-
-    <span class="nd">@rid</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">rid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_rid</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rid</span> <span class="o">=</span> <span class="n">_rid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_data</span><span class="p">({</span><span class="s1">&#39;rid&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rid</span><span class="p">})</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_primary_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the primary key (e.g. &#39;id&#39;) or the rid if id does not exist or is None&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ModelBase</span><span class="o">.</span><span class="n">PRIMARY_KEY</span><span class="p">):</span>
-            <span class="n">pk</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ModelBase</span><span class="o">.</span><span class="n">PRIMARY_KEY</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">pk</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">pk</span>
-        <span class="k">return</span> <span class="s1">&#39;r</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rid</span><span class="p">)</span>
-
-<div class="viewcode-block" id="ModelBase.append_to_many"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.append_to_many">[docs]</a>    <span class="k">def</span> <span class="nf">append_to_many</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Appends a model to the many relationship</span>
-
-<span class="sd">        :param name: name of the relationship or attribute</span>
-<span class="sd">        :type name: str</span>
-<span class="sd">        :param model: model to append</span>
-<span class="sd">        :type model: ModelBase</span>
-<span class="sd">        :return: None</span>
-<span class="sd">        :rtype: None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_relationships</span><span class="p">():</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_relationships</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="n">field</span><span class="o">.</span><span class="n">nested</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot &#39;append_to_many.&#39; Model must be a &#39;</span><span class="si">{}</span><span class="s2">&#39; but found a &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">field</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">many</span><span class="p">:</span>
-                <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">val</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">rid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">rid</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)]:</span>
-                    <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-
-<div class="viewcode-block" id="ModelBase.load"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.load">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;This method is now depreciated as of version 0.1.0. Trident now requires&quot;</span>
-                        <span class="s2">&quot; model instantiations to be explicitly attached to an AqSession object.&quot;</span>
-                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Please use the following&quot;</span>
-                        <span class="s2">&quot; methods to initialize your models, which will automatically attach your session object to&quot;</span>
-                        <span class="s2">&quot; the newly constructed instance.&quot;</span>
-                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">(1) `session.</span><span class="si">{name}</span><span class="s2">.new(*args, **kwargs)` to initialize a new model using a constructor.&quot;</span>
-                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">(2) `session.</span><span class="si">{name}</span><span class="s2">.load(data)  # to initialize a model with data.&quot;</span>
-                        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">(3) `</span><span class="si">{name}</span><span class="s2">.load_from(data, session)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="ModelBase.load_from"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.load_from">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new model instance from loaded attributes.</span>
-
-<span class="sd">        &#39;obj&#39; should have a o&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-                <span class="n">model</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_set_data</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
-                <span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">models</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_set_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">model</span></div>
-
-    <span class="c1"># TODO: rename reload to something else, implement &#39;refresh&#39; method and associated tests</span>
-<div class="viewcode-block" id="ModelBase.reload"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reload model attributes from new data</span>
-
-<span class="sd">        :param data: data to update model instance</span>
-<span class="sd">        :type data: dict</span>
-<span class="sd">        :return: model instance</span>
-<span class="sd">        :rtype: ModelBase</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">temp_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">load_from</span><span class="p">(</span><span class="n">data_copy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-        <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">temp_model</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="bp">self</span></div>
-
-<div class="viewcode-block" id="ModelBase.refresh"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Refresh this model from data from the server.</span>
-
-<span class="sd">        :return: self</span>
-<span class="sd">        :rtype: self</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_interface</span><span class="p">()</span>
-        <span class="n">interface</span><span class="o">.</span><span class="n">_do_load</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">interface</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_relationships</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="n">grouped</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_schema</span><span class="o">.</span><span class="n">grouped_fields</span>
-        <span class="n">relationships</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="n">fields</span><span class="o">.</span><span class="n">Relationship</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
-        <span class="n">alias</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="n">fields</span><span class="o">.</span><span class="n">Alias</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">aname</span><span class="p">,</span> <span class="n">alias_field</span> <span class="ow">in</span> <span class="n">alias</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">aliased</span> <span class="o">=</span> <span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">alias_field</span><span class="o">.</span><span class="n">alias</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">aliased</span><span class="p">:</span>
-                <span class="n">relationships</span><span class="p">[</span><span class="n">aname</span><span class="p">]</span> <span class="o">=</span> <span class="n">aliased</span>
-        <span class="k">return</span> <span class="n">relationships</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The connected session instance.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span>
-
-    <span class="nd">@session</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_session</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">new_session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">new_session</span><span class="p">),</span> <span class="n">SessionABC</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">NoSessionError</span><span class="p">(</span><span class="s2">&quot;Cannot instantiate new model because its data parent &quot;</span>
-                                 <span class="s2">&quot;session is a type &#39;</span><span class="si">{}</span><span class="s2">&#39;, not a Session object&quot;</span>
-                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">new_session</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cannot set session. Model </span><span class="si">{}</span><span class="s2"> already has a session.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">new_session</span>
-
-<div class="viewcode-block" id="ModelBase.connect_to_session"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.connect_to_session">[docs]</a>    <span class="k">def</span> <span class="nf">connect_to_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Connect model instance to a session. Does nothing if session already exists.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span></div>
-
-<div class="viewcode-block" id="ModelBase._check_for_session"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase._check_for_session">[docs]</a>    <span class="k">def</span> <span class="nf">_check_for_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Raises error if model is not connected to a session&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NoSessionError</span><span class="p">(</span><span class="s2">&quot;No AqSession instance found for &#39;</span><span class="si">{name}</span><span class="s2">&#39; but one is required for the method.&quot;</span>
-                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Do one of the following:&quot;</span>
-                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">(1) - Use &#39;connect_to_session&#39; after initializing your model.&quot;</span>
-                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">(2) - If initializing a model use the session model constructor.&quot;</span>
-                                 <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2"> &gt;&gt; USE: </span><span class="se">\t\t</span><span class="s2">&#39;session.</span><span class="si">{name}</span><span class="s2">.new(*args, **kwargs)&#39;&quot;</span>
-                                 <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2"> &gt;&gt; DO NOT USE:</span><span class="se">\t</span><span class="s2">&#39;</span><span class="si">{name}</span><span class="s2">(*args, **kwargs)&#39;&quot;</span>
-                                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">(3) - If initializing with load&quot;</span>
-                                 <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2"> &gt;&gt; USE: </span><span class="se">\t\t</span><span class="s2">&#39;session.</span><span class="si">{name}</span><span class="s2">.load(data)&quot;</span>
-                                 <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2"> &gt;&gt; DO NOT USE</span><span class="se">\t</span><span class="s2">&#39;</span><span class="si">{name}</span><span class="s2">.load(data)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="ModelBase.no_getter"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.no_getter">[docs]</a>    <span class="k">def</span> <span class="nf">no_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Callback that always returns None&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
-
-    <span class="k">def</span> <span class="nf">create_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
-
-<div class="viewcode-block" id="ModelBase.interface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.interface">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Creates a model interface from this class and a session</span>
-
-<span class="sd">        This method can be overridden in model definitions for special cases.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">model_interface</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="ModelBase.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.find">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">model_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Finds a model instance by its model_id&quot;&quot;&quot;</span>
-        <span class="n">interface</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">interface</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="ModelBase.where"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.where">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Finds a list of models by some parameters&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">interface</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">interface</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></div>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">interface</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">interface</span><span class="o">.</span><span class="n">one</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">one_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_session</span><span class="p">()</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">one</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<div class="viewcode-block" id="ModelBase.find_callback"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.find_callback">[docs]</a>    <span class="k">def</span> <span class="nf">find_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Finds a model using the model interface and model_id. Used to find</span>
-<span class="sd">        models in model relationships.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_session</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">model_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">_log_to_aqhttp</span><span class="p">(</span>
-            <span class="s2">&quot;CALLBACK &#39;</span><span class="si">{clsname}</span><span class="s2">(rid=</span><span class="si">{rid}</span><span class="s2">)&#39; made a FIND request for &#39;</span><span class="si">{model}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">clsname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="n">rid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rid</span><span class="p">,</span>
-                <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">model_id</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="ModelBase.where_callback"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.where_callback">[docs]</a>    <span class="k">def</span> <span class="nf">where_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Finds models using a model interface and a set of parameters. Used to</span>
-<span class="sd">        find models in model relationships.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_session</span><span class="p">()</span>
-        <span class="n">query_arg</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query_arg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_arg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">list</span><span class="p">(</span><span class="n">query_arg</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">query_arg</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">_log_to_aqhttp</span><span class="p">(</span><span class="s2">&quot;CALLBACK &#39;</span><span class="si">{clsname}</span><span class="s2">(rid=</span><span class="si">{rid}</span><span class="s2">)&#39; made a WHERE request for &#39;</span><span class="si">{model}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">clsname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-            <span class="n">rid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rid</span><span class="p">,</span>
-            <span class="n">model</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">query_arg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
-        <span class="n">relationships</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_relationships</span><span class="p">()</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">relationships</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_str</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;rid&#39;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">attributes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="s1">&#39;rid&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">attributes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
-            <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;rid&#39;</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">()</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">attributes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">attributes</span>
-        <span class="p">]))</span>
-
-    <span class="c1"># TODO: anonymize the keys for relationships as well</span>
-<div class="viewcode-block" id="ModelBase.anonymize"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.anonymize">[docs]</a>    <span class="k">def</span> <span class="nf">anonymize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resets the primary key of the model and assigns a new rid.</span>
-
-<span class="sd">        Metatypes cannot be annonymized.</span>
-
-<span class="sd">        :return: self</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Type&#39;</span><span class="p">):</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PRIMARY_KEY</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;rid&#39;</span><span class="p">,</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-
-
-    <span class="k">def</span> <span class="nf">_anonymize_field_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">relation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_relationships</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">relation</span><span class="p">,</span> <span class="s1">&#39;ref&#39;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">relation</span><span class="o">.</span><span class="n">nested</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Type&#39;</span><span class="p">):</span>
-                    <span class="k">continue</span>
-                <span class="k">elif</span> <span class="n">keep</span> <span class="ow">and</span> <span class="n">relation</span><span class="o">.</span><span class="n">nested</span> <span class="ow">in</span> <span class="n">keep</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relation</span><span class="o">.</span><span class="n">ref</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-<div class="viewcode-block" id="ModelBase.copy"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Provides a deepcopy of the model, but annonymizes the primary and global keys unless</span>
-<span class="sd">        class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is</span>
-<span class="sd">        found in list of &#39;keep&#39;</span>
-
-<span class="sd">        By default, inventory classes such as Sample, Item, and Collection are &#39;kept&#39;.</span>
-
-<span class="sd">        This specific usecase is that when copying whole plans, that the integrity of the</span>
-<span class="sd">        inventory used in the operations is maintained. These are the items that refer</span>
-<span class="sd">        to physical inventory in the laboratory and are referred to by their `rids`, and</span>
-<span class="sd">        so it is important to that any of these inventory are always maintain their `rids`.</span>
-<span class="sd">        Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,</span>
-<span class="sd">        there is only ONE instance of inventory that is referred to by its rid.</span>
-
-<span class="sd">        Similarly, any metatype model must also maintain their `rid`.</span>
-
-<span class="sd">        :param keep: list of model classes (as a list of strings) to keep un-anonymous</span>
-<span class="sd">        :return: copied model</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">memo</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">copied</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">keep</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">keep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_COPY_KEEP_UNANONYMOUS</span>
-
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">memo</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">ModelBase</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">keep</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keep</span><span class="p">:</span>
-                    <span class="n">m</span><span class="o">.</span><span class="n">anonymize</span><span class="p">()</span>
-                <span class="n">m</span><span class="o">.</span><span class="n">_anonymize_field_keys</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="n">keep</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">copied</span></div>
-
-<div class="viewcode-block" id="ModelBase._flatten_deserialized_data"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase._flatten_deserialized_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_flatten_deserialized_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">models</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Flattens all of the relationships found in the models, returning a rid: model dictionary&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">models</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">memo</span>
-        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
-
-            <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">model</span><span class="o">.</span><span class="n">rid</span> <span class="ow">in</span> <span class="n">memo</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">memo</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">rid</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">_get_deserialized_data</span><span class="p">()</span>
-                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_relationships</span><span class="p">():</span>
-                    <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">continue</span>
-                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="bp">cls</span><span class="o">.</span><span class="n">_flatten_deserialized_data</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="bp">cls</span><span class="o">.</span><span class="n">_flatten_deserialized_data</span><span class="p">([</span><span class="n">val</span><span class="p">],</span> <span class="n">memo</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">memo</span></div>
-
-<div class="viewcode-block" id="ModelBase._rid_dict"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase._rid_dict">[docs]</a>    <span class="k">def</span> <span class="nf">_rid_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Dictionary of all models attached to this model keyed by their rid&quot;&quot;&quot;</span>
-        <span class="n">memo</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_flatten_deserialized_data</span><span class="p">([</span><span class="bp">self</span><span class="p">],</span> <span class="n">memo</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">memo</span></div>
-
-    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
-
-    <span class="c1">#     return cp</span>
-    <span class="c1"># def patch(self, json_data):</span>
-    <span class="c1">#     &quot;&quot;&quot;Make a patch request to self using json_data. Reload model instance with new data&quot;&quot;&quot;</span>
-    <span class="c1">#     result = self.create_interface().patch(self.id, json_data=json_data)</span>
-    <span class="c1">#     self.reload(data=result)</span>
-    <span class="c1">#     return self</span>
-    <span class="c1">#</span>
-    <span class="c1"># def patch_with_self(self, **kwargs):</span>
-    <span class="c1">#     &quot;&quot;&quot;Update changes to this model instance to Aquarium.&quot;&quot;&quot;</span>
-    <span class="c1">#     json_data = self.dump(**kwargs)</span>
-    <span class="c1">#     return self.patch(json_data=json_data)</span>
-
-    <span class="c1"># def __getattribute__(self, name):</span>
-    <span class="c1">#     &quot;&quot;&quot;Override getattribute to automatically connect sessions&quot;&quot;&quot;</span>
-    <span class="c1">#     res = super().__getattribute__(name)</span>
-    <span class="c1">#     if isinstance(res, list) or isinstance(res, SchemaModel):</span>
-    <span class="c1">#         relationships = object.__getattribute__(</span>
-    <span class="c1">#             self, &quot;get_relationships&quot;)()</span>
-    <span class="c1">#         if name in relationships:</span>
-    <span class="c1">#             session = object.__getattribute__(self, &#39;session&#39;)</span>
-    <span class="c1">#             if isinstance(res, list):</span>
-    <span class="c1">#                 [m.connect_to_session(session) for m in res]</span>
-    <span class="c1">#             else:</span>
-    <span class="c1">#                 res.connect_to_session(session)</span>
-    <span class="c1">#     return res</span>
+<span></span>&quot;&quot;&quot;
+Aquarium model baseclass
+
+This module contains the base classes for Trident models.
+Trident models load from JSON and dump to JSON.
+This is accomplished by adding the ``@add_schema`` decorator to classes inherited
+by the Base class.
+Using ``@add_schema`` dynamically creates a model schema that handles dumping and
+loading.
+
+Features of Trident models:
+
+    load - models can be loaded from JSON data. Hierarchical JSON is loaded
+    intelligently.
+
+.. code-block:: python
+
+    Sample.load({&quot;name&quot;: &quot;MyPrimer&quot;, &quot;sample_type&quot;: {&quot;name&quot;: &quot;Primer&quot;, ...} })
+    # =&gt; &lt;Sample(name=&quot;MyPrimer&quot;, sample_type=&lt;SampleType(name=&quot;Primer&quot;)&gt;)&gt;
+
+dump - models can be dumped to JSON. Dependent models and relationships can be
+       dumped as well.
+
+.. code-block:: python
+
+    s.dump(include=(&quot;sample_type&quot;))
+
+relationships - models relationships are stored
+
+.. code-block:: python
+
+    s = Sample.load(
+        {&quot;name&quot;: &quot;MyPrimer&quot;,
+        &quot;sample_type_id&quot;: 1}
+    )
+
+    primer_type = s.sample_type
+
+&quot;&quot;&quot;
+
+from pydent.exceptions import AquariumModelError, NoSessionError
+from pydent.marshaller import SchemaModel, ModelRegistry, fields
+from inflection import tableize
+import itertools
+from copy import deepcopy
+from pydent.sessionabc import SessionABC
+
+
+<div class="viewcode-block" id="ModelBase"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase">[docs]</a>class ModelBase(SchemaModel):
+    &quot;&quot;&quot;
+    Base class for Aquarium models.
+    Subclass of :class:`pydent.marshaller.MarshallerBase`
+
+    - creates instances from JSON using `load`
+    - contains a reference to the :class:`pydent.session.aqsession.AqSession`
+      instance that loaded this model
+    &quot;&quot;&quot;
+    PRIMARY_KEY = &#39;id&#39;
+    GLOBAL_KEY = &#39;rid&#39;
+    SERVER_MODEL_NAME = None
+    DEFAULT_COPY_KEEP_UNANONYMOUS = [&#39;Item&#39;, &#39;Sample&#39;, &#39;Collection&#39;]
+    counter = itertools.count()
+    id = None
+    rid = None
+
+    def __new__(cls, *args, session=None, **kwargs):
+        instance = super(ModelBase, cls).__new__(cls)
+        instance._session = None
+        instance.session = session
+        instance._rid = next(ModelBase.counter)
+        return instance
+
+    def __init__(self, **data):
+        super().__init__(data)
+        self.add_data({&#39;rid&#39;: self._rid, &quot;id&quot;: data.get(&#39;id&#39;, None)})
+
+    @classmethod
+    def _set_data(cls, data, owner):
+        if not hasattr(owner, &#39;session&#39;):
+            raise NoSessionError(&quot;Cannot instantiate new model because its data parent&quot;
+                                 &quot; {} has no &#39;session&#39; attribute&quot;.format(owner))
+        instance = cls.__new__(cls, session=owner.session)
+        instance.raw = data
+        cls.__init__(instance)
+        ModelBase.__init__(instance, **data)
+        return instance
+
+    @classmethod
+    def get_server_model_name(cls):
+        if cls.SERVER_MODEL_NAME is None:
+            return cls.__name__
+        return cls.SERVER_MODEL_NAME
+
+    @classmethod
+    def get_tableized_name(cls):
+        return tableize(cls.get_server_model_name())
+
+    @property
+    def rid(self):
+        return self._rid
+
+    @rid.setter
+    def rid(self, _rid):
+        self._rid = _rid
+        self.add_data({&#39;rid&#39;: self._rid})
+
+    @property
+    def _primary_key(self):
+        &quot;&quot;&quot;Returns the primary key (e.g. &#39;id&#39;) or the rid if id does not exist or is None&quot;&quot;&quot;
+        if hasattr(self, ModelBase.PRIMARY_KEY):
+            pk = getattr(self, ModelBase.PRIMARY_KEY)
+            if pk:
+                return pk
+        return &#39;r{}&#39;.format(self.rid)
+
+<div class="viewcode-block" id="ModelBase.append_to_many"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.append_to_many">[docs]</a>    def append_to_many(self, name, model):
+        &quot;&quot;&quot;
+        Appends a model to the many relationship
+
+        :param name: name of the relationship or attribute
+        :type name: str
+        :param model: model to append
+        :type model: ModelBase
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
+        if name in self.get_relationships():
+            field = self.get_relationships()[name]
+            if not model.__class__.__name__ == field.nested:
+                raise AquariumModelError(&quot;Cannot &#39;append_to_many.&#39; Model must be a &#39;{}&#39; but found a &#39;{}&#39;&quot;.format(
+                    field.model, model.__class__.__name__))
+            if field.many:
+                val = getattr(self, name)
+                if val is None:
+                    val = []
+                    setattr(self, name, val)
+
+                if model.rid not in [m.rid for m in getattr(self, name)]:
+                    getattr(self, name).append(model)
+        return self</div>
+
+<div class="viewcode-block" id="ModelBase.load"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.load">[docs]</a>    @classmethod
+    def load(cls, *args, **kwargs):
+        raise Exception(&quot;This method is now depreciated as of version 0.1.0. Trident now requires&quot;
+                        &quot; model instantiations to be explicitly attached to an AqSession object.&quot;
+                        &quot;\nPlease use the following&quot;
+                        &quot; methods to initialize your models, which will automatically attach your session object to&quot;
+                        &quot; the newly constructed instance.&quot;
+                        &quot;\n(1) `session.{name}.new(*args, **kwargs)` to initialize a new model using a constructor.&quot;
+                        &quot;\n(2) `session.{name}.load(data)  # to initialize a model with data.&quot;
+                        &quot;\n(3) `{name}.load_from(data, session)&quot;.format(name=cls.__name__))</div>
+
+<div class="viewcode-block" id="ModelBase.load_from"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.load_from">[docs]</a>    @classmethod
+    def load_from(cls, data, owner=None):
+        &quot;&quot;&quot;Create a new model instance from loaded attributes.
+
+        &#39;obj&#39; should have a o&quot;&quot;&quot;
+        if isinstance(data, list):
+            models = []
+            for d in data:
+                model = cls._set_data(d, owner)
+                models.append(model)
+            return models
+        else:
+            model = cls._set_data(data, owner)
+        return model</div>
+
+    # TODO: rename reload to something else, implement &#39;refresh&#39; method and associated tests
+<div class="viewcode-block" id="ModelBase.reload"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.reload">[docs]</a>    def reload(self, data):
+        &quot;&quot;&quot;
+        Reload model attributes from new data
+
+        :param data: data to update model instance
+        :type data: dict
+        :return: model instance
+        :rtype: ModelBase
+        &quot;&quot;&quot;
+        data_copy = deepcopy(data)
+        temp_model = self.__class__.load_from(data_copy, self.session)
+        vars(self).update(vars(temp_model))
+
+        return self</div>
+
+<div class="viewcode-block" id="ModelBase.refresh"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.refresh">[docs]</a>    def refresh(self):
+        &quot;&quot;&quot;
+        Refresh this model from data from the server.
+
+        :return: self
+        :rtype: self
+        &quot;&quot;&quot;
+        interface = self.create_interface()
+        interface._do_load = False
+        data = interface.find(self.id)
+        self.reload(data)
+        return self</div>
+
+    @classmethod
+    def get_relationships(cls):
+        grouped = cls._model_schema.grouped_fields
+        relationships = grouped[fields.Relationship.__name__]
+        alias = grouped[fields.Alias.__name__]
+        for aname, alias_field in alias.items():
+            aliased = relationships.get(alias_field.alias, None)
+            if aliased:
+                relationships[aname] = aliased
+        return relationships
+
+    @property
+    def session(self):
+        &quot;&quot;&quot;The connected session instance.&quot;&quot;&quot;
+        return self._session
+
+    @session.setter
+    def session(self, new_session):
+        if new_session is not None and not issubclass(type(new_session), SessionABC):
+            raise NoSessionError(&quot;Cannot instantiate new model because its data parent &quot;
+                                 &quot;session is a type &#39;{}&#39;, not a Session object&quot;
+                                 .format(type(new_session)))
+        if self.session is not None:
+            raise Exception(&quot;Cannot set session. Model {} already has a session.&quot;.format(self))
+        self._session = new_session
+
+<div class="viewcode-block" id="ModelBase.connect_to_session"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.connect_to_session">[docs]</a>    def connect_to_session(self, session):
+        &quot;&quot;&quot;Connect model instance to a session. Does nothing if session already exists.&quot;&quot;&quot;
+        self.session = session</div>
+
+<div class="viewcode-block" id="ModelBase._check_for_session"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase._check_for_session">[docs]</a>    def _check_for_session(self):
+        &quot;&quot;&quot;Raises error if model is not connected to a session&quot;&quot;&quot;
+        if self.session is None:
+            raise NoSessionError(&quot;No AqSession instance found for &#39;{name}&#39; but one is required for the method.&quot;
+                                 &quot;\nDo one of the following:&quot;
+                                 &quot;\n(1) - Use &#39;connect_to_session&#39; after initializing your model.&quot;
+                                 &quot;\n(2) - If initializing a model use the session model constructor.&quot;
+                                 &quot;\n\t &gt;&gt; USE: \t\t&#39;session.{name}.new(*args, **kwargs)&#39;&quot;
+                                 &quot;\n\t &gt;&gt; DO NOT USE:\t&#39;{name}(*args, **kwargs)&#39;&quot;
+                                 &quot;\n(3) - If initializing with load&quot;
+                                 &quot;\n\t &gt;&gt; USE: \t\t&#39;session.{name}.load(data)&quot;
+                                 &quot;\n\t &gt;&gt; DO NOT USE\t&#39;{name}.load(data)&quot;.format(name=self.__class__.__name__))</div>
+
+<div class="viewcode-block" id="ModelBase.no_getter"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.no_getter">[docs]</a>    def no_getter(self, *_):
+        &quot;&quot;&quot;Callback that always returns None&quot;&quot;&quot;
+        return None</div>
+
+    def create_interface(self):
+        return self.interface(self.session)
+
+<div class="viewcode-block" id="ModelBase.interface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.interface">[docs]</a>    @classmethod
+    def interface(cls, session):
+        &quot;&quot;&quot;Creates a model interface from this class and a session
+
+        This method can be overridden in model definitions for special cases.&quot;&quot;&quot;
+        return session.model_interface(cls.__name__)</div>
+
+<div class="viewcode-block" id="ModelBase.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.find">[docs]</a>    @classmethod
+    def find(cls, session, model_id):
+        &quot;&quot;&quot;Finds a model instance by its model_id&quot;&quot;&quot;
+        interface = cls.interface(session)
+        return interface.find(model_id)</div>
+
+<div class="viewcode-block" id="ModelBase.where"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.where">[docs]</a>    @classmethod
+    def where(cls, session, params):
+        &quot;&quot;&quot;Finds a list of models by some parameters&quot;&quot;&quot;
+        if params is None:
+            return None
+        interface = cls.interface(session)
+        return interface.where(params)</div>
+
+    @classmethod
+    def one(cls, session, query, **kwargs):
+        interface = cls.interface(session)
+        query = dict(query)
+        query.update(kwargs)
+        return interface.one(query)
+
+    def one_callback(self, model_name, *args, **kwargs):
+        self._check_for_session()
+        model = ModelRegistry.get_model(model_name)
+        return model.one(self.session, *args, **kwargs)
+
+<div class="viewcode-block" id="ModelBase.find_callback"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.find_callback">[docs]</a>    def find_callback(self, model_name, model_id):
+        &quot;&quot;&quot;Finds a model using the model interface and model_id. Used to find
+        models in model relationships.&quot;&quot;&quot;
+        self._check_for_session()
+        if model_id is None:
+            return None
+        model = ModelRegistry.get_model(model_name)
+        self.session._log_to_aqhttp(
+            &quot;CALLBACK &#39;{clsname}(rid={rid})&#39; made a FIND request for &#39;{model}&#39;&quot;.format(
+                clsname=self.__class__.__name__,
+                rid=self.rid,
+                model=model_name))
+        return model.find(self.session, model_id)</div>
+
+<div class="viewcode-block" id="ModelBase.where_callback"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.where_callback">[docs]</a>    def where_callback(self, model_name, *args, **kwargs):
+        &quot;&quot;&quot;Finds models using a model interface and a set of parameters. Used to
+        find models in model relationships.&quot;&quot;&quot;
+        self._check_for_session()
+        query_arg = args[0]
+
+        if isinstance(query_arg, dict):
+            if len(query_arg) == 1 and list(query_arg.values())[0] is None:
+                return None
+            if None in query_arg.values():
+                return None
+        model = ModelRegistry.get_model(model_name)
+        if kwargs is None:
+            kwargs = {}
+        self.session._log_to_aqhttp(&quot;CALLBACK &#39;{clsname}(rid={rid})&#39; made a WHERE request for &#39;{model}&#39;&quot;.format(
+            clsname=self.__class__.__name__,
+            rid=self.rid,
+            model=model_name)
+        )
+        return model.where(self.session, query_arg, *args[1:], **kwargs)</div>
+
+    def print(self):
+        data = self.dump()
+        relationships = self.get_relationships()
+        data.update(relationships)
+        print(data)
+
+    def __str__(self):
+        return self._to_str(&#39;id&#39;, &#39;rid&#39;)
+
+    def _to_str(self, *attributes, **kwargs):
+        if &#39;rid&#39; not in attributes:
+            attributes = list(attributes)
+            attributes.append(&#39;rid&#39;)
+        data = self._get_data()
+        data.update(kwargs)
+        attributes = list(attributes) + list(kwargs)
+        return &quot;&lt;{} {}&gt;&quot;.format(self.__class__.__name__, &#39; &#39;.join([
+            &quot;{}={}&quot;.format(k, data.get(k, None)) for k in attributes
+        ]))
+
+    # TODO: anonymize the keys for relationships as well
+<div class="viewcode-block" id="ModelBase.anonymize"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.anonymize">[docs]</a>    def anonymize(self):
+        &quot;&quot;&quot;
+        Resets the primary key of the model and assigns a new rid.
+
+        Metatypes cannot be annonymized.
+
+        :return: self
+        &quot;&quot;&quot;
+        if not self.__class__.__name__.endswith(&#39;Type&#39;):
+            setattr(self, self.PRIMARY_KEY, None)
+            setattr(self, &#39;rid&#39;, next(self.counter))
+            self.updated_at = None
+            self.created_at = None
+            self.raw = {}
+        return self</div>
+
+
+    def _anonymize_field_keys(self, keep=None):
+        for name, relation in self.get_relationships().items():
+            if hasattr(relation, &#39;ref&#39;):
+                if relation.nested.endswith(&#39;Type&#39;):
+                    continue
+                elif keep and relation.nested in keep:
+                    continue
+                else:
+                    setattr(self, relation.ref, None)
+
+<div class="viewcode-block" id="ModelBase.copy"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase.copy">[docs]</a>    def copy(self, keep=None):
+        &quot;&quot;&quot;
+        Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+        class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+        found in list of &#39;keep&#39;
+
+        By default, inventory classes such as Sample, Item, and Collection are &#39;kept&#39;.
+
+        This specific usecase is that when copying whole plans, that the integrity of the
+        inventory used in the operations is maintained. These are the items that refer
+        to physical inventory in the laboratory and are referred to by their `rids`, and
+        so it is important to that any of these inventory are always maintain their `rids`.
+        Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+        there is only ONE instance of inventory that is referred to by its rid.
+
+        Similarly, any metatype model must also maintain their `rid`.
+
+        :param keep: list of model classes (as a list of strings) to keep un-anonymous
+        :return: copied model
+        &quot;&quot;&quot;
+        memo = {}
+        copied = deepcopy(self, memo)
+        if keep is None:
+            keep = self.DEFAULT_COPY_KEEP_UNANONYMOUS
+
+        for m in memo.values():
+            if issubclass(type(m), ModelBase):
+                if keep is None or m.__class__.__name__ not in keep:
+                    m.anonymize()
+                m._anonymize_field_keys(keep=keep)
+        return copied</div>
+
+<div class="viewcode-block" id="ModelBase._flatten_deserialized_data"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase._flatten_deserialized_data">[docs]</a>    @classmethod
+    def _flatten_deserialized_data(cls, models, memo):
+        &quot;&quot;&quot;Flattens all of the relationships found in the models, returning a rid: model dictionary&quot;&quot;&quot;
+        if models is None:
+            return memo
+        for model in models:
+
+            if model is None or model.rid in memo:
+                continue
+            else:
+                memo[model.rid] = model
+                data = model._get_deserialized_data()
+                for key in model.get_relationships():
+                    val = data.get(key, None)
+                    if val is None:
+                        continue
+                    elif isinstance(val, list):
+                        cls._flatten_deserialized_data(val, memo)
+                    else:
+                        cls._flatten_deserialized_data([val], memo)
+        return memo</div>
+
+<div class="viewcode-block" id="ModelBase._rid_dict"><a class="viewcode-back" href="../../developer/_autosummary/pydent.base.html#pydent.models.code.ModelBase._rid_dict">[docs]</a>    def _rid_dict(self):
+        &quot;&quot;&quot;Dictionary of all models attached to this model keyed by their rid&quot;&quot;&quot;
+        memo = {}
+        self._flatten_deserialized_data([self], memo)
+        return memo</div>
+
+    def __copy__(self):
+        return self.copy()</div>
+
+    #     return cp
+    # def patch(self, json_data):
+    #     &quot;&quot;&quot;Make a patch request to self using json_data. Reload model instance with new data&quot;&quot;&quot;
+    #     result = self.create_interface().patch(self.id, json_data=json_data)
+    #     self.reload(data=result)
+    #     return self
+    #
+    # def patch_with_self(self, **kwargs):
+    #     &quot;&quot;&quot;Update changes to this model instance to Aquarium.&quot;&quot;&quot;
+    #     json_data = self.dump(**kwargs)
+    #     return self.patch(json_data=json_data)
+
+    # def __getattribute__(self, name):
+    #     &quot;&quot;&quot;Override getattribute to automatically connect sessions&quot;&quot;&quot;
+    #     res = super().__getattribute__(name)
+    #     if isinstance(res, list) or isinstance(res, SchemaModel):
+    #         relationships = object.__getattribute__(
+    #             self, &quot;get_relationships&quot;)()
+    #         if name in relationships:
+    #             session = object.__getattribute__(self, &#39;session&#39;)
+    #             if isinstance(res, list):
+    #                 [m.connect_to_session(session) for m in res]
+    #             else:
+    #                 res.connect_to_session(session)
+    #     return res
 </pre></div>
 
     </div>

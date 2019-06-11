@@ -83,8 +83,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../versions.html">Version History</a><ul>
@@ -114,7 +114,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="../../_sources/developer/_autosummary/pydent.browser.rst.txt"
+  <a href="../../_sources/developer/_autosummary/pydent.browser.rst"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -452,19 +452,19 @@
 either a list or a dictionary. For example, the following will collect all of the field_values
 and their incoming and outgoing wires, the connecting field_values, and finally those FieldValues’
 operations.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">relation_dict</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;field_values&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;wires_as_dest&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;operation&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;operation&quot;</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;wires_as_source&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;operation&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="s2">&quot;operation&quot;</span>
-        <span class="p">},</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="n">browser</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">operations</span><span class="p">,</span> <span class="n">relation_dict</span><span class="p">)</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>relation_dict = {
+    &quot;field_values&quot;: {
+        &quot;wires_as_dest&quot;: {
+            &quot;source&quot;: &quot;operation&quot;,
+            &quot;destination&quot;: &quot;operation&quot;
+        },
+        &quot;wires_as_source&quot;: {
+            &quot;source&quot;: &quot;operation&quot;,
+            &quot;destination&quot;: &quot;operation&quot;
+        },
+    }
+}
+browser.retrieve(operations, relation_dict)
 </pre></div>
 </div>
 <dl class="field-list simple">

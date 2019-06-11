@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,520 +125,520 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.plan</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Models related to plans, plan associations, and wires.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">json</span>
-
-<span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
-<span class="kn">from</span> <span class="nn">pydent.exceptions</span> <span class="k">import</span> <span class="n">AquariumModelError</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">add_schema</span>
-<span class="kn">from</span> <span class="nn">pydent.models.field_value</span> <span class="k">import</span> <span class="n">FieldValue</span>
-<span class="kn">from</span> <span class="nn">pydent.models.data_associations</span> <span class="k">import</span> <span class="n">Upload</span><span class="p">,</span> <span class="n">DataAssociatorMixin</span>
-<span class="kn">from</span> <span class="nn">pydent.relationships</span> <span class="k">import</span> <span class="p">(</span><span class="n">Raw</span><span class="p">,</span> <span class="n">JSON</span><span class="p">,</span> <span class="n">Many</span><span class="p">,</span> <span class="n">HasOne</span><span class="p">,</span> <span class="n">HasMany</span><span class="p">,</span>
-                                  <span class="n">HasManyThrough</span><span class="p">,</span> <span class="n">HasManyGeneric</span><span class="p">,</span>
-                                  <span class="n">fields</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pydent.models.crud_mixin</span> <span class="k">import</span> <span class="n">SaveMixin</span><span class="p">,</span> <span class="n">DeleteMixin</span>
-
-<div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Plan</span><span class="p">(</span><span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">SaveMixin</span><span class="p">,</span> <span class="n">DeleteMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A Plan model</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">data_associations</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;DataAssociation&quot;</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
-            <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;Plan&quot;</span>
-        <span class="p">}),</span>
-        <span class="n">plan_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;PlanAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;Plan&quot;</span><span class="p">),</span>
-        <span class="n">operations</span><span class="o">=</span><span class="n">HasManyThrough</span><span class="p">(</span><span class="s2">&quot;Operation&quot;</span><span class="p">,</span> <span class="s2">&quot;PlanAssociation&quot;</span><span class="p">),</span>
-        <span class="n">wires</span><span class="o">=</span><span class="n">Many</span><span class="p">(</span><span class="s2">&quot;Wire&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;_get_wires_from_server&quot;</span><span class="p">),</span>
-        <span class="n">layout</span><span class="o">=</span><span class="n">JSON</span><span class="p">(),</span>
-        <span class="n">status</span><span class="o">=</span><span class="n">Raw</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;planning&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">query_hook</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;include&#39;</span><span class="p">:</span> <span class="s1">&#39;wires&#39;</span>
-    <span class="p">}</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyPlan&quot;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;planning&quot;</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
-            <span class="n">data_associations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">plan_associations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">layout</span><span class="o">=</span><span class="p">{</span>
-                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;documentation&quot;</span><span class="p">:</span> <span class="s2">&quot;No documentation of this module&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
-                <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;no_name&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;parent_id&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-                <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span>
-                <span class="s2">&quot;wires&quot;</span><span class="p">:</span> <span class="p">[]</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
-
-<div class="viewcode-block" id="Plan.add_operation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.add_operation">[docs]</a>    <span class="k">def</span> <span class="nf">add_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds an operation to the Plan</span>
-
-<span class="sd">        :param operation: Operation to add</span>
-<span class="sd">        :type operation: Operation</span>
-<span class="sd">        :return: None</span>
-<span class="sd">        :rtype: None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">append_to_many</span><span class="p">(</span><span class="s1">&#39;operations&#39;</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Plan.add_operations"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.add_operations">[docs]</a>    <span class="k">def</span> <span class="nf">add_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds multiple operations to the Plan</span>
-
-<span class="sd">        :param operations: list of Operations</span>
-<span class="sd">        :type operations: list</span>
-<span class="sd">        :return: None</span>
-<span class="sd">        :rtype: None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">has_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">op</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="ow">and</span> <span class="n">op</span><span class="o">.</span><span class="n">rid</span> <span class="ow">in</span> <span class="p">[</span><span class="n">_op</span><span class="o">.</span><span class="n">rid</span> <span class="k">for</span> <span class="n">_op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">]</span>
-
-<div class="viewcode-block" id="Plan.find_wires"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.find_wires">[docs]</a>    <span class="k">def</span> <span class="nf">find_wires</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Retrieves the wire between a source and destination FieldValues</span>
-
-<span class="sd">        :param src: source FieldValue</span>
-<span class="sd">        :type src: FieldValue</span>
-<span class="sd">        :param dest: destination FieldValue</span>
-<span class="sd">        :type dest: FieldValue</span>
-<span class="sd">        :return: array of wires between src and dest FieldValues (determined by rid)</span>
-<span class="sd">        :rtype: array of wires</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span> <span class="ow">and</span> <span class="n">dest</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span><span class="p">:</span>
-                <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">found</span></div>
-
-<div class="viewcode-block" id="Plan.wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.wire">[docs]</a>    <span class="k">def</span> <span class="nf">wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new wire between src and dest FieldValues. Returns the new wire</span>
-<span class="sd">        if it does not exist in the plan. If the wire already exists and</span>
-<span class="sd">        error_if_exists is True, then the existing wire is returned. Else an exception is raised.</span>
-
-<span class="sd">        :param src: source field value (the input of the wire)</span>
-<span class="sd">        :type src: FieldValue</span>
-<span class="sd">        :param dest: destination field value (the output of the wire)</span>
-<span class="sd">        :type dest: FieldValue</span>
-<span class="sd">        :param error_if_exists: Raise an error if the Wire already exists in the plan.</span>
-<span class="sd">        :type error_if_exists: boolean</span>
-<span class="sd">        :return: Newly created wire or existing wire (if exists and error_if_exists == False)</span>
-<span class="sd">        :rtype: Wire</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_operation</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">operation</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot wire because the wire&#39;s source FieldValue </span><span class="si">{}</span><span class="s2"> does &quot;</span>
-                <span class="s2">&quot;not exist in the Plan because its Operation &#39;</span><span class="si">{}</span><span class="s2">&#39; is not in the plan&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">operation</span><span class="p">))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_operation</span><span class="p">(</span><span class="n">dest</span><span class="o">.</span><span class="n">operation</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot wire because the wire&#39;s destination FieldValue </span><span class="si">{}</span><span class="s2"> does not exist &quot;</span>
-                <span class="s2">&quot;in the Plan because its Operation &#39;</span><span class="si">{}</span><span class="s2">&#39; is not in the plan.&quot;</span><span class="o">.</span><span class="n">formst</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">dest</span><span class="o">.</span><span class="n">operation</span><span class="p">))</span>
-
-        <span class="n">wire</span> <span class="o">=</span> <span class="n">Wire</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">src</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">dest</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">append_to_many</span><span class="p">(</span><span class="s1">&#39;wires&#39;</span><span class="p">,</span> <span class="n">wire</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">wire</span></div>
-
-    <span class="k">def</span> <span class="nf">_collect_wires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">incoming_wires</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">outgoing_wires</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">outgoing_wires</span><span class="p">:</span>
-                            <span class="n">outgoing_wires</span> <span class="o">+=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">outgoing_wires</span>
-                        <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">incoming_wires</span><span class="p">:</span>
-                            <span class="n">incoming_wires</span> <span class="o">+=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">incoming_wires</span>
-        <span class="k">return</span> <span class="n">incoming_wires</span><span class="p">,</span> <span class="n">outgoing_wires</span>
-
-<div class="viewcode-block" id="Plan._get_wire_dict"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan._get_wire_dict">[docs]</a>    <span class="k">def</span> <span class="nf">_get_wire_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wires</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return all wires in the plan grouped by the wire identifier&quot;&quot;&quot;</span>
-        <span class="n">wire_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wires</span><span class="p">:</span>
-            <span class="n">wire_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
-            <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wire_dict</span><span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">identifier</span><span class="p">]:</span>
-                <span class="n">wire_dict</span><span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">wire_dict</span></div>
-
-    <span class="k">def</span> <span class="nf">_get_wires_from_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="n">fvs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-                <span class="n">fvs</span> <span class="o">+=</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span>
-
-        <span class="n">fv_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">fv</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">fvs</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-        <span class="n">wires_from_server</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">fv_ids</span><span class="p">:</span>
-            <span class="n">wires_from_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Wire</span><span class="o">.</span><span class="n">where</span><span class="p">({</span>
-                <span class="s1">&#39;from_id&#39;</span><span class="p">:</span> <span class="n">fv_ids</span><span class="p">,</span> <span class="s1">&#39;to_id&#39;</span><span class="p">:</span> <span class="n">fv_ids</span><span class="p">})</span>
-        <span class="k">return</span> <span class="n">wires_from_server</span>
-
-<div class="viewcode-block" id="Plan.submit"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.submit">[docs]</a>    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Submits the Plan to the Aquarium server.</span>
-
-<span class="sd">        :param user: User to submit the Plan</span>
-<span class="sd">        :type user: User</span>
-<span class="sd">        :param budget: Budget to use for the Plan</span>
-<span class="sd">        :type budget: Budget</span>
-<span class="sd">        :return: JSON</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">submit_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span></div>
-
-    <span class="k">def</span> <span class="nf">all_data_associations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">das</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_associations</span>
-        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-            <span class="n">das</span> <span class="o">+=</span> <span class="n">operation</span><span class="o">.</span><span class="n">data_associations</span>
-            <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">item</span><span class="p">:</span>
-                    <span class="n">das</span> <span class="o">+=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">data_associations</span>
-        <span class="k">return</span> <span class="n">das</span>
-
-<div class="viewcode-block" id="Plan.interface"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.interface">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
-        <span class="c1"># get model interface from Base class</span>
-        <span class="n">model_interface</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Plan</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-
-        <span class="c1"># make a special find method for plans, as generic method is too minimal.</span>
-        <span class="k">def</span> <span class="nf">new_find</span><span class="p">(</span><span class="n">model_id</span><span class="p">):</span> <span class="k">return</span> <span class="n">model_interface</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s1">&#39;plans/</span><span class="si">{}</span><span class="s1">.json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_id</span><span class="p">))</span>
-
-        <span class="c1"># override the old find method</span>
-        <span class="n">model_interface</span><span class="o">.</span><span class="n">find</span> <span class="o">=</span> <span class="n">new_find</span>
-
-        <span class="k">return</span> <span class="n">model_interface</span></div>
-
-<div class="viewcode-block" id="Plan.validate"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Validates the plan.</span>
-
-<span class="sd">        :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.</span>
-<span class="sd">        :type raise_error: boolean</span>
-<span class="sd">        :return: list of error messages</span>
-<span class="sd">        :rtype: array</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
-                <span class="n">field_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
-        <span class="n">fv_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">fv</span><span class="o">.</span><span class="n">_primary_key</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">field_values</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">_fvtype</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;destination&#39;</span><span class="p">]:</span>
-                <span class="n">field_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wire</span><span class="p">,</span> <span class="n">_fvtype</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">_primary_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fv_keys</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The FieldValue of a wire Wire(rid=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2"> is missing from the list&quot;</span> \
-                              <span class="s2">&quot; of FieldValues in the plan. Did you forget to add an operation to &quot;</span> \
-                              <span class="s2">&quot; the plan?&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">wire</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">,</span> <span class="n">_fvtype</span><span class="p">,</span>
-                    <span class="p">)</span>
-                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">raise_error</span> <span class="ow">and</span> <span class="n">errors</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;(ErrNo </span><span class="si">{}</span><span class="s2">) - </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">errors</span><span class="p">)])</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Plan </span><span class="si">{}</span><span class="s2"> had the following errors:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">errors</span></div>
-
-<div class="viewcode-block" id="Plan.to_save_json"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.to_save_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the json representation of the plan for saving and creating</span>
-<span class="sd">        Plans on the Aquarium server.</span>
-
-<span class="sd">        :return: JSON</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">wires</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="n">json_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span>
-            <span class="s1">&#39;operations&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;field_values&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="p">}</span>
-        <span class="p">})</span>
-
-        <span class="c1"># remove redundant wires</span>
-        <span class="n">wire_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-            <span class="n">wire_data</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
-            <span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;from_id&#39;</span><span class="p">],</span>
-                <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">],</span>
-                <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;to_id&#39;</span><span class="p">],</span>
-                <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]</span>
-            <span class="p">]</span>
-            <span class="n">wire_hash</span> <span class="o">=</span> <span class="s2">&quot;*&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">])</span>
-            <span class="n">wire_dict</span><span class="p">[</span><span class="n">wire_hash</span><span class="p">]</span> <span class="o">=</span> <span class="n">wire_data</span>
-        <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;wires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wire_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-
-        <span class="c1"># validate</span>
-        <span class="n">fv_rids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;operations&#39;</span><span class="p">]:</span>
-            <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="p">[</span><span class="s1">&#39;field_values&#39;</span><span class="p">]:</span>
-                <span class="n">fv_rids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">[</span><span class="s1">&#39;rid&#39;</span><span class="p">])</span>
-
-        <span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">wire_data</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;wires&#39;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fv_rids</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;rid </span><span class="si">{}</span><span class="s1"> is missing!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]))</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fv_rids</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;rid </span><span class="si">{}</span><span class="s1"> is missing!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]))</span>
-        <span class="k">if</span> <span class="n">warnings</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">warnings</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">json_data</span></div>
-
-    <span class="k">def</span> <span class="nf">_get_create_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">_get_update_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">_get_create_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
-
-    <span class="k">def</span> <span class="nf">_get_update_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
-
-<div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.estimate_cost">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Estimates the cost of the plan on the Aquarium server.</span>
-<span class="sd">        This is necessary before plan submission.</span>
-
-<span class="sd">        :return: cost</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">estimate_plan_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">field_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-
-<div class="viewcode-block" id="Plan.step"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Steps a plan&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">step_plan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Plan.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Print the plan nicely&quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; id: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-            <span class="n">operation</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
-            <span class="n">wire</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.replan">[docs]</a>    <span class="k">def</span> <span class="nf">replan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Copies or replans the plan. Returns a plan copy&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">replan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Plan.download_files"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.download_files">[docs]</a>    <span class="k">def</span> <span class="nf">download_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Downloads all uploads associated with the plan. Downloads happen</span>
-<span class="sd">        ansynchrounously.</span>
-
-<span class="sd">        :param outdir: output directory for downloaded files</span>
-<span class="sd">        :param overwrite: whether to overwrite files if they exist</span>
-<span class="sd">        :return: None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">uploads</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">da</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_associations</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">da</span><span class="o">.</span><span class="n">upload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">uploads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">upload</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Upload</span><span class="o">.</span><span class="n">async_download</span><span class="p">(</span><span class="n">uploads</span><span class="p">,</span> <span class="n">outdir</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span></div></div>
-
-
-<div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.PlanAssociation">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">PlanAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A PlanAssociation model&quot;&quot;&quot;</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">plan</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Plan&quot;</span><span class="p">),</span>
-        <span class="n">operation</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Operation&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">operation_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">plan_id</span><span class="o">=</span><span class="n">plan_id</span><span class="p">,</span>
-            <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span>
-        <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Wire</span><span class="p">(</span><span class="n">DeleteMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Wire model&quot;&quot;&quot;</span>
-
-    <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;FieldValue&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;from_id&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;destination&quot;</span><span class="p">:</span>  <span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;FieldValue&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;to_id&quot;</span><span class="p">),</span>
-    <span class="p">}</span>
-
-    <span class="n">WIRABLE_PARENT_CLASSES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Operation&#39;</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_field_values</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">):</span>
-            <span class="n">from_id</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">id</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">from_id</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">):</span>
-            <span class="n">to_id</span> <span class="o">=</span> <span class="n">destination</span><span class="o">.</span><span class="n">id</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">to_id</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="n">source</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">destination</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">destination</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">source</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire. Either source (</span><span class="si">{}</span><span class="s2">) or destination (</span><span class="si">{}</span><span class="s2">) is None&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">source</span><span class="p">,</span> <span class="n">destination</span>
-            <span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">source</span><span class="o">.</span><span class="n">role</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire. FieldValue </span><span class="si">{}</span><span class="s2"> does not have a role&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">role</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">source</span><span class="o">.</span><span class="n">role</span> <span class="o">!=</span> <span class="s1">&#39;output&#39;</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire an &#39;</span><span class="si">{}</span><span class="s2">&#39; FieldValue as a source&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">role</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">destination</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">destination</span><span class="o">.</span><span class="n">role</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire. FieldValue </span><span class="si">{}</span><span class="s2"> does not have a role&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination</span><span class="o">.</span><span class="n">role</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">destination</span><span class="o">.</span><span class="n">role</span> <span class="o">!=</span> <span class="s1">&#39;input&#39;</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire an &#39;</span><span class="si">{}</span><span class="s2">&#39; FieldValue as a destination&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination</span><span class="o">.</span><span class="n">role</span><span class="p">))</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
-            <span class="s2">&quot;from_id&quot;</span><span class="p">:</span> <span class="n">from_id</span><span class="p">,</span>
-            <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="n">destination</span><span class="p">,</span>
-            <span class="s2">&quot;to_id&quot;</span><span class="p">:</span> <span class="n">to_id</span>
-        <span class="p">},</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">:</span>
-            <span class="n">source_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_id</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">source_id</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">:</span>
-            <span class="n">destination_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_id</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">destination_id</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="n">destination_id</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_validate_field_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">src</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_field_value</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">dest</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_field_value</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s1">&#39;destination&#39;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">src</span> <span class="ow">and</span> <span class="n">dest</span> <span class="ow">and</span> <span class="n">src</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="n">dest</span><span class="o">.</span><span class="n">rid</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot create wire because source and destination are the same instance.&quot;</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_validate_field_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fv</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">fv</span><span class="p">),</span> <span class="n">FieldValue</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot create wire because </span><span class="si">{}</span><span class="s2"> FieldValue is </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fv</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">parent_class</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">WIRABLE_PARENT_CLASSES</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot create wire because the </span><span class="si">{}</span><span class="s2"> FieldValue is has &#39;</span><span class="si">{}</span><span class="s2">&#39; parent class. &quot;</span> \
-                                     <span class="s2">&quot;Only </span><span class="si">{}</span><span class="s2"> parent classes are wirable&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fv</span><span class="o">.</span><span class="n">parent_class</span><span class="p">,</span>
-                                                                                 <span class="bp">cls</span><span class="o">.</span><span class="n">WIRABLE_PARENT_CLASSES</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_field_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">to_save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">save_json</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="s2">&quot;from_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="s2">&quot;to_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;rid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span><span class="p">},</span>
-            <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;rid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span><span class="p">},</span>
-            <span class="s2">&quot;active&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="n">save_json</span>
-
-<div class="viewcode-block" id="Wire.delete"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Permanently deletes the wire instance on the Aquarium server.</span>
-<span class="sd">        :return:</span>
-<span class="sd">        :rtype:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">delete_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Wire.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Show the wire nicely&quot;&quot;&quot;</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
-        <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span>
-
-        <span class="n">from_op_type_name</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
-        <span class="n">from_name</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
-        <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
-            <span class="n">from_op_type_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span>
-            <span class="n">from_name</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span>
-
-        <span class="n">to_op_type_name</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
-        <span class="n">to_name</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
-        <span class="k">if</span> <span class="n">dest</span><span class="p">:</span>
-            <span class="n">to_op_type_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span>
-            <span class="n">to_name</span> <span class="o">=</span> <span class="n">dest</span><span class="o">.</span><span class="n">name</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="n">pre</span> <span class="o">+</span> <span class="n">from_op_type_name</span> <span class="o">+</span>
-              <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">from_name</span> <span class="o">+</span>
-              <span class="s2">&quot; --&gt; &quot;</span> <span class="o">+</span> <span class="n">to_op_type_name</span> <span class="o">+</span>
-              <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">to_name</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">does_wire_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">destination</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">destination</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">def</span> <span class="nf">does_wire_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">source</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">source</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-<div class="viewcode-block" id="Wire.does_wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.does_wire">[docs]</a>    <span class="k">def</span> <span class="nf">does_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Checks whether this Wire is a wire between the source and destination FieldValues.</span>
-
-<span class="sd">        If any of the source or destination FieldValues are None, returns False.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">source</span> <span class="ow">and</span> <span class="n">destination</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">source</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span> <span class="ow">and</span> <span class="n">destination</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Checks whether this Wire is wired to the same FieldValue instances of another Wire.</span>
-
-<span class="sd">        see `does_wire` method.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">does_wire</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">destination</span><span class="p">)</span></div>
+<span></span>&quot;&quot;&quot;
+Models related to plans, plan associations, and wires.
+&quot;&quot;&quot;
+
+import json
+
+from pydent.base import ModelBase
+from pydent.exceptions import AquariumModelError
+from pydent.marshaller import add_schema
+from pydent.models.field_value import FieldValue
+from pydent.models.data_associations import Upload, DataAssociatorMixin
+from pydent.relationships import (Raw, JSON, Many, HasOne, HasMany,
+                                  HasManyThrough, HasManyGeneric,
+                                  fields)
+from pydent.models.crud_mixin import SaveMixin, DeleteMixin
+
+<div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan">[docs]</a>@add_schema
+class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
+    &quot;&quot;&quot;
+    A Plan model
+    &quot;&quot;&quot;
+    fields = dict(
+        data_associations=HasManyGeneric(&quot;DataAssociation&quot;, additional_args={
+            &quot;parent_class&quot;: &quot;Plan&quot;
+        }),
+        plan_associations=HasMany(&quot;PlanAssociation&quot;, &quot;Plan&quot;),
+        operations=HasManyThrough(&quot;Operation&quot;, &quot;PlanAssociation&quot;),
+        wires=Many(&quot;Wire&quot;, callback=&quot;_get_wires_from_server&quot;),
+        layout=JSON(),
+        status=Raw(default=&quot;planning&quot;)
+    )
+    query_hook = {
+        &#39;include&#39;: &#39;wires&#39;
+    }
+
+    def __init__(self, name=&quot;MyPlan&quot;, status=&quot;planning&quot;):
+        super().__init__(
+            name=name,
+            status=status,
+            data_associations=None,
+            plan_associations=None,
+            layout={
+                &quot;id&quot;: 0,
+                &quot;children&quot;: [],
+                &quot;documentation&quot;: &quot;No documentation of this module&quot;,
+                &quot;height&quot;: 60,
+                &quot;input&quot;: [],
+                &quot;output&quot;: [],
+                &quot;name&quot;: &quot;no_name&quot;,
+                &quot;parent_id&quot;: -1,
+                &quot;width&quot;: 160,
+                &quot;wires&quot;: []
+            }
+        )
+
+<div class="viewcode-block" id="Plan.add_operation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.add_operation">[docs]</a>    def add_operation(self, operation):
+        &quot;&quot;&quot;
+        Adds an operation to the Plan
+
+        :param operation: Operation to add
+        :type operation: Operation
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
+        self.append_to_many(&#39;operations&#39;, operation)</div>
+
+<div class="viewcode-block" id="Plan.add_operations"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.add_operations">[docs]</a>    def add_operations(self, operations):
+        &quot;&quot;&quot;
+        Adds multiple operations to the Plan
+
+        :param operations: list of Operations
+        :type operations: list
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
+        for operation in operations:
+            self.add_operation(operation)</div>
+
+    def has_operation(self, op):
+        if op is None:
+            return False
+        return self.operations and op.rid in [_op.rid for _op in self.operations]
+
+<div class="viewcode-block" id="Plan.find_wires"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.find_wires">[docs]</a>    def find_wires(self, src, dest):
+        &quot;&quot;&quot;
+        Retrieves the wire between a source and destination FieldValues
+
+        :param src: source FieldValue
+        :type src: FieldValue
+        :param dest: destination FieldValue
+        :type dest: FieldValue
+        :return: array of wires between src and dest FieldValues (determined by rid)
+        :rtype: array of wires
+        &quot;&quot;&quot;
+
+        found = []
+        for wire in self.wires:
+            if src.rid == wire.source.rid and dest.rid == wire.destination.rid:
+                found.append(wire)
+        return found</div>
+
+<div class="viewcode-block" id="Plan.wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.wire">[docs]</a>    def wire(self, src, dest):
+        &quot;&quot;&quot;
+        Creates a new wire between src and dest FieldValues. Returns the new wire
+        if it does not exist in the plan. If the wire already exists and
+        error_if_exists is True, then the existing wire is returned. Else an exception is raised.
+
+        :param src: source field value (the input of the wire)
+        :type src: FieldValue
+        :param dest: destination field value (the output of the wire)
+        :type dest: FieldValue
+        :param error_if_exists: Raise an error if the Wire already exists in the plan.
+        :type error_if_exists: boolean
+        :return: Newly created wire or existing wire (if exists and error_if_exists == False)
+        :rtype: Wire
+        &quot;&quot;&quot;
+
+        if not self.has_operation(src.operation):
+            raise AquariumModelError(
+                &quot;Cannot wire because the wire&#39;s source FieldValue {} does &quot;
+                &quot;not exist in the Plan because its Operation &#39;{}&#39; is not in the plan&quot;.format(src, src.operation))
+        if not self.has_operation(dest.operation):
+            raise AquariumModelError(
+                &quot;Cannot wire because the wire&#39;s destination FieldValue {} does not exist &quot;
+                &quot;in the Plan because its Operation &#39;{}&#39; is not in the plan.&quot;.formst(dest, dest.operation))
+
+        wire = Wire(source=src, destination=dest)
+        self.append_to_many(&#39;wires&#39;, wire)
+        return wire</div>
+
+    def _collect_wires(self):
+        incoming_wires = []
+        outgoing_wires = []
+        if self.operations:
+            for operation in self.operations:
+                if operation.field_values:
+                    for field_value in operation.field_values:
+                        if field_value.outgoing_wires:
+                            outgoing_wires += field_value.outgoing_wires
+                        if field_value.incoming_wires:
+                            incoming_wires += field_value.incoming_wires
+        return incoming_wires, outgoing_wires
+
+<div class="viewcode-block" id="Plan._get_wire_dict"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan._get_wire_dict">[docs]</a>    def _get_wire_dict(self, wires):
+        &quot;&quot;&quot;Return all wires in the plan grouped by the wire identifier&quot;&quot;&quot;
+        wire_dict = {}
+        for w in wires:
+            wire_dict.setdefault(w.identifier, list())
+            if w not in wire_dict[w.identifier]:
+                wire_dict[w.identifier].append(w)
+        return wire_dict</div>
+
+    def _get_wires_from_server(self, *args):
+        fvs = []
+        if self.operations:
+            for op in self.operations:
+                fvs += op.field_values
+
+        fv_ids = [fv.id for fv in fvs if fv.id is not None]
+        wires_from_server = []
+        if fv_ids:
+            wires_from_server = self.session.Wire.where({
+                &#39;from_id&#39;: fv_ids, &#39;to_id&#39;: fv_ids})
+        return wires_from_server
+
+<div class="viewcode-block" id="Plan.submit"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.submit">[docs]</a>    def submit(self, user, budget):
+        &quot;&quot;&quot;
+        Submits the Plan to the Aquarium server.
+
+        :param user: User to submit the Plan
+        :type user: User
+        :param budget: Budget to use for the Plan
+        :type budget: Budget
+        :return: JSON
+        :rtype: dict
+        &quot;&quot;&quot;
+        result = self.session.utils.submit_plan(self, user, budget)
+        return result</div>
+
+    def all_data_associations(self):
+        das = self.data_associations
+        for operation in self.operations:
+            das += operation.data_associations
+            for field_value in operation.field_values:
+                if field_value.item:
+                    das += field_value.item.data_associations
+        return das
+
+<div class="viewcode-block" id="Plan.interface"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.interface">[docs]</a>    @classmethod
+    def interface(cls, session):
+        # get model interface from Base class
+        model_interface = super(Plan, cls).interface(session)
+
+        # make a special find method for plans, as generic method is too minimal.
+        def new_find(model_id): return model_interface.get(
+            &#39;plans/{}.json&#39;.format(model_id))
+
+        # override the old find method
+        model_interface.find = new_find
+
+        return model_interface</div>
+
+<div class="viewcode-block" id="Plan.validate"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.validate">[docs]</a>    def validate(self, raise_error=True):
+        &quot;&quot;&quot;
+        Validates the plan.
+
+        :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.
+        :type raise_error: boolean
+        :return: list of error messages
+        :rtype: array
+        &quot;&quot;&quot;
+        errors = []
+
+        field_values = []
+        for op in self.operations:
+            for fv in op.field_values:
+                field_values.append(fv)
+        fv_keys = [fv._primary_key for fv in field_values]
+        for wire in self.wires:
+            for _fvtype in [&#39;source&#39;, &#39;destination&#39;]:
+                field_value = getattr(wire, _fvtype)
+                if field_value._primary_key not in fv_keys:
+                    msg = &quot;The FieldValue of a wire Wire(rid={}).{} is missing from the list&quot; \
+                              &quot; of FieldValues in the plan. Did you forget to add an operation to &quot; \
+                              &quot; the plan?&quot;.format(
+                            wire._primary_key, _fvtype,
+                    )
+                    errors.append(msg)
+        if raise_error and errors:
+            msg = &#39;\n&#39;.join([&quot;(ErrNo {}) - {}&quot;.format(i, e) for i, e in enumerate(errors)])
+            raise AquariumModelError(&quot;Plan {} had the following errors:\n{}&quot;.format(self, msg))
+        return errors</div>
+
+<div class="viewcode-block" id="Plan.to_save_json"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.to_save_json">[docs]</a>    def to_save_json(self):
+        &quot;&quot;&quot;
+        Returns the json representation of the plan for saving and creating
+        Plans on the Aquarium server.
+
+        :return: JSON
+        :rtype: dict
+        &quot;&quot;&quot;
+        if not self.operations:
+            self.operations = []
+
+        if not self.wires:
+            self.wires = []
+
+        self.validate(raise_error=True)
+
+        json_data = self.dump(include={
+            &#39;operations&#39;: {
+                &#39;field_values&#39;: {},
+            }
+        })
+
+        # remove redundant wires
+        wire_dict = {}
+        for wire in self.wires:
+            wire_data = wire.to_save_json()
+            attributes = [
+                wire_data[&#39;from_id&#39;],
+                wire_data[&#39;from&#39;][&#39;rid&#39;],
+                wire_data[&#39;to_id&#39;],
+                wire_data[&#39;to&#39;][&#39;rid&#39;]
+            ]
+            wire_hash = &quot;*&amp;&quot;.join([str(a) for a in attributes])
+            wire_dict[wire_hash] = wire_data
+        json_data[&#39;wires&#39;] = list(wire_dict.values())
+
+        # validate
+        fv_rids = []
+        for op in json_data[&#39;operations&#39;]:
+            for fv in op[&#39;field_values&#39;]:
+                fv_rids.append(fv[&#39;rid&#39;])
+
+        warnings = []
+        for wire_data in json_data[&#39;wires&#39;]:
+            if not wire_data[&#39;from&#39;][&#39;rid&#39;] in fv_rids:
+                warnings.append(&#39;rid {} is missing!&#39;.format(wire_data[&#39;from&#39;][&#39;rid&#39;]))
+            if not wire_data[&#39;to&#39;][&#39;rid&#39;] in fv_rids:
+                warnings.append(&#39;rid {} is missing!&#39;.format(wire_data[&#39;to&#39;][&#39;rid&#39;]))
+        if warnings:
+            print(warnings)
+
+        if json_data[&#39;layout&#39;] is not None:
+            json_data[&#39;layout&#39;] = json.loads(json_data[&#39;layout&#39;])
+        else:
+            del json_data[&#39;layout&#39;]
+
+        return json_data</div>
+
+    def _get_create_json(self):
+        return self.to_save_json()
+
+    def _get_update_json(self):
+        return self.to_save_json()
+
+    def _get_create_params(self):
+        return {&quot;user_id&quot;: self.session.current_user.id}
+
+    def _get_update_params(self):
+        return {&quot;user_id&quot;: self.session.current_user.id}
+
+<div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.estimate_cost">[docs]</a>    def estimate_cost(self):
+        &quot;&quot;&quot;
+        Estimates the cost of the plan on the Aquarium server.
+        This is necessary before plan submission.
+
+        :return: cost
+        :rtype: dict
+        &quot;&quot;&quot;
+        return self.session.utils.estimate_plan_cost(self)</div>
+
+    def field_values(self):
+        raise NotImplementedError()
+
+<div class="viewcode-block" id="Plan.step"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.step">[docs]</a>    def step(self):
+        &quot;&quot;&quot;Steps a plan&quot;&quot;&quot;
+        return self.session.utils.step_plan(self.id)</div>
+
+<div class="viewcode-block" id="Plan.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.show">[docs]</a>    def show(self):
+        &quot;&quot;&quot;Print the plan nicely&quot;&quot;&quot;
+        print(self.name + &quot; id: &quot; + str(self.id))
+        for operation in self.operations:
+            operation.show(pre=&quot;  &quot;)
+        for wire in self.wires:
+            wire.show(pre=&quot;  &quot;)</div>
+
+<div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.replan">[docs]</a>    def replan(self):
+        &quot;&quot;&quot;Copies or replans the plan. Returns a plan copy&quot;&quot;&quot;
+        return self.session.utils.replan(self.id)</div>
+
+<div class="viewcode-block" id="Plan.download_files"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.download_files">[docs]</a>    def download_files(self, outdir=None, overwrite=True):
+        &quot;&quot;&quot;
+        Downloads all uploads associated with the plan. Downloads happen
+        ansynchrounously.
+
+        :param outdir: output directory for downloaded files
+        :param overwrite: whether to overwrite files if they exist
+        :return: None
+        &quot;&quot;&quot;
+        uploads = []
+        for da in self.data_associations:
+            if da.upload is not None:
+                uploads.append(da.upload)
+        return Upload.async_download(uploads, outdir, overwrite)</div></div>
+
+
+<div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.PlanAssociation">[docs]</a>@add_schema
+class PlanAssociation(ModelBase):
+    &quot;&quot;&quot;A PlanAssociation model&quot;&quot;&quot;
+    fields = dict(
+        plan=HasOne(&quot;Plan&quot;),
+        operation=HasOne(&quot;Operation&quot;)
+    )
+
+    def __init__(self, plan_id=None, operation_id=None):
+        super().__init__(
+            plan_id=plan_id,
+            operation_id=operation_id
+        )</div>
+
+
+<div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire">[docs]</a>@add_schema
+class Wire(DeleteMixin, ModelBase):
+    &quot;&quot;&quot;A Wire model&quot;&quot;&quot;
+
+    fields = {
+        &quot;source&quot;: HasOne(&quot;FieldValue&quot;, ref=&quot;from_id&quot;),
+        &quot;destination&quot;:  HasOne(&quot;FieldValue&quot;, ref=&quot;to_id&quot;),
+    }
+
+    WIRABLE_PARENT_CLASSES = [&#39;Operation&#39;]
+
+    def __init__(self, source=None, destination=None):
+
+        self._validate_field_values(source, destination)
+
+        if hasattr(source, &#39;id&#39;):
+            from_id = source.id
+        else:
+            from_id = None
+
+        if hasattr(destination, &#39;id&#39;):
+            to_id = destination.id
+        else:
+            to_id = None
+
+        if (source and not destination) or (destination and not source):
+            raise AquariumModelError(&quot;Cannot wire. Either source ({}) or destination ({}) is None&quot;.format(
+                source, destination
+            ))
+
+        if source:
+            if not source.role:
+                raise AquariumModelError(&quot;Cannot wire. FieldValue {} does not have a role&quot;.format(source.role))
+            elif source.role != &#39;output&#39;:
+                raise AquariumModelError(&quot;Cannot wire an &#39;{}&#39; FieldValue as a source&quot;.format(source.role))
+
+        if destination:
+            if not destination.role:
+                raise AquariumModelError(&quot;Cannot wire. FieldValue {} does not have a role&quot;.format(destination.role))
+            elif destination.role != &#39;input&#39;:
+                raise AquariumModelError(&quot;Cannot wire an &#39;{}&#39; FieldValue as a destination&quot;.format(destination.role))
+
+        super().__init__(**{
+            &quot;source&quot;: source,
+            &quot;from_id&quot;: from_id,
+            &quot;destination&quot;: destination,
+            &quot;to_id&quot;: to_id
+        }, active=True)
+
+    @property
+    def identifier(self):
+
+        if not self.source:
+            source_id = self.from_id
+        else:
+            source_id = &#39;r&#39; + str(self.source.rid)
+
+        if not self.destination:
+            destination_id = self.to_id
+        else:
+            destination_id = &#39;r&#39; + str(self.destination.rid)
+        return &#39;{}_{}&#39;.format(source_id, destination_id)
+
+    @classmethod
+    def _validate_field_values(cls, src, dest):
+        if src:
+            cls._validate_field_value(src, &#39;source&#39;)
+        if dest:
+            cls._validate_field_value(dest, &#39;destination&#39;)
+
+        if src and dest and src.rid == dest.rid:
+            raise AquariumModelError(&quot;Cannot create wire because source and destination are the same instance.&quot;)
+
+    @classmethod
+    def _validate_field_value(cls, fv, name):
+        if not issubclass(type(fv), FieldValue):
+            raise AquariumModelError(
+                &quot;Cannot create wire because {} FieldValue is {}.&quot;.format(name, fv.__class__.__name__))
+
+        if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
+            raise AquariumModelError(&quot;Cannot create wire because the {} FieldValue is has &#39;{}&#39; parent class. &quot; \
+                                     &quot;Only {} parent classes are wirable&quot;.format(name, fv.parent_class,
+                                                                                 cls.WIRABLE_PARENT_CLASSES))
+
+    def validate(self):
+        self._validate_field_values(self.source, self.destination)
+
+    def to_save_json(self):
+        save_json = {
+            &quot;id&quot;: self.id,
+            &quot;from_id&quot;: self.source.id,
+            &quot;to_id&quot;: self.destination.id,
+            &quot;from&quot;: {&quot;rid&quot;: self.source.rid},
+            &quot;to&quot;: {&quot;rid&quot;: self.destination.rid},
+            &quot;active&quot;: self.active
+        }
+        return save_json
+
+<div class="viewcode-block" id="Wire.delete"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.delete">[docs]</a>    def delete(self):
+        &quot;&quot;&quot;
+        Permanently deletes the wire instance on the Aquarium server.
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        return self.session.utils.delete_wire(self)</div>
+
+<div class="viewcode-block" id="Wire.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.show">[docs]</a>    def show(self, pre=&quot;&quot;):
+        &quot;&quot;&quot;Show the wire nicely&quot;&quot;&quot;
+        source = self.source
+        dest = self.destination
+
+        from_op_type_name = &#39;None&#39;
+        from_name = &#39;None&#39;
+        if source:
+            from_op_type_name = self.source.operation.operation_type.name
+            from_name = source.name
+
+        to_op_type_name = &#39;None&#39;
+        to_name = &#39;None&#39;
+        if dest:
+            to_op_type_name = self.destination.operation.operation_type.name
+            to_name = dest.name
+
+        print(pre + from_op_type_name +
+              &quot;:&quot; + from_name +
+              &quot; --&gt; &quot; + to_op_type_name +
+              &quot;:&quot; + to_name)</div>
+
+    def does_wire_to(self, destination):
+        if destination and self.destination:
+            return destination.rid == self.destination.rid
+        return False
+
+    def does_wire_from(self, source):
+        if source and self.source:
+            return source.rid == self.source.rid
+        return False
+
+<div class="viewcode-block" id="Wire.does_wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.does_wire">[docs]</a>    def does_wire(self, source, destination):
+        &quot;&quot;&quot;Checks whether this Wire is a wire between the source and destination FieldValues.
+
+        If any of the source or destination FieldValues are None, returns False.&quot;&quot;&quot;
+        if source and destination and self.source and self.destination:
+            return source.rid == self.source.rid and destination.rid == self.destination.rid
+        return False</div>
+
+    def __eq__(self, other):
+        &quot;&quot;&quot;Checks whether this Wire is wired to the same FieldValue instances of another Wire.
+
+        see `does_wire` method.&quot;&quot;&quot;
+        return self.does_wire(other.source, other.destination)</div>
 </pre></div>
 
     </div>

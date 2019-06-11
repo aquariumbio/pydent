@@ -83,8 +83,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../versions.html">Version History</a><ul>
@@ -114,7 +114,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="../../../_sources/developer/_autosummary/_autosummary/pydent.planner.planner.rst.txt"
+  <a href="../../../_sources/developer/_autosummary/_autosummary/pydent.planner.planner.rst"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -292,6 +292,42 @@ text annotation at that location.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.planner.planner.Planner.chain">
+<code class="sig-name descname">chain</code><span class="sig-paren">(</span><em class="sig-param">*op_or_otnames</em>, <em class="sig-param">category=None</em>, <em class="sig-param">return_as_dict=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.chain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.chain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a chain of operations by <em>guessing</em> wires between operations
+based on the AllowableFieldTypes between the inputs and outputs of each
+operation type.
+Sample inputs and outputs will be set along the wire if possible.</p>
+<p>e.g.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># create four new operations based on their OperationType names
+planner.chain(&quot;Make PCR Fragment&quot;, &quot;Run Gel&quot;,
+                          &quot;Extract Gel Slice&quot;, &quot;Purify Gel Slice&quot;)
+
+# create four new operations based on their OperationType names by
+# finding OperationTypes only in the &quot;Cloning&quot; category
+planner.chain(&quot;Make PCR Fragment&quot;, &quot;Run Gel&quot;,
+                          &quot;Extract Gel Slice&quot;, &quot;Purify Gel Slice&quot;,
+                          category=&quot;Cloning&quot;)
+
+# create four new operations based on their OperationType names by
+# finding OperationTypes only in the &quot;Cloning&quot; category,
+# except find &quot;Make PCR Fragment&quot; in the &quot;Cloning Sandbox&quot; category
+planner.chain((&quot;Make PCR Fragment&quot;, &quot;Cloning Sandbox&quot;),
+                           &quot;Run Gel&quot;, &quot;Extract Gel Slice&quot;,
+                           &quot;Purify Gel Slice&quot;, category=&quot;Cloning&quot;)
+
+# create and wire new operations to an existing operations while
+# routing samples
+pcr_op = planner.create_operation_by_name(&quot;Make PCR Fragment&quot;)
+planner.set_field_value(pcr_op.outputs[0], sample=my_sample)
+new_ops = planner.chain(pcr_op, &quot;Run Gel&quot;)
+run_gel = new_ops[1]
+planner.chain(&quot;Pour Gel&quot;, run_gel)
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.planner.planner.Planner.combine">
 <em class="property">static </em><code class="sig-name descname">combine</code><span class="sig-paren">(</span><em class="sig-param">plans</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.combine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.combine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merges a list of plans into a single plan by combining operations and wires.</p>
@@ -333,8 +369,8 @@ one-shot yeast competent cell aliquots</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.planner.planner.Planner.find_operations_by_name">
-<code class="sig-name descname">find_operations_by_name</code><span class="sig-paren">(</span><em class="sig-param">operation_type_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.find_operations_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.find_operations_by_name" title="Permalink to this definition">¶</a></dt>
+<dt id="pydent.planner.planner.Planner.get_op_by_name">
+<code class="sig-name descname">get_op_by_name</code><span class="sig-paren">(</span><em class="sig-param">operation_type_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.get_op_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.get_op_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find operations by their operation_type_name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -355,42 +391,6 @@ one-shot yeast competent cell aliquots</p>
 <dd><p>Optimizes a plan by removing redundent operations.
 :param planner:
 :return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.planner.planner.Planner.quick_create_chain">
-<code class="sig-name descname">quick_create_chain</code><span class="sig-paren">(</span><em class="sig-param">*op_or_otnames</em>, <em class="sig-param">category=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.quick_create_chain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.quick_create_chain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a chain of operations by <em>guessing</em> wires between operations
-based on the AllowableFieldTypes between the inputs and outputs of each
-operation type.
-Sample inputs and outputs will be set along the wire if possible.</p>
-<p>e.g.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create four new operations based on their OperationType names</span>
-<span class="n">planner</span><span class="o">.</span><span class="n">quick_create_chain</span><span class="p">(</span><span class="s2">&quot;Make PCR Fragment&quot;</span><span class="p">,</span> <span class="s2">&quot;Run Gel&quot;</span><span class="p">,</span>
-                          <span class="s2">&quot;Extract Gel Slice&quot;</span><span class="p">,</span> <span class="s2">&quot;Purify Gel Slice&quot;</span><span class="p">)</span>
-
-<span class="c1"># create four new operations based on their OperationType names by</span>
-<span class="c1"># finding OperationTypes only in the &quot;Cloning&quot; category</span>
-<span class="n">planner</span><span class="o">.</span><span class="n">quick_create_chain</span><span class="p">(</span><span class="s2">&quot;Make PCR Fragment&quot;</span><span class="p">,</span> <span class="s2">&quot;Run Gel&quot;</span><span class="p">,</span>
-                          <span class="s2">&quot;Extract Gel Slice&quot;</span><span class="p">,</span> <span class="s2">&quot;Purify Gel Slice&quot;</span><span class="p">,</span>
-                          <span class="n">category</span><span class="o">=</span><span class="s2">&quot;Cloning&quot;</span><span class="p">)</span>
-
-<span class="c1"># create four new operations based on their OperationType names by</span>
-<span class="c1"># finding OperationTypes only in the &quot;Cloning&quot; category,</span>
-<span class="c1"># except find &quot;Make PCR Fragment&quot; in the &quot;Cloning Sandbox&quot; category</span>
-<span class="n">planner</span><span class="o">.</span><span class="n">quick_create_chain</span><span class="p">((</span><span class="s2">&quot;Make PCR Fragment&quot;</span><span class="p">,</span> <span class="s2">&quot;Cloning Sandbox&quot;</span><span class="p">),</span>
-                           <span class="s2">&quot;Run Gel&quot;</span><span class="p">,</span> <span class="s2">&quot;Extract Gel Slice&quot;</span><span class="p">,</span>
-                           <span class="s2">&quot;Purify Gel Slice&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s2">&quot;Cloning&quot;</span><span class="p">)</span>
-
-<span class="c1"># create and wire new operations to an existing operations while</span>
-<span class="c1"># routing samples</span>
-<span class="n">pcr_op</span> <span class="o">=</span> <span class="n">planner</span><span class="o">.</span><span class="n">create_operation_by_name</span><span class="p">(</span><span class="s2">&quot;Make PCR Fragment&quot;</span><span class="p">)</span>
-<span class="n">planner</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">pcr_op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sample</span><span class="o">=</span><span class="n">my_sample</span><span class="p">)</span>
-<span class="n">new_ops</span> <span class="o">=</span> <span class="n">planner</span><span class="o">.</span><span class="n">quick_create_chain</span><span class="p">(</span><span class="n">pcr_op</span><span class="p">,</span> <span class="s2">&quot;Run Gel&quot;</span><span class="p">)</span>
-<span class="n">run_gel</span> <span class="o">=</span> <span class="n">new_ops</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">planner</span><span class="o">.</span><span class="n">quick_create_chain</span><span class="p">(</span><span class="s2">&quot;Pour Gel&quot;</span><span class="p">,</span> <span class="n">run_gel</span><span class="p">)</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -487,8 +487,8 @@ operation input, and so on…:</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.planner.planner.Planner.set_output">
-<code class="sig-name descname">set_output</code><span class="sig-paren">(</span><em class="sig-param">fv</em>, <em class="sig-param">sample=None</em>, <em class="sig-param">routing=None</em>, <em class="sig-param">setter=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.set_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.set_output" title="Permalink to this definition">¶</a></dt>
+<dt id="pydent.planner.planner.Planner.set_output_sample">
+<code class="sig-name descname">set_output_sample</code><span class="sig-paren">(</span><em class="sig-param">fv</em>, <em class="sig-param">sample=None</em>, <em class="sig-param">routing=None</em>, <em class="sig-param">setter=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pydent/planner/planner.html#Planner.set_output_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.planner.Planner.set_output_sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the output of the field value to the sample. If the field_value names between the Sample and
 the field_value’s operation inputs, these will be set as well. Optionally, a routing dictionary may
 be passed to indicate the mapping between the sample field values and the operation field values.</p>

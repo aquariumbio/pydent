@@ -83,8 +83,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../versions.html">Version History</a><ul>
@@ -114,7 +114,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="../../../_sources/developer/_autosummary/_autosummary/pydent.marshaller.descriptors.rst.txt"
+  <a href="../../../_sources/developer/_autosummary/_autosummary/pydent.marshaller.descriptors.rst"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -190,41 +190,41 @@ AttributeError is raised.</p>
 <p>This may be used to assign dynamic properties to a class method as in
 the example below, or subclasses of the DataAccessor can be created
 to create ‘hooks’ when the descriptor is accessed, set, or delete.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_class</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">DataAccessor</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">model_class</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">DataAccessor</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="n">instance</span> <span class="o">=</span> <span class="n">model_class</span><span class="p">()</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>model_class.x = DataAccessor(&#39;x&#39;)
+model_class.y = DataAccessor(&#39;y&#39;)
+instance = model_class()
 
-<span class="n">instance</span><span class="o">.</span><span class="n">data</span> <span class="c1"># {&#39;x&#39;: Placeholders.DATA, &#39;y&#39;: Placeholders.DATA}</span>
+instance.data # {&#39;x&#39;: Placeholders.DATA, &#39;y&#39;: Placeholders.DATA}
 
-<span class="c1"># accessing the default values</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">instance</span><span class="o">.</span><span class="n">x</span>
-<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x being tracked but is not set&quot;</span><span class="p">)</span>
+# accessing the default values
+try:
+    instance.x
+except AttributeError:
+    print(&quot;x being tracked but is not set&quot;)
 
-<span class="c1"># setting and accessing a value</span>
-<span class="n">instance</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">instance</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">Placeholders</span><span class="o">.</span><span class="n">DATA</span><span class="p">}</span>
-<span class="n">instance</span><span class="o">.</span><span class="n">x</span>  <span class="c1"># returns 5</span>
+# setting and accessing a value
+instance.x = 5
+instance.data = {&#39;x&#39;: 5, &#39;y&#39;: Placeholders.DATA}
+instance.x  # returns 5
 
-<span class="c1"># raising AttributeError</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">instance</span><span class="o">.</span><span class="n">y</span>
-<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y is not set&quot;</span><span class="p">)</span>
+# raising AttributeError
+try:
+    instance.y
+except AttributeError:
+    print(&quot;y is not set&quot;)
 
-<span class="c1"># setting the value</span>
-<span class="n">instance</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="k">assert</span> <span class="n">instance</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
-<span class="k">assert</span> <span class="n">instance</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="mi">10</span>
+# setting the value
+instance.y = 10
+assert instance.data == {&#39;x&#39;: 5, &#39;y&#39;: 10}
+assert instance.y == 10
 
-<span class="c1"># deleting the value</span>
-<span class="k">del</span> <span class="n">instance</span><span class="o">.</span><span class="n">y</span>
-<span class="k">assert</span> <span class="n">instance</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">Placeholders</span><span class="o">.</span><span class="n">DATA</span><span class="p">}</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">instance</span><span class="o">.</span><span class="n">y</span>
-<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y is not set&quot;</span><span class="p">)</span>
+# deleting the value
+del instance.y
+assert instance.data == {&#39;x&#39;: 5, &#39;y&#39;: Placeholders.DATA}
+try:
+    instance.y
+except AttributeError:
+    print(&quot;y is not set&quot;)
 </pre></div>
 </div>
 </dd></dl>

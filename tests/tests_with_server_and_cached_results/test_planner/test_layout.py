@@ -20,9 +20,9 @@ class TestCanvasLayout:
 
     def test_layout(self, session):
         canvas = Planner(session)
-        canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        canvas.chain("Assemble Plasmid", "Transform Cells",
                                   "Plate Transformed Cells", "Check Plate",
-                                  category="Cloning")
+                     category="Cloning")
         assert canvas.layout is not None
 
     def test_bounds_of_ops(self):
@@ -150,7 +150,7 @@ class TestCanvasLayout:
 
     def test_collect_successors(self, session):
         canvas = Planner(session)
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate", category="Cloning")
         print(canvas.layout.ops_to_nodes(ops))
@@ -159,7 +159,7 @@ class TestCanvasLayout:
 
     def test_collect_predecessors(self, session):
         canvas = Planner(session)
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate", category="Cloning")
         s = canvas.layout.collect_predecessors(["r{}".format(ops[1].rid)])
@@ -168,16 +168,16 @@ class TestCanvasLayout:
     def test_align_x_with_predecessors(self, session):
         canvas = Planner(session)
 
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate", category="Cloning")
-        new_ops = canvas.find_operations_by_name("E Coli Lysate")
+        new_ops = canvas.get_op_by_name("E Coli Lysate")
         print(len(new_ops))
         for _ in range(3):
             print('created')
-            canvas.quick_create_chain(
+            canvas.chain(
                 ops[-1], "E Coli Lysate", category="Cloning")
-        new_ops = canvas.find_operations_by_name("E Coli Lysate")
+        new_ops = canvas.get_op_by_name("E Coli Lysate")
         print(len(new_ops))
         new_ops[0].x = 0
         new_ops[1].x = 100
@@ -199,13 +199,13 @@ class TestCanvasLayout:
     def test_successor_layout(self, session):
         canvas = Planner(session)
 
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
-                                        category="Cloning")
+                           category="Cloning")
         new_ops = []
         for _ in range(3):
-            new_ops += canvas.quick_create_chain(
+            new_ops += canvas.chain(
                 ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR")[1:]
         assert len(new_ops) == 6
         successor_layout = canvas.layout.successor_layout(
@@ -215,13 +215,13 @@ class TestCanvasLayout:
     def test_predecessor_layout(self, session):
         canvas = Planner(session)
 
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
-                                        category="Cloning")
+                           category="Cloning")
         new_ops = []
         for _ in range(3):
-            new_ops += canvas.quick_create_chain(
+            new_ops += canvas.chain(
                 ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR")[1:]
         assert len(new_ops) == 6
         predecessor_layout = canvas.layout.predecessor_layout(
@@ -231,13 +231,13 @@ class TestCanvasLayout:
     def test_align_midpoints(self, session):
         canvas = Planner(session)
 
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
-                                        category="Cloning")
+                           category="Cloning")
         new_ops = []
         for _ in range(3):
-            new_ops += canvas.quick_create_chain(
+            new_ops += canvas.chain(
                 ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR")[1:]
 
         layout = canvas.layout.ops_to_layout(ops)
@@ -250,10 +250,10 @@ class TestCanvasLayout:
     def test_topo_sort_chain(self, session):
         canvas = Planner(session)
 
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
-                                        category="Cloning")
+                           category="Cloning")
         ops[-1].x = 300
         ops[-2].x = 200
         ops[-3].x = 100
@@ -265,17 +265,17 @@ class TestCanvasLayout:
     def test_topo_sort(self, session):
         canvas = Planner(session)
 
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
-                                        category="Cloning")
+                           category="Cloning")
         ops[-1].x = 500
         for _ in range(3):
-            canvas.quick_create_chain(
+            canvas.chain(
                 ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR")
 
-        lysate = canvas.find_operations_by_name("E Coli Lysate")
-        pcr = canvas.find_operations_by_name("E Coli Colony PCR")
+        lysate = canvas.get_op_by_name("E Coli Lysate")
+        pcr = canvas.get_op_by_name("E Coli Colony PCR")
         canvas.layout.ops_to_layout(pcr).translate(100, 100)
         assert not canvas.layout.ops_to_layout(
             lysate).midpoint()[0] == ops[-1].x
@@ -289,13 +289,13 @@ class TestCanvasLayout:
     def test_topo_sort_with_independent_subgraphs(self, session):
         canvas = Planner(session)
 
-        ops1 = canvas.quick_create_chain(
+        ops1 = canvas.chain(
             "Assemble Plasmid", "Transform Cells", "Plate Transformed Cells",
             category="Cloning")
-        ops2 = canvas.quick_create_chain(
+        ops2 = canvas.chain(
             "Assemble Plasmid", "Transform Cells", "Plate Transformed Cells",
             category="Cloning")
-        ops3 = canvas.quick_create_chain(
+        ops3 = canvas.chain(
             "Assemble Plasmid", "Transform Cells", "Plate Transformed Cells",
             category="Cloning")
         canvas.layout.topo_sort()
@@ -307,10 +307,10 @@ class TestCanvasLayout:
 
     def test_subgraph(self, session):
         canvas = Planner(session)
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
-                                        category="Cloning")
+                           category="Cloning")
 
         graph = canvas.layout.ops_to_layout(ops[-2:])
         assert len(graph) == 2
@@ -318,25 +318,25 @@ class TestCanvasLayout:
 
     def test_leaves(self, session):
         canvas = Planner(session)
-        ops = canvas.quick_create_chain("Assemble Plasmid", "Transform Cells",
+        ops = canvas.chain("Assemble Plasmid", "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
-                                        category="Cloning")
-        canvas.quick_create_chain(ops[0], "Transform Cells",
+                           category="Cloning")
+        canvas.chain(ops[0], "Transform Cells",
                                   "Plate Transformed Cells",
                                   "Check Plate",
-                                  category="Cloning")
+                     category="Cloning")
         assert len(canvas.layout.leaves()) == 2
 
     def test_roots(self, session):
         canvas = Planner(session)
-        ops = canvas.quick_create_chain("Assemble Plasmid",
+        ops = canvas.chain("Assemble Plasmid",
                                         "Transform Cells",
                                         "Plate Transformed Cells",
                                         "Check Plate",
-                                        category="Cloning")
-        canvas.quick_create_chain(ops[0], "Transform Cells",
+                           category="Cloning")
+        canvas.chain(ops[0], "Transform Cells",
                                   "Plate Transformed Cells",
                                   "Check Plate",
-                                  category="Cloning")
+                     category="Cloning")
         assert len(canvas.layout.roots()) == 1

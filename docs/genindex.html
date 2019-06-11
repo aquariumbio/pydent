@@ -82,8 +82,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developer/versions.html">Version History</a><ul>
@@ -1507,6 +1507,8 @@
 </li>
       <li><a href="developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.CallbackValidationError">CallbackValidationError</a>
 </li>
+      <li><a href="developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.chain">chain() (pydent.planner.planner.Planner method)</a>
+</li>
       <li><a href="developer/_autosummary/_autosummary/pydent.models.field_value.html#pydent.models.field_value.FieldValue.choose_item">choose_item() (pydent.models.field_value.FieldValue method)</a>
 
       <ul>
@@ -2333,8 +2335,6 @@
         <li><a href="developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value_mixins.FieldMixin.find_field_parent">(pydent.models.field_value_mixins.FieldMixin method)</a>
 </li>
       </ul></li>
-      <li><a href="developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.find_operations_by_name">find_operations_by_name() (pydent.planner.planner.Planner method)</a>
-</li>
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Plan.find_wires">find_wires() (pydent.models.Plan method)</a>
 
       <ul>
@@ -2506,6 +2506,8 @@
       <li><a href="developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry.get_model">get_model() (pydent.marshaller.registry.ModelRegistry static method)</a>
 </li>
       <li><a href="developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_model_schema">get_model_schema() (pydent.marshaller.registry.SchemaRegistry static method)</a>
+</li>
+      <li><a href="developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.get_op_by_name">get_op_by_name() (pydent.planner.planner.Planner method)</a>
 </li>
       <li><a href="developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value_mixins.FieldValueInterface.get_routing">get_routing() (pydent.models.field_value_mixins.FieldValueInterface method)</a>
 
@@ -3511,8 +3513,6 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.quick_create_chain">quick_create_chain() (pydent.planner.planner.Planner method)</a>
-</li>
       <li><a href="developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.quick_wire">quick_wire() (pydent.planner.planner.Planner method)</a>
 </li>
       <li><a href="developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.quick_wire_by_name">quick_wire_by_name() (pydent.planner.planner.Planner method)</a>
@@ -4058,8 +4058,6 @@
       <ul>
         <li><a href="developer/_autosummary/_autosummary/pydent.models.operation.html#pydent.models.operation.Operation.set_output">(pydent.models.operation.Operation method)</a>
 </li>
-        <li><a href="developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_output">(pydent.planner.planner.Planner method)</a>
-</li>
       </ul></li>
       <li><a href="developer/_autosummary/pydent.models.html#pydent.models.Operation.set_output_array">set_output_array() (pydent.models.Operation method)</a>
 
@@ -4067,6 +4065,8 @@
         <li><a href="developer/_autosummary/_autosummary/pydent.models.operation.html#pydent.models.operation.Operation.set_output_array">(pydent.models.operation.Operation method)</a>
 </li>
       </ul></li>
+      <li><a href="developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_output_sample">set_output_sample() (pydent.planner.planner.Planner method)</a>
+</li>
       <li><a href="developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMany.set_ref">set_ref() (pydent.relationships.HasMany method)</a>
 
       <ul>

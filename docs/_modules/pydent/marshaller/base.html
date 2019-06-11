@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,214 +125,212 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Model base class</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span>&quot;&quot;&quot;
+Model base class
+&quot;&quot;&quot;
 
-<span class="kn">from</span> <span class="nn">pydent.marshaller.exceptions</span> <span class="k">import</span> <span class="n">SchemaException</span><span class="p">,</span> <span class="n">SchemaModelException</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.schema</span> <span class="k">import</span> <span class="n">DynamicSchema</span><span class="p">,</span> <span class="n">SchemaRegistry</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.fields</span> <span class="k">import</span> <span class="n">Callback</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.registry</span> <span class="k">import</span> <span class="n">ModelRegistry</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.descriptors</span> <span class="k">import</span> <span class="n">DataAccessor</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
-<span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-
-
-<div class="viewcode-block" id="add_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.add_schema">[docs]</a><span class="k">def</span> <span class="nf">add_schema</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Decorator that dynamically attaches a schema to a model.&quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">SchemaModel</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">SchemaException</span><span class="p">(</span><span class="s2">&quot;Model must be a subclaass of &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">SchemaModel</span><span class="p">))</span>
-    <span class="n">new_schema</span> <span class="o">=</span> <span class="n">SchemaRegistry</span><span class="p">(</span>
-        <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">make_schema_name</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
-        <span class="p">(</span><span class="n">DynamicSchema</span><span class="p">,),</span>
-        <span class="p">{</span><span class="s2">&quot;_model_class&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="p">}</span>
-    <span class="p">)</span>
-    <span class="n">new_schema</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">cls</span></div>
+from pydent.marshaller.exceptions import SchemaException, SchemaModelException
+from pydent.marshaller.schema import DynamicSchema, SchemaRegistry
+from pydent.marshaller.fields import Callback
+from pydent.marshaller.registry import ModelRegistry
+from pydent.marshaller.descriptors import DataAccessor
+from copy import deepcopy
+import functools
+import inspect
 
 
-<div class="viewcode-block" id="SchemaModel"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel">[docs]</a><span class="k">class</span> <span class="nc">SchemaModel</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ModelRegistry</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A Schema class that holds information on serialization/deserialization</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="add_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.add_schema">[docs]</a>def add_schema(cls):
+    &quot;&quot;&quot;Decorator that dynamically attaches a schema to a model.&quot;&quot;&quot;
 
-    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="n">ModelRegistry</span><span class="o">.</span><span class="n">_data_key</span><span class="p">,</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">_deserialized_key</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">]</span>
+    if not issubclass(cls, SchemaModel):
+        raise SchemaException(&quot;Model must be a subclaass of &#39;{}&#39;&quot;.format(SchemaModel))
+    new_schema = SchemaRegistry(
+        SchemaRegistry.make_schema_name(cls.__name__),
+        (DynamicSchema,),
+        {&quot;_model_class&quot;: cls}
+    )
+    new_schema.register(cls)
+    return cls</div>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The model initializer.</span>
 
-<span class="sd">        :param data: data to add to the model</span>
-<span class="sd">        :type data: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">_data_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">_data_key</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">_deserialized_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">_deserialized_key</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="viewcode-block" id="SchemaModel"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel">[docs]</a>class SchemaModel(metaclass=ModelRegistry):
+    &quot;&quot;&quot;
+    A Schema class that holds information on serialization/deserialization
+    &quot;&quot;&quot;
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">model_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the attached model schema.</span>
+    __slots__ = [ModelRegistry._data_key, ModelRegistry._deserialized_key, &#39;__dict__&#39;]
 
-<span class="sd">        :return: the model&#39;s schema class</span>
-<span class="sd">        :rtype: DynamicSchema</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="s1">&#39;model_schema&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    def __init__(self, data=None):
+        &quot;&quot;&quot;
+        The model initializer.
 
-<div class="viewcode-block" id="SchemaModel.add_data"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel.add_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initializes fake attributes that correspond to data.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_schema</span><span class="p">:</span>
-            <span class="n">filepath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">filepath</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="k">raise</span> <span class="n">SchemaModelException</span><span class="p">(</span><span class="s2">&quot;Cannot initialize a </span><span class="si">{}</span><span class="s2"> without a </span><span class="si">{}</span><span class="s2">. &quot;</span>
-                                       <span class="s2">&quot;Use &#39;@</span><span class="si">{}</span><span class="s2">&#39; to decorate the class definition for &#39;</span><span class="si">{}</span><span class="s2">&#39; located in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">SchemaModel</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="n">DynamicSchema</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="n">add_schema</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="n">filepath</span><span class="p">,</span>
-            <span class="p">))</span>
-        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">model_schema</span><span class="o">.</span><span class="n">init_data_accessors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+        :param data: data to add to the model
+        :type data: dict
+        &quot;&quot;&quot;
+        if data is None:
+            data = {}
+        if not getattr(self, ModelRegistry._data_key, None):
+            setattr(self, ModelRegistry._data_key, data)
+        if not getattr(self, ModelRegistry._deserialized_key, None):
+            setattr(self, ModelRegistry._deserialized_key, {})
+        self.add_data(data)
 
-<div class="viewcode-block" id="SchemaModel._get_data"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel._get_data">[docs]</a>    <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the model&#39;s data&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_data_key</span><span class="p">)</span></div>
+    @property
+    def model_schema(self):
+        &quot;&quot;&quot;
+        Returns the attached model schema.
 
-    <span class="k">def</span> <span class="nf">_get_deserialized_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_deserialized_key</span><span class="p">)</span>
+        :return: the model&#39;s schema class
+        :rtype: DynamicSchema
+        &quot;&quot;&quot;
+        return getattr(self.__class__, &#39;model_schema&#39;, None)
 
-    <span class="k">def</span> <span class="nf">get_deserialized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_deserialized_data</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span>
+<div class="viewcode-block" id="SchemaModel.add_data"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel.add_data">[docs]</a>    def add_data(self, data):
+        &quot;&quot;&quot;Initializes fake attributes that correspond to data.&quot;&quot;&quot;
+        if not self.model_schema:
+            filepath = &#39;&#39;
+            try:
+                filepath = inspect.getfile(self.__class__)
+            except:
+                pass
+            raise SchemaModelException(&quot;Cannot initialize a {} without a {}. &quot;
+                                       &quot;Use &#39;@{}&#39; to decorate the class definition for &#39;{}&#39; located in {}&quot;.format(
+                SchemaModel.__name__,
+                DynamicSchema.__name__,
+                add_schema.__name__,
+                self.__class__.__name__,
+                filepath,
+            ))
+        if data is not None:
+            self.__class__.model_schema.init_data_accessors(self, data)</div>
 
-    <span class="k">def</span> <span class="nf">has_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_deserialized_data</span><span class="p">()</span>
+<div class="viewcode-block" id="SchemaModel._get_data"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel._get_data">[docs]</a>    def _get_data(self):
+        &quot;&quot;&quot;Return the model&#39;s data&quot;&quot;&quot;
+        return getattr(self, self.__class__._data_key)</div>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_set_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">calling_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">SchemaModel</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-        <span class="n">SchemaModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">instance</span>
+    def _get_deserialized_data(self):
+        return getattr(self, self.__class__._deserialized_key)
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_keys_to_dict</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{}</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">keys</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
+    def get_deserialized(self, name):
+        return self._get_deserialized_data()[name]
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_dump</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">SchemaModel</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">obj</span>
+    def has_deserialize(self, name):
+        assert name in self._get_deserialized_data()
 
-        <span class="n">only</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_keys_to_dict</span><span class="p">(</span><span class="n">only</span><span class="p">)</span>
-        <span class="n">include</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_keys_to_dict</span><span class="p">(</span><span class="n">include</span><span class="p">)</span>
-        <span class="n">ignore</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_keys_to_dict</span><span class="p">(</span><span class="n">ignore</span><span class="p">)</span>
+    @classmethod
+    def _set_data(cls, data, calling_obj=None):
+        instance = SchemaModel.__new__(cls)
+        SchemaModel.__init__(instance, data)
+        return instance
 
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    @staticmethod
+    def _keys_to_dict(keys):
+        if keys is None:
+            return {}
+        elif isinstance(keys, str):
+            return {keys: None}
+        elif isinstance(keys, dict):
+            return dict(keys)
+        else:
+            return {k: None for k in keys}
 
-        <span class="n">serialized_data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_get_data</span><span class="p">()</span>
+    @classmethod
+    def _dump(cls, obj, only=None, include=None, ignore=None):
+        if not issubclass(type(obj), SchemaModel):
+            return obj
 
-        <span class="n">include_and_only</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">include</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">only</span><span class="p">))</span>
+        only = cls._keys_to_dict(only)
+        include = cls._keys_to_dict(include)
+        ignore = cls._keys_to_dict(ignore)
 
-        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">include_and_only</span><span class="p">:</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+        data = {}
 
-        <span class="n">keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">serialized_data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ignore</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">only</span><span class="p">:</span>
-            <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">only</span><span class="p">))</span>
+        serialized_data = obj._get_data()
 
-        <span class="n">model_fields</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">model_schema</span><span class="o">.</span><span class="n">fields</span>
+        include_and_only = set(include).union(set(only))
 
-        <span class="n">callback_fields</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">nested_fields</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">always_dump</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">model_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s1">&#39;nested&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">Callback</span><span class="p">):</span>
-                <span class="n">callback_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s1">&#39;always_dump&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="n">always_dump</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        for fname in include_and_only:
+            getattr(obj, fname)
 
-        <span class="n">include_and_only</span> <span class="o">=</span> <span class="n">include_and_only</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">always_dump</span><span class="p">))</span>
-        <span class="n">callback_keys</span> <span class="o">=</span> <span class="n">include_and_only</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">callback_fields</span><span class="p">))</span>
-        <span class="n">callback_keys</span> <span class="o">=</span> <span class="n">callback_keys</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ignore</span><span class="p">))</span>
+        keys = set(serialized_data.keys())
+        keys = keys.difference(set(ignore))
+        if only:
+            keys = keys.intersection(set(only))
 
-        <span class="n">data_keys</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">callback_fields</span><span class="p">))</span>
+        model_fields = obj.__class__.model_schema.fields
 
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data_keys</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">serialized_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">callback_keys</span><span class="p">:</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">model_fields</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-            <span class="n">dump</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_dump</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">only</span><span class="o">=</span><span class="n">only</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                                     <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model_fields</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="s1">&#39;nested&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">model_fields</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">many</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                    <span class="n">data</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">data_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">dump</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">data_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">dump</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data</span>
+        callback_fields = []
+        always_dump = []
+        for fname, field in model_fields.items():
+            if hasattr(field, &#39;nested&#39;) or issubclass(type(field), Callback):
+                callback_fields.append(fname)
+            if getattr(field, &#39;always_dump&#39;, None):
+                always_dump.append(fname)
 
-<div class="viewcode-block" id="SchemaModel.dump"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Dump/serializes the model to a json-like dictionary.</span>
+        include_and_only = include_and_only.union(set(always_dump))
+        callback_keys = include_and_only.intersection(set(callback_fields))
+        callback_keys = callback_keys.difference(set(ignore))
 
-<span class="sd">        :param only: restricts dump/serialization to the provided keys</span>
-<span class="sd">        :type only: basestring|list|tuple|dict</span>
-<span class="sd">        :param include: include any callback fields in the dump/serialization</span>
-<span class="sd">        :type include: basestring|list|tuple|dict</span>
-<span class="sd">        :param ignore: ignores fields in the dump/serialization</span>
-<span class="sd">        :type ignore: basestring|list|tuple|dict</span>
-<span class="sd">        :return: the serialized data</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="n">only</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">))</span></div>
+        data_keys = keys.difference(set(callback_fields))
 
-    <span class="c1"># def __dir__(self):</span>
-    <span class="c1">#     return [&#39;a&#39;]</span>
+        for key in data_keys:
+            data[key] = serialized_data[key]
+        for key in callback_keys:
+            field = model_fields[key]
+            val = getattr(obj, key)
+            dump = functools.partial(cls._dump, include=include.pop(key, None), only=only.pop(key, None),
+                                     ignore=ignore.pop(key, None))
+            if getattr(model_fields[key], &#39;nested&#39;, None) and model_fields[key].many:
+                if isinstance(val, list):
+                    data[field.data_key] = [dump(v) for v in val]
+            else:
+                data[field.data_key] = dump(val)
+        return data
 
-<div class="viewcode-block" id="SchemaModel.load"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel.load">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deserialize the data to a model.</span>
+<div class="viewcode-block" id="SchemaModel.dump"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel.dump">[docs]</a>    def dump(self, only=None, include=None, ignore=None):
+        &quot;&quot;&quot;
+        Dump/serializes the model to a json-like dictionary.
 
-<span class="sd">        :param data: data to deserialize</span>
-<span class="sd">        :type data: dict</span>
-<span class="sd">        :return: the deserialized model</span>
-<span class="sd">        :rtype: SchemaModel</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_set_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+        :param only: restricts dump/serialization to the provided keys
+        :type only: basestring|list|tuple|dict
+        :param include: include any callback fields in the dump/serialization
+        :type include: basestring|list|tuple|dict
+        :param ignore: ignores fields in the dump/serialization
+        :type ignore: basestring|list|tuple|dict
+        :return: the serialized data
+        :rtype: dict
+        &quot;&quot;&quot;
+        return deepcopy(self._dump(self, only=only, include=include, ignore=ignore))</div>
 
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overrides how models are unpickled. The default way pickling works by dumping</span>
-<span class="sd">        the __dict__ along with the class definition. Since the way data is handle in</span>
-<span class="sd">        the marshaller object involves dynamic creation of descriptors, these are not properly</span>
-<span class="sd">        handled upon load. Here we will create these descriptors upon</span>
-<span class="sd">        unpickling. Unlike serialized data, deserialized data is handled explicitly using &#39;fields&#39; in the</span>
-<span class="sd">        schema/model definition, it is not necessary to do anything with these descriptors.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">state</span>
+    # def __dir__(self):
+    #     return [&#39;a&#39;]
 
-        <span class="c1"># add data accessors</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="n">ModelRegistry</span><span class="o">.</span><span class="n">_data_key</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
-                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">DataAccessor</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">_data_key</span><span class="p">))</span></div>
+<div class="viewcode-block" id="SchemaModel.load"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel.load">[docs]</a>    @classmethod
+    def load(cls, data):
+        &quot;&quot;&quot;
+        Deserialize the data to a model.
+
+        :param data: data to deserialize
+        :type data: dict
+        :return: the deserialized model
+        :rtype: SchemaModel
+        &quot;&quot;&quot;
+        return cls._set_data(data)</div>
+
+    def __setstate__(self, state):
+        &quot;&quot;&quot;Overrides how models are unpickled. The default way pickling works by dumping
+        the __dict__ along with the class definition. Since the way data is handle in
+        the marshaller object involves dynamic creation of descriptors, these are not properly
+        handled upon load. Here we will create these descriptors upon
+        unpickling. Unlike serialized data, deserialized data is handled explicitly using &#39;fields&#39; in the
+        schema/model definition, it is not necessary to do anything with these descriptors.&quot;&quot;&quot;
+        self.__dict__ = state
+
+        # add data accessors
+        data = state[ModelRegistry._data_key]
+        for k in data:
+            if k not in self.__class__.__dict__:
+                setattr(self.__class__, k, DataAccessor(k, ModelRegistry._data_key))</div>
 </pre></div>
 
     </div>

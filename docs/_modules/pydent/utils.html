@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">Version History</a><ul>
@@ -125,79 +125,79 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Utilities</span>
+<span></span>&quot;&quot;&quot;Utilities
 
-<span class="sd">==========</span>
-<span class="sd">utils</span>
-<span class="sd">==========</span>
+==========
+utils
+==========
 
-<span class="sd">Submodules</span>
-<span class="sd">==========</span>
+Submodules
+==========
 
-<span class="sd">.. autosummary::</span>
-<span class="sd">    :toctree: _autosummary</span>
+.. autosummary::
+    :toctree: _autosummary
 
-<span class="sd">    async_requests</span>
-<span class="sd">    logger</span>
+    async_requests
+    logger
 
-<span class="sd">&quot;&quot;&quot;</span>
+&quot;&quot;&quot;
 
-<span class="kn">import</span> <span class="nn">pprint</span> <span class="k">as</span> <span class="nn">pprint_module</span>
+import pprint as pprint_module
 
-<span class="kn">from</span> <span class="nn">pydent.utils.async_requests</span> <span class="k">import</span> <span class="n">make_async</span>
-
-
-<span class="n">printer</span> <span class="o">=</span> <span class="n">pprint_module</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">pprint</span> <span class="o">=</span> <span class="n">printer</span><span class="o">.</span><span class="n">pprint</span>
-<span class="n">pformat</span> <span class="o">=</span> <span class="n">printer</span><span class="o">.</span><span class="n">pformat</span>
+from pydent.utils.async_requests import make_async
 
 
-<div class="viewcode-block" id="filter_list"><a class="viewcode-back" href="../../developer/_autosummary/pydent.utils.html#pydent.utils.filter_list">[docs]</a><span class="k">def</span> <span class="nf">filter_list</span><span class="p">(</span><span class="n">objlist</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Filters a list of objects based on attributes in kwargs&quot;&quot;&quot;</span>
-    <span class="n">intersection</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objlist</span><span class="p">:</span>
-        <span class="n">is_ok</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-                <span class="n">is_ok</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">break</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">==</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
-                <span class="n">is_ok</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">break</span>
-        <span class="k">if</span> <span class="n">is_ok</span><span class="p">:</span>
-            <span class="n">intersection</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">objlist</span><span class="p">)(</span><span class="n">intersection</span><span class="p">)</span></div>
+printer = pprint_module.PrettyPrinter(indent=1)
+pprint = printer.pprint
+pformat = printer.pformat
 
 
-<div class="viewcode-block" id="url_build"><a class="viewcode-back" href="../../developer/_autosummary/pydent.utils.html#pydent.utils.url_build">[docs]</a><span class="k">def</span> <span class="nf">url_build</span><span class="p">(</span><span class="o">*</span><span class="n">parts</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Join parts of a url into a string&quot;&quot;&quot;</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">url</span></div>
+<div class="viewcode-block" id="filter_list"><a class="viewcode-back" href="../../developer/_autosummary/pydent.utils.html#pydent.utils.filter_list">[docs]</a>def filter_list(objlist, **kwargs):
+    &quot;&quot;&quot;Filters a list of objects based on attributes in kwargs&quot;&quot;&quot;
+    intersection = []
+    for obj in objlist:
+        is_ok = True
+        for k in kwargs:
+            if not hasattr(obj, k):
+                is_ok = False
+                break
+            if not getattr(obj, k) == kwargs[k]:
+                is_ok = False
+                break
+        if is_ok:
+            intersection.append(obj)
+    return type(objlist)(intersection)</div>
 
-<div class="viewcode-block" id="empty_copy"><a class="viewcode-back" href="../../developer/_autosummary/pydent.utils.html#pydent.utils.empty_copy">[docs]</a><span class="k">def</span> <span class="nf">empty_copy</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return an empty copy of an object for copying purposes&quot;&quot;&quot;</span>
-    <span class="k">class</span> <span class="nc">Empty</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
-    <span class="n">newcopy</span> <span class="o">=</span> <span class="n">Empty</span><span class="p">(</span>  <span class="p">)</span>
-    <span class="n">newcopy</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span>
-    <span class="k">return</span> <span class="n">newcopy</span></div>
+
+<div class="viewcode-block" id="url_build"><a class="viewcode-back" href="../../developer/_autosummary/pydent.utils.html#pydent.utils.url_build">[docs]</a>def url_build(*parts):
+    &quot;&quot;&quot;Join parts of a url into a string&quot;&quot;&quot;
+    url = &#39;/&#39;.join(p.strip(&#39;/&#39;) for p in parts)
+    return url</div>
+
+<div class="viewcode-block" id="empty_copy"><a class="viewcode-back" href="../../developer/_autosummary/pydent.utils.html#pydent.utils.empty_copy">[docs]</a>def empty_copy(obj):
+    &quot;&quot;&quot;Return an empty copy of an object for copying purposes&quot;&quot;&quot;
+    class Empty(obj.__class__):
+        def __init__(self): pass
+    newcopy = Empty(  )
+    newcopy.__class__ = obj.__class__
+    return newcopy</div>
 
 
-<span class="c1"># def filter_dictionary(dictionary, filter_function):</span>
-<span class="c1">#     new_dict = {}</span>
-<span class="c1">#     if isinstance(dictionary, dict):</span>
-<span class="c1">#         for key, val in dictionary.items():</span>
-<span class="c1">#             if filter_function(key, val):</span>
-<span class="c1">#                 new_dict[key] = val</span>
-<span class="c1">#             if isinstance(val, dict):</span>
-<span class="c1">#                 new_dict[key] = filter_dictionary(val, filter_function)</span>
-<span class="c1">#         return new_dict</span>
+# def filter_dictionary(dictionary, filter_function):
+#     new_dict = {}
+#     if isinstance(dictionary, dict):
+#         for key, val in dictionary.items():
+#             if filter_function(key, val):
+#                 new_dict[key] = val
+#             if isinstance(val, dict):
+#                 new_dict[key] = filter_dictionary(val, filter_function)
+#         return new_dict
 
-<span class="c1"># def ignore_none(d):</span>
-<span class="c1">#     return filter_dictionary(d, lambda k, v: v is not None)</span>
-<span class="c1">#</span>
-<span class="c1"># def ignore_empty(d):</span>
-<span class="c1">#     return filter_dictionary(d, lambda k, v: v != [])</span>
+# def ignore_none(d):
+#     return filter_dictionary(d, lambda k, v: v is not None)
+#
+# def ignore_empty(d):
+#     return filter_dictionary(d, lambda k, v: v != [])
 </pre></div>
 
     </div>

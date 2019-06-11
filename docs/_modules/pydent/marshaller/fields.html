@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,384 +125,384 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.fields</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Fields</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span>&quot;&quot;&quot;
+Fields
+&quot;&quot;&quot;
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">auto</span>
+from abc import ABC, abstractmethod
+from enum import Enum, auto
 
-<span class="kn">from</span> <span class="nn">pydent.marshaller.descriptors</span> <span class="k">import</span> <span class="n">CallbackAccessor</span><span class="p">,</span> <span class="n">MarshallingAccessor</span><span class="p">,</span> <span class="n">RelationshipAccessor</span><span class="p">,</span> <span class="n">Placeholders</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.exceptions</span> <span class="k">import</span> <span class="n">AllowNoneFieldValidationError</span><span class="p">,</span> <span class="n">RunTimeCallbackAttributeError</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.registry</span> <span class="k">import</span> <span class="n">ModelRegistry</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.utils</span> <span class="k">import</span> <span class="n">make_signature_str</span>
-
-
-<div class="viewcode-block" id="FieldABC"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.FieldABC">[docs]</a><span class="k">class</span> <span class="nc">FieldABC</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Field abstract base class</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+from pydent.marshaller.descriptors import CallbackAccessor, MarshallingAccessor, RelationshipAccessor, Placeholders
+from pydent.marshaller.exceptions import AllowNoneFieldValidationError, RunTimeCallbackAttributeError
+from pydent.marshaller.registry import ModelRegistry
+from pydent.marshaller.utils import make_signature_str
 
 
-<div class="viewcode-block" id="Field"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Field">[docs]</a><span class="k">class</span> <span class="nc">Field</span><span class="p">(</span><span class="n">FieldABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A serialization/deserialization field.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FieldABC"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.FieldABC">[docs]</a>class FieldABC(ABC):
+    &quot;&quot;&quot;
+    Field abstract base class
+    &quot;&quot;&quot;
 
-    <span class="n">ACCESSOR</span> <span class="o">=</span> <span class="n">MarshallingAccessor</span>
+    @abstractmethod
+    def serialize(self):
+        pass
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">Placeholders</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A standard field. Performs no functions on serialized and</span>
-<span class="sd">        deserialized data.</span>
+    @abstractmethod
+    def deserialize(self):
+        pass
 
-<span class="sd">        :param many: whether to treat serializations and deserializations as a per-item basis in a list</span>
-<span class="sd">        :type many: bool</span>
-<span class="sd">        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered</span>
-<span class="sd">        nested should return this field&#39;s descriptor.</span>
-<span class="sd">        :type data_key: basestring</span>
-<span class="sd">        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods</span>
-<span class="sd">        :type allow_none: bool</span>
-<span class="sd">        :raises AllowNoneFieldValidationError if None is received in serialize and deserialized methods</span>
-<span class="sd">        and self.allow_none == False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    @abstractmethod
+    def _serialize(self):
+        pass
 
-        <span class="k">if</span> <span class="n">allow_none</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">allow_none</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">many</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">many</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">many</span> <span class="o">=</span> <span class="n">many</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">objtype</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_key</span> <span class="o">=</span> <span class="n">data_key</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">allow_none</span> <span class="o">=</span> <span class="n">allow_none</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
-
-    <span class="k">def</span> <span class="nf">set_data_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_key</span> <span class="o">=</span> <span class="n">key</span>
-
-    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">data</span>
-
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">data</span>
-
-    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_none</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AllowNoneFieldValidationError</span><span class="p">(</span><span class="s2">&quot;None is not allowed for field &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_key</span><span class="p">))</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">many</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deserialize</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deserialize</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_none</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AllowNoneFieldValidationError</span><span class="p">(</span><span class="s2">&quot;None is not allowed for field &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_key</span><span class="p">))</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">many</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Field.register"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Field.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">objtype</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Registers the field to a nested class. Instantiates the corresponding</span>
-<span class="sd">        descriptor (i.e. accessor)</span>
-
-<span class="sd">        :param name: name of the field</span>
-<span class="sd">        :type name: basestring</span>
-<span class="sd">        :param objtype: the nested class to register the field to</span>
-<span class="sd">        :type objtype: SchemaModel</span>
-<span class="sd">        :return: None</span>
-<span class="sd">        :rtype: None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">objtype</span> <span class="o">=</span> <span class="n">objtype</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">objtype</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="n">name</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_key</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_key</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ACCESSOR</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="o">=</span><span class="n">objtype</span><span class="o">.</span><span class="n">_data_key</span><span class="p">,</span>
-                                                 <span class="n">deserialized_accessor</span><span class="o">=</span><span class="n">objtype</span><span class="o">.</span><span class="n">_deserialized_key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">))</span></div>
-
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{cls}</span><span class="s2"> key=&#39;</span><span class="si">{objtype}</span><span class="s2">.</span><span class="si">{key}</span><span class="s2">&#39; many=</span><span class="si">{many}</span><span class="s2"> allow_none=</span><span class="si">{allow_none}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">cls</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-            <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_key</span><span class="p">,</span>
-            <span class="n">many</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">many</span><span class="p">,</span>
-            <span class="n">allow_none</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allow_none</span><span class="p">,</span>
-            <span class="n">objtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">objtype</span>
-        <span class="p">)</span></div>
+    @abstractmethod
+    def _deserialize(self):
+        pass</div>
 
 
-<div class="viewcode-block" id="Nested"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Nested">[docs]</a><span class="k">class</span> <span class="nc">Nested</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents a field that returns another nested instance.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Field"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Field">[docs]</a>class Field(FieldABC):
+    &quot;&quot;&quot;A serialization/deserialization field.&quot;&quot;&quot;
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Nested relationship initializer.</span>
+    ACCESSOR = MarshallingAccessor
 
-<span class="sd">        :param nested: the nested name of nested field. Should exist in the ModelRegistery.</span>
-<span class="sd">        :type nested: SchemaModel</span>
-<span class="sd">        :param many: whether to treat serializations and deserializations as a per-item basis in a list</span>
-<span class="sd">        :type many: bool</span>
-<span class="sd">        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered</span>
-<span class="sd">        nested should return this field&#39;s descriptor.</span>
-<span class="sd">        :type data_key: basestring</span>
-<span class="sd">        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods</span>
-<span class="sd">        :type allow_none: bool</span>
-<span class="sd">        :param lazy: if set to True (default), perform lazy serialization and deserialization. If the data received</span>
-<span class="sd">        by `deserialize` is the expected nested, return that data. If the object</span>
-<span class="sd">        recieved by `serialize` is not the expected nested, return that data.</span>
-<span class="sd">        :type lazy:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    def __init__(self, many=None, data_key=None, allow_none=None, default=Placeholders.DEFAULT):
+        &quot;&quot;&quot;A standard field. Performs no functions on serialized and
+        deserialized data.
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">nested</span>
-        <span class="k">if</span> <span class="n">lazy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">allow_none</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">allow_none</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">many</span><span class="p">,</span> <span class="n">data_key</span><span class="p">,</span> <span class="n">allow_none</span><span class="p">)</span>
+        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :type many: bool
+        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        nested should return this field&#39;s descriptor.
+        :type data_key: basestring
+        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :type allow_none: bool
+        :raises AllowNoneFieldValidationError if None is received in serialize and deserialized methods
+        and self.allow_none == False
+        &quot;&quot;&quot;
 
-    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nested</span><span class="p">)</span>
+        if allow_none is None:
+            allow_none = True
+        if many is None:
+            many = False
+        self.many = many
+        self.objtype = None
+        self.data_key = data_key
+        self.allow_none = allow_none
+        self.default = default
 
-    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_none</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">()):</span>
-            <span class="k">return</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span><span class="o">.</span><span class="n">_set_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
+    def set_data_key(self, key):
+        self.data_key = key
 
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_none</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">()):</span>
-            <span class="k">return</span> <span class="n">obj</span>
-        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">_get_data</span><span class="p">()</span></div>
+    def _deserialize(self, owner, data):
+        return data
 
+    def _serialize(self, owner, data):
+        return data
 
-<div class="viewcode-block" id="Callback"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback">[docs]</a><span class="k">class</span> <span class="nc">Callback</span><span class="p">(</span><span class="n">Field</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Make a callback when called.&quot;&quot;&quot;</span>
+    def deserialize(self, owner, data):
+        if data is None:
+            if not self.allow_none:
+                raise AllowNoneFieldValidationError(&quot;None is not allowed for field &#39;{}&#39;&quot;.format(self.data_key))
+            return None
+        if self.many:
+            for i, x in enumerate(data):
+                data[i] = self._deserialize(owner, x)
+            return data
+        return self._deserialize(owner, data)
 
-    <span class="k">class</span> <span class="nc">__FLAGS</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-        <span class="n">SELF</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    def serialize(self, owner, data):
+        if data is None:
+            if not self.allow_none:
+                raise AllowNoneFieldValidationError(&quot;None is not allowed for field &#39;{}&#39;&quot;.format(self.data_key))
+            return None
+        if self.many:
+            return [self._serialize(owner, d) for d in data]
+        return self._serialize(owner, data)
 
-    <span class="n">SELF</span> <span class="o">=</span> <span class="n">__FLAGS</span><span class="o">.</span><span class="n">SELF</span>
-    <span class="n">ACCESSOR</span> <span class="o">=</span> <span class="n">CallbackAccessor</span>
+<div class="viewcode-block" id="Field.register"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Field.register">[docs]</a>    def register(self, name, objtype):
+        &quot;&quot;&quot;Registers the field to a nested class. Instantiates the corresponding
+        descriptor (i.e. accessor)
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">allow_none</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">always_dump</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A Callback field initializer.</span>
+        :param name: name of the field
+        :type name: basestring
+        :param objtype: the nested class to register the field to
+        :type objtype: SchemaModel
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
 
-<span class="sd">        :param callback: name of the callback function or a callable. If a name, the name should exist</span>
-<span class="sd">        as a function in the owner instance. Invalid callback signatures are captures on class creation.</span>
-<span class="sd">        :type callback: callable|basestring</span>
-<span class="sd">        :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or</span>
-<span class="sd">        values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will</span>
-<span class="sd">        replace any arguments that are `Callback.SElF`</span>
-<span class="sd">        :type callback_args: tuple</span>
-<span class="sd">        :param callback_kwargs: a dictionary of kwargs to use in the callback</span>
-<span class="sd">        :type callback_kwargs: dict</span>
-<span class="sd">        :param cache: whether to cache the result using `setattr` on the owner instance. This will initialize the</span>
-<span class="sd">        serialization and deserialization procedures detailed in the corresponding field/descriptor.</span>
-<span class="sd">        :type cache: bool</span>
-<span class="sd">        :param many: whether to treat serializations and deserializations as a per-item basis in a list</span>
-<span class="sd">        :type many: bool</span>
-<span class="sd">        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods</span>
-<span class="sd">        :type allow_none: bool</span>
-<span class="sd">        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered</span>
-<span class="sd">        nested should return this field&#39;s descriptor.</span>
-<span class="sd">        :param always_dump: if True, this field will be serialized by default</span>
-<span class="sd">        :type always_dump: bool</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        self.objtype = objtype
+        if name not in objtype.__dict__:
+            key = name
+            if self.data_key:
+                key = self.data_key
+            setattr(objtype, name, self.ACCESSOR(name=key, field=self, accessor=objtype._data_key,
+                                                 deserialized_accessor=objtype._deserialized_key, default=self.default))</div>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">many</span><span class="p">,</span> <span class="n">data_key</span><span class="p">,</span> <span class="n">allow_none</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">always_dump</span> <span class="o">=</span> <span class="n">always_dump</span>
-        <span class="k">if</span> <span class="n">callback_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">callback_args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">callback_args</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
-            <span class="n">callback_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">callback_args</span><span class="p">,)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">callback_args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">callback_args</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">callback_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">callback_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">callback_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">callback_kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span>
-
-    <span class="k">def</span> <span class="nf">_callback_signature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_args</span>
-        <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_kwargs</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{func}{args}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span>
-            <span class="n">args</span><span class="o">=</span><span class="n">make_signature_str</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-        <span class="p">)</span>
-
-<div class="viewcode-block" id="Callback.get_callback_args"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback.get_callback_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_callback_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Processes the callback args&quot;&quot;&quot;</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">callback_args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">callback_args</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">extra_args</span><span class="p">:</span>
-            <span class="n">callback_args</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">extra_args</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">callback_args</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">SELF</span><span class="p">:</span>
-                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">callable</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">(</span><span class="n">owner</span><span class="p">))</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">RunTimeCallbackAttributeError</span><span class="p">(</span>
-                <span class="s2">&quot;There was an error retrieving callback arguments for &#39;</span><span class="si">{sig}</span><span class="s2">&#39; due to:</span><span class="se">\n</span><span class="si">{e}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">sig</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback_signature</span><span class="p">(),</span>
-                    <span class="n">e</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                <span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
-        <span class="k">return</span> <span class="n">args</span></div>
-
-<div class="viewcode-block" id="Callback.get_callback_kwargs"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback.get_callback_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">get_callback_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">extra_kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Processes the callback kwargs&quot;&quot;&quot;</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">callback_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">callback_kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">extra_kwargs</span><span class="p">:</span>
-            <span class="n">callback_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_kwargs</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">callback_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-                    <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">SELF</span><span class="p">:</span>
-                    <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">owner</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">RunTimeCallbackAttributeError</span><span class="p">(</span>
-                <span class="s2">&quot;There was an error retrieving callback keyword arguments for &#39;</span><span class="si">{func}</span><span class="s2">(args)&#39; due to:</span><span class="se">\n</span><span class="si">{e}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span>
-                    <span class="n">args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback_signature</span><span class="p">(),</span>
-                    <span class="n">e</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                <span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
-        <span class="k">return</span> <span class="n">kwargs</span></div>
-
-<div class="viewcode-block" id="Callback.fullfill"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback.fullfill">[docs]</a>    <span class="k">def</span> <span class="nf">fullfill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calls the callback function using the owner object. A</span>
-<span class="sd">        Callback.SELF arg value will be replaced to be equivalent to the</span>
-<span class="sd">        owner instance model.</span>
-
-<span class="sd">        :param owner: the owning object</span>
-<span class="sd">        :type owner: SchemaModel</span>
-<span class="sd">        :return: function result</span>
-<span class="sd">        :rtype: any</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">):</span>
-            <span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">)</span>
-
-        <span class="n">callback_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_callback_args</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="n">extra_args</span><span class="p">)</span>
-        <span class="n">callback_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_callback_kwargs</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">extra_kwargs</span><span class="o">=</span><span class="n">extra_kwargs</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">callback_args</span><span class="p">),</span> <span class="o">**</span><span class="n">callback_kwargs</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">RunTimeCallbackAttributeError</span><span class="p">(</span>
-                <span class="s2">&quot;There was an calling &#39;</span><span class="si">{signature}</span><span class="s2">&#39; due to:</span><span class="se">\n</span><span class="si">{e}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">signature</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback_signature</span><span class="p">(</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="p">),</span>
-                    <span class="n">e</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                <span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
-        <span class="k">if</span> <span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span>
-        <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cache_result</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">val</span></div>
-
-    <span class="k">def</span> <span class="nf">cache_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;_deserialize is not implemented for field </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;deserialize is not implemented for field </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+    def __str__(self):
+        return &quot;&lt;{cls} key=&#39;{objtype}.{key}&#39; many={many} allow_none={allow_none}&gt;&quot;.format(
+            cls=self.__class__.__name__,
+            key=self.data_key,
+            many=self.many,
+            allow_none=self.allow_none,
+            objtype=self.objtype
+        )</div>
 
 
-<div class="viewcode-block" id="Relationship"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Relationship">[docs]</a><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A composition (Callback/Nested) field that uses a callback to retrieve a model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Nested"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Nested">[docs]</a>class Nested(Field):
+    &quot;&quot;&quot;Represents a field that returns another nested instance.&quot;&quot;&quot;
 
-    <span class="n">ACCESSOR</span> <span class="o">=</span> <span class="n">RelationshipAccessor</span>
+    def __init__(self, nested, many=None, data_key=None, allow_none=None, lazy=None):
+        &quot;&quot;&quot;Nested relationship initializer.
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">allow_none</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">always_dump</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Relationship initializer</span>
+        :param nested: the nested name of nested field. Should exist in the ModelRegistery.
+        :type nested: SchemaModel
+        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :type many: bool
+        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        nested should return this field&#39;s descriptor.
+        :type data_key: basestring
+        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :type allow_none: bool
+        :param lazy: if set to True (default), perform lazy serialization and deserialization. If the data received
+        by `deserialize` is the expected nested, return that data. If the object
+        recieved by `serialize` is not the expected nested, return that data.
+        :type lazy:
+        &quot;&quot;&quot;
 
-<span class="sd">        :param nested: the nested name of nested field. Should exist in the ModelRegistery.</span>
-<span class="sd">        :type nested: SchemaModel</span>
-<span class="sd">        :param callback: name of the callback function or a callable. If a name, the name should exist</span>
-<span class="sd">        as a function in the owner instance. Invalid callback signatures are captures on class creation.</span>
-<span class="sd">        :type callback: callable|basestring</span>
-<span class="sd">        :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or</span>
-<span class="sd">                                values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will</span>
-<span class="sd">                                replace any arguments that are `Callback.SElF`</span>
-<span class="sd">        :type callback_args: tuple</span>
-<span class="sd">        :param callback_kwargs: a dictionary of kwargs to use in the callback</span>
-<span class="sd">        :type callback_kwargs: dict</span>
-<span class="sd">        :param cache: whether to cache the result using `setattr` on the owner instance. This will initialize the</span>
-<span class="sd">        serialization and deserialization procedures detailed in the corresponding field/descriptor.</span>
-<span class="sd">        :type cache: bool</span>
-<span class="sd">        :param many: whether to treat serializations and deserializations as a per-item basis in a list</span>
-<span class="sd">        :type many: bool</span>
-<span class="sd">        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered</span>
-<span class="sd">        nested should return this field&#39;s descriptor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        self.nested = nested
+        if lazy is None:
+            self.lazy = True
+        if allow_none is None:
+            allow_none = True
+        super().__init__(many, data_key, allow_none)
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">data_key</span><span class="p">,</span> <span class="n">many</span><span class="p">,</span> <span class="n">allow_none</span><span class="p">,</span> <span class="n">always_dump</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nested_field</span> <span class="o">=</span> <span class="n">Nested</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">many</span><span class="p">,</span> <span class="n">data_key</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">nested</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">callback_args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">nested</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">callback_args</span><span class="p">))</span>
+    def get_model(self):
+        return ModelRegistry.get_model(self.nested)
 
-    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nested_field</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+    def _deserialize(self, owner, data):
+        if data is None and self.allow_none:
+            return None
+        elif self.lazy and isinstance(data, self.get_model()):
+            return data
+        return self.get_model()._set_data(data, owner)
 
-    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nested_field</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div>
+    def _serialize(self, owner, obj):
+        if obj is None and self.allow_none:
+            return None
+        elif self.lazy and not isinstance(obj, self.get_model()):
+            return obj
+        return obj._get_data()</div>
 
 
-<div class="viewcode-block" id="Alias"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Alias">[docs]</a><span class="k">class</span> <span class="nc">Alias</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A shallow alias to another field. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Callback"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback">[docs]</a>class Callback(Field):
+    &quot;&quot;&quot;Make a callback when called.&quot;&quot;&quot;
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Alias field initialize. Exposes a shallow alias to another field that can be accessed by</span>
-<span class="sd">        a different attribute key.</span>
+    class __FLAGS(Enum):
+        SELF = auto()
 
-<span class="sd">        :param field_name: the key of the other field</span>
-<span class="sd">        :type field_name: basestring</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    SELF = __FLAGS.SELF
+    ACCESSOR = CallbackAccessor
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">alias</span> <span class="o">=</span> <span class="n">field_name</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alias_callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="p">(</span><span class="n">Callback</span><span class="o">.</span><span class="n">SELF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias</span><span class="p">),</span> <span class="n">always_dump</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="n">field_name</span><span class="p">)</span>
+    def __init__(self, callback, callback_args=None, callback_kwargs=None, cache=False, data_key=None, many=None,
+                 allow_none=None, always_dump=False):
+        &quot;&quot;&quot;A Callback field initializer.
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">alias_callback</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span></div>
+        :param callback: name of the callback function or a callable. If a name, the name should exist
+        as a function in the owner instance. Invalid callback signatures are captures on class creation.
+        :type callback: callable|basestring
+        :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
+        values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
+        replace any arguments that are `Callback.SElF`
+        :type callback_args: tuple
+        :param callback_kwargs: a dictionary of kwargs to use in the callback
+        :type callback_kwargs: dict
+        :param cache: whether to cache the result using `setattr` on the owner instance. This will initialize the
+        serialization and deserialization procedures detailed in the corresponding field/descriptor.
+        :type cache: bool
+        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :type many: bool
+        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :type allow_none: bool
+        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        nested should return this field&#39;s descriptor.
+        :param always_dump: if True, this field will be serialized by default
+        :type always_dump: bool
+        &quot;&quot;&quot;
+
+        super().__init__(many, data_key, allow_none)
+        self.callback = callback
+        self.always_dump = always_dump
+        if callback_args is None:
+            callback_args = tuple()
+        elif not isinstance(callback_args, (list, tuple)):
+            callback_args = (callback_args,)
+        self.callback_args = tuple(callback_args)
+        if callback_kwargs is None:
+            callback_kwargs = {}
+        self.callback_kwargs = dict(callback_kwargs)
+        self.cache = cache
+
+    def _callback_signature(self, args=None, kwargs=None):
+        if args is None:
+            args = self.callback_args
+        if kwargs is None:
+            kwargs = self.callback_kwargs
+        return &quot;{func}{args}&quot;.format(
+            func=self.callback,
+            args=make_signature_str(args, kwargs)
+        )
+
+<div class="viewcode-block" id="Callback.get_callback_args"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback.get_callback_args">[docs]</a>    def get_callback_args(self, owner, extra_args=None):
+        &quot;&quot;&quot;Processes the callback args&quot;&quot;&quot;
+        args = []
+        callback_args = list(self.callback_args)
+        if extra_args:
+            callback_args += list(extra_args)
+        try:
+            for a in callback_args:
+                if a is self.SELF:
+                    args.append(owner)
+                elif callable(a):
+                    args.append(a(owner))
+                else:
+                    args.append(a)
+        except AttributeError as e:
+            raise RunTimeCallbackAttributeError(
+                &quot;There was an error retrieving callback arguments for &#39;{sig}&#39; due to:\n{e}&quot;.format(
+                    sig=self._callback_signature(),
+                    e=&quot;{}: {}&quot;.format(e.__class__.__name__, e)
+                )) from e
+        return args</div>
+
+<div class="viewcode-block" id="Callback.get_callback_kwargs"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback.get_callback_kwargs">[docs]</a>    def get_callback_kwargs(self, owner, extra_kwargs):
+        &quot;&quot;&quot;Processes the callback kwargs&quot;&quot;&quot;
+        kwargs = {}
+        callback_kwargs = dict(self.callback_kwargs)
+        if extra_kwargs:
+            callback_kwargs.update(extra_kwargs)
+        try:
+            for k, v in callback_kwargs.items():
+                if callable(v):
+                    kwargs[k] = v(owner)
+                elif v is self.SELF:
+                    kwargs[k] = owner
+                else:
+                    kwargs[k] = v
+        except AttributeError as e:
+            raise RunTimeCallbackAttributeError(
+                &quot;There was an error retrieving callback keyword arguments for &#39;{func}(args)&#39; due to:\n{e}&quot;.format(
+                    func=self.callback,
+                    args=self._callback_signature(),
+                    e=&quot;{}: {}&quot;.format(e.__class__.__name__, e)
+                )) from e
+        return kwargs</div>
+
+<div class="viewcode-block" id="Callback.fullfill"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback.fullfill">[docs]</a>    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
+        &quot;&quot;&quot;Calls the callback function using the owner object. A
+        Callback.SELF arg value will be replaced to be equivalent to the
+        owner instance model.
+
+        :param owner: the owning object
+        :type owner: SchemaModel
+        :return: function result
+        :rtype: any
+        &quot;&quot;&quot;
+
+        if callable(self.callback):
+            func = self.callback
+        else:
+            func = getattr(owner, self.callback)
+
+        callback_args = self.get_callback_args(owner, extra_args=extra_args)
+        callback_kwargs = self.get_callback_kwargs(owner, extra_kwargs=extra_kwargs)
+
+        try:
+            val = func(*tuple(callback_args), **callback_kwargs)
+        except AttributeError as e:
+            raise RunTimeCallbackAttributeError(
+                &quot;There was an calling &#39;{signature}&#39; due to:\n{e}&quot;.format(
+                    signature=self._callback_signature(callback_args, callback_kwargs),
+                    e=&quot;{}: {}&quot;.format(e.__class__.__name__, e)
+                )) from e
+        if cache is None:
+            cache = self.cache
+        if cache:
+            self.cache_result(owner, val)
+        return val</div>
+
+    def cache_result(self, owner, val):
+        setattr(owner, self.data_key, val)
+
+    def _deserialize(self, owner, data):
+        raise NotImplementedError(&quot;_deserialize is not implemented for field {}&quot;.format(self))
+
+    def deserialize(self, *args, **kwargs):
+        raise NotImplementedError(&quot;deserialize is not implemented for field {}&quot;.format(self))</div>
+
+
+<div class="viewcode-block" id="Relationship"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Relationship">[docs]</a>class Relationship(Callback):
+    &quot;&quot;&quot;
+    A composition (Callback/Nested) field that uses a callback to retrieve a model.
+    &quot;&quot;&quot;
+
+    ACCESSOR = RelationshipAccessor
+
+    def __init__(self, nested, callback, callback_args=None, callback_kwargs=None, cache=True, data_key=None, many=None,
+                 allow_none=None, always_dump=False):
+        &quot;&quot;&quot;
+        Relationship initializer
+
+        :param nested: the nested name of nested field. Should exist in the ModelRegistery.
+        :type nested: SchemaModel
+        :param callback: name of the callback function or a callable. If a name, the name should exist
+        as a function in the owner instance. Invalid callback signatures are captures on class creation.
+        :type callback: callable|basestring
+        :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
+                                values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
+                                replace any arguments that are `Callback.SElF`
+        :type callback_args: tuple
+        :param callback_kwargs: a dictionary of kwargs to use in the callback
+        :type callback_kwargs: dict
+        :param cache: whether to cache the result using `setattr` on the owner instance. This will initialize the
+        serialization and deserialization procedures detailed in the corresponding field/descriptor.
+        :type cache: bool
+        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :type many: bool
+        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        nested should return this field&#39;s descriptor.
+        &quot;&quot;&quot;
+
+        super().__init__(callback, callback_args, callback_kwargs, cache, data_key, many, allow_none, always_dump)
+        self.nested_field = Nested(nested, many, data_key)
+        self.nested = nested
+        self.callback_args = tuple([nested] + list(self.callback_args))
+
+    def deserialize(self, owner, val):
+        return self.nested_field.deserialize(owner, val)
+
+    def serialize(self, owner, obj):
+        return self.nested_field.serialize(owner, obj)</div>
+
+
+<div class="viewcode-block" id="Alias"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Alias">[docs]</a>class Alias(Callback):
+    &quot;&quot;&quot;A shallow alias to another field. &quot;&quot;&quot;
+
+    def __init__(self, field_name):
+        &quot;&quot;&quot;
+        Alias field initialize. Exposes a shallow alias to another field that can be accessed by
+        a different attribute key.
+
+        :param field_name: the key of the other field
+        :type field_name: basestring
+        &quot;&quot;&quot;
+
+        self.alias = field_name
+        super().__init__(self.alias_callback, callback_args=(Callback.SELF, self.alias), always_dump=True, data_key=field_name)
+
+    @staticmethod
+    def alias_callback(m, field_name):
+        return getattr(m, field_name)</div>
 </pre></div>
 
     </div>
