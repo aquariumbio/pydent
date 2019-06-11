@@ -1,3 +1,7 @@
+"""
+Models related to jobs, or operation execution.
+"""
+
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.relationships import (JSON, HasOne, HasMany,

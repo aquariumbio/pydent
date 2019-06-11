@@ -1,3 +1,7 @@
+"""
+Models related to protocol code, which is associated with operation types.
+"""
+
 from pydent.base import ModelBase
 
 from pydent.marshaller import add_schema

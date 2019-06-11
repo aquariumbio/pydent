@@ -1,3 +1,7 @@
+"""
+The create, read, update, destroy (CRUD) mixins used for some models.
+"""
+
 class CreateMixin(object):
 
     def create(self):

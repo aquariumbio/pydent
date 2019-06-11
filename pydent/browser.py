@@ -1,3 +1,7 @@
+"""
+Browsing class for searching and caching query results.
+"""
+
 import re
 from collections import OrderedDict
 from difflib import get_close_matches

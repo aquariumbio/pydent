@@ -53,18 +53,50 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../querying.html">Making Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
               
             
+            
+              
+                
+              
             
             
             
@@ -92,19 +124,23 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.field_value_mixins</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Sequence</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Mixins for FieldValues and those objects using FieldValues and FieldTypes.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Sequence</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">zip_longest</span>
 
 <span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
 <span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">filter_list</span>
 
 
-<span class="k">class</span> <span class="nc">FieldMixin</span><span class="p">:</span>
+<div class="viewcode-block" id="FieldMixin"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldMixin">[docs]</a><span class="k">class</span> <span class="nc">FieldMixin</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Mixin for finding FieldType and FieldValue relationships</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">find_field_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_id</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldMixin.find_field_parent"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldMixin.find_field_parent">[docs]</a>    <span class="k">def</span> <span class="nf">find_field_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback for finding operation_type or sample_type.</span>
 <span class="sd">        If parent_class does not match the expected nested model name</span>
@@ -114,26 +150,84 @@
             <span class="c1"># weird, but helps with refactoring this mixin</span>
             <span class="n">fxn_name</span> <span class="o">=</span> <span class="n">ModelBase</span><span class="o">.</span><span class="n">find_callback</span><span class="o">.</span><span class="vm">__name__</span>
             <span class="n">fxn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fxn_name</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">fxn</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">model_id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fxn</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">model_id</span><span class="p">)</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">FieldTypeInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldTypeInterface"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldTypeInterface">[docs]</a><span class="k">class</span> <span class="nc">FieldTypeInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An interface for things that have field types (i.e.</span>
+<span class="sd">    :class:`pydent.models.OperationType` and :class:`pydent.models.SampleType`).&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldTypeInterface.field_type"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldTypeInterface.field_type">[docs]</a>    <span class="k">def</span> <span class="nf">field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a :class:`pydent.models.FieldType` by its name and role.</span>
+
+<span class="sd">        :param name: its name</span>
+<span class="sd">        :type name: basestring</span>
+<span class="sd">        :param role: its role</span>
+<span class="sd">        :type role: basestring</span>
+<span class="sd">        :return: the field type or None if not found</span>
+<span class="sd">        :rtype: FieldType | None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">:</span>
             <span class="n">fts</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">fts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">fts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">FieldValueInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface">[docs]</a><span class="k">class</span> <span class="nc">FieldValueInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A common interface for things (i.e. Operations and Samples) that have FieldValues and FieldTypes&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">new_field_value_from_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">values_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_types</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">new_field_value</span><span class="p">(</span><span class="n">field_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="n">values_dict</span><span class="o">=</span><span class="n">values_dict</span><span class="p">)</span>
+<div class="viewcode-block" id="FieldValueInterface.new_field_value_from_field_type"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.new_field_value_from_field_type">[docs]</a>    <span class="k">def</span> <span class="nf">new_field_value_from_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">values_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiates a new :class:`pydent.models.FieldValue` from a :class:`pydent.models.FieldType`</span>
+<span class="sd">        instance. Optionally, a values dictionary may be provided with the following format:</span>
 
-    <span class="k">def</span> <span class="nf">new_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            values_dict = {</span>
+<span class="sd">                &quot;value&quot;: None,</span>
+<span class="sd">                &quot;sample&quot;: mysample,</span>
+<span class="sd">                &quot;item&quot;: myitem,</span>
+<span class="sd">                &quot;object_type&quot;: None</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :param field_type: field type to instantiate the field value</span>
+<span class="sd">        :type field_type: FieldType</span>
+<span class="sd">        :param values_dict: values to set the new field value</span>
+<span class="sd">        :type values_dict: dict</span>
+<span class="sd">        :return: the new field value</span>
+<span class="sd">        :rtype: FieldValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_types</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_field_value</span><span class="p">(</span><span class="n">field_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="n">values_dict</span><span class="o">=</span><span class="n">values_dict</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FieldValueInterface.new_field_value"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.new_field_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiates a new :class:`pydent.models.FieldValue` from a name and role.</span>
+<span class="sd">        The should be a field type with the name and role</span>
+<span class="sd">        in the metatype.</span>
+<span class="sd">        Optionally, a values dictionary may be provided with the following format:</span>
+
+<span class="sd">        ::</span>
+
+<span class="sd">            values_dict = {</span>
+<span class="sd">                &quot;value&quot;: None,</span>
+<span class="sd">                &quot;sample&quot;: mysample,</span>
+<span class="sd">                &quot;item&quot;: myitem,</span>
+<span class="sd">                &quot;object_type&quot;: None</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :param name: its name</span>
+<span class="sd">        :type name: basestring</span>
+<span class="sd">        :param role: its role</span>
+<span class="sd">        :type role: basestring</span>
+<span class="sd">        :param values_dict: values to set the new field value</span>
+<span class="sd">        :type values_dict: dict</span>
+<span class="sd">        :return: the new field value</span>
+<span class="sd">        :rtype: FieldValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="c1"># retrieve the field_type from the meta_type</span>
         <span class="n">metatype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metatype</span><span class="p">()</span>
         <span class="n">ft</span> <span class="o">=</span> <span class="n">metatype</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
@@ -147,9 +241,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">fv</span>
+        <span class="k">return</span> <span class="n">fv</span></div>
 
-    <span class="k">def</span> <span class="nf">safe_get_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.safe_get_field_type"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.safe_get_field_type">[docs]</a>    <span class="k">def</span> <span class="nf">safe_get_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fv</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Safely returns the field value&#39;s :class:`pydent.models.FieldType`</span>
+<span class="sd">        from the model. If the field value has no reference to the field type,</span>
+<span class="sd">        its metatype (e.g. :class:`pydent.models.SampleType` or :class:`pydent.models.OperationType`)</span>
+<span class="sd">        is used to recover the field type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">field_type_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_types</span><span class="p">()</span>
             <span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_%&amp;^_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
@@ -157,19 +258,51 @@
             <span class="n">ft</span> <span class="o">=</span> <span class="n">name_role_to_ft</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">fv</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">ft</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">fv</span><span class="o">.</span><span class="n">set_field_type</span><span class="p">(</span><span class="n">ft</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">fv</span><span class="o">.</span><span class="n">field_type</span>
+        <span class="k">return</span> <span class="n">fv</span><span class="o">.</span><span class="n">field_type</span></div>
 
-    <span class="k">def</span> <span class="nf">get_metatype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.get_metatype"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.get_metatype">[docs]</a>    <span class="k">def</span> <span class="nf">get_metatype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the instance&#39;s metatype (e.g. :class:`pydent.models.SampleType`</span>
+<span class="sd">        or :class:`pydent.models.OperationType`). The metatype class name is stored</span>
+<span class="sd">        as `METATYPE` in the class definition.</span>
+
+<span class="sd">        :return: the instances metatype (e.g. :class:`pydent.models.SampleType`</span>
+<span class="sd">        or :class:`pydent.models.OperationType`)</span>
+<span class="sd">        :rtype: ModelBase</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">metatype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">METATYPE</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">metatype</span><span class="p">),</span> <span class="n">FieldTypeInterface</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">metatype</span>
+        <span class="k">return</span> <span class="n">metatype</span></div>
 
-    <span class="k">def</span> <span class="nf">get_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.get_field_value"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.get_field_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a :class:`pydent.models.FieldValue` by its name and role.</span>
+
+<span class="sd">        :param name: its name</span>
+<span class="sd">        :type name: basestring</span>
+<span class="sd">        :param role: its role</span>
+<span class="sd">        :type role: basestring</span>
+<span class="sd">        :return: the field value or None if not found</span>
+<span class="sd">        :rtype: FieldValue | None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">fv_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fv_array</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">fv_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">fv_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">get_field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.get_field_value_array"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.get_field_value_array">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of :class:`pydent.models.FieldValue` by their name and role.</span>
+
+<span class="sd">        :param name: its name</span>
+<span class="sd">        :type name: basestring</span>
+<span class="sd">        :param role: its role</span>
+<span class="sd">        :type role: basestring</span>
+<span class="sd">        :return: list of field values</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="n">fvs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -178,20 +311,44 @@
             <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">fv</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">role</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">safe_get_field_type</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
                 <span class="n">fvs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">fvs</span>
+        <span class="k">return</span> <span class="n">fvs</span></div>
 
-    <span class="k">def</span> <span class="nf">get_field_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.get_field_types"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.get_field_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of :class:`pydent.models.FieldType` by their name and role</span>
+<span class="sd">        from the instance&#39;s metaclass.</span>
+
+<span class="sd">        :param name: its name</span>
+<span class="sd">        :type name: basestring</span>
+<span class="sd">        :param role: its role</span>
+<span class="sd">        :type role: basestring</span>
+<span class="sd">        :return: list of field types</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">fts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metatype</span><span class="p">()</span><span class="o">.</span><span class="n">field_types</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fts</span> <span class="o">=</span> <span class="p">[</span><span class="n">ft</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">fts</span> <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">role</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fts</span> <span class="o">=</span> <span class="p">[</span><span class="n">ft</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">fts</span> <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">fts</span>
+        <span class="k">return</span> <span class="n">fts</span></div>
 
-    <span class="k">def</span> <span class="nf">get_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.get_field_type"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.get_field_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a :class:`pydent.models.FieldType` by its name and role</span>
+<span class="sd">        from the instance&#39;s metaclass.</span>
+
+<span class="sd">        :param name: its name</span>
+<span class="sd">        :type name: basestring</span>
+<span class="sd">        :param role: its role</span>
+<span class="sd">        :type role: basestring</span>
+<span class="sd">        :return: metatypes field type or None if not found</span>
+<span class="sd">        :rtype: FieldType | None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">fts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_types</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fts</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">fts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">fts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">_field_value_dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ft_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fv_func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
@@ -224,16 +381,43 @@
 
         <span class="k">return</span> <span class="n">data</span>
 
-    <span class="k">def</span> <span class="nf">set_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.set_field_value"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.set_field_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets a field value name and role using a dictionary, as in the following:</span>
+
+<span class="sd">        ::</span>
+
+<span class="sd">            values = {</span>
+<span class="sd">                &quot;value&quot;: None,</span>
+<span class="sd">                &quot;sample&quot;: mysample,</span>
+<span class="sd">                &quot;item&quot;: myitem,</span>
+<span class="sd">                &quot;object_type&quot;: None</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">ft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
         <span class="n">fv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">new_field_value_from_field_type</span><span class="p">(</span><span class="n">ft</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">fv</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="o">**</span><span class="n">values</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">set_field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">values_array</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.set_field_value_array"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.set_field_value_array">[docs]</a>    <span class="k">def</span> <span class="nf">set_field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">values_array</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets an array of field values by name and role using an array of dictionaries,</span>
+<span class="sd">        as in the following:</span>
+
+<span class="sd">        ::</span>
+
+<span class="sd">            values_array = [{</span>
+<span class="sd">                &quot;value&quot;: None,</span>
+<span class="sd">                &quot;sample&quot;: mysample,</span>
+<span class="sd">                &quot;item&quot;: myitem,</span>
+<span class="sd">                &quot;object_type&quot;: None</span>
+<span class="sd">            }]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">fvs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
         <span class="n">to_be_removed</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">fv</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">zip_longest</span><span class="p">(</span><span class="n">fvs</span><span class="p">,</span> <span class="n">values_array</span><span class="p">):</span>
@@ -245,13 +429,19 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">new_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">to_be_removed</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">get_routing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldValueInterface.get_routing"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.field_value_mixins.html#pydent.models.field_value.FieldValueInterface.get_routing">[docs]</a>    <span class="k">def</span> <span class="nf">get_routing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the routing dictionary for this instance.</span>
+
+<span class="sd">        :return: routing dictionary</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field_value_dictionary</span><span class="p">(</span>
             <span class="k">lambda</span> <span class="n">ft</span><span class="p">:</span> <span class="n">ft</span><span class="o">.</span><span class="n">routing</span><span class="p">,</span>
             <span class="k">lambda</span> <span class="n">fv</span><span class="p">:</span> <span class="n">fv</span><span class="o">.</span><span class="n">sid</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">update_field_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_dict</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">ft_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">ft</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">ft</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_types</span><span class="p">()}</span>
@@ -262,7 +452,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 </pre></div>
 
     </div>
@@ -276,7 +466,7 @@
       
     </p>
     <p>
-        &copy; Copyright 2017, University of Washington.<br/>
+        &copy; Copyright 2019, University of Washington.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
     </p>
   </div>

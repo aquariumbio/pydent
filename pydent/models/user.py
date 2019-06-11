@@ -1,3 +1,7 @@
+"""
+User, group, and budget models.
+"""
+
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.relationships import (HasOne, HasMany,

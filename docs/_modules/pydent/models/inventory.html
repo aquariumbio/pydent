@@ -53,18 +53,50 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../querying.html">Making Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
               
             
+            
+              
+                
+              
             
             
             
@@ -92,18 +124,22 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.inventory</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Models related to inventory, like Items, Collections, ObjectTypes, and PartAssociations</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
 <span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">add_schema</span>
+<span class="kn">from</span> <span class="nn">pydent.models.crud_mixin</span> <span class="k">import</span> <span class="n">SaveMixin</span>
 <span class="kn">from</span> <span class="nn">pydent.models.data_associations</span> <span class="k">import</span> <span class="n">DataAssociatorMixin</span>
 <span class="kn">from</span> <span class="nn">pydent.relationships</span> <span class="k">import</span> <span class="p">(</span><span class="n">Raw</span><span class="p">,</span> <span class="n">HasOne</span><span class="p">,</span> <span class="n">HasMany</span><span class="p">,</span>
                                   <span class="n">HasManyThrough</span><span class="p">,</span> <span class="n">HasManyGeneric</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pydent.models.crud_mixin</span> <span class="k">import</span> <span class="n">SaveMixin</span>
 
-<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Item">[docs]</a><span class="nd">@add_schema</span>
+
+<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item">[docs]</a><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">SaveMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Defines a proxy object for an Item model in Aquarium.</span>
-<span class="sd">    An Item is a physical object in the lab.</span>
+<span class="sd">    A physical object in the lab, which a location and unique id.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">sample</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">),</span>
@@ -128,13 +164,13 @@
             <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="Item.make"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Item.make">[docs]</a>    <span class="k">def</span> <span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Item.make"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item.make">[docs]</a>    <span class="k">def</span> <span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Makes the Item on the Aquarium server. Requires</span>
 <span class="sd">        this Item to be connected to a session.&quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">create_items</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;item&quot;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Item.save"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Item.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Item.save"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A synonym for `make`&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make</span><span class="p">()</span></div>
 
@@ -165,7 +201,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">part_assoc</span><span class="o">.</span><span class="n">collection_id</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Item.as_collection"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Item.as_collection">[docs]</a>    <span class="k">def</span> <span class="nf">as_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Item.as_collection"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item.as_collection">[docs]</a>    <span class="k">def</span> <span class="nf">as_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the Collection object with the ID of this Item, which must be a</span>
 <span class="sd">        collection.</span>
@@ -198,9 +234,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">part_associations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="Collection"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Collection">[docs]</a><span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Collection"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Collection">[docs]</a><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">Collection</span><span class="p">(</span><span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
-    <span class="sd">&quot;&quot;&quot;A Collection model&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A Collection model, such as a 96-well plate, which contains many `parts`, each</span>
+<span class="sd">    of which can be associated with a different sample.&quot;&quot;&quot;</span>
+
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">object_type</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;ObjectType&quot;</span><span class="p">),</span>
         <span class="n">data_associations</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;DataAssociation&quot;</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
@@ -233,7 +271,7 @@
             <span class="n">sample_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_list</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sample_matrix</span>
 
-<div class="viewcode-block" id="Collection.part"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Collection.part">[docs]</a>    <span class="k">def</span> <span class="nf">part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+<div class="viewcode-block" id="Collection.part"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Collection.part">[docs]</a>    <span class="k">def</span> <span class="nf">part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the part Item at (row, col) of this Collection (zero-based).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -245,7 +283,7 @@
 
         <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">parts</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Collection.as_item"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Collection.as_item">[docs]</a>    <span class="k">def</span> <span class="nf">as_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Collection.as_item"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Collection.as_item">[docs]</a>    <span class="k">def</span> <span class="nf">as_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the Item object with the ID of this Collection</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -261,9 +299,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">as_item</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ObjectType"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.ObjectType">[docs]</a><span class="nd">@add_schema</span>
+<div class="viewcode-block" id="ObjectType"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.ObjectType">[docs]</a><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">ObjectType</span><span class="p">(</span><span class="n">SaveMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A ObjectType model&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A ObjectType model that represents the type of container an item is.&quot;&quot;&quot;</span>
 
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">items</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Item&quot;</span><span class="p">,</span> <span class="s2">&quot;ObjectType&quot;</span><span class="p">),</span>
@@ -274,13 +312,13 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_str</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PartAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.PartAssociation">[docs]</a><span class="nd">@add_schema</span>
+<div class="viewcode-block" id="PartAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.PartAssociation">[docs]</a><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">PartAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a PartAssociation linking a part to a collection.</span>
-
-<span class="sd">    Aquarium definition has the collection as an Item. Not sure why this isn&#39;t a Collection.</span>
+<span class="sd">    Represents a PartAssociation linking a part to a collection. Collections contain</span>
+<span class="sd">    many `parts`, each of which can refer to a different sample.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">part</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s1">&#39;Item&#39;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;part_id&quot;</span><span class="p">),</span>
         <span class="n">collection</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s1">&#39;Collection&#39;</span><span class="p">)</span>
@@ -306,7 +344,7 @@
       
     </p>
     <p>
-        &copy; Copyright 2017, University of Washington.<br/>
+        &copy; Copyright 2019, University of Washington.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
     </p>
   </div>

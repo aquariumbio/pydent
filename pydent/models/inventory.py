@@ -1,15 +1,19 @@
+"""
+Models related to inventory, like Items, Collections, ObjectTypes, and PartAssociations
+"""
+
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import SaveMixin
 from pydent.models.data_associations import DataAssociatorMixin
 from pydent.relationships import (Raw, HasOne, HasMany,
                                   HasManyThrough, HasManyGeneric)
-from pydent.models.crud_mixin import SaveMixin
+
 
 @add_schema
 class Item(DataAssociatorMixin, SaveMixin, ModelBase):
     """
-    Defines a proxy object for an Item model in Aquarium.
-    An Item is a physical object in the lab.
+    A physical object in the lab, which a location and unique id.
     """
     fields = dict(
         sample=HasOne("Sample"),
@@ -106,7 +110,9 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
 @add_schema
 class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-public-methods
-    """A Collection model"""
+    """A Collection model, such as a 96-well plate, which contains many `parts`, each
+    of which can be associated with a different sample."""
+
     fields = dict(
         object_type=HasOne("ObjectType"),
         data_associations=HasManyGeneric("DataAssociation", additional_args={
@@ -169,7 +175,7 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
 
 @add_schema
 class ObjectType(SaveMixin, ModelBase):
-    """A ObjectType model"""
+    """A ObjectType model that represents the type of container an item is."""
 
     fields = dict(
         items=HasMany("Item", "ObjectType"),
@@ -183,10 +189,10 @@ class ObjectType(SaveMixin, ModelBase):
 @add_schema
 class PartAssociation(ModelBase):
     """
-    Represents a PartAssociation linking a part to a collection.
-
-    Aquarium definition has the collection as an Item. Not sure why this isn't a Collection.
+    Represents a PartAssociation linking a part to a collection. Collections contain
+    many `parts`, each of which can refer to a different sample.
     """
+
     fields = dict(
         part=HasOne('Item', ref="part_id"),
         collection=HasOne('Collection')

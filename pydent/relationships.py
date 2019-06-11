@@ -1,4 +1,5 @@
-"""Nested model relationships for Aquarium models.
+"""
+Nested model relationships for Aquarium models.
 """
 
 import json
@@ -15,12 +16,18 @@ class FieldValidationError(ModelValidationError):
 
 
 class Raw(fields.Field):
+    """
+    Field that performs no serialization/deserialization.
+    """
 
     def __init__(self, many=False, data_key=None, allow_none=True, default=None):
-        super().__init__(many=many, data_key=data_key, allow_none=allow_none, default=None)
+        super().__init__(many=many, data_key=data_key, allow_none=allow_none, default=default)
 
 
 class JSON(Raw):
+    """
+    Automatically serializes/deserializes JSON objects.
+    """
 
     def _deserialize(self, owner, data):
         if isinstance(data, dict):
@@ -32,6 +39,11 @@ class JSON(Raw):
 
 
 class Function(fields.Callback):
+    """
+    Calls a specified function upon attribute access. Similar to the @property
+    decorator in python, but will search and find an instance method using
+    the method name.
+    """
 
     def __init__(self, callback, callback_args=None, callback_kwargs=None, cache=False, data_key=None, many=None,
                  allow_none=True, always_dump=True):
@@ -39,12 +51,16 @@ class Function(fields.Callback):
 
 
 class BaseRelationshipAccessor(fields.RelationshipAccessor):
+    """
+    Python descriptor that is returned by a field during attribute access.
+    """
+
     HOLDER = None
 
 
 class BaseRelationship(fields.Relationship):
     """
-    BaseRelationship field. By default, if the value is None, attempt a callback. If that fails,
+    Base class for relationships. By default, if the value is None, attempt a callback. If that fails,
     fallback to None. If successful, deserialize data to the nested model.
     """
 
@@ -296,6 +312,10 @@ class HasManyThrough(HasMixin, Many):
 
 
 class HasOneFromMany(HasMixin, One):
+    """
+    Returns a single model from a Many relationship
+    """
+
     QUERY_TYPE = "query"
 
     def __init__(self, nested, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,

@@ -45,16 +45,16 @@ Links:
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
    :hidden:
 
-   getting_started
-   querying
-   planning
+   basics/getting_started
+   basics/querying
+   basics/planning
    developer/api_reference
-   contributing
-   advanced
-   versions
+   developer/contributing
+   advanced/topics
+   developer/versions
 
 
 
