@@ -747,6 +747,15 @@ class Browser(logger.Loggable, object):
         else:
             raise BrowserException("Type {} for is not recognized for recursive_retrieve".format(type(relations)))
 
+    def get(self, models, relations, strict=True):
+        if isinstance(models, ModelBase):
+            models = [models]
+
+        if isinstance(relations, dict):
+            return self.recursive_retrieve(models, relations, strict=strict)
+        else:
+            return self.retrieve(models, relations, strict=strict)
+
     def samples_to_df(self, samples):
         """
         Returns a pandas data frame representing the samples
