@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="pydent.browser" href="pydent.browser.html" />
-    <link rel="prev" title="pydent.models" href="pydent.models.html" />
+    <link rel="prev" title="pydent.models.field_value_mixins" href="_autosummary/pydent.models.field_value_mixins.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -55,18 +55,58 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../querying.html">Making Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../planning.html">Experiment Planning</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Using local caches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
               
             
+            
+              
+                
+  <li>
+    <a href="_autosummary/pydent.models.field_value_mixins.html" title="Previous Chapter: pydent.models.field_value_mixins"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pydent.models...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pydent.browser.html" title="Next Chapter: pydent.browser"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pydent.browser &raquo;</span>
+    </a>
+  </li>
+              
             
             
             
@@ -108,13 +148,13 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.BaseRelationship" title="pydent.relationships.BaseRelationship"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseRelationship</span></code></a>(nested, callback[, …])</p></td>
-<td><p>BaseRelationship field.</p></td>
+<td><p>Base class for relationships.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.relationships.BaseRelationshipAccessor" title="pydent.relationships.BaseRelationshipAccessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseRelationshipAccessor</span></code></a>(name, field, …[, …])</p></td>
-<td><p></p></td>
+<td><p>Python descriptor that is returned by a field during attribute access.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.Function" title="pydent.relationships.Function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Function</span></code></a>(callback[, callback_args, …])</p></td>
-<td><p></p></td>
+<td><p>Calls a specified function upon attribute access.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.relationships.HasMany" title="pydent.relationships.HasMany"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasMany</span></code></a>(nested[, ref_model, attr, ref, …])</p></td>
 <td><p>A relationship that establishes a One-to-Many relationship with another model.</p></td>
@@ -132,10 +172,10 @@
 <td><p>HasOne initializer.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.HasOneFromMany" title="pydent.relationships.HasOneFromMany"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HasOneFromMany</span></code></a>(nested[, ref_model, attr, …])</p></td>
-<td><p>HasOneFromMany relationship initializer, which is intended to return a single model from a Many query</p></td>
+<td><p>Returns a single model from a Many relationship</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.relationships.JSON" title="pydent.relationships.JSON"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSON</span></code></a>([many, data_key, allow_none, default])</p></td>
-<td><p></p></td>
+<td><p>Automatically serializes/deserializes JSON objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.Many" title="pydent.relationships.Many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Many</span></code></a>(nested, *args[, callback, …])</p></td>
 <td><p>Defines a many relationship with another model.</p></td>
@@ -144,7 +184,7 @@
 <td><p>Defines a single relationship with another model.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.Raw" title="pydent.relationships.Raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Raw</span></code></a>([many, data_key, allow_none, default])</p></td>
-<td><p></p></td>
+<td><p>Field that performs no serialization/deserialization.</p></td>
 </tr>
 </tbody>
 </table>
@@ -164,7 +204,7 @@
 <dt id="pydent.relationships.BaseRelationship">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.relationships.</code><code class="sig-name descname">BaseRelationship</code><span class="sig-paren">(</span><em class="sig-param">nested</em>, <em class="sig-param">callback</em>, <em class="sig-param">callback_args=None</em>, <em class="sig-param">callback_kwargs=None</em>, <em class="sig-param">many=None</em>, <em class="sig-param">allow_none=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#BaseRelationship"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.BaseRelationship" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Relationship" title="pydent.marshaller.fields.Relationship"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Relationship</span></code></a></p>
-<p>BaseRelationship field. By default, if the value is None, attempt a callback. If that fails,
+<p>Base class for relationships. By default, if the value is None, attempt a callback. If that fails,
 fallback to None. If successful, deserialize data to the nested model.</p>
 <dl class="attribute">
 <dt id="pydent.relationships.BaseRelationship.ACCESSOR">
@@ -242,6 +282,7 @@ descriptor (i.e. accessor)</p>
 <dt id="pydent.relationships.BaseRelationshipAccessor">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.relationships.</code><code class="sig-name descname">BaseRelationshipAccessor</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">field</em>, <em class="sig-param">accessor</em>, <em class="sig-param">deserialized_accessor</em>, <em class="sig-param">default=&lt;Placeholders.CALLBACK: 3&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#BaseRelationshipAccessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.BaseRelationshipAccessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.RelationshipAccessor" title="pydent.marshaller.descriptors.RelationshipAccessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.descriptors.RelationshipAccessor</span></code></a></p>
+<p>Python descriptor that is returned by a field during attribute access.</p>
 </dd></dl>
 
 <dl class="exception">
@@ -261,6 +302,9 @@ set self.__traceback__ to tb and return self.</p>
 <dt id="pydent.relationships.Function">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.relationships.</code><code class="sig-name descname">Function</code><span class="sig-paren">(</span><em class="sig-param">callback</em>, <em class="sig-param">callback_args=None</em>, <em class="sig-param">callback_kwargs=None</em>, <em class="sig-param">cache=False</em>, <em class="sig-param">data_key=None</em>, <em class="sig-param">many=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">always_dump=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#Function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.Function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback</span></code></a></p>
+<p>Calls a specified function upon attribute access. Similar to the &#64;property
+decorator in python, but will search and find an instance method using
+the method name.</p>
 <dl class="attribute">
 <dt id="pydent.relationships.Function.ACCESSOR">
 <code class="sig-name descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.Function.ACCESSOR" title="Permalink to this definition">¶</a></dt>
@@ -800,6 +844,7 @@ defined parameters for
 <dt id="pydent.relationships.HasOneFromMany">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.relationships.</code><code class="sig-name descname">HasOneFromMany</code><span class="sig-paren">(</span><em class="sig-param">nested</em>, <em class="sig-param">ref_model=None</em>, <em class="sig-param">attr=None</em>, <em class="sig-param">ref=None</em>, <em class="sig-param">additional_args=None</em>, <em class="sig-param">callback=None</em>, <em class="sig-param">callback_kwargs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#HasOneFromMany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasOneFromMany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.relationships.HasMixin" title="pydent.relationships.HasMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.HasMixin</span></code></a>, <a class="reference internal" href="#pydent.relationships.One" title="pydent.relationships.One"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.One</span></code></a></p>
+<p>Returns a single model from a Many relationship</p>
 <p>HasOneFromMany relationship initializer, which is intended to return a single model from
 a Many query</p>
 <dl class="field-list simple">
@@ -924,6 +969,7 @@ defined parameters for
 <dt id="pydent.relationships.JSON">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.relationships.</code><code class="sig-name descname">JSON</code><span class="sig-paren">(</span><em class="sig-param">many=False</em>, <em class="sig-param">data_key=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#JSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.JSON" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydent.relationships.Raw" title="pydent.relationships.Raw"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.Raw</span></code></a></p>
+<p>Automatically serializes/deserializes JSON objects.</p>
 <dl class="attribute">
 <dt id="pydent.relationships.JSON.ACCESSOR">
 <code class="sig-name descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.JSON.ACCESSOR" title="Permalink to this definition">¶</a></dt>
@@ -1135,6 +1181,7 @@ descriptor (i.e. accessor)</p>
 <dt id="pydent.relationships.Raw">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.relationships.</code><code class="sig-name descname">Raw</code><span class="sig-paren">(</span><em class="sig-param">many=False</em>, <em class="sig-param">data_key=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/relationships.html#Raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.Raw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="_autosummary/pydent.marshaller.fields.html#pydent.marshaller.fields.Field" title="pydent.marshaller.fields.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Field</span></code></a></p>
+<p>Field that performs no serialization/deserialization.</p>
 <dl class="attribute">
 <dt id="pydent.relationships.Raw.ACCESSOR">
 <code class="sig-name descname">ACCESSOR</code><a class="headerlink" href="#pydent.relationships.Raw.ACCESSOR" title="Permalink to this definition">¶</a></dt>
@@ -1178,7 +1225,7 @@ descriptor (i.e. accessor)</p>
       
     </p>
     <p>
-        &copy; Copyright 2017, University of Washington.<br/>
+        &copy; Copyright 2019, University of Washington.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
     </p>
   </div>

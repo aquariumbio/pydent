@@ -67,7 +67,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = pydent.__title__
-copyright = '2017, University of Washington'
+copyright = '2019, University of Washington'
 author = pydent.__author__
 
 # The version info for the project you're documenting, acts as replacement for
@@ -126,13 +126,16 @@ html_theme_options = {
     'navbar_site_name': 'Trident',
 
     # Render the next and previous page links in navbar. (Default: true)
-    'navbar_sidebarrel': False,
+    'navbar_sidebarrel': True,
 
     # Render the current pages TOC in the navbar. (Default: true)
     'navbar_pagenav': False,
 
     # Tab name for the current pages TOC. (Default: "Page")
     'navbar_pagenav_name': "Page",
+
+    'globaltoc_depth': 2,
+
 
     # Location of link to source.
     # Options are "nav" (default), "footer" or anything else to exclude.
@@ -161,9 +164,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
 
-# html side bars
 # html_sidebars = {
 #     'index':    ['sidebar.html', 'globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
 #     '**':       ['sidebar.html', 'localtoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html']

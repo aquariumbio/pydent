@@ -1,3 +1,7 @@
+"""
+Mixins for FieldValues and those objects using FieldValues and FieldTypes.
+"""
+
 from collections import Sequence
 from itertools import zip_longest
 
@@ -24,8 +28,20 @@ class FieldMixin:
 
 
 class FieldTypeInterface(object):
+    """An interface for things that have field types (i.e.
+    :class:`pydent.models.OperationType` and :class:`pydent.models.SampleType`)."""
 
     def field_type(self, name, role):
+        """
+        Returns a :class:`pydent.models.FieldType` by its name and role.
+
+        :param name: its name
+        :type name: basestring
+        :param role: its role
+        :type role: basestring
+        :return: the field type or None if not found
+        :rtype: FieldType | None
+        """
         if self.field_types:
             fts = filter_list(self.field_types, role=role, name=name)
             if len(fts) > 0:
@@ -36,10 +52,56 @@ class FieldValueInterface(object):
     """A common interface for things (i.e. Operations and Samples) that have FieldValues and FieldTypes"""
 
     def new_field_value_from_field_type(self, field_type, values_dict=None):
+        """
+        Instantiates a new :class:`pydent.models.FieldValue` from a :class:`pydent.models.FieldType`
+        instance. Optionally, a values dictionary may be provided with the following format:
+
+        ::
+
+            values_dict = {
+                "value": None,
+                "sample": mysample,
+                "item": myitem,
+                "object_type": None
+            }
+
+        :param field_type: field type to instantiate the field value
+        :type field_type: FieldType
+        :param values_dict: values to set the new field value
+        :type values_dict: dict
+        :return: the new field value
+        :rtype: FieldValue
+        """
+
         assert field_type in self.get_field_types()
         self.new_field_value(field_type.name, field_type.role, values_dict=values_dict)
 
     def new_field_value(self, name, role=None, values_dict=None):
+        """
+        Instantiates a new :class:`pydent.models.FieldValue` from a name and role.
+        The should be a field type with the name and role
+        in the metatype.
+        Optionally, a values dictionary may be provided with the following format:
+
+        ::
+
+            values_dict = {
+                "value": None,
+                "sample": mysample,
+                "item": myitem,
+                "object_type": None
+            }
+
+        :param name: its name
+        :type name: basestring
+        :param role: its role
+        :type role: basestring
+        :param values_dict: values to set the new field value
+        :type values_dict: dict
+        :return: the new field value
+        :rtype: FieldValue
+        """
+
         # retrieve the field_type from the meta_type
         metatype = self.get_metatype()
         ft = metatype.field_type(name, role=role)
@@ -56,6 +118,13 @@ class FieldValueInterface(object):
         return fv
 
     def safe_get_field_type(self, fv):
+        """
+        Safely returns the field value's :class:`pydent.models.FieldType`
+        from the model. If the field value has no reference to the field type,
+        its metatype (e.g. :class:`pydent.models.SampleType` or :class:`pydent.models.OperationType`)
+        is used to recover the field type.
+        """
+
         if fv.field_type_id is None:
             fts = self.get_field_types()
             h = lambda f: '{}_%&^_{}'.format(f.name, f.role)
@@ -66,16 +135,48 @@ class FieldValueInterface(object):
         return fv.field_type
 
     def get_metatype(self):
+        """
+        Returns the instance's metatype (e.g. :class:`pydent.models.SampleType`
+        or :class:`pydent.models.OperationType`). The metatype class name is stored
+        as `METATYPE` in the class definition.
+
+        :return: the instances metatype (e.g. :class:`pydent.models.SampleType`
+        or :class:`pydent.models.OperationType`)
+        :rtype: ModelBase
+        """
+
         metatype = getattr(self, self.METATYPE)
         assert issubclass(type(metatype), FieldTypeInterface)
         return metatype
 
     def get_field_value(self, name, role=None):
+        """
+        Returns a :class:`pydent.models.FieldValue` by its name and role.
+
+        :param name: its name
+        :type name: basestring
+        :param role: its role
+        :type role: basestring
+        :return: the field value or None if not found
+        :rtype: FieldValue | None
+        """
+
         fv_array = self.get_field_value_array(name, role=role)
         if fv_array:
             return fv_array[0]
 
     def get_field_value_array(self, name, role=None):
+        """
+        Returns a list of :class:`pydent.models.FieldValue` by their name and role.
+
+        :param name: its name
+        :type name: basestring
+        :param role: its role
+        :type role: basestring
+        :return: list of field values
+        :rtype: list
+        """
+
         if self.field_values is None:
             return []
         fvs = []
@@ -87,6 +188,18 @@ class FieldValueInterface(object):
         return fvs
 
     def get_field_types(self, name=None, role=None):
+        """
+        Returns a list of :class:`pydent.models.FieldType` by their name and role
+        from the instance's metaclass.
+
+        :param name: its name
+        :type name: basestring
+        :param role: its role
+        :type role: basestring
+        :return: list of field types
+        :rtype: list
+        """
+
         fts = self.get_metatype().field_types
         if name is not None:
             fts = [ft for ft in fts if ft.name == name]
@@ -95,6 +208,18 @@ class FieldValueInterface(object):
         return fts
 
     def get_field_type(self, name, role):
+        """
+        Returns a :class:`pydent.models.FieldType` by its name and role
+        from the instance's metaclass.
+
+        :param name: its name
+        :type name: basestring
+        :param role: its role
+        :type role: basestring
+        :return: metatypes field type or None if not found
+        :rtype: FieldType | None
+        """
+
         fts = self.get_field_types(name, role)
         if fts:
             return fts[0]
@@ -131,6 +256,19 @@ class FieldValueInterface(object):
         return data
 
     def set_field_value(self, name, role, values):
+        """
+        Sets a field value name and role using a dictionary, as in the following:
+
+        ::
+
+            values = {
+                "value": None,
+                "sample": mysample,
+                "item": myitem,
+                "object_type": None
+            }
+        """
+
         ft = self.get_field_type(name, role)
         fv = self.get_field_value(name, role)
         if fv is None:
@@ -140,6 +278,20 @@ class FieldValueInterface(object):
         return self
 
     def set_field_value_array(self, name, role, values_array):
+        """
+        Sets an array of field values by name and role using an array of dictionaries,
+        as in the following:
+
+        ::
+
+            values_array = [{
+                "value": None,
+                "sample": mysample,
+                "item": myitem,
+                "object_type": None
+            }]
+        """
+
         fvs = self.get_field_value_array(name, role)
         to_be_removed = []
         for fv, val in zip_longest(fvs, values_array):
@@ -154,6 +306,12 @@ class FieldValueInterface(object):
         return self
 
     def get_routing(self):
+        """
+        Returns the routing dictionary for this instance.
+
+        :return: routing dictionary
+        :rtype: dict
+        """
         return self._field_value_dictionary(
             lambda ft: ft.routing,
             lambda fv: fv.sid

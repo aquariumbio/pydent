@@ -1,3 +1,7 @@
+"""
+Models related to field values and sample properties.
+"""
+
 import json
 
 from pydent.base import ModelBase

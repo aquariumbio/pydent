@@ -1,3 +1,7 @@
+"""
+Models related to data associations
+"""
+
 import os
 import shutil
 
@@ -17,6 +21,18 @@ class DataAssociatorMixin:
     """
 
     def associate(self, key, value, upload=None):
+        """
+        Adds a data association with the key and value to this object.
+
+        :param key: Key of the association
+        :type key: str
+        :param value: a json serializable object
+        :type value: dict | str | int | float
+        :param upload: optional file to upload
+        :type upload: File
+        :return: newly created data association
+        :rtype: DataAssociation
+        """
         """
         Adds a data association with the key and value to this object.
         """

@@ -1,3 +1,7 @@
+"""
+Models related to operations and operation types.
+"""
+
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema

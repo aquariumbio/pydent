@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Using local caches &#8212; Trident 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="planning_tutorial.html" />
+    <link rel="prev" title="Advanced topics" href="topics.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="topics.html">Advanced topics</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Using local caches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="topics.html" title="Previous Chapter: Advanced topics"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Advanced topics</span>
+    </a>
+  </li>
+  <li>
+    <a href="planning_tutorial.html" title="Next Chapter: <no title>"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet"><no title> &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/advanced/caching.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="using-local-caches">
+<h1>Using local caches<a class="headerlink" href="#using-local-caches" title="Permalink to this headline">¶</a></h1>
+<p>Session objects can automatically cache model results to greatly
+speed up data mining. It does this using the <cite>Browser</cite> class, which
+is stored in the <cite>.browser</cite> attribute of the session.</p>
+<p>To begin, lets grab a normal AqSession instance.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s1">&#39;mylogin&#39;</span><span class="p">,</span> <span class="s1">&#39;mypass&#39;</span><span class="p">,</span> <span class="s1">&#39;myurl.org&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default, the cache is turned off. We can see this by printing off
+the browser</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No browser&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Lets turn on the cache, which initializes the browser</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">using_cache</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;Sample&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">12355</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">Sample</span><span class="o">&gt;</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>We should now see that the queries model has been cached in the browsers dictionary. Now, next time
+we attempt to retrieve the sample, we should preferentially retrieve from the model_cache.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s2</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">id</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Due to how models inherit their sessions from other models, queries made
+via attribute relationships are also attached to the model_cache</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_types</span>
+<span class="k">assert</span> <span class="s1">&#39;SampleType&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span>
+<span class="k">assert</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="p">[</span><span class="s1">&#39;SampleType&#39;</span><span class="p">]</span>
+<span class="k">assert</span> <span class="s1">&#39;FieldType&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span>
+<span class="k">assert</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="p">[</span><span class="s1">&#39;FieldType&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="temporary-sessions">
+<h2>Temporary Sessions<a class="headerlink" href="#temporary-sessions" title="Permalink to this headline">¶</a></h2>
+<p>Of course, caching may not always be desirable, as in the case
+of making server updates. If we only ever pulled from our local
+cache, we would be unable to see any updates on the server. In this
+case, we may want to create a <strong>temporary</strong> cache, perform optimized
+queries, and then return the models. To do this, we can use the new
+temporary session API.</p>
+<p>Conviniently, sessions themselves are session factories. We can
+spin off new sessions with new properties using existing sessions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mynewsession</span> <span class="o">=</span> <span class="n">session</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We can instantiate a session with new properties. For example, spinning
+off a session with <cite>using_cache=True</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nocache</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can also instantiate sessions with requests turned off or
+with new timeouts or sessions that inherith the model cache.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">increasetimeout</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">norequests</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_requests</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">inheritcache</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_models</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, this can become troublesome if we have many different sessions
+attached to many different models. To keep everything tidy, we can use the
+<cite>with</cite> api of the session.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="p">(</span><span class="n">using_cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
+
+    <span class="c1"># in the &#39;with&#39; statement, models inherit the temporary session</span>
+    <span class="k">assert</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">session</span>
+    <span class="k">assert</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="n">sess</span>
+
+<span class="c1"># upon exiting the with statement, models return</span>
+<span class="c1"># to the original session.</span>
+<span class="k">assert</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="n">session</span>
+</pre></div>
+</div>
+<p>Two convinience methods have been implemented to use cache and
+turn off requests. You can use these <cite>with</cite> nested with statements as well:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">with_cache</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess1</span><span class="p">:</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">sess1</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">sess1</span><span class="o">.</span><span class="n">with_request_off</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess2</span><span class="p">:</span>
+        <span class="n">sess2</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="optimized-queries">
+<h2>Optimized queries<a class="headerlink" href="#optimized-queries" title="Permalink to this headline">¶</a></h2>
+<p>We can perform optimized queries using the browser’s <cite>get</cite> method. This allows
+us to pull model relationships very efficiently from the server. Under the hood,
+Trident is using knowledge of model relationships to efficiently optimize queries
+sent to the server and preferentially using a local model cache.</p>
+<p>Optimized queries can increase data mining speed by up to 5-fold.
+Here the optimized method (#4) is compared with nested requests (#1 and #2) and
+server side deserialization (#3).</p>
+<a class="reference internal image-reference" href="advanced/_static/benchmark/histogram-test_query_benchmark.svg"><img alt="advanced/_static/benchmark/histogram-test_query_benchmark.svg" src="advanced/_static/benchmark/histogram-test_query_benchmark.svg" width="100%" /></a>
+<p>Below is an example of retrieve nested model information for many plans:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">with_cache</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">plans</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">Plan</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+
+    <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plans</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s2">&quot;operations&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;field_values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="s2">&quot;sample_type&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s1">&#39;object_type&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;field_type&#39;</span><span class="p">:</span> <span class="p">[]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="c1"># now data is cached in the plans!</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">fv</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

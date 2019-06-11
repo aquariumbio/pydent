@@ -53,18 +53,50 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../querying.html">Making Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
               
             
+            
+              
+                
+              
             
             
             
@@ -92,7 +124,11 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.data_associations</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Models related to data associations</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
@@ -105,19 +141,31 @@
 <span class="kn">import</span> <span class="nn">json</span>
 
 
-<span class="k">class</span> <span class="nc">DataAssociatorMixin</span><span class="p">:</span>
+<div class="viewcode-block" id="DataAssociatorMixin"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.data_associations.html#pydent.models.data_associations.DataAssociatorMixin">[docs]</a><span class="k">class</span> <span class="nc">DataAssociatorMixin</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Mixin for handling data associations</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">associate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DataAssociatorMixin.associate"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.data_associations.html#pydent.models.data_associations.DataAssociatorMixin.associate">[docs]</a>    <span class="k">def</span> <span class="nf">associate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a data association with the key and value to this object.</span>
+
+<span class="sd">        :param key: Key of the association</span>
+<span class="sd">        :type key: str</span>
+<span class="sd">        :param value: a json serializable object</span>
+<span class="sd">        :type value: dict | str | int | float</span>
+<span class="sd">        :param upload: optional file to upload</span>
+<span class="sd">        :type upload: File</span>
+<span class="sd">        :return: newly created data association</span>
+<span class="sd">        :rtype: DataAssociation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a data association with the key and value to this object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">create_data_association</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="n">upload</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="n">upload</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">associate_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DataAssociatorMixin.associate_file"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.data_associations.html#pydent.models.data_associations.DataAssociatorMixin.associate_file">[docs]</a>    <span class="k">def</span> <span class="nf">associate_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Associate a file</span>
 
@@ -134,9 +182,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Upload</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
         <span class="n">u</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">associate</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="n">u</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">associate</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="n">u</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">associate_file_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DataAssociatorMixin.associate_file_from_path"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.data_associations.html#pydent.models.data_associations.DataAssociatorMixin.associate_file_from_path">[docs]</a>    <span class="k">def</span> <span class="nf">associate_file_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Associate a file from a filepath</span>
 
@@ -152,7 +200,7 @@
 <span class="sd">        :rtype: :class:`DataAssociation`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">associate_file</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">associate_file</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">get_data_associations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="n">das</span> <span class="o">=</span> <span class="p">[]</span>
@@ -170,10 +218,10 @@
             <span class="k">return</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">val</span>
+        <span class="k">return</span> <span class="n">val</span></div>
 
 
-<div class="viewcode-block" id="DataAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.DataAssociation">[docs]</a><span class="nd">@add_schema</span>
+<div class="viewcode-block" id="DataAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.DataAssociation">[docs]</a><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">DataAssociation</span><span class="p">(</span><span class="n">JSONDeleteMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A DataAssociation model&quot;&quot;&quot;</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -189,7 +237,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_str</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Upload"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Upload">[docs]</a><span class="nd">@add_schema</span>
+<div class="viewcode-block" id="Upload"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.Upload">[docs]</a><span class="nd">@add_schema</span>
 <span class="k">class</span> <span class="nc">Upload</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An Upload model</span>
@@ -223,7 +271,7 @@
             <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">},</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;expiring_url&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">raw</span>
         <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;expiring_url&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Upload._download_file_from_url"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Upload._download_file_from_url">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Upload._download_file_from_url"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.Upload._download_file_from_url">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_download_file_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">outpath</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Downloads a file from a url</span>
@@ -240,7 +288,7 @@
             <span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span> <span class="n">out_file</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">raw</span></div>
 
-<div class="viewcode-block" id="Upload.async_download"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Upload.async_download">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Upload.async_download"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.Upload.async_download">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="nd">@make_async</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">async_download</span><span class="p">(</span><span class="n">uploads</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -257,7 +305,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Upload</span><span class="o">.</span><span class="n">_download_files</span><span class="p">(</span><span class="n">uploads</span><span class="p">,</span> <span class="n">outdir</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Upload._download_files"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Upload._download_files">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Upload._download_files"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.Upload._download_files">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_download_files</span><span class="p">(</span><span class="n">uploads</span><span class="p">,</span> <span class="n">outdir</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Downloads uploaded file from list of :class:`Upload` models.</span>
@@ -277,7 +325,7 @@
             <span class="n">filepaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">filepaths</span></div>
 
-<div class="viewcode-block" id="Upload.download"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Upload.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Upload.download"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.Upload.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Downloads the uploaded file to the specified output directory. If</span>
 <span class="sd">        no output directory is specified, the file will be downloaded to the</span>
@@ -303,7 +351,7 @@
         <span class="n">result</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_url</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">content</span>
 
-<div class="viewcode-block" id="Upload.create"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Upload.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Upload.create"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.Upload.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the upload to the server.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">create_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
@@ -322,7 +370,7 @@
       
     </p>
     <p>
-        &copy; Copyright 2017, University of Washington.<br/>
+        &copy; Copyright 2019, University of Washington.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
     </p>
   </div>

@@ -53,18 +53,50 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../querying.html">Making Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../planning.html">Experiment Planning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developer/api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Using local caches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
               
             
+            
+              
+                
+              
             
             
             
@@ -92,7 +124,8 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.relationships</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Nested model relationships for Aquarium models.</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Nested model relationships for Aquarium models.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">json</span>
@@ -109,12 +142,18 @@
 
 
 <div class="viewcode-block" id="Raw"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Raw">[docs]</a><span class="k">class</span> <span class="nc">Raw</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">Field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Field that performs no serialization/deserialization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="n">many</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="n">data_key</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="n">many</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="n">data_key</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="JSON"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.JSON">[docs]</a><span class="k">class</span> <span class="nc">JSON</span><span class="p">(</span><span class="n">Raw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Automatically serializes/deserializes JSON objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -126,6 +165,11 @@
 
 
 <div class="viewcode-block" id="Function"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Function">[docs]</a><span class="k">class</span> <span class="nc">Function</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">Callback</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calls a specified function upon attribute access. Similar to the @property</span>
+<span class="sd">    decorator in python, but will search and find an instance method using</span>
+<span class="sd">    the method name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always_dump</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -133,12 +177,16 @@
 
 
 <div class="viewcode-block" id="BaseRelationshipAccessor"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationshipAccessor">[docs]</a><span class="k">class</span> <span class="nc">BaseRelationshipAccessor</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">RelationshipAccessor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Python descriptor that is returned by a field during attribute access.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">HOLDER</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="BaseRelationship"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship">[docs]</a><span class="k">class</span> <span class="nc">BaseRelationship</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">Relationship</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    BaseRelationship field. By default, if the value is None, attempt a callback. If that fails,</span>
+<span class="sd">    Base class for relationships. By default, if the value is None, attempt a callback. If that fails,</span>
 <span class="sd">    fallback to None. If successful, deserialize data to the nested model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -390,6 +438,10 @@
 
 
 <div class="viewcode-block" id="HasOneFromMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOneFromMany">[docs]</a><span class="k">class</span> <span class="nc">HasOneFromMany</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">One</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a single model from a Many relationship</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">QUERY_TYPE</span> <span class="o">=</span> <span class="s2">&quot;query&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">ref_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -459,7 +511,7 @@
       
     </p>
     <p>
-        &copy; Copyright 2017, University of Washington.<br/>
+        &copy; Copyright 2019, University of Washington.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
     </p>
   </div>

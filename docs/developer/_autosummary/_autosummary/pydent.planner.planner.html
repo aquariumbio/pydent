@@ -55,18 +55,58 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../querying.html">Making Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
               
             
+            
+              
+                
+  <li>
+    <a href="../pydent.planner.html" title="Previous Chapter: pydent.planner"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pydent.planner</span>
+    </a>
+  </li>
+  <li>
+    <a href="pydent.planner.layout.html" title="Next Chapter: pydent.planner.layout"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pydent.planner.layout &raquo;</span>
+    </a>
+  </li>
+              
             
             
             
@@ -367,7 +407,7 @@ Sample inputs and outputs will be set along the wire if possible.</p>
 <dd class="field-even"><p>created wire</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../pydent.models.html#pydent.models.Wire" title="pydent.models.Wire">Wire</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.models.plan.html#pydent.models.plan.Wire" title="pydent.models.plan.Wire">Wire</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -413,18 +453,18 @@ If there are no empty field values in the array, create a new field value and se
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>op</strong> (<a class="reference internal" href="../pydent.models.html#pydent.models.Operation" title="pydent.models.Operation"><em>Operation</em></a>) – operation</p></li>
+<li><p><strong>op</strong> (<a class="reference internal" href="pydent.models.operation.html#pydent.models.operation.Operation" title="pydent.models.operation.Operation"><em>Operation</em></a>) – operation</p></li>
 <li><p><strong>field_value_name</strong> (<em>basestring</em>) – field value name</p></li>
-<li><p><strong>sample</strong> (<a class="reference internal" href="../pydent.models.html#pydent.models.Sample" title="pydent.models.Sample"><em>Sample</em></a>) – the sample to set</p></li>
-<li><p><strong>item</strong> (<a class="reference internal" href="../pydent.models.html#pydent.models.Item" title="pydent.models.Item"><em>Item</em></a>) – the item to set</p></li>
-<li><p><strong>container</strong> (<a class="reference internal" href="../pydent.models.html#pydent.models.ObjectType" title="pydent.models.ObjectType"><em>ObjectType</em></a>) – the container type to set</p></li>
+<li><p><strong>sample</strong> (<a class="reference internal" href="pydent.models.sample.html#pydent.models.sample.Sample" title="pydent.models.sample.Sample"><em>Sample</em></a>) – the sample to set</p></li>
+<li><p><strong>item</strong> (<a class="reference internal" href="pydent.models.inventory.html#pydent.models.inventory.Item" title="pydent.models.inventory.Item"><em>Item</em></a>) – the item to set</p></li>
+<li><p><strong>container</strong> (<a class="reference internal" href="pydent.models.inventory.html#pydent.models.inventory.ObjectType" title="pydent.models.inventory.ObjectType"><em>ObjectType</em></a>) – the container type to set</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the set field value</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../pydent.models.html#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.models.field_value.html#pydent.models.field_value.FieldValue" title="pydent.models.field_value.FieldValue">FieldValue</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -476,7 +516,7 @@ the oldest item.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fv</strong> (<a class="reference internal" href="../pydent.models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><em>FieldValue</em></a>) – The field value to set.</p></li>
+<li><p><strong>fv</strong> (<a class="reference internal" href="pydent.models.field_value.html#pydent.models.field_value.FieldValue" title="pydent.models.field_value.FieldValue"><em>FieldValue</em></a>) – The field value to set.</p></li>
 <li><p><strong>recent</strong> (<em>bool</em>) – whether to select the most recent item (recent=True is default)</p></li>
 <li><p><strong>filter_func</strong> (<em>list</em>) – array of lambda to filter items by. E.g. ‘lambda_arr=[lambda x: x.get(“concentration”) &gt; 10]’</p></li>
 <li><p><strong>order_preference</strong> (<em>basestring</em>) – The item order preference. Select from “LAST” (default), “FIRST”, or “RANDOM”. Selections
@@ -494,7 +534,7 @@ set for the field_value</p></li>
 <dd class="field-even"><p>The selected item (or None if no item set)</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../pydent.models.html#pydent.models.Item" title="pydent.models.Item">Item</a> or None</p>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.models.inventory.html#pydent.models.inventory.Item" title="pydent.models.inventory.Item">Item</a> or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -568,7 +608,7 @@ as arguments exist in the plan.</p>
       
     </p>
     <p>
-        &copy; Copyright 2017, University of Washington.<br/>
+        &copy; Copyright 2019, University of Washington.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
     </p>
   </div>

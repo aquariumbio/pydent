@@ -1,3 +1,7 @@
+"""
+Models related to plans, plan associations, and wires.
+"""
+
 import json
 
 from pydent.base import ModelBase

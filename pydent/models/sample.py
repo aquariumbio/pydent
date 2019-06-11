@@ -1,3 +1,7 @@
+"""
+Models related to samples, like Samples and SampleTypes
+"""
+
 import json
 from collections import Sequence
 from warnings import warn
