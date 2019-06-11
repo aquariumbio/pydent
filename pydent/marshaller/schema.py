@@ -17,6 +17,11 @@ class DynamicSchema(metaclass=SchemaRegistry):
     """
 
     ignore = ()
+    fields = dict()
+
+    @classmethod
+    def _get_model_fields(cls):
+        return cls.fields
 
     @classmethod
     def init_field_accessors(cls):
@@ -25,7 +30,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
         :return:
         :rtype:
         """
-        for field_name, field in cls.fields.items():
+        for field_name, field in cls._get_model_fields().items():
             field.register(field_name, cls.model_class)
 
     @classmethod

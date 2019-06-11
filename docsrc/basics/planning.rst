@@ -16,10 +16,10 @@ You can draw existing plans (colors represent Operation statuses, legend to come
     canvas.layout.draw()
 
 
-.. image:: _static/CanvasDrawExample1.png
+.. image:: /_static/CanvasDrawExample1.png
     :width: 75 %
 
-.. image:: _static/AquariumPlanExample1.png
+.. image:: /_static/AquariumPlanExample1.png
     :width: 75 %
 
 

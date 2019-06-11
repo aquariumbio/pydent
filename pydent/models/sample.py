@@ -52,6 +52,7 @@ class Sample(FieldValueInterface, ModelBase):
             field_values=field_values,
             items=None,
         )
+
         if properties is not None:
             self.update_properties(properties)
 

@@ -31,7 +31,6 @@ class SchemaModel(metaclass=ModelRegistry):
     A Schema class that holds information on serialization/deserialization
     """
 
-    fields = dict()
     __slots__ = [ModelRegistry._data_key, ModelRegistry._deserialized_key, '__dict__']
 
     def __init__(self, data=None):
@@ -134,7 +133,6 @@ class SchemaModel(metaclass=ModelRegistry):
         model_fields = obj.__class__.model_schema.fields
 
         callback_fields = []
-        nested_fields = []
         always_dump = []
         for fname, field in model_fields.items():
             if hasattr(field, 'nested') or issubclass(type(field), Callback):

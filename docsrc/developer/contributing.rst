@@ -64,6 +64,11 @@ Server tests use the `session` pytest fixture, as in the following:
 Information on sessions and servers can be found in the `conftest.py` files within the `tests`
 directory.
 
+It is recommended you
+use a dockerized server for your tests. Please see the `Aquarium installation
+details <https://www.aquarium.bio/>`_ for further information.
+
+
 Request recording
 `````````````````
 
@@ -86,7 +91,7 @@ if your test makes a server change:
 Installing dependencies
 -----------------------
 
-Trident uses `poetry <https://https://poetry.eustace.io/>`_ for installation and distribution.
+Trident uses `poetry <https://poetry.eustace.io/>`_ for installation and distribution.
 Installation information is managed by `poetry` in the `pyproject.toml` file.
 Please view the poetry documentation on how to install it.
 
@@ -108,7 +113,7 @@ To open a virtual environment with the poetry installation, use either of the fo
 
     poetry run [command]
 
-Again, refer to the `poetry documentation <https://https://poetry.eustace.io/>`_ for further details.
+Again, refer to the `poetry documentation <https://poetry.eustace.io/>`_ for further details.
 
 Before making any changes, install the git hooks to help prevent changes to the
 docs directory, which contains generated documentation files:
