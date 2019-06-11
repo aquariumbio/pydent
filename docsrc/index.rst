@@ -48,14 +48,12 @@ Links:
    :maxdepth: 1
    :hidden:
 
-   installation
-   basic_usage
+   getting_started
    querying
    planning
-   developer_notes
-   tests
    developer/api_reference
    contributing
+   advanced
    versions
 
 
