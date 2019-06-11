@@ -84,6 +84,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Using local caches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planning_tutorial.html">Planning</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="versions.html">Version History</a><ul>
@@ -184,6 +185,9 @@ to login to a live server:</p>
 </div>
 <p>Information on sessions and servers can be found in the <cite>conftest.py</cite> files within the <cite>tests</cite>
 directory.</p>
+<p>It is recommended you
+use a dockerized server for your tests. Please see the <a class="reference external" href="https://www.aquarium.bio/">Aquarium installation
+details</a> for further information.</p>
 <div class="section" id="request-recording">
 <h4>Request recording<a class="headerlink" href="#request-recording" title="Permalink to this headline">¶</a></h4>
 <p>By default, live requests are recorded automatically via
@@ -203,7 +207,7 @@ if your test makes a server change:</p>
 </div>
 <div class="section" id="installing-dependencies">
 <h2>Installing dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>Trident uses <a class="reference external" href="https://https://poetry.eustace.io/">poetry</a> for installation and distribution.
+<p>Trident uses <a class="reference external" href="https://poetry.eustace.io/">poetry</a> for installation and distribution.
 Installation information is managed by <cite>poetry</cite> in the <cite>pyproject.toml</cite> file.
 Please view the poetry documentation on how to install it.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">add</span> <span class="p">[</span><span class="n">name_of_dependency</span><span class="p">]</span>
@@ -219,7 +223,7 @@ Please view the poetry documentation on how to install it.</p>
 <span class="n">poetry</span> <span class="n">run</span> <span class="p">[</span><span class="n">command</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Again, refer to the <a class="reference external" href="https://https://poetry.eustace.io/">poetry documentation</a> for further details.</p>
+<p>Again, refer to the <a class="reference external" href="https://poetry.eustace.io/">poetry documentation</a> for further details.</p>
 <p>Before making any changes, install the git hooks to help prevent changes to the
 docs directory, which contains generated documentation files:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">hooks</span>

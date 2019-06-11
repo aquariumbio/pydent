@@ -60,6 +60,8 @@ class ModelBase(SchemaModel):
     SERVER_MODEL_NAME = None
     DEFAULT_COPY_KEEP_UNANONYMOUS = ['Item', 'Sample', 'Collection']
     counter = itertools.count()
+    id = None
+    rid = None
 
     def __new__(cls, *args, session=None, **kwargs):
         instance = super(ModelBase, cls).__new__(cls)

@@ -1,12 +1,6 @@
 Getting Started
 ===============
 
-.. toctree::
-   :glob:
-   :maxdepth: 3
-
-   /basics/getting_started/*
-
 Trident (also known as `pydent`) is the Python API to Aquarium, aa open-source
 human-in-the-loop laboratory automation system that enables rapid,
 flexible, and reproducible workflow development and execution. Unlike most other

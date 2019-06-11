@@ -38,7 +38,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
 
     def __init__(self, operation_type_id=None, operation_type=None, status=None, x=0, y=0):
         super().__init__(
-            operation_type_id=None,
+            operation_type_id=operation_type_id,
             operation_type=operation_type,
             status=status,
             field_values=None,

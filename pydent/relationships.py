@@ -64,6 +64,7 @@ class BaseRelationship(fields.Relationship):
     fallback to None. If successful, deserialize data to the nested model.
     """
 
+    QUERY_TYPE = None
     ACCESSOR = BaseRelationshipAccessor
 
     def __init__(self, nested, callback, callback_args=None, callback_kwargs=None, many=None, allow_none=True):
