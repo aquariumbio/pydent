@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,56 +125,56 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.code</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Models related to protocol code, which is associated with operation types.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span>&quot;&quot;&quot;
+Models related to protocol code, which is associated with operation types.
+&quot;&quot;&quot;
 
-<span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
+from pydent.base import ModelBase
 
-<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">add_schema</span>
-<span class="kn">from</span> <span class="nn">pydent.relationships</span> <span class="k">import</span> <span class="n">HasOne</span><span class="p">,</span> <span class="n">One</span><span class="p">,</span> <span class="n">HasManyGeneric</span><span class="p">,</span> <span class="n">HasOneFromMany</span>
-
-
-<div class="viewcode-block" id="Code"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Code">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Code</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Code model&quot;&quot;&quot;</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">user</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">),</span>
-        <span class="n">operation_type</span><span class="o">=</span><span class="n">One</span><span class="p">(</span>
-            <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_parent&quot;</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-        <span class="n">library</span><span class="o">=</span><span class="n">One</span><span class="p">(</span><span class="s2">&quot;Library&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;get_parent&quot;</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_class</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">parent_class</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_class</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">model_interface</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parent_class</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_id</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># since they may not always be tied to specific parent</span>
-        <span class="c1"># controllers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">update_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+from pydent.marshaller import add_schema
+from pydent.relationships import HasOne, One, HasManyGeneric, HasOneFromMany
 
 
-<div class="viewcode-block" id="Library"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Library">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Library</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Library model&quot;&quot;&quot;</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">codes</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">),</span>
-        <span class="n">source</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
-                              <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
-                                  <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;Library&quot;</span><span class="p">,</span>
-                                  <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span>
-                              <span class="p">}),</span>
-    <span class="p">)</span>
+<div class="viewcode-block" id="Code"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Code">[docs]</a>@add_schema
+class Code(ModelBase):
+    &quot;&quot;&quot;A Code model&quot;&quot;&quot;
+    fields = dict(
+        user=HasOne(&quot;User&quot;),
+        operation_type=One(
+            &quot;OperationType&quot;, callback=&quot;get_parent&quot;, callback_args=None),
+        library=One(&quot;Library&quot;, callback=&quot;get_parent&quot;, callback_args=None)
+    )
 
-<div class="viewcode-block" id="Library.code"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Library.code">[docs]</a>    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reminant from previous API&quot;&quot;&quot;</span>
-        <span class="c1"># raise DeprecationWarning(&quot;This method is depreciated. Use &#39;.source&#39; directly&quot;)</span>
-        <span class="k">if</span> <span class="n">accessor</span> <span class="o">==</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
-        <span class="k">return</span> <span class="kc">None</span></div></div>
+    def get_parent(self, parent_class, *args):
+        if parent_class != self.parent_class:
+            return None
+        return self.session.model_interface(
+            self.parent_class).find(self.parent_id)
+
+    def update(self):
+        # since they may not always be tied to specific parent
+        # controllers
+        self.session.utils.update_code(self)</div>
+
+
+<div class="viewcode-block" id="Library"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Library">[docs]</a>@add_schema
+class Library(ModelBase):
+    &quot;&quot;&quot;A Library model&quot;&quot;&quot;
+    fields = dict(
+        codes=HasManyGeneric(&quot;Code&quot;),
+        source=HasOneFromMany(&quot;Code&quot;, ref=&quot;parent_id&quot;,
+                              additional_args={
+                                  &quot;parent_class&quot;: &quot;Library&quot;,
+                                  &quot;name&quot;: &quot;source&quot;
+                              }),
+    )
+
+<div class="viewcode-block" id="Library.code"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Library.code">[docs]</a>    def code(self, accessor):
+        &quot;&quot;&quot;Reminant from previous API&quot;&quot;&quot;
+        # raise DeprecationWarning(&quot;This method is depreciated. Use &#39;.source&#39; directly&quot;)
+        if accessor == &quot;source&quot;:
+            return self.source
+        return None</div></div>
 </pre></div>
 
     </div>

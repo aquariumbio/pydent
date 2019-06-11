@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">Version History</a><ul>
@@ -125,380 +125,381 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.relationships</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Nested model relationships for Aquarium models.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">json</span>
-
-<span class="kn">import</span> <span class="nn">inflection</span>
-
-<span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">fields</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller.exceptions</span> <span class="k">import</span> <span class="n">ModelValidationError</span>
-
-
-<div class="viewcode-block" id="FieldValidationError"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.FieldValidationError">[docs]</a><span class="k">class</span> <span class="nc">FieldValidationError</span><span class="p">(</span><span class="n">ModelValidationError</span><span class="p">):</span>
-    <span class="k">pass</span></div>
-
-
-<div class="viewcode-block" id="Raw"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Raw">[docs]</a><span class="k">class</span> <span class="nc">Raw</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">Field</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Field that performs no serialization/deserialization.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="n">many</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="n">data_key</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="JSON"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.JSON">[docs]</a><span class="k">class</span> <span class="nc">JSON</span><span class="p">(</span><span class="n">Raw</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Automatically serializes/deserializes JSON objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Function"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Function">[docs]</a><span class="k">class</span> <span class="nc">Function</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">Callback</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calls a specified function upon attribute access. Similar to the @property</span>
-<span class="sd">    decorator in python, but will search and find an instance method using</span>
-<span class="sd">    the method name.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always_dump</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">data_key</span><span class="p">,</span> <span class="n">many</span><span class="p">,</span> <span class="n">allow_none</span><span class="p">,</span> <span class="n">always_dump</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="BaseRelationshipAccessor"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationshipAccessor">[docs]</a><span class="k">class</span> <span class="nc">BaseRelationshipAccessor</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">RelationshipAccessor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Python descriptor that is returned by a field during attribute access.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">HOLDER</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-
-<div class="viewcode-block" id="BaseRelationship"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship">[docs]</a><span class="k">class</span> <span class="nc">BaseRelationship</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">Relationship</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base class for relationships. By default, if the value is None, attempt a callback. If that fails,</span>
-<span class="sd">    fallback to None. If successful, deserialize data to the nested model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">ACCESSOR</span> <span class="o">=</span> <span class="n">BaseRelationshipAccessor</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="n">many</span><span class="p">,</span>
-                         <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">)</span>
-
-<div class="viewcode-block" id="BaseRelationship.fullfill"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.fullfill">[docs]</a>    <span class="k">def</span> <span class="nf">fullfill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fullfill</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="n">extra_args</span><span class="p">,</span> <span class="n">extra_kwargs</span><span class="o">=</span><span class="n">extra_kwargs</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">fields</span><span class="o">.</span><span class="n">RunTimeCallbackAttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">BaseRelationshipAccessor</span><span class="o">.</span><span class="n">HOLDER</span></div>
-
-<div class="viewcode-block" id="BaseRelationship.build_query"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.build_query">[docs]</a>    <span class="k">def</span> <span class="nf">build_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">models</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Bundles all of the callback args for the models into a single query&quot;&quot;&quot;</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
-            <span class="n">callback_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_callback_args</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">QUERY_TYPE</span> <span class="o">==</span> <span class="s1">&#39;by_id&#39;</span><span class="p">:</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">,</span> <span class="p">[])</span>
-                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">callback_args</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">]:</span>
-                        <span class="n">args</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">cba</span> <span class="ow">in</span> <span class="n">callback_args</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">cba</span><span class="p">:</span>
-                        <span class="n">args</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[])</span>
-                        <span class="n">arg_arr</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-                        <span class="n">val</span> <span class="o">=</span> <span class="n">cba</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-                        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
-                                    <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">arg_arr</span><span class="p">:</span>
-                                        <span class="n">arg_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                            <span class="k">elif</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">arg_arr</span><span class="p">:</span>
-                                <span class="n">arg_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">args</span></div></div>
-
-
-<div class="viewcode-block" id="One"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.One">[docs]</a><span class="k">class</span> <span class="nc">One</span><span class="p">(</span><span class="n">BaseRelationship</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Defines a single relationship with another model.</span>
-<span class="sd">    Subclass of :class:`pydent.marshaller.Relation`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">QUERY_TYPE</span> <span class="o">=</span> <span class="s1">&#39;by_id&#39;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        One initializer. Uses &quot;find&quot; callback by default.</span>
-
-<span class="sd">        :param nested: target model</span>
-<span class="sd">        :type nested: basestring</span>
-<span class="sd">        :param args: other args for fields.Nested relationship</span>
-<span class="sd">        :type args: ...</span>
-<span class="sd">        :param attr: attribute to use to find model</span>
-<span class="sd">        :type attr: basestring</span>
-<span class="sd">        :param kwargs: other kwargs for fields.Nested relationship</span>
-<span class="sd">        :type kwargs: ...</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">callback</span> <span class="o">=</span> <span class="n">ModelBase</span><span class="o">.</span><span class="n">find_callback</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Many"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Many">[docs]</a><span class="k">class</span> <span class="nc">Many</span><span class="p">(</span><span class="n">BaseRelationship</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Defines a many relationship with another model.</span>
-<span class="sd">    Subclass of :class:`pydent.marshaller.Relation`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">QUERY_TYPE</span> <span class="o">=</span> <span class="s1">&#39;query&#39;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Many initializer. Uses &quot;where&quot; callback by default.</span>
-
-<span class="sd">        :param nested: target model</span>
-<span class="sd">        :type nested: basestring</span>
-<span class="sd">        :param args: other args for fields.Nested relationship</span>
-<span class="sd">        :type args: ...</span>
-<span class="sd">        :param attr: attribute to use to find model</span>
-<span class="sd">        :type attr: basestring</span>
-<span class="sd">        :param kwargs: other kwargs for fields.Nested relationship</span>
-<span class="sd">        :type kwargs: ...</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">callback</span> <span class="o">=</span> <span class="n">ModelBase</span><span class="o">.</span><span class="n">where_callback</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span>
-                         <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span>
-                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="HasMixin"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMixin">[docs]</a><span class="k">class</span> <span class="nc">HasMixin</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Mixin for adding the &#39;set_ref&#39; method. &#39;set_ref&#39; builds a &#39;ref&#39; and &#39;attr&#39;</span>
-<span class="sd">    attributes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="HasMixin.set_ref"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMixin.set_ref">[docs]</a>    <span class="k">def</span> <span class="nf">set_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the &#39;ref&#39; and &#39;attr&#39; attributes. These attributes are used to</span>
-<span class="sd">        defined parameters for</span>
-<span class="sd">        :class:`pydent.marshaller.Relation` classes.</span>
-
-<span class="sd">        For example:</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            relation # HasOne, HasMany, or HasManyGeneric, etc.</span>
-<span class="sd">            relation.set_ref(ref=&quot;parent_id&quot;)</span>
-<span class="sd">            relation.ref    # &quot;parent_id&quot;</span>
-<span class="sd">            relation.attr   # &quot;id&quot;</span>
-
-<span class="sd">            relation.set_ref(model=&quot;SampleType&quot;)</span>
-<span class="sd">            relation.ref   # &quot;sample_type_id&quot;</span>
-<span class="sd">            relation.attr  # &quot;id&quot;</span>
-
-<span class="sd">            relation.set_ref(attr=&quot;name&quot;, model=&quot;OperationType&quot;)</span>
-<span class="sd">            relation.ref   # &quot;operation_type_name</span>
-<span class="sd">            relation.attr  # &quot;name&quot;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
-        <span class="k">if</span> <span class="n">ref</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span>
-                    <span class="s2">&quot;&#39;attr&#39; is None. Relationship &#39;</span><span class="si">{}</span><span class="s2">&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">))</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">nested</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span>
-                    <span class="s2">&quot;&#39;model&#39; is None. Relationship &#39;</span><span class="si">{}</span><span class="s2">&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inflection</span><span class="o">.</span><span class="n">underscore</span><span class="p">(</span><span class="n">nested</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span></div></div>
-
-
-<div class="viewcode-block" id="HasOne"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOne">[docs]</a><span class="k">class</span> <span class="nc">HasOne</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">One</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        HasOne initializer. Uses the &quot;get_one_generic&quot; callback and</span>
-<span class="sd">        automatically assigns attribute as in the following:</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            model=&quot;SampleType&quot;, attr=&quot;id&quot; # equiv. to &#39;lambda self: self.sample_type_id.&#39;</span>
-
-<span class="sd">        :param nested: model name of the target model</span>
-<span class="sd">        :type nested: basestring</span>
-<span class="sd">        :param attr: attribute to append underscored model name</span>
-<span class="sd">        :type attr: basestring</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">nested</span><span class="o">=</span><span class="n">nested</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ref</span><span class="p">,),</span>
-                         <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;HasOne (model=</span><span class="si">{}</span><span class="s2">, callback_args=lambda self: self.</span><span class="si">{}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nested</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span><span class="p">:</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">val</span></div>
-
-
-<div class="viewcode-block" id="HasMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMany">[docs]</a><span class="k">class</span> <span class="nc">HasMany</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">Many</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A relationship that establishes a One-to-Many relationship with another model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">ref_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        HasMany relationship initializer</span>
-
-<span class="sd">        :param nested: Model class name for this relationship</span>
-<span class="sd">        :type nested: str</span>
-<span class="sd">        :param ref_model: Reference model name of the model owning this relationships.</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            @add_schema</span>
-<span class="sd">            class Author(ModelBase):</span>
-<span class="sd">                fields=dict(books=HasMany(&quot;Book&quot;, &quot;Author&quot;))  # search for books using &#39;author_id&#39;</span>
-
-<span class="sd">        :type ref_model: str</span>
-<span class="sd">        :param attr: Attribute name to use with reference model (default=&#39;id&#39;).</span>
-<span class="sd">                     For example &quot;Author&quot; =&gt; &#39;author_id&#39;</span>
-<span class="sd">        :type attr: str</span>
-<span class="sd">        :param ref: The reference to use to find models. If none, a reference is</span>
-<span class="sd">                    built from the &#39;ref_model&#39; and &#39;attr&#39; parameters</span>
-<span class="sd">        :type ref: str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">ref_model</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;</span>
-            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span>
-                <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">nested</span><span class="o">=</span><span class="n">ref_model</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">additional_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">additional_args</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">def</span> <span class="nf">callback_args</span><span class="p">(</span><span class="n">slf</span><span class="p">):</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)}</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_args</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">query</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span>
-                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="HasManyThrough"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyThrough">[docs]</a><span class="k">class</span> <span class="nc">HasManyThrough</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">Many</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A relationship using an intermediate association model.</span>
-<span class="sd">    Establishes a Many-to-Many relationship with another model</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">through</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">nested</span><span class="o">=</span><span class="n">nested</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
-
-        <span class="c1"># e.g. PlanAssociation &gt;&gt; plan_associations</span>
-        <span class="n">through_model_attr</span> <span class="o">=</span> <span class="n">inflection</span><span class="o">.</span><span class="n">pluralize</span><span class="p">(</span>
-            <span class="n">inflection</span><span class="o">.</span><span class="n">underscore</span><span class="p">(</span><span class="n">through</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">through_model_attr</span> <span class="o">=</span> <span class="n">through_model_attr</span>
-
-        <span class="k">if</span> <span class="n">additional_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">additional_args</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">def</span> <span class="nf">callback_args</span><span class="p">(</span><span class="n">slf</span><span class="p">):</span>
-            <span class="n">through_model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">through_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)]}</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_args</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">through_model_attr</span><span class="p">)]}</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span>
-                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="HasOneFromMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOneFromMany">[docs]</a><span class="k">class</span> <span class="nc">HasOneFromMany</span><span class="p">(</span><span class="n">HasMixin</span><span class="p">,</span> <span class="n">One</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns a single model from a Many relationship</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">QUERY_TYPE</span> <span class="o">=</span> <span class="s2">&quot;query&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">ref_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        HasOneFromMany relationship initializer, which is intended to return a single model from</span>
-<span class="sd">        a Many query</span>
-
-<span class="sd">        :param nested: Model class name for this relationship</span>
-<span class="sd">        :type nested: str</span>
-<span class="sd">        :param ref_model: Reference model name of the model owning this relationships.</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            @add_schema</span>
-<span class="sd">            class Author(ModelBase):</span>
-<span class="sd">                fields=dict(books=HasMany(&quot;Book&quot;, &quot;Author&quot;))  # search for books using &#39;author_id&#39;</span>
-
-<span class="sd">        :type ref_model: str</span>
-<span class="sd">        :param attr: Attribute name to use with reference model (default=&#39;id&#39;).</span>
-<span class="sd">                     For example &quot;Author&quot; =&gt; &#39;author_id&#39;</span>
-<span class="sd">        :type attr: str</span>
-<span class="sd">        :param ref: The reference to use to find models. If none, a reference is</span>
-<span class="sd">                    built from the &#39;ref_model&#39; and &#39;attr&#39; parameters</span>
-<span class="sd">        :type ref: str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">ref_model</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;</span>
-            <span class="k">raise</span> <span class="n">FieldValidationError</span><span class="p">(</span>
-                <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">nested</span><span class="o">=</span><span class="n">ref_model</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">additional_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">additional_args</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">def</span> <span class="nf">callback_args</span><span class="p">(</span><span class="n">slf</span><span class="p">):</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ref</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)}</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional_args</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">query</span>
-
-        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">callback</span> <span class="o">=</span> <span class="n">ModelBase</span><span class="o">.</span><span class="n">one_callback</span><span class="o">.</span><span class="vm">__name__</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="n">callback_args</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span>
-                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="HasManyGeneric"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyGeneric">[docs]</a><span class="k">class</span> <span class="nc">HasManyGeneric</span><span class="p">(</span><span class="n">HasMany</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Establishes a One-to-Many relationship using &#39;parent_id&#39; as the attribute</span>
-<span class="sd">    to find other models.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nested</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nested</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="n">additional_args</span><span class="p">,</span>
-                         <span class="n">callback_kwargs</span><span class="o">=</span><span class="n">callback_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+<span></span>&quot;&quot;&quot;
+Nested model relationships for Aquarium models.
+&quot;&quot;&quot;
+
+import json
+
+import inflection
+
+from pydent.base import ModelBase
+from pydent.marshaller import fields
+from pydent.marshaller.exceptions import ModelValidationError
+
+
+<div class="viewcode-block" id="FieldValidationError"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.FieldValidationError">[docs]</a>class FieldValidationError(ModelValidationError):
+    pass</div>
+
+
+<div class="viewcode-block" id="Raw"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Raw">[docs]</a>class Raw(fields.Field):
+    &quot;&quot;&quot;
+    Field that performs no serialization/deserialization.
+    &quot;&quot;&quot;
+
+    def __init__(self, many=False, data_key=None, allow_none=True, default=None):
+        super().__init__(many=many, data_key=data_key, allow_none=allow_none, default=default)</div>
+
+
+<div class="viewcode-block" id="JSON"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.JSON">[docs]</a>class JSON(Raw):
+    &quot;&quot;&quot;
+    Automatically serializes/deserializes JSON objects.
+    &quot;&quot;&quot;
+
+    def _deserialize(self, owner, data):
+        if isinstance(data, dict):
+            return data
+        return json.loads(data)
+
+    def _serialize(self, owner, data):
+        return json.dumps(data)</div>
+
+
+<div class="viewcode-block" id="Function"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Function">[docs]</a>class Function(fields.Callback):
+    &quot;&quot;&quot;
+    Calls a specified function upon attribute access. Similar to the @property
+    decorator in python, but will search and find an instance method using
+    the method name.
+    &quot;&quot;&quot;
+
+    def __init__(self, callback, callback_args=None, callback_kwargs=None, cache=False, data_key=None, many=None,
+                 allow_none=True, always_dump=True):
+        super().__init__(callback, callback_args, callback_kwargs, cache, data_key, many, allow_none, always_dump)</div>
+
+
+<div class="viewcode-block" id="BaseRelationshipAccessor"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationshipAccessor">[docs]</a>class BaseRelationshipAccessor(fields.RelationshipAccessor):
+    &quot;&quot;&quot;
+    Python descriptor that is returned by a field during attribute access.
+    &quot;&quot;&quot;
+
+    HOLDER = None</div>
+
+
+<div class="viewcode-block" id="BaseRelationship"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship">[docs]</a>class BaseRelationship(fields.Relationship):
+    &quot;&quot;&quot;
+    Base class for relationships. By default, if the value is None, attempt a callback. If that fails,
+    fallback to None. If successful, deserialize data to the nested model.
+    &quot;&quot;&quot;
+
+    QUERY_TYPE = None
+    ACCESSOR = BaseRelationshipAccessor
+
+    def __init__(self, nested, callback, callback_args=None, callback_kwargs=None, many=None, allow_none=True):
+        super().__init__(nested, callback, callback_args, callback_kwargs, cache=True, data_key=None, many=many,
+                         allow_none=allow_none)
+
+<div class="viewcode-block" id="BaseRelationship.fullfill"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.fullfill">[docs]</a>    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
+        try:
+            return super().fullfill(owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs)
+        except fields.RunTimeCallbackAttributeError as e:
+            return BaseRelationshipAccessor.HOLDER</div>
+
+<div class="viewcode-block" id="BaseRelationship.build_query"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.build_query">[docs]</a>    def build_query(self, models):
+        &quot;&quot;&quot;Bundles all of the callback args for the models into a single query&quot;&quot;&quot;
+        args = {}
+        for s in models:
+            callback_args = self.get_callback_args(s)[1:]
+            if self.QUERY_TYPE == &#39;by_id&#39;:
+                args.setdefault(self.attr, [])
+                for x in callback_args:
+                    if x is not None and x not in args[self.attr]:
+                        args[self.attr].append(x)
+            else:
+                for cba in callback_args:
+                    for k in cba:
+                        args.setdefault(k, [])
+                        arg_arr = args[k]
+                        val = cba[k]
+                        if val is not None:
+                            if isinstance(val, list):
+                                for v in val:
+                                    if v not in arg_arr:
+                                        arg_arr.append(v)
+                            elif val not in arg_arr:
+                                arg_arr.append(val)
+        return args</div></div>
+
+
+<div class="viewcode-block" id="One"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.One">[docs]</a>class One(BaseRelationship):
+    &quot;&quot;&quot;
+    Defines a single relationship with another model.
+    Subclass of :class:`pydent.marshaller.Relation`.
+    &quot;&quot;&quot;
+
+    QUERY_TYPE = &#39;by_id&#39;
+
+    def __init__(self, nested, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
+        &quot;&quot;&quot;
+        One initializer. Uses &quot;find&quot; callback by default.
+
+        :param nested: target model
+        :type nested: basestring
+        :param args: other args for fields.Nested relationship
+        :type args: ...
+        :param attr: attribute to use to find model
+        :type attr: basestring
+        :param kwargs: other kwargs for fields.Nested relationship
+        :type kwargs: ...
+        &quot;&quot;&quot;
+        if callback is None:
+            callback = ModelBase.find_callback.__name__
+        super().__init__(nested, callback, callback_args=callback_args, callback_kwargs=callback_kwargs, many=False)</div>
+
+
+<div class="viewcode-block" id="Many"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Many">[docs]</a>class Many(BaseRelationship):
+    &quot;&quot;&quot;
+    Defines a many relationship with another model.
+    Subclass of :class:`pydent.marshaller.Relation`.
+    &quot;&quot;&quot;
+
+    QUERY_TYPE = &#39;query&#39;
+
+    def __init__(self, nested, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
+        &quot;&quot;&quot;
+        Many initializer. Uses &quot;where&quot; callback by default.
+
+        :param nested: target model
+        :type nested: basestring
+        :param args: other args for fields.Nested relationship
+        :type args: ...
+        :param attr: attribute to use to find model
+        :type attr: basestring
+        :param kwargs: other kwargs for fields.Nested relationship
+        :type kwargs: ...
+        &quot;&quot;&quot;
+        if callback is None:
+            callback = ModelBase.where_callback.__name__
+        super().__init__(nested, *args,
+                         many=True, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)</div>
+
+
+<div class="viewcode-block" id="HasMixin"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMixin">[docs]</a>class HasMixin:
+    &quot;&quot;&quot;
+    Mixin for adding the &#39;set_ref&#39; method. &#39;set_ref&#39; builds a &#39;ref&#39; and &#39;attr&#39;
+    attributes
+    &quot;&quot;&quot;
+
+<div class="viewcode-block" id="HasMixin.set_ref"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMixin.set_ref">[docs]</a>    def set_ref(self, nested=None, ref=None, attr=None):
+        &quot;&quot;&quot;
+        Sets the &#39;ref&#39; and &#39;attr&#39; attributes. These attributes are used to
+        defined parameters for
+        :class:`pydent.marshaller.Relation` classes.
+
+        For example:
+
+        .. code-block:: python
+
+            relation # HasOne, HasMany, or HasManyGeneric, etc.
+            relation.set_ref(ref=&quot;parent_id&quot;)
+            relation.ref    # &quot;parent_id&quot;
+            relation.attr   # &quot;id&quot;
+
+            relation.set_ref(model=&quot;SampleType&quot;)
+            relation.ref   # &quot;sample_type_id&quot;
+            relation.attr  # &quot;id&quot;
+
+            relation.set_ref(attr=&quot;name&quot;, model=&quot;OperationType&quot;)
+            relation.ref   # &quot;operation_type_name
+            relation.attr  # &quot;name&quot;
+        &quot;&quot;&quot;
+        self.ref = ref
+        self.attr = attr
+
+        if not self.attr:
+            self.attr = &#39;id&#39;
+        if ref:
+            self.ref = ref
+        else:
+            if not self.attr:
+                raise FieldValidationError(
+                    &quot;&#39;attr&#39; is None. Relationship &#39;{}&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;.format(self.__class__))
+            if not nested:
+                raise FieldValidationError(
+                    &quot;&#39;model&#39; is None. Relationship &#39;{}&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;.format(self.__class__))
+            self.ref = &quot;{}_{}&quot;.format(inflection.underscore(nested), self.attr)</div></div>
+
+
+<div class="viewcode-block" id="HasOne"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOne">[docs]</a>class HasOne(HasMixin, One):
+    def __init__(self, nested, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs):
+        &quot;&quot;&quot;
+        HasOne initializer. Uses the &quot;get_one_generic&quot; callback and
+        automatically assigns attribute as in the following:
+
+        .. code-block:: python
+
+            model=&quot;SampleType&quot;, attr=&quot;id&quot; # equiv. to &#39;lambda self: self.sample_type_id.&#39;
+
+        :param nested: model name of the target model
+        :type nested: basestring
+        :param attr: attribute to append underscored model name
+        :type attr: basestring
+        &quot;&quot;&quot;
+        self.set_ref(nested=nested, attr=attr, ref=ref)
+
+        super().__init__(nested, many=False, callback=callback, callback_args=(self.get_ref,),
+                         callback_kwargs=callback_kwargs, **kwargs)
+
+    def get_ref(self, instance):
+        return getattr(instance, self.ref)
+
+    def __repr__(self):
+        return &quot;&lt;HasOne (model={}, callback_args=lambda self: self.{})&gt;&quot;.format(self.nested, self.ref)
+
+    def deserialize(self, owner, val):
+        val = super().deserialize(owner, val)
+        if val:
+            setattr(owner, self.ref, getattr(val, self.attr))
+        return val</div>
+
+
+<div class="viewcode-block" id="HasMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMany">[docs]</a>class HasMany(HasMixin, Many):
+    &quot;&quot;&quot;
+    A relationship that establishes a One-to-Many relationship with another model.
+    &quot;&quot;&quot;
+
+    def __init__(self, nested, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
+                 callback_kwargs=None, **kwargs):
+        &quot;&quot;&quot;
+        HasMany relationship initializer
+
+        :param nested: Model class name for this relationship
+        :type nested: str
+        :param ref_model: Reference model name of the model owning this relationships.
+
+        .. code-block:: python
+
+            @add_schema
+            class Author(ModelBase):
+                fields=dict(books=HasMany(&quot;Book&quot;, &quot;Author&quot;))  # search for books using &#39;author_id&#39;
+
+        :type ref_model: str
+        :param attr: Attribute name to use with reference model (default=&#39;id&#39;).
+                     For example &quot;Author&quot; =&gt; &#39;author_id&#39;
+        :type attr: str
+        :param ref: The reference to use to find models. If none, a reference is
+                    built from the &#39;ref_model&#39; and &#39;attr&#39; parameters
+        :type ref: str
+        &quot;&quot;&quot;
+        if ref_model is None and ref is None:
+            msg = &quot;&#39;{}&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;
+            raise FieldValidationError(
+                msg.format(self.__class__.__name__))
+        self.set_ref(nested=ref_model, attr=attr, ref=ref)
+
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            query = {self.ref: getattr(slf, self.attr)}
+            query.update(additional_args)
+            return query
+
+        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)</div>
+
+
+<div class="viewcode-block" id="HasManyThrough"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyThrough">[docs]</a>class HasManyThrough(HasMixin, Many):
+    &quot;&quot;&quot;
+    A relationship using an intermediate association model.
+    Establishes a Many-to-Many relationship with another model
+    &quot;&quot;&quot;
+
+    def __init__(self, nested, through, attr=&quot;id&quot;, ref=None, additional_args=None, callback=None, callback_kwargs=None,
+                 **kwargs):
+        self.set_ref(nested=nested, attr=attr, ref=ref)
+
+        # e.g. PlanAssociation &gt;&gt; plan_associations
+        through_model_attr = inflection.pluralize(
+            inflection.underscore(through))
+        self.through_model_attr = through_model_attr
+
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            through_model = getattr(slf, through_model_attr)
+            if through_model is None:
+                return None
+            query = {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
+            query.update(additional_args)
+            return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
+
+        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)</div>
+
+
+<div class="viewcode-block" id="HasOneFromMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOneFromMany">[docs]</a>class HasOneFromMany(HasMixin, One):
+    &quot;&quot;&quot;
+    Returns a single model from a Many relationship
+    &quot;&quot;&quot;
+
+    QUERY_TYPE = &quot;query&quot;
+
+    def __init__(self, nested, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
+                 callback_kwargs=None, **kwargs):
+        &quot;&quot;&quot;
+        HasOneFromMany relationship initializer, which is intended to return a single model from
+        a Many query
+
+        :param nested: Model class name for this relationship
+        :type nested: str
+        :param ref_model: Reference model name of the model owning this relationships.
+
+        .. code-block:: python
+
+            @add_schema
+            class Author(ModelBase):
+                fields=dict(books=HasMany(&quot;Book&quot;, &quot;Author&quot;))  # search for books using &#39;author_id&#39;
+
+        :type ref_model: str
+        :param attr: Attribute name to use with reference model (default=&#39;id&#39;).
+                     For example &quot;Author&quot; =&gt; &#39;author_id&#39;
+        :type attr: str
+        :param ref: The reference to use to find models. If none, a reference is
+                    built from the &#39;ref_model&#39; and &#39;attr&#39; parameters
+        :type ref: str
+        &quot;&quot;&quot;
+        if ref_model is None and ref is None:
+            msg = &quot;&#39;{}&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;
+            raise FieldValidationError(
+                msg.format(self.__class__.__name__))
+        self.set_ref(nested=ref_model, attr=attr, ref=ref)
+
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            query = {self.ref: getattr(slf, self.attr)}
+            query.update(additional_args)
+            return query
+
+        if callback is None:
+            callback = ModelBase.one_callback.__name__
+
+        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
+                         **kwargs)</div>
+
+
+<div class="viewcode-block" id="HasManyGeneric"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyGeneric">[docs]</a>class HasManyGeneric(HasMany):
+    &quot;&quot;&quot;
+    Establishes a One-to-Many relationship using &#39;parent_id&#39; as the attribute
+    to find other models.
+    &quot;&quot;&quot;
+
+    def __init__(self, nested, additional_args=None, callback=None, callback_kwargs=None, **kwargs):
+        super().__init__(nested, ref=&quot;parent_id&quot;, attr=&quot;id&quot;, callback=callback, additional_args=additional_args,
+                         callback_kwargs=callback_kwargs, **kwargs)</div>
 </pre></div>
 
     </div>

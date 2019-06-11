@@ -12,7 +12,7 @@ ot = session.OperationType.find(328)
 order_primer = ot.instance()
 
 # set io
-order_primer.set_output("Primer", sample=primer)
+order_primer.set_output_sample("Primer", sample=primer)
 order_primer.set_input("Urgent?", value="no")
 
 # create a new plan and add operations

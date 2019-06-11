@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,386 +125,386 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.operation</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Models related to operations and operation types.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span>&quot;&quot;&quot;
+Models related to operations and operation types.
+&quot;&quot;&quot;
 
-<span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
-<span class="kn">from</span> <span class="nn">pydent.exceptions</span> <span class="k">import</span> <span class="n">AquariumModelError</span>
-<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">add_schema</span>
-<span class="kn">from</span> <span class="nn">pydent.models.data_associations</span> <span class="k">import</span> <span class="n">DataAssociatorMixin</span>
-<span class="kn">from</span> <span class="nn">pydent.models.field_value_mixins</span> <span class="k">import</span> <span class="n">FieldValueInterface</span><span class="p">,</span> <span class="n">FieldTypeInterface</span>
-<span class="kn">from</span> <span class="nn">pydent.relationships</span> <span class="k">import</span> <span class="p">(</span><span class="n">Raw</span><span class="p">,</span> <span class="n">Function</span><span class="p">,</span> <span class="n">HasOne</span><span class="p">,</span> <span class="n">HasMany</span><span class="p">,</span>
-                                  <span class="n">HasManyThrough</span><span class="p">,</span> <span class="n">HasManyGeneric</span><span class="p">,</span>
-                                  <span class="n">HasOneFromMany</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">filter_list</span>
-<span class="kn">from</span> <span class="nn">pydent.models.crud_mixin</span> <span class="k">import</span> <span class="n">SaveMixin</span>
+from pydent.base import ModelBase
+from pydent.exceptions import AquariumModelError
+from pydent.marshaller import add_schema
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
+from pydent.relationships import (Raw, Function, HasOne, HasMany,
+                                  HasManyThrough, HasManyGeneric,
+                                  HasOneFromMany)
+from pydent.utils import filter_list
+from pydent.models.crud_mixin import SaveMixin
 
 
-<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">FieldValueInterface</span><span class="p">,</span> <span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Operation model&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation">[docs]</a>@add_schema
+class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
+    &quot;&quot;&quot;A Operation model&quot;&quot;&quot;
 
-    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">field_values</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;FieldValue&quot;</span><span class="p">,</span>
-                             <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
-                             <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;Operation&quot;</span><span class="p">}),</span>
-        <span class="n">data_associations</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;DataAssociation&quot;</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
-            <span class="s1">&#39;parent_class&#39;</span><span class="p">:</span> <span class="s1">&#39;Operation&#39;</span>
-        <span class="p">}),</span>
-        <span class="n">operation_type</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;OperationType&quot;</span><span class="p">),</span>
-        <span class="n">job_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;JobAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;Operation&quot;</span><span class="p">),</span>
-        <span class="n">jobs</span><span class="o">=</span><span class="n">HasManyThrough</span><span class="p">(</span><span class="s2">&quot;Job&quot;</span><span class="p">,</span> <span class="s2">&quot;JobAssociation&quot;</span><span class="p">),</span>
-        <span class="n">plan_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;PlanAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;Operation&quot;</span><span class="p">),</span>
-        <span class="n">plans</span><span class="o">=</span><span class="n">HasManyThrough</span><span class="p">(</span><span class="s2">&quot;Plan&quot;</span><span class="p">,</span> <span class="s2">&quot;PlanAssociation&quot;</span><span class="p">),</span>
-        <span class="n">status</span><span class="o">=</span><span class="n">Raw</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;planning&#39;</span><span class="p">),</span>
-        <span class="n">routing</span><span class="o">=</span><span class="n">Function</span><span class="p">(</span><span class="s1">&#39;get_routing&#39;</span><span class="p">),</span>
-    <span class="p">)</span>
+    fields = dict(
+        field_values=HasMany(&quot;FieldValue&quot;,
+                             ref=&quot;parent_id&quot;,
+                             additional_args={&quot;parent_class&quot;: &quot;Operation&quot;}),
+        data_associations=HasManyGeneric(&quot;DataAssociation&quot;, additional_args={
+            &#39;parent_class&#39;: &#39;Operation&#39;
+        }),
+        operation_type=HasOne(&quot;OperationType&quot;),
+        job_associations=HasMany(&quot;JobAssociation&quot;, &quot;Operation&quot;),
+        jobs=HasManyThrough(&quot;Job&quot;, &quot;JobAssociation&quot;),
+        plan_associations=HasMany(&quot;PlanAssociation&quot;, &quot;Operation&quot;),
+        plans=HasManyThrough(&quot;Plan&quot;, &quot;PlanAssociation&quot;),
+        status=Raw(default=&#39;planning&#39;),
+        routing=Function(&#39;get_routing&#39;),
+    )
 
-    <span class="n">METATYPE</span> <span class="o">=</span> <span class="s2">&quot;operation_type&quot;</span>
+    METATYPE = &quot;operation_type&quot;
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_type_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">operation_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">operation_type_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">operation_type</span><span class="o">=</span><span class="n">operation_type</span><span class="p">,</span>
-            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
-            <span class="n">field_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-            <span class="n">y</span><span class="o">=</span><span class="n">y</span>
-        <span class="p">)</span>
+    def __init__(self, operation_type_id=None, operation_type=None, status=None, x=0, y=0):
+        super().__init__(
+            operation_type_id=operation_type_id,
+            operation_type=operation_type,
+            status=status,
+            field_values=None,
+            x=x,
+            y=y
+        )
 
-<div class="viewcode-block" id="Operation.get_routing"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.get_routing">[docs]</a>    <span class="k">def</span> <span class="nf">get_routing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">routing_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">fvs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span>
-        <span class="n">ot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span>
-        <span class="k">if</span> <span class="n">ot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">routing_dict</span>
-        <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">ot</span><span class="o">.</span><span class="n">field_types</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">routing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">routing_dict</span><span class="p">[</span><span class="n">ft</span><span class="o">.</span><span class="n">routing</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">fvs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
-                <span class="n">ft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get_field_type</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">ft</span><span class="o">.</span><span class="n">routing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">routing_dict</span><span class="p">[</span><span class="n">ft</span><span class="o">.</span><span class="n">routing</span><span class="p">]</span> <span class="o">=</span> <span class="n">fv</span><span class="o">.</span><span class="n">sid</span>
-        <span class="k">return</span> <span class="n">routing_dict</span></div>
+<div class="viewcode-block" id="Operation.get_routing"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.get_routing">[docs]</a>    def get_routing(self):
+        routing_dict = {}
+        fvs = self.field_values
+        ot = self.operation_type
+        if ot is None:
+            return routing_dict
+        for ft in ot.field_types:
+            if ft.routing is not None:
+                routing_dict[ft.routing] = None
+        if fvs is not None:
+            for fv in self.field_values:
+                ft = self.safe_get_field_type(fv)
+                if ft.routing is not None:
+                    routing_dict[ft.routing] = fv.sid
+        return routing_dict</div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">successors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">successors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">successors</span><span class="p">:</span>
-                    <span class="n">successors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">operation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">successors</span>
+    @property
+    def successors(self):
+        successors = []
+        if self.outputs:
+            for output in self.outputs:
+                for s in output.successors:
+                    successors.append(s.operation)
+        return successors
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">predecessors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">predecessors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">inputs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">predecessors</span><span class="p">:</span>
-                    <span class="n">predecessors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">operation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">predecessors</span>
+    @property
+    def predecessors(self):
+        predecessors = []
+        if self.inputs:
+            for inputs in self.inputs:
+                for s in inputs.predecessors:
+                    predecessors.append(s.operation)
+        return predecessors
 
-<div class="viewcode-block" id="Operation.init_field_values"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.init_field_values">[docs]</a>    <span class="k">def</span> <span class="nf">init_field_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the :class:`FieldValue` from the :class:`FieldType` of the</span>
-<span class="sd">        parent :class:`Operation` type.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metatype</span><span class="p">()</span><span class="o">.</span><span class="n">field_types</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">field_type</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">new_field_value_from_field_type</span><span class="p">(</span><span class="n">field_type</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
+<div class="viewcode-block" id="Operation.init_field_values"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.init_field_values">[docs]</a>    def init_field_values(self):
+        &quot;&quot;&quot;
+        Initialize the :class:`FieldValue` from the :class:`FieldType` of the
+        parent :class:`Operation` type.
+        &quot;&quot;&quot;
+        self.field_values = []
+        for field_type in self.get_metatype().field_types:
+            if not field_type.array:
+                self.new_field_value_from_field_type(field_type)
+        return self</div>
 
-<div class="viewcode-block" id="Operation.field_value_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.field_value_array">[docs]</a>    <span class="k">def</span> <span class="nf">field_value_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns :class:`FieldValue` array with name and role.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">))</span></div>
+<div class="viewcode-block" id="Operation.field_value_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.field_value_array">[docs]</a>    def field_value_array(self, name, role):
+        &quot;&quot;&quot;Returns :class:`FieldValue` array with name and role.&quot;&quot;&quot;
+        return filter_list(self.get_field_value_array(name, role))</div>
 
-<div class="viewcode-block" id="Operation.field_value"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.field_value">[docs]</a>    <span class="k">def</span> <span class="nf">field_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns :class:`FieldValue` with name and role.</span>
-<span class="sd">        Return None if not found.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
-            <span class="n">fvs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+<div class="viewcode-block" id="Operation.field_value"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.field_value">[docs]</a>    def field_value(self, name, role):
+        &quot;&quot;&quot;
+        Returns :class:`FieldValue` with name and role.
+        Return None if not found.
+        &quot;&quot;&quot;
+        if self.field_values:
+            fvs = self.field_value_array(name, role)
 
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span>
+            if len(fvs) == 0:
+                return None
 
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fvs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">fvs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            if len(fvs) == 1:
+                return fvs[0]
 
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;More than one FieldValue found for the field value&quot;</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; of operation </span><span class="si">{}</span><span class="s2">.(id=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">. Are you sure you didn&#39;t mean to call &#39;field_value_array&#39;?&quot;</span>
-            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
-                <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span></div>
+            msg = &quot;More than one FieldValue found for the field value&quot;
+            msg += &quot; of operation {}.(id={}).{}.{}. Are you sure you didn&#39;t mean to call &#39;field_value_array&#39;?&quot;
+            raise AquariumModelError(
+                msg.format(self.operation_type, self.id, role, name))</div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">plan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    @property
+    def plan(self):
+        return self.plans[0]
 
-    <span class="k">def</span> <span class="nf">input_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">)</span>
+    def input_array(self, name):
+        return self.get_field_value_array(name, &#39;input&#39;)
 
-    <span class="k">def</span> <span class="nf">output_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">)</span>
+    def output_array(self, name):
+        return self.get_field_value_array(name, &#39;output&#39;)
 
-<div class="viewcode-block" id="Operation.input"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.input">[docs]</a>    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the input :class:`FieldValue` by name&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Operation.input"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.input">[docs]</a>    def input(self, name):
+        &quot;&quot;&quot;Returns the input :class:`FieldValue` by name&quot;&quot;&quot;
+        return self.field_value(name, &#39;input&#39;)</div>
 
-<div class="viewcode-block" id="Operation.output"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the output :class:`FieldValue` by name&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Operation.output"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.output">[docs]</a>    def output(self, name):
+        &quot;&quot;&quot;Returns the output :class:`FieldValue` by name&quot;&quot;&quot;
+        return self.field_value(name, &#39;output&#39;)</div>
 
-<div class="viewcode-block" id="Operation.add_to_input_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.add_to_input_array">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_input_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                           <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates and adds a new input :class:`FieldValue`.</span>
-<span class="sd">        When setting values to items/samples/containers, the</span>
-<span class="sd">        item/sample/container must be saved.</span>
+<div class="viewcode-block" id="Operation.add_to_input_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.add_to_input_array">[docs]</a>    def add_to_input_array(self, name, sample=None, item=None, value=None,
+                           container=None):
+        &quot;&quot;&quot;
+        Creates and adds a new input :class:`FieldValue`.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
-<span class="sd">        :param name: name of the FieldType/FieldValue</span>
-<span class="sd">        :type name: string</span>
-<span class="sd">        :param sample: an existing Sample</span>
-<span class="sd">        :type sample: Sample</span>
-<span class="sd">        :param item: an existing Item</span>
-<span class="sd">        :type item: Item</span>
-<span class="sd">        :param value: a string or number value</span>
-<span class="sd">        :type value: string|integer</span>
-<span class="sd">        :param container: an existing ObjectType</span>
-<span class="sd">        :type container: ObjectType</span>
-<span class="sd">        :return: the newly created FieldValue</span>
-<span class="sd">        :rtype: FieldValue</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span>
-                                    <span class="nb">dict</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
-                                         <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
-                                         <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
-                                         <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">))</span></div>
+        :param name: name of the FieldType/FieldValue
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the newly created FieldValue
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        return self.new_field_value(name, &quot;input&quot;,
+                                    dict(sample=sample,
+                                         item=item,
+                                         value=value,
+                                         container=container))</div>
 
-<div class="viewcode-block" id="Operation.add_to_output_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.add_to_output_array">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_output_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates and adds a new output :class:`FieldValue`.</span>
-<span class="sd">        When setting values to items/samples/containers, the</span>
-<span class="sd">        item/sample/container must be saved.</span>
+<div class="viewcode-block" id="Operation.add_to_output_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.add_to_output_array">[docs]</a>    def add_to_output_array(self, name, sample=None, item=None, value=None,
+                            container=None):
+        &quot;&quot;&quot;
+        Creates and adds a new output :class:`FieldValue`.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
-<span class="sd">        :param name: name of the FieldType/FieldValue</span>
-<span class="sd">        :type name: string</span>
-<span class="sd">        :param sample: an existing Sample</span>
-<span class="sd">        :type sample: Sample</span>
-<span class="sd">        :param item: an existing Item</span>
-<span class="sd">        :type item: Item</span>
-<span class="sd">        :param value: a string or number value</span>
-<span class="sd">        :type value: string|integer</span>
-<span class="sd">        :param container: an existing ObjectType</span>
-<span class="sd">        :type container: ObjectType</span>
-<span class="sd">        :return: the newly created FieldValue</span>
-<span class="sd">        :rtype: FieldValue</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">,</span>
-                                    <span class="nb">dict</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
-                                         <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
-                                         <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
-                                         <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">))</span></div>
+        :param name: name of the FieldType/FieldValue
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the newly created FieldValue
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        return self.new_field_value(name, &quot;output&quot;,
+                                    dict(sample=sample,
+                                         item=item,
+                                         value=value,
+                                         container=container))</div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a list of all input :class:`FieldValues`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">fv</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;input&#39;</span><span class="p">]</span>
+    @property
+    def inputs(self):
+        &quot;&quot;&quot;Return a list of all input :class:`FieldValues`&quot;&quot;&quot;
+        return [fv for fv in self.field_values if fv.role == &#39;input&#39;]
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a list of all output :class:`FieldValues`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">fv</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;output&#39;</span><span class="p">]</span>
+    @property
+    def outputs(self):
+        &quot;&quot;&quot;Return a list of all output :class:`FieldValues`&quot;&quot;&quot;
+        return [fv for fv in self.field_values if fv.role == &#39;output&#39;]
 
-<div class="viewcode-block" id="Operation.set_input"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.set_input">[docs]</a>    <span class="k">def</span> <span class="nf">set_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">object_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets a input :class:`FieldValue` to a value. When setting values to</span>
-<span class="sd">        items/samples/containers, the item/sample/container must be saved.</span>
+<div class="viewcode-block" id="Operation.set_input"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.set_input">[docs]</a>    def set_input(self, name, sample=None, item=None, value=None,
+                  container=None, object_type=None):
+        &quot;&quot;&quot;
+        Sets a input :class:`FieldValue` to a value. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
 
-<span class="sd">        :param name: name of the FieldValue/FieldType</span>
-<span class="sd">        :type name: string</span>
-<span class="sd">        :param sample: an existing Sample</span>
-<span class="sd">        :type sample: Sample</span>
-<span class="sd">        :param item: an existing Item</span>
-<span class="sd">        :type item: Item</span>
-<span class="sd">        :param value: a string or number value</span>
-<span class="sd">        :type value: string|integer</span>
-<span class="sd">        :param container: an existing ObjectType</span>
-<span class="sd">        :type container: ObjectType</span>
-<span class="sd">        :return: the existing FieldValue modified</span>
-<span class="sd">        :rtype: FieldValue</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">object_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">container</span><span class="p">:</span>
-            <span class="n">object_type</span> <span class="o">=</span> <span class="n">container</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">object_type</span><span class="o">=</span><span class="n">container</span><span class="p">))</span></div>
+        :param name: name of the FieldValue/FieldType
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the existing FieldValue modified
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        if object_type is None and container:
+            object_type = container
+        return self.set_field_value(name, &#39;input&#39;, dict(sample=sample, item=item, value=value, object_type=container))</div>
 
-<div class="viewcode-block" id="Operation.set_output"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.set_output">[docs]</a>    <span class="k">def</span> <span class="nf">set_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">object_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets a output :class:`FieldValue` to a value. When setting values to</span>
-<span class="sd">        items/samples/containers, the item/sample/container must be saved.</span>
+<div class="viewcode-block" id="Operation.set_output"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.set_output">[docs]</a>    def set_output(self, name, sample=None, item=None, value=None, container=None, object_type=None):
+        &quot;&quot;&quot;
+        Sets a output :class:`FieldValue` to a value. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
 
-<span class="sd">        :param name: name of the FieldValue/FieldType</span>
-<span class="sd">        :type name: string</span>
-<span class="sd">        :param sample: an existing Sample</span>
-<span class="sd">        :type sample: Sample</span>
-<span class="sd">        :param item: an existing Item</span>
-<span class="sd">        :type item: Item</span>
-<span class="sd">        :param value: a string or number value</span>
-<span class="sd">        :type value: string|integer</span>
-<span class="sd">        :param container: an existing ObjectType</span>
-<span class="sd">        :type container: ObjectType</span>
-<span class="sd">        :return: the existing FieldValue modified</span>
-<span class="sd">        :rtype: FieldValue</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">object_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">container</span><span class="p">:</span>
-            <span class="n">object_type</span> <span class="o">=</span> <span class="n">container</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">,</span>
-                                    <span class="nb">dict</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">object_type</span><span class="o">=</span><span class="n">object_type</span><span class="p">))</span></div>
+        :param name: name of the FieldValue/FieldType
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the existing FieldValue modified
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        if object_type is None and container:
+            object_type = container
+        return self.set_field_value(name, &#39;output&#39;,
+                                    dict(sample=sample, item=item, value=value, object_type=object_type))</div>
 
-<div class="viewcode-block" id="Operation.set_input_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.set_input_array">[docs]</a>    <span class="k">def</span> <span class="nf">set_input_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets input :class:`FieldValue` array using values.</span>
-<span class="sd">        Values should be a list of dictionaries containing sample, item,</span>
-<span class="sd">        container, or values keys.</span>
-<span class="sd">        When setting values to items/samples/containers, the</span>
-<span class="sd">        item/sample/container must be saved.</span>
+<div class="viewcode-block" id="Operation.set_input_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.set_input_array">[docs]</a>    def set_input_array(self, name, values):
+        &quot;&quot;&quot;
+        Sets input :class:`FieldValue` array using values.
+        Values should be a list of dictionaries containing sample, item,
+        container, or values keys.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
-<span class="sd">        :param name: name of the FieldType/FieldValues being modified</span>
-<span class="sd">        :type name: string</span>
-<span class="sd">        :param values: list of dictionary of values to set</span>
-<span class="sd">                (e.g. [{&quot;sample&quot;: mysample}, {&quot;item&quot;: myitem}])</span>
-<span class="sd">        :type values: list</span>
-<span class="sd">        :return: the list of modified FieldValues</span>
-<span class="sd">        :rtype: list</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+        :param name: name of the FieldType/FieldValues being modified
+        :type name: string
+        :param values: list of dictionary of values to set
+                (e.g. [{&quot;sample&quot;: mysample}, {&quot;item&quot;: myitem}])
+        :type values: list
+        :return: the list of modified FieldValues
+        :rtype: list
+        &quot;&quot;&quot;
+        return self.set_field_value_array(name, &quot;input&quot;, values)</div>
 
-<div class="viewcode-block" id="Operation.set_output_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.set_output_array">[docs]</a>    <span class="k">def</span> <span class="nf">set_output_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets output :class:`FieldValue` array using values.</span>
-<span class="sd">        Values should be a list of dictionaries containing sample, item,</span>
-<span class="sd">        container, or values keys.</span>
-<span class="sd">        When setting values to items/samples/containers, the</span>
-<span class="sd">        item/sample/container must be saved.</span>
+<div class="viewcode-block" id="Operation.set_output_array"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.set_output_array">[docs]</a>    def set_output_array(self, name, values):
+        &quot;&quot;&quot;
+        Sets output :class:`FieldValue` array using values.
+        Values should be a list of dictionaries containing sample, item,
+        container, or values keys.
+        When setting values to items/samples/containers, the
+        item/sample/container must be saved.
 
-<span class="sd">        :param name: name of the FieldType/FieldValues being modified</span>
-<span class="sd">        :type name: string</span>
-<span class="sd">        :param values: list of dictionary of values to set</span>
-<span class="sd">                (e.g. [{&quot;sample&quot;: mysample}, {&quot;item&quot;: myitem}])</span>
-<span class="sd">        :type values: list</span>
-<span class="sd">        :return: the list of modified FieldValues</span>
-<span class="sd">        :rtype: list</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_field_value_array</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+        :param name: name of the FieldType/FieldValues being modified
+        :type name: string
+        :param values: list of dictionary of values to set
+                (e.g. [{&quot;sample&quot;: mysample}, {&quot;item&quot;: myitem}])
+        :type values: list
+        :return: the list of modified FieldValues
+        :rtype: list
+        &quot;&quot;&quot;
+        return self.set_field_value_array(name, &quot;output&quot;, values)</div>
 
-<div class="viewcode-block" id="Operation.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Print the operation nicely</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">pre</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
-            <span class="n">field_value</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="n">pre</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Operation.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.Operation.show">[docs]</a>    def show(self, pre=&quot;&quot;):
+        &quot;&quot;&quot;
+        Print the operation nicely
+        &quot;&quot;&quot;
+        print(pre + self.operation_type.name + &quot; &quot; + str(self.cost))
+        for field_value in self.field_values:
+            field_value.show(pre=pre + &quot;  &quot;)</div>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_str</span><span class="p">(</span><span class="n">operation_type_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+    def __str__(self):
+        return self._to_str(operation_type_name=self.operation_type.name)</div>
 
-<div class="viewcode-block" id="OperationType"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.OperationType">[docs]</a><span class="nd">@add_schema</span>
-<span class="k">class</span> <span class="nc">OperationType</span><span class="p">(</span><span class="n">FieldTypeInterface</span><span class="p">,</span> <span class="n">SaveMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents an OperationType, which is the definition of a protocol in</span>
-<span class="sd">    Aquarium.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">operations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Operation&quot;</span><span class="p">,</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">),</span>
-        <span class="n">field_types</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;FieldType&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">}),</span>
-        <span class="n">codes</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">),</span>
-        <span class="n">cost_model</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
-                                  <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
-                                      <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span>
-                                      <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;cost_model&quot;</span>
-                                  <span class="p">}),</span>
-        <span class="n">documentation</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
-                                     <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
-                                         <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span>
-                                         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;documentation&quot;</span>
-                                     <span class="p">}),</span>
-        <span class="n">precondition</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
-                                    <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
-                                        <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span>
-                                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;precondition&quot;</span>
-                                    <span class="p">}),</span>
-        <span class="n">protocol</span><span class="o">=</span><span class="n">HasOneFromMany</span><span class="p">(</span><span class="s2">&quot;Code&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">,</span>
-                                <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
-                                    <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;OperationType&quot;</span><span class="p">,</span>
-                                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;protocol&quot;</span>
-                                <span class="p">})</span>
-    <span class="p">)</span>
+<div class="viewcode-block" id="OperationType"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.OperationType">[docs]</a>@add_schema
+class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
+    &quot;&quot;&quot;
+    Represents an OperationType, which is the definition of a protocol in
+    Aquarium.
+    &quot;&quot;&quot;
+    fields = dict(
+        operations=HasMany(&quot;Operation&quot;, &quot;OperationType&quot;),
+        field_types=HasMany(&quot;FieldType&quot;, ref=&quot;parent_id&quot;, additional_args={&quot;parent_class&quot;: &quot;OperationType&quot;}),
+        codes=HasManyGeneric(&quot;Code&quot;),
+        cost_model=HasOneFromMany(&quot;Code&quot;, ref=&quot;parent_id&quot;,
+                                  additional_args={
+                                      &quot;parent_class&quot;: &quot;OperationType&quot;,
+                                      &quot;name&quot;: &quot;cost_model&quot;
+                                  }),
+        documentation=HasOneFromMany(&quot;Code&quot;, ref=&quot;parent_id&quot;,
+                                     additional_args={
+                                         &quot;parent_class&quot;: &quot;OperationType&quot;,
+                                         &quot;name&quot;: &quot;documentation&quot;
+                                     }),
+        precondition=HasOneFromMany(&quot;Code&quot;, ref=&quot;parent_id&quot;,
+                                    additional_args={
+                                        &quot;parent_class&quot;: &quot;OperationType&quot;,
+                                        &quot;name&quot;: &quot;precondition&quot;
+                                    }),
+        protocol=HasOneFromMany(&quot;Code&quot;, ref=&quot;parent_id&quot;,
+                                additional_args={
+                                    &quot;parent_class&quot;: &quot;OperationType&quot;,
+                                    &quot;name&quot;: &quot;protocol&quot;
+                                })
+    )
 
-    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="p">):</span>
-        <span class="c1"># raise DeprecationWarning(&quot;This method is depreciated. Call code directly using &#39;protocol&#39;, &#39;cost_model&#39;,&quot;</span>
-        <span class="c1">#                          &quot; &#39;documentation&#39;, or &#39;precondition&#39;.&quot;)</span>
-        <span class="k">if</span> <span class="n">accessor</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;protocol&quot;</span><span class="p">,</span> <span class="s1">&#39;precondition&#39;</span><span class="p">,</span> <span class="s1">&#39;documentation&#39;</span><span class="p">,</span> <span class="s1">&#39;cost_model&#39;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessor</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+    def code(self, accessor):
+        # raise DeprecationWarning(&quot;This method is depreciated. Call code directly using &#39;protocol&#39;, &#39;cost_model&#39;,&quot;
+        #                          &quot; &#39;documentation&#39;, or &#39;precondition&#39;.&quot;)
+        if accessor in [&quot;protocol&quot;, &#39;precondition&#39;, &#39;documentation&#39;, &#39;cost_model&#39;]:
+            return getattr(self, accessor)
+        return None
 
-    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ypos</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Operation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">operation_type_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                                               <span class="n">status</span><span class="o">=</span><span class="s1">&#39;planning&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">xpos</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ypos</span><span class="p">)</span>
-        <span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="n">operation</span><span class="o">.</span><span class="n">init_field_values</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">operation</span>
+    def instance(self, xpos=0, ypos=0):
+        operation = self.session.Operation.new(operation_type_id=self.id,
+                                               status=&#39;planning&#39;, x=xpos, y=ypos)
+        operation.operation_type = self
+        operation.init_field_values()
+        return operation
 
-<div class="viewcode-block" id="OperationType.field_type"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.OperationType.field_type">[docs]</a>    <span class="k">def</span> <span class="nf">field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">:</span>
-            <span class="n">fts</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">fts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+<div class="viewcode-block" id="OperationType.field_type"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.OperationType.field_type">[docs]</a>    def field_type(self, name, role):
+        if self.field_types:
+            fts = filter_list(self.field_types, role=role, name=name)
+            if len(fts) &gt; 0:
+                return fts[0]</div>
 
-    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">)</span>
+    def output(self, name):
+        return self.field_type(name, &quot;output&quot;)
 
-    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">)</span>
+    def input(self, name):
+        return self.field_type(name, &quot;input&quot;)
 
-<div class="viewcode-block" id="OperationType.save"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.OperationType.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Saves the Operation Type to the Aquarium server. Requires</span>
-<span class="sd">        this Operation Type to be connected to a session.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">create_operation_type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+<div class="viewcode-block" id="OperationType.save"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.operation.OperationType.save">[docs]</a>    def save(self):
+        &quot;&quot;&quot;Saves the Operation Type to the Aquarium server. Requires
+        this Operation Type to be connected to a session.&quot;&quot;&quot;
+        return self.reload(self.session.utils.create_operation_type(self))</div>
 
-    <span class="k">def</span> <span class="nf">to_save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">op_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span>
-            <span class="s1">&#39;field_types&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;allowable_field_types&#39;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;protocol&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;cost_model&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;documentation&#39;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;precondition&#39;</span><span class="p">:</span> <span class="p">{}</span>
-        <span class="p">})</span>
+    def to_save_json(self):
+        op_data = self.dump(include={
+            &#39;field_types&#39;: {
+                &#39;allowable_field_types&#39;: {}
+            },
+            &#39;protocol&#39;: {},
+            &#39;cost_model&#39;: {},
+            &#39;documentation&#39;: {},
+            &#39;precondition&#39;: {}
+        })
 
-        <span class="c1"># Format &#39;sample_type&#39; and &#39;object_type&#39; keys for afts</span>
-        <span class="k">for</span> <span class="n">ft_d</span><span class="p">,</span> <span class="n">ft</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-                <span class="n">op_data</span><span class="p">[</span><span class="s1">&#39;field_types&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">aft_d</span><span class="p">,</span> <span class="n">aft</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-                    <span class="n">ft_d</span><span class="p">[</span><span class="s1">&#39;allowable_field_types&#39;</span><span class="p">],</span> <span class="n">ft</span><span class="o">.</span><span class="n">allowable_field_types</span><span class="p">):</span>
-                <span class="n">aft_d</span><span class="p">[</span><span class="s1">&#39;sample_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">aft</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
-                <span class="n">aft_d</span><span class="p">[</span><span class="s1">&#39;object_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">aft</span><span class="o">.</span><span class="n">object_type</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
-        <span class="k">return</span> <span class="n">op_data</span>
+        # Format &#39;sample_type&#39; and &#39;object_type&#39; keys for afts
+        for ft_d, ft in zip(
+                op_data[&#39;field_types&#39;], self.field_types):
+            for aft_d, aft in zip(
+                    ft_d[&#39;allowable_field_types&#39;], ft.allowable_field_types):
+                aft_d[&#39;sample_type&#39;] = {&#39;name&#39;: aft.sample_type.name}
+                aft_d[&#39;object_type&#39;] = {&#39;name&#39;: aft.object_type.name}
+        return op_data
 
-    <span class="k">def</span> <span class="nf">_get_create_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
+    def _get_create_json(self):
+        return self.to_save_json()
 
-    <span class="k">def</span> <span class="nf">_get_update_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
+    def _get_update_json(self):
+        return self.to_save_json()
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_str</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;category&#39;</span><span class="p">)</span></div>
+    def __str__(self):
+        return self._to_str(&#39;id&#39;, &#39;name&#39;, &#39;category&#39;)</div>
 </pre></div>
 
     </div>

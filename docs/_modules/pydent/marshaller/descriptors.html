@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,196 +125,196 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.descriptors</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Descriptors</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span>&quot;&quot;&quot;
+Descriptors
+&quot;&quot;&quot;
 
-<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">auto</span>
-
-
-<div class="viewcode-block" id="Placeholders"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.Placeholders">[docs]</a><span class="k">class</span> <span class="nc">Placeholders</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="n">DATA</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
-    <span class="n">MARSHALL</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
-    <span class="n">CALLBACK</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
-    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></div>
+from enum import Enum, auto
 
 
-<div class="viewcode-block" id="DataAccessor"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.DataAccessor">[docs]</a><span class="k">class</span> <span class="nc">DataAccessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A descriptor that will dynamically access an instance&#39;s dictionary named</span>
-<span class="sd">    by the `accessor` key. If the key is not in the dictionary or the value</span>
-<span class="sd">    received from the dictionary is a :class:`Placeholders.DATA` enumerator, an</span>
-<span class="sd">    AttributeError is raised.</span>
-
-<span class="sd">    **Usage**:</span>
-
-<span class="sd">    This may be used to assign dynamic properties to a class method as in</span>
-<span class="sd">    the example below, or subclasses of the DataAccessor can be created</span>
-<span class="sd">    to create &#39;hooks&#39; when the descriptor is accessed, set, or delete.</span>
-
-<span class="sd">    .. code-block::</span>
-
-<span class="sd">        model_class.x = DataAccessor(&#39;x&#39;)</span>
-<span class="sd">        model_class.y = DataAccessor(&#39;y&#39;)</span>
-<span class="sd">        instance = model_class()</span>
-
-<span class="sd">        instance.data # {&#39;x&#39;: Placeholders.DATA, &#39;y&#39;: Placeholders.DATA}</span>
-
-<span class="sd">        # accessing the default values</span>
-<span class="sd">        try:</span>
-<span class="sd">            instance.x</span>
-<span class="sd">        except AttributeError:</span>
-<span class="sd">            print(&quot;x being tracked but is not set&quot;)</span>
-
-<span class="sd">        # setting and accessing a value</span>
-<span class="sd">        instance.x = 5</span>
-<span class="sd">        instance.data = {&#39;x&#39;: 5, &#39;y&#39;: Placeholders.DATA}</span>
-<span class="sd">        instance.x  # returns 5</span>
-
-<span class="sd">        # raising AttributeError</span>
-<span class="sd">        try:</span>
-<span class="sd">            instance.y</span>
-<span class="sd">        except AttributeError:</span>
-<span class="sd">            print(&quot;y is not set&quot;)</span>
-
-<span class="sd">        # setting the value</span>
-<span class="sd">        instance.y = 10</span>
-<span class="sd">        assert instance.data == {&#39;x&#39;: 5, &#39;y&#39;: 10}</span>
-<span class="sd">        assert instance.y == 10</span>
-
-<span class="sd">        # deleting the value</span>
-<span class="sd">        del instance.y</span>
-<span class="sd">        assert instance.data == {&#39;x&#39;: 5, &#39;y&#39;: Placeholders.DATA}</span>
-<span class="sd">        try:</span>
-<span class="sd">            instance.y</span>
-<span class="sd">        except AttributeError:</span>
-<span class="sd">            print(&quot;y is not set&quot;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;accessor&#39;</span><span class="p">,</span> <span class="s1">&#39;default&#39;</span><span class="p">]</span>
-    <span class="n">HOLDER</span> <span class="o">=</span> <span class="n">Placeholders</span><span class="o">.</span><span class="n">DATA</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">accessor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">HOLDER</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span> <span class="o">=</span> <span class="n">accessor</span>
-        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="n">Placeholders</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">:</span>
-            <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOLDER</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Descriptor name &#39;</span><span class="si">{}</span><span class="s2">&#39; cannot be accessor name &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">get_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="n">access_data</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">access_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">objtype</span><span class="p">):</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOLDER</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="s2">&quot;type object &#39;</span><span class="si">{}</span><span class="s2">&#39; does not have attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">val</span>
-
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-
-    <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOLDER</span></div>
+<div class="viewcode-block" id="Placeholders"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.Placeholders">[docs]</a>class Placeholders(Enum):
+    DATA = auto()
+    MARSHALL = auto()
+    CALLBACK = auto()
+    DEFAULT = auto()</div>
 
 
-<div class="viewcode-block" id="MarshallingAccessor"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.MarshallingAccessor">[docs]</a><span class="k">class</span> <span class="nc">MarshallingAccessor</span><span class="p">(</span><span class="n">DataAccessor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A generic Marshalling descriptor.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DataAccessor"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.DataAccessor">[docs]</a>class DataAccessor(object):
+    &quot;&quot;&quot;A descriptor that will dynamically access an instance&#39;s dictionary named
+    by the `accessor` key. If the key is not in the dictionary or the value
+    received from the dictionary is a :class:`Placeholders.DATA` enumerator, an
+    AttributeError is raised.
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;accessor&#39;</span><span class="p">,</span> <span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="s1">&#39;deserialized_accessor&#39;</span><span class="p">,</span> <span class="s1">&#39;default&#39;</span><span class="p">]</span>
-    <span class="n">HOLDER</span> <span class="o">=</span> <span class="n">Placeholders</span><span class="o">.</span><span class="n">MARSHALL</span>
+    **Usage**:
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">accessor</span><span class="p">,</span> <span class="n">deserialized_accessor</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">HOLDER</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">accessor</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">deserialized_accessor</span> <span class="o">=</span> <span class="n">deserialized_accessor</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialized_accessor</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Descriptor accessor &#39;</span><span class="si">{}</span><span class="s2">&#39; cannot be deserialized accessor &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialized_accessor</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="n">field</span>
+    This may be used to assign dynamic properties to a class method as in
+    the example below, or subclasses of the DataAccessor can be created
+    to create &#39;hooks&#39; when the descriptor is accessed, set, or delete.
 
-    <span class="k">def</span> <span class="nf">get_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialized_accessor</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">e</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Error retrieving attribute &#39;</span><span class="si">{}</span><span class="s2">&#39; from &#39;</span><span class="si">{}</span><span class="s2">&#39; because:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
-            <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
+    .. code-block::
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">objtype</span><span class="p">):</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOLDER</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOLDER</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOLDER</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                    <span class="s2">&quot;type object &#39;</span><span class="si">{}</span><span class="s2">&#39; does not have attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">val</span>
+        model_class.x = DataAccessor(&#39;x&#39;)
+        model_class.y = DataAccessor(&#39;y&#39;)
+        instance = model_class()
 
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">deserialized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-            <span class="n">serialized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">deserialized</span><span class="p">)</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialized_accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">deserialized</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">serialized</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">traceback</span> <span class="k">import</span> <span class="n">format_tb</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;__set__ traceback:&#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">format_tb</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">__traceback__</span><span class="p">)))</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;can&#39;t set attribute &#39;</span><span class="si">{}</span><span class="s2">&#39; for &#39;</span><span class="si">{}</span><span class="s2">&#39; to &#39;</span><span class="si">{}</span><span class="s2">&#39; due to:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">. See the traceback&quot;</span>
-                            <span class="s2">&quot; printed above&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        instance.data # {&#39;x&#39;: Placeholders.DATA, &#39;y&#39;: Placeholders.DATA}
 
-    <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">del</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-        <span class="k">del</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialized_accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span></div>
+        # accessing the default values
+        try:
+            instance.x
+        except AttributeError:
+            print(&quot;x being tracked but is not set&quot;)
 
+        # setting and accessing a value
+        instance.x = 5
+        instance.data = {&#39;x&#39;: 5, &#39;y&#39;: Placeholders.DATA}
+        instance.x  # returns 5
 
-<div class="viewcode-block" id="CallbackAccessor"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.CallbackAccessor">[docs]</a><span class="k">class</span> <span class="nc">CallbackAccessor</span><span class="p">(</span><span class="n">MarshallingAccessor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A descriptor that uses a registered :class:`marshaller.fields.Callback`</span>
-<span class="sd">    to dynamically access the value of a callback by sending the instance to</span>
-<span class="sd">    the callback field&#39;s `fullfill` method if the descriptor is not yet set.</span>
+        # raising AttributeError
+        try:
+            instance.y
+        except AttributeError:
+            print(&quot;y is not set&quot;)
 
-<span class="sd">    If the descriptor is already set, return that value. Deleting the</span>
-<span class="sd">    descriptor sets the value to the default</span>
-<span class="sd">    :class:`Placeholders.CALLBACK`, which will attempt to `fullfill` the</span>
-<span class="sd">    descriptor once accessed.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+        # setting the value
+        instance.y = 10
+        assert instance.data == {&#39;x&#39;: 5, &#39;y&#39;: 10}
+        assert instance.y == 10
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;accessor&#39;</span><span class="p">,</span> <span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="s1">&#39;deserialized_accessor&#39;</span><span class="p">,</span> <span class="s1">&#39;default&#39;</span><span class="p">]</span>
-    <span class="n">HOLDER</span> <span class="o">=</span> <span class="n">Placeholders</span><span class="o">.</span><span class="n">CALLBACK</span>
+        # deleting the value
+        del instance.y
+        assert instance.data == {&#39;x&#39;: 5, &#39;y&#39;: Placeholders.DATA}
+        try:
+            instance.y
+        except AttributeError:
+            print(&quot;y is not set&quot;)
+    &quot;&quot;&quot;
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">accessor</span><span class="p">,</span> <span class="n">deserialized_accessor</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">HOLDER</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">accessor</span><span class="p">,</span> <span class="n">deserialized_accessor</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">)</span>
+    __slots__ = [&#39;name&#39;, &#39;accessor&#39;, &#39;default&#39;]
+    HOLDER = Placeholders.DATA
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">objtype</span><span class="p">):</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOLDER</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">fullfill</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">val</span>
+    def __init__(self, name, accessor=None, default=HOLDER):
+        self.name = name
+        self.accessor = accessor
+        if default is Placeholders.DEFAULT:
+            default = self.HOLDER
+        self.default = default
+        if self.name == self.accessor:
+            raise Exception(&quot;Descriptor name &#39;{}&#39; cannot be accessor name &#39;{}&#39;&quot;.format(self.name, self.accessor))
 
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialized_accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span></div>
+    def get_val(self, obj):
+        access_data = getattr(obj, self.accessor)
+        return access_data.get(self.name, self.default)
+
+    def __get__(self, obj, objtype):
+        val = self.get_val(obj)
+        if val is self.HOLDER:
+            raise AttributeError(
+                &quot;type object &#39;{}&#39; does not have attribute &#39;{}&#39;&quot;.format(obj.__class__.__name__, self.name))
+        else:
+            return val
+
+    def __set__(self, obj, val):
+        getattr(obj, self.accessor)[self.name] = val
+
+    def __delete__(self, obj):
+        getattr(obj, self.accessor)[self.name] = self.HOLDER</div>
 
 
-<div class="viewcode-block" id="RelationshipAccessor"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.RelationshipAccessor">[docs]</a><span class="k">class</span> <span class="nc">RelationshipAccessor</span><span class="p">(</span><span class="n">CallbackAccessor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The descriptor for a :class:`pydent.marshaller.fields.Relationship` field</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="n">deserialized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-        <span class="n">serialized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">deserialized</span><span class="p">)</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialized_accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">deserialized</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessor</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">serialized</span></div>
+<div class="viewcode-block" id="MarshallingAccessor"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.MarshallingAccessor">[docs]</a>class MarshallingAccessor(DataAccessor):
+    &quot;&quot;&quot;
+    A generic Marshalling descriptor.
+    &quot;&quot;&quot;
+
+    __slots__ = [&#39;name&#39;, &#39;accessor&#39;, &#39;field&#39;, &#39;deserialized_accessor&#39;, &#39;default&#39;]
+    HOLDER = Placeholders.MARSHALL
+
+    def __init__(self, name, field, accessor, deserialized_accessor, default=HOLDER):
+        super().__init__(name, accessor, default=default)
+        self.deserialized_accessor = deserialized_accessor
+        if self.accessor == self.deserialized_accessor:
+            raise Exception(&quot;Descriptor accessor &#39;{}&#39; cannot be deserialized accessor &#39;{}&#39;&quot;.format(self.accessor, self.deserialized_accessor))
+        self.field = field
+
+    def get_val(self, obj):
+        try:
+            return getattr(obj, self.deserialized_accessor).get(self.name, self.default)
+        except AttributeError as e:
+            raise e
+        except Exception as e:
+            raise Exception(&quot;Error retrieving attribute &#39;{}&#39; from &#39;{}&#39; because:\n&quot;.format(
+                self.name,
+                obj.__class__,
+            ) + &quot;{}: &quot;.format(e.__class__.__name__) + str(e)) from e
+
+    def __get__(self, obj, objtype):
+        val = self.get_val(obj)
+        if val is self.HOLDER:
+            val = getattr(obj, self.accessor).get(self.name, self.HOLDER)
+            if val is self.HOLDER:
+                raise AttributeError(
+                    &quot;type object &#39;{}&#39; does not have attribute &#39;{}&#39;&quot;.format(obj.__class__.__name__, self.name))
+            else:
+                return self.field.deserialize(obj, val)
+        return val
+
+    def __set__(self, obj, val):
+        try:
+            deserialized = self.field.deserialize(obj, val)
+            serialized = self.field.serialize(obj, deserialized)
+            getattr(obj, self.deserialized_accessor)[self.name] = deserialized
+            getattr(obj, self.accessor)[self.name] = serialized
+        except Exception as e:
+            from traceback import format_tb
+            print(&#39;__set__ traceback:&#39;)
+            print(&#39;\n&#39;.join(format_tb(e.__traceback__)))
+            raise Exception(&quot;can&#39;t set attribute &#39;{}&#39; for &#39;{}&#39; to &#39;{}&#39; due to:\n{}. See the traceback&quot;
+                            &quot; printed above&quot;.format(
+                self.name, obj, val, str(e))
+            ) from e
+
+    def __delete__(self, obj):
+        del getattr(obj, self.accessor)[self.name]
+        del getattr(obj, self.deserialized_accessor)[self.name]</div>
+
+
+<div class="viewcode-block" id="CallbackAccessor"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.CallbackAccessor">[docs]</a>class CallbackAccessor(MarshallingAccessor):
+    &quot;&quot;&quot;A descriptor that uses a registered :class:`marshaller.fields.Callback`
+    to dynamically access the value of a callback by sending the instance to
+    the callback field&#39;s `fullfill` method if the descriptor is not yet set.
+
+    If the descriptor is already set, return that value. Deleting the
+    descriptor sets the value to the default
+    :class:`Placeholders.CALLBACK`, which will attempt to `fullfill` the
+    descriptor once accessed.
+    &quot;&quot;&quot;
+
+    __slots__ = [&#39;name&#39;, &#39;accessor&#39;, &#39;field&#39;, &#39;deserialized_accessor&#39;, &#39;default&#39;]
+    HOLDER = Placeholders.CALLBACK
+
+    def __init__(self, name, field, accessor, deserialized_accessor, default=HOLDER):
+        super().__init__(name, field, accessor, deserialized_accessor, default=default)
+
+    def __get__(self, obj, objtype):
+        val = self.get_val(obj)
+        if val is self.HOLDER:
+            val = self.field.fullfill(obj)
+        return val
+
+    def __set__(self, obj, val):
+        getattr(obj, self.deserialized_accessor)[self.name] = val
+        getattr(obj, self.accessor)[self.name] = self.field.serialize(obj, val)</div>
+
+
+<div class="viewcode-block" id="RelationshipAccessor"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.RelationshipAccessor">[docs]</a>class RelationshipAccessor(CallbackAccessor):
+    &quot;&quot;&quot;
+    The descriptor for a :class:`pydent.marshaller.fields.Relationship` field
+    &quot;&quot;&quot;
+    def __set__(self, obj, val):
+        deserialized = self.field.deserialize(obj, val)
+        serialized = self.field.serialize(obj, deserialized)
+        getattr(obj, self.deserialized_accessor)[self.name] = deserialized
+        getattr(obj, self.accessor)[self.name] = serialized</div>
 </pre></div>
 
     </div>

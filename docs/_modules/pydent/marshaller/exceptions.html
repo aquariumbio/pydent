@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,105 +125,105 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.exceptions</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Marshalling exceptions</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span>&quot;&quot;&quot;
+Marshalling exceptions
+&quot;&quot;&quot;
 
-<div class="viewcode-block" id="SchemaRegistryError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaRegistryError">[docs]</a><span class="k">class</span> <span class="nc">SchemaRegistryError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generic schema registry exception&quot;&quot;&quot;</span></div>
-
-
-<div class="viewcode-block" id="SchemaException"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaException">[docs]</a><span class="k">class</span> <span class="nc">SchemaException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A generic schema exception&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="SchemaRegistryError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaRegistryError">[docs]</a>class SchemaRegistryError(Exception):
+    &quot;&quot;&quot;Generic schema registry exception&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="SchemaModelException"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaModelException">[docs]</a><span class="k">class</span> <span class="nc">SchemaModelException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A generic model exception&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="SchemaException"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaException">[docs]</a>class SchemaException(Exception):
+    &quot;&quot;&quot;A generic schema exception&quot;&quot;&quot;</div>
 
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Field validation exceptions</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SchemaModelException"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaModelException">[docs]</a>class SchemaModelException(Exception):
+    &quot;&quot;&quot;A generic model exception&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="FieldValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.FieldValidationError">[docs]</a><span class="k">class</span> <span class="nc">FieldValidationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A generic field validation error&quot;&quot;&quot;</span></div>
+&quot;&quot;&quot;
+Field validation exceptions
+&quot;&quot;&quot;
 
 
-<div class="viewcode-block" id="AllowNoneFieldValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.AllowNoneFieldValidationError">[docs]</a><span class="k">class</span> <span class="nc">AllowNoneFieldValidationError</span><span class="p">(</span><span class="n">FieldValidationError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A field validation error for getting or setting None values&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="FieldValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.FieldValidationError">[docs]</a>class FieldValidationError(Exception):
+    &quot;&quot;&quot;A generic field validation error&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="CallbackValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.CallbackValidationError">[docs]</a><span class="k">class</span> <span class="nc">CallbackValidationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A generic callback validation error&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="AllowNoneFieldValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.AllowNoneFieldValidationError">[docs]</a>class AllowNoneFieldValidationError(FieldValidationError):
+    &quot;&quot;&quot;A field validation error for getting or setting None values&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="RunTimeCallbackAttributeError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.RunTimeCallbackAttributeError">[docs]</a><span class="k">class</span> <span class="nc">RunTimeCallbackAttributeError</span><span class="p">(</span><span class="ne">AttributeError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Error that occurs during executing a field callback&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="CallbackValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.CallbackValidationError">[docs]</a>class CallbackValidationError(Exception):
+    &quot;&quot;&quot;A generic callback validation error&quot;&quot;&quot;</div>
 
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Model validation exceptions</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="ModelRegistryError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ModelRegistryError">[docs]</a><span class="k">class</span> <span class="nc">ModelRegistryError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Model not found in registry exception.&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="RunTimeCallbackAttributeError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.RunTimeCallbackAttributeError">[docs]</a>class RunTimeCallbackAttributeError(AttributeError):
+    &quot;&quot;&quot;Error that occurs during executing a field callback&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="ModelValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ModelValidationError">[docs]</a><span class="k">class</span> <span class="nc">ModelValidationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A model validation error&quot;&quot;&quot;</span></div>
+&quot;&quot;&quot;
+Model validation exceptions
+&quot;&quot;&quot;
+
+<div class="viewcode-block" id="ModelRegistryError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ModelRegistryError">[docs]</a>class ModelRegistryError(Exception):
+    &quot;&quot;&quot;Model not found in registry exception.&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="ExceptionCollection"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ExceptionCollection">[docs]</a><span class="k">class</span> <span class="nc">ExceptionCollection</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Context dependent exception for capturing multiple exceptions.</span>
-
-<span class="sd">    Call `r` to gather exceptions, upon exiting, a single</span>
-<span class="sd">    ExceptionCollection will be raised with a summary of all the</span>
-<span class="sd">    internal exceptions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">header</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
-
-<div class="viewcode-block" id="ExceptionCollection.raise_exception_class"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ExceptionCollection.raise_exception_class">[docs]</a>    <span class="k">def</span> <span class="nf">raise_exception_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception_class</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Raise an exception class, if it was collected.&quot;&quot;&quot;</span>
-        <span class="n">errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">exception_class</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">[])</span>
-        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">exception_class</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">group_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">grouped</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
-            <span class="n">grouped</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">grouped</span>
-
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
-            <span class="c1"># raise MultipleValidation(self.errors)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
-                <span class="n">group_by_exception</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_errors</span><span class="p">()</span>
-                <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">errors</span> <span class="ow">in</span> <span class="n">group_by_exception</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> </span><span class="si">{}</span><span class="s2">(s):&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">errors</span><span class="p">):</span>
-                        <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  (</span><span class="si">{}</span><span class="s1">): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg</span><span class="p">,)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;There was an error raising exceptions </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="bp">self</span></div>
+<div class="viewcode-block" id="ModelValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ModelValidationError">[docs]</a>class ModelValidationError(Exception):
+    &quot;&quot;&quot;A model validation error&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="MultipleValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.MultipleValidationError">[docs]</a><span class="k">class</span> <span class="nc">MultipleValidationError</span><span class="p">(</span><span class="n">ModelValidationError</span><span class="p">,</span> <span class="n">ExceptionCollection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Model validation exception.&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="ExceptionCollection"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ExceptionCollection">[docs]</a>class ExceptionCollection(Exception):
+    &quot;&quot;&quot;Context dependent exception for capturing multiple exceptions.
+
+    Call `r` to gather exceptions, upon exiting, a single
+    ExceptionCollection will be raised with a summary of all the
+    internal exceptions.
+    &quot;&quot;&quot;
+
+    def __init__(self, *args, header=&#39;&#39;):
+        self.args = args
+        self.header = header
+        self.errors = None
+
+    def r(self, exception):
+        self.errors.append(exception)
+
+<div class="viewcode-block" id="ExceptionCollection.raise_exception_class"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ExceptionCollection.raise_exception_class">[docs]</a>    def raise_exception_class(self, exception_class):
+        &quot;&quot;&quot;Raise an exception class, if it was collected.&quot;&quot;&quot;
+        errors = self.group_errors.get(exception_class.__name__, [])
+        if errors:
+            raise exception_class(errors)</div>
+
+    def group_errors(self):
+        grouped = {}
+        for e in self.errors:
+            grouped.setdefault(e.__class__.__name__, []).append(e)
+        return grouped
+
+    def __enter__(self):
+        self.errors = []
+        return self
+
+    def __exit__(self, *args):
+        if self.errors:
+            # raise MultipleValidation(self.errors)
+            try:
+                msg = &quot;{}: {}&quot;.format(self.__class__.__name__, self.header)
+                group_by_exception = self.group_errors()
+                for g, errors in group_by_exception.items():
+                    msg += &quot;\n {}(s):&quot;.format(g)
+                    for i, e in enumerate(errors):
+                        msg += &#39;\n  ({}): {}&#39;.format(i, e)
+                self.args = (msg,)
+            except Exception as e:
+                raise Exception(&quot;There was an error raising exceptions {}\n&quot;.format(self.errors, e))
+            raise self</div>
+
+
+<div class="viewcode-block" id="MultipleValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.MultipleValidationError">[docs]</a>class MultipleValidationError(ModelValidationError, ExceptionCollection):
+    &quot;&quot;&quot;Model validation exception.&quot;&quot;&quot;</div>
 
 
 </pre></div>

@@ -1,5 +1,5 @@
-Using local caches
-==================
+Speeding up queries
+===================
 
 Session objects can automatically cache model results to greatly
 speed up data mining. It does this using the `Browser` class, which

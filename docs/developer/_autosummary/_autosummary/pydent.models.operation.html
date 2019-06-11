@@ -83,8 +83,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../versions.html">Version History</a><ul>
@@ -114,7 +114,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="../../../_sources/developer/_autosummary/_autosummary/pydent.models.operation.rst.txt"
+  <a href="../../../_sources/developer/_autosummary/_autosummary/pydent.models.operation.rst"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -601,12 +601,12 @@ parent <a class="reference internal" href="#pydent.models.operation.Operation" t
 The should be a field type with the name and role
 in the metatype.
 Optionally, a values dictionary may be provided with the following format:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">values_dict</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="n">mysample</span><span class="p">,</span>
-    <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="n">myitem</span><span class="p">,</span>
-    <span class="s2">&quot;object_type&quot;</span><span class="p">:</span> <span class="kc">None</span>
-<span class="p">}</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>values_dict = {
+    &quot;value&quot;: None,
+    &quot;sample&quot;: mysample,
+    &quot;item&quot;: myitem,
+    &quot;object_type&quot;: None
+}
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -631,12 +631,12 @@ Optionally, a values dictionary may be provided with the following format:</p>
 <code class="sig-name descname">new_field_value_from_field_type</code><span class="sig-paren">(</span><em class="sig-param">field_type</em>, <em class="sig-param">values_dict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.operation.Operation.new_field_value_from_field_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiates a new <a class="reference internal" href="../pydent.models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a <a class="reference internal" href="../pydent.models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a>
 instance. Optionally, a values dictionary may be provided with the following format:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">values_dict</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="n">mysample</span><span class="p">,</span>
-    <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="n">myitem</span><span class="p">,</span>
-    <span class="s2">&quot;object_type&quot;</span><span class="p">:</span> <span class="kc">None</span>
-<span class="p">}</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>values_dict = {
+    &quot;value&quot;: None,
+    &quot;sample&quot;: mysample,
+    &quot;item&quot;: myitem,
+    &quot;object_type&quot;: None
+}
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -723,12 +723,12 @@ is used to recover the field type.</p>
 <dt id="pydent.models.operation.Operation.set_field_value">
 <code class="sig-name descname">set_field_value</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">role</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.operation.Operation.set_field_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets a field value name and role using a dictionary, as in the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">values</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="n">mysample</span><span class="p">,</span>
-    <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="n">myitem</span><span class="p">,</span>
-    <span class="s2">&quot;object_type&quot;</span><span class="p">:</span> <span class="kc">None</span>
-<span class="p">}</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>values = {
+    &quot;value&quot;: None,
+    &quot;sample&quot;: mysample,
+    &quot;item&quot;: myitem,
+    &quot;object_type&quot;: None
+}
 </pre></div>
 </div>
 </dd></dl>
@@ -738,12 +738,12 @@ is used to recover the field type.</p>
 <code class="sig-name descname">set_field_value_array</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">role</em>, <em class="sig-param">values_array</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.operation.Operation.set_field_value_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets an array of field values by name and role using an array of dictionaries,
 as in the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">values_array</span> <span class="o">=</span> <span class="p">[{</span>
-    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="n">mysample</span><span class="p">,</span>
-    <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="n">myitem</span><span class="p">,</span>
-    <span class="s2">&quot;object_type&quot;</span><span class="p">:</span> <span class="kc">None</span>
-<span class="p">}]</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>values_array = [{
+    &quot;value&quot;: None,
+    &quot;sample&quot;: mysample,
+    &quot;item&quot;: myitem,
+    &quot;object_type&quot;: None
+}]
 </pre></div>
 </div>
 </dd></dl>

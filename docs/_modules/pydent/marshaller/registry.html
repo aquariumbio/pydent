@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,104 +125,104 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.registry</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Model and schema registry meta-classes</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span>&quot;&quot;&quot;
+Model and schema registry meta-classes
+&quot;&quot;&quot;
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+from collections import defaultdict
 
-<span class="kn">from</span> <span class="nn">pydent.marshaller.exceptions</span> <span class="k">import</span> <span class="n">ModelRegistryError</span><span class="p">,</span> <span class="n">SchemaRegistryError</span>
-
-
-<div class="viewcode-block" id="SchemaRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry">[docs]</a><span class="k">class</span> <span class="nc">SchemaRegistry</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Stores a list of models that can be accessed by name.&quot;&quot;&quot;</span>
-
-    <span class="n">schemas</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># the registry of Schemas instantiated</span>
-    <span class="n">_fields</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># list of fields instantiated</span>
-    <span class="n">_model_class</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># reference to model class the schema is attached to</span>
-    <span class="n">BASE</span> <span class="o">=</span> <span class="s2">&quot;DynamicSchema&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">bases</span> <span class="o">!=</span> <span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">BASE</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">SchemaRegistryError</span><span class="p">(</span><span class="s2">&quot;Cannot register &#39;</span><span class="si">{}</span><span class="s2">&#39; since it already exists.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
-            <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">model_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The registered model class.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_class</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The shcmea fields.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_fields</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">grouped_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fields grouped by their base classes.</span>
-
-<span class="sd">        Returns empty list of base class not in fields.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">grouped</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">mro</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span>
-            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">mro</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]:</span>
-                <span class="n">grouped</span><span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="vm">__name__</span><span class="p">][</span><span class="n">fname</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
-        <span class="k">return</span> <span class="n">grouped</span>
-
-<div class="viewcode-block" id="SchemaRegistry.make_schema_name"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.make_schema_name">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">make_schema_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Makes a Schema class name from a model name (appending &#39;Schema&#39; to</span>
-<span class="sd">        name)&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;Schema&quot;</span></div>
-
-<div class="viewcode-block" id="SchemaRegistry.get_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_schema">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Gets model by model_name.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SchemaRegistryError</span><span class="p">(</span><span class="s2">&quot;Schema </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2"> not found in SchemaRegistry. Available schemas:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span>
-                <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-            <span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">schemas</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="SchemaRegistry.get_model_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_model_schema">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_model_schema</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Gets a model schema from a model name.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="n">SchemaRegistry</span><span class="o">.</span><span class="n">make_schema_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">))</span></div></div>
+from pydent.marshaller.exceptions import ModelRegistryError, SchemaRegistryError
 
 
-<div class="viewcode-block" id="ModelRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry">[docs]</a><span class="k">class</span> <span class="nc">ModelRegistry</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Stores list of all models instantiated from the SchemaModel base.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SchemaRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry">[docs]</a>class SchemaRegistry(type):
+    &quot;&quot;&quot;Stores a list of models that can be accessed by name.&quot;&quot;&quot;
 
-    <span class="n">models</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># the dictionary of model classes instantiated</span>
-    <span class="n">_model_schema</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the class attribute to store the model_classes Schema class</span>
-    <span class="n">_fields_key</span> <span class="o">=</span> <span class="s2">&quot;fields&quot;</span>  <span class="c1"># the class level attribute key to instantiate model fields</span>
-    <span class="n">_data_key</span> <span class="o">=</span> <span class="s2">&quot;__serialized_data&quot;</span>  <span class="c1"># the attribute key used to store serialized data</span>
-    <span class="n">_deserialized_key</span> <span class="o">=</span> <span class="s2">&quot;__deserialized_data&quot;</span>  <span class="c1"># the attribute key used to store serialized data</span>
-    <span class="n">BASE</span> <span class="o">=</span> <span class="s1">&#39;SchemaModel&#39;</span>
+    schemas = {}  # the registry of Schemas instantiated
+    _fields = None  # list of fields instantiated
+    _model_class = None  # reference to model class the schema is attached to
+    BASE = &quot;DynamicSchema&quot;
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">selfdict</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">bases</span> <span class="o">!=</span> <span class="p">()</span> <span class="ow">and</span> <span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">BASE</span><span class="p">:</span>
-            <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
+    def __init__(cls, name, bases, selfdict):
+        &quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;
+        super().__init__(name, bases, selfdict)
+        if bases != () and name != SchemaRegistry.BASE:
+            if name in SchemaRegistry.schemas:
+                raise SchemaRegistryError(&quot;Cannot register &#39;{}&#39; since it already exists.&quot;.format(name))
+            SchemaRegistry.schemas[name] = cls
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">model_schema</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the class&#39;s schema.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model_schema</span>
+    @property
+    def model_class(cls):
+        &quot;&quot;&quot;The registered model class.&quot;&quot;&quot;
+        return cls._model_class
 
-<div class="viewcode-block" id="ModelRegistry.get_model"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry.get_model">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Gets a model class by name.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ModelRegistryError</span><span class="p">(</span><span class="s2">&quot;Model &#39;</span><span class="si">{}</span><span class="s2">&#39; not found in registry. Available models:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
-        <span class="k">return</span> <span class="n">ModelRegistry</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div></div>
+    @property
+    def fields(cls):
+        &quot;&quot;&quot;The shcmea fields.&quot;&quot;&quot;
+        return cls._fields
+
+    @property
+    def grouped_fields(cls):
+        &quot;&quot;&quot;Fields grouped by their base classes.
+
+        Returns empty list of base class not in fields.
+        &quot;&quot;&quot;
+        grouped = defaultdict(dict)
+        for fname, field in cls.fields.items():
+            mro = field.__class__.__mro__
+            for b in mro[:-2]:
+                grouped[b.__name__][fname] = field
+        return grouped
+
+<div class="viewcode-block" id="SchemaRegistry.make_schema_name"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.make_schema_name">[docs]</a>    @staticmethod
+    def make_schema_name(name):
+        &quot;&quot;&quot;Makes a Schema class name from a model name (appending &#39;Schema&#39; to
+        name)&quot;&quot;&quot;
+        return name + &quot;Schema&quot;</div>
+
+<div class="viewcode-block" id="SchemaRegistry.get_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_schema">[docs]</a>    @staticmethod
+    def get_schema(name):
+        &quot;&quot;&quot;Gets model by model_name.&quot;&quot;&quot;
+        if name not in SchemaRegistry.schemas:
+            raise SchemaRegistryError(&quot;Schema \&quot;{}\&quot; not found in SchemaRegistry. Available schemas:\n{}&quot;.format(
+                name,
+                &#39;,&#39;.join(SchemaRegistry.schemas.keys())
+            ))
+        else:
+            return SchemaRegistry.schemas[name]</div>
+
+<div class="viewcode-block" id="SchemaRegistry.get_model_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_model_schema">[docs]</a>    @staticmethod
+    def get_model_schema(model_name):
+        &quot;&quot;&quot;Gets a model schema from a model name.&quot;&quot;&quot;
+        return SchemaRegistry.get_schema(SchemaRegistry.make_schema_name(model_name))</div></div>
+
+
+<div class="viewcode-block" id="ModelRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry">[docs]</a>class ModelRegistry(type):
+    &quot;&quot;&quot;Stores list of all models instantiated from the SchemaModel base.&quot;&quot;&quot;
+
+    models = {}  # the dictionary of model classes instantiated
+    _model_schema = None  # the class attribute to store the model_classes Schema class
+    _fields_key = &quot;fields&quot;  # the class level attribute key to instantiate model fields
+    _data_key = &quot;__serialized_data&quot;  # the attribute key used to store serialized data
+    _deserialized_key = &quot;__deserialized_data&quot;  # the attribute key used to store serialized data
+    BASE = &#39;SchemaModel&#39;
+
+    def __init__(cls, name, bases, selfdict):
+        &quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;
+        super().__init__(name, bases, selfdict)
+        if bases != () and bases[0].__name__ != ModelRegistry.BASE:
+            ModelRegistry.models[name] = cls
+
+    @property
+    def model_schema(cls):
+        &quot;&quot;&quot;Returns the class&#39;s schema.&quot;&quot;&quot;
+        return cls._model_schema
+
+<div class="viewcode-block" id="ModelRegistry.get_model"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry.get_model">[docs]</a>    @staticmethod
+    def get_model(name):
+        &quot;&quot;&quot;Gets a model class by name.&quot;&quot;&quot;
+        if name not in ModelRegistry.models:
+            raise ModelRegistryError(&quot;Model &#39;{}&#39; not found in registry. Available models:\n{}&quot;.format(name, &#39;, &#39;.join(ModelRegistry.models.keys())))
+        return ModelRegistry.models[name]</div></div>
 </pre></div>
 
     </div>

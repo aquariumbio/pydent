@@ -4,15 +4,14 @@ Planner
 
 import random
 import webbrowser
-from collections import defaultdict, Sequence
+from collections import defaultdict
 from functools import wraps
 from uuid import uuid4
 
 import networkx as nx
 
 from pydent.aqsession import AqSession
-from pydent.browser import Browser
-from pydent.models import FieldValue, Operation, Plan
+from pydent.models import FieldValue, Operation, Plan, OperationType
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
 from pydent.utils import make_async, logger, empty_copy
@@ -216,13 +215,6 @@ class Planner(logger.Loggable, AFTMatcher, object):
         self._plan = new_plan
         self.cache()
 
-    def cache(self):
-        # ots = self.browser.where('OperationType', {'deployed': True})
-        # self.browser.retrieve(ots, 'field_types')
-        self.browser.update_cache([self.plan], recursive=True)
-        results = self.browser.recursive_retrieve([self.plan], self.cache_query())
-
-
     @classmethod
     def cache_plans(cls, browser, plans):
         browser.recursive_retrieve(plans, cls._cache_query())
@@ -310,6 +302,17 @@ class Planner(logger.Loggable, AFTMatcher, object):
             raise PlannerException(msg.format(operation_type_name))
         return self.create_operation_by_type(ots[0])
 
+    def new_op(self, name_id_or_ot):
+        if isinstance(name_id_or_ot, str):
+            return self.create_operation_by_name(name_id_or_ot)
+        elif isinstance(name_id_or_ot, int):
+            return self.create_operation_by_type_id(name_id_or_ot)
+        elif issubclass(type(name_id_or_ot), OperationType):
+            return self.create_operation_by_type(name_id_or_ot)
+        else:
+            raise PlannerException("Expected a string, integer, or OperationType, "
+                                   "not a {}".format(type(name_id_or_ot)))
+
     @staticmethod
     def _model_are_equal(model1, model2):
         if model1.id is None and model2.id is None:
@@ -319,7 +322,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
             return True
         return False
 
-    def get_operation(self, id):
+    def get_op(self, id):
         for op in self.plan.operations:
             if op.id == id:
                 return op
@@ -423,7 +426,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
             op = self.create_operation_by_name(op, category=category)
         return op
 
-    def quick_create_chain(self, *op_or_otnames, category=None):
+    def chain(self, *op_or_otnames, category=None, return_as_dict=False):
         """
         Creates a chain of operations by *guessing* wires between operations
         based on the AllowableFieldTypes between the inputs and outputs of each
@@ -435,19 +438,19 @@ class Planner(logger.Loggable, AFTMatcher, object):
         .. code::
 
             # create four new operations based on their OperationType names
-            planner.quick_create_chain("Make PCR Fragment", "Run Gel",
+            planner.chain("Make PCR Fragment", "Run Gel",
                                       "Extract Gel Slice", "Purify Gel Slice")
 
             # create four new operations based on their OperationType names by
             # finding OperationTypes only in the "Cloning" category
-            planner.quick_create_chain("Make PCR Fragment", "Run Gel",
+            planner.chain("Make PCR Fragment", "Run Gel",
                                       "Extract Gel Slice", "Purify Gel Slice",
                                       category="Cloning")
 
             # create four new operations based on their OperationType names by
             # finding OperationTypes only in the "Cloning" category,
             # except find "Make PCR Fragment" in the "Cloning Sandbox" category
-            planner.quick_create_chain(("Make PCR Fragment", "Cloning Sandbox"),
+            planner.chain(("Make PCR Fragment", "Cloning Sandbox"),
                                        "Run Gel", "Extract Gel Slice",
                                        "Purify Gel Slice", category="Cloning")
 
@@ -455,9 +458,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
             # routing samples
             pcr_op = planner.create_operation_by_name("Make PCR Fragment")
             planner.set_field_value(pcr_op.outputs[0], sample=my_sample)
-            new_ops = planner.quick_create_chain(pcr_op, "Run Gel")
+            new_ops = planner.chain(pcr_op, "Run Gel")
             run_gel = new_ops[1]
-            planner.quick_create_chain("Pour Gel", run_gel)
+            planner.chain("Pour Gel", run_gel)
         """
         self._info("QUICK CREATE CHAIN {}".format(op_or_otnames))
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
@@ -466,6 +469,11 @@ class Planner(logger.Loggable, AFTMatcher, object):
         pairs = arr_to_pairs(ops)
         for op1, op2 in pairs:
             self.quick_wire(op1, op2)
+        if return_as_dict:
+            return_dict = {}
+            for op in ops:
+                return_dict.setdefault(op.operation_type.name, []).append(op)
+            return return_dict
         return ops
 
     def _select_empty_input_array(self, op, fvname):
@@ -538,8 +546,8 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
     def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""
-        op1 = self.find_operations_by_name(otname1)[-1]
-        op2 = self.find_operations_by_name(otname2)[-1]
+        op1 = self.get_op_by_name(otname1)[-1]
+        op2 = self.get_op_by_name(otname2)[-1]
         return self.quick_wire(op1, op2)
 
     def clean_wires(self):
@@ -944,7 +952,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
                 setter(operation_input, sample=sample_property)
 
     @plan_verification_wrapper
-    def set_output(self, fv, sample=None, routing=None, setter=None):
+    def set_output_sample(self, fv, sample=None, routing=None, setter=None):
         """
         Sets the output of the field value to the sample. If the field_value names between the Sample and
         the field_value's operation inputs, these will be set as well. Optionally, a routing dictionary may
@@ -978,14 +986,14 @@ class Planner(logger.Loggable, AFTMatcher, object):
         return model
 
     @classmethod
-    def move_operation(cls, op, plan_id):
+    def move_op(cls, op, plan_id):
         pa = op.plan_associations[0]
         pa.plan_id = plan_id
         op.parent_id = 0
         cls._json_update(op)
         cls._json_update(pa)
 
-    def find_operations_by_name(self, operation_type_name):
+    def get_op_by_name(self, operation_type_name):
         """
         Find operations by their operation_type_name
 
@@ -996,11 +1004,6 @@ class Planner(logger.Loggable, AFTMatcher, object):
         """
         return [op for op in self.plan.operations if
                 op.operation_type.name == operation_type_name]
-
-    def find_operation(self, opid):
-        for op in self.plan.operations:
-            if op._primary_key == opid:
-                return op
 
     def replan(self):
         """Replan the plan, by 'copying' the plan using the Aquarium server."""
@@ -1296,7 +1299,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         :param plans: list of Aquarium Plans instances
         :return: new Plan
         """
-        copied_plans = [deepcopy(c) for c in plans]
+        copied_plans = [c.copy() for c in plans]
 
         sessions = set([p.session for p in plans])
         if len(sessions) > 1:
@@ -1306,7 +1309,6 @@ class Planner(logger.Loggable, AFTMatcher, object):
         new_plan = Planner(session)
         new_plan.plan.operations = []
         for p in copied_plans:
-            print(len(p.plan.operations))
             new_plan.plan.operations += p.plan.operations
             new_plan.plan.wires += p.plan.wires
         return new_plan
@@ -1345,6 +1347,15 @@ class Planner(logger.Loggable, AFTMatcher, object):
             new_plan.plan.operations = ops
             new_plan.plan.wires = wires
         return new_plans
+
+    def __add__(self, other):
+        return self.combine([self, other])
+
+    def __mul__(self, num):
+        return self.combine([self] * num)
+
+    def prettify(self):
+        self.layout.topo_sort()
 
     # TODO: implement individual wires and things
     def draw(self):

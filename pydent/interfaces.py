@@ -685,7 +685,7 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
         return self.browser.find(id, model_class=self.model_name)
 
     def find_by_name(self, name):
-        return self.bowser.find_by_name(name, model_class=self.model_name)
+        return self.browser.find_by_name(name, model_class=self.model_name)
 
     def where(self, criteria, methods=None, opts=None):
         return self.browser.where(criteria, model_class=self.model_name, methods=methods, opts=opts)

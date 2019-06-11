@@ -8,7 +8,7 @@ def planner_example(session):
     with session.with_cache() as sess:
         p = Planner(sess)
         for _ in range(num_chains):
-            p.quick_create_chain('Make PCR Fragment', 'Run Gel', 'Extract Gel Slice', 'Purify Gel Slice')
+            p.chain('Make PCR Fragment', 'Run Gel', 'Extract Gel Slice', 'Purify Gel Slice')
     p.plan.id = 1234
     return p
 

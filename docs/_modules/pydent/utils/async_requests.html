@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,119 +125,119 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.utils.async_requests</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
+<span></span>import asyncio
+from functools import wraps, partial
+from tqdm import tqdm
+import itertools
 
 
-<div class="viewcode-block" id="chunkify"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.chunkify">[docs]</a><span class="k">def</span> <span class="nf">chunkify</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Breaks a list into n chunks. Last chunk may not be equal in size to other chunks&quot;&quot;&quot;</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="n">n</span><span class="p">)]</span></div>
+<div class="viewcode-block" id="chunkify"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.chunkify">[docs]</a>def chunkify(list, n):
+    &quot;&quot;&quot;Breaks a list into n chunks. Last chunk may not be equal in size to other chunks&quot;&quot;&quot;
+    l = list
+    return [l[i:i + n] for i in range(0, len(l), n)]</div>
 
 
-<span class="k">def</span> <span class="nf">with_index</span><span class="p">(</span><span class="n">fxn</span><span class="p">):</span>
-    <span class="nd">@wraps</span><span class="p">(</span><span class="n">fxn</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">fxn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">wrapped</span>
+def with_index(fxn):
+    @wraps(fxn)
+    def wrapped(i, *args, **kwargs):
+        return (i, fxn(*args, **kwargs))
+    return wrapped
 
 
-<div class="viewcode-block" id="exec_async_fxn"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.exec_async_fxn">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">exec_async_fxn</span><span class="p">(</span><span class="n">fxn</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Executes an asynchronous function</span>
+<div class="viewcode-block" id="exec_async_fxn"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.exec_async_fxn">[docs]</a>async def exec_async_fxn(fxn, arg_list, kwargs, chunk_size=1, desc=&#39;&#39;, progress_bar=True):
+    &quot;&quot;&quot;
+    Executes an asynchronous function
 
-<span class="sd">    :param fxn: function to execute in parallel</span>
-<span class="sd">    :type fxn: callable</span>
-<span class="sd">    :param arg_list: list of arguments as tuples for each function run</span>
-<span class="sd">    :type arg_list: list of tuples</span>
-<span class="sd">    :param kwargs: key-value arguments for each function run</span>
-<span class="sd">    :type kwargs: dict</span>
-<span class="sd">    :param chunk_size: number of functions to run for each worker</span>
-<span class="sd">    :type chunk_size: int</span>
-<span class="sd">    :param desc: description</span>
-<span class="sd">    :type desc: basestring</span>
-<span class="sd">    :param progress_bar: whether to display tqdm progress bar</span>
-<span class="sd">    :type progress_bar: boolean</span>
-<span class="sd">    :return: list of results in same order as arg_list</span>
-<span class="sd">    :rtype: list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># run asynchronously</span>
+    :param fxn: function to execute in parallel
+    :type fxn: callable
+    :param arg_list: list of arguments as tuples for each function run
+    :type arg_list: list of tuples
+    :param kwargs: key-value arguments for each function run
+    :type kwargs: dict
+    :param chunk_size: number of functions to run for each worker
+    :type chunk_size: int
+    :param desc: description
+    :type desc: basestring
+    :param progress_bar: whether to display tqdm progress bar
+    :type progress_bar: boolean
+    :return: list of results in same order as arg_list
+    :rtype: list
+    &quot;&quot;&quot;
+    # run asynchronously
 
-    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-    <span class="n">partial_fxn</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">with_index</span><span class="p">(</span><span class="n">fxn</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">partial_fxn</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">args</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">arg_list</span><span class="p">)</span>
-    <span class="p">]</span>
+    loop = asyncio.get_event_loop()
+    partial_fxn = partial(with_index(fxn), **kwargs)
+    futures = [
+        loop.run_in_executor(None, partial_fxn, i, *args)
+        for i, args in enumerate(arg_list)
+    ]
 
-    <span class="c1"># collect results</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    # collect results
+    results = []
 
-    <span class="n">iterator</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">futures</span><span class="p">),</span> <span class="n">unit_scale</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)</span>
+    iterator = asyncio.as_completed(futures)
+    if progress_bar:
+        iterator = tqdm(iterator, desc=desc, total=len(futures), unit_scale=chunk_size)
 
-    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
-        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">await</span> <span class="n">f</span><span class="p">)</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="asyncfunc"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.asyncfunc">[docs]</a><span class="k">def</span> <span class="nf">asyncfunc</span><span class="p">(</span><span class="n">fxn</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Runs a function asynchronously.</span>
-
-<span class="sd">    :param fxn: function to run asynchronously</span>
-<span class="sd">    :type fxn: function or lambda</span>
-<span class="sd">    :param arg_chunks: arguments to apply to the function; suggested to divide list into chunks</span>
-<span class="sd">    :type arg_chunks: list</span>
-<span class="sd">    :return: result</span>
-<span class="sd">    :rtype: list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="c1"># finish loop</span>
-    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">desc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">desc</span> <span class="o">=</span> <span class="n">desc</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">exec_async_fxn</span><span class="p">(</span><span class="n">fxn</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">))</span>
-<span class="c1">#     loop.close()</span>
-    <span class="k">return</span> <span class="n">results</span></div>
+    for f in iterator:
+        results.append(await f)
+    results = sorted(results, key=lambda x: x[0])
+    return [r[1] for r in results]</div>
 
 
-<div class="viewcode-block" id="make_async"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.make_async">[docs]</a><span class="k">def</span> <span class="nf">make_async</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_classmethod</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_pos</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wrapper to make a function run asynchrounously.</span>
+<div class="viewcode-block" id="asyncfunc"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.asyncfunc">[docs]</a>def asyncfunc(fxn, arg_list, kwargs=None, chunk_size=1, progress_bar=True, desc=None):
+    &quot;&quot;&quot;
+    Runs a function asynchronously.
 
-<span class="sd">    :param chunk_size: size of array to apply to each worker</span>
-<span class="sd">    :type chunk_size: int</span>
-<span class="sd">    :param progress_bar: whether to display a progress bar</span>
-<span class="sd">    :type progress_bar: bool</span>
-<span class="sd">    :param as_classmethod: whether to pass in the first argument as a instance for instance or classmethods</span>
-<span class="sd">    :type as_classmethod: bool</span>
-<span class="sd">    :param data_pos: position in arguments where list of data is</span>
-<span class="sd">    :type data_pos: int</span>
-<span class="sd">    :return: results</span>
-<span class="sd">    :rtype: list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="n">fxn</span><span class="p">):</span>
-        <span class="n">data_position</span> <span class="o">=</span> <span class="n">data_pos</span>
-        <span class="k">if</span> <span class="n">as_classmethod</span><span class="p">:</span>
-            <span class="n">data_position</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="nd">@wraps</span><span class="p">(</span><span class="n">fxn</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">data_position</span><span class="p">]</span>
-            <span class="n">post_data_args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">data_position</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
-            <span class="n">pre_data_args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[:</span><span class="n">data_position</span><span class="p">]</span>
-            <span class="n">chunks</span> <span class="o">=</span> <span class="n">chunkify</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
-            <span class="n">arg_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pre_data_args</span> <span class="o">+</span> <span class="p">(</span><span class="n">c</span><span class="p">,)</span> <span class="o">+</span> <span class="n">post_data_args</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
-            <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Running </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2"> [size: </span><span class="si">{}</span><span class="s2">, num: </span><span class="si">{}</span><span class="s2">]: &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fxn</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">))</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="n">asyncfunc</span><span class="p">(</span><span class="n">fxn</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">results</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">wrapper</span>
-    <span class="k">return</span> <span class="n">dec</span></div>
+    :param fxn: function to run asynchronously
+    :type fxn: function or lambda
+    :param arg_chunks: arguments to apply to the function; suggested to divide list into chunks
+    :type arg_chunks: list
+    :return: result
+    :rtype: list
+    &quot;&quot;&quot;
+    if kwargs is None:
+        kwargs = {}
+    # finish loop
+    loop = asyncio.get_event_loop()
+    if desc is None:
+        desc = desc
+    results = loop.run_until_complete(exec_async_fxn(fxn, arg_list, kwargs=kwargs, desc=desc, progress_bar=progress_bar, chunk_size=chunk_size))
+#     loop.close()
+    return results</div>
+
+
+<div class="viewcode-block" id="make_async"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.make_async">[docs]</a>def make_async(chunk_size, progress_bar=True, as_classmethod=False, data_pos=0):
+    &quot;&quot;&quot;
+    Wrapper to make a function run asynchrounously.
+
+    :param chunk_size: size of array to apply to each worker
+    :type chunk_size: int
+    :param progress_bar: whether to display a progress bar
+    :type progress_bar: bool
+    :param as_classmethod: whether to pass in the first argument as a instance for instance or classmethods
+    :type as_classmethod: bool
+    :param data_pos: position in arguments where list of data is
+    :type data_pos: int
+    :return: results
+    :rtype: list
+    &quot;&quot;&quot;
+    def dec(fxn):
+        data_position = data_pos
+        if as_classmethod:
+            data_position += 1
+        @wraps(fxn)
+        def wrapper(*args, **kwargs):
+            data = args[data_position]
+            post_data_args = args[data_position+1:]
+            pre_data_args = args[:data_position]
+            chunks = chunkify(data, chunk_size)
+            arg_list = [pre_data_args + (c,) + post_data_args for c in chunks]
+            desc = &quot;Running \&quot;{}\&quot; [size: {}, num: {}]: &quot;.format(fxn.__name__, chunk_size, len(chunks))
+            results = asyncfunc(fxn, arg_list, kwargs=kwargs, progress_bar=progress_bar, desc=desc)
+            return list(itertools.chain(*results))
+        return wrapper
+    return dec</div>
 </pre></div>
 
     </div>

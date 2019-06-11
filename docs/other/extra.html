@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">Version History</a><ul>
@@ -104,7 +104,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="../_sources/other/extra.rst.txt"
+  <a href="../_sources/other/extra.rst"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -285,23 +285,23 @@ SampleType:
 </div>
 <div class="section" id="all-relationships">
 <h2>all relationships<a class="headerlink" href="#all-relationships" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">all_relations</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">{&#39;created_at&#39;: &#39;2013-10-08T10:18:48-07:00&#39;,</span>
-<span class="sd">&#39;data&#39;: None,</span>
-<span class="sd">&#39;description&#39;: None,</span>
-<span class="sd">&#39;field_values&#39;: [{&#39;allowable_field_type_id&#39;: None,</span>
-<span class="sd">                       &#39;child_item_id&#39;: None,</span>
-<span class="sd">                       &#39;child_sample_id&#39;: None,</span>
-<span class="sd">                       &#39;column&#39;: None,</span>
-<span class="sd">                       &#39;created_at&#39;: &#39;2016-05-09T20:41:06-07:00&#39;,</span>
-<span class="sd">                       &#39;field_type_id&#39;: None,</span>
-<span class="sd">                       &#39;id&#39;: 67853,</span>
-<span class="sd">                        ...</span>
-<span class="sd">...</span>
-<span class="sd">}</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>s = session.SampleType.find(1)
+print(prettyprint(s.dump(all_relations=True)))
+&quot;&quot;&quot;
+{&#39;created_at&#39;: &#39;2013-10-08T10:18:48-07:00&#39;,
+&#39;data&#39;: None,
+&#39;description&#39;: None,
+&#39;field_values&#39;: [{&#39;allowable_field_type_id&#39;: None,
+                       &#39;child_item_id&#39;: None,
+                       &#39;child_sample_id&#39;: None,
+                       &#39;column&#39;: None,
+                       &#39;created_at&#39;: &#39;2016-05-09T20:41:06-07:00&#39;,
+                       &#39;field_type_id&#39;: None,
+                       &#39;id&#39;: 67853,
+                        ...
+...
+}
+&quot;&quot;&quot;
 </pre></div>
 </div>
 </div>

@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">Version History</a><ul>
@@ -125,316 +125,316 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.aqhttp</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Request class for making raw http requests to Aquarium</span>
+<span></span>&quot;&quot;&quot;
+Request class for making raw http requests to Aquarium
 
-<span class="sd">This module contains the AqHTTP class, which can make arbitrary post/put/get</span>
-<span class="sd">requests to Aquarium and returns JSON data.</span>
+This module contains the AqHTTP class, which can make arbitrary post/put/get
+requests to Aquarium and returns JSON data.
 
-<span class="sd">Generally, Trident users should be unable to make arbitrary requests using this</span>
-<span class="sd">class.</span>
-<span class="sd">Users should only access these methods indirectly through a ``Session`` or</span>
-<span class="sd">``SessionInterface`` instance.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+Generally, Trident users should be unable to make arbitrary requests using this
+class.
+Users should only access these methods indirectly through a ``Session`` or
+``SessionInterface`` instance.
+&quot;&quot;&quot;
 
-<span class="kn">import</span> <span class="nn">json</span>
+import json
 
-<span class="kn">import</span> <span class="nn">requests</span>
+import requests
 
-<span class="kn">from</span> <span class="nn">pydent.exceptions</span> <span class="k">import</span> <span class="p">(</span><span class="n">TridentRequestError</span><span class="p">,</span> <span class="n">TridentLoginError</span><span class="p">,</span>
-                               <span class="n">TridentTimeoutError</span><span class="p">,</span> <span class="n">TridentJSONDataIncomplete</span><span class="p">,</span>
-                               <span class="n">ForbiddenRequestError</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pydent.utils</span> <span class="k">import</span> <span class="n">url_build</span><span class="p">,</span> <span class="n">logger</span>
+from pydent.exceptions import (TridentRequestError, TridentLoginError,
+                               TridentTimeoutError, TridentJSONDataIncomplete,
+                               ForbiddenRequestError)
+from pydent.utils import url_build, logger
 
 
-<div class="viewcode-block" id="AqHTTP"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP">[docs]</a><span class="k">class</span> <span class="nc">AqHTTP</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">Loggable</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Defines a session/connection to Aquarium.</span>
-<span class="sd">    Makes HTTP requests to Aquarium and returns JSON.</span>
+<div class="viewcode-block" id="AqHTTP"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP">[docs]</a>class AqHTTP(logger.Loggable, object):
+    &quot;&quot;&quot;
+    Defines a session/connection to Aquarium.
+    Makes HTTP requests to Aquarium and returns JSON.
 
-<span class="sd">    This class should be obscured from Trident user so that users cannot make</span>
-<span class="sd">    arbitrary requests to an Aquarium server and get sensitive information</span>
-<span class="sd">    (e.g. User json that is returned contains api_key, password_digest, etc.)</span>
-<span class="sd">    or make damaging posts.</span>
-<span class="sd">    Instead, a SessionInterface should be the object that makes these requests.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    This class should be obscured from Trident user so that users cannot make
+    arbitrary requests to an Aquarium server and get sensitive information
+    (e.g. User json that is returned contains api_key, password_digest, etc.)
+    or make damaging posts.
+    Instead, a SessionInterface should be the object that makes these requests.
+    &quot;&quot;&quot;
 
-    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">10</span>
+    TIMEOUT = 10
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">aquarium_url</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes an aquarium session with login, password, and server.</span>
+    def __init__(self, login, password, aquarium_url):
+        &quot;&quot;&quot;
+        Initializes an aquarium session with login, password, and server.
 
-<span class="sd">        :param login: Aquarium login</span>
-<span class="sd">        :type login: str</span>
-<span class="sd">        :param aquarium_url: aquarium url to the server</span>
-<span class="sd">        :type aquarium_url: str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">login</span> <span class="o">=</span> <span class="n">login</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span> <span class="o">=</span> <span class="n">aquarium_url</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_session</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">TIMEOUT</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_login</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init_logger</span><span class="p">(</span><span class="s2">&quot;AqHTTP@</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aquarium_url</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_using_requests</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_requests</span> <span class="o">=</span> <span class="mi">0</span>
+        :param login: Aquarium login
+        :type login: str
+        :param aquarium_url: aquarium url to the server
+        :type aquarium_url: str
+        &quot;&quot;&quot;
+        self.login = login
+        self.aquarium_url = aquarium_url
+        self._requests_session = None
+        self.timeout = self.__class__.TIMEOUT
+        self._login(login, password)
+        self.init_logger(&quot;AqHTTP@{}&quot;.format(aquarium_url))
+        self._using_requests = True
+        self.num_requests = 0
 
-    <span class="k">def</span> <span class="nf">on</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_using_requests</span> <span class="o">=</span> <span class="kc">True</span>
+    def on(self):
+        self._using_requests = True
 
-    <span class="k">def</span> <span class="nf">off</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_using_requests</span> <span class="o">=</span> <span class="kc">False</span>
+    def off(self):
+        self._using_requests = False
 
-    <span class="k">def</span> <span class="nf">_format_response_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">include_text</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_body</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">:</span>
-                <span class="n">include_text</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
-            <span class="n">info</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;seconds&quot;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">elapsed</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()})</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;REQUEST: (t=</span><span class="si">{seconds}</span><span class="s2">s)  </span><span class="si">{method}</span><span class="s2"> </span><span class="si">{url}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">info</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">include_body</span><span class="p">:</span>
-                <span class="n">body</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">my_json</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
-                    <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">my_json</span><span class="p">)</span>
-                    <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pprint_data</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">max_list_len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="k">pass</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;BODY: </span><span class="si">{body}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">include_text</span><span class="p">:</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="k">pass</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;TEXT: </span><span class="si">{text}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">msg</span>
-        <span class="k">return</span> <span class="s2">&quot;RESPONSE: NO RESPONSE&quot;</span>
+    def _format_response_info(self, response, include_text=False, include_body=True):
+        if response is not None:
+            if response.status_code &gt;= 400:
+                include_text = True
+            info = dict(response.request.__dict__)
+            info.update({&quot;seconds&quot;: response.elapsed.total_seconds()})
+            msg = &quot;REQUEST: (t={seconds}s)  {method} {url}&quot;.format(**info)
+            if include_body:
+                body = info[&#39;body&#39;]
+                try:
+                    my_json = body.decode(&#39;utf8&#39;).replace(&quot;&#39;&quot;, &#39;&quot;&#39;)
+                    body = json.loads(my_json)
+                    body = self._pprint_data(body, max_list_len=10)
+                except:
+                    pass
+                msg = msg + &quot;\n&quot; + &quot;BODY: {body}&quot;.format(body=body)
+            if include_text:
+                text = getattr(response, &#39;text&#39;, &#39;&#39;)
+                try:
+                    text = json.dumps(json.loads(text), indent=2)
+                except:
+                    pass
+                msg = msg + &quot;\n&quot; + &quot;TEXT: {text}&quot;.format(text=text)
+            return msg
+        return &quot;RESPONSE: NO RESPONSE&quot;
 
-    <span class="k">def</span> <span class="nf">_format_request_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;STATUS:  </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;STATUS: NO RESPONSE&quot;</span>
+    def _format_request_status(self, response):
+        if response is not None:
+            return &quot;STATUS:  {} {}&quot;.format(response.status_code, response.reason)
+        return &quot;STATUS: NO RESPONSE&quot;
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;An alias of aquarium_url&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span>
+    @property
+    def url(self):
+        &quot;&quot;&quot;An alias of aquarium_url&quot;&quot;&quot;
+        return self.aquarium_url
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">create_session_json</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;login&quot;</span><span class="p">:</span> <span class="n">login</span><span class="p">,</span>
-            <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span>
-        <span class="p">}}</span>
+    @staticmethod
+    def create_session_json(login, password):
+        return {&quot;session&quot;: {
+            &quot;login&quot;: login,
+            &quot;password&quot;: password
+        }}
 
-<div class="viewcode-block" id="AqHTTP._login"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._login">[docs]</a>    <span class="k">def</span> <span class="nf">_login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Login to aquarium and saves header as a requests.Session()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">session_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_session_json</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url_build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="s2">&quot;sessions.json&quot;</span><span class="p">),</span>
-                                <span class="n">json</span><span class="o">=</span><span class="n">session_data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span>
-            <span class="n">cookies</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">cookies</span><span class="p">)</span>
+<div class="viewcode-block" id="AqHTTP._login"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._login">[docs]</a>    def _login(self, login, password):
+        &quot;&quot;&quot;
+        Login to aquarium and saves header as a requests.Session()
+        &quot;&quot;&quot;
+        session_data = self.create_session_json(login, password)
+        try:
+            res = requests.post(url_build(self.aquarium_url, &quot;sessions.json&quot;),
+                                json=session_data, timeout=self.timeout)
+            if res is None:
+                raise requests.exceptions.ConnectionError
+            cookies = dict(res.cookies)
 
-            <span class="c1"># Check for remember token</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="s2">&quot;remember_token&quot;</span> <span class="ow">in</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">cookies</span><span class="p">)]):</span>
-                <span class="k">raise</span> <span class="n">TridentLoginError</span><span class="p">(</span>
-                    <span class="s2">&quot;Authentication error. Remember token not found in login request.&quot;</span>
-                    <span class="s2">&quot; Contact developers.&quot;</span>
-                <span class="p">)</span>
+            # Check for remember token
+            if not any([&quot;remember_token&quot; in k for k in dict(res.cookies)]):
+                raise TridentLoginError(
+                    &quot;Authentication error. Remember token not found in login request.&quot;
+                    &quot; Contact developers.&quot;
+                )
 
-            <span class="c1"># fix remember token (for some outdated versions of Aquarium)</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cookies</span><span class="p">):</span>
-                <span class="k">if</span> <span class="s2">&quot;remember_token&quot;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
-                    <span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;remember_token&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cookies</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
-            <span class="c1"># TODO: do we remove the session cookie to handle asynchronous requests?</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cookies</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">MissingSchema</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TridentLoginError</span><span class="p">(</span>
-                <span class="s2">&quot;Aquarium URL </span><span class="si">{0}</span><span class="s2"> incorrectly formatted. </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectTimeout</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TridentTimeoutError</span><span class="p">(</span>
-                <span class="s2">&quot;Either Aquarium took too long to respond during login or your internet&quot;</span>
-                <span class="s2">&quot; connection is slow. Make sure the url </span><span class="si">{}</span><span class="s2"> is correct.&quot;</span>
-                <span class="s2">&quot; Alternatively, use Session.set_timeout&quot;</span>
-                <span class="s2">&quot; to increase the request timeout.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">))</span>
-        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TridentLoginError</span><span class="p">(</span>
-                <span class="s2">&quot;Could not contact &#39;</span><span class="si">{}</span><span class="s2">&#39;. Login request returned no response&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">)</span>
-            <span class="p">)</span></div>
+            # fix remember token (for some outdated versions of Aquarium)
+            for c in dict(cookies):
+                if &quot;remember_token&quot; in c:
+                    cookies[&quot;remember_token&quot;] = cookies[c]
+            # TODO: do we remove the session cookie to handle asynchronous requests?
+            self.cookies = dict(cookies)
+        except requests.exceptions.MissingSchema as error:
+            raise TridentLoginError(
+                &quot;Aquarium URL {0} incorrectly formatted. {1}&quot;.format(
+                    self.aquarium_url, error.args[0]))
+        except requests.exceptions.ConnectTimeout:
+            raise TridentTimeoutError(
+                &quot;Either Aquarium took too long to respond during login or your internet&quot;
+                &quot; connection is slow. Make sure the url {} is correct.&quot;
+                &quot; Alternatively, use Session.set_timeout&quot;
+                &quot; to increase the request timeout.&quot;.format(self.aquarium_url))
+        except requests.exceptions.ConnectionError:
+            raise TridentLoginError(
+                &quot;Could not contact &#39;{}&#39;. Login request returned no response&quot;.format(self.aquarium_url)
+            )</div>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_serialize_request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
-            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
-            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
-            <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="n">body</span>
-        <span class="p">},</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    @staticmethod
+    def _serialize_request(url, method, body):
+        return json.dumps({
+            &quot;url&quot;: url,
+            &quot;method&quot;: method,
+            &quot;body&quot;: body
+        }, sort_keys=True)
 
-<div class="viewcode-block" id="AqHTTP.request"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Performs a http request.</span>
+<div class="viewcode-block" id="AqHTTP.request"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.request">[docs]</a>    def request(self, method, path, timeout=None, allow_none=True, **kwargs):
+        &quot;&quot;&quot;
+        Performs a http request.
 
-<span class="sd">        :param method: request method (e.g. &#39;put&#39;, &#39;post&#39;, &#39;get&#39;, etc.)</span>
-<span class="sd">        :type method: str</span>
-<span class="sd">        :param path: url to perform the request</span>
-<span class="sd">        :type path: str</span>
-<span class="sd">        :param timeout: time in seconds to process request before raising</span>
-<span class="sd">                exception</span>
-<span class="sd">        :type timeout: int</span>
-<span class="sd">        :param allow_none: if False will raise error when json_data</span>
-<span class="sd">                contains a None or null value (default: True)</span>
-<span class="sd">        :type allow_none: boolean</span>
-<span class="sd">        :param kwargs: additional arguments to post to request</span>
-<span class="sd">        :type kwargs: dict</span>
-<span class="sd">        :return: json</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        :param method: request method (e.g. &#39;put&#39;, &#39;post&#39;, &#39;get&#39;, etc.)
+        :type method: str
+        :param path: url to perform the request
+        :type path: str
+        :param timeout: time in seconds to process request before raising
+                exception
+        :type timeout: int
+        :param allow_none: if False will raise error when json_data
+                contains a None or null value (default: True)
+        :type allow_none: boolean
+        :param kwargs: additional arguments to post to request
+        :type kwargs: dict
+        :return: json
+        :rtype: dict
+        &quot;&quot;&quot;
 
-        <span class="n">url</span> <span class="o">=</span> <span class="n">url_build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_using_requests</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ForbiddenRequestError</span><span class="p">(</span><span class="s2">&quot;Attempted a request (</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">) when requests have been turned OFF.</span><span class="se">\n</span><span class="s2">DATA: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">url</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span>
-            <span class="p">))</span>
+        url = url_build(self.aquarium_url, path)
+        if not self._using_requests:
+            raise ForbiddenRequestError(&quot;Attempted a request ({} {}) when requests have been turned OFF.\nDATA: {}&quot;.format(
+                method.upper(), url, kwargs[&#39;json&#39;]
+            ))
 
-        <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_none</span> <span class="ow">and</span> <span class="s1">&#39;json&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_disallow_null_in_json</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">])</span>
+        if timeout is None:
+            timeout = self.timeout
+        if not allow_none and &#39;json&#39; in kwargs:
+            self._disallow_null_in_json(kwargs[&#39;json&#39;])
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_requests</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
-                <span class="n">method</span><span class="p">,</span>
-                <span class="n">url</span><span class="p">,</span>
-                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
-                <span class="n">cookies</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cookies</span><span class="p">,</span>
-                <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        self.num_requests += 1
+        response = requests.request(
+                method,
+                url,
+                timeout=timeout,
+                cookies=self.cookies,
+                **kwargs)
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_format_response_info</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">:</span>
-            <span class="n">response_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_response_info</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-            <span class="n">request_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_request_status</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;The Aquarium server returned an error.&#39;</span><span class="p">,</span>
-                             <span class="n">request_status</span><span class="p">,</span> <span class="n">response_info</span><span class="p">])</span>
-            <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        self._info(self._format_response_info(response))
+        if response.status_code &gt;= 400:
+            response_info = self._format_response_info(response)
+            request_status = self._format_request_status(response)
+            msg = &#39;\n&#39;.join([&#39;The Aquarium server returned an error.&#39;,
+                             request_status, response_info])
+            raise TridentRequestError(msg, response)
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_to_json</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div>
+        return self._response_to_json(response)</div>
 
-<div class="viewcode-block" id="AqHTTP._response_to_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._response_to_json">[docs]</a>    <span class="k">def</span> <span class="nf">_response_to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Turns :class:`requests.Request` instance into a json.</span>
-<span class="sd">        Raises TridentRequestError if an error occurs.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AqHTTP._response_to_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._response_to_json">[docs]</a>    def _response_to_json(self, response):
+        &quot;&quot;&quot;
+        Turns :class:`requests.Request` instance into a json.
+        Raises TridentRequestError if an error occurs.
+        &quot;&quot;&quot;
 
-        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span> <span class="o">==</span> <span class="n">url_build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">,</span> <span class="s2">&quot;signin&quot;</span><span class="p">):</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;There was an error with authenticating the request. Aquarium &quot;</span> <span class="o">+</span> \
-            <span class="s2">&quot;re-routed to the sign-in page.&quot;</span>
-            <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        if response.url == url_build(self.aquarium_url, &quot;signin&quot;):
+            msg = &quot;There was an error with authenticating the request. Aquarium &quot; + \
+            &quot;re-routed to the sign-in page.&quot;
+            raise TridentRequestError(msg, response)
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Response is not JSON formatted&quot;</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Message:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_format_response_info</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">response_json</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;errors&#39;</span> <span class="ow">in</span> <span class="n">response_json</span><span class="p">:</span>
-                <span class="n">errors</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                    <span class="n">errors</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error response:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="n">TridentRequestError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response_json</span></div>
+        try:
+            response_json = response.json()
+        except json.JSONDecodeError:
+            msg = &quot;Response is not JSON formatted&quot;
+            msg += &quot;\nMessage:\n&quot; + response.text
+            self._error(self._format_response_info(response))
+            raise TridentRequestError(msg, response)
+        if response_json:
+            if &#39;errors&#39; in response_json:
+                errors = response_json[&#39;errors&#39;]
+                if isinstance(errors, list):
+                    errors = &quot;\n&quot;.join(errors)
+                msg = &quot;Error response:\n{}&quot;.format(errors)
+                raise TridentRequestError(msg, response)
+        return response_json</div>
 
-<div class="viewcode-block" id="AqHTTP._disallow_null_in_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._disallow_null_in_json">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_disallow_null_in_json</span><span class="p">(</span><span class="n">json_data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if</span>
-<span class="sd">        json data being sent contains a null value</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">json_data</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="n">TridentJSONDataIncomplete</span><span class="p">(</span>
-                <span class="s2">&quot;JSON data </span><span class="si">{}</span><span class="s2"> contains a null value.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">json_data</span><span class="p">))</span></div>
+<div class="viewcode-block" id="AqHTTP._disallow_null_in_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._disallow_null_in_json">[docs]</a>    @staticmethod
+    def _disallow_null_in_json(json_data):
+        &quot;&quot;&quot;
+        Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if
+        json data being sent contains a null value
+        &quot;&quot;&quot;
+        if None in json_data.values():
+            raise TridentJSONDataIncomplete(
+                &quot;JSON data {} contains a null value.&quot;.format(json_data))</div>
 
-<div class="viewcode-block" id="AqHTTP.post"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Make a post request to the session</span>
+<div class="viewcode-block" id="AqHTTP.post"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.post">[docs]</a>    def post(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
+        &quot;&quot;&quot;
+        Make a post request to the session
 
-<span class="sd">        :param path: url</span>
-<span class="sd">        :type path: str</span>
-<span class="sd">        :param json_data: json_data to post</span>
-<span class="sd">        :type json_data: dict</span>
-<span class="sd">        :param timeout: time in seconds to process request before raising</span>
-<span class="sd">                exception</span>
-<span class="sd">        :type timeout: int</span>
-<span class="sd">        :param allow_none: if False throw error if json_data contains a null</span>
-<span class="sd">                or None value (default True)</span>
-<span class="sd">        :type allow_none: boolean</span>
-<span class="sd">        :param kwargs: additional arguments to post to request</span>
-<span class="sd">        :type kwargs: dict</span>
-<span class="sd">        :return: json</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
-                            <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        :param path: url
+        :type path: str
+        :param json_data: json_data to post
+        :type json_data: dict
+        :param timeout: time in seconds to process request before raising
+                exception
+        :type timeout: int
+        :param allow_none: if False throw error if json_data contains a null
+                or None value (default True)
+        :type allow_none: boolean
+        :param kwargs: additional arguments to post to request
+        :type kwargs: dict
+        :return: json
+        :rtype: dict
+        &quot;&quot;&quot;
+        return self.request(&quot;post&quot;, path, json=json_data, timeout=timeout,
+                            allow_none=allow_none, **kwargs)</div>
 
-<div class="viewcode-block" id="AqHTTP.put"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Make a put request to the session</span>
+<div class="viewcode-block" id="AqHTTP.put"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.put">[docs]</a>    def put(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
+        &quot;&quot;&quot;
+        Make a put request to the session
 
-<span class="sd">        :param path: url</span>
-<span class="sd">        :type path: str</span>
-<span class="sd">        :param json_data: json_data to post</span>
-<span class="sd">        :type json_data: dict</span>
-<span class="sd">        :param timeout: time in seconds to process request before raising</span>
-<span class="sd">                exception</span>
-<span class="sd">        :type timeout: int</span>
-<span class="sd">        :param allow_none: if False throw error when json_data contains a null</span>
-<span class="sd">                or None value (default True)</span>
-<span class="sd">        :type allow_none: boolean</span>
-<span class="sd">        :param kwargs: additional arguments to post to request</span>
-<span class="sd">        :type kwargs: dict</span>
-<span class="sd">        :return: json</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;put&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
-                            <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        :param path: url
+        :type path: str
+        :param json_data: json_data to post
+        :type json_data: dict
+        :param timeout: time in seconds to process request before raising
+                exception
+        :type timeout: int
+        :param allow_none: if False throw error when json_data contains a null
+                or None value (default True)
+        :type allow_none: boolean
+        :param kwargs: additional arguments to post to request
+        :type kwargs: dict
+        :return: json
+        :rtype: dict
+        &quot;&quot;&quot;
+        return self.request(&quot;put&quot;, path, json=json_data, timeout=timeout,
+                            allow_none=allow_none, **kwargs)</div>
 
-<div class="viewcode-block" id="AqHTTP.get"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Make a get request to the session</span>
+<div class="viewcode-block" id="AqHTTP.get"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.get">[docs]</a>    def get(self, path, timeout=None, allow_none=True, **kwargs):
+        &quot;&quot;&quot;
+        Make a get request to the session
 
-<span class="sd">        :param path: url</span>
-<span class="sd">        :type path: str</span>
-<span class="sd">        :param timeout: time in seconds to process request before raising</span>
-<span class="sd">                exception</span>
-<span class="sd">        :type timeout: int</span>
-<span class="sd">        :param allow_none: if False throw error when json_data contains a null</span>
-<span class="sd">                or None value (default: True)</span>
-<span class="sd">        :type allow_none: boolean</span>
-<span class="sd">        :param kwargs: additional arguments to post to request</span>
-<span class="sd">        :type kwargs: dict</span>
-<span class="sd">        :return: json</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
-                            <span class="n">allow_none</span><span class="o">=</span><span class="n">allow_none</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        :param path: url
+        :type path: str
+        :param timeout: time in seconds to process request before raising
+                exception
+        :type timeout: int
+        :param allow_none: if False throw error when json_data contains a null
+                or None value (default: True)
+        :type allow_none: boolean
+        :param kwargs: additional arguments to post to request
+        :type kwargs: dict
+        :return: json
+        :rtype: dict
+        &quot;&quot;&quot;
+        return self.request(&quot;get&quot;, path, timeout=timeout,
+                            allow_none=allow_none, **kwargs)</div>
 
-    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    def delete(self, path, timeout=None, **kwargs):
+        return self.request(&quot;delete&quot;, path, timeout=timeout, **kwargs)
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2">(user=&#39;</span><span class="si">{}</span><span class="s2">&#39;, url=&#39;</span><span class="si">{}</span><span class="s2">&#39;)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                                     <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aquarium_url</span><span class="p">)</span>
+    def __repr__(self):
+        return &quot;&lt;{}(user=&#39;{}&#39;, url=&#39;{}&#39;)&gt;&quot;.format(self.__class__.__name__,
+                                     self.login, self.aquarium_url)
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+    def __str__(self):
+        return self.__repr__()</div>
 </pre></div>
 
     </div>

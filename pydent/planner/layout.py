@@ -164,6 +164,9 @@ class PlannerLayout(object):
         self._topological_sort()
         self.move(*self.TOP_RIGHT)
 
+    def prettify(self):
+        return self.topo_sort()
+
     @classmethod
     def arrange_layouts(cls, layouts):
         x = 0

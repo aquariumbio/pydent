@@ -81,8 +81,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Using local caches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planning_tutorial.html">Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
@@ -125,83 +125,83 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.utils.logger</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
+<span></span>import logging
+import math
+import pprint
 
 
-<div class="viewcode-block" id="new_logger"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.logger.html#pydent.utils.logger.new_logger">[docs]</a><span class="k">def</span> <span class="nf">new_logger</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Instantiate a new logger with the given name. If channel handler exists, do not create a new one.&quot;&quot;&quot;</span>
-    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<div class="viewcode-block" id="new_logger"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.logger.html#pydent.utils.logger.new_logger">[docs]</a>def new_logger(name, level=logging.ERROR):
+    &quot;&quot;&quot;Instantiate a new logger with the given name. If channel handler exists, do not create a new one.&quot;&quot;&quot;
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
 
-    <span class="c1"># make stream handler</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
-        <span class="n">ch</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
-        <span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+    # make stream handler
+    if not logger.handlers:
+        ch = logging.StreamHandler()
+        ch.setLevel(level)
 
-        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">ch</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">logger</span><span class="p">,</span> <span class="n">ch</span></div>
-
-
-<div class="viewcode-block" id="condense_long_lists"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.logger.html#pydent.utils.logger.condense_long_lists">[docs]</a><span class="k">def</span> <span class="nf">condense_long_lists</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">max_list_len</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Condense the long lists in a dictionary</span>
-
-<span class="sd">    :param d: dictionary to condense</span>
-<span class="sd">    :type d: dict</span>
-<span class="sd">    :param max_len: max length of lists to display</span>
-<span class="sd">    :type max_len: int</span>
-<span class="sd">    :return:</span>
-<span class="sd">    :rtype:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="n">return_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
-            <span class="n">return_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">condense_long_lists</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">return_dict</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_list_len</span><span class="p">:</span>
-            <span class="n">g</span> <span class="o">=</span> <span class="n">max_list_len</span> <span class="o">/</span> <span class="mi">2</span>
-            <span class="k">return</span> <span class="n">d</span><span class="p">[:</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">g</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;...&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">g</span><span class="p">):]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">d</span><span class="p">[:]</span>
-    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+        formatter = logging.Formatter(&#39;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#39;)
+        ch.setFormatter(formatter)
+        logger.addHandler(ch)
+    else:
+        ch = logger.handlers[0]
+    return logger, ch</div>
 
 
-<span class="k">class</span> <span class="nc">Loggable</span><span class="p">():</span>
+<div class="viewcode-block" id="condense_long_lists"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.logger.html#pydent.utils.logger.condense_long_lists">[docs]</a>def condense_long_lists(d, max_list_len=20):
+    &quot;&quot;&quot;
+    Condense the long lists in a dictionary
 
-    <span class="k">def</span> <span class="nf">init_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger_name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">new_logger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    :param d: dictionary to condense
+    :type d: dict
+    :param max_len: max length of lists to display
+    :type max_len: int
+    :return:
+    :rtype:
+    &quot;&quot;&quot;
+    if isinstance(d, dict):
+        return_dict = {}
+        for k in d:
+            return_dict[k] = condense_long_lists(dict(d).pop(k))
+        return dict(return_dict)
+    elif isinstance(d, list):
+        if len(d) &gt; max_list_len:
+            g = max_list_len / 2
+            return d[:math.floor(g)] + [&#39;...&#39;] + d[-math.ceil(g):]
+        else:
+            return d[:]
+    return str(d)</div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_logger_name</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_log_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+class Loggable():
 
-    <span class="k">def</span> <span class="nf">set_verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+    def init_logger(self, name):
+        self._logger_name = name
+        new_logger(name)
 
-    <span class="k">def</span> <span class="nf">_pprint_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_list_len</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">condense_long_lists</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">max_list_len</span><span class="o">=</span><span class="n">max_list_len</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
-                              <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="n">compact</span><span class="p">)</span>
+    @property
+    def _logger(self):
+        return logging.getLogger(self._logger_name)
 
-    <span class="k">def</span> <span class="nf">_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    @property
+    def _log_handler(self):
+        return self._logger.handlers[0]
 
-    <span class="k">def</span> <span class="nf">_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    def set_verbose(self, verbose):
+        if verbose:
+            self._log_handler.setLevel(logging.INFO)
+        else:
+            self._log_handler.setLevel(logging.ERROR)
+
+    def _pprint_data(self, data, width=80, depth=10, max_list_len=20, compact=True, indent=1):
+        return pprint.pformat(condense_long_lists(data, max_list_len=max_list_len), indent=indent, width=width,
+                              depth=depth, compact=compact)
+
+    def _info(self, msg):
+        self._logger.info(msg)
+
+    def _error(self, msg):
+        self._logger.error(msg)
 </pre></div>
 
     </div>
