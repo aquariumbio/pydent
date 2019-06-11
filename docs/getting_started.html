@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Basic Usage &#8212; Trident 0.1.0a3 documentation</title>
+    <title>Getting Started &#8212; Trident 0.1.0a3 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -13,8 +13,6 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Making Queries" href="querying.html" />
-    <link rel="prev" title="Installation" href="installation.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -54,9 +52,8 @@
      href="index.html">Trident <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
+      aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="querying.html">Making Queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="planning.html">Experiment Planning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developer_notes.html">Developer Notes</a></li>
@@ -75,7 +72,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="_sources/basic_usage.rst.txt"
+  <a href="_sources/getting_started.rst.txt"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -99,65 +96,88 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="basic-usage">
-<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
-<p>This page provides a quick introduction to Trident and introductory examples.
-If you have not already installed, Guzzle, head over to the <span class="xref std std-doc">overview</span> page.</p>
-<div class="section" id="logging-in">
-<h2>Logging in<a class="headerlink" href="#logging-in" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="kn">import</span> <span class="n">AqSession</span>
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>Trident (also known as <cite>pydent</cite>) is the Python API to Aquarium, aa open-source
+human-in-the-loop laboratory automation system that enables rapid,
+flexible, and reproducible workflow development and execution. Unlike most other
+automation systems, Aquarium embraces the practicality of humans in the laboratory, using codified human-readable instructions to automate lab operations.
+You can learn more about it here: <a class="reference external" href="https://www.aquarium.bio/">https://www.aquarium.bio/</a></p>
+<p>Trident provide algorithmic access to a scientific laboratory running Aquarium.
+It provides an interface for algorithms and computerized-agents
+to interact the scientific laboratory, enticing the possibility engineering systems
+that can not only learn from experimental data, but can actually schedule and run
+its own experiments with little human intervention.</p>
+<div class="section" id="logging-into-a-session">
+<h2>Logging into a session<a class="headerlink" href="#logging-into-a-session" title="Permalink to this headline">¶</a></h2>
+<p>Session instances provide the main interface between your Python script
+and various requests made to an Aquarium server.</p>
+<p>To use trident, you’ll need an Aquarium login, password, and url</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="k">import</span> <span class="n">AqSession</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;http://you.aquarium.url&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can maintain multiple sessions by intantiating a new session:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session2</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;url2&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="logging-and-verbose-mode">
-<h3>Logging and verbose mode<a class="headerlink" href="#logging-and-verbose-mode" title="Permalink to this headline">¶</a></h3>
-<p>To see details on all requests Trident is making, you can set
-verbose mode on:</p>
+<p>If we want to take a look at exactly what the session is doing, we can set verbose mode on:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">set_verbose</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>This produces many log files, so lets leave it off initially.</p>
 </div>
-</div>
-<div class="section" id="available-models">
-<h2>Available Models<a class="headerlink" href="#available-models" title="Permalink to this headline">¶</a></h2>
-<p>We can first see all of the available models using:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">models</span><span class="p">)</span>
+<div class="section" id="models">
+<h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
+<p>In Trident, scientific models are treated as first class objects. These objects
+represent various aspects of most laboratories. These models include laboratory inventory such as</p>
+<p><strong>Samples</strong> – laboratory entities (such as a <cite>Plasmid</cite> or <a href="#id1"><span class="problematic" id="id2">*</span></a><cite>E. coli</cite>) that have chemical or biological properties</p>
+<p><strong>Items</strong> – physical instantiations of a <cite>Sample</cite>, such as a specific tube of Plasmid or a particular
+glycerol stock of an <em>E. coli</em> strain.</p>
+<p><strong>Collections</strong> – multi-compartment items that can contain many samples (e.g a 96-well Plate)</p>
+<p><strong>ObjectType</strong> – The type of container a collection/item possess (e.g. a small tube vs a large tube)</p>
+<p>Samples, Items, and Collections comprise the inventory system of Trident/Aquarium. Items have a unique
+id and a physical local associated with the lab. The biological/chemical properties are detailed by its
+Sample. Further, Samples have specific types called SampleTypes which further constrain the types of
+Samples there can be. For example, a yeast strain is one <cite>SampleType</cite> while a bacterial strain is another
+<cite>SampleType</cite>. There may be many types of yeast strains in the inventory, each with their own specific properties
+(e.g. genome sequence, antibiotic resistance). Each of these samples may have a myriad of different <cite>Items</cite>
+in the lab of different <cite>ObjectTypes</cite>. The inventory relationships are depicted here:</p>
+<a class="reference internal image-reference" href="_images/Fig2_LIMS.png"><img alt="_images/Fig2_LIMS.png" src="_images/Fig2_LIMS.png" style="width: 100%;" /></a>
+<p>In addition to the inventory models, Trident/Aquarium has a protocol execution model as well:</p>
+<p><strong>Operation</strong> – a scientific protocol that takes in some specified number inventory or parameters
+and produces some other inventory</p>
+<p><strong>Job</strong> – model representing actions taken during the execution of an <cite>Operation</cite> (dates, steps, etc.)</p>
+<p><strong>Plans</strong> – a set of <cite>Operations</cite> connected in a graph that roughly represents a scientific experiment</p>
+<p><strong>DataAssociation</strong> – a key/value pair associated with inventory, plans, or operations</p>
+<p><strong>etc.</strong></p>
+<a class="reference internal image-reference" href="_images/Fig3_Planning.png"><img alt="_images/Fig3_Planning.png" src="_images/Fig3_Planning.png" style="width: 100%;" /></a>
+<p>To view all of the models available through Trident, run</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">__all__</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">__all__</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;Account&#39;, &#39;AllowableFieldType&#39;, &#39;Budget&#39;, &#39;Code&#39;, &#39;Collection&#39;, &#39;DataAssociation&#39;, &#39;FieldType&#39;, &#39;FieldValue&#39;, &#39;Group&#39;, &#39;Invoice&#39;, &#39;Item&#39;, &#39;Job&#39;, &#39;JobAssociation&#39;, &#39;Library&#39;, &#39;Membership&#39;, &#39;ObjectType&#39;, &#39;Operation&#39;, &#39;OperationType&#39;, &#39;PartAssociation&#39;, &#39;Plan&#39;, &#39;PlanAssociation&#39;, &#39;Sample&#39;, &#39;SampleType&#39;, &#39;Upload&#39;, &#39;User&#39;, &#39;UserBudgetAssociation&#39;, &#39;Wire&#39;]
 </pre></div>
 </div>
 <p>For more information about these models, visit the <span class="xref std std-doc">developer/api_reference.rst</span></p>
-<p>First, we can find a Sample with id=1 using <strong>find</strong>, which returns a single
-model (or None):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<p>Models contain specific relationships to each other roughly outlined here:</p>
+<a class="reference internal image-reference" href="_images/Fig1_Subsystems.png"><img alt="_images/Fig1_Subsystems.png" src="_images/Fig1_Subsystems.png" style="width: 100%;" /></a>
+</div>
+<div class="section" id="making-queries">
+<h2>Making queries<a class="headerlink" href="#making-queries" title="Permalink to this headline">¶</a></h2>
+<p>Model queries can be made directly from the session. For example, like grab one <cite>Sample</cite> from
+the Aquarium server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mysample</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1
+<p>Once loaded, model attributes can be accessed directly as class attributes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We just grabbed sample </span><span class="si">{}</span><span class="s2"> with name </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">mysample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We may also find some models by name using the <strong>find_by_name</strong> method,
-which returns a single model (or None):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;Primer&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mysample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Primer
-</pre></div>
-</div>
-<p>We can also perform more explicit queries using <strong>where</strong>, which returns
-an array of models (or an empty array):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">myoperation</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Order Primer&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">myoperation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Order Primer
+<p>We can also grab many samples at the same time:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">last50</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>   <span class="c1"># the last 50 samples created in the database</span>
+<span class="n">first25</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>  <span class="c1"># the first 25 samples created</span>
+<span class="n">mysample2</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="s2">&quot;GFP&quot;</span><span class="p">)</span>  <span class="c1"># sample with name == &#39;GFP&#39;</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s1">&#39;sample_type_id</span>
 </pre></div>
 </div>
 <p>You can use where with more specific conditions</p>
@@ -190,8 +210,42 @@ update (<strong>updated_at</strong>) times:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="creating-a-sample">
-<h2>Creating a Sample<a class="headerlink" href="#creating-a-sample" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="relationship-queries">
+<h2>Relationship Queries<a class="headerlink" href="#relationship-queries" title="Permalink to this headline">¶</a></h2>
+<p>Trident automatically makes
+requests as needed for certain attributes are access from
+models. For example, we know from above that <cite>Samples</cite> have
+many <cite>Items</cite> associated with it and, conversely, an <cite>Item</cite> has
+a single <cite>Sample</cite>. Trident allows us to access these requests
+on demand. For example, the following code automatically
+makes a new request for an <cite>Item’s</cite> <cite>Sample</cite> using its
+<cite>.sample_id</cite> attribute.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">item</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Item</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+
+<span class="c1"># new request equivalent to session.Sample.where({&quot;id&quot;: item.sample_id})[0] is made here</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">sample</span>
+</pre></div>
+</div>
+<p>On the other side, we can collect all of the <cite>Items</cite> associated with a particular sample using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span><span class="o">.</span><span class="n">items</span>
+</pre></div>
+</div>
+<p>Once these queries are made, the data is cached into the model instance. Running <cite>sample.items</cite> again
+<strong>will not result in a new query</strong>, but will return the previously cached results. If you want to refresh
+the query, you can set the attribute to None, which will re-initiate the appropriate query once accessed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span><span class="o">.</span><span class="n">items</span> <span class="c1"># no query here</span>
+
+<span class="n">sample</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">sample</span><span class="o">.</span><span class="n">items</span> <span class="c1"># new query here</span>
+</pre></div>
+</div>
+<p>An important thing to note is that, while this make querying very convenient on the Python side of
+things, it is very easy to make many unncessary requets. For information on making efficient queries
+and generally how querying works, visit <span class="xref std std-doc">querying.rst</span>.</p>
+</div>
+<div class="section" id="creating-inventory">
+<h2>Creating inventory<a class="headerlink" href="#creating-inventory" title="Permalink to this headline">¶</a></h2>
 <p>The syntax for creating new Samples, Items, etc. is:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mysession</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 <span class="n">mysession</span><span class="o">.</span><span class="n">Item</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -229,9 +283,8 @@ connecting to a session.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
-</div>
 <div class="section" id="setting-query-timeout">
-<h2>Setting query timeout<a class="headerlink" href="#setting-query-timeout" title="Permalink to this headline">¶</a></h2>
+<h3>Setting query timeout<a class="headerlink" href="#setting-query-timeout" title="Permalink to this headline">¶</a></h3>
 <p>The following should raise an exception if the request takes too long.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># we set timeout to 0s</span>
 <span class="k">try</span><span class="p">:</span>
@@ -254,9 +307,11 @@ connecting to a session.</p>
 </div>
 </div>
 <div class="section" id="deserializing">
-<h2>Deserializing<a class="headerlink" href="#deserializing" title="Permalink to this headline">¶</a></h2>
+<h3>Deserializing<a class="headerlink" href="#deserializing" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
 <div class="section" id="nested-data">
-<h3>Nested data<a class="headerlink" href="#nested-data" title="Permalink to this headline">¶</a></h3>
+<h2>Nested data<a class="headerlink" href="#nested-data" title="Permalink to this headline">¶</a></h2>
 <p>Pydent automatically deserializes model relationships.
 Below is an example of how pydent deserializes <code class="docutils literal notranslate"><span class="pre">sample_type</span></code> to a
 <code class="docutils literal notranslate"><span class="pre">SampleType</span></code> model</p>
@@ -273,7 +328,7 @@ Below is an example of how pydent deserializes <code class="docutils literal not
 </div>
 </div>
 <div class="section" id="nested-models">
-<h3>Nested models<a class="headerlink" href="#nested-models" title="Permalink to this headline">¶</a></h3>
+<h2>Nested models<a class="headerlink" href="#nested-models" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span>
     <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">SampleType</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;primer&quot;</span><span class="p">)</span>
@@ -286,7 +341,7 @@ Below is an example of how pydent deserializes <code class="docutils literal not
 </div>
 </div>
 <div class="section" id="relationships">
-<h3>Relationships<a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h3>
+<h2>Relationships<a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.models</span> <span class="k">import</span> <span class="n">Sample</span><span class="p">,</span> <span class="n">SampleType</span>
 
 <span class="c1"># create new sample</span>
@@ -329,10 +384,8 @@ SampleType:
 }
 </pre></div>
 </div>
-</div>
-</div>
 <div class="section" id="serializing">
-<h2>Serializing<a class="headerlink" href="#serializing" title="Permalink to this headline">¶</a></h2>
+<h3>Serializing<a class="headerlink" href="#serializing" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -349,8 +402,10 @@ SampleType:
 }
 </pre></div>
 </div>
+</div>
+</div>
 <div class="section" id="only-fields">
-<h3><em>only</em> fields<a class="headerlink" href="#only-fields" title="Permalink to this headline">¶</a></h3>
+<h2><em>only</em> fields<a class="headerlink" href="#only-fields" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">))</span>
@@ -367,7 +422,7 @@ SampleType:
 </div>
 </div>
 <div class="section" id="only-some-relationships">
-<h3>only some relationships<a class="headerlink" href="#only-some-relationships" title="Permalink to this headline">¶</a></h3>
+<h2>only some relationships<a class="headerlink" href="#only-some-relationships" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">relations</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,))</span>
 
@@ -386,7 +441,7 @@ SampleType:
 </div>
 </div>
 <div class="section" id="all-relationships">
-<h3>all relationships<a class="headerlink" href="#all-relationships" title="Permalink to this headline">¶</a></h3>
+<h2>all relationships<a class="headerlink" href="#all-relationships" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">prettyprint</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">all_relations</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -408,7 +463,7 @@ SampleType:
 </div>
 </div>
 <div class="section" id="complex-serialization">
-<h3>complex serialization<a class="headerlink" href="#complex-serialization" title="Permalink to this headline">¶</a></h3>
+<h2>complex serialization<a class="headerlink" href="#complex-serialization" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
     <span class="n">include</span><span class="o">=</span><span class="p">{</span>
@@ -459,12 +514,12 @@ SampleType:
 }
 </pre></div>
 </div>
-</div>
-</div>
 <div class="section" id="planning">
-<h2>Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h2>
+<h3>Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
 <div class="section" id="submitting-a-plan">
-<h3>Submitting a Plan<a class="headerlink" href="#submitting-a-plan" title="Permalink to this headline">¶</a></h3>
+<h2>Submitting a Plan<a class="headerlink" href="#submitting-a-plan" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">primer</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="c1"># get Order Primer operation type</span>
@@ -511,7 +566,7 @@ True
 </div>
 </div>
 <div class="section" id="submitting-a-gibson-assembly">
-<h3>Submitting a Gibson Assembly<a class="headerlink" href="#submitting-a-gibson-assembly" title="Permalink to this headline">¶</a></h3>
+<h2>Submitting a Gibson Assembly<a class="headerlink" href="#submitting-a-gibson-assembly" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find &quot;Assembly Plasmid&quot; protocol</span>
 <span class="n">gibson_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Assemble Plasmid&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -606,7 +661,6 @@ True
 </div>
 </div>
 </div>
-</div>
 
 
     </div>
@@ -621,7 +675,7 @@ True
     </p>
     <p>
         &copy; Copyright 2017, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
     </p>
   </div>
 </footer>
