@@ -2,22 +2,24 @@ PIP=pip3
 
 .PHONY: docs  # necessary so it doesn't look for 'docs/makefile html'
 
+
 init:
-	$(PIP) install pipenv --upgrade
-	pipenv install --dev --skip-lock
+	curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+	poetry self:update
+	poerty install
 
 
 test:
-	pipenv run python -m pytest
+	poetry run python -m pytest
 
 
-pylint:
-	pipenv run pylint -E pydent
+lint:
+	poetry run pylint -E pydent
 
 
 coverage:
 	@echo "Coverage"
-	pipenv run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=pydent tests
+	poetry run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=pydent tests
 
 
 docs:
@@ -29,7 +31,7 @@ docs:
 
 	pandoc --from=markdown --to=rst --output=README.rst README.md
 	rm -rf docs
-	cd docsrc && pipenv run make html
+	cd docsrc && poetry run make html
 	find docs -type f -exec chmod 444 {} \;
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/html/index.html.\n\033[0m"
 
@@ -39,7 +41,7 @@ docs:
 
 doctest:
 	rm -rf docs
-	cd docsrc && pipenv run make doctest
+	cd docsrc && poetry run make doctest
 
 
 testdeploy:
@@ -54,8 +56,8 @@ benchmark:
 
 
 format:
-	pipenv run yapf . -r -i --style="./format.ini"
-	pipenv run docformatter . -r -i
+	poetry run yapf . -r -i --style="./scripts/format.ini"
+	poetry run docformatter . -r -i
 
 
 deploy:
@@ -65,10 +67,7 @@ deploy:
 
 
 lock:
-	pipenv lock
-	pipenv lock -r > requirements.txt
-	pipenv lock -r > requirements-dev.txt
-	pipenv lock --dev -r >> requirements-dev.txt
+	poetry update
 
 
 hooks: .git/hooks
