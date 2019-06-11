@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.models.user &#8212; Trident 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querying.html">Making Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.models.user</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
+<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">add_schema</span>
+<span class="kn">from</span> <span class="nn">pydent.relationships</span> <span class="k">import</span> <span class="p">(</span><span class="n">HasOne</span><span class="p">,</span> <span class="n">HasMany</span><span class="p">,</span>
+                                  <span class="n">HasManyThrough</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="User"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.User">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A User model&quot;&quot;&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">groups</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;Group&quot;</span><span class="p">,</span> <span class="s2">&quot;User&quot;</span><span class="p">),</span>
+        <span class="n">user_budget_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;UserBudgetAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;User&quot;</span><span class="p">),</span>
+        <span class="n">budgets</span><span class="o">=</span><span class="n">HasManyThrough</span><span class="p">(</span><span class="s2">&quot;Budget&quot;</span><span class="p">,</span> <span class="s2">&quot;UserBudgetAssociation&quot;</span><span class="p">),</span>
+        <span class="n">additional</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">),</span>
+        <span class="n">ignore</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;password_digest&quot;</span><span class="p">,</span> <span class="s2">&quot;remember_token&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="UserBudgetAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.UserBudgetAssociation">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">UserBudgetAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An association model between a User and a Budget&quot;&quot;&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">budget</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Budget&quot;</span><span class="p">),</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Membership"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Membership">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Membership</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">),</span>
+        <span class="n">group</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Group&quot;</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Group">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Group model&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Account"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Account">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Account</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An Account model&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Budget"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Budget">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Budget</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Budget model&quot;&quot;&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">user_budget_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;UserBudgetAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;Budget&quot;</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Invoice"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Invoice">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Invoice</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Invoice model&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

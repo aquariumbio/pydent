@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.models.plan &#8212; Trident 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querying.html">Making Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../versions.html">Version History</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.models.plan</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">pydent.base</span> <span class="k">import</span> <span class="n">ModelBase</span>
+<span class="kn">from</span> <span class="nn">pydent.exceptions</span> <span class="k">import</span> <span class="n">AquariumModelError</span>
+<span class="kn">from</span> <span class="nn">pydent.marshaller</span> <span class="k">import</span> <span class="n">add_schema</span>
+<span class="kn">from</span> <span class="nn">pydent.models.field_value</span> <span class="k">import</span> <span class="n">FieldValue</span>
+<span class="kn">from</span> <span class="nn">pydent.models.data_associations</span> <span class="k">import</span> <span class="n">Upload</span><span class="p">,</span> <span class="n">DataAssociatorMixin</span>
+<span class="kn">from</span> <span class="nn">pydent.relationships</span> <span class="k">import</span> <span class="p">(</span><span class="n">Raw</span><span class="p">,</span> <span class="n">JSON</span><span class="p">,</span> <span class="n">Many</span><span class="p">,</span> <span class="n">HasOne</span><span class="p">,</span> <span class="n">HasMany</span><span class="p">,</span>
+                                  <span class="n">HasManyThrough</span><span class="p">,</span> <span class="n">HasManyGeneric</span><span class="p">,</span>
+                                  <span class="n">fields</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pydent.models.crud_mixin</span> <span class="k">import</span> <span class="n">SaveMixin</span><span class="p">,</span> <span class="n">DeleteMixin</span>
+
+<div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Plan</span><span class="p">(</span><span class="n">DataAssociatorMixin</span><span class="p">,</span> <span class="n">SaveMixin</span><span class="p">,</span> <span class="n">DeleteMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Plan model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">data_associations</span><span class="o">=</span><span class="n">HasManyGeneric</span><span class="p">(</span><span class="s2">&quot;DataAssociation&quot;</span><span class="p">,</span> <span class="n">additional_args</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;parent_class&quot;</span><span class="p">:</span> <span class="s2">&quot;Plan&quot;</span>
+        <span class="p">}),</span>
+        <span class="n">plan_associations</span><span class="o">=</span><span class="n">HasMany</span><span class="p">(</span><span class="s2">&quot;PlanAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;Plan&quot;</span><span class="p">),</span>
+        <span class="n">operations</span><span class="o">=</span><span class="n">HasManyThrough</span><span class="p">(</span><span class="s2">&quot;Operation&quot;</span><span class="p">,</span> <span class="s2">&quot;PlanAssociation&quot;</span><span class="p">),</span>
+        <span class="n">wires</span><span class="o">=</span><span class="n">Many</span><span class="p">(</span><span class="s2">&quot;Wire&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="s2">&quot;_get_wires_from_server&quot;</span><span class="p">),</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">JSON</span><span class="p">(),</span>
+        <span class="n">status</span><span class="o">=</span><span class="n">Raw</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;planning&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">query_hook</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;include&#39;</span><span class="p">:</span> <span class="s1">&#39;wires&#39;</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyPlan&quot;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;planning&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+            <span class="n">data_associations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">plan_associations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">layout</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;documentation&quot;</span><span class="p">:</span> <span class="s2">&quot;No documentation of this module&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+                <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;no_name&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;parent_id&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span>
+                <span class="s2">&quot;wires&quot;</span><span class="p">:</span> <span class="p">[]</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Plan.add_operation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.add_operation">[docs]</a>    <span class="k">def</span> <span class="nf">add_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds an operation to the Plan</span>
+
+<span class="sd">        :param operation: Operation to add</span>
+<span class="sd">        :type operation: Operation</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_to_many</span><span class="p">(</span><span class="s1">&#39;operations&#39;</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plan.add_operations"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.add_operations">[docs]</a>    <span class="k">def</span> <span class="nf">add_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds multiple operations to the Plan</span>
+
+<span class="sd">        :param operations: list of Operations</span>
+<span class="sd">        :type operations: list</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_operation</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">has_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="ow">and</span> <span class="n">op</span><span class="o">.</span><span class="n">rid</span> <span class="ow">in</span> <span class="p">[</span><span class="n">_op</span><span class="o">.</span><span class="n">rid</span> <span class="k">for</span> <span class="n">_op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Plan.find_wires"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.find_wires">[docs]</a>    <span class="k">def</span> <span class="nf">find_wires</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the wire between a source and destination FieldValues</span>
+
+<span class="sd">        :param src: source FieldValue</span>
+<span class="sd">        :type src: FieldValue</span>
+<span class="sd">        :param dest: destination FieldValue</span>
+<span class="sd">        :type dest: FieldValue</span>
+<span class="sd">        :return: array of wires between src and dest FieldValues (determined by rid)</span>
+<span class="sd">        :rtype: array of wires</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="n">wire</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span> <span class="ow">and</span> <span class="n">dest</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="n">wire</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span><span class="p">:</span>
+                <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">found</span></div>
+
+<div class="viewcode-block" id="Plan.wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.wire">[docs]</a>    <span class="k">def</span> <span class="nf">wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new wire between src and dest FieldValues. Returns the new wire</span>
+<span class="sd">        if it does not exist in the plan. If the wire already exists and</span>
+<span class="sd">        error_if_exists is True, then the existing wire is returned. Else an exception is raised.</span>
+
+<span class="sd">        :param src: source field value (the input of the wire)</span>
+<span class="sd">        :type src: FieldValue</span>
+<span class="sd">        :param dest: destination field value (the output of the wire)</span>
+<span class="sd">        :type dest: FieldValue</span>
+<span class="sd">        :param error_if_exists: Raise an error if the Wire already exists in the plan.</span>
+<span class="sd">        :type error_if_exists: boolean</span>
+<span class="sd">        :return: Newly created wire or existing wire (if exists and error_if_exists == False)</span>
+<span class="sd">        :rtype: Wire</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_operation</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">operation</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot wire because the wire&#39;s source FieldValue </span><span class="si">{}</span><span class="s2"> does &quot;</span>
+                <span class="s2">&quot;not exist in the Plan because its Operation &#39;</span><span class="si">{}</span><span class="s2">&#39; is not in the plan&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">operation</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_operation</span><span class="p">(</span><span class="n">dest</span><span class="o">.</span><span class="n">operation</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot wire because the wire&#39;s destination FieldValue </span><span class="si">{}</span><span class="s2"> does not exist &quot;</span>
+                <span class="s2">&quot;in the Plan because its Operation &#39;</span><span class="si">{}</span><span class="s2">&#39; is not in the plan.&quot;</span><span class="o">.</span><span class="n">formst</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">dest</span><span class="o">.</span><span class="n">operation</span><span class="p">))</span>
+
+        <span class="n">wire</span> <span class="o">=</span> <span class="n">Wire</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">src</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">dest</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_to_many</span><span class="p">(</span><span class="s1">&#39;wires&#39;</span><span class="p">,</span> <span class="n">wire</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wire</span></div>
+
+    <span class="k">def</span> <span class="nf">_collect_wires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">incoming_wires</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">outgoing_wires</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">outgoing_wires</span><span class="p">:</span>
+                            <span class="n">outgoing_wires</span> <span class="o">+=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">outgoing_wires</span>
+                        <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">incoming_wires</span><span class="p">:</span>
+                            <span class="n">incoming_wires</span> <span class="o">+=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">incoming_wires</span>
+        <span class="k">return</span> <span class="n">incoming_wires</span><span class="p">,</span> <span class="n">outgoing_wires</span>
+
+<div class="viewcode-block" id="Plan._get_wire_dict"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan._get_wire_dict">[docs]</a>    <span class="k">def</span> <span class="nf">_get_wire_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wires</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return all wires in the plan grouped by the wire identifier&quot;&quot;&quot;</span>
+        <span class="n">wire_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wires</span><span class="p">:</span>
+            <span class="n">wire_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wire_dict</span><span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">identifier</span><span class="p">]:</span>
+                <span class="n">wire_dict</span><span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wire_dict</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_wires_from_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">fvs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+                <span class="n">fvs</span> <span class="o">+=</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span>
+
+        <span class="n">fv_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">fv</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">fvs</span> <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="n">wires_from_server</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">fv_ids</span><span class="p">:</span>
+            <span class="n">wires_from_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Wire</span><span class="o">.</span><span class="n">where</span><span class="p">({</span>
+                <span class="s1">&#39;from_id&#39;</span><span class="p">:</span> <span class="n">fv_ids</span><span class="p">,</span> <span class="s1">&#39;to_id&#39;</span><span class="p">:</span> <span class="n">fv_ids</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">wires_from_server</span>
+
+<div class="viewcode-block" id="Plan.submit"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.submit">[docs]</a>    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Submits the Plan to the Aquarium server.</span>
+
+<span class="sd">        :param user: User to submit the Plan</span>
+<span class="sd">        :type user: User</span>
+<span class="sd">        :param budget: Budget to use for the Plan</span>
+<span class="sd">        :type budget: Budget</span>
+<span class="sd">        :return: JSON</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">submit_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">budget</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="k">def</span> <span class="nf">all_data_associations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">das</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_associations</span>
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="n">das</span> <span class="o">+=</span> <span class="n">operation</span><span class="o">.</span><span class="n">data_associations</span>
+            <span class="k">for</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">item</span><span class="p">:</span>
+                    <span class="n">das</span> <span class="o">+=</span> <span class="n">field_value</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">data_associations</span>
+        <span class="k">return</span> <span class="n">das</span>
+
+<div class="viewcode-block" id="Plan.interface"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.interface">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">interface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+        <span class="c1"># get model interface from Base class</span>
+        <span class="n">model_interface</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Plan</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">interface</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+
+        <span class="c1"># make a special find method for plans, as generic method is too minimal.</span>
+        <span class="k">def</span> <span class="nf">new_find</span><span class="p">(</span><span class="n">model_id</span><span class="p">):</span> <span class="k">return</span> <span class="n">model_interface</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;plans/</span><span class="si">{}</span><span class="s1">.json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_id</span><span class="p">))</span>
+
+        <span class="c1"># override the old find method</span>
+        <span class="n">model_interface</span><span class="o">.</span><span class="n">find</span> <span class="o">=</span> <span class="n">new_find</span>
+
+        <span class="k">return</span> <span class="n">model_interface</span></div>
+
+<div class="viewcode-block" id="Plan.validate"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates the plan.</span>
+
+<span class="sd">        :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.</span>
+<span class="sd">        :type raise_error: boolean</span>
+<span class="sd">        :return: list of error messages</span>
+<span class="sd">        :rtype: array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">field_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+                <span class="n">field_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">)</span>
+        <span class="n">fv_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">fv</span><span class="o">.</span><span class="n">_primary_key</span> <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">field_values</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_fvtype</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;destination&#39;</span><span class="p">]:</span>
+                <span class="n">field_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wire</span><span class="p">,</span> <span class="n">_fvtype</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">field_value</span><span class="o">.</span><span class="n">_primary_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fv_keys</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The FieldValue of a wire Wire(rid=</span><span class="si">{}</span><span class="s2">).</span><span class="si">{}</span><span class="s2"> is missing from the list&quot;</span> \
+                              <span class="s2">&quot; of FieldValues in the plan. Did you forget to add an operation to &quot;</span> \
+                              <span class="s2">&quot; the plan?&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">wire</span><span class="o">.</span><span class="n">_primary_key</span><span class="p">,</span> <span class="n">_fvtype</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">raise_error</span> <span class="ow">and</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;(ErrNo </span><span class="si">{}</span><span class="s2">) - </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">errors</span><span class="p">)])</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Plan </span><span class="si">{}</span><span class="s2"> had the following errors:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">errors</span></div>
+
+<div class="viewcode-block" id="Plan.to_save_json"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.to_save_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the json representation of the plan for saving and creating</span>
+<span class="sd">        Plans on the Aquarium server.</span>
+
+<span class="sd">        :return: JSON</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wires</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">json_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;operations&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;field_values&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+
+        <span class="c1"># remove redundant wires</span>
+        <span class="n">wire_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
+            <span class="n">wire_data</span> <span class="o">=</span> <span class="n">wire</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
+            <span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;from_id&#39;</span><span class="p">],</span>
+                <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">],</span>
+                <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;to_id&#39;</span><span class="p">],</span>
+                <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]</span>
+            <span class="p">]</span>
+            <span class="n">wire_hash</span> <span class="o">=</span> <span class="s2">&quot;*&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">])</span>
+            <span class="n">wire_dict</span><span class="p">[</span><span class="n">wire_hash</span><span class="p">]</span> <span class="o">=</span> <span class="n">wire_data</span>
+        <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;wires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wire_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="c1"># validate</span>
+        <span class="n">fv_rids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;operations&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="p">[</span><span class="s1">&#39;field_values&#39;</span><span class="p">]:</span>
+                <span class="n">fv_rids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fv</span><span class="p">[</span><span class="s1">&#39;rid&#39;</span><span class="p">])</span>
+
+        <span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">wire_data</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;wires&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fv_rids</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;rid </span><span class="si">{}</span><span class="s1"> is missing!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fv_rids</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;rid </span><span class="si">{}</span><span class="s1"> is missing!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wire_data</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">][</span><span class="s1">&#39;rid&#39;</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">warnings</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">warnings</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">json_data</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_create_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_update_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_save_json</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_create_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_get_update_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+
+<div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.estimate_cost">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Estimates the cost of the plan on the Aquarium server.</span>
+<span class="sd">        This is necessary before plan submission.</span>
+
+<span class="sd">        :return: cost</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">estimate_plan_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">field_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Plan.step"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Steps a plan&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">step_plan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plan.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print the plan nicely&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; id: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+            <span class="n">operation</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
+            <span class="n">wire</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.replan">[docs]</a>    <span class="k">def</span> <span class="nf">replan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Copies or replans the plan. Returns a plan copy&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">replan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plan.download_files"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Plan.download_files">[docs]</a>    <span class="k">def</span> <span class="nf">download_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Downloads all uploads associated with the plan. Downloads happen</span>
+<span class="sd">        ansynchrounously.</span>
+
+<span class="sd">        :param outdir: output directory for downloaded files</span>
+<span class="sd">        :param overwrite: whether to overwrite files if they exist</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">uploads</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">da</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_associations</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">da</span><span class="o">.</span><span class="n">upload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">uploads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">upload</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Upload</span><span class="o">.</span><span class="n">async_download</span><span class="p">(</span><span class="n">uploads</span><span class="p">,</span> <span class="n">outdir</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.PlanAssociation">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">PlanAssociation</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A PlanAssociation model&quot;&quot;&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">plan</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Plan&quot;</span><span class="p">),</span>
+        <span class="n">operation</span><span class="o">=</span><span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;Operation&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">operation_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">plan_id</span><span class="o">=</span><span class="n">plan_id</span><span class="p">,</span>
+            <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Wire">[docs]</a><span class="nd">@add_schema</span>
+<span class="k">class</span> <span class="nc">Wire</span><span class="p">(</span><span class="n">DeleteMixin</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Wire model&quot;&quot;&quot;</span>
+
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;FieldValue&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;from_id&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;destination&quot;</span><span class="p">:</span>  <span class="n">HasOne</span><span class="p">(</span><span class="s2">&quot;FieldValue&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="s2">&quot;to_id&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">WIRABLE_PARENT_CLASSES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Operation&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_field_values</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">):</span>
+            <span class="n">from_id</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">from_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">):</span>
+            <span class="n">to_id</span> <span class="o">=</span> <span class="n">destination</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">to_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">source</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">destination</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">destination</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">source</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire. Either source (</span><span class="si">{}</span><span class="s2">) or destination (</span><span class="si">{}</span><span class="s2">) is None&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">source</span><span class="p">,</span> <span class="n">destination</span>
+            <span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">source</span><span class="o">.</span><span class="n">role</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire. FieldValue </span><span class="si">{}</span><span class="s2"> does not have a role&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">role</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">source</span><span class="o">.</span><span class="n">role</span> <span class="o">!=</span> <span class="s1">&#39;output&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire an &#39;</span><span class="si">{}</span><span class="s2">&#39; FieldValue as a source&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">role</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">destination</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">destination</span><span class="o">.</span><span class="n">role</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire. FieldValue </span><span class="si">{}</span><span class="s2"> does not have a role&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination</span><span class="o">.</span><span class="n">role</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">destination</span><span class="o">.</span><span class="n">role</span> <span class="o">!=</span> <span class="s1">&#39;input&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot wire an &#39;</span><span class="si">{}</span><span class="s2">&#39; FieldValue as a destination&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination</span><span class="o">.</span><span class="n">role</span><span class="p">))</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
+            <span class="s2">&quot;from_id&quot;</span><span class="p">:</span> <span class="n">from_id</span><span class="p">,</span>
+            <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="n">destination</span><span class="p">,</span>
+            <span class="s2">&quot;to_id&quot;</span><span class="p">:</span> <span class="n">to_id</span>
+        <span class="p">},</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">:</span>
+            <span class="n">source_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">source_id</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">:</span>
+            <span class="n">destination_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">destination_id</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="n">destination_id</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_validate_field_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">src</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_field_value</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dest</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_field_value</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s1">&#39;destination&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">src</span> <span class="ow">and</span> <span class="n">dest</span> <span class="ow">and</span> <span class="n">src</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="n">dest</span><span class="o">.</span><span class="n">rid</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot create wire because source and destination are the same instance.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_validate_field_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fv</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">fv</span><span class="p">),</span> <span class="n">FieldValue</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot create wire because </span><span class="si">{}</span><span class="s2"> FieldValue is </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fv</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">fv</span><span class="o">.</span><span class="n">parent_class</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">WIRABLE_PARENT_CLASSES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AquariumModelError</span><span class="p">(</span><span class="s2">&quot;Cannot create wire because the </span><span class="si">{}</span><span class="s2"> FieldValue is has &#39;</span><span class="si">{}</span><span class="s2">&#39; parent class. &quot;</span> \
+                                     <span class="s2">&quot;Only </span><span class="si">{}</span><span class="s2"> parent classes are wirable&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fv</span><span class="o">.</span><span class="n">parent_class</span><span class="p">,</span>
+                                                                                 <span class="bp">cls</span><span class="o">.</span><span class="n">WIRABLE_PARENT_CLASSES</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_field_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">save_json</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;from_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;to_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;rid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span><span class="p">},</span>
+            <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;rid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span><span class="p">},</span>
+            <span class="s2">&quot;active&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">save_json</span>
+
+<div class="viewcode-block" id="Wire.delete"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Wire.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Permanently deletes the wire instance on the Aquarium server.</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">delete_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wire.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Wire.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show the wire nicely&quot;&quot;&quot;</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
+        <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span>
+
+        <span class="n">from_op_type_name</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+        <span class="n">from_name</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+        <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
+            <span class="n">from_op_type_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">from_name</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="n">to_op_type_name</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+        <span class="n">to_name</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+        <span class="k">if</span> <span class="n">dest</span><span class="p">:</span>
+            <span class="n">to_op_type_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">operation_type</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">to_name</span> <span class="o">=</span> <span class="n">dest</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">pre</span> <span class="o">+</span> <span class="n">from_op_type_name</span> <span class="o">+</span>
+              <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">from_name</span> <span class="o">+</span>
+              <span class="s2">&quot; --&gt; &quot;</span> <span class="o">+</span> <span class="n">to_op_type_name</span> <span class="o">+</span>
+              <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">to_name</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">does_wire_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">destination</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">destination</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">does_wire_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">source</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Wire.does_wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.Wire.does_wire">[docs]</a>    <span class="k">def</span> <span class="nf">does_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks whether this Wire is a wire between the source and destination FieldValues.</span>
+
+<span class="sd">        If any of the source or destination FieldValues are None, returns False.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">and</span> <span class="n">destination</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">source</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">rid</span> <span class="ow">and</span> <span class="n">destination</span><span class="o">.</span><span class="n">rid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">rid</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks whether this Wire is wired to the same FieldValue instances of another Wire.</span>
+
+<span class="sd">        see `does_wire` method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">does_wire</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">destination</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
