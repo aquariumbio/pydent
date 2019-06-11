@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.aqhttp &#8212; Trident 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pydent.aqsession" href="pydent.aqsession.html" />
+    <link rel="prev" title="API Reference" href="../api_reference.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../querying.html">Making Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../planning.html">Experiment Planning</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Version History</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../../_sources/developer/_autosummary/pydent.aqhttp.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="module-pydent.aqhttp">
+<span id="pydent-aqhttp"></span><h1>pydent.aqhttp<a class="headerlink" href="#module-pydent.aqhttp" title="Permalink to this headline">¶</a></h1>
+<p>Request class for making raw http requests to Aquarium</p>
+<p>This module contains the AqHTTP class, which can make arbitrary post/put/get
+requests to Aquarium and returns JSON data.</p>
+<p>Generally, Trident users should be unable to make arbitrary requests using this
+class.
+Users should only access these methods indirectly through a <code class="docutils literal notranslate"><span class="pre">Session</span></code> or
+<code class="docutils literal notranslate"><span class="pre">SessionInterface</span></code> instance.</p>
+<p class="rubric">Classes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqhttp.AqHTTP" title="pydent.aqhttp.AqHTTP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AqHTTP</span></code></a>(login, password, aquarium_url)</p></td>
+<td><p>Defines a session/connection to Aquarium.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="pydent.aqhttp.AqHTTP">
+<em class="property">class </em><code class="sig-prename descclassname">pydent.aqhttp.</code><code class="sig-name descname">AqHTTP</code><span class="sig-paren">(</span><em class="sig-param">login</em>, <em class="sig-param">password</em>, <em class="sig-param">aquarium_url</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.utils.logger.Loggable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines a session/connection to Aquarium.
+Makes HTTP requests to Aquarium and returns JSON.</p>
+<p>This class should be obscured from Trident user so that users cannot make
+arbitrary requests to an Aquarium server and get sensitive information
+(e.g. User json that is returned contains api_key, password_digest, etc.)
+or make damaging posts.
+Instead, a SessionInterface should be the object that makes these requests.</p>
+<p>Initializes an aquarium session with login, password, and server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>login</strong> (<em>str</em>) – Aquarium login</p></li>
+<li><p><strong>aquarium_url</strong> (<em>str</em>) – aquarium url to the server</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pydent.aqhttp.AqHTTP._disallow_null_in_json">
+<em class="property">static </em><code class="sig-name descname">_disallow_null_in_json</code><span class="sig-paren">(</span><em class="sig-param">json_data</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP._disallow_null_in_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP._disallow_null_in_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if
+json data being sent contains a null value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqhttp.AqHTTP._login">
+<code class="sig-name descname">_login</code><span class="sig-paren">(</span><em class="sig-param">login</em>, <em class="sig-param">password</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP._login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP._login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Login to aquarium and saves header as a requests.Session()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqhttp.AqHTTP._response_to_json">
+<code class="sig-name descname">_response_to_json</code><span class="sig-paren">(</span><em class="sig-param">response</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP._response_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP._response_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Request</span></code> instance into a json.
+Raises TridentRequestError if an error occurs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqhttp.AqHTTP.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a get request to the session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – url</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
+exception</p></li>
+<li><p><strong>allow_none</strong> (<em>boolean</em>) – if False throw error when json_data contains a null
+or None value (default: True)</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqhttp.AqHTTP.post">
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">json_data=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a post request to the session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – url</p></li>
+<li><p><strong>json_data</strong> (<em>dict</em>) – json_data to post</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
+exception</p></li>
+<li><p><strong>allow_none</strong> (<em>boolean</em>) – if False throw error if json_data contains a null
+or None value (default True)</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqhttp.AqHTTP.put">
+<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">json_data=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a put request to the session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – url</p></li>
+<li><p><strong>json_data</strong> (<em>dict</em>) – json_data to post</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
+exception</p></li>
+<li><p><strong>allow_none</strong> (<em>boolean</em>) – if False throw error when json_data contains a null
+or None value (default True)</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqhttp.AqHTTP.request">
+<code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param">method</em>, <em class="sig-param">path</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydent/aqhttp.html#AqHTTP.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqhttp.AqHTTP.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a http request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>str</em>) – request method (e.g. ‘put’, ‘post’, ‘get’, etc.)</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – url to perform the request</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – time in seconds to process request before raising
+exception</p></li>
+<li><p><strong>allow_none</strong> (<em>boolean</em>) – if False will raise error when json_data
+contains a None or null value (default: True)</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – additional arguments to post to request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqhttp.AqHTTP.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pydent.aqhttp.AqHTTP.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>An alias of aquarium_url</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

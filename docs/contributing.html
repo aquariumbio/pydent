@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Contributing &#8212; Trident 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advanced tutorials" href="advanced.html" />
+    <link rel="prev" title="pydent.utils.logger" href="developer/_autosummary/_autosummary/pydent.utils.logger.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a3</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querying.html">Making Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/api_reference.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versions.html">Version History</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/contributing.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="running-tests">
+<h2>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<p>Tests are written to run with pytest.</p>
+<p>To run tests, first install trident’s dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
+</pre></div>
+</div>
+<p>To run tests, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">tests</span>
+</pre></div>
+</div>
+<p>To run doctests located in <cite>user/examples</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">doctest</span>
+</pre></div>
+</div>
+<div class="section" id="server-vs-local-tests">
+<h3>Server vs local tests<a class="headerlink" href="#server-vs-local-tests" title="Permalink to this headline">¶</a></h3>
+<p>Tests that <strong>do not</strong> access the server are located in <cite>tests/test_pydent</cite>.
+Requests are turned off by default for any test within this directory. These tests will
+not access the server and use a pytest fixture <cite>fake_session</cite> to perform Trident tests, as in
+the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">my_non_server_test</span><span class="p">(</span><span class="n">fake_session</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fake_session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+    <span class="c1"># do stuff with fake sample &#39;s&#39;</span>
+</pre></div>
+</div>
+<p>Tests that <strong>do</strong> access the server are located in <cite>tests_with_server_and_cached_results</cite>.
+These tests will use the <cite>tests_with_server_and_cached_results/secrets/config.json.secret</cite> file
+to login to a live server:</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;login&quot;</span><span class="p">:</span> <span class="s2">&quot;Neptune&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;aquarium&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;aquarium_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://0.0.0.0:80&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Please remember not to commit your login information.</p>
+<p>Server tests use the <cite>session</cite> pytest fixture, as in the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">my_sever_test</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+    <span class="c1"># do stuff with real sample &#39;s&#39;</span>
+</pre></div>
+</div>
+<p>Information on sessions and servers can be found in the <cite>conftest.py</cite> files within the <cite>tests</cite>
+directory.</p>
+<div class="section" id="request-recording">
+<h4>Request recording<a class="headerlink" href="#request-recording" title="Permalink to this headline">¶</a></h4>
+<p>By default, live requests are recorded automatically via
+<a class="reference external" href="https://vcrpy.readthedocs.io/en/latest/installation.html">VCRpy</a></p>
+<p>Information about each request is stored in a <strong>fixtures/vcr_cassettes/*.yaml</strong>
+and retrieved on a as-needed basis.</p>
+<p>You may turn off request recording using the following decorator. This may be necessary
+if your test makes a server change:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">record_mode</span><span class="p">(</span><span class="s1">&#39;no&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_sever_test</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+    <span class="c1"># do stuff with real sample &#39;s&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="installing-dependencies">
+<h2>Installing dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Trident uses <a class="reference external" href="https://https://poetry.eustace.io/">poetry</a> for installation and distribution.
+Installation information is managed by <cite>poetry</cite> in the <cite>pyproject.toml</cite> file.
+Please view the poetry documentation on how to install it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">add</span> <span class="p">[</span><span class="n">name_of_dependency</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Dependencies can be install using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>To open a virtual environment with the poetry installation, use either of the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">shell</span>
+
+<span class="n">poetry</span> <span class="n">run</span> <span class="p">[</span><span class="n">command</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Again, refer to the <a class="reference external" href="https://https://poetry.eustace.io/">poetry documentation</a> for further details.</p>
+<p>Before making any changes, install the git hooks to help prevent changes to the
+docs directory, which contains generated documentation files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">hooks</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="making-a-release">
+<h2>Making a Release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
+<p>ToDo: write documentation on using poetry to publish to pypi</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
