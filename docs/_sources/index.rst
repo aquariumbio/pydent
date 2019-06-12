@@ -48,6 +48,7 @@ Links:
    :maxdepth: 3
    :hidden:
 
+   basics/installation
    basics/getting_started
    basics/querying
    basics/planning

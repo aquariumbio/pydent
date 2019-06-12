@@ -13,6 +13,8 @@ to interact the scientific laboratory, enticing the possibility engineering syst
 that can not only learn from experimental data, but can actually schedule and run
 its own experiments with little human intervention.
 
+To install, checkout the installation guide: :doc:`installation`
+
 .. testsetup::
 
     import os
