@@ -30,15 +30,4 @@ nest_asyncio.apply()
 from .aqsession import AqSession
 from .base import ModelBase, ModelRegistry
 from .utils import pprint
-from .__version__ import info
-
-
-def clean(s):
-    return s.replace('"', "").replace("'", "")
-
-
-__version__ = clean(info["version"])
-__title__ = clean(info["name"])
-__author__ = clean(info["authors"])
-__homepage__ = clean(info["homepage"])
-__repo__ = clean(info["repository"])
+from pydent._version import __version__, __title__, __author__, __homepage__, __repo__

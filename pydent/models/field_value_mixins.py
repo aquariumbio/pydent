@@ -2,7 +2,7 @@
 Mixins for FieldValues and those objects using FieldValues and FieldTypes.
 """
 
-from collections import Sequence
+from collections.abc import Sequence
 from itertools import zip_longest
 
 from pydent.base import ModelBase
