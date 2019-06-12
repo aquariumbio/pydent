@@ -10,13 +10,13 @@ from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
-from pydent.relationships import (HasOne, HasMany,
-                                  HasManyThrough)
+from pydent.relationships import (HasOne, HasMany)
 
 
 @add_schema
 class Sample(FieldValueInterface, ModelBase):
-    """A Sample model"""
+    """A Sample model
+    """
     fields = dict(
         # sample relationships
         sample_type=HasOne("SampleType"),
