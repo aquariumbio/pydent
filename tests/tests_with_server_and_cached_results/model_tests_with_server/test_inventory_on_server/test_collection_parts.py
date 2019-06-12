@@ -18,14 +18,19 @@ def example_collection(session, example_part_association):
 
 
 class TestCollection:
-
     def test_parts(self, session, example_collection):
         collection = example_collection
         part_associations = collection.part_associations
 
-        expected_part = next(iter([
-            assoc.part for assoc in part_associations
-            if assoc.row == 0 and assoc.column == 0]))
+        expected_part = next(
+            iter(
+                [
+                    assoc.part
+                    for assoc in part_associations
+                    if assoc.row == 0 and assoc.column == 0
+                ]
+            )
+        )
 
         assert collection.part(0, 0) is not None
         actual_part = collection.part(0, 0)
@@ -45,13 +50,11 @@ class TestCollection:
 
         expected_matrix = list()
         for row in range(num_row):
-            row_assoc = [
-                assoc for assoc in part_associations if assoc.row == row]
+            row_assoc = [assoc for assoc in part_associations if assoc.row == row]
             row_list = list()
             for col in range(num_col):
                 sample_id = None
-                col_assoc = [
-                    assoc for assoc in row_assoc if assoc.column == col]
+                col_assoc = [assoc for assoc in row_assoc if assoc.column == col]
                 if col_assoc:
                     assoc = next(iter(col_assoc))
                     sample_id = assoc.part.sample.id

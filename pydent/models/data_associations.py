@@ -37,7 +37,8 @@ class DataAssociatorMixin:
         Adds a data association with the key and value to this object.
         """
         return self.session.utils.create_data_association(
-            self, key, value, upload=upload)
+            self, key, value, upload=upload
+        )
 
     def associate_file(self, key, value, file, job_id=None):
         """
@@ -73,7 +74,7 @@ class DataAssociatorMixin:
         :return: new data association
         :rtype: :class:`DataAssociation`
         """
-        with open(filepath, 'rb') as f:
+        with open(filepath, "rb") as f:
             return self.associate_file(key, value, f, job_id=job_id)
 
     def get_data_associations(self, key):
@@ -98,10 +99,8 @@ class DataAssociatorMixin:
 @add_schema
 class DataAssociation(JSONDeleteMixin, ModelBase):
     """A DataAssociation model"""
-    fields = dict(
-        object=JSON(),
-        upload=HasOne("Upload")
-    )
+
+    fields = dict(object=JSON(), upload=HasOne("Upload"))
 
     @property
     def value(self):
@@ -116,9 +115,8 @@ class Upload(ModelBase):
     """
     An Upload model
     """
-    fields = dict(
-        job=HasOne("Job")
-    )
+
+    fields = dict(job=HasOne("Job"))
 
     def __init__(self, job_id=None, file=None):
         """
@@ -129,21 +127,20 @@ class Upload(ModelBase):
         :param file: file to upload
         :type file: file object
         """
-        super().__init__(
-            job_id=job_id,
-        )
+        super().__init__(job_id=job_id)
         self.file = file
 
     # def _get_uploads_from_job_id(self, job_id):
 
     def _get_uploads_from_job(self):
         http = self.session._AqSession__aqhttp
-        return http.get("krill/uploads?job={}".format(self.job_id))['uploads']
+        return http.get("krill/uploads?job={}".format(self.job_id))["uploads"]
 
     def temp_url(self):
-        data = self.session.Upload.where(
-            {"id": self.id}, methods=["expiring_url"])[0].raw
-        return data['expiring_url']
+        data = self.session.Upload.where({"id": self.id}, methods=["expiring_url"])[
+            0
+        ].raw
+        return data["expiring_url"]
 
     @staticmethod
     def _download_file_from_url(url, outpath):
@@ -158,7 +155,7 @@ class Upload(ModelBase):
         :rtype: str
         """
         response = requests.get(url, stream=True)
-        with open(outpath, 'wb') as out_file:
+        with open(outpath, "wb") as out_file:
             shutil.copyfileobj(response.raw, out_file)
         return response.raw
 
@@ -211,7 +208,7 @@ class Upload(ModelBase):
         :return: None
         """
         if outdir is None:
-            outdir = '.'
+            outdir = "."
         if filename is None:
             filename = "{}_{}".format(self.id, self.upload_file_name)
         filepath = os.path.join(outdir, filename)

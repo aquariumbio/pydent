@@ -153,7 +153,9 @@ from pydent.marshaller.exceptions import ModelValidationError
     &quot;&quot;&quot;
 
     def __init__(self, many=False, data_key=None, allow_none=True, default=None):
-        super().__init__(many=many, data_key=data_key, allow_none=allow_none, default=default)</div>
+        super().__init__(
+            many=many, data_key=data_key, allow_none=allow_none, default=default
+        )</div>
 
 
 <div class="viewcode-block" id="JSON"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.JSON">[docs]</a>class JSON(Raw):
@@ -177,9 +179,27 @@ from pydent.marshaller.exceptions import ModelValidationError
     the method name.
     &quot;&quot;&quot;
 
-    def __init__(self, callback, callback_args=None, callback_kwargs=None, cache=False, data_key=None, many=None,
-                 allow_none=True, always_dump=True):
-        super().__init__(callback, callback_args, callback_kwargs, cache, data_key, many, allow_none, always_dump)</div>
+    def __init__(
+        self,
+        callback,
+        callback_args=None,
+        callback_kwargs=None,
+        cache=False,
+        data_key=None,
+        many=None,
+        allow_none=True,
+        always_dump=True,
+    ):
+        super().__init__(
+            callback,
+            callback_args,
+            callback_kwargs,
+            cache,
+            data_key,
+            many,
+            allow_none,
+            always_dump,
+        )</div>
 
 
 <div class="viewcode-block" id="BaseRelationshipAccessor"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationshipAccessor">[docs]</a>class BaseRelationshipAccessor(fields.RelationshipAccessor):
@@ -199,13 +219,31 @@ from pydent.marshaller.exceptions import ModelValidationError
     QUERY_TYPE = None
     ACCESSOR = BaseRelationshipAccessor
 
-    def __init__(self, nested, callback, callback_args=None, callback_kwargs=None, many=None, allow_none=True):
-        super().__init__(nested, callback, callback_args, callback_kwargs, cache=True, data_key=None, many=many,
-                         allow_none=allow_none)
+    def __init__(
+        self,
+        nested,
+        callback,
+        callback_args=None,
+        callback_kwargs=None,
+        many=None,
+        allow_none=True,
+    ):
+        super().__init__(
+            nested,
+            callback,
+            callback_args,
+            callback_kwargs,
+            cache=True,
+            data_key=None,
+            many=many,
+            allow_none=allow_none,
+        )
 
 <div class="viewcode-block" id="BaseRelationship.fullfill"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.fullfill">[docs]</a>    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
         try:
-            return super().fullfill(owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs)
+            return super().fullfill(
+                owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs
+            )
         except fields.RunTimeCallbackAttributeError as e:
             return BaseRelationshipAccessor.HOLDER</div>
 
@@ -214,7 +252,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         args = {}
         for s in models:
             callback_args = self.get_callback_args(s)[1:]
-            if self.QUERY_TYPE == &#39;by_id&#39;:
+            if self.QUERY_TYPE == &quot;by_id&quot;:
                 args.setdefault(self.attr, [])
                 for x in callback_args:
                     if x is not None and x not in args[self.attr]:
@@ -241,9 +279,17 @@ from pydent.marshaller.exceptions import ModelValidationError
     Subclass of :class:`pydent.marshaller.Relation`.
     &quot;&quot;&quot;
 
-    QUERY_TYPE = &#39;by_id&#39;
+    QUERY_TYPE = &quot;by_id&quot;
 
-    def __init__(self, nested, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
+    def __init__(
+        self,
+        nested,
+        *args,
+        callback=None,
+        callback_args=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
         &quot;&quot;&quot;
         One initializer. Uses &quot;find&quot; callback by default.
 
@@ -258,7 +304,13 @@ from pydent.marshaller.exceptions import ModelValidationError
         &quot;&quot;&quot;
         if callback is None:
             callback = ModelBase.find_callback.__name__
-        super().__init__(nested, callback, callback_args=callback_args, callback_kwargs=callback_kwargs, many=False)</div>
+        super().__init__(
+            nested,
+            callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            many=False,
+        )</div>
 
 
 <div class="viewcode-block" id="Many"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Many">[docs]</a>class Many(BaseRelationship):
@@ -267,9 +319,17 @@ from pydent.marshaller.exceptions import ModelValidationError
     Subclass of :class:`pydent.marshaller.Relation`.
     &quot;&quot;&quot;
 
-    QUERY_TYPE = &#39;query&#39;
+    QUERY_TYPE = &quot;query&quot;
 
-    def __init__(self, nested, *args, callback=None, callback_args=None, callback_kwargs=None, **kwargs):
+    def __init__(
+        self,
+        nested,
+        *args,
+        callback=None,
+        callback_args=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
         &quot;&quot;&quot;
         Many initializer. Uses &quot;where&quot; callback by default.
 
@@ -284,9 +344,15 @@ from pydent.marshaller.exceptions import ModelValidationError
         &quot;&quot;&quot;
         if callback is None:
             callback = ModelBase.where_callback.__name__
-        super().__init__(nested, *args,
-                         many=True, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
-                         **kwargs)</div>
+        super().__init__(
+            nested,
+            *args,
+            many=True,
+            callback=callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
 
 
 <div class="viewcode-block" id="HasMixin"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMixin">[docs]</a>class HasMixin:
@@ -322,21 +388,29 @@ from pydent.marshaller.exceptions import ModelValidationError
         self.attr = attr
 
         if not self.attr:
-            self.attr = &#39;id&#39;
+            self.attr = &quot;id&quot;
         if ref:
             self.ref = ref
         else:
             if not self.attr:
                 raise FieldValidationError(
-                    &quot;&#39;attr&#39; is None. Relationship &#39;{}&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;.format(self.__class__))
+                    &quot;&#39;attr&#39; is None. Relationship &#39;{}&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;.format(
+                        self.__class__
+                    )
+                )
             if not nested:
                 raise FieldValidationError(
-                    &quot;&#39;model&#39; is None. Relationship &#39;{}&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;.format(self.__class__))
+                    &quot;&#39;model&#39; is None. Relationship &#39;{}&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;.format(
+                        self.__class__
+                    )
+                )
             self.ref = &quot;{}_{}&quot;.format(inflection.underscore(nested), self.attr)</div></div>
 
 
 <div class="viewcode-block" id="HasOne"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOne">[docs]</a>class HasOne(HasMixin, One):
-    def __init__(self, nested, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs):
+    def __init__(
+        self, nested, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs
+    ):
         &quot;&quot;&quot;
         HasOne initializer. Uses the &quot;get_one_generic&quot; callback and
         automatically assigns attribute as in the following:
@@ -352,14 +426,22 @@ from pydent.marshaller.exceptions import ModelValidationError
         &quot;&quot;&quot;
         self.set_ref(nested=nested, attr=attr, ref=ref)
 
-        super().__init__(nested, many=False, callback=callback, callback_args=(self.get_ref,),
-                         callback_kwargs=callback_kwargs, **kwargs)
+        super().__init__(
+            nested,
+            many=False,
+            callback=callback,
+            callback_args=(self.get_ref,),
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )
 
     def get_ref(self, instance):
         return getattr(instance, self.ref)
 
     def __repr__(self):
-        return &quot;&lt;HasOne (model={}, callback_args=lambda self: self.{})&gt;&quot;.format(self.nested, self.ref)
+        return &quot;&lt;HasOne (model={}, callback_args=lambda self: self.{})&gt;&quot;.format(
+            self.nested, self.ref
+        )
 
     def deserialize(self, owner, val):
         val = super().deserialize(owner, val)
@@ -373,8 +455,17 @@ from pydent.marshaller.exceptions import ModelValidationError
     A relationship that establishes a One-to-Many relationship with another model.
     &quot;&quot;&quot;
 
-    def __init__(self, nested, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
-                 callback_kwargs=None, **kwargs):
+    def __init__(
+        self,
+        nested,
+        ref_model=None,
+        attr=None,
+        ref=None,
+        additional_args=None,
+        callback=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
         &quot;&quot;&quot;
         HasMany relationship initializer
 
@@ -398,8 +489,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         &quot;&quot;&quot;
         if ref_model is None and ref is None:
             msg = &quot;&#39;{}&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;
-            raise FieldValidationError(
-                msg.format(self.__class__.__name__))
+            raise FieldValidationError(msg.format(self.__class__.__name__))
         self.set_ref(nested=ref_model, attr=attr, ref=ref)
 
         if additional_args is None:
@@ -410,8 +500,13 @@ from pydent.marshaller.exceptions import ModelValidationError
             query.update(additional_args)
             return query
 
-        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
-                         **kwargs)</div>
+        super().__init__(
+            nested,
+            callback=callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
 
 
 <div class="viewcode-block" id="HasManyThrough"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyThrough">[docs]</a>class HasManyThrough(HasMixin, Many):
@@ -420,13 +515,21 @@ from pydent.marshaller.exceptions import ModelValidationError
     Establishes a Many-to-Many relationship with another model
     &quot;&quot;&quot;
 
-    def __init__(self, nested, through, attr=&quot;id&quot;, ref=None, additional_args=None, callback=None, callback_kwargs=None,
-                 **kwargs):
+    def __init__(
+        self,
+        nested,
+        through,
+        attr=&quot;id&quot;,
+        ref=None,
+        additional_args=None,
+        callback=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
         self.set_ref(nested=nested, attr=attr, ref=ref)
 
         # e.g. PlanAssociation &gt;&gt; plan_associations
-        through_model_attr = inflection.pluralize(
-            inflection.underscore(through))
+        through_model_attr = inflection.pluralize(inflection.underscore(through))
         self.through_model_attr = through_model_attr
 
         if additional_args is None:
@@ -436,12 +539,21 @@ from pydent.marshaller.exceptions import ModelValidationError
             through_model = getattr(slf, through_model_attr)
             if through_model is None:
                 return None
-            query = {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
+            query = {
+                attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]
+            }
             query.update(additional_args)
-            return {attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]}
+            return {
+                attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]
+            }
 
-        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
-                         **kwargs)</div>
+        super().__init__(
+            nested,
+            callback=callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
 
 
 <div class="viewcode-block" id="HasOneFromMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOneFromMany">[docs]</a>class HasOneFromMany(HasMixin, One):
@@ -451,8 +563,17 @@ from pydent.marshaller.exceptions import ModelValidationError
 
     QUERY_TYPE = &quot;query&quot;
 
-    def __init__(self, nested, ref_model=None, attr=None, ref=None, additional_args=None, callback=None,
-                 callback_kwargs=None, **kwargs):
+    def __init__(
+        self,
+        nested,
+        ref_model=None,
+        attr=None,
+        ref=None,
+        additional_args=None,
+        callback=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
         &quot;&quot;&quot;
         HasOneFromMany relationship initializer, which is intended to return a single model from
         a Many query
@@ -477,8 +598,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         &quot;&quot;&quot;
         if ref_model is None and ref is None:
             msg = &quot;&#39;{}&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;
-            raise FieldValidationError(
-                msg.format(self.__class__.__name__))
+            raise FieldValidationError(msg.format(self.__class__.__name__))
         self.set_ref(nested=ref_model, attr=attr, ref=ref)
 
         if additional_args is None:
@@ -492,8 +612,13 @@ from pydent.marshaller.exceptions import ModelValidationError
         if callback is None:
             callback = ModelBase.one_callback.__name__
 
-        super().__init__(nested, callback=callback, callback_args=callback_args, callback_kwargs=callback_kwargs,
-                         **kwargs)</div>
+        super().__init__(
+            nested,
+            callback=callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
 
 
 <div class="viewcode-block" id="HasManyGeneric"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyGeneric">[docs]</a>class HasManyGeneric(HasMany):
@@ -502,9 +627,23 @@ from pydent.marshaller.exceptions import ModelValidationError
     to find other models.
     &quot;&quot;&quot;
 
-    def __init__(self, nested, additional_args=None, callback=None, callback_kwargs=None, **kwargs):
-        super().__init__(nested, ref=&quot;parent_id&quot;, attr=&quot;id&quot;, callback=callback, additional_args=additional_args,
-                         callback_kwargs=callback_kwargs, **kwargs)</div>
+    def __init__(
+        self,
+        nested,
+        additional_args=None,
+        callback=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
+        super().__init__(
+            nested,
+            ref=&quot;parent_id&quot;,
+            attr=&quot;id&quot;,
+            callback=callback,
+            additional_args=additional_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
 </pre></div>
 
     </div>

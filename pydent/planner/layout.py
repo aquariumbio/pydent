@@ -24,7 +24,7 @@ class PlannerLayout(object):
         "running": "green",
         "delayed": "magenta",
         "done": "black",
-        "planning": "grey"
+        "planning": "grey",
     }
 
     def __init__(self, G=None):
@@ -32,7 +32,6 @@ class PlannerLayout(object):
             G = nx.DiGraph()
         self.G = G
         self.annotations = []
-
 
     @classmethod
     def from_plan(cls, plan: Plan):
@@ -93,13 +92,13 @@ class PlannerLayout(object):
     @property
     def operations(self):
         for node in self.G.nodes:
-            if 'operation' in self.G.node[node]:
-                yield self.G. node[node]['operation']
+            if "operation" in self.G.node[node]:
+                yield self.G.node[node]["operation"]
 
     def iter_operations(self):
         for node in self.G.nodes:
-            if 'operation' in self.G.node[node]:
-                yield (node, self.G.node[node]['operation'])
+            if "operation" in self.G.node[node]:
+                yield (node, self.G.node[node]["operation"])
 
     def _add_operation(self, operation: Operation):
         """
@@ -118,7 +117,7 @@ class PlannerLayout(object):
 
     def nodes_to_ops(self, nodes):
         """Returns operations from a list of node_ids"""
-        return [self.G.node[n]['operation'] for n in nodes]
+        return [self.G.node[n]["operation"] for n in nodes]
 
     def ops_to_nodes(self, ops):
         """Returns node_ids for each operation"""
@@ -176,8 +175,9 @@ class PlannerLayout(object):
             x += layout.width + cls.BOX_DELTA_X
             y = layout.y
 
-    def to_grid(self, columns: int, axis: int = 1,
-                border_x: int = None, border_y: int = None):
+    def to_grid(
+        self, columns: int, axis: int = 1, border_x: int = None, border_y: int = None
+    ):
         """
         Arrange layouts in a grid format.
 
@@ -271,9 +271,10 @@ class PlannerLayout(object):
                     x, _ = self.subgraph(predecessors).midpoint()
                     predecessor_avg_x.append((x, op_id))
                 else:
-                    predecessor_avg_x.append((x+1, op_id))
-            sorted_op_ids = [op_id for _, op_id in sorted(
-                predecessor_avg_x, key=lambda x: x[0])]
+                    predecessor_avg_x.append((x + 1, op_id))
+            sorted_op_ids = [
+                op_id for _, op_id in sorted(predecessor_avg_x, key=lambda x: x[0])
+            ]
 
             x = _x
             # sorted_op_ids = sorted(op_ids)
@@ -534,7 +535,7 @@ class PlannerLayout(object):
         self.y = y
 
     def center(self, x, y):
-        self.move(x - self.width/2, y - self.height/2)
+        self.move(x - self.width / 2, y - self.height / 2)
 
     @property
     def width(self):
@@ -551,8 +552,9 @@ class PlannerLayout(object):
         return pos
 
     def _status_colors(self):
-        node_color = [self.STATUS_COLORS.get(
-            op.status, "rosybrown") for op in self.operations]
+        node_color = [
+            self.STATUS_COLORS.get(op.status, "rosybrown") for op in self.operations
+        ]
         return node_color
 
     def draw(self):

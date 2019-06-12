@@ -195,7 +195,7 @@ from enum import Enum, auto
             print(&quot;y is not set&quot;)
     &quot;&quot;&quot;
 
-    __slots__ = [&#39;name&#39;, &#39;accessor&#39;, &#39;default&#39;]
+    __slots__ = [&quot;name&quot;, &quot;accessor&quot;, &quot;default&quot;]
     HOLDER = Placeholders.DATA
 
     def __init__(self, name, accessor=None, default=HOLDER):
@@ -205,7 +205,11 @@ from enum import Enum, auto
             default = self.HOLDER
         self.default = default
         if self.name == self.accessor:
-            raise Exception(&quot;Descriptor name &#39;{}&#39; cannot be accessor name &#39;{}&#39;&quot;.format(self.name, self.accessor))
+            raise Exception(
+                &quot;Descriptor name &#39;{}&#39; cannot be accessor name &#39;{}&#39;&quot;.format(
+                    self.name, self.accessor
+                )
+            )
 
     def get_val(self, obj):
         access_data = getattr(obj, self.accessor)
@@ -215,7 +219,10 @@ from enum import Enum, auto
         val = self.get_val(obj)
         if val is self.HOLDER:
             raise AttributeError(
-                &quot;type object &#39;{}&#39; does not have attribute &#39;{}&#39;&quot;.format(obj.__class__.__name__, self.name))
+                &quot;type object &#39;{}&#39; does not have attribute &#39;{}&#39;&quot;.format(
+                    obj.__class__.__name__, self.name
+                )
+            )
         else:
             return val
 
@@ -231,14 +238,18 @@ from enum import Enum, auto
     A generic Marshalling descriptor.
     &quot;&quot;&quot;
 
-    __slots__ = [&#39;name&#39;, &#39;accessor&#39;, &#39;field&#39;, &#39;deserialized_accessor&#39;, &#39;default&#39;]
+    __slots__ = [&quot;name&quot;, &quot;accessor&quot;, &quot;field&quot;, &quot;deserialized_accessor&quot;, &quot;default&quot;]
     HOLDER = Placeholders.MARSHALL
 
     def __init__(self, name, field, accessor, deserialized_accessor, default=HOLDER):
         super().__init__(name, accessor, default=default)
         self.deserialized_accessor = deserialized_accessor
         if self.accessor == self.deserialized_accessor:
-            raise Exception(&quot;Descriptor accessor &#39;{}&#39; cannot be deserialized accessor &#39;{}&#39;&quot;.format(self.accessor, self.deserialized_accessor))
+            raise Exception(
+                &quot;Descriptor accessor &#39;{}&#39; cannot be deserialized accessor &#39;{}&#39;&quot;.format(
+                    self.accessor, self.deserialized_accessor
+                )
+            )
         self.field = field
 
     def get_val(self, obj):
@@ -247,10 +258,13 @@ from enum import Enum, auto
         except AttributeError as e:
             raise e
         except Exception as e:
-            raise Exception(&quot;Error retrieving attribute &#39;{}&#39; from &#39;{}&#39; because:\n&quot;.format(
-                self.name,
-                obj.__class__,
-            ) + &quot;{}: &quot;.format(e.__class__.__name__) + str(e)) from e
+            raise Exception(
+                &quot;Error retrieving attribute &#39;{}&#39; from &#39;{}&#39; because:\n&quot;.format(
+                    self.name, obj.__class__
+                )
+                + &quot;{}: &quot;.format(e.__class__.__name__)
+                + str(e)
+            ) from e
 
     def __get__(self, obj, objtype):
         val = self.get_val(obj)
@@ -258,7 +272,10 @@ from enum import Enum, auto
             val = getattr(obj, self.accessor).get(self.name, self.HOLDER)
             if val is self.HOLDER:
                 raise AttributeError(
-                    &quot;type object &#39;{}&#39; does not have attribute &#39;{}&#39;&quot;.format(obj.__class__.__name__, self.name))
+                    &quot;type object &#39;{}&#39; does not have attribute &#39;{}&#39;&quot;.format(
+                        obj.__class__.__name__, self.name
+                    )
+                )
             else:
                 return self.field.deserialize(obj, val)
         return val
@@ -271,11 +288,12 @@ from enum import Enum, auto
             getattr(obj, self.accessor)[self.name] = serialized
         except Exception as e:
             from traceback import format_tb
-            print(&#39;__set__ traceback:&#39;)
-            print(&#39;\n&#39;.join(format_tb(e.__traceback__)))
-            raise Exception(&quot;can&#39;t set attribute &#39;{}&#39; for &#39;{}&#39; to &#39;{}&#39; due to:\n{}. See the traceback&quot;
-                            &quot; printed above&quot;.format(
-                self.name, obj, val, str(e))
+
+            print(&quot;__set__ traceback:&quot;)
+            print(&quot;\n&quot;.join(format_tb(e.__traceback__)))
+            raise Exception(
+                &quot;can&#39;t set attribute &#39;{}&#39; for &#39;{}&#39; to &#39;{}&#39; due to:\n{}. See the traceback&quot;
+                &quot; printed above&quot;.format(self.name, obj, val, str(e))
             ) from e
 
     def __delete__(self, obj):
@@ -294,7 +312,7 @@ from enum import Enum, auto
     descriptor once accessed.
     &quot;&quot;&quot;
 
-    __slots__ = [&#39;name&#39;, &#39;accessor&#39;, &#39;field&#39;, &#39;deserialized_accessor&#39;, &#39;default&#39;]
+    __slots__ = [&quot;name&quot;, &quot;accessor&quot;, &quot;field&quot;, &quot;deserialized_accessor&quot;, &quot;default&quot;]
     HOLDER = Placeholders.CALLBACK
 
     def __init__(self, name, field, accessor, deserialized_accessor, default=HOLDER):
@@ -315,6 +333,7 @@ from enum import Enum, auto
     &quot;&quot;&quot;
     The descriptor for a :class:`pydent.marshaller.fields.Relationship` field
     &quot;&quot;&quot;
+
     def __set__(self, obj, val):
         deserialized = self.field.deserialize(obj, val)
         serialized = self.field.serialize(obj, deserialized)

@@ -28,7 +28,12 @@ from requests.exceptions import ReadTimeout
 from abc import ABC, abstractmethod
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
-from pydent.interfaces import QueryInterfaceABC, QueryInterface, UtilityInterface, BrowserInterface
+from pydent.interfaces import (
+    QueryInterfaceABC,
+    QueryInterface,
+    UtilityInterface,
+    BrowserInterface,
+)
 from pydent.models import __all__ as allmodels
 from pydent.browser import Browser
 from pydent.sessionabc import SessionABC
@@ -69,7 +74,9 @@ class AqSession(SessionABC):
             if aqhttp is not None:
                 self._aqhttp = aqhttp
             else:
-                raise ValueError("Need either a name, password, and url OR an aqhttp instance.")
+                raise ValueError(
+                    "Need either a name, password, and url OR an aqhttp instance."
+                )
         else:
             self._aqhttp = AqHTTP(login, password, aquarium_url)
         self._current_user = None
@@ -86,7 +93,11 @@ class AqSession(SessionABC):
     @interface_class.setter
     def interface_class(self, c):
         if not issubclass(c, QueryInterfaceABC):
-            raise ValueError("Interface {} is not a subclass of {}".format(type(c), QueryInterfaceABC))
+            raise ValueError(
+                "Interface {} is not a subclass of {}".format(
+                    type(c), QueryInterfaceABC
+                )
+            )
         self._interface_class = c
 
     def initialize_interfaces(self):
@@ -142,8 +153,7 @@ class AqSession(SessionABC):
             user = self.User.where({"login": self._aqhttp.login})
             if not user:
                 return None
-            self._current_user = self.User.where(
-                {"login": self._aqhttp.login})[0]
+            self._current_user = self.User.where({"login": self._aqhttp.login})[0]
         return self._current_user
 
     def logged_in(self):
@@ -184,14 +194,18 @@ class AqSession(SessionABC):
             ping_function = lambda: self.User.find(1)
             ping_function_source = inspect.getsource(ping_function).strip()
             secs = timeit.timeit(ping_function, number=num)
-            print("{} pings (using the function '{}')".format(num, ping_function_source))
-            print("{} seconds per ping".format('%.2E' % Decimal(secs / num)))
+            print(
+                "{} pings (using the function '{}')".format(num, ping_function_source)
+            )
+            print("{} seconds per ping".format("%.2E" % Decimal(secs / num)))
             return secs
         except ReadTimeout as e:
             print("Error: {}".format(e))
             print(
                 "Aquarium ({}) looks like its down. The function '{}' raised a {} exception, but should not have.".format(
-                    self.url, ping_function_source, ReadTimeout))
+                    self.url, ping_function_source, ReadTimeout
+                )
+            )
             return None
 
     @property
@@ -233,7 +247,9 @@ class AqSession(SessionABC):
             self.initialize_interfaces()
 
     def copy(self):
-        instance = self.__class__(None, None, None, self.name, aqhttp=copy(self._aqhttp))
+        instance = self.__class__(
+            None, None, None, self.name, aqhttp=copy(self._aqhttp)
+        )
         instance.using_requests = self.using_requests
         instance.using_cache = self.using_cache
         return instance
@@ -243,14 +259,16 @@ class AqSession(SessionABC):
             using_cache=True,
             using_models=using_models,
             using_requests=using_requests,
-            timeout=timeout)
+            timeout=timeout,
+        )
 
     def with_requests_off(self, using_cache=None, using_models=True, timeout=None):
         return self(
             using_cache=using_cache,
             using_models=using_models,
             using_requests=False,
-            timeout=timeout)
+            timeout=timeout,
+        )
 
     @staticmethod
     def _swap_sessions(from_session, to_session):
@@ -261,7 +279,9 @@ class AqSession(SessionABC):
         for m in models:
             m._session = to_session
 
-    def __call__(self, using_cache=None, using_requests=None, timeout=None, using_models=None):
+    def __call__(
+        self, using_cache=None, using_requests=None, timeout=None, using_models=None
+    ):
         new_session = self.copy()
         new_session.parent_session = self
         if using_cache is not None:
@@ -278,8 +298,10 @@ class AqSession(SessionABC):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if hasattr(self, 'parent_session'):
+        if hasattr(self, "parent_session"):
             self._swap_sessions(self, self.parent_session)
 
     def __repr__(self):
-        return "<{}(name={}, AqHTTP={}))>".format(self.__class__.__name__, self.name, self._aqhttp)
+        return "<{}(name={}, AqHTTP={}))>".format(
+            self.__class__.__name__, self.name, self._aqhttp
+        )

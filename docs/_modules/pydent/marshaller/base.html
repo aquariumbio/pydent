@@ -152,7 +152,7 @@ import inspect
     new_schema = SchemaRegistry(
         SchemaRegistry.make_schema_name(cls.__name__),
         (DynamicSchema,),
-        {&quot;_model_class&quot;: cls}
+        {&quot;_model_class&quot;: cls},
     )
     new_schema.register(cls)
     return cls</div>
@@ -163,7 +163,7 @@ import inspect
     A Schema class that holds information on serialization/deserialization
     &quot;&quot;&quot;
 
-    __slots__ = [ModelRegistry._data_key, ModelRegistry._deserialized_key, &#39;__dict__&#39;]
+    __slots__ = [ModelRegistry._data_key, ModelRegistry._deserialized_key, &quot;__dict__&quot;]
 
     def __init__(self, data=None):
         &quot;&quot;&quot;
@@ -188,24 +188,26 @@ import inspect
         :return: the model&#39;s schema class
         :rtype: DynamicSchema
         &quot;&quot;&quot;
-        return getattr(self.__class__, &#39;model_schema&#39;, None)
+        return getattr(self.__class__, &quot;model_schema&quot;, None)
 
 <div class="viewcode-block" id="SchemaModel.add_data"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.base.html#pydent.marshaller.base.SchemaModel.add_data">[docs]</a>    def add_data(self, data):
         &quot;&quot;&quot;Initializes fake attributes that correspond to data.&quot;&quot;&quot;
         if not self.model_schema:
-            filepath = &#39;&#39;
+            filepath = &quot;&quot;
             try:
                 filepath = inspect.getfile(self.__class__)
             except:
                 pass
-            raise SchemaModelException(&quot;Cannot initialize a {} without a {}. &quot;
-                                       &quot;Use &#39;@{}&#39; to decorate the class definition for &#39;{}&#39; located in {}&quot;.format(
-                SchemaModel.__name__,
-                DynamicSchema.__name__,
-                add_schema.__name__,
-                self.__class__.__name__,
-                filepath,
-            ))
+            raise SchemaModelException(
+                &quot;Cannot initialize a {} without a {}. &quot;
+                &quot;Use &#39;@{}&#39; to decorate the class definition for &#39;{}&#39; located in {}&quot;.format(
+                    SchemaModel.__name__,
+                    DynamicSchema.__name__,
+                    add_schema.__name__,
+                    self.__class__.__name__,
+                    filepath,
+                )
+            )
         if data is not None:
             self.__class__.model_schema.init_data_accessors(self, data)</div>
 
@@ -267,9 +269,9 @@ import inspect
         callback_fields = []
         always_dump = []
         for fname, field in model_fields.items():
-            if hasattr(field, &#39;nested&#39;) or issubclass(type(field), Callback):
+            if hasattr(field, &quot;nested&quot;) or issubclass(type(field), Callback):
                 callback_fields.append(fname)
-            if getattr(field, &#39;always_dump&#39;, None):
+            if getattr(field, &quot;always_dump&quot;, None):
                 always_dump.append(fname)
 
         include_and_only = include_and_only.union(set(always_dump))
@@ -283,9 +285,13 @@ import inspect
         for key in callback_keys:
             field = model_fields[key]
             val = getattr(obj, key)
-            dump = functools.partial(cls._dump, include=include.pop(key, None), only=only.pop(key, None),
-                                     ignore=ignore.pop(key, None))
-            if getattr(model_fields[key], &#39;nested&#39;, None) and model_fields[key].many:
+            dump = functools.partial(
+                cls._dump,
+                include=include.pop(key, None),
+                only=only.pop(key, None),
+                ignore=ignore.pop(key, None),
+            )
+            if getattr(model_fields[key], &quot;nested&quot;, None) and model_fields[key].many:
                 if isinstance(val, list):
                     data[field.data_key] = [dump(v) for v in val]
             else:

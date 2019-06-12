@@ -9,4 +9,4 @@ def test_all_models():
     missing_models = set(allmodels) - set(list(ModelRegistry.models.keys()))
 
     msg = "Missing models in pydent.models.__all__: {}"
-    assert len(missing_models) == 0, msg.format(', '.join(missing_models))
+    assert len(missing_models) == 0, msg.format(", ".join(missing_models))

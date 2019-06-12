@@ -9,5 +9,5 @@ def test_pickle_multiplan(session):
     canvas = Planner(p)
 
     here = dirname(abspath(__file__))
-    with open(join(here, 'multiplan.pkl'), 'wb') as f:
+    with open(join(here, "multiplan.pkl"), "wb") as f:
         dill.dump(canvas, f)

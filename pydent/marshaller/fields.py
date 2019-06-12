@@ -5,8 +5,16 @@ Fields
 from abc import ABC, abstractmethod
 from enum import Enum, auto
 
-from pydent.marshaller.descriptors import CallbackAccessor, MarshallingAccessor, RelationshipAccessor, Placeholders
-from pydent.marshaller.exceptions import AllowNoneFieldValidationError, RunTimeCallbackAttributeError
+from pydent.marshaller.descriptors import (
+    CallbackAccessor,
+    MarshallingAccessor,
+    RelationshipAccessor,
+    Placeholders,
+)
+from pydent.marshaller.exceptions import (
+    AllowNoneFieldValidationError,
+    RunTimeCallbackAttributeError,
+)
 from pydent.marshaller.registry import ModelRegistry
 from pydent.marshaller.utils import make_signature_str
 
@@ -38,7 +46,9 @@ class Field(FieldABC):
 
     ACCESSOR = MarshallingAccessor
 
-    def __init__(self, many=None, data_key=None, allow_none=None, default=Placeholders.DEFAULT):
+    def __init__(
+        self, many=None, data_key=None, allow_none=None, default=Placeholders.DEFAULT
+    ):
         """A standard field. Performs no functions on serialized and
         deserialized data.
 
@@ -75,7 +85,9 @@ class Field(FieldABC):
     def deserialize(self, owner, data):
         if data is None:
             if not self.allow_none:
-                raise AllowNoneFieldValidationError("None is not allowed for field '{}'".format(self.data_key))
+                raise AllowNoneFieldValidationError(
+                    "None is not allowed for field '{}'".format(self.data_key)
+                )
             return None
         if self.many:
             for i, x in enumerate(data):
@@ -86,7 +98,9 @@ class Field(FieldABC):
     def serialize(self, owner, data):
         if data is None:
             if not self.allow_none:
-                raise AllowNoneFieldValidationError("None is not allowed for field '{}'".format(self.data_key))
+                raise AllowNoneFieldValidationError(
+                    "None is not allowed for field '{}'".format(self.data_key)
+                )
             return None
         if self.many:
             return [self._serialize(owner, d) for d in data]
@@ -109,8 +123,17 @@ class Field(FieldABC):
             key = name
             if self.data_key:
                 key = self.data_key
-            setattr(objtype, name, self.ACCESSOR(name=key, field=self, accessor=objtype._data_key,
-                                                 deserialized_accessor=objtype._deserialized_key, default=self.default))
+            setattr(
+                objtype,
+                name,
+                self.ACCESSOR(
+                    name=key,
+                    field=self,
+                    accessor=objtype._data_key,
+                    deserialized_accessor=objtype._deserialized_key,
+                    default=self.default,
+                ),
+            )
 
     def __str__(self):
         return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>".format(
@@ -118,7 +141,7 @@ class Field(FieldABC):
             key=self.data_key,
             many=self.many,
             allow_none=self.allow_none,
-            objtype=self.objtype
+            objtype=self.objtype,
         )
 
 
@@ -177,8 +200,17 @@ class Callback(Field):
     SELF = __FLAGS.SELF
     ACCESSOR = CallbackAccessor
 
-    def __init__(self, callback, callback_args=None, callback_kwargs=None, cache=False, data_key=None, many=None,
-                 allow_none=None, always_dump=False):
+    def __init__(
+        self,
+        callback,
+        callback_args=None,
+        callback_kwargs=None,
+        cache=False,
+        data_key=None,
+        many=None,
+        allow_none=None,
+        always_dump=False,
+    ):
         """A Callback field initializer.
 
         :param callback: name of the callback function or a callable. If a name, the name should exist
@@ -222,8 +254,7 @@ class Callback(Field):
         if kwargs is None:
             kwargs = self.callback_kwargs
         return "{func}{args}".format(
-            func=self.callback,
-            args=make_signature_str(args, kwargs)
+            func=self.callback, args=make_signature_str(args, kwargs)
         )
 
     def get_callback_args(self, owner, extra_args=None):
@@ -244,8 +275,9 @@ class Callback(Field):
             raise RunTimeCallbackAttributeError(
                 "There was an error retrieving callback arguments for '{sig}' due to:\n{e}".format(
                     sig=self._callback_signature(),
-                    e="{}: {}".format(e.__class__.__name__, e)
-                )) from e
+                    e="{}: {}".format(e.__class__.__name__, e),
+                )
+            ) from e
         return args
 
     def get_callback_kwargs(self, owner, extra_kwargs):
@@ -267,8 +299,9 @@ class Callback(Field):
                 "There was an error retrieving callback keyword arguments for '{func}(args)' due to:\n{e}".format(
                     func=self.callback,
                     args=self._callback_signature(),
-                    e="{}: {}".format(e.__class__.__name__, e)
-                )) from e
+                    e="{}: {}".format(e.__class__.__name__, e),
+                )
+            ) from e
         return kwargs
 
     def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
@@ -296,8 +329,9 @@ class Callback(Field):
             raise RunTimeCallbackAttributeError(
                 "There was an calling '{signature}' due to:\n{e}".format(
                     signature=self._callback_signature(callback_args, callback_kwargs),
-                    e="{}: {}".format(e.__class__.__name__, e)
-                )) from e
+                    e="{}: {}".format(e.__class__.__name__, e),
+                )
+            ) from e
         if cache is None:
             cache = self.cache
         if cache:
@@ -308,10 +342,14 @@ class Callback(Field):
         setattr(owner, self.data_key, val)
 
     def _deserialize(self, owner, data):
-        raise NotImplementedError("_deserialize is not implemented for field {}".format(self))
+        raise NotImplementedError(
+            "_deserialize is not implemented for field {}".format(self)
+        )
 
     def deserialize(self, *args, **kwargs):
-        raise NotImplementedError("deserialize is not implemented for field {}".format(self))
+        raise NotImplementedError(
+            "deserialize is not implemented for field {}".format(self)
+        )
 
 
 class Relationship(Callback):
@@ -321,8 +359,18 @@ class Relationship(Callback):
 
     ACCESSOR = RelationshipAccessor
 
-    def __init__(self, nested, callback, callback_args=None, callback_kwargs=None, cache=True, data_key=None, many=None,
-                 allow_none=None, always_dump=False):
+    def __init__(
+        self,
+        nested,
+        callback,
+        callback_args=None,
+        callback_kwargs=None,
+        cache=True,
+        data_key=None,
+        many=None,
+        allow_none=None,
+        always_dump=False,
+    ):
         """
         Relationship initializer
 
@@ -346,7 +394,16 @@ class Relationship(Callback):
         nested should return this field's descriptor.
         """
 
-        super().__init__(callback, callback_args, callback_kwargs, cache, data_key, many, allow_none, always_dump)
+        super().__init__(
+            callback,
+            callback_args,
+            callback_kwargs,
+            cache,
+            data_key,
+            many,
+            allow_none,
+            always_dump,
+        )
         self.nested_field = Nested(nested, many, data_key)
         self.nested = nested
         self.callback_args = tuple([nested] + list(self.callback_args))
@@ -371,7 +428,12 @@ class Alias(Callback):
         """
 
         self.alias = field_name
-        super().__init__(self.alias_callback, callback_args=(Callback.SELF, self.alias), always_dump=True, data_key=field_name)
+        super().__init__(
+            self.alias_callback,
+            callback_args=(Callback.SELF, self.alias),
+            always_dump=True,
+            data_key=field_name,
+        )
 
     @staticmethod
     def alias_callback(m, field_name):

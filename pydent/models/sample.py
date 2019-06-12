@@ -10,26 +10,35 @@ from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
-from pydent.relationships import (HasOne, HasMany)
+from pydent.relationships import HasOne, HasMany
 
 
 @add_schema
 class Sample(FieldValueInterface, ModelBase):
     """A Sample model
     """
+
     fields = dict(
         # sample relationships
         sample_type=HasOne("SampleType"),
         items=HasMany("Item", ref="sample_id"),
-        field_values=HasMany("FieldValue",
-                             ref="parent_id",
-                             additional_args={"parent_class": "Sample"}),
+        field_values=HasMany(
+            "FieldValue", ref="parent_id", additional_args={"parent_class": "Sample"}
+        ),
     )
 
     METATYPE = "sample_type"
 
-    def __init__(self, name=None, project=None, description=None, sample_type=None, sample_type_id=None,
-                 properties=None, field_values=None):
+    def __init__(
+        self,
+        name=None,
+        project=None,
+        description=None,
+        sample_type=None,
+        sample_type_id=None,
+        properties=None,
+        field_values=None,
+    ):
         """
 
         :param name:
@@ -80,20 +89,17 @@ class Sample(FieldValueInterface, ModelBase):
     def _property_accessor(self, fv):
         ft = self.safe_get_field_type(fv)
         if ft:
-            if ft.ftype == 'sample':
+            if ft.ftype == "sample":
                 return fv.sample
             else:
-                if ft.ftype == 'number':
+                if ft.ftype == "number":
                     if isinstance(fv.value, str):
                         return json.loads(fv.value)
                 return fv.value
 
     @property
     def properties(self):
-        return self._field_value_dictionary(
-            lambda ft: ft.name,
-            self._property_accessor
-        )
+        return self._field_value_dictionary(lambda ft: ft.name, self._property_accessor)
 
     def update_properties(self, prop_dict):
         """
@@ -108,9 +114,9 @@ class Sample(FieldValueInterface, ModelBase):
         for name, val in prop_dict.items():
             ft = ft_dict[name]
             if ft.is_parameter():
-                key = 'value'
+                key = "value"
             else:
-                key = 'sample'
+                key = "sample"
             if issubclass(type(val), Sequence) and ft.array:
                 self.set_field_value_array(name, None, [{key: v} for v in val])
             else:
@@ -130,11 +136,17 @@ class Sample(FieldValueInterface, ModelBase):
             fv.reload(fv.save())
 
         new_fvs = self.field_values
-        server_fvs = self.session.FieldValue.where(dict(parent_id=self.id, parent_class="Sample"))
+        server_fvs = self.session.FieldValue.where(
+            dict(parent_id=self.id, parent_class="Sample")
+        )
 
-        to_remove = [fv for fv in server_fvs if fv.id not in [_fv.id for _fv in new_fvs]]
+        to_remove = [
+            fv for fv in server_fvs if fv.id not in [_fv.id for _fv in new_fvs]
+        ]
         if to_remove:
-            warn("Trident tried to save a Sample, but it required FieldValues to be deleted.")
+            warn(
+                "Trident tried to save a Sample, but it required FieldValues to be deleted."
+            )
         self.reload(self.session.utils.json_save("Sample", self.dump()))
         return self
 
@@ -142,12 +154,15 @@ class Sample(FieldValueInterface, ModelBase):
         query = {"name": object_type_name, "id": object_type_id}
         query = {k: v for k, v in query.items() if v is not None}
         if query == {}:
-            return [i for i in self.items if i.location != 'deleted']
+            return [i for i in self.items if i.location != "deleted"]
         else:
             object_types = self.session.ObjectType.where(query)
             object_type = object_types[0]
-            return [i for i in self.items if i.location != 'deleted' and
-                    i.object_type_id == object_type.id]
+            return [
+                i
+                for i in self.items
+                if i.location != "deleted" and i.object_type_id == object_type.id
+            ]
 
     def copy(self):
         """Return a copy of this sample."""
@@ -156,16 +171,18 @@ class Sample(FieldValueInterface, ModelBase):
         return copied
 
     def __str__(self):
-        return self._to_str('id', 'name', 'sample_type')
+        return self._to_str("id", "name", "sample_type")
 
 
 @add_schema
 class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
     """A SampleType model"""
+
     fields = dict(
         samples=HasMany("Sample", "SampleType"),
-        field_types=HasMany("FieldType", ref="parent_id", additional_args={"parent_class": "SampleType"}),
-
+        field_types=HasMany(
+            "FieldType", ref="parent_id", additional_args={"parent_class": "SampleType"}
+        ),
         # TODO: operation_type_afts
         # TODO: property_afts
         # TODO: add relationships description
@@ -178,7 +195,7 @@ class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
     def properties(self):
         props = {}
         for ft in self.field_types:
-            if ft.ftype == 'sample':
+            if ft.ftype == "sample":
                 props[ft.name] = [str(aft) for aft in ft.allowable_field_types]
             else:
                 props[ft.name] = ft.ftype
@@ -192,15 +209,15 @@ class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
             sample_type=self,
             description=description,
             project=project,
-            properties=properties
+            properties=properties,
         )
         return sample
 
     def _get_update_json(self):
-        return self.dump(include=('field_types',))
+        return self.dump(include=("field_types",))
 
     def _get_create_json(self):
-        return self.dump(include=('field_types',))
+        return self.dump(include=("field_types",))
 
     def __str__(self):
-        return self._to_str('id', 'name')
+        return self._to_str("id", "name")

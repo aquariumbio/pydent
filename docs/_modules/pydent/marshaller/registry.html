@@ -152,7 +152,9 @@ from pydent.marshaller.exceptions import ModelRegistryError, SchemaRegistryError
         super().__init__(name, bases, selfdict)
         if bases != () and name != SchemaRegistry.BASE:
             if name in SchemaRegistry.schemas:
-                raise SchemaRegistryError(&quot;Cannot register &#39;{}&#39; since it already exists.&quot;.format(name))
+                raise SchemaRegistryError(
+                    &quot;Cannot register &#39;{}&#39; since it already exists.&quot;.format(name)
+                )
             SchemaRegistry.schemas[name] = cls
 
     @property
@@ -188,10 +190,11 @@ from pydent.marshaller.exceptions import ModelRegistryError, SchemaRegistryError
     def get_schema(name):
         &quot;&quot;&quot;Gets model by model_name.&quot;&quot;&quot;
         if name not in SchemaRegistry.schemas:
-            raise SchemaRegistryError(&quot;Schema \&quot;{}\&quot; not found in SchemaRegistry. Available schemas:\n{}&quot;.format(
-                name,
-                &#39;,&#39;.join(SchemaRegistry.schemas.keys())
-            ))
+            raise SchemaRegistryError(
+                &#39;Schema &quot;{}&quot; not found in SchemaRegistry. Available schemas:\n{}&#39;.format(
+                    name, &quot;,&quot;.join(SchemaRegistry.schemas.keys())
+                )
+            )
         else:
             return SchemaRegistry.schemas[name]</div>
 
@@ -208,8 +211,10 @@ from pydent.marshaller.exceptions import ModelRegistryError, SchemaRegistryError
     _model_schema = None  # the class attribute to store the model_classes Schema class
     _fields_key = &quot;fields&quot;  # the class level attribute key to instantiate model fields
     _data_key = &quot;__serialized_data&quot;  # the attribute key used to store serialized data
-    _deserialized_key = &quot;__deserialized_data&quot;  # the attribute key used to store serialized data
-    BASE = &#39;SchemaModel&#39;
+    _deserialized_key = (
+        &quot;__deserialized_data&quot;
+    )  # the attribute key used to store serialized data
+    BASE = &quot;SchemaModel&quot;
 
     def __init__(cls, name, bases, selfdict):
         &quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;
@@ -226,7 +231,11 @@ from pydent.marshaller.exceptions import ModelRegistryError, SchemaRegistryError
     def get_model(name):
         &quot;&quot;&quot;Gets a model class by name.&quot;&quot;&quot;
         if name not in ModelRegistry.models:
-            raise ModelRegistryError(&quot;Model &#39;{}&#39; not found in registry. Available models:\n{}&quot;.format(name, &#39;, &#39;.join(ModelRegistry.models.keys())))
+            raise ModelRegistryError(
+                &quot;Model &#39;{}&#39; not found in registry. Available models:\n{}&quot;.format(
+                    name, &quot;, &quot;.join(ModelRegistry.models.keys())
+                )
+            )
         return ModelRegistry.models[name]</div></div>
 </pre></div>
 

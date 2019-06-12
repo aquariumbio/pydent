@@ -24,8 +24,8 @@ def test_load_model_from_json(monkeypatch, mock_login_post):
             "login": "default_login",
             "groups": [
                 {"id": 1, "name": "default_group1"},
-                {"id": 2, "name": "defulat_group2"}
-            ]
+                {"id": 2, "name": "defulat_group2"},
+            ],
         }
         json_data.update(user_default)
         return json_data
@@ -59,16 +59,9 @@ def test_load_model_with_database_connection(monkeypatch, mock_login_post):
 
     # monkey patch the "find" method
     def find_user(*args, json_data=None, **kwargs):
-        sample_default = {
-            "id": 3,
-            "name": "MyPrimer",
-            "sample_type_id": 5
-        }
+        sample_default = {"id": 3, "name": "MyPrimer", "sample_type_id": 5}
 
-        sample_type_default = {
-            "name": "Primer",
-            "id": 5
-        }
+        sample_type_default = {"name": "Primer", "id": 5}
 
         if json_data["model"] == "Sample":
             if json_data["id"] == sample_default["id"]:
@@ -109,10 +102,7 @@ def test_load_model_with_many(monkeypatch, mock_login_post):
     session = AqSession("username", "password", aquarium_url)
 
     def mock_post(*args, json_data=None, **kwargs):
-        dummy_object = {
-            "id": 3,
-            "name": "Primer"
-        }
+        dummy_object = {"id": 3, "name": "Primer"}
         if "method" not in json_data or json_data["method"] != "where":
             return dummy_object
 
@@ -122,8 +112,10 @@ def test_load_model_with_many(monkeypatch, mock_login_post):
             {"id": 3, "sample_type_id": 5, "name": "sample3"},
         ]
         return [
-            s for s in samples if
-            s["sample_type_id"] == json_data["arguments"]["sample_type_id"]]
+            s
+            for s in samples
+            if s["sample_type_id"] == json_data["arguments"]["sample_type_id"]
+        ]
 
     monkeypatch.setattr(AqHTTP, "post", mock_post)
 
@@ -154,12 +146,12 @@ def test_load_model_with_many_through(monkeypatch, mock_login_post):
                     {"id": 2, "sample_type_id": 3, "name": "sample2"},
                     {"id": 3, "sample_type_id": 5, "name": "sample3"},
                 ]
-                return [s for s in samples if
-                        s["sample_type_id"] == json_data["arguments"]["sample_type_id"]]
-        return {
-                "id": 3,
-                "name": "Primer"
-            }
+                return [
+                    s
+                    for s in samples
+                    if s["sample_type_id"] == json_data["arguments"]["sample_type_id"]
+                ]
+        return {"id": 3, "name": "Primer"}
 
     monkeypatch.setattr(AqHTTP, "post", mock_post)
 

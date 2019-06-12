@@ -30,4 +30,3 @@ class SessionABC(ABC):
     User = None
     UserBudgetAssociation = None
     Wire = None
-

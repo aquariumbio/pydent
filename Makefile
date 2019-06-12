@@ -56,14 +56,11 @@ benchmark:
 
 
 format:
-	poetry run yapf . -r -i --style="./scripts/format.ini"
-	poetry run docformatter . -r -i
+	poetry run black pydent
+	poetry run black tests
 
 
-testdeployconfig
-	poetry config repositories.testpypi https://
-
-testdeploy:
+testpublish:
 	poetry publish -r testpypi
 
 lock:
@@ -76,3 +73,7 @@ hooks: .git/hooks
 
 klocs:
 	find . -name '*.py' | xargs wc -l
+
+
+tox:
+	tox

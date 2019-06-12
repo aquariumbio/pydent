@@ -9,4 +9,3 @@ def test_instance():
     fa = fas[0]
 
     fa.instance()
-

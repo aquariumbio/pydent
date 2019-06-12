@@ -143,18 +143,17 @@ from pydent.relationships import HasOne, One, HasManyGeneric, HasOneFromMany
 <div class="viewcode-block" id="Code"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Code">[docs]</a>@add_schema
 class Code(ModelBase):
     &quot;&quot;&quot;A Code model&quot;&quot;&quot;
+
     fields = dict(
         user=HasOne(&quot;User&quot;),
-        operation_type=One(
-            &quot;OperationType&quot;, callback=&quot;get_parent&quot;, callback_args=None),
-        library=One(&quot;Library&quot;, callback=&quot;get_parent&quot;, callback_args=None)
+        operation_type=One(&quot;OperationType&quot;, callback=&quot;get_parent&quot;, callback_args=None),
+        library=One(&quot;Library&quot;, callback=&quot;get_parent&quot;, callback_args=None),
     )
 
     def get_parent(self, parent_class, *args):
         if parent_class != self.parent_class:
             return None
-        return self.session.model_interface(
-            self.parent_class).find(self.parent_id)
+        return self.session.model_interface(self.parent_class).find(self.parent_id)
 
     def update(self):
         # since they may not always be tied to specific parent
@@ -165,13 +164,14 @@ class Code(ModelBase):
 <div class="viewcode-block" id="Library"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Library">[docs]</a>@add_schema
 class Library(ModelBase):
     &quot;&quot;&quot;A Library model&quot;&quot;&quot;
+
     fields = dict(
         codes=HasManyGeneric(&quot;Code&quot;),
-        source=HasOneFromMany(&quot;Code&quot;, ref=&quot;parent_id&quot;,
-                              additional_args={
-                                  &quot;parent_class&quot;: &quot;Library&quot;,
-                                  &quot;name&quot;: &quot;source&quot;
-                              }),
+        source=HasOneFromMany(
+            &quot;Code&quot;,
+            ref=&quot;parent_id&quot;,
+            additional_args={&quot;parent_class&quot;: &quot;Library&quot;, &quot;name&quot;: &quot;source&quot;},
+        ),
     )
 
 <div class="viewcode-block" id="Library.code"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.code.Library.code">[docs]</a>    def code(self, accessor):

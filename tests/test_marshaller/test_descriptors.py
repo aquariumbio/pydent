@@ -3,9 +3,7 @@ from pydent.marshaller.fields import Field
 
 
 def test_marshalling_accessor(base):
-
     class Int(Field):
-
         def serialize(self, obj, val):
             return int(val)
 
@@ -21,4 +19,4 @@ def test_marshalling_accessor(base):
     model.id = 50
     print(model.field)
     assert type(model.id) is str
-    assert model._get_data()['id'] is 50
+    assert model._get_data()["id"] is 50

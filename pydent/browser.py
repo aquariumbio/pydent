@@ -11,6 +11,7 @@ import pandas as pd
 from pydent.marshaller import ModelRegistry
 from pydent import models as pydent_models
 from pydent.base import ModelBase
+
 # TODO: browser documentation
 # TODO: examples in sphinx
 # TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
@@ -30,7 +31,12 @@ class Browser(logger.Loggable, object):
     # TODO: ability to block model callbacks to enforce cache
 
     INTERFACE_CLASS = QueryInterface
-    ACCEPTED_GET_RELATION_TYPES = ["HasOne", "HasMany", "HasManyThrough", "HasManyGeneric"]
+    ACCEPTED_GET_RELATION_TYPES = [
+        "HasOne",
+        "HasMany",
+        "HasManyThrough",
+        "HasManyGeneric",
+    ]
 
     def __init__(self, session):
         """
@@ -42,7 +48,7 @@ class Browser(logger.Loggable, object):
         self.session = session
         self._list_models_fxn = self.sample_list
         self.use_cache = True
-        self.model_name = 'Sample'
+        self.model_name = "Sample"
         self.model_list_cache = {}
         self.model_cache = {}
         self.init_logger("Browser@{}".format(session.url))
@@ -77,15 +83,17 @@ class Browser(logger.Loggable, object):
         """
         if model_class is None:
             model_class = self.model_name
-        return self.session.model_interface(model_class, interface_class=self.INTERFACE_CLASS)
+        return self.session.model_interface(
+            model_class, interface_class=self.INTERFACE_CLASS
+        )
 
     def _generic_list_models(self, **query):
         models = self.where(query, self.model_name)
-        return ['{}: {}'.format(m.id, m.name) for m in models]
+        return ["{}: {}".format(m.id, m.name) for m in models]
 
     def sample_list(self, sample_type_id=None):
         """Returns a sample list"""
-        path = 'sample_list'
+        path = "sample_list"
         if sample_type_id is not None:
             path += "/" + str(sample_type_id)
         return self.session.utils.aqhttp.get(path)
@@ -99,18 +107,20 @@ class Browser(logger.Loggable, object):
         get_models = lambda: self._list_models_fxn(*args, **kwargs)
 
         if self.use_cache:
-            models_cache = self.model_list_cache.get('models', {})
+            models_cache = self.model_list_cache.get("models", {})
             if self.model_name in models_cache:
                 model_list = models_cache[self.model_name]
             else:
                 model_list = get_models()
         else:
             model_list = get_models()
-        self.model_list_cache.setdefault('models', {})
-        self.model_list_cache['models'][self.model_name] = model_list[:]
+        self.model_list_cache.setdefault("models", {})
+        self.model_list_cache["models"][self.model_name] = model_list[:]
         return model_list
 
-    def where(self, query, model_class=None, primary_key='id', sample_type=None, **kwargs):
+    def where(
+        self, query, model_class=None, primary_key="id", sample_type=None, **kwargs
+    ):
         """
         Perform a 'where' query. If models are found in the browser cache, those are returned,
         else new http queries are made to find the models.
@@ -125,13 +135,22 @@ class Browser(logger.Loggable, object):
         if model_class is None:
             model_class = self.model_name
         if sample_type is not None:
-            sample_type_id = self.find_by_name(sample_type, 'SampleType').id
+            sample_type_id = self.find_by_name(sample_type, "SampleType").id
             query.update({"sample_type_id": sample_type_id})
         if self.use_cache:
             return self.cached_where(query, model_class, primary_key=primary_key)
         return self.interface(model_class).where(query, **kwargs)
 
-    def __query_helper(self, fname, query, model_class, sample_type=None, opts=None, params=None, as_single=False):
+    def __query_helper(
+        self,
+        fname,
+        query,
+        model_class,
+        sample_type=None,
+        opts=None,
+        params=None,
+        as_single=False,
+    ):
         """
         Builds a custom query for the browser.
 
@@ -159,7 +178,9 @@ class Browser(logger.Loggable, object):
         if params is None:
             params = dict()
         if sample_type is not None:
-            query.update({'sample_type_id': self.find_by_name(sample_type, 'SampleType').id})
+            query.update(
+                {"sample_type_id": self.find_by_name(sample_type, "SampleType").id}
+            )
         interface = self.interface(model_class)
         fxn = getattr(interface, fname)
         models = fxn(query=query, opts=opts, **params)
@@ -182,7 +203,9 @@ class Browser(logger.Loggable, object):
         :return:
         :rtype:
         """
-        models = self.__query_helper('one', query, model_class, sample_type, opts=opts, as_single=True)
+        models = self.__query_helper(
+            "one", query, model_class, sample_type, opts=opts, as_single=True
+        )
         if not models:
             return None
         return models[0]
@@ -202,7 +225,9 @@ class Browser(logger.Loggable, object):
         :return:
         :rtype:
         """
-        return self.__query_helper('last', query, model_class, sample_type, params=dict(num=num))
+        return self.__query_helper(
+            "last", query, model_class, sample_type, params=dict(num=num)
+        )
 
     def first(self, num=1, model_class=None, sample_type=None, query=None):
         """
@@ -219,7 +244,9 @@ class Browser(logger.Loggable, object):
         :return:
         :rtype:
         """
-        return self.__query_helper('first', query, model_class, sample_type, params=dict(num=num))
+        return self.__query_helper(
+            "first", query, model_class, sample_type, params=dict(num=num)
+        )
 
     def find(self, model_id, model_class=None):
         """
@@ -238,7 +265,7 @@ class Browser(logger.Loggable, object):
             return self.cached_find(model_class, model_id)
         return self.interface(model_class).find(model_id)
 
-    def find_by_name(self, name, model_class=None, primary_key='id'):
+    def find_by_name(self, name, model_class=None, primary_key="id"):
         """
         Find model by name. Will return cached model if possible.
 
@@ -248,7 +275,7 @@ class Browser(logger.Loggable, object):
         :param primary_key:
         :return:
         """
-        models = self.where({'name': name}, model_class, primary_key=primary_key)
+        models = self.where({"name": name}, model_class, primary_key=primary_key)
         if not models:
             return None
         return models[0]
@@ -264,7 +291,7 @@ class Browser(logger.Loggable, object):
         :return:
         :rtype:
         """
-        return self.__query_helper('all', model_class=model_class, opts=opts)
+        return self.__query_helper("all", model_class=model_class, opts=opts)
 
     @staticmethod
     def _match_query(query, model_dict):
@@ -314,7 +341,9 @@ class Browser(logger.Loggable, object):
     # TODO: do we really want to simply overwrite the dictionary or update the models?
     def _update_model_cache_helper(self, modelname, modeldict):
         """Updates the browser's model cache with models from the provided model dict"""
-        self._info("CACHE updated cached with {} {} models".format(len(modeldict), modelname))
+        self._info(
+            "CACHE updated cached with {} {} models".format(len(modeldict), modelname)
+        )
         self.model_cache.setdefault(modelname, {})
 
         model_cache_dict = self.model_cache[modelname]
@@ -338,23 +367,29 @@ class Browser(logger.Loggable, object):
             arr.append(model)
 
         for clstype in grouped_by_type:
-            self._update_model_cache_helper(clstype, {m._primary_key: m for m in grouped_by_type[clstype]})
+            self._update_model_cache_helper(
+                clstype, {m._primary_key: m for m in grouped_by_type[clstype]}
+            )
 
     # TODO: support unsaved models as well
     def cached_find(self, model_class, id):
         if isinstance(id, list):
-            return self.cached_where({'id': id}, model_class)
+            return self.cached_where({"id": id}, model_class)
         cached_models = self.model_cache.get(model_class, {})
         found_model = cached_models.get(id, None)
         if found_model is None:
             found_model = self.interface(model_class).find(id)
         else:
-            self._info("CACHE found {} model with id={} in cache".format(model_class, id))
+            self._info(
+                "CACHE found {} model with id={} in cache".format(model_class, id)
+            )
         if found_model is None:
             return None
-        return self._update_model_cache_helper(model_class, {found_model.id: found_model})[0]
+        return self._update_model_cache_helper(
+            model_class, {found_model.id: found_model}
+        )[0]
 
-    def cached_where(self, query, model, primary_key='id'):
+    def cached_where(self, query, model, primary_key="id"):
         if [] in query.values():
             return []
         cached_models = self.model_cache.get(model, {})
@@ -368,11 +403,11 @@ class Browser(logger.Loggable, object):
                 query_id_list = [query_id_list]
             remaining_ids = list(set(query_id_list).difference(set(found_ids)))
             remaining_query[primary_key] = remaining_ids
-        self._info("CACHE found {num} {model} models in cache using query {query}".format(
-            num=len(found_dict),
-            model=model,
-            query=self._pprint_data(query)
-        ))
+        self._info(
+            "CACHE found {num} {model} models in cache using query {query}".format(
+                num=len(found_dict), model=model, query=self._pprint_data(query)
+            )
+        )
 
         # TODO: this code may be sketchy... here {'id': []}, really means we found all of the models..
         if primary_key in remaining_query and not remaining_query[primary_key]:
@@ -389,13 +424,17 @@ class Browser(logger.Loggable, object):
             if isinstance(sample_type, pydent_models.SampleType):
                 sample_type_id = sample_type.id
             else:
-                sample_type_id = self.find_by_name(sample_type, 'SampleType').id
+                sample_type_id = self.find_by_name(sample_type, "SampleType").id
 
         if sample_type_id is not None:
-            query.update({'sample_type_id': sample_type_id})
+            query.update({"sample_type_id": sample_type_id})
 
         model_list = self.list_models()
-        self._info("SEARCH found {} total models of type {}".format(len(model_list), self.model_name))
+        self._info(
+            "SEARCH found {} total models of type {}".format(
+                len(model_list), self.model_name
+            )
+        )
         matches = filter_fxn(pattern, model_list)
 
         if not matches:
@@ -406,7 +445,11 @@ class Browser(logger.Loggable, object):
             filtered = self.where(query, self.model_name)
         else:
             filtered = self.interface().find(matches)
-        self._info("SEARCH filtered to {} total models of type {}".format(len(filtered), self.model_name))
+        self._info(
+            "SEARCH filtered to {} total models of type {}".format(
+                len(filtered), self.model_name
+            )
+        )
 
         if self.use_cache:
             self._update_model_cache(filtered)
@@ -440,9 +483,13 @@ class Browser(logger.Loggable, object):
                     matches.append(name)
             return matches
 
-        return self._search_helper(pattern, regex_filter, sample_type=sample_type, **query)
+        return self._search_helper(
+            pattern, regex_filter, sample_type=sample_type, **query
+        )
 
-    def search_description(self, pattern, samples=None, sample_type=None, ignore_case=True):
+    def search_description(
+        self, pattern, samples=None, sample_type=None, ignore_case=True
+    ):
         """
         Search samples by their description.
 
@@ -484,7 +531,9 @@ class Browser(logger.Loggable, object):
         :return: list of samples
         :rtype: list
         """
-        return self._search_helper(pattern, get_close_matches, sample_type=sample_type, **query)
+        return self._search_helper(
+            pattern, get_close_matches, sample_type=sample_type, **query
+        )
 
     def list_field_values(self, model_ids, **query):
         """
@@ -503,14 +552,18 @@ class Browser(logger.Loggable, object):
         return d
 
     def new_sample(self, sample_type, name, description, project, properties=None):
-        st = self.find_by_name(sample_type, "SampleType", primary_key='name')
-        if st._get_deserialized_data().get('field_types', None) is None:
-            fts = self.where({"parent_class": "SampleType", "parent_id": st.id}, "FieldType")
+        st = self.find_by_name(sample_type, "SampleType", primary_key="name")
+        if st._get_deserialized_data().get("field_types", None) is None:
+            fts = self.where(
+                {"parent_class": "SampleType", "parent_id": st.id}, "FieldType"
+            )
             st.field_types = fts
         return st.new_sample(name, description, project, properties=properties)
 
     # TODO: handle not-yet existant samples using rid
-    def _retrieve_has_many_or_has_one(self, models, relationship_name, relation=None, strict=True):
+    def _retrieve_has_many_or_has_one(
+        self, models, relationship_name, relation=None, strict=True
+    ):
         """Performs exactly 1 query to fullfill some relationship for a list of models"""
         if not models:
             return []
@@ -528,16 +581,18 @@ class Browser(logger.Loggable, object):
 
         retrieve_query = relation.build_query(models)
         retrieved_models = self.where(retrieve_query, model_class2)
-        self._info("RETRIEVE retrieved {num} {cls} models using query {query}".format(
-            num=len(retrieved_models),
-            cls=model_class2,
-            query=self._pprint_data(retrieve_query)
-        ))
+        self._info(
+            "RETRIEVE retrieved {num} {cls} models using query {query}".format(
+                num=len(retrieved_models),
+                cls=model_class2,
+                query=self._pprint_data(retrieve_query),
+            )
+        )
 
         if not retrieved_models:
             return []
 
-        if relation.QUERY_TYPE == 'query':
+        if relation.QUERY_TYPE == "query":
             model_dict = {m1.id: list() for m1 in models}
             for model in retrieved_models:
                 model_ref = getattr(model, ref)
@@ -548,8 +603,11 @@ class Browser(logger.Loggable, object):
                         model_dict[model_ref].append(model)
                 else:
                     self._error(
-                        "RETRIEVE ref: {ref} {model_ref}, attr: {attr}".format(ref=ref, attr=attr, model_ref=model_ref))
-        elif relation.QUERY_TYPE == 'by_id':
+                        "RETRIEVE ref: {ref} {model_ref}, attr: {attr}".format(
+                            ref=ref, attr=attr, model_ref=model_ref
+                        )
+                    )
+        elif relation.QUERY_TYPE == "by_id":
             retrieved_dict = {getattr(m2, attr): m2 for m2 in retrieved_models}
             model_dict = {m1.id: None for m1 in models}
             missing_models = []
@@ -564,26 +622,36 @@ class Browser(logger.Loggable, object):
                             model_dict[model_attr] = retrieved_dict[model_ref]
                     else:
                         self._error(
-                            "attr: {attr}={model_attr}, ref: {ref}={model_ref}".format(m1=model, ref=ref, attr=attr,
-                                                                                       model_attr=model_attr,
-                                                                                       model_ref=model_ref))
+                            "attr: {attr}={model_attr}, ref: {ref}={model_ref}".format(
+                                m1=model,
+                                ref=ref,
+                                attr=attr,
+                                model_attr=model_attr,
+                                model_ref=model_ref,
+                            )
+                        )
                     if model_ref not in retrieved_dict:
                         missing_models.append(model_ref)
             if missing_models:
-                self._error("INCONSISTENT AQUARIUM DATABASE - There where {l} missing {cls} models "
-                            "from the Aquarium database, which were ignored by trident. "
-                            "This happens when models are deleted from Aquarium which "
-                            "results in an inconsistent server database. Trident was unable "
-                            "resolve the following relationships which returned no models from the server: "
-                            "{cls}.where({attr}={missing})".format(
-                    l=len(missing_models),
-                    cls=model_class2,
-                    missing=missing_models,
-                    attr=attr
-                ))
+                self._error(
+                    "INCONSISTENT AQUARIUM DATABASE - There where {l} missing {cls} models "
+                    "from the Aquarium database, which were ignored by trident. "
+                    "This happens when models are deleted from Aquarium which "
+                    "results in an inconsistent server database. Trident was unable "
+                    "resolve the following relationships which returned no models from the server: "
+                    "{cls}.where({attr}={missing})".format(
+                        l=len(missing_models),
+                        cls=model_class2,
+                        missing=missing_models,
+                        attr=attr,
+                    )
+                )
         else:
             raise BrowserException(
-                "QUERY_TYPE '{}' for relation '{}' not recognized.".format(relation.QUERY_TYPE, relationship_name))
+                "QUERY_TYPE '{}' for relation '{}' not recognized.".format(
+                    relation.QUERY_TYPE, relationship_name
+                )
+            )
         for model in models:
             found_models = model_dict[getattr(model, attr)]
             setattr(model, relationship_name, found_models)
@@ -593,7 +661,9 @@ class Browser(logger.Loggable, object):
     def _retrieve_has_many_through(self, models, relationship_name, strict=True):
         """Performs exactly 2 queries to establish a HasManyThrough relationship"""
         relation = models[0].get_relationships()[relationship_name]
-        association_relation = models[0].get_relationships()[relation.through_model_attr]
+        association_relation = models[0].get_relationships()[
+            relation.through_model_attr
+        ]
         attr = relation.attr
         ref = association_relation.ref
 
@@ -606,7 +676,9 @@ class Browser(logger.Loggable, object):
             if ar.nested == relation.nested:
                 other_ref = r
 
-        associations = self._retrieve_has_many_or_has_one(models, relation.through_model_attr, strict=strict)
+        associations = self._retrieve_has_many_or_has_one(
+            models, relation.through_model_attr, strict=strict
+        )
         self._retrieve_has_many_or_has_one(associations, other_ref, strict=strict)
 
         associations_by_mid = {}
@@ -664,30 +736,50 @@ class Browser(logger.Loggable, object):
             return []
         self._info('RETRIEVE retrieving "{}"'.format(relationship_name))
         model_classes = set([m.__class__.__name__ for m in models])
-        assert len(model_classes) == 1, "Models must be all of the same BaseModel, but found {}".format(model_classes)
+        assert (
+            len(model_classes) == 1
+        ), "Models must be all of the same BaseModel, but found {}".format(
+            model_classes
+        )
         if relation is None:
             relation = models[0].get_relationships().get(relationship_name, None)
             if relation is None:
                 if strict:
                     raise BrowserException(
-                        "Relation '{}' not found in relationships for {}".format(relationship_name, type(models[0])))
+                        "Relation '{}' not found in relationships for {}".format(
+                            relationship_name, type(models[0])
+                        )
+                    )
                 else:
                     return []
         else:
             if relationship_name in models[0].get_relationships():
                 raise BrowserException(
                     'Cannot add new relationship "{}" because it already exists in the model definition'.format(
-                        relationship_name))
+                        relationship_name
+                    )
+                )
         # TODO: add relationship handler for Many and One
         if relation.__class__.__name__ not in self.ACCEPTED_GET_RELATION_TYPES:
             raise BrowserException(
-                "retrieve is not supported for the \"{}\" relationship".format(relation.__class__.__name__))
-        self._info('RETRIEVE {}: {}'.format(relationship_name, relation))
-        if hasattr(relation, 'through_model_attr'):
-            found_models = self._retrieve_has_many_through(models, relationship_name, strict=strict)
+                'retrieve is not supported for the "{}" relationship'.format(
+                    relation.__class__.__name__
+                )
+            )
+        self._info("RETRIEVE {}: {}".format(relationship_name, relation))
+        if hasattr(relation, "through_model_attr"):
+            found_models = self._retrieve_has_many_through(
+                models, relationship_name, strict=strict
+            )
         else:
-            found_models = self._retrieve_has_many_or_has_one(models, relationship_name, relation, strict=strict)
-        self._info('RETRIEVE retrieved {} for "{}"'.format(len(found_models), relationship_name))
+            found_models = self._retrieve_has_many_or_has_one(
+                models, relationship_name, relation, strict=strict
+            )
+        self._info(
+            'RETRIEVE retrieved {} for "{}"'.format(
+                len(found_models), relationship_name
+            )
+        )
         return found_models
 
     def recursive_retrieve(self, models, relations, strict=True):
@@ -727,18 +819,21 @@ class Browser(logger.Loggable, object):
         if isinstance(relations, str):
             self._info('RETRIEVE retrieving "{}"'.format(relations))
             return {relations: self.retrieve(models, relations, strict=strict)}
-        elif isinstance(relations, list) or \
-                isinstance(relations, set) or \
-                isinstance(relations, dict) or \
-                isinstance(relations, tuple):
+        elif (
+            isinstance(relations, list)
+            or isinstance(relations, set)
+            or isinstance(relations, dict)
+            or isinstance(relations, tuple)
+        ):
             models_by_attr = {}
             for relation_name in relations:
                 models_by_attr.setdefault(relation_name, [])
                 new_models = self.retrieve(models, relation_name, strict=strict)
                 models_by_attr[relation_name] += new_models
                 if isinstance(relations, dict):
-                    _models_by_attr = self.recursive_retrieve(new_models, dict(relations).pop(relation_name),
-                                                              strict=strict)
+                    _models_by_attr = self.recursive_retrieve(
+                        new_models, dict(relations).pop(relation_name), strict=strict
+                    )
                     for attr in _models_by_attr:
                         _models = _models_by_attr[attr]
                         if attr in models_by_attr:
@@ -749,7 +844,11 @@ class Browser(logger.Loggable, object):
         elif not strict:
             return []
         else:
-            raise BrowserException("Type {} for is not recognized for recursive_retrieve".format(type(relations)))
+            raise BrowserException(
+                "Type {} for is not recognized for recursive_retrieve".format(
+                    type(relations)
+                )
+            )
 
     def get(self, models, relations=None, strict=True):
         if isinstance(models, ModelBase):
@@ -776,7 +875,9 @@ class Browser(logger.Loggable, object):
         """
         df = pd.DataFrame(self.samples_to_rows(samples))
         st = samples[0].sample_type
-        columns = [st.name, 'Description', 'Project'] + [ft.name for ft in st.field_types]
+        columns = [st.name, "Description", "Project"] + [
+            ft.name for ft in st.field_types
+        ]
         df = df[columns]
         # pd.DataFrame(df['Fragments'].values.tolist())
         for ft in st.field_types:
@@ -825,7 +926,9 @@ class Browser(logger.Loggable, object):
         :rtype: list
         """
 
-        assert len(set([s.sample_type_id for s in samples])) == 1, "Samples be the of the same SampleType"
+        assert (
+            len(set([s.sample_type_id for s in samples])) == 1
+        ), "Samples be the of the same SampleType"
         sample_type = samples[0].sample_type
 
         # self.recursive_retrieve(samples, {
@@ -835,6 +938,7 @@ class Browser(logger.Loggable, object):
         #     }
         # })
         if sample_resolver is None:
+
             def default_resolver(sample):
                 if isinstance(sample, pydent_models.Sample):
                     return sample.name
@@ -851,7 +955,11 @@ class Browser(logger.Loggable, object):
             sample_resolver = default_resolver
         rows = []
         for s in samples:
-            row = {sample_type.name: s.name, 'Description': s.description, 'Project': s.project}
+            row = {
+                sample_type.name: s.name,
+                "Description": s.description,
+                "Project": s.project,
+            }
             props = {k: sample_resolver(v) for k, v in s.properties.items()}
             row.update(props)
             rows.append(row)
@@ -859,15 +967,15 @@ class Browser(logger.Loggable, object):
 
     # TODO: add to change log
     @staticmethod
-    def _inspect_header(model, name=None, _id='id'):
+    def _inspect_header(model, name=None, _id="id"):
         if name is not None:
             name = eval("model.{}".format(name))
         else:
-            name = ''
+            name = ""
         return "{model_class}: {_id} {name}".format(
             model_class=model.__class__.__name__,
             name=name,
-            _id=eval("model.{}".format(_id))
+            _id=eval("model.{}".format(_id)),
         )
 
     # TODO: add to change log
@@ -875,11 +983,10 @@ class Browser(logger.Loggable, object):
     def _inspect_rows(model, attributes, indent=2):
         rows = []
         for attr in attributes:
-            rows.append("{attr}: {val}".format(
-                attr=attr,
-                val=eval("model.{}".format(attr))
-            ))
-        sep = '\n' + ' ' * indent
+            rows.append(
+                "{attr}: {val}".format(attr=attr, val=eval("model.{}".format(attr)))
+            )
+        sep = "\n" + " " * indent
         s = sep + sep.join(rows)
         return s
 
@@ -888,7 +995,4 @@ class Browser(logger.Loggable, object):
     def inspect(cls, model, header, attributes):
         model_header = cls._inspect_header(model, **header)
         rows = cls._inspect_rows(model, attributes)
-        return "{header}{rows}".format(
-            header=model_header,
-            rows=rows
-        )
+        return "{header}{rows}".format(header=model_header, rows=rows)

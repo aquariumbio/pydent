@@ -7,17 +7,20 @@ import itertools
 def chunkify(list, n):
     """Breaks a list into n chunks. Last chunk may not be equal in size to other chunks"""
     l = list
-    return [l[i:i + n] for i in range(0, len(l), n)]
+    return [l[i : i + n] for i in range(0, len(l), n)]
 
 
 def with_index(fxn):
     @wraps(fxn)
     def wrapped(i, *args, **kwargs):
         return (i, fxn(*args, **kwargs))
+
     return wrapped
 
 
-async def exec_async_fxn(fxn, arg_list, kwargs, chunk_size=1, desc='', progress_bar=True):
+async def exec_async_fxn(
+    fxn, arg_list, kwargs, chunk_size=1, desc="", progress_bar=True
+):
     """
     Executes an asynchronous function
 
@@ -75,8 +78,17 @@ def asyncfunc(fxn, arg_list, kwargs=None, chunk_size=1, progress_bar=True, desc=
     loop = asyncio.get_event_loop()
     if desc is None:
         desc = desc
-    results = loop.run_until_complete(exec_async_fxn(fxn, arg_list, kwargs=kwargs, desc=desc, progress_bar=progress_bar, chunk_size=chunk_size))
-#     loop.close()
+    results = loop.run_until_complete(
+        exec_async_fxn(
+            fxn,
+            arg_list,
+            kwargs=kwargs,
+            desc=desc,
+            progress_bar=progress_bar,
+            chunk_size=chunk_size,
+        )
+    )
+    #     loop.close()
     return results
 
 
@@ -95,19 +107,27 @@ def make_async(chunk_size, progress_bar=True, as_classmethod=False, data_pos=0):
     :return: results
     :rtype: list
     """
+
     def dec(fxn):
         data_position = data_pos
         if as_classmethod:
             data_position += 1
+
         @wraps(fxn)
         def wrapper(*args, **kwargs):
             data = args[data_position]
-            post_data_args = args[data_position+1:]
+            post_data_args = args[data_position + 1 :]
             pre_data_args = args[:data_position]
             chunks = chunkify(data, chunk_size)
             arg_list = [pre_data_args + (c,) + post_data_args for c in chunks]
-            desc = "Running \"{}\" [size: {}, num: {}]: ".format(fxn.__name__, chunk_size, len(chunks))
-            results = asyncfunc(fxn, arg_list, kwargs=kwargs, progress_bar=progress_bar, desc=desc)
+            desc = 'Running "{}" [size: {}, num: {}]: '.format(
+                fxn.__name__, chunk_size, len(chunks)
+            )
+            results = asyncfunc(
+                fxn, arg_list, kwargs=kwargs, progress_bar=progress_bar, desc=desc
+            )
             return list(itertools.chain(*results))
+
         return wrapper
+
     return dec

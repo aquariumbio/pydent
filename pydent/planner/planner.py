@@ -34,19 +34,20 @@ def plan_verification_wrapper(fxn):
     def wrapper(self, *args, **kwargs):
         if not issubclass(self.__class__, Planner):
             raise PlannerException(
-                "Cannot apply 'verify_plan_models' to a non-planner instance.")
+                "Cannot apply 'verify_plan_models' to a non-planner instance."
+            )
         for arg in args:
             if issubclass(arg.__class__, FieldValue):
                 fv = arg
                 if not self._contains_op(fv.operation):
                     fv_ref = "{} {}".format(fv.role, fv.name)
-                    msg = "FieldValue \"{}\" not found in planner."
+                    msg = 'FieldValue "{}" not found in planner.'
                     raise PlannerException(msg.format(fv_ref))
             elif issubclass(arg.__class__, Operation):
                 op = arg
                 if not self._contains_op(op):
                     op_ref = "{}".format(op.operation_type.name)
-                    msg = "Operation \"{}\" not found in planner."
+                    msg = 'Operation "{}" not found in planner.'
                     raise PlannerException(msg.format(op_ref))
         return fxn(self, *args, **kwargs)
 
@@ -54,23 +55,26 @@ def plan_verification_wrapper(fxn):
 
 
 class AFTMatcher(object):
-
     @staticmethod
     def _resolve_to_field_types(model, role=None):
         if isinstance(model, FieldValue):
             if model.role == role:
                 return [model.field_type]
             else:
-                msg = "Planner attempted to find matching" \
-                      " allowable_field_types for" \
-                      " an input FieldValue but found an output FieldValue"
+                msg = (
+                    "Planner attempted to find matching"
+                    " allowable_field_types for"
+                    " an input FieldValue but found an output FieldValue"
+                )
                 raise PlannerException(msg)
         elif isinstance(model, Operation):
             return [ft for ft in model.get_field_types() if ft.role == role]
         else:
             raise PlannerException(
-                "Cannot resolve inputs, type must be a FieldValue or Operation, not a \"{}\"".format(type(model)))
-
+                'Cannot resolve inputs, type must be a FieldValue or Operation, not a "{}"'.format(
+                    type(model)
+                )
+            )
 
     @classmethod
     def _collect_matching_afts(cls, source, destination):
@@ -84,8 +88,8 @@ class AFTMatcher(object):
         :rtype: tuple
         """
         """Find matching AllowableFieldTypes"""
-        dest_fts = cls._resolve_to_field_types(destination, role='input')
-        src_fts = cls._resolve_to_field_types(source, role='output')
+        dest_fts = cls._resolve_to_field_types(destination, role="input")
+        src_fts = cls._resolve_to_field_types(source, role="output")
 
         matching_afts = []
         matching_inputs = []
@@ -120,8 +124,10 @@ class AFTMatcher(object):
                 in_object_type_id = dest_aft.object_type_id
                 out_sample_type_id = src_aft.sample_type_id
                 in_sample_type_id = dest_aft.sample_type_id
-                if (out_object_type_id == in_object_type_id
-                        and out_sample_type_id == in_sample_type_id):
+                if (
+                    out_object_type_id == in_object_type_id
+                    and out_sample_type_id == in_sample_type_id
+                ):
                     afts.append((src_aft, dest_aft))
         return afts
 
@@ -133,9 +139,13 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
         ANY = "ANY"  # pick the first item that matches the set field_value
         RESTRICT = "RESTRICT"  # restrict to the currently set allowable_field_type
-        PREFERRED = "PREFERRED"  # (default) pick the item that matches the currently set allowable_field_type, else
+        PREFERRED = (
+            "PREFERRED"
+        )  # (default) pick the item that matches the currently set allowable_field_type, else
         # pick ANY item that matches the set field_value
-        RESTRICT_TO_ONE = "RESTRICT TO ONE"  # will not select item if its being used in another active operation
+        RESTRICT_TO_ONE = (
+            "RESTRICT TO ONE"
+        )  # will not select item if its being used in another active operation
         _DEFAULT = PREFERRED
         _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]
 
@@ -154,10 +164,11 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
             if plan_id is not None:
                 # load an existing plan
-                plan = self.browser.find(plan_id, 'Plan')
+                plan = self.browser.find(plan_id, "Plan")
                 if plan is None:
                     raise PlannerException(
-                        "Could not find plan with id={}".format(plan_id))
+                        "Could not find plan with id={}".format(plan_id)
+                    )
                 self.plan = plan
             else:
                 # create a new plan
@@ -187,22 +198,20 @@ class Planner(logger.Loggable, AFTMatcher, object):
             "operations": {
                 "field_values": {
                     "wires_as_dest": {
-                        'source': 'operation',
-                        'destination': 'operation'
+                        "source": "operation",
+                        "destination": "operation",
                     },
                     "wires_as_source": {
-                        'source': 'operation',
-                        'destination': 'operation'
+                        "source": "operation",
+                        "destination": "operation",
                     },
                     "sample": [],
                     "item": [],
                     "operation": [],
-                    "field_type": []
+                    "field_type": [],
                 },
-                'plan_associations': ['plan'],
-                "operation_type": {
-                    "field_types": []
-                }
+                "plan_associations": ["plan"],
+                "operation_type": {"field_types": []},
             }
         }
 
@@ -251,13 +260,15 @@ class Planner(logger.Loggable, AFTMatcher, object):
     def create(self):
         """Create the plan on Aquarium"""
         if self.plan.id:
-            raise PlannerException("Cannot create plan since it already exists on the server (plan_id={})"
-                                   " Did you mean .{save}() push an update to the server plan? You"
-                                   " can also create a copy of the new plan by calling .{replan}().".format(
-                plan_id=self.plan.id,
-                save=self.save.__name__,
-                replan=self.replan.__name__
-            ))
+            raise PlannerException(
+                "Cannot create plan since it already exists on the server (plan_id={})"
+                " Did you mean .{save}() push an update to the server plan? You"
+                " can also create a copy of the new plan by calling .{replan}().".format(
+                    plan_id=self.plan.id,
+                    save=self.save.__name__,
+                    replan=self.replan.__name__,
+                )
+            )
 
         self.plan.create()
 
@@ -292,13 +303,13 @@ class Planner(logger.Loggable, AFTMatcher, object):
         """Adds a new operation to the plan"""
         query = {"deployed": True, "name": operation_type_name}
         if category is not None:
-            query['category'] = category
+            query["category"] = category
         ots = self.session.OperationType.where(query)
         if len(ots) > 1:
-            msg = "Found more than one OperationType for query \"{}\". Have you tried specifying the category?"
+            msg = 'Found more than one OperationType for query "{}". Have you tried specifying the category?'
             raise PlannerException(msg.format(query))
         if ots is None or len(ots) == 0:
-            msg = "Could not find deployed OperationType \"{}\"."
+            msg = 'Could not find deployed OperationType "{}".'
             raise PlannerException(msg.format(operation_type_name))
         return self.create_operation_by_type(ots[0])
 
@@ -310,8 +321,10 @@ class Planner(logger.Loggable, AFTMatcher, object):
         elif issubclass(type(name_id_or_ot), OperationType):
             return self.create_operation_by_type(name_id_or_ot)
         else:
-            raise PlannerException("Expected a string, integer, or OperationType, "
-                                   "not a {}".format(type(name_id_or_ot)))
+            raise PlannerException(
+                "Expected a string, integer, or OperationType, "
+                "not a {}".format(type(name_id_or_ot))
+            )
 
     @staticmethod
     def _model_are_equal(model1, model2):
@@ -330,8 +343,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
     @plan_verification_wrapper
     def get_wire(self, fv1, fv2):
         for wire in self.plan.wires:
-            if (self._model_are_equal(wire.source, fv1)
-                    and self._model_are_equal(wire.destination, fv2)):
+            if self._model_are_equal(wire.source, fv1) and self._model_are_equal(
+                wire.destination, fv2
+            ):
                 self._info("found wire from {} to {}".format(fv1.name, fv2.name))
                 return wire
 
@@ -487,7 +501,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         :param fvname: FieldType/FieldValue name of the array
         :return:
         """
-        field_type = op.operation_type.field_type(fvname, 'input')
+        field_type = op.operation_type.field_type(fvname, "input")
         if field_type.array:
             existing_fvs = op.input_array(fvname)
             for fv in existing_fvs:
@@ -511,7 +525,8 @@ class Planner(logger.Loggable, AFTMatcher, object):
         :rtype: Wire
         """
         afts, model_inputs, model_outputs = self._collect_matching_afts(
-            source, destination)
+            source, destination
+        )
 
         # TODO: only if matching FVs are ambiguous raise Exception
         # TODO: automatically wire to empty FV if they are equivalent
@@ -519,10 +534,12 @@ class Planner(logger.Loggable, AFTMatcher, object):
             raise PlannerException(
                 "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}\n"
                 "Instead, try to use `add_wire` method to wire together two FieldValues.".format(
-                    ', '.join([ft.name for ft in model_inputs]),
+                    ", ".join([ft.name for ft in model_inputs]),
                     model_inputs[0].operation_type.name,
-                    ', '.join([ft.name for ft in model_outputs]),
-                    model_outputs[0].operation_type.name))
+                    ", ".join([ft.name for ft in model_outputs]),
+                    model_outputs[0].operation_type.name,
+                )
+            )
         elif len(afts) > 0:
             for aft1, aft2 in afts:
 
@@ -531,7 +548,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
                 # input_fv = None
                 if input_ft.array:
-                    input_fv = self._select_empty_input_array(destination, input_ft.name)
+                    input_fv = self._select_empty_input_array(
+                        destination, input_ft.name
+                    )
                 else:
                     input_fv = destination.input(input_ft.name)
                 output_fv = source.output(output_ft.name)
@@ -542,7 +561,8 @@ class Planner(logger.Loggable, AFTMatcher, object):
             raise PlannerException(
                 "Cannot quick wire. No possible wiring found between inputs {} and {}".format(
                     source, destination
-                ))
+                )
+            )
 
     def quick_wire_by_name(self, otname1, otname2):
         """Wires together the last added operations."""
@@ -554,7 +574,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
         wires_by_id = {}
         for wire in self.plan.wires:
             if wire.source is not None and wire.destination is not None:
-                _id = "{}_{}".format(wire.source._primary_key, wire.destination._primary_key)
+                _id = "{}_{}".format(
+                    wire.source._primary_key, wire.destination._primary_key
+                )
                 wires_by_id[_id] = wire
         for op in self.plan.operations:
             for fv in op.field_values:
@@ -592,19 +614,29 @@ class Planner(logger.Loggable, AFTMatcher, object):
     def _set_wire(self, src_fv, dest_fv, preference="source", setter=None):
 
         if len(self.get_incoming_wires(dest_fv)) > 0:
-            raise PlannerException("Cannot wire because \"{}\" already has an incoming wire and inputs"
-                                   " can only have one incoming wire. Please remove wire"
-                                   " using 'canvas.remove_wire(src_fv, dest_fv)' before setting.".format(dest_fv.name))
+            raise PlannerException(
+                'Cannot wire because "{}" already has an incoming wire and inputs'
+                " can only have one incoming wire. Please remove wire"
+                " using 'canvas.remove_wire(src_fv, dest_fv)' before setting.".format(
+                    dest_fv.name
+                )
+            )
 
         # first collect any matching allowable field types between the field values
         aft_pairs = self._collect_matching_afts(src_fv, dest_fv)[0]
 
         if len(aft_pairs) == 0:
-            raise PlannerException("Cannot wire \"{}\" to \"{}\". No allowable field types match."
-                                   .format(src_fv.name, dest_fv.name))
+            raise PlannerException(
+                'Cannot wire "{}" to "{}". No allowable field types match.'.format(
+                    src_fv.name, dest_fv.name
+                )
+            )
 
         # select the first aft
-        default_aft_ids = [src_fv.allowable_field_type_id, dest_fv.allowable_field_type_id]
+        default_aft_ids = [
+            src_fv.allowable_field_type_id,
+            dest_fv.allowable_field_type_id,
+        ]
         pref_index = 0
         if preference == "destination":
             pref_index = 1
@@ -612,7 +644,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
         for pair in aft_pairs:
             if pair[pref_index].id == default_aft_ids[pref_index]:
                 selected_aft_pair = pair
-        assert selected_aft_pair[0].object_type_id == selected_aft_pair[1].object_type_id
+        assert (
+            selected_aft_pair[0].object_type_id == selected_aft_pair[1].object_type_id
+        )
 
         # resolve sample
         samples = [src_fv.sample, dest_fv.sample]
@@ -625,28 +659,46 @@ class Planner(logger.Loggable, AFTMatcher, object):
             selected_sample = samples[pref_index]
 
             # filter afts by sample_type_id
-            aft_pairs = [aft for aft in aft_pairs if aft[0].sample_type_id ==
-                         selected_sample.sample_type_id]
+            aft_pairs = [
+                aft
+                for aft in aft_pairs
+                if aft[0].sample_type_id == selected_sample.sample_type_id
+            ]
             selected_aft_pair = aft_pairs[0]
 
             if len(aft_pairs) == 0:
-                raise PlannerException("No allowable_field_types were found for FieldValues {} & {} for"
-                                       " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name))
+                raise PlannerException(
+                    "No allowable_field_types were found for FieldValues {} & {} for"
+                    " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name)
+                )
 
             setter(src_fv, sample=selected_sample)
             setter(dest_fv, sample=selected_sample)
 
-            assert selected_aft_pair[0].sample_type_id == selected_aft_pair[1].sample_type_id
+            assert (
+                selected_aft_pair[0].sample_type_id
+                == selected_aft_pair[1].sample_type_id
+            )
             assert selected_aft_pair[0].sample_type_id == src_fv.sample.sample_type_id
             assert selected_aft_pair[0].sample_type_id == dest_fv.sample.sample_type_id
 
             # set the sample (and allowable_field_type)
-            if src_fv.sample is not None and (dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
+            if src_fv.sample is not None and (
+                dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
+            ):
                 setter(
-                    dest_fv, sample=src_fv.sample, container=selected_aft_pair[0].object_type)
-            elif dest_fv.sample is not None and (src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
+                    dest_fv,
+                    sample=src_fv.sample,
+                    container=selected_aft_pair[0].object_type,
+                )
+            elif dest_fv.sample is not None and (
+                src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
+            ):
                 setter(
-                    src_fv, sample=dest_fv.sample, container=selected_aft_pair[0].object_type)
+                    src_fv,
+                    sample=dest_fv.sample,
+                    container=selected_aft_pair[0].object_type,
+                )
 
         setter(src_fv, container=selected_aft_pair[0].object_type)
         setter(dest_fv, container=selected_aft_pair[0].object_type)
@@ -704,20 +756,40 @@ class Planner(logger.Loggable, AFTMatcher, object):
     # TODO: Support for row and column
     # TODO: routing dict does not work with input arrays (it groups them ALL together)
     @plan_verification_wrapper
-    def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
+    def set_field_value(
+        self,
+        field_value,
+        sample=None,
+        item=None,
+        container=None,
+        value=None,
+        row=None,
+        column=None,
+    ):
         self._info(
-            "setting field_value {} to {} - {} - {} - {}".format(field_value.name, sample, item, container, value))
+            "setting field_value {} to {} - {} - {} - {}".format(
+                field_value.name, sample, item, container, value
+            )
+        )
         field_value.set_value(
-            sample=sample, item=item, container=container, value=value, row=None, column=None)
+            sample=sample,
+            item=item,
+            container=container,
+            value=value,
+            row=None,
+            column=None,
+        )
         if not field_value.field_type.array:
             routing = field_value.field_type.routing
             fvs = self.get_sample_routing_of_operation(field_value.operation)[routing]
-            if field_value.field_type.ftype == 'sample':
+            if field_value.field_type.ftype == "sample":
                 for fv in fvs:
                     fv.set_value(sample=sample)
         return field_value
 
-    def set_input_field_value_array(self, op, field_value_name, sample=None, item=None, container=None):
+    def set_input_field_value_array(
+        self, op, field_value_name, sample=None, item=None, container=None
+    ):
         """
         Finds the first 'empty' (no incoming wires and no sample set) field value and set the field value.
         If there are no empty field values in the array, create a new field value and set that one.
@@ -736,7 +808,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
         :rtype: FieldValue
         """
         input_fv = self._select_empty_input_array(op, field_value_name)
-        return self.set_field_value(input_fv, sample=sample, item=item, container=container)
+        return self.set_field_value(
+            input_fv, sample=sample, item=item, container=container
+        )
 
     def set_field_value_and_propogate(self, field_value, sample=None):
         # ots = self.browser.where('OperationType', {"id": [op.operation_type_id for op in self.plan.operations]})
@@ -746,7 +820,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
         for node in subgraph:
             n = routing_graph.node[node]
-            fv = n['fv']
+            fv = n["fv"]
             self.set_field_value(fv, sample=sample)
         return field_value
 
@@ -768,20 +842,30 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
     def _item_preference_query(self, sample, field_value, item_preference):
         if item_preference not in self.ITEM_SELECTION_PREFERENCE._CHOICES:
-            raise PlannerException("Item selection preference \"{}\" not recognized"
-                                   " Please select from one of {}".format(item_preference, ','.join(
-                self.ITEM_SELECTION_PREFERENCE._CHOICES)))
+            raise PlannerException(
+                'Item selection preference "{}" not recognized'
+                " Please select from one of {}".format(
+                    item_preference, ",".join(self.ITEM_SELECTION_PREFERENCE._CHOICES)
+                )
+            )
         query = {"sample_id": sample.id}
 
         # restrict allowable_field_types based on preference
         afts = list(field_value.field_type.allowable_field_types)
 
-        if item_preference in [self.ITEM_SELECTION_PREFERENCE.RESTRICT, self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE]:
+        if item_preference in [
+            self.ITEM_SELECTION_PREFERENCE.RESTRICT,
+            self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE,
+        ]:
             afts = [field_value.allowable_field_type]
         # elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
         #     afts = [aft for aft in field_value.field_type.allowable_field_types if aft.sample]
         if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
-            afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id == sample.sample_type_id)
+            afts = sorted(
+                afts,
+                reverse=True,
+                key=lambda aft: aft.sample_type_id == sample.sample_type_id,
+            )
 
         query.update({"object_type_id": [aft.object_type_id for aft in afts]})
         return query
@@ -790,9 +874,11 @@ class Planner(logger.Loggable, AFTMatcher, object):
         """Returns a dictionary of item_ids and the array of field_values that use them"""
         browser = self.browser
         item_ids = [i.id for i in items]
-        server_fvs = browser.where({"child_item_id": item_ids}, model_class='FieldValue')
-        browser.retrieve(server_fvs, 'operation')
-        server_fvs = [fv for fv in server_fvs if fv.operation.status != 'planning']
+        server_fvs = browser.where(
+            {"child_item_id": item_ids}, model_class="FieldValue"
+        )
+        browser.retrieve(server_fvs, "operation")
+        server_fvs = [fv for fv in server_fvs if fv.operation.status != "planning"]
 
         these_fvs = []
         for op in self.plan.operations:
@@ -815,8 +901,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
         query = self._item_preference_query(sample, field_value, item_preference)
         available_items = self.session.Item.where(query)
-        available_items = [i for i in available_items if i.location != 'deleted']
-
+        available_items = [i for i in available_items if i.location != "deleted"]
 
         x = len(available_items)
         if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE:
@@ -842,8 +927,8 @@ class Planner(logger.Loggable, AFTMatcher, object):
         # find all field_values that use this item
         item_id_to_fv = defaultdict(list)
         item_ids = [i.id for i in items]
-        fvs = browser.where({"child_item_id": item_ids}, model_class='FieldValue')
-        browser.retrieve(fvs, 'operation')
+        fvs = browser.where({"child_item_id": item_ids}, model_class="FieldValue")
+        browser.retrieve(fvs, "operation")
 
         for fv in fvs:
             item_id_to_fv[fv.child_item_id].append(fv)
@@ -854,25 +939,41 @@ class Planner(logger.Loggable, AFTMatcher, object):
             fvs = item_id_to_fv[item.id]
 
             # filter by operations that are submitted
-            fvs = [fv for fv in fvs if fv.operation.status != 'planning']
+            fvs = [fv for fv in fvs if fv.operation.status != "planning"]
             if len(fvs) > 1:
-                available_items = browser.where({"sample_id": item.sample_id, 'object_type_id': item.object_type_id},
-                                                model_class='Item')
-                available_items = [item for item in available_items if item.location != 'deleted']
-                print("Item {} {} is used in {} inputs. There are {} available items.".format(item.id, item.sample.name,
-                                                                                              len(fvs),
-                                                                                              len(available_items)))
+                available_items = browser.where(
+                    {
+                        "sample_id": item.sample_id,
+                        "object_type_id": item.object_type_id,
+                    },
+                    model_class="Item",
+                )
+                available_items = [
+                    item for item in available_items if item.location != "deleted"
+                ]
+                print(
+                    "Item {} {} is used in {} inputs. There are {} available items.".format(
+                        item.id, item.sample.name, len(fvs), len(available_items)
+                    )
+                )
 
-                for fv, item in itertools.zip_longest(fvs, available_items, fillvalue='&&&'):
-                    if fv != '&&&' and item != '&&&':
+                for fv, item in itertools.zip_longest(
+                    fvs, available_items, fillvalue="&&&"
+                ):
+                    if fv != "&&&" and item != "&&&":
                         distributed.append(fv, item)
 
         for fv, item in distributed:
             fv.set_value(item=item)
 
     @plan_verification_wrapper
-    def set_to_available_item(self, fv, order_preference=ITEM_ORDER_PREFERENCE._DEFAULT, filter_func=None,
-                              item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT):
+    def set_to_available_item(
+        self,
+        fv,
+        order_preference=ITEM_ORDER_PREFERENCE._DEFAULT,
+        filter_func=None,
+        item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT,
+    ):
         """
         Sets the item of the field value to the next available item. Setting recent=False will select
         the oldest item.
@@ -924,7 +1025,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
         return item
 
     @plan_verification_wrapper
-    def set_inputs_using_sample_properties(self, operation, sample, routing=None, setter=None):
+    def set_inputs_using_sample_properties(
+        self, operation, sample, routing=None, setter=None
+    ):
         """Map the sample field values to the operation inputs. Optionally, a routing dictionary may
         be passed to indicate the mapping between the sample field values and operation inputs.
 
@@ -968,12 +1071,16 @@ class Planner(logger.Loggable, AFTMatcher, object):
         :rtype:
         """
         if fv.role != "output":
-            raise Exception("Cannot output. FieldValue {} is a/an {}.".format(fv.name, fv.role))
+            raise Exception(
+                "Cannot output. FieldValue {} is a/an {}.".format(fv.name, fv.role)
+            )
         if setter is None:
             setter = self.set_field_value
         setter(fv, sample=sample)
         op = fv.operation
-        self.set_inputs_using_sample_properties(op, sample, routing=routing, setter=setter)
+        self.set_inputs_using_sample_properties(
+            op, sample, routing=routing, setter=setter
+        )
 
     @staticmethod
     def _json_update(model, **params):
@@ -981,7 +1088,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         aqhttp = model.session._AqSession__aqhttp
         data = {"model": {"model": model.__class__.__name__}}
         data.update(model.dump(**params))
-        model_data = aqhttp.create('json/save', json_data=data)
+        model_data = aqhttp.create("json/save", json_data=data)
         model.reload(model_data)
         return model
 
@@ -1002,8 +1109,11 @@ class Planner(logger.Loggable, AFTMatcher, object):
         :return: list of operations
         :rtype: list
         """
-        return [op for op in self.plan.operations if
-                op.operation_type.name == operation_type_name]
+        return [
+            op
+            for op in self.plan.operations
+            if op.operation_type.name == operation_type_name
+        ]
 
     def replan(self):
         """Replan the plan, by 'copying' the plan using the Aquarium server."""
@@ -1032,14 +1142,14 @@ class Planner(logger.Loggable, AFTMatcher, object):
             "anchor": {"x": width, "y": height},
             "x": x,
             "y": y,
-            "markdown": markdown
+            "markdown": markdown,
         }
         markdown += "\n<!-- annotated by pydent.planner -->"
-        self.plan.layout.setdefault('text_boxes', [])
-        if self.plan.layout['text_boxes'] is None:
-            self.plan.layout['text_boxes'] = []
-        if annotation not in self.plan.layout['text_boxes']:
-            self.plan.layout['text_boxes'].append(annotation)
+        self.plan.layout.setdefault("text_boxes", [])
+        if self.plan.layout["text_boxes"] is None:
+            self.plan.layout["text_boxes"] = []
+        if annotation not in self.plan.layout["text_boxes"]:
+            self.plan.layout["text_boxes"].append(annotation)
         return annotation
 
     def annotate_operations(self, ops, markdown, width, height):
@@ -1053,7 +1163,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
         if layout is None:
             layout = self.layout
 
-        x = layout.midpoint()[0] + layout.BOX_WIDTH / 2  # adjust so x is midpoint of 'box' on screen
+        x = (
+            layout.midpoint()[0] + layout.BOX_WIDTH / 2
+        )  # adjust so x is midpoint of 'box' on screen
         y = layout.y
 
         # center the annotation
@@ -1083,13 +1195,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
         item_id = "none"
         if fv.item is not None:
             item_id = "{}{}".format(fv.role, fv.item.id)
-        fvhash = "{}:{}:{}:{}".format(
-            ft.name, ft.role, sid, item_id)
+        fvhash = "{}:{}:{}:{}".format(ft.name, ft.role, sid, item_id)
         if ft.part:
-            fvhash += "r{row}:c{column}".format(
-                row=fv.row,
-                column=fv.column,
-            )
+            fvhash += "r{row}:c{column}".format(row=fv.row, column=fv.column)
         return fvhash
 
     @classmethod
@@ -1126,7 +1234,8 @@ class Planner(logger.Loggable, AFTMatcher, object):
     def ipython_link(self):
         try:
             from IPython.display import display, HTML
-            return display(HTML("<a href=\"{url}\">{url}</a>".format(url=self.url)))
+
+            return display(HTML('<a href="{url}">{url}</a>'.format(url=self.url)))
         except ImportError:
             print("Could not import IPython. This is likely not installed.")
 
@@ -1146,13 +1255,14 @@ class Planner(logger.Loggable, AFTMatcher, object):
             self._info("   only_operations={}".format([op.id for op in operations]))
         self._info("   ignore_types={}".format(ignore))
         if operations is None:
-            operations = [
-                op for op in self.plan.operations if op.status == 'planning']
+            operations = [op for op in self.plan.operations if op.status == "planning"]
         if ignore:
             operations = [
-                op for op in operations if op.operation_type.name not in ignore]
-        groups = {k: v for k, v in self._group_ops_by_hashes(
-            operations).items() if len(v) > 1}
+                op for op in operations if op.operation_type.name not in ignore
+            ]
+        groups = {
+            k: v for k, v in self._group_ops_by_hashes(operations).items() if len(v) > 1
+        }
         num_inputs_rewired = 0
         num_outputs_rewired = 0
         ops_to_remove = []
@@ -1163,7 +1273,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         visited_groups = []
         for node in sorted_nodes:
             node_data = op_graph.node[node]
-            op = node_data['operation']
+            op = node_data["operation"]
             op_hash = self._op_to_hash(op)
             if op_hash in visited_groups or op_hash not in groups:
                 continue
@@ -1210,7 +1320,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
             for n in subgraph:
                 node = subgraph.node[n]
                 if len(list(subgraph.predecessors(n))) == 0:
-                    root = node['fv']
+                    root = node["fv"]
                     roots.append(root)
         return roots
 
@@ -1227,7 +1337,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
                 role=fv.role,
                 name=fv.name,
                 ot=fv.operation.operation_type.name,
-                opid=fv.operation.id
+                opid=fv.operation.id,
             )
 
         routes = {}
@@ -1237,11 +1347,10 @@ class Planner(logger.Loggable, AFTMatcher, object):
             root = None
             for n in subgraph:
                 node = subgraph.node[n]
-                fv = node['fv']
+                fv = node["fv"]
                 value = fv.sample
-                if value is None and fv.field_type.ftype == 'sample':
-                    reasons.append(
-                        "{} has no sample defined".format(fv_info(fv)))
+                if value is None and fv.field_type.ftype == "sample":
+                    reasons.append("{} has no sample defined".format(fv_info(fv)))
                 else:
                     if fv.item:
                         item = fv.item
@@ -1251,26 +1360,30 @@ class Planner(logger.Loggable, AFTMatcher, object):
                         if item.sample_id != fv.sample.id:
                             reasons.append(
                                 "{} has sample_id={} but generated item has sample_id={}".format(
-                                    fv_info(fv),
-                                    fv.sample.id, item.sample_id
+                                    fv_info(fv), fv.sample.id, item.sample_id
                                 )
                             )
                     values.append(value)
                 if len(list(subgraph.predecessors(n))) == 0:
                     root = fv
-            if root.item is None and root.role == "input" and root.field_type.ftype == 'sample':
-                reasons.append(
-                    "{} has no item defined".format(fv_info(fv)))
+            if (
+                root.item is None
+                and root.role == "input"
+                and root.field_type.ftype == "sample"
+            ):
+                reasons.append("{} has no item defined".format(fv_info(fv)))
             values = list(set(values))
             if len(values) > 1:
                 reasons.append("different samples defined in route ({})".format(values))
-            root_id = "{} for {} ({})".format(root.name, root.operation.operation_type.name, self._routing_id(root))
+            root_id = "{} for {} ({})".format(
+                root.name, root.operation.operation_type.name, self._routing_id(root)
+            )
             routes[root_id] = {
                 "root_field_value": root,
                 "errors": reasons,
-                "valid": len(reasons) == 0
+                "valid": len(reasons) == 0,
             }
-        errors = {k: v for k, v in routes.items() if v['valid'] != True}
+        errors = {k: v for k, v in routes.items() if v["valid"] != True}
         return errors
         # return routes
 
@@ -1281,7 +1394,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         # copy everything execpt plan, which may be large
         copied = empty_copy(self)
         data = self.__dict__.copy()
-        data.pop('_plan')
+        data.pop("_plan")
         copied.__dict__ = deepcopy(data)
 
         # copy over anonymous copy
@@ -1303,7 +1416,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
         sessions = set([p.session for p in plans])
         if len(sessions) > 1:
-            raise PlannerException("Cannot combine plans, plans must all derive from same session instance")
+            raise PlannerException(
+                "Cannot combine plans, plans must all derive from same session instance"
+            )
         session = sessions.pop()
 
         new_plan = Planner(session)
@@ -1334,13 +1449,13 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
             # copy over the operations
             opids = list(layout.G.nodes)
-            ops = [layout.G.nodes[opid]['operation'] for opid in opids]
+            ops = [layout.G.nodes[opid]["operation"] for opid in opids]
             wires = []
 
             # copy over relevant wires
             for wire in copied_plan.plan.wires:
                 to_id = wire.destination.operation._primary_key
-                from_id = getattr(wire, 'source').operation._primary_key
+                from_id = getattr(wire, "source").operation._primary_key
                 if to_id in opids or from_id in opids:
                     wires.append(wire)
 
@@ -1363,7 +1478,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         edge_colors = []
         for s, e, d in layout.G.edges(data=True):
             color = "black"
-            wire = d['wire']
+            wire = d["wire"]
             if wire.source.sample is None:
                 color = "orange"
             elif wire.destination.sample is None:
@@ -1372,4 +1487,3 @@ class Planner(logger.Loggable, AFTMatcher, object):
                 color = "red"
             edge_colors.append(color)
         nx.draw(self.layout.G, edge_colors=edge_colors, pos=self.layout.pos())
-

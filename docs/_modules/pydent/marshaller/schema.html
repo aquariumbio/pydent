@@ -137,7 +137,10 @@ Model serialization/deserialization schema
 import inspect
 
 from pydent.marshaller.descriptors import DataAccessor
-from pydent.marshaller.exceptions import MultipleValidationError, CallbackValidationError
+from pydent.marshaller.exceptions import (
+    MultipleValidationError,
+    CallbackValidationError,
+)
 from pydent.marshaller.fields import Field, Callback
 from pydent.marshaller.registry import SchemaRegistry
 from pydent.marshaller.utils import make_signature_str
@@ -185,7 +188,10 @@ from pydent.marshaller.utils import make_signature_str
             if not add_extra and k not in cls.model_class.fields:
                 raise AttributeError(
                     &quot;Expected field missing. Cannot initialize accessor for &#39;{}&#39; for &#39;{}&#39; because it is not a field.&quot;
-                    &quot; It may be missing from the &#39;field&#39; dictionary.&quot;.format(k, cls.model_class))
+                    &quot; It may be missing from the &#39;field&#39; dictionary.&quot;.format(
+                        k, cls.model_class
+                    )
+                )
             if k not in cls.model_class.__dict__:
                 setattr(cls.model_class, k, DataAccessor(k, cls.model_class._data_key))
             try:
@@ -218,10 +224,14 @@ from pydent.marshaller.utils import make_signature_str
             callback_func = callback_field.callback
             if callback_func is None:
                 missing_callbacks.append(
-                    &quot;Callback for {model}.{name} cannot be None&quot;.format(model=model_class.__name__, name=rname))
+                    &quot;Callback for {model}.{name} cannot be None&quot;.format(
+                        model=model_class.__name__, name=rname
+                    )
+                )
                 continue
             error_prefix = &quot;Callback &#39;{callback}&#39; for relationship &#39;{model}.{name}&#39;&quot;.format(
-                callback=callback_func, model=model_class.__name__, name=rname)
+                callback=callback_func, model=model_class.__name__, name=rname
+            )
             if not callable(callback_func) and not hasattr(model_class, callback_func):
                 if callback_func not in missing_callbacks:
                     missing_callbacks.append(error_prefix + &quot; is missing.&quot;)
@@ -230,7 +240,7 @@ from pydent.marshaller.utils import make_signature_str
                 kwargs_to_send = dict(callback_field.callback_kwargs)
                 if isinstance(callback_func, str):
                     callback_func = getattr(model_class, callback_func)
-                    args_to_send = [&#39;self&#39;] + args_to_send
+                    args_to_send = [&quot;self&quot;] + args_to_send
                 if not callable(callback_func):
                     not_callable.append(error_prefix + &quot; is not callable.&quot;)
                 else:
@@ -238,32 +248,45 @@ from pydent.marshaller.utils import make_signature_str
                     expected_args = signature.args
                     expected_kwargs = {}
                     if signature.defaults:
-                        default_args = expected_args[-len(signature.defaults):]
-                        expected_args = expected_args[:-len(signature.defaults)]
+                        default_args = expected_args[-len(signature.defaults) :]
+                        expected_args = expected_args[: -len(signature.defaults)]
                         expected_kwargs = dict(zip(default_args, signature.defaults))
 
-                    if len(expected_args) != len(args_to_send) and not signature.varargs:
+                    if (
+                        len(expected_args) != len(args_to_send)
+                        and not signature.varargs
+                    ):
                         wrong_signature.append(
-                            error_prefix + &quot; expects arguments {receive_args} but would receive arguments {sent_args}.&quot;.format(
-                                receive_args=make_signature_str(expected_args, expected_kwargs),
-                                sent_args=make_signature_str(list(args_to_send), kwargs_to_send))
+                            error_prefix
+                            + &quot; expects arguments {receive_args} but would receive arguments {sent_args}.&quot;.format(
+                                receive_args=make_signature_str(
+                                    expected_args, expected_kwargs
+                                ),
+                                sent_args=make_signature_str(
+                                    list(args_to_send), kwargs_to_send
+                                ),
                             )
+                        )
                     else:
                         for k in kwargs_to_send:
                             invalid_keys = []
                             if k not in expected_kwargs and not signature.varkw:
                                 invalid_keys.append(k)
                             if invalid_keys:
-                                wrong_signature.append(error_prefix +
-                                                       &quot; does not recognize named key(s) {invalid_keys} from signature {receive_args}.&quot;.format(
-                                                           invalid_keys=&#39;, &#39;.join(
-                                                               [&#39;&quot;{}&quot;&#39;.format(key) for key in invalid_keys]),
-                                                           receive_args=make_signature_str(expected_args,
-                                                                                           expected_kwargs),
-                                                       ))
+                                wrong_signature.append(
+                                    error_prefix
+                                    + &quot; does not recognize named key(s) {invalid_keys} from signature {receive_args}.&quot;.format(
+                                        invalid_keys=&quot;, &quot;.join(
+                                            [&#39;&quot;{}&quot;&#39;.format(key) for key in invalid_keys]
+                                        ),
+                                        receive_args=make_signature_str(
+                                            expected_args, expected_kwargs
+                                        ),
+                                    )
+                                )
                                 wrong_signature.append(callback_func)
 
-        with MultipleValidationError(&#39;&#39;) as e:
+        with MultipleValidationError(&quot;&quot;) as e:
             if missing_callbacks:
                 for w in missing_callbacks:
                     e.r(CallbackValidationError(w))
@@ -292,7 +315,7 @@ from pydent.marshaller.utils import make_signature_str
         if hasattr(model_class, fields_key):
             model_fields = getattr(model_class, fields_key)
 
-            ignore = model_fields.pop(&#39;ignore&#39;, ())
+            ignore = model_fields.pop(&quot;ignore&quot;, ())
             if isinstance(ignore, str):
                 ignore = (ignore,)
             cls.ignore = ignore

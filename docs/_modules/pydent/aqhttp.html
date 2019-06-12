@@ -146,9 +146,13 @@ import json
 
 import requests
 
-from pydent.exceptions import (TridentRequestError, TridentLoginError,
-                               TridentTimeoutError, TridentJSONDataIncomplete,
-                               ForbiddenRequestError)
+from pydent.exceptions import (
+    TridentRequestError,
+    TridentLoginError,
+    TridentTimeoutError,
+    TridentJSONDataIncomplete,
+    ForbiddenRequestError,
+)
 from pydent.utils import url_build, logger
 
 
@@ -198,16 +202,16 @@ from pydent.utils import url_build, logger
             info.update({&quot;seconds&quot;: response.elapsed.total_seconds()})
             msg = &quot;REQUEST: (t={seconds}s)  {method} {url}&quot;.format(**info)
             if include_body:
-                body = info[&#39;body&#39;]
+                body = info[&quot;body&quot;]
                 try:
-                    my_json = body.decode(&#39;utf8&#39;).replace(&quot;&#39;&quot;, &#39;&quot;&#39;)
+                    my_json = body.decode(&quot;utf8&quot;).replace(&quot;&#39;&quot;, &#39;&quot;&#39;)
                     body = json.loads(my_json)
                     body = self._pprint_data(body, max_list_len=10)
                 except:
                     pass
                 msg = msg + &quot;\n&quot; + &quot;BODY: {body}&quot;.format(body=body)
             if include_text:
-                text = getattr(response, &#39;text&#39;, &#39;&#39;)
+                text = getattr(response, &quot;text&quot;, &quot;&quot;)
                 try:
                     text = json.dumps(json.loads(text), indent=2)
                 except:
@@ -228,10 +232,7 @@ from pydent.utils import url_build, logger
 
     @staticmethod
     def create_session_json(login, password):
-        return {&quot;session&quot;: {
-            &quot;login&quot;: login,
-            &quot;password&quot;: password
-        }}
+        return {&quot;session&quot;: {&quot;login&quot;: login, &quot;password&quot;: password}}
 
 <div class="viewcode-block" id="AqHTTP._login"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP._login">[docs]</a>    def _login(self, login, password):
         &quot;&quot;&quot;
@@ -239,8 +240,11 @@ from pydent.utils import url_build, logger
         &quot;&quot;&quot;
         session_data = self.create_session_json(login, password)
         try:
-            res = requests.post(url_build(self.aquarium_url, &quot;sessions.json&quot;),
-                                json=session_data, timeout=self.timeout)
+            res = requests.post(
+                url_build(self.aquarium_url, &quot;sessions.json&quot;),
+                json=session_data,
+                timeout=self.timeout,
+            )
             if res is None:
                 raise requests.exceptions.ConnectionError
             cookies = dict(res.cookies)
@@ -261,25 +265,26 @@ from pydent.utils import url_build, logger
         except requests.exceptions.MissingSchema as error:
             raise TridentLoginError(
                 &quot;Aquarium URL {0} incorrectly formatted. {1}&quot;.format(
-                    self.aquarium_url, error.args[0]))
+                    self.aquarium_url, error.args[0]
+                )
+            )
         except requests.exceptions.ConnectTimeout:
             raise TridentTimeoutError(
                 &quot;Either Aquarium took too long to respond during login or your internet&quot;
                 &quot; connection is slow. Make sure the url {} is correct.&quot;
                 &quot; Alternatively, use Session.set_timeout&quot;
-                &quot; to increase the request timeout.&quot;.format(self.aquarium_url))
+                &quot; to increase the request timeout.&quot;.format(self.aquarium_url)
+            )
         except requests.exceptions.ConnectionError:
             raise TridentLoginError(
-                &quot;Could not contact &#39;{}&#39;. Login request returned no response&quot;.format(self.aquarium_url)
+                &quot;Could not contact &#39;{}&#39;. Login request returned no response&quot;.format(
+                    self.aquarium_url
+                )
             )</div>
 
     @staticmethod
     def _serialize_request(url, method, body):
-        return json.dumps({
-            &quot;url&quot;: url,
-            &quot;method&quot;: method,
-            &quot;body&quot;: body
-        }, sort_keys=True)
+        return json.dumps({&quot;url&quot;: url, &quot;method&quot;: method, &quot;body&quot;: body}, sort_keys=True)
 
 <div class="viewcode-block" id="AqHTTP.request"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.request">[docs]</a>    def request(self, method, path, timeout=None, allow_none=True, **kwargs):
         &quot;&quot;&quot;
@@ -303,29 +308,33 @@ from pydent.utils import url_build, logger
 
         url = url_build(self.aquarium_url, path)
         if not self._using_requests:
-            raise ForbiddenRequestError(&quot;Attempted a request ({} {}) when requests have been turned OFF.\nDATA: {}&quot;.format(
-                method.upper(), url, kwargs[&#39;json&#39;]
-            ))
+            raise ForbiddenRequestError(
+                &quot;Attempted a request ({} {}) when requests have been turned OFF.\nDATA: {}&quot;.format(
+                    method.upper(), url, kwargs[&quot;json&quot;]
+                )
+            )
 
         if timeout is None:
             timeout = self.timeout
-        if not allow_none and &#39;json&#39; in kwargs:
-            self._disallow_null_in_json(kwargs[&#39;json&#39;])
+        if not allow_none and &quot;json&quot; in kwargs:
+            self._disallow_null_in_json(kwargs[&quot;json&quot;])
 
         self.num_requests += 1
         response = requests.request(
-                method,
-                url,
-                timeout=timeout,
-                cookies=self.cookies,
-                **kwargs)
+            method, url, timeout=timeout, cookies=self.cookies, **kwargs
+        )
 
         self._info(self._format_response_info(response))
         if response.status_code &gt;= 400:
             response_info = self._format_response_info(response)
             request_status = self._format_request_status(response)
-            msg = &#39;\n&#39;.join([&#39;The Aquarium server returned an error.&#39;,
-                             request_status, response_info])
+            msg = &quot;\n&quot;.join(
+                [
+                    &quot;The Aquarium server returned an error.&quot;,
+                    request_status,
+                    response_info,
+                ]
+            )
             raise TridentRequestError(msg, response)
 
         return self._response_to_json(response)</div>
@@ -337,8 +346,10 @@ from pydent.utils import url_build, logger
         &quot;&quot;&quot;
 
         if response.url == url_build(self.aquarium_url, &quot;signin&quot;):
-            msg = &quot;There was an error with authenticating the request. Aquarium &quot; + \
-            &quot;re-routed to the sign-in page.&quot;
+            msg = (
+                &quot;There was an error with authenticating the request. Aquarium &quot;
+                + &quot;re-routed to the sign-in page.&quot;
+            )
             raise TridentRequestError(msg, response)
 
         try:
@@ -349,8 +360,8 @@ from pydent.utils import url_build, logger
             self._error(self._format_response_info(response))
             raise TridentRequestError(msg, response)
         if response_json:
-            if &#39;errors&#39; in response_json:
-                errors = response_json[&#39;errors&#39;]
+            if &quot;errors&quot; in response_json:
+                errors = response_json[&quot;errors&quot;]
                 if isinstance(errors, list):
                     errors = &quot;\n&quot;.join(errors)
                 msg = &quot;Error response:\n{}&quot;.format(errors)
@@ -365,7 +376,8 @@ from pydent.utils import url_build, logger
         &quot;&quot;&quot;
         if None in json_data.values():
             raise TridentJSONDataIncomplete(
-                &quot;JSON data {} contains a null value.&quot;.format(json_data))</div>
+                &quot;JSON data {} contains a null value.&quot;.format(json_data)
+            )</div>
 
 <div class="viewcode-block" id="AqHTTP.post"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.post">[docs]</a>    def post(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
         &quot;&quot;&quot;
@@ -386,8 +398,14 @@ from pydent.utils import url_build, logger
         :return: json
         :rtype: dict
         &quot;&quot;&quot;
-        return self.request(&quot;post&quot;, path, json=json_data, timeout=timeout,
-                            allow_none=allow_none, **kwargs)</div>
+        return self.request(
+            &quot;post&quot;,
+            path,
+            json=json_data,
+            timeout=timeout,
+            allow_none=allow_none,
+            **kwargs
+        )</div>
 
 <div class="viewcode-block" id="AqHTTP.put"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.put">[docs]</a>    def put(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
         &quot;&quot;&quot;
@@ -408,8 +426,14 @@ from pydent.utils import url_build, logger
         :return: json
         :rtype: dict
         &quot;&quot;&quot;
-        return self.request(&quot;put&quot;, path, json=json_data, timeout=timeout,
-                            allow_none=allow_none, **kwargs)</div>
+        return self.request(
+            &quot;put&quot;,
+            path,
+            json=json_data,
+            timeout=timeout,
+            allow_none=allow_none,
+            **kwargs
+        )</div>
 
 <div class="viewcode-block" id="AqHTTP.get"><a class="viewcode-back" href="../../developer/_autosummary/pydent.aqhttp.html#pydent.aqhttp.AqHTTP.get">[docs]</a>    def get(self, path, timeout=None, allow_none=True, **kwargs):
         &quot;&quot;&quot;
@@ -428,15 +452,17 @@ from pydent.utils import url_build, logger
         :return: json
         :rtype: dict
         &quot;&quot;&quot;
-        return self.request(&quot;get&quot;, path, timeout=timeout,
-                            allow_none=allow_none, **kwargs)</div>
+        return self.request(
+            &quot;get&quot;, path, timeout=timeout, allow_none=allow_none, **kwargs
+        )</div>
 
     def delete(self, path, timeout=None, **kwargs):
         return self.request(&quot;delete&quot;, path, timeout=timeout, **kwargs)
 
     def __repr__(self):
-        return &quot;&lt;{}(user=&#39;{}&#39;, url=&#39;{}&#39;)&gt;&quot;.format(self.__class__.__name__,
-                                     self.login, self.aquarium_url)
+        return &quot;&lt;{}(user=&#39;{}&#39;, url=&#39;{}&#39;)&gt;&quot;.format(
+            self.__class__.__name__, self.login, self.aquarium_url
+        )
 
     def __str__(self):
         return self.__repr__()</div>

@@ -134,6 +134,7 @@
 Marshalling exceptions
 &quot;&quot;&quot;
 
+
 <div class="viewcode-block" id="SchemaRegistryError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaRegistryError">[docs]</a>class SchemaRegistryError(Exception):
     &quot;&quot;&quot;Generic schema registry exception&quot;&quot;&quot;</div>
 
@@ -171,6 +172,7 @@ Field validation exceptions
 Model validation exceptions
 &quot;&quot;&quot;
 
+
 <div class="viewcode-block" id="ModelRegistryError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ModelRegistryError">[docs]</a>class ModelRegistryError(Exception):
     &quot;&quot;&quot;Model not found in registry exception.&quot;&quot;&quot;</div>
 
@@ -187,7 +189,7 @@ Model validation exceptions
     internal exceptions.
     &quot;&quot;&quot;
 
-    def __init__(self, *args, header=&#39;&#39;):
+    def __init__(self, *args, header=&quot;&quot;):
         self.args = args
         self.header = header
         self.errors = None
@@ -220,17 +222,17 @@ Model validation exceptions
                 for g, errors in group_by_exception.items():
                     msg += &quot;\n {}(s):&quot;.format(g)
                     for i, e in enumerate(errors):
-                        msg += &#39;\n  ({}): {}&#39;.format(i, e)
+                        msg += &quot;\n  ({}): {}&quot;.format(i, e)
                 self.args = (msg,)
             except Exception as e:
-                raise Exception(&quot;There was an error raising exceptions {}\n&quot;.format(self.errors, e))
+                raise Exception(
+                    &quot;There was an error raising exceptions {}\n&quot;.format(self.errors, e)
+                )
             raise self</div>
 
 
 <div class="viewcode-block" id="MultipleValidationError"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.MultipleValidationError">[docs]</a>class MultipleValidationError(ModelValidationError, ExceptionCollection):
     &quot;&quot;&quot;Model validation exception.&quot;&quot;&quot;</div>
-
-
 </pre></div>
 
     </div>

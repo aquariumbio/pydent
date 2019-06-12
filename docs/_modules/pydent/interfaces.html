@@ -182,7 +182,7 @@ from .utils import url_build
     http requests.
     &quot;&quot;&quot;
 
-    __slots__ = [&#39;aqhttp&#39;, &#39;session&#39;]
+    __slots__ = [&quot;aqhttp&quot;, &quot;session&quot;]
 
     def __init__(self, aqhttp, session):
         &quot;&quot;&quot;
@@ -203,7 +203,7 @@ from .utils import url_build
     Aquarium&#39;s JSON controller.
     &quot;&quot;&quot;
 
-    __slots__ = [&#39;aqhttp&#39;, &#39;session&#39;]
+    __slots__ = [&quot;aqhttp&quot;, &quot;session&quot;]
 
     # def _validate_model_id(self, model):
     #     if not hasattr(model, &#39;id&#39;) or model.id is None:
@@ -225,16 +225,11 @@ from .utils import url_build
         :rtype: dict
         &quot;&quot;&quot;
         if model_id:
-            url = &#39;{}/{}.json&#39;.format(table, model_id)
+            url = &quot;{}/{}.json&quot;.format(table, model_id)
         else:
-            url = &#39;{}.json&#39;.format(table)
+            url = &quot;{}.json&quot;.format(table)
 
-        result = self.aqhttp.request(
-            method,
-            url,
-            json=data,
-            params=params
-        )
+        result = self.aqhttp.request(method, url, json=data, params=params)
         return result</div>
 
     def model_create(self, table, data, params=None):
@@ -248,7 +243,9 @@ from .utils import url_build
             return
         return self._model_controller(&quot;delete&quot;, table, model_id, None, params)
 
-<div class="viewcode-block" id="CRUDInterface._json_controller"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.CRUDInterface._json_controller">[docs]</a>    def _json_controller(self, method, model_name, model_data, record_methods=None, record_getters=None):
+<div class="viewcode-block" id="CRUDInterface._json_controller"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.CRUDInterface._json_controller">[docs]</a>    def _json_controller(
+        self, method, model_name, model_data, record_methods=None, record_getters=None
+    ):
         &quot;&quot;&quot;
         Method for create, updating, and deleting models using Aquariums JSON controller.
 
@@ -275,7 +272,7 @@ from .utils import url_build
             &quot;model&quot;: {
                 &quot;model&quot;: model_name,
                 &quot;record_methods&quot;: record_methods,
-                &quot;record_getters&quot;: record_getters
+                &quot;record_getters&quot;: record_getters,
             }
         }
 
@@ -283,15 +280,12 @@ from .utils import url_build
             data.update(model_data)
 
         if method:
-            url = &#39;json/&#39; + method
+            url = &quot;json/&quot; + method
         else:
-            url = &#39;json&#39;
+            url = &quot;json&quot;
 
         try:
-            post_response = self.aqhttp.post(
-                url,
-                json_data=data,
-            )
+            post_response = self.aqhttp.post(url, json_data=data)
             return post_response
         except TridentRequestError as err:
             # if err.strerror.status_code == 422:
@@ -301,14 +295,26 @@ from .utils import url_build
         result = self.aqhttp.post(&quot;json&quot; + method, json_data=data)
         return result</div>
 
-    def json_delete(self, model_name, model_data, record_methods=None, record_getters=None):
-        return self._json_controller(&quot;delete&quot;, model_name, model_data, record_methods, record_getters)
+    def json_delete(
+        self, model_name, model_data, record_methods=None, record_getters=None
+    ):
+        return self._json_controller(
+            &quot;delete&quot;, model_name, model_data, record_methods, record_getters
+        )
 
-    def json_save(self, model_name, model_data, record_methods=None, record_getters=None):
-        return self._json_controller(&quot;save&quot;, model_name, model_data, record_methods, record_getters)
+    def json_save(
+        self, model_name, model_data, record_methods=None, record_getters=None
+    ):
+        return self._json_controller(
+            &quot;save&quot;, model_name, model_data, record_methods, record_getters
+        )
 
-    def json_post(self, model_name, model_data, record_methods=None, record_getters=None):
-        return self._json_controller(None, model_name, model_data, record_methods, record_getters)</div>
+    def json_post(
+        self, model_name, model_data, record_methods=None, record_getters=None
+    ):
+        return self._json_controller(
+            None, model_name, model_data, record_methods, record_getters
+        )</div>
 
 
 <div class="viewcode-block" id="UtilityInterface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface">[docs]</a>class UtilityInterface(CRUDInterface):
@@ -316,7 +322,7 @@ from .utils import url_build
     Miscellaneous and specialized requests for creating, updating, etc.
     &quot;&quot;&quot;
 
-    __slots__ = [&#39;aqhttp&#39;, &#39;session&#39;]
+    __slots__ = [&quot;aqhttp&quot;, &quot;session&quot;]
 
     ##############################
     # Create
@@ -326,22 +332,26 @@ from .utils import url_build
     def create_samples(self, samples):
         json = [s.dump(include=(&quot;field_values&quot;,)) for s in samples]
 
-        updated_sample_data = self.aqhttp.post(&#39;browser/create_samples&#39;, {&quot;samples&quot;: json})
-        updated_samples = updated_sample_data[&#39;samples&#39;]
+        updated_sample_data = self.aqhttp.post(
+            &quot;browser/create_samples&quot;, {&quot;samples&quot;: json}
+        )
+        updated_samples = updated_sample_data[&quot;samples&quot;]
         assert len(samples) == len(updated_samples)
         for s, data in zip(samples, updated_samples):
             s.reload(data)
         return samples
 
     def create_items(self, items):
-        return [self.aqhttp.get(&#39;items/make/{}/{}&#39;.format(
-            i.sample.id, i.object_type.id))
-            for i in items]
+        return [
+            self.aqhttp.get(&quot;items/make/{}/{}&quot;.format(i.sample.id, i.object_type.id))
+            for i in items
+        ]
 
     def create_upload(self, upload):
-        files = {&#39;file&#39;: upload.file}
+        files = {&quot;file&quot;: upload.file}
         result = self.aqhttp.post(
-            &quot;krill/upload?job={}&quot;.format(upload.job_id), files=files)
+            &quot;krill/upload?job={}&quot;.format(upload.job_id), files=files
+        )
         upload.reload(result)
         return upload
 
@@ -354,12 +364,11 @@ from .utils import url_build
             &quot;key&quot;: str(key),
             &quot;object&quot;: json.dumps({str(key): value}),
             &quot;parent_class&quot;: model_inst.__class__.__name__,
-            &quot;upload_id&quot;: upload_id
+            &quot;upload_id&quot;: upload_id,
         }
         result = self.json_save(&quot;DataAssociation&quot;, data)
 
-        data_association = model_inst.session.DataAssociation.find(
-            result[&#39;id&#39;])
+        data_association = model_inst.session.DataAssociation.find(result[&quot;id&quot;])
         if data_association.id not in [da.id for da in model_inst.data_associations]:
             model_inst.data_associations.append(data_association)
             return data_association
@@ -376,14 +385,9 @@ from .utils import url_build
         &quot;&quot;&quot;
         Updates code for a operation_type
         &quot;&quot;&quot;
-        controller = underscore(
-            pluralize(code.parent_class))
+        controller = underscore(pluralize(code.parent_class))
 
-        code_data = {
-            &quot;id&quot;: code.parent_id,
-            &quot;name&quot;: code.name,
-            &quot;content&quot;: code.content
-        }
+        code_data = {&quot;id&quot;: code.parent_id, &quot;name&quot;: code.name, &quot;content&quot;: code.content}
         result = self.aqhttp.post(url_build(controller, &quot;code&quot;), code_data)
         if &quot;id&quot; in result:
             code.id = result[&quot;id&quot;]
@@ -391,7 +395,8 @@ from .utils import url_build
             code.updated_at = result[&quot;updated_at&quot;]
         else:
             raise TridentRequestError(
-                &quot;Unable to update code object {}&quot;.format(code_data), result)</div>
+                &quot;Unable to update code object {}&quot;.format(code_data), result
+            )</div>
 
     ##############################
     # Misc
@@ -401,62 +406,57 @@ from .utils import url_build
         &quot;&quot;&quot;
         Estimates the plan cost
         &quot;&quot;&quot;
-        result = self.aqhttp.post(&#39;launcher/estimate&#39;, {&#39;id&#39;: plan.id})
+        result = self.aqhttp.post(&quot;launcher/estimate&quot;, {&quot;id&quot;: plan.id})
         total = 0
         for operation in plan.operations:
-            for cost in result[&#39;costs&#39;]:
-                if cost[&#39;id&#39;] == operation.id:
+            for cost in result[&quot;costs&quot;]:
+                if cost[&quot;id&quot;] == operation.id:
                     operation.cost = cost
-                    total += (cost[&#39;labor&#39;] * cost[&#39;labor_rate&#39;] +
-                              cost[&#39;materials&#39;]) * cost[&#39;markup_rate&#39;]
+                    total += (
+                        cost[&quot;labor&quot;] * cost[&quot;labor_rate&quot;] + cost[&quot;materials&quot;]
+                    ) * cost[&quot;markup_rate&quot;]
         return total</div>
 
     def step_plan(self, plan_id):
-        self.aqhttp.get(
-            &#39;operations/step?plan_id={}&#39;.format(plan_id)
-        )
+        self.aqhttp.get(&quot;operations/step?plan_id={}&quot;.format(plan_id))
         return None
 
 <div class="viewcode-block" id="UtilityInterface.replan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.replan">[docs]</a>    def replan(self, plan_id):
         &quot;&quot;&quot;
         Copies a plan
         &quot;&quot;&quot;
-        result = self.aqhttp.get(
-            &#39;plans/replan/{plan_id}&#39;.format(plan_id=plan_id))
+        result = self.aqhttp.get(&quot;plans/replan/{plan_id}&quot;.format(plan_id=plan_id))
         plan_copy = self.session.Plan.load(result)
         return plan_copy</div>
 
     def start_job(self, job_id):
-        result = self.aqhttp.get(
-            &#39;krill/start?job={job_id}&#39;.format(job_id=job_id))
+        result = self.aqhttp.get(&quot;krill/start?job={job_id}&quot;.format(job_id=job_id))
         return result
 
 <div class="viewcode-block" id="UtilityInterface.batch_operations"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.batch_operations">[docs]</a>    def batch_operations(self, operation_ids):
         &quot;&quot;&quot;
         Batches operations from a list of operation_ids
         &quot;&quot;&quot;
-        self.aqhttp.post(&#39;operations/batch&#39;, json_data=operation_ids)</div>
+        self.aqhttp.post(&quot;operations/batch&quot;, json_data=operation_ids)</div>
 
 <div class="viewcode-block" id="UtilityInterface.unbatch_operations"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.unbatch_operations">[docs]</a>    def unbatch_operations(self, operation_ids):
         &quot;&quot;&quot;
         Unbatches operations from a list of operation_ids
         &quot;&quot;&quot;
-        self.aqhttp.post(&#39;operations/batch&#39;, json_data=operation_ids)</div>
+        self.aqhttp.post(&quot;operations/batch&quot;, json_data=operation_ids)</div>
 
 <div class="viewcode-block" id="UtilityInterface.set_operation_status"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.set_operation_status">[docs]</a>    def set_operation_status(self, operation_id, status):
         &quot;&quot;&quot;
         Sets an operation&#39;s status
         &quot;&quot;&quot;
-        msg = &#39;operations/{oid}/status/{status}&#39;.format(
-            oid=operation_id,
-            status=status)
+        msg = &quot;operations/{oid}/status/{status}&quot;.format(oid=operation_id, status=status)
         self.aqhttp.get(msg)</div>
 
 <div class="viewcode-block" id="UtilityInterface.job_debug"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.job_debug">[docs]</a>    def job_debug(self, job_id):
         &quot;&quot;&quot;
         Runs debug on a job with id=job_id
         &quot;&quot;&quot;
-        self.aqhttp.get(&#39;krill/debug/{jid}&#39;.format(jid=job_id))</div>
+        self.aqhttp.get(&quot;krill/debug/{jid}&quot;.format(jid=job_id))</div>
 
 <div class="viewcode-block" id="UtilityInterface.submit_plan"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.submit_plan">[docs]</a>    def submit_plan(self, plan, user, budget):
         &quot;&quot;&quot;
@@ -464,18 +464,18 @@ from .utils import url_build
         &quot;&quot;&quot;
         user_query = &quot;&amp;user_id=&quot; + str(user.id)
         budget_query = &quot;?budget_id=&quot; + str(budget.id)
-        result = self.aqhttp.get(&#39;plans/start/&#39; + str(plan.id) +
-                                 budget_query + user_query)
+        result = self.aqhttp.get(
+            &quot;plans/start/&quot; + str(plan.id) + budget_query + user_query
+        )
         return result</div>
 
 <div class="viewcode-block" id="UtilityInterface.compatible_items"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.UtilityInterface.compatible_items">[docs]</a>    def compatible_items(self, sample_id, object_type_id):
         &quot;&quot;&quot;
         Find items compatible with the field value.
         &quot;&quot;&quot;
-        result = self.aqhttp.post(&quot;json/items&quot;, {
-            &quot;sid&quot;: sample_id,
-            &quot;oid&quot;: object_type_id
-        })
+        result = self.aqhttp.post(
+            &quot;json/items&quot;, {&quot;sid&quot;: sample_id, &quot;oid&quot;: object_type_id}
+        )
         items = []
         for element in result:
             print(element)
@@ -583,7 +583,9 @@ from abc import ABC, abstractmethod
                 if isinstance(v, dict):
                     query[k].update(v)
                 else:
-                    raise ValueError(&quot;Cannot update query {} with {}:{}&quot;.format(query, k, v))
+                    raise ValueError(
+                        &quot;Cannot update query {} with {}:{}&quot;.format(query, k, v)
+                    )
         return query</div>
 
 <div class="viewcode-block" id="QueryInterface._post_json"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface._post_json">[docs]</a>    def _post_json(self, data):
@@ -591,7 +593,7 @@ from abc import ABC, abstractmethod
         Posts a json request to session for this interface.
         Attaches raw json and this session instance to the models it retrieves.
         &quot;&quot;&quot;
-        data_dict = {&#39;model&#39;: self.model_name}
+        data_dict = {&quot;model&quot;: self.model_name}
         data_dict = self._prepost_query_hook(data_dict)
         data_dict.update({k: v for k, v in data.items() if v})
 
@@ -632,10 +634,7 @@ from abc import ABC, abstractmethod
         &quot;&quot;&quot;
         if model_id is None:
             raise ValueError(&quot;model_id in &#39;find&#39; cannot be None&quot;)
-        return self._post_json({
-            &quot;id&quot;: model_id,
-            &quot;include&quot;: include,
-            &quot;options&quot;: opts})</div>
+        return self._post_json({&quot;id&quot;: model_id, &quot;include&quot;: include, &quot;options&quot;: opts})</div>
 
 <div class="viewcode-block" id="QueryInterface.find_by_name"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.find_by_name">[docs]</a>    def find_by_name(self, name, include=None, opts=None):
         &quot;&quot;&quot;
@@ -643,11 +642,14 @@ from abc import ABC, abstractmethod
         &quot;&quot;&quot;
         if name is None:
             raise ValueError(&quot;name in &#39;find_by_name&#39; cannot be None&quot;)
-        return self._post_json({
-            &quot;method&quot;: &quot;find_by_name&quot;,
-            &quot;arguments&quot;: [name],
-            &quot;include&quot;: include,
-            &quot;options&quot;: opts})</div>
+        return self._post_json(
+            {
+                &quot;method&quot;: &quot;find_by_name&quot;,
+                &quot;arguments&quot;: [name],
+                &quot;include&quot;: include,
+                &quot;options&quot;: opts,
+            }
+        )</div>
 
 <div class="viewcode-block" id="QueryInterface.array_query"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.array_query">[docs]</a>    def array_query(self, method, args, rest=None, include=None, opts=None):
         &quot;&quot;&quot;
@@ -655,17 +657,23 @@ from abc import ABC, abstractmethod
         &quot;&quot;&quot;
         if opts is None:
             opts = {}
-        options = {&quot;offset&quot;: self.DEFAULT_OFFSET, &quot;limit&quot;: self.DEFAULT_LIMIT, &quot;reverse&quot;: self.DEFAULT_REVERSE}
+        options = {
+            &quot;offset&quot;: self.DEFAULT_OFFSET,
+            &quot;limit&quot;: self.DEFAULT_LIMIT,
+            &quot;reverse&quot;: self.DEFAULT_REVERSE,
+        }
         options.update(opts)
-        if options.get(&#39;limit&#39;, None) == 0:
+        if options.get(&quot;limit&quot;, None) == 0:
             return []
         if args is None:
             args = []
-        query = {&quot;model&quot;: self.model.__name__,
-                 &quot;method&quot;: method,
-                 &quot;arguments&quot;: args,
-                 &quot;include&quot;: include,
-                 &quot;options&quot;: options}
+        query = {
+            &quot;model&quot;: self.model.__name__,
+            &quot;method&quot;: method,
+            &quot;arguments&quot;: args,
+            &quot;include&quot;: include,
+            &quot;options&quot;: options,
+        }
         if rest:
             query.update(rest)
         res = self._post_json(query)
@@ -686,11 +694,13 @@ from abc import ABC, abstractmethod
 
         if opts is None:
             opts = {}
-        addopts = opts.pop(&#39;opts&#39;, dict())
+        addopts = opts.pop(&quot;opts&quot;, dict())
         opts.update(addopts)
         options = {&quot;offset&quot;: self.DEFAULT_OFFSET, &quot;reverse&quot;: self.DEFAULT_REVERSE}
         options.update(opts)
-        return self.array_query(method=&quot;all&quot;, args=None, rest=None, include=include, opts=options)</div>
+        return self.array_query(
+            method=&quot;all&quot;, args=None, rest=None, include=include, opts=options
+        )</div>
 
 <div class="viewcode-block" id="QueryInterface.where"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.where">[docs]</a>    def where(self, criteria, methods=None, include=None, opts=None):
         &quot;&quot;&quot;
@@ -704,11 +714,14 @@ from abc import ABC, abstractmethod
         :return: list of models
         :rtype: list
         &quot;&quot;&quot;
-        if opts is None: opts = dict()
+        if opts is None:
+            opts = dict()
         rest = {}
         if methods is not None:
             rest = {&quot;methods&quot;: methods}
-        return self.array_query(method=&quot;where&quot;, args=criteria, rest=rest, include=include, opts=opts)</div>
+        return self.array_query(
+            method=&quot;where&quot;, args=criteria, rest=rest, include=include, opts=opts
+        )</div>
 
     # TODO: Refactor &#39;last&#39; so query is an argument, not part of kwargs
 <div class="viewcode-block" id="QueryInterface.last"><a class="viewcode-back" href="../../developer/_autosummary/pydent.interfaces.html#pydent.browser.QueryInterface.last">[docs]</a>    def last(self, num=None, query=None, include=None, opts=None):
@@ -820,7 +833,9 @@ from abc import ABC, abstractmethod
         return self.browser.find_by_name(name, model_class=self.model_name)
 
     def where(self, criteria, methods=None, opts=None):
-        return self.browser.where(criteria, model_class=self.model_name, methods=methods, opts=opts)
+        return self.browser.where(
+            criteria, model_class=self.model_name, methods=methods, opts=opts
+        )
 
     def one(self, query=None, first=False, opts=None):
         return self.browser.one(model_class=self.model_name, query=query, opts=opts)

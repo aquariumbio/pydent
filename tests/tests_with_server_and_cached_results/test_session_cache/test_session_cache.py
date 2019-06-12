@@ -17,6 +17,7 @@ def test_regular_session(session):
 def test_raise_value_error_for_interface(session):
     class MyClass(ABC):
         pass
+
     with pytest.raises(ValueError):
         session.interface_class = MyClass
 

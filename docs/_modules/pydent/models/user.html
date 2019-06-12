@@ -136,19 +136,19 @@ User, group, and budget models.
 
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import (HasOne, HasMany,
-                                  HasManyThrough)
+from pydent.relationships import HasOne, HasMany, HasManyThrough
 
 
 <div class="viewcode-block" id="User"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.user.User">[docs]</a>@add_schema
 class User(ModelBase):
     &quot;&quot;&quot;A User model&quot;&quot;&quot;
+
     fields = dict(
         groups=HasMany(&quot;Group&quot;, &quot;User&quot;),
         user_budget_associations=HasMany(&quot;UserBudgetAssociation&quot;, &quot;User&quot;),
         budgets=HasManyThrough(&quot;Budget&quot;, &quot;UserBudgetAssociation&quot;),
         additional=(&quot;name&quot;, &quot;id&quot;, &quot;login&quot;),
-        ignore=(&quot;password_digest&quot;, &quot;remember_token&quot;, &quot;key&quot;)
+        ignore=(&quot;password_digest&quot;, &quot;remember_token&quot;, &quot;key&quot;),
     )
 
     def __init__(self):
@@ -158,10 +158,8 @@ class User(ModelBase):
 <div class="viewcode-block" id="UserBudgetAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.user.UserBudgetAssociation">[docs]</a>@add_schema
 class UserBudgetAssociation(ModelBase):
     &quot;&quot;&quot;An association model between a User and a Budget&quot;&quot;&quot;
-    fields = dict(
-        budget=HasOne(&quot;Budget&quot;),
-        user=HasOne(&quot;User&quot;)
-    )
+
+    fields = dict(budget=HasOne(&quot;Budget&quot;), user=HasOne(&quot;User&quot;))
 
     def __init__(self):
         pass</div>
@@ -169,15 +167,13 @@ class UserBudgetAssociation(ModelBase):
 
 <div class="viewcode-block" id="Membership"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.user.Membership">[docs]</a>@add_schema
 class Membership(ModelBase):
-    fields = dict(
-        user=HasOne(&quot;User&quot;),
-        group=HasOne(&quot;Group&quot;)
-    )</div>
+    fields = dict(user=HasOne(&quot;User&quot;), group=HasOne(&quot;Group&quot;))</div>
 
 
 <div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.user.Group">[docs]</a>@add_schema
 class Group(ModelBase):
     &quot;&quot;&quot;A Group model&quot;&quot;&quot;
+
     pass</div>
 
 
@@ -189,14 +185,14 @@ class Account(ModelBase):
 <div class="viewcode-block" id="Budget"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.user.Budget">[docs]</a>@add_schema
 class Budget(ModelBase):
     &quot;&quot;&quot;A Budget model&quot;&quot;&quot;
-    fields = dict(
-        user_budget_associations=HasMany(&quot;UserBudgetAssociation&quot;, &quot;Budget&quot;)
-    )</div>
+
+    fields = dict(user_budget_associations=HasMany(&quot;UserBudgetAssociation&quot;, &quot;Budget&quot;))</div>
 
 
 <div class="viewcode-block" id="Invoice"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.user.Invoice">[docs]</a>@add_schema
 class Invoice(ModelBase):
     &quot;&quot;&quot;A Invoice model&quot;&quot;&quot;
+
     pass</div>
 </pre></div>
 

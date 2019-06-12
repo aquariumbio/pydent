@@ -44,14 +44,18 @@ def filter_list(objlist, **kwargs):
 
 def url_build(*parts):
     """Join parts of a url into a string"""
-    url = '/'.join(p.strip('/') for p in parts)
+    url = "/".join(p.strip("/") for p in parts)
     return url
+
 
 def empty_copy(obj):
     """Return an empty copy of an object for copying purposes"""
+
     class Empty(obj.__class__):
-        def __init__(self): pass
-    newcopy = Empty(  )
+        def __init__(self):
+            pass
+
+    newcopy = Empty()
     newcopy.__class__ = obj.__class__
     return newcopy
 

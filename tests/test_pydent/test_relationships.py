@@ -2,8 +2,14 @@
 Test for pydent.relationships.py
 """
 
-from pydent.relationships import (One, Many, HasOne, HasMany,
-                                  HasManyGeneric, HasManyThrough)
+from pydent.relationships import (
+    One,
+    Many,
+    HasOne,
+    HasMany,
+    HasManyGeneric,
+    HasManyThrough,
+)
 from pydent import ModelBase
 
 
@@ -57,6 +63,7 @@ def test_has_many():
         params = lambda: x: {"ref_model_id": x.id}
 
     """
+
     class RefModel:
         id = 4
         name = "myname"
@@ -67,8 +74,7 @@ def test_has_many():
     assert hasmany.callback_args[1](RefModel) == {"ref_model_id": 4}
 
     # has_many tries to return lambda x: {"ref_model_name": x.name}
-    hasmany = HasMany("ModelName", RefModel.__name__,
-                      attr="name")
+    hasmany = HasMany("ModelName", RefModel.__name__, attr="name")
     assert hasmany.callback_args[1](RefModel) == {"ref_model_name": "myname"}
 
 
@@ -82,6 +88,7 @@ def test_has_one():
         params = lambda x: x.my_model_id
 
     """
+
     class MyModel:
         my_model_id = 4
         my_model_name = "myname"
@@ -106,6 +113,7 @@ def test_has_one_with_ref():
         params = lambda x: x.my_model_id
 
     """
+
     class MyModel:
         parent_id = 4
         my_model_name = "myname"
@@ -126,7 +134,8 @@ def test_has_many_generic():
 
         params = lambda x: {"parent_id": x.id}
     """
-    class MyModel():
+
+    class MyModel:
         pass
 
     mymodel = MyModel()
@@ -135,7 +144,9 @@ def test_has_many_generic():
     hasmanygeneric = HasManyGeneric("MyModel")
     assert hasmanygeneric.nested == "MyModel"
 
-    def expected_fxn(model): return {"parent_id": model.id}
+    def expected_fxn(model):
+        return {"parent_id": model.id}
+
     fxn = hasmanygeneric.callback_args[1]
     assert expected_fxn(mymodel) == fxn(mymodel)
     assert fxn(mymodel) == {"parent_id": 4}
@@ -187,8 +198,9 @@ def test_has_many_through():
     hasmanythrough = HasManyThrough("MyModel", "ThroughModel")
     assert hasmanythrough.nested == "MyModel"
 
-    def expected_fxn(model): return {
-        "id": [x.my_model_id for x in model.through_models]}
+    def expected_fxn(model):
+        return {"id": [x.my_model_id for x in model.through_models]}
+
     fxn = hasmanythrough.callback_args[1]
     assert fxn(this_model) == expected_fxn(this_model)
     assert fxn(this_model) == {"id": [4]}
