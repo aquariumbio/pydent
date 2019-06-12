@@ -26,7 +26,13 @@ Submodules
 import nest_asyncio
 nest_asyncio.apply()
 
-from .__version__ import __description__, __author__, __version__, __url__, __title__, __pypi__
 from .aqsession import AqSession
 from .base import ModelBase, ModelRegistry
 from .utils import pprint
+
+from .__version__ import info
+__version__ = info['version']
+__title__ = info['name']
+__author__ = info['authors']
+__homepage__ = info['homepage']
+__repo__ = info['repository']
