@@ -25,7 +25,6 @@ from decimal import Decimal
 
 from requests.exceptions import ReadTimeout
 
-from abc import ABC, abstractmethod
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
 from pydent.interfaces import (

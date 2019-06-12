@@ -63,6 +63,7 @@ class ModelBase(SchemaModel):
     counter = itertools.count()
     id = None
     rid = None
+    gid = None
 
     def __new__(cls, *args, session=None, **kwargs):
         instance = super(ModelBase, cls).__new__(cls)
