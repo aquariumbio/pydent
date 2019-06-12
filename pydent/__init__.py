@@ -29,10 +29,15 @@ nest_asyncio.apply()
 from .aqsession import AqSession
 from .base import ModelBase, ModelRegistry
 from .utils import pprint
-
 from .__version__ import info
-__version__ = info['version']
-__title__ = info['name']
-__author__ = info['authors']
-__homepage__ = info['homepage']
-__repo__ = info['repository']
+
+
+def clean(s):
+    return s.replace('"', '').replace("'", '')
+
+
+__version__ = clean(info['version'])
+__title__ = clean(info['name'])
+__author__ = clean(info['authors'])
+__homepage__ = clean(info['homepage'])
+__repo__ = clean(info['repository'])
