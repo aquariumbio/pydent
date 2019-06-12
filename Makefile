@@ -22,7 +22,11 @@ coverage:
 	poetry run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=pydent tests
 
 
-docs:
+pullversion:
+	python pydent/_version/__init__.py
+
+
+docs: | pullversion
 	@echo "Updating docs"
 
 	# copy README.md to README.rst format for Sphinx documentation
@@ -44,7 +48,7 @@ doctest:
 	cd docsrc && poetry run make doctest
 
 
-testdeploy:
+testdeploy: | pullversion
 	rm -rf dist
 	python setup.py sdist
 	twine upload dist/* -r testpypi
@@ -63,8 +67,12 @@ format:
 testpublish:
 	poetry publish -r testpypi
 
-lock:
+
+lock: | pullversion
 	poetry update
+
+build: | pullversion
+    poetry build
 
 
 hooks: .git/hooks
