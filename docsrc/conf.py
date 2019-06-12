@@ -79,7 +79,7 @@ author = pydent.__author__
 #
 # The short X.Y version.
 version = pydent.__version__
-gitpage = "http://www.github.com/klavinslab/trident"
+gitpage = pydent.__homepage__
 # The full version, including alpha/beta/rc tags.
 release = pydent.__version__
 
