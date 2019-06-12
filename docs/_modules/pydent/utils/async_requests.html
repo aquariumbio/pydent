@@ -139,17 +139,20 @@ import itertools
 <div class="viewcode-block" id="chunkify"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.chunkify">[docs]</a>def chunkify(list, n):
     &quot;&quot;&quot;Breaks a list into n chunks. Last chunk may not be equal in size to other chunks&quot;&quot;&quot;
     l = list
-    return [l[i:i + n] for i in range(0, len(l), n)]</div>
+    return [l[i : i + n] for i in range(0, len(l), n)]</div>
 
 
 def with_index(fxn):
     @wraps(fxn)
     def wrapped(i, *args, **kwargs):
         return (i, fxn(*args, **kwargs))
+
     return wrapped
 
 
-<div class="viewcode-block" id="exec_async_fxn"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.exec_async_fxn">[docs]</a>async def exec_async_fxn(fxn, arg_list, kwargs, chunk_size=1, desc=&#39;&#39;, progress_bar=True):
+<div class="viewcode-block" id="exec_async_fxn"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.utils.async_requests.html#pydent.utils.async_requests.exec_async_fxn">[docs]</a>async def exec_async_fxn(
+    fxn, arg_list, kwargs, chunk_size=1, desc=&quot;&quot;, progress_bar=True
+):
     &quot;&quot;&quot;
     Executes an asynchronous function
 
@@ -207,8 +210,17 @@ def with_index(fxn):
     loop = asyncio.get_event_loop()
     if desc is None:
         desc = desc
-    results = loop.run_until_complete(exec_async_fxn(fxn, arg_list, kwargs=kwargs, desc=desc, progress_bar=progress_bar, chunk_size=chunk_size))
-#     loop.close()
+    results = loop.run_until_complete(
+        exec_async_fxn(
+            fxn,
+            arg_list,
+            kwargs=kwargs,
+            desc=desc,
+            progress_bar=progress_bar,
+            chunk_size=chunk_size,
+        )
+    )
+    #     loop.close()
     return results</div>
 
 
@@ -227,21 +239,29 @@ def with_index(fxn):
     :return: results
     :rtype: list
     &quot;&quot;&quot;
+
     def dec(fxn):
         data_position = data_pos
         if as_classmethod:
             data_position += 1
+
         @wraps(fxn)
         def wrapper(*args, **kwargs):
             data = args[data_position]
-            post_data_args = args[data_position+1:]
+            post_data_args = args[data_position + 1 :]
             pre_data_args = args[:data_position]
             chunks = chunkify(data, chunk_size)
             arg_list = [pre_data_args + (c,) + post_data_args for c in chunks]
-            desc = &quot;Running \&quot;{}\&quot; [size: {}, num: {}]: &quot;.format(fxn.__name__, chunk_size, len(chunks))
-            results = asyncfunc(fxn, arg_list, kwargs=kwargs, progress_bar=progress_bar, desc=desc)
+            desc = &#39;Running &quot;{}&quot; [size: {}, num: {}]: &#39;.format(
+                fxn.__name__, chunk_size, len(chunks)
+            )
+            results = asyncfunc(
+                fxn, arg_list, kwargs=kwargs, progress_bar=progress_bar, desc=desc
+            )
             return list(itertools.chain(*results))
+
         return wrapper
+
     return dec</div>
 </pre></div>
 

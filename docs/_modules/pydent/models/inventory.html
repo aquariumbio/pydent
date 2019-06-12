@@ -138,8 +138,7 @@ from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import SaveMixin
 from pydent.models.data_associations import DataAssociatorMixin
-from pydent.relationships import (Raw, HasOne, HasMany,
-                                  HasManyThrough, HasManyGeneric)
+from pydent.relationships import Raw, HasOne, HasMany, HasManyThrough, HasManyGeneric
 
 
 <div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item">[docs]</a>@add_schema
@@ -147,22 +146,27 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
     &quot;&quot;&quot;
     A physical object in the lab, which a location and unique id.
     &quot;&quot;&quot;
+
     fields = dict(
         sample=HasOne(&quot;Sample&quot;),
         object_type=HasOne(&quot;ObjectType&quot;),
-        data_associations=HasManyGeneric(&quot;DataAssociation&quot;, additional_args={
-            &quot;parent_class&quot;: &quot;Item&quot;
-        }),
+        data_associations=HasManyGeneric(
+            &quot;DataAssociation&quot;, additional_args={&quot;parent_class&quot;: &quot;Item&quot;}
+        ),
         data=Raw(),
         ignore=(&quot;locator_id&quot;,),
-        part_associations=HasMany(&quot;PartAssociation&quot;, ref=&quot;part_id&quot;),  # TODO: add to change log
-        collections=HasManyThrough(&quot;Collection&quot;, &quot;PartAssociation&quot;),  # TODO: add to change log
+        part_associations=HasMany(
+            &quot;PartAssociation&quot;, ref=&quot;part_id&quot;
+        ),  # TODO: add to change log
+        collections=HasManyThrough(
+            &quot;Collection&quot;, &quot;PartAssociation&quot;
+        ),  # TODO: add to change log
     )
-    query_hook = {
-        &#39;methods&#39;: [&#39;is_part&#39;]
-    }
+    query_hook = {&quot;methods&quot;: [&quot;is_part&quot;]}
 
-    def __init__(self=None, sample_id=None, sample=None, object_type=None, object_type_id=None):
+    def __init__(
+        self=None, sample_id=None, sample=None, object_type=None, object_type_id=None
+    ):
         super().__init__(
             object_type_id=object_type_id,
             object_type=object_type,
@@ -181,7 +185,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         return self.make()</div>
 
     def is_deleted(self):
-        return self.location == &#39;deleted&#39;
+        return self.location == &quot;deleted&quot;
 
     @property
     def containing_collection(self):
@@ -194,7 +198,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         if not self.is_part:
             return None
 
-        assoc_list = self.session.PartAssociation.where({&#39;part_id&#39;: self.id})
+        assoc_list = self.session.PartAssociation.where({&quot;part_id&quot;: self.id})
         if not assoc_list:
             return
 
@@ -226,7 +230,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
         Note: this is not how Aquarium does this test in the `collection?` method.
         &quot;&quot;&quot;
-        assoc_list = self.session.PartAssociation.where({&#39;collection_id&#39;: self.id})
+        assoc_list = self.session.PartAssociation.where({&quot;collection_id&quot;: self.id})
         return bool(assoc_list)
 
     # TODO: add to change log
@@ -241,21 +245,21 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
 
 <div class="viewcode-block" id="Collection"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Collection">[docs]</a>@add_schema
-class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-public-methods
+class Collection(
+    DataAssociatorMixin, ModelBase
+):  # pylint: disable=too-few-public-methods
     &quot;&quot;&quot;A Collection model, such as a 96-well plate, which contains many `parts`, each
     of which can be associated with a different sample.&quot;&quot;&quot;
 
     fields = dict(
         object_type=HasOne(&quot;ObjectType&quot;),
-        data_associations=HasManyGeneric(&quot;DataAssociation&quot;, additional_args={
-            &quot;parent_class&quot;: &quot;Collection&quot;
-        }),
+        data_associations=HasManyGeneric(
+            &quot;DataAssociation&quot;, additional_args={&quot;parent_class&quot;: &quot;Collection&quot;}
+        ),
         part_associations=HasMany(&quot;PartAssociation&quot;, &quot;Collection&quot;),
-        parts=HasManyThrough(&quot;Item&quot;, &quot;PartAssociation&quot;, ref=&quot;part_id&quot;)
+        parts=HasManyThrough(&quot;Item&quot;, &quot;PartAssociation&quot;, ref=&quot;part_id&quot;),
     )
-    query_hook = {
-        &quot;methods&quot;: [&quot;dimensions&quot;]
-    }
+    query_hook = {&quot;methods&quot;: [&quot;dimensions&quot;]}
 
     @property
     def matrix(self):
@@ -281,8 +285,11 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
         &quot;&quot;&quot;
         Returns the part Item at (row, col) of this Collection (zero-based).
         &quot;&quot;&quot;
-        parts = [assoc.part for assoc in self.part_associations
-                 if assoc.row == row and assoc.column == col]
+        parts = [
+            assoc.part
+            for assoc in self.part_associations
+            if assoc.row == row and assoc.column == col
+        ]
 
         if not parts:
             return None
@@ -309,13 +316,10 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
 class ObjectType(SaveMixin, ModelBase):
     &quot;&quot;&quot;A ObjectType model that represents the type of container an item is.&quot;&quot;&quot;
 
-    fields = dict(
-        items=HasMany(&quot;Item&quot;, &quot;ObjectType&quot;),
-        sample_type=HasOne(&quot;SampleType&quot;)
-    )
+    fields = dict(items=HasMany(&quot;Item&quot;, &quot;ObjectType&quot;), sample_type=HasOne(&quot;SampleType&quot;))
 
     def __str__(self):
-        return self._to_str(&#39;id&#39;, &#39;name&#39;)</div>
+        return self._to_str(&quot;id&quot;, &quot;name&quot;)</div>
 
 
 <div class="viewcode-block" id="PartAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.PartAssociation">[docs]</a>@add_schema
@@ -325,17 +329,11 @@ class PartAssociation(ModelBase):
     many `parts`, each of which can refer to a different sample.
     &quot;&quot;&quot;
 
-    fields = dict(
-        part=HasOne(&#39;Item&#39;, ref=&quot;part_id&quot;),
-        collection=HasOne(&#39;Collection&#39;)
-    )
+    fields = dict(part=HasOne(&quot;Item&quot;, ref=&quot;part_id&quot;), collection=HasOne(&quot;Collection&quot;))
 
     def __init__(self, part_id=None, collection_id=None, row=None, column=None):
         super().__init__(
-            part_id=part_id,
-            collection_id=collection_id,
-            row=row,
-            column=column
+            part_id=part_id, collection_id=collection_id, row=row, column=column
         )</div>
 </pre></div>
 

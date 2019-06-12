@@ -4,18 +4,14 @@ from pydent import models
 from pydent.exceptions import TridentRequestError
 
 
-
-@pytest.mark.record_mode('no')
+@pytest.mark.record_mode("no")
 def test_plans_and_convert_to_save_json(session):
     plans = session.Plan.last(20)
     with session.with_cache() as sess:
-        sess.browser.recursive_retrieve(plans, {
-                'operations': 'field_values'
-            })
+        sess.browser.recursive_retrieve(plans, {"operations": "field_values"})
 
         for p in plans:
             p.to_save_json()
-
 
     # browser = Browser(session)
     #
@@ -33,17 +29,19 @@ def test_plans_and_convert_to_save_json(session):
     #             'field_values'
     #         }
     #     })
-        # for p in plans:
-        #     for op in p.operations:
-        #         op.field_values
+    # for p in plans:
+    #     for op in p.operations:
+    #         op.field_values
 
-        # for p in plans:
-        #     p.to_save_json()
+    # for p in plans:
+    #     p.to_save_json()
 
-@pytest.mark.record('no')
+
+@pytest.mark.record("no")
 def test_submit_order_primer(session):
     order_primer = session.OperationType.where(
-        {"deployed": True, "name": "Assemble Plasmid"})[0]
+        {"deployed": True, "name": "Assemble Plasmid"}
+    )[0]
 
     order_primer_op = order_primer.instance()
 
@@ -54,13 +52,14 @@ def test_submit_order_primer(session):
 
     p.delete()
 
+
 def test_plan_with_parameter(session):
-    primer = session.SampleType.find_by_name('Primer')
-    assert(primer), "Sample type Primer not found"
+    primer = session.SampleType.find_by_name("Primer")
+    assert primer, "Sample type Primer not found"
     print("primer:\n{}\n".format(primer))
 
     # get Order Primer operation type
-    ot = session.OperationType.where({'name': 'Order Primer', 'deployed': True})[0]
+    ot = session.OperationType.where({"name": "Order Primer", "deployed": True})[0]
     assert ot, "Operation type Order Primer not found"
     print("op type:\n{}\n".format(ot))
 
@@ -94,57 +93,70 @@ def test_plan_with_parameter(session):
 
 def test_parameter_to_zero(session):
     test_plan = session.Plan.new(name="Test Plan")
-    op_type = session.OperationType.find_by_name('Challenge and Label')
-    assert(op_type), "Operation type Challenge and Label not found"
+    op_type = session.OperationType.find_by_name("Challenge and Label")
+    assert op_type, "Operation type Challenge and Label not found"
 
     op1 = op_type.instance()
-    op1.set_input('Protease Concentration', value=0)
+    op1.set_input("Protease Concentration", value=0)
 
     op2 = op_type.instance()
-    op2.set_input('Protease Concentration', value=250)
+    op2.set_input("Protease Concentration", value=250)
 
     test_plan.add_operations([op1, op2])
 
-    assert op1.input('Protease Concentration').value == 0
-    assert op2.input('Protease Concentration').value == 250
-    assert not op1.input('Protease Concentration').value == 2
+    assert op1.input("Protease Concentration").value == 0
+    assert op2.input("Protease Concentration").value == 250
+    assert not op1.input("Protease Concentration").value == 2
 
     # test_plan.connect_to_session(session)
     # test_plan.create()
 
 
-@pytest.mark.record('no')
+@pytest.mark.record("no")
 def test_submission_1(session):
     # find "Assembly Plasmid" protocol
-    gibson_type = session.OperationType.where({"deployed": True, "name": "Assemble Plasmid"})[0]
+    gibson_type = session.OperationType.where(
+        {"deployed": True, "name": "Assemble Plasmid"}
+    )[0]
 
     # instantiate gibson operation
     gibson_op = gibson_type.instance()
     gibson_op.field_values = []
 
     # set output
-    gibson_op.set_output_sample("Assembled Plasmid", sample=session.Sample.find_by_name("pCAG-NLS-HA-Bxb1"))
+    gibson_op.set_output_sample(
+        "Assembled Plasmid", sample=session.Sample.find_by_name("pCAG-NLS-HA-Bxb1")
+    )
 
     # set input 1
-    gibson_op.add_to_input_array("Fragment",
-                                 sample=session.Sample.find_by_name("SV40NLS1-FLP-SV40NLS2"),
-                                 item=session.Item.find(84034))
+    gibson_op.add_to_input_array(
+        "Fragment",
+        sample=session.Sample.find_by_name("SV40NLS1-FLP-SV40NLS2"),
+        item=session.Item.find(84034),
+    )
 
     # set input 2
-    gibson_op.add_to_input_array("Fragment",
-                                 sample=session.Sample.find_by_name("CRPos0-HDAC4_split"),
-                                 item=session.Item.find(83714))
+    gibson_op.add_to_input_array(
+        "Fragment",
+        sample=session.Sample.find_by_name("CRPos0-HDAC4_split"),
+        item=session.Item.find(83714),
+    )
 
     # set input 3
     sample = session.Sample.find_by_name("_HDAC4_split_part1")
-    fv = gibson_op.add_to_input_array("Fragment",
-                                      sample=sample)
+    fv = gibson_op.add_to_input_array("Fragment", sample=sample)
 
     # PCR
-    pcr_type = session.OperationType.where({"deployed": True, "name": "Make PCR Fragment"})[0]
+    pcr_type = session.OperationType.where(
+        {"deployed": True, "name": "Make PCR Fragment"}
+    )[0]
     pcr_op = pcr_type.instance()
-    pcr_op.set_input("Forward Primer", sample=sample.field_value("Forward Primer").sample)
-    pcr_op.set_input("Reverse Primer", sample=sample.field_value("Forward Primer").sample)
+    pcr_op.set_input(
+        "Forward Primer", sample=sample.field_value("Forward Primer").sample
+    )
+    pcr_op.set_input(
+        "Reverse Primer", sample=sample.field_value("Forward Primer").sample
+    )
     pcr_op.set_input("Template", sample=sample.field_value("Template").sample)
     pcr_op.set_output_sample("Fragment", sample=sample)
 
@@ -156,13 +168,17 @@ def test_submission_1(session):
     gel_op.set_output_sample("Fragment", sample=sample)
 
     # extract gel
-    extract_type = session.OperationType.where({"deployed": True, "name": "Extract Gel Slice"})[0]
+    extract_type = session.OperationType.where(
+        {"deployed": True, "name": "Extract Gel Slice"}
+    )[0]
     extract_op = extract_type.instance()
     extract_op.set_input("Fragment", sample=sample)
     extract_op.set_output_sample("Fragment", sample=sample)
 
     # purify gel slice
-    purify_type = session.OperationType.where({"deployed": True, "name": "Purify Gel Slice"})[0]
+    purify_type = session.OperationType.where(
+        {"deployed": True, "name": "Purify Gel Slice"}
+    )[0]
     purify_op = purify_type.instance()
     purify_op.set_input("Gel", sample=sample)
     purify_op.set_output_sample("Fragment", sample=sample)
@@ -206,13 +222,18 @@ def test_submission_1(session):
     # submit the plan
     p.submit(session.current_user, session.current_user.budgets[0])
 
-    print("You may open you plan here: {}".format(session.url + "/plans?plan_id={}".format(p.id)))
+    print(
+        "You may open you plan here: {}".format(
+            session.url + "/plans?plan_id={}".format(p.id)
+        )
+    )
 
 
 def test_submission_2(session):
     # find "Assembly Plasmid" protocol
     op_types = session.OperationType.where(
-        {"deployed": True, "name": "Assemble Plasmid"})
+        {"deployed": True, "name": "Assemble Plasmid"}
+    )
     assert len(op_types) > 0, "Operation type Assemble Plasmid not found"
     gibson_type = op_types[0]
 
@@ -222,40 +243,32 @@ def test_submission_2(session):
 
     # set output
     sample = session.Sample.find_by_name("pCAG-NLS-HA-Bxb1")
-    assert sample, "Sample \"pCAG-NLS-HA-Bxb1\" not found"
-    gibson_op.set_output_sample(
-        "Assembled Plasmid",
-        sample=sample)
+    assert sample, 'Sample "pCAG-NLS-HA-Bxb1" not found'
+    gibson_op.set_output_sample("Assembled Plasmid", sample=sample)
 
     # set input 1
     sample = session.Sample.find_by_name("SV40NLS1-FLP-SV40NLS2")
-    assert sample, "Sample \"SV40NLS1-FLP-SV40NLS2\" not found"
+    assert sample, 'Sample "SV40NLS1-FLP-SV40NLS2" not found'
     item = session.Item.find(84034)
     assert item, "Item not found"
-    gibson_op.add_to_input_array(
-        "Fragment",
-        sample=sample,
-        item=item)
+    gibson_op.add_to_input_array("Fragment", sample=sample, item=item)
 
     # set input 2
-    sample = session.Sample.find_by_name(
-        "CRPos0-HDAC4_split")
-    assert sample, "Sample \"CRPos0-HDAC4_split\" not found"
+    sample = session.Sample.find_by_name("CRPos0-HDAC4_split")
+    assert sample, 'Sample "CRPos0-HDAC4_split" not found'
     item = session.Item.find(83714)
     assert item, "Item not"
-    gibson_op.add_to_input_array("Fragment",
-                                 sample=sample,
-                                 item=item)
+    gibson_op.add_to_input_array("Fragment", sample=sample, item=item)
 
     # set input 3
     sample = session.Sample.find_by_name("_HDAC4_split_part1")
-    assert sample, "Sample \"_HDAC4_split_part1\" not found"
-    fv = gibson_op.add_to_input_array("Fragment",
-                                      sample=sample)
+    assert sample, 'Sample "_HDAC4_split_part1" not found'
+    fv = gibson_op.add_to_input_array("Fragment", sample=sample)
 
     # PCR
     op_types = session.OperationType.where(
-        {"deployed": True, "name": "Make PCR Fragment"})
+        {"deployed": True, "name": "Make PCR Fragment"}
+    )
     assert len(op_types) > 0, "Operation type Make PCR Fragment not found"
     pcr_type = op_types[0]
     pcr_op = pcr_type.instance()
@@ -269,8 +282,7 @@ def test_submission_2(session):
     pcr_op.set_output_sample("Fragment", sample=sample)
 
     # Run gel
-    op_types = session.OperationType.where(
-        {"deployed": True, "name": "Run Gel"})
+    op_types = session.OperationType.where({"deployed": True, "name": "Run Gel"})
     assert len(op_types) > 0, "Operation type Run Gel not found"
     gel_type = op_types[0]
     gel_op = gel_type.instance()
@@ -279,7 +291,8 @@ def test_submission_2(session):
 
     # extract gel
     op_types = session.OperationType.where(
-        {"deployed": True, "name": "Extract Gel Slice"})
+        {"deployed": True, "name": "Extract Gel Slice"}
+    )
     assert len(op_types) > 0, "Operation type Extract Gel Slice not found"
     extract_type = op_types[0]
     extract_op = extract_type.instance()
@@ -288,7 +301,8 @@ def test_submission_2(session):
 
     # purify gel slice
     op_types = session.OperationType.where(
-        {"deployed": True, "name": "Purify Gel Slice"})
+        {"deployed": True, "name": "Purify Gel Slice"}
+    )
     assert len(op_types) > 0, "Operation type Purify Gel Slice not found"
     purify_type = op_types[0]
     purify_op = purify_type.instance()
@@ -326,5 +340,8 @@ def test_submission_2(session):
     # submit the plan
     p.submit(session.current_user, session.current_user.budgets[0])
 
-    print("You may open you plan here: {}".format(
-        session.url + "/plans?plan_id={}".format(p.id)))
+    print(
+        "You may open you plan here: {}".format(
+            session.url + "/plans?plan_id={}".format(p.id)
+        )
+    )

@@ -9,9 +9,9 @@ def test_plan_constructor(fake_session):
     assert g.operations is None
     assert g.wires == []
 
-    g = Plan(name="MyPlan", status='running')
-    assert g.name == 'MyPlan'
-    assert g.status == 'running'
+    g = Plan(name="MyPlan", status="running")
+    assert g.name == "MyPlan"
+    assert g.status == "running"
 
 
 def test_add_operation(fake_session):
@@ -24,29 +24,43 @@ def test_add_operation(fake_session):
     assert p.operations == [op]
 
     # add second operation
-    op2 = fake_session.Operation.load({'id': 5})
+    op2 = fake_session.Operation.load({"id": 5})
     p.add_operation(op2)
     assert p.operations == [op, op2]
 
 
 def test_add_operations(fake_session):
     op = fake_session.Operation.load({"id": 4})
-    op2 = fake_session.Operation.load({'id': 5})
+    op2 = fake_session.Operation.load({"id": 5})
     ops = [op, op2]
     p = fake_session.Plan.new()
     p.add_operations(ops)
     assert p.operations == [op, op2]
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def fake_plan(fake_session):
     p = fake_session.Plan.new()
 
     op1 = fake_session.Operation.load({})
     op2 = fake_session.Operation.load({})
 
-    src = fake_session.FieldValue.load({'name': 'myinput', 'parent_class': 'Operation', 'operation': op1, 'role': 'output'})
-    dest = fake_session.FieldValue.load({'name': 'myoutput', 'parent_class': 'Operation', 'operation': op2, 'role': 'input'})
+    src = fake_session.FieldValue.load(
+        {
+            "name": "myinput",
+            "parent_class": "Operation",
+            "operation": op1,
+            "role": "output",
+        }
+    )
+    dest = fake_session.FieldValue.load(
+        {
+            "name": "myoutput",
+            "parent_class": "Operation",
+            "operation": op2,
+            "role": "input",
+        }
+    )
     op1.field_values = [src]
     op2.field_values = [dest]
 
@@ -59,9 +73,10 @@ def test_wire(fake_plan):
     p.add_operations([src.operation, dest.operation])
     p.wire(src, dest)
     assert len(p.wires) == 1
-    assert p.wires[0].source.name == 'myinput'
-    assert p.wires[0].destination.name == 'myoutput'
+    assert p.wires[0].source.name == "myinput"
+    assert p.wires[0].destination.name == "myoutput"
     print(p.wires)
+
 
 def test_plan_copy(example_plan):
     """Copying plans should anonymize operations and wires"""

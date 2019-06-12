@@ -6,8 +6,7 @@ from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import SaveMixin
 from pydent.models.data_associations import DataAssociatorMixin
-from pydent.relationships import (Raw, HasOne, HasMany,
-                                  HasManyThrough, HasManyGeneric)
+from pydent.relationships import Raw, HasOne, HasMany, HasManyThrough, HasManyGeneric
 
 
 @add_schema
@@ -15,22 +14,27 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
     """
     A physical object in the lab, which a location and unique id.
     """
+
     fields = dict(
         sample=HasOne("Sample"),
         object_type=HasOne("ObjectType"),
-        data_associations=HasManyGeneric("DataAssociation", additional_args={
-            "parent_class": "Item"
-        }),
+        data_associations=HasManyGeneric(
+            "DataAssociation", additional_args={"parent_class": "Item"}
+        ),
         data=Raw(),
         ignore=("locator_id",),
-        part_associations=HasMany("PartAssociation", ref="part_id"),  # TODO: add to change log
-        collections=HasManyThrough("Collection", "PartAssociation"),  # TODO: add to change log
+        part_associations=HasMany(
+            "PartAssociation", ref="part_id"
+        ),  # TODO: add to change log
+        collections=HasManyThrough(
+            "Collection", "PartAssociation"
+        ),  # TODO: add to change log
     )
-    query_hook = {
-        'methods': ['is_part']
-    }
+    query_hook = {"methods": ["is_part"]}
 
-    def __init__(self=None, sample_id=None, sample=None, object_type=None, object_type_id=None):
+    def __init__(
+        self=None, sample_id=None, sample=None, object_type=None, object_type_id=None
+    ):
         super().__init__(
             object_type_id=object_type_id,
             object_type=object_type,
@@ -49,7 +53,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         return self.make()
 
     def is_deleted(self):
-        return self.location == 'deleted'
+        return self.location == "deleted"
 
     @property
     def containing_collection(self):
@@ -62,7 +66,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         if not self.is_part:
             return None
 
-        assoc_list = self.session.PartAssociation.where({'part_id': self.id})
+        assoc_list = self.session.PartAssociation.where({"part_id": self.id})
         if not assoc_list:
             return
 
@@ -94,7 +98,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
         Note: this is not how Aquarium does this test in the `collection?` method.
         """
-        assoc_list = self.session.PartAssociation.where({'collection_id': self.id})
+        assoc_list = self.session.PartAssociation.where({"collection_id": self.id})
         return bool(assoc_list)
 
     # TODO: add to change log
@@ -109,21 +113,21 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
 
 @add_schema
-class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-public-methods
+class Collection(
+    DataAssociatorMixin, ModelBase
+):  # pylint: disable=too-few-public-methods
     """A Collection model, such as a 96-well plate, which contains many `parts`, each
     of which can be associated with a different sample."""
 
     fields = dict(
         object_type=HasOne("ObjectType"),
-        data_associations=HasManyGeneric("DataAssociation", additional_args={
-            "parent_class": "Collection"
-        }),
+        data_associations=HasManyGeneric(
+            "DataAssociation", additional_args={"parent_class": "Collection"}
+        ),
         part_associations=HasMany("PartAssociation", "Collection"),
-        parts=HasManyThrough("Item", "PartAssociation", ref="part_id")
+        parts=HasManyThrough("Item", "PartAssociation", ref="part_id"),
     )
-    query_hook = {
-        "methods": ["dimensions"]
-    }
+    query_hook = {"methods": ["dimensions"]}
 
     @property
     def matrix(self):
@@ -149,8 +153,11 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
         """
         Returns the part Item at (row, col) of this Collection (zero-based).
         """
-        parts = [assoc.part for assoc in self.part_associations
-                 if assoc.row == row and assoc.column == col]
+        parts = [
+            assoc.part
+            for assoc in self.part_associations
+            if assoc.row == row and assoc.column == col
+        ]
 
         if not parts:
             return None
@@ -177,13 +184,10 @@ class Collection(DataAssociatorMixin, ModelBase):  # pylint: disable=too-few-pub
 class ObjectType(SaveMixin, ModelBase):
     """A ObjectType model that represents the type of container an item is."""
 
-    fields = dict(
-        items=HasMany("Item", "ObjectType"),
-        sample_type=HasOne("SampleType")
-    )
+    fields = dict(items=HasMany("Item", "ObjectType"), sample_type=HasOne("SampleType"))
 
     def __str__(self):
-        return self._to_str('id', 'name')
+        return self._to_str("id", "name")
 
 
 @add_schema
@@ -193,15 +197,9 @@ class PartAssociation(ModelBase):
     many `parts`, each of which can refer to a different sample.
     """
 
-    fields = dict(
-        part=HasOne('Item', ref="part_id"),
-        collection=HasOne('Collection')
-    )
+    fields = dict(part=HasOne("Item", ref="part_id"), collection=HasOne("Collection"))
 
     def __init__(self, part_id=None, collection_id=None, row=None, column=None):
         super().__init__(
-            part_id=part_id,
-            collection_id=collection_id,
-            row=row,
-            column=column
+            part_id=part_id, collection_id=collection_id, row=row, column=column
         )

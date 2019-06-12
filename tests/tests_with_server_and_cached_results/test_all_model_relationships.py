@@ -2,9 +2,11 @@ import pytest
 from pydent.marshaller import ModelRegistry
 
 # skip tests
-pytestmark = pytest.mark.skip("These tests utilize a live session with alot of requests."
-                              "In the future, we may want to utilize something like pyvrc to avoid"
-                              "sending live requests to Aquarium.")
+pytestmark = pytest.mark.skip(
+    "These tests utilize a live session with alot of requests."
+    "In the future, we may want to utilize something like pyvrc to avoid"
+    "sending live requests to Aquarium."
+)
 
 relationship_pairs = []
 for model in ModelRegistry.models.values():
@@ -24,7 +26,7 @@ class TestModelRelationships:
     This code isn't ideal, but may be useful in conjunction with request vcr.
     """
 
-    @pytest.mark.parametrize('model_class,attr,relationship', relationship_pairs)
+    @pytest.mark.parametrize("model_class,attr,relationship", relationship_pairs)
     def test_model_relationships(self, session, model_class, attr, relationship):
         """
         Tries to access nested relationships in an a model
@@ -48,15 +50,25 @@ class TestModelRelationships:
                 nested_model = ModelRegistry.get_model(relationship.nested)
                 if relationship.many:
                     if val:
-                        assert isinstance(val[0], nested_model), "Value should be a {}, not a {}".format(nested_model, type(val[0]))
+                        assert isinstance(
+                            val[0], nested_model
+                        ), "Value should be a {}, not a {}".format(
+                            nested_model, type(val[0])
+                        )
                         num_models = 0
                     else:
                         num_models += num_model_increase
                 else:
                     if val is not None:
-                        assert isinstance(val, nested_model), "Value should be a {}, not a {}".format(nested_model, val)
+                        assert isinstance(
+                            val, nested_model
+                        ), "Value should be a {}, not a {}".format(nested_model, val)
                         num_models = 0
                     else:
                         num_models += num_model_increase
         if num_models > 0:
-            raise Exception("{} is missing an example of the relationship for '{}'".format(model_class, attr))
+            raise Exception(
+                "{} is missing an example of the relationship for '{}'".format(
+                    model_class, attr
+                )
+            )

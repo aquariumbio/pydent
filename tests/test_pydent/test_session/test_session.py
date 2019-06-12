@@ -1,4 +1,3 @@
-
 from pydent.base import ModelRegistry
 from pydent.aqhttp import AqHTTP
 from pydent.interfaces import QueryInterface, UtilityInterface
@@ -35,15 +34,10 @@ def test_access_utils_interface(fake_session):
 
 # TODO: this is all muddled with models!
 def test_current_user(monkeypatch, fake_session):
-
     def fake_post(*args, **kwargs):
-        return [{
-            "login": "mylogin",
-            "id": 1,
-            "name": "Jane Doe"
-        }]
+        return [{"login": "mylogin", "id": 1, "name": "Jane Doe"}]
 
-    monkeypatch.setattr(AqHTTP, 'post', fake_post)
+    monkeypatch.setattr(AqHTTP, "post", fake_post)
 
     user = fake_session.current_user
     assert isinstance(user, User)
@@ -51,24 +45,18 @@ def test_current_user(monkeypatch, fake_session):
 
 # TODO: this is all muddled with models!
 def test_not_logged_in(monkeypatch, fake_session):
-
     def fake_post(*args, **kwargs):
         return []
 
-    monkeypatch.setattr(AqHTTP, 'post', fake_post)
+    monkeypatch.setattr(AqHTTP, "post", fake_post)
     assert not fake_session.logged_in()
 
 
 def test_logged_in(monkeypatch, fake_session):
-
     def fake_post(*args, **kwargs):
-        return [{
-            "login": "mylogin",
-            "id": 1,
-            "name": "Jane Doe"
-        }]
+        return [{"login": "mylogin", "id": 1, "name": "Jane Doe"}]
 
-    monkeypatch.setattr(AqHTTP, 'post', fake_post)
+    monkeypatch.setattr(AqHTTP, "post", fake_post)
     assert fake_session.logged_in()
 
 

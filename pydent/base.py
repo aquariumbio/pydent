@@ -55,10 +55,11 @@ class ModelBase(SchemaModel):
     - contains a reference to the :class:`pydent.session.aqsession.AqSession`
       instance that loaded this model
     """
-    PRIMARY_KEY = 'id'
-    GLOBAL_KEY = 'rid'
+
+    PRIMARY_KEY = "id"
+    GLOBAL_KEY = "rid"
     SERVER_MODEL_NAME = None
-    DEFAULT_COPY_KEEP_UNANONYMOUS = ['Item', 'Sample', 'Collection']
+    DEFAULT_COPY_KEEP_UNANONYMOUS = ["Item", "Sample", "Collection"]
     counter = itertools.count()
     id = None
     rid = None
@@ -72,13 +73,15 @@ class ModelBase(SchemaModel):
 
     def __init__(self, **data):
         super().__init__(data)
-        self.add_data({'rid': self._rid, "id": data.get('id', None)})
+        self.add_data({"rid": self._rid, "id": data.get("id", None)})
 
     @classmethod
     def _set_data(cls, data, owner):
-        if not hasattr(owner, 'session'):
-            raise NoSessionError("Cannot instantiate new model because its data parent"
-                                 " {} has no 'session' attribute".format(owner))
+        if not hasattr(owner, "session"):
+            raise NoSessionError(
+                "Cannot instantiate new model because its data parent"
+                " {} has no 'session' attribute".format(owner)
+            )
         instance = cls.__new__(cls, session=owner.session)
         instance.raw = data
         cls.__init__(instance)
@@ -102,7 +105,7 @@ class ModelBase(SchemaModel):
     @rid.setter
     def rid(self, _rid):
         self._rid = _rid
-        self.add_data({'rid': self._rid})
+        self.add_data({"rid": self._rid})
 
     @property
     def _primary_key(self):
@@ -111,7 +114,7 @@ class ModelBase(SchemaModel):
             pk = getattr(self, ModelBase.PRIMARY_KEY)
             if pk:
                 return pk
-        return 'r{}'.format(self.rid)
+        return "r{}".format(self.rid)
 
     def append_to_many(self, name, model):
         """
@@ -127,8 +130,11 @@ class ModelBase(SchemaModel):
         if name in self.get_relationships():
             field = self.get_relationships()[name]
             if not model.__class__.__name__ == field.nested:
-                raise AquariumModelError("Cannot 'append_to_many.' Model must be a '{}' but found a '{}'".format(
-                    field.model, model.__class__.__name__))
+                raise AquariumModelError(
+                    "Cannot 'append_to_many.' Model must be a '{}' but found a '{}'".format(
+                        field.model, model.__class__.__name__
+                    )
+                )
             if field.many:
                 val = getattr(self, name)
                 if val is None:
@@ -141,14 +147,16 @@ class ModelBase(SchemaModel):
 
     @classmethod
     def load(cls, *args, **kwargs):
-        raise Exception("This method is now depreciated as of version 0.1.0. Trident now requires"
-                        " model instantiations to be explicitly attached to an AqSession object."
-                        "\nPlease use the following"
-                        " methods to initialize your models, which will automatically attach your session object to"
-                        " the newly constructed instance."
-                        "\n(1) `session.{name}.new(*args, **kwargs)` to initialize a new model using a constructor."
-                        "\n(2) `session.{name}.load(data)  # to initialize a model with data."
-                        "\n(3) `{name}.load_from(data, session)".format(name=cls.__name__))
+        raise Exception(
+            "This method is now depreciated as of version 0.1.0. Trident now requires"
+            " model instantiations to be explicitly attached to an AqSession object."
+            "\nPlease use the following"
+            " methods to initialize your models, which will automatically attach your session object to"
+            " the newly constructed instance."
+            "\n(1) `session.{name}.new(*args, **kwargs)` to initialize a new model using a constructor."
+            "\n(2) `session.{name}.load(data)  # to initialize a model with data."
+            "\n(3) `{name}.load_from(data, session)".format(name=cls.__name__)
+        )
 
     @classmethod
     def load_from(cls, data, owner=None):
@@ -213,11 +221,14 @@ class ModelBase(SchemaModel):
     @session.setter
     def session(self, new_session):
         if new_session is not None and not issubclass(type(new_session), SessionABC):
-            raise NoSessionError("Cannot instantiate new model because its data parent "
-                                 "session is a type '{}', not a Session object"
-                                 .format(type(new_session)))
+            raise NoSessionError(
+                "Cannot instantiate new model because its data parent "
+                "session is a type '{}', not a Session object".format(type(new_session))
+            )
         if self.session is not None:
-            raise Exception("Cannot set session. Model {} already has a session.".format(self))
+            raise Exception(
+                "Cannot set session. Model {} already has a session.".format(self)
+            )
         self._session = new_session
 
     def connect_to_session(self, session):
@@ -227,15 +238,19 @@ class ModelBase(SchemaModel):
     def _check_for_session(self):
         """Raises error if model is not connected to a session"""
         if self.session is None:
-            raise NoSessionError("No AqSession instance found for '{name}' but one is required for the method."
-                                 "\nDo one of the following:"
-                                 "\n(1) - Use 'connect_to_session' after initializing your model."
-                                 "\n(2) - If initializing a model use the session model constructor."
-                                 "\n\t >> USE: \t\t'session.{name}.new(*args, **kwargs)'"
-                                 "\n\t >> DO NOT USE:\t'{name}(*args, **kwargs)'"
-                                 "\n(3) - If initializing with load"
-                                 "\n\t >> USE: \t\t'session.{name}.load(data)"
-                                 "\n\t >> DO NOT USE\t'{name}.load(data)".format(name=self.__class__.__name__))
+            raise NoSessionError(
+                "No AqSession instance found for '{name}' but one is required for the method."
+                "\nDo one of the following:"
+                "\n(1) - Use 'connect_to_session' after initializing your model."
+                "\n(2) - If initializing a model use the session model constructor."
+                "\n\t >> USE: \t\t'session.{name}.new(*args, **kwargs)'"
+                "\n\t >> DO NOT USE:\t'{name}(*args, **kwargs)'"
+                "\n(3) - If initializing with load"
+                "\n\t >> USE: \t\t'session.{name}.load(data)"
+                "\n\t >> DO NOT USE\t'{name}.load(data)".format(
+                    name=self.__class__.__name__
+                )
+            )
 
     def no_getter(self, *_):
         """Callback that always returns None"""
@@ -286,9 +301,9 @@ class ModelBase(SchemaModel):
         model = ModelRegistry.get_model(model_name)
         self.session._log_to_aqhttp(
             "CALLBACK '{clsname}(rid={rid})' made a FIND request for '{model}'".format(
-                clsname=self.__class__.__name__,
-                rid=self.rid,
-                model=model_name))
+                clsname=self.__class__.__name__, rid=self.rid, model=model_name
+            )
+        )
         return model.find(self.session, model_id)
 
     def where_callback(self, model_name, *args, **kwargs):
@@ -305,10 +320,10 @@ class ModelBase(SchemaModel):
         model = ModelRegistry.get_model(model_name)
         if kwargs is None:
             kwargs = {}
-        self.session._log_to_aqhttp("CALLBACK '{clsname}(rid={rid})' made a WHERE request for '{model}'".format(
-            clsname=self.__class__.__name__,
-            rid=self.rid,
-            model=model_name)
+        self.session._log_to_aqhttp(
+            "CALLBACK '{clsname}(rid={rid})' made a WHERE request for '{model}'".format(
+                clsname=self.__class__.__name__, rid=self.rid, model=model_name
+            )
         )
         return model.where(self.session, query_arg, *args[1:], **kwargs)
 
@@ -319,18 +334,19 @@ class ModelBase(SchemaModel):
         print(data)
 
     def __str__(self):
-        return self._to_str('id', 'rid')
+        return self._to_str("id", "rid")
 
     def _to_str(self, *attributes, **kwargs):
-        if 'rid' not in attributes:
+        if "rid" not in attributes:
             attributes = list(attributes)
-            attributes.append('rid')
+            attributes.append("rid")
         data = self._get_data()
         data.update(kwargs)
         attributes = list(attributes) + list(kwargs)
-        return "<{} {}>".format(self.__class__.__name__, ' '.join([
-            "{}={}".format(k, data.get(k, None)) for k in attributes
-        ]))
+        return "<{} {}>".format(
+            self.__class__.__name__,
+            " ".join(["{}={}".format(k, data.get(k, None)) for k in attributes]),
+        )
 
     # TODO: anonymize the keys for relationships as well
     def anonymize(self):
@@ -341,19 +357,18 @@ class ModelBase(SchemaModel):
 
         :return: self
         """
-        if not self.__class__.__name__.endswith('Type'):
+        if not self.__class__.__name__.endswith("Type"):
             setattr(self, self.PRIMARY_KEY, None)
-            setattr(self, 'rid', next(self.counter))
+            setattr(self, "rid", next(self.counter))
             self.updated_at = None
             self.created_at = None
             self.raw = {}
         return self
 
-
     def _anonymize_field_keys(self, keep=None):
         for name, relation in self.get_relationships().items():
-            if hasattr(relation, 'ref'):
-                if relation.nested.endswith('Type'):
+            if hasattr(relation, "ref"):
+                if relation.nested.endswith("Type"):
                     continue
                 elif keep and relation.nested in keep:
                     continue

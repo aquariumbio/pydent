@@ -17,6 +17,7 @@ from pydent.exceptions import NoSessionError
 #     m = ModelBase()
 #     assert m.session is None
 
+
 @pytest.fixture(scope="function")
 def base():
     old_schemas = dict(SchemaRegistry.schemas)
@@ -39,6 +40,7 @@ def mymodel(base):
     @add_schema
     class MyModel(base):
         pass
+
     yield MyModel
 
 
@@ -48,6 +50,7 @@ def test_record_id():
     For each instance, a new 'rid' should be
     created.
     """
+
     @add_schema
     class MyModel(ModelBase):
         pass
@@ -66,6 +69,7 @@ def test_record_id():
 
 def test_deepcopy():
     """Deepcopy should retain attributes exactly"""
+
     @add_schema
     class MyModel(ModelBase):
         pass
@@ -75,11 +79,10 @@ def test_deepcopy():
     assert m.rid == copied.rid
 
 
-
-@pytest.mark.parametrize('copy_method', [
-        pytest.param(lambda x: x.copy()),
-        pytest.param(lambda x: copy.copy(x)),
-])
+@pytest.mark.parametrize(
+    "copy_method",
+    [pytest.param(lambda x: x.copy()), pytest.param(lambda x: copy.copy(x))],
+)
 def test_copy(copy_method):
     """Copy should anonymize models"""
 
@@ -139,7 +142,7 @@ def test_basic_constructor(mymodel):
     assert m.name == "SomeName"
     assert m.id == 2
     data = m.dump()
-    data.pop('rid')
+    data.pop("rid")
     assert data == {"name": "SomeName", "id": 2}
 
 
@@ -148,11 +151,11 @@ def test_base_constructor_with_marshaller(mymodel):
     With a schema, those
     attributes are also tracked and available for dumping."""
     m = mymodel(name="model", id=5)
-    assert m.name == 'model'
+    assert m.name == "model"
     assert m.id == 5
     mdump = m.dump()
-    del mdump['rid']
-    assert mdump == {'name': 'model', 'id': 5}
+    del mdump["rid"]
+    assert mdump == {"name": "model", "id": 5}
 
 
 def test_connect_to_session(mymodel, fake_session):
@@ -248,8 +251,9 @@ def test_where_and_find(mymodel, monkeypatch, fake_session):
 
         return FakeInterface
 
-    monkeypatch.setattr(AqSession, AqSession.model_interface.__name__,
-                        fake_model_interface)
+    monkeypatch.setattr(
+        AqSession, AqSession.model_interface.__name__, fake_model_interface
+    )
 
     m = mymodel()
     ModelRegistry.models["FakeModel"] = ModelBase
@@ -265,27 +269,21 @@ def test_print(mymodel):
 
 
 def test_load_many(base, fake_session):
-
     @add_schema
     class Child(base):
         pass
 
     @add_schema
     class Parent(base):
-        fields = dict(
-            children=fields.Relationship('Child', 'get_children', many=True)
-        )
+        fields = dict(children=fields.Relationship("Child", "get_children", many=True))
 
         def get_children(self, model_name):
             return None
 
-    parent = Parent.load_from({
-        "id": 10,
-        "children": [
-            {"id": 1, "name": "Child1"},
-            {"id": 2}
-        ]
-    }, fake_session.utils)
+    parent = Parent.load_from(
+        {"id": 10, "children": [{"id": 1, "name": "Child1"}, {"id": 2}]},
+        fake_session.utils,
+    )
     print(parent.children)
     assert len(parent.children) == 2
     assert isinstance(parent.children[0], Child)

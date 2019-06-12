@@ -11,6 +11,7 @@ from pydent import AqSession
 # VCR setup
 ###########
 
+
 def hash_response(r):
     """Hash function for request matcher. Defines what vcr will consider
     to be the same request."""
@@ -25,9 +26,7 @@ def hash_test_function(func):
     else:
         cls = "None"
     return "{module}_{cls}_{name}".format(
-        module=func.module.__name__,
-        cls=cls,
-        name=func.name,
+        module=func.module.__name__, cls=cls, name=func.name
     )
 
 
@@ -35,14 +34,15 @@ def matcher(r1, r2):
     """Request matcher. Defines what vcr considers the same request"""
     return hash_response(r1) == hash_response(r2)
 
+
 ############
 # Test hooks
 ############
 
 # https://vcrpy.readthedocs.io/en/latest/usage.html
 myvcr = vcr.VCR()
-myvcr.register_matcher('matcher', matcher)
-myvcr.match_on = ['matcher']
+myvcr.register_matcher("matcher", matcher)
+myvcr.match_on = ["matcher"]
 # record mode is handled in pytest.ini
 here = os.path.abspath(os.path.dirname(__file__))
 fixtures_path = os.path.join(here, "fixtures/vcr_cassettes")
@@ -62,18 +62,18 @@ def pytest_pyfunc_call(pyfuncitem):
     for marker in markers:
         record_modes += marker.args
 
-    if 'no' not in record_modes and USE_VCR:
+    if "no" not in record_modes and USE_VCR:
         myvcr.record_mode = record_modes[0]
         with myvcr.use_cassette(os.path.join(fixtures_path, cassette_name) + ".yaml"):
-            outcome = yield # runs the test
+            outcome = yield  # runs the test
     else:
-        outcome = yield # runs the test
+        outcome = yield  # runs the test
 
 
 def pytest_collection_modifyitems(items):
     """Adds the 'webtest' marker to tests. Necessary to access a live server."""
     for item in items:
-        item.add_marker('webtest')
+        item.add_marker("webtest")
 
 
 ###########
@@ -89,7 +89,7 @@ def config():
     dir = os.path.dirname(os.path.abspath(__file__))
 
     config_path = os.path.join(dir, "secrets", "config.json.secret")
-    with open(config_path, 'rU') as f:
+    with open(config_path, "rU") as f:
         config = json.load(f)
     return config
 

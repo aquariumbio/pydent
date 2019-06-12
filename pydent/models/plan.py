@@ -9,29 +9,36 @@ from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
 from pydent.models.field_value import FieldValue
 from pydent.models.data_associations import Upload, DataAssociatorMixin
-from pydent.relationships import (Raw, JSON, Many, HasOne, HasMany,
-                                  HasManyThrough, HasManyGeneric,
-                                  fields)
+from pydent.relationships import (
+    Raw,
+    JSON,
+    Many,
+    HasOne,
+    HasMany,
+    HasManyThrough,
+    HasManyGeneric,
+    fields,
+)
 from pydent.models.crud_mixin import SaveMixin, DeleteMixin
+
 
 @add_schema
 class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     """
     A Plan model
     """
+
     fields = dict(
-        data_associations=HasManyGeneric("DataAssociation", additional_args={
-            "parent_class": "Plan"
-        }),
+        data_associations=HasManyGeneric(
+            "DataAssociation", additional_args={"parent_class": "Plan"}
+        ),
         plan_associations=HasMany("PlanAssociation", "Plan"),
         operations=HasManyThrough("Operation", "PlanAssociation"),
         wires=Many("Wire", callback="_get_wires_from_server"),
         layout=JSON(),
         status=Raw(default="planning"),
     )
-    query_hook = {
-        'include': 'wires'
-    }
+    query_hook = {"include": "wires"}
 
     def __init__(self, name="MyPlan", status="planning"):
         super().__init__(
@@ -49,8 +56,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                 "name": "no_name",
                 "parent_id": -1,
                 "width": 160,
-                "wires": []
-            }
+                "wires": [],
+            },
         )
 
     def add_operation(self, operation):
@@ -62,7 +69,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         :return: None
         :rtype: None
         """
-        self.append_to_many('operations', operation)
+        self.append_to_many("operations", operation)
 
     def add_operations(self, operations):
         """
@@ -118,14 +125,20 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         if not self.has_operation(src.operation):
             raise AquariumModelError(
                 "Cannot wire because the wire's source FieldValue {} does "
-                "not exist in the Plan because its Operation '{}' is not in the plan".format(src, src.operation))
+                "not exist in the Plan because its Operation '{}' is not in the plan".format(
+                    src, src.operation
+                )
+            )
         if not self.has_operation(dest.operation):
             raise AquariumModelError(
                 "Cannot wire because the wire's destination FieldValue {} does not exist "
-                "in the Plan because its Operation '{}' is not in the plan.".formst(dest, dest.operation))
+                "in the Plan because its Operation '{}' is not in the plan.".formst(
+                    dest, dest.operation
+                )
+            )
 
         wire = Wire(source=src, destination=dest)
-        self.append_to_many('wires', wire)
+        self.append_to_many("wires", wire)
         return wire
 
     def _collect_wires(self):
@@ -159,8 +172,9 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         fv_ids = [fv.id for fv in fvs if fv.id is not None]
         wires_from_server = []
         if fv_ids:
-            wires_from_server = self.session.Wire.where({
-                'from_id': fv_ids, 'to_id': fv_ids})
+            wires_from_server = self.session.Wire.where(
+                {"from_id": fv_ids, "to_id": fv_ids}
+            )
         return wires_from_server
 
     def submit(self, user, budget):
@@ -192,8 +206,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         model_interface = super(Plan, cls).interface(session)
 
         # make a special find method for plans, as generic method is too minimal.
-        def new_find(model_id): return model_interface.get(
-            'plans/{}.json'.format(model_id))
+        def new_find(model_id):
+            return model_interface.get("plans/{}.json".format(model_id))
 
         # override the old find method
         model_interface.find = new_find
@@ -217,18 +231,22 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                 field_values.append(fv)
         fv_keys = [fv._primary_key for fv in field_values]
         for wire in self.wires:
-            for _fvtype in ['source', 'destination']:
+            for _fvtype in ["source", "destination"]:
                 field_value = getattr(wire, _fvtype)
                 if field_value._primary_key not in fv_keys:
-                    msg = "The FieldValue of a wire Wire(rid={}).{} is missing from the list" \
-                              " of FieldValues in the plan. Did you forget to add an operation to " \
-                              " the plan?".format(
-                            wire._primary_key, _fvtype,
+                    msg = (
+                        "The FieldValue of a wire Wire(rid={}).{} is missing from the list"
+                        " of FieldValues in the plan. Did you forget to add an operation to "
+                        " the plan?".format(wire._primary_key, _fvtype)
                     )
                     errors.append(msg)
         if raise_error and errors:
-            msg = '\n'.join(["(ErrNo {}) - {}".format(i, e) for i, e in enumerate(errors)])
-            raise AquariumModelError("Plan {} had the following errors:\n{}".format(self, msg))
+            msg = "\n".join(
+                ["(ErrNo {}) - {}".format(i, e) for i, e in enumerate(errors)]
+            )
+            raise AquariumModelError(
+                "Plan {} had the following errors:\n{}".format(self, msg)
+            )
         return errors
 
     def to_save_json(self):
@@ -247,45 +265,41 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
 
         self.validate(raise_error=True)
 
-        json_data = self.dump(include={
-            'operations': {
-                'field_values': {},
-            }
-        })
+        json_data = self.dump(include={"operations": {"field_values": {}}})
 
         # remove redundant wires
         wire_dict = {}
         for wire in self.wires:
             wire_data = wire.to_save_json()
             attributes = [
-                wire_data['from_id'],
-                wire_data['from']['rid'],
-                wire_data['to_id'],
-                wire_data['to']['rid']
+                wire_data["from_id"],
+                wire_data["from"]["rid"],
+                wire_data["to_id"],
+                wire_data["to"]["rid"],
             ]
             wire_hash = "*&".join([str(a) for a in attributes])
             wire_dict[wire_hash] = wire_data
-        json_data['wires'] = list(wire_dict.values())
+        json_data["wires"] = list(wire_dict.values())
 
         # validate
         fv_rids = []
-        for op in json_data['operations']:
-            for fv in op['field_values']:
-                fv_rids.append(fv['rid'])
+        for op in json_data["operations"]:
+            for fv in op["field_values"]:
+                fv_rids.append(fv["rid"])
 
         warnings = []
-        for wire_data in json_data['wires']:
-            if not wire_data['from']['rid'] in fv_rids:
-                warnings.append('rid {} is missing!'.format(wire_data['from']['rid']))
-            if not wire_data['to']['rid'] in fv_rids:
-                warnings.append('rid {} is missing!'.format(wire_data['to']['rid']))
+        for wire_data in json_data["wires"]:
+            if not wire_data["from"]["rid"] in fv_rids:
+                warnings.append("rid {} is missing!".format(wire_data["from"]["rid"]))
+            if not wire_data["to"]["rid"] in fv_rids:
+                warnings.append("rid {} is missing!".format(wire_data["to"]["rid"]))
         if warnings:
             print(warnings)
 
-        if json_data['layout'] is not None:
-            json_data['layout'] = json.loads(json_data['layout'])
+        if json_data["layout"] is not None:
+            json_data["layout"] = json.loads(json_data["layout"])
         else:
-            del json_data['layout']
+            del json_data["layout"]
 
         return json_data
 
@@ -349,16 +363,11 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
 @add_schema
 class PlanAssociation(ModelBase):
     """A PlanAssociation model"""
-    fields = dict(
-        plan=HasOne("Plan"),
-        operation=HasOne("Operation")
-    )
+
+    fields = dict(plan=HasOne("Plan"), operation=HasOne("Operation"))
 
     def __init__(self, plan_id=None, operation_id=None):
-        super().__init__(
-            plan_id=plan_id,
-            operation_id=operation_id
-        )
+        super().__init__(plan_id=plan_id, operation_id=operation_id)
 
 
 @add_schema
@@ -367,48 +376,67 @@ class Wire(DeleteMixin, ModelBase):
 
     fields = {
         "source": HasOne("FieldValue", ref="from_id"),
-        "destination":  HasOne("FieldValue", ref="to_id"),
+        "destination": HasOne("FieldValue", ref="to_id"),
     }
 
-    WIRABLE_PARENT_CLASSES = ['Operation']
+    WIRABLE_PARENT_CLASSES = ["Operation"]
 
     def __init__(self, source=None, destination=None):
 
         self._validate_field_values(source, destination)
 
-        if hasattr(source, 'id'):
+        if hasattr(source, "id"):
             from_id = source.id
         else:
             from_id = None
 
-        if hasattr(destination, 'id'):
+        if hasattr(destination, "id"):
             to_id = destination.id
         else:
             to_id = None
 
         if (source and not destination) or (destination and not source):
-            raise AquariumModelError("Cannot wire. Either source ({}) or destination ({}) is None".format(
-                source, destination
-            ))
+            raise AquariumModelError(
+                "Cannot wire. Either source ({}) or destination ({}) is None".format(
+                    source, destination
+                )
+            )
 
         if source:
             if not source.role:
-                raise AquariumModelError("Cannot wire. FieldValue {} does not have a role".format(source.role))
-            elif source.role != 'output':
-                raise AquariumModelError("Cannot wire an '{}' FieldValue as a source".format(source.role))
+                raise AquariumModelError(
+                    "Cannot wire. FieldValue {} does not have a role".format(
+                        source.role
+                    )
+                )
+            elif source.role != "output":
+                raise AquariumModelError(
+                    "Cannot wire an '{}' FieldValue as a source".format(source.role)
+                )
 
         if destination:
             if not destination.role:
-                raise AquariumModelError("Cannot wire. FieldValue {} does not have a role".format(destination.role))
-            elif destination.role != 'input':
-                raise AquariumModelError("Cannot wire an '{}' FieldValue as a destination".format(destination.role))
+                raise AquariumModelError(
+                    "Cannot wire. FieldValue {} does not have a role".format(
+                        destination.role
+                    )
+                )
+            elif destination.role != "input":
+                raise AquariumModelError(
+                    "Cannot wire an '{}' FieldValue as a destination".format(
+                        destination.role
+                    )
+                )
 
-        super().__init__(**{
-            "source": source,
-            "from_id": from_id,
-            "destination": destination,
-            "to_id": to_id
-        }, active=True)
+        super().__init__(
+            **{
+                "source": source,
+                "from_id": from_id,
+                "destination": destination,
+                "to_id": to_id,
+            },
+            active=True
+        )
 
     @property
     def identifier(self):
@@ -416,34 +444,42 @@ class Wire(DeleteMixin, ModelBase):
         if not self.source:
             source_id = self.from_id
         else:
-            source_id = 'r' + str(self.source.rid)
+            source_id = "r" + str(self.source.rid)
 
         if not self.destination:
             destination_id = self.to_id
         else:
-            destination_id = 'r' + str(self.destination.rid)
-        return '{}_{}'.format(source_id, destination_id)
+            destination_id = "r" + str(self.destination.rid)
+        return "{}_{}".format(source_id, destination_id)
 
     @classmethod
     def _validate_field_values(cls, src, dest):
         if src:
-            cls._validate_field_value(src, 'source')
+            cls._validate_field_value(src, "source")
         if dest:
-            cls._validate_field_value(dest, 'destination')
+            cls._validate_field_value(dest, "destination")
 
         if src and dest and src.rid == dest.rid:
-            raise AquariumModelError("Cannot create wire because source and destination are the same instance.")
+            raise AquariumModelError(
+                "Cannot create wire because source and destination are the same instance."
+            )
 
     @classmethod
     def _validate_field_value(cls, fv, name):
         if not issubclass(type(fv), FieldValue):
             raise AquariumModelError(
-                "Cannot create wire because {} FieldValue is {}.".format(name, fv.__class__.__name__))
+                "Cannot create wire because {} FieldValue is {}.".format(
+                    name, fv.__class__.__name__
+                )
+            )
 
         if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
-            raise AquariumModelError("Cannot create wire because the {} FieldValue is has '{}' parent class. " \
-                                     "Only {} parent classes are wirable".format(name, fv.parent_class,
-                                                                                 cls.WIRABLE_PARENT_CLASSES))
+            raise AquariumModelError(
+                "Cannot create wire because the {} FieldValue is has '{}' parent class. "
+                "Only {} parent classes are wirable".format(
+                    name, fv.parent_class, cls.WIRABLE_PARENT_CLASSES
+                )
+            )
 
     def validate(self):
         self._validate_field_values(self.source, self.destination)
@@ -455,7 +491,7 @@ class Wire(DeleteMixin, ModelBase):
             "to_id": self.destination.id,
             "from": {"rid": self.source.rid},
             "to": {"rid": self.destination.rid},
-            "active": self.active
+            "active": self.active,
         }
         return save_json
 
@@ -472,22 +508,28 @@ class Wire(DeleteMixin, ModelBase):
         source = self.source
         dest = self.destination
 
-        from_op_type_name = 'None'
-        from_name = 'None'
+        from_op_type_name = "None"
+        from_name = "None"
         if source:
             from_op_type_name = self.source.operation.operation_type.name
             from_name = source.name
 
-        to_op_type_name = 'None'
-        to_name = 'None'
+        to_op_type_name = "None"
+        to_name = "None"
         if dest:
             to_op_type_name = self.destination.operation.operation_type.name
             to_name = dest.name
 
-        print(pre + from_op_type_name +
-              ":" + from_name +
-              " --> " + to_op_type_name +
-              ":" + to_name)
+        print(
+            pre
+            + from_op_type_name
+            + ":"
+            + from_name
+            + " --> "
+            + to_op_type_name
+            + ":"
+            + to_name
+        )
 
     def does_wire_to(self, destination):
         if destination and self.destination:
@@ -504,7 +546,10 @@ class Wire(DeleteMixin, ModelBase):
 
         If any of the source or destination FieldValues are None, returns False."""
         if source and destination and self.source and self.destination:
-            return source.rid == self.source.rid and destination.rid == self.destination.rid
+            return (
+                source.rid == self.source.rid
+                and destination.rid == self.destination.rid
+            )
         return False
 
     def __eq__(self, other):

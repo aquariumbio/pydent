@@ -2,6 +2,7 @@
 Marshalling exceptions
 """
 
+
 class SchemaRegistryError(Exception):
     """Generic schema registry exception"""
 
@@ -39,6 +40,7 @@ class RunTimeCallbackAttributeError(AttributeError):
 Model validation exceptions
 """
 
+
 class ModelRegistryError(Exception):
     """Model not found in registry exception."""
 
@@ -55,7 +57,7 @@ class ExceptionCollection(Exception):
     internal exceptions.
     """
 
-    def __init__(self, *args, header=''):
+    def __init__(self, *args, header=""):
         self.args = args
         self.header = header
         self.errors = None
@@ -88,14 +90,14 @@ class ExceptionCollection(Exception):
                 for g, errors in group_by_exception.items():
                     msg += "\n {}(s):".format(g)
                     for i, e in enumerate(errors):
-                        msg += '\n  ({}): {}'.format(i, e)
+                        msg += "\n  ({}): {}".format(i, e)
                 self.args = (msg,)
             except Exception as e:
-                raise Exception("There was an error raising exceptions {}\n".format(self.errors, e))
+                raise Exception(
+                    "There was an error raising exceptions {}\n".format(self.errors, e)
+                )
             raise self
 
 
 class MultipleValidationError(ModelValidationError, ExceptionCollection):
     """Model validation exception."""
-
-

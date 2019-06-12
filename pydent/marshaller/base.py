@@ -20,7 +20,7 @@ def add_schema(cls):
     new_schema = SchemaRegistry(
         SchemaRegistry.make_schema_name(cls.__name__),
         (DynamicSchema,),
-        {"_model_class": cls}
+        {"_model_class": cls},
     )
     new_schema.register(cls)
     return cls
@@ -31,7 +31,7 @@ class SchemaModel(metaclass=ModelRegistry):
     A Schema class that holds information on serialization/deserialization
     """
 
-    __slots__ = [ModelRegistry._data_key, ModelRegistry._deserialized_key, '__dict__']
+    __slots__ = [ModelRegistry._data_key, ModelRegistry._deserialized_key, "__dict__"]
 
     def __init__(self, data=None):
         """
@@ -56,24 +56,26 @@ class SchemaModel(metaclass=ModelRegistry):
         :return: the model's schema class
         :rtype: DynamicSchema
         """
-        return getattr(self.__class__, 'model_schema', None)
+        return getattr(self.__class__, "model_schema", None)
 
     def add_data(self, data):
         """Initializes fake attributes that correspond to data."""
         if not self.model_schema:
-            filepath = ''
+            filepath = ""
             try:
                 filepath = inspect.getfile(self.__class__)
             except:
                 pass
-            raise SchemaModelException("Cannot initialize a {} without a {}. "
-                                       "Use '@{}' to decorate the class definition for '{}' located in {}".format(
-                SchemaModel.__name__,
-                DynamicSchema.__name__,
-                add_schema.__name__,
-                self.__class__.__name__,
-                filepath,
-            ))
+            raise SchemaModelException(
+                "Cannot initialize a {} without a {}. "
+                "Use '@{}' to decorate the class definition for '{}' located in {}".format(
+                    SchemaModel.__name__,
+                    DynamicSchema.__name__,
+                    add_schema.__name__,
+                    self.__class__.__name__,
+                    filepath,
+                )
+            )
         if data is not None:
             self.__class__.model_schema.init_data_accessors(self, data)
 
@@ -135,9 +137,9 @@ class SchemaModel(metaclass=ModelRegistry):
         callback_fields = []
         always_dump = []
         for fname, field in model_fields.items():
-            if hasattr(field, 'nested') or issubclass(type(field), Callback):
+            if hasattr(field, "nested") or issubclass(type(field), Callback):
                 callback_fields.append(fname)
-            if getattr(field, 'always_dump', None):
+            if getattr(field, "always_dump", None):
                 always_dump.append(fname)
 
         include_and_only = include_and_only.union(set(always_dump))
@@ -151,9 +153,13 @@ class SchemaModel(metaclass=ModelRegistry):
         for key in callback_keys:
             field = model_fields[key]
             val = getattr(obj, key)
-            dump = functools.partial(cls._dump, include=include.pop(key, None), only=only.pop(key, None),
-                                     ignore=ignore.pop(key, None))
-            if getattr(model_fields[key], 'nested', None) and model_fields[key].many:
+            dump = functools.partial(
+                cls._dump,
+                include=include.pop(key, None),
+                only=only.pop(key, None),
+                ignore=ignore.pop(key, None),
+            )
+            if getattr(model_fields[key], "nested", None) and model_fields[key].many:
                 if isinstance(val, list):
                     data[field.data_key] = [dump(v) for v in val]
             else:

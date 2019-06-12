@@ -142,26 +142,35 @@ from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
-from pydent.relationships import (HasOne, HasMany)
+from pydent.relationships import HasOne, HasMany
 
 
 <div class="viewcode-block" id="Sample"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.sample.Sample">[docs]</a>@add_schema
 class Sample(FieldValueInterface, ModelBase):
     &quot;&quot;&quot;A Sample model
     &quot;&quot;&quot;
+
     fields = dict(
         # sample relationships
         sample_type=HasOne(&quot;SampleType&quot;),
         items=HasMany(&quot;Item&quot;, ref=&quot;sample_id&quot;),
-        field_values=HasMany(&quot;FieldValue&quot;,
-                             ref=&quot;parent_id&quot;,
-                             additional_args={&quot;parent_class&quot;: &quot;Sample&quot;}),
+        field_values=HasMany(
+            &quot;FieldValue&quot;, ref=&quot;parent_id&quot;, additional_args={&quot;parent_class&quot;: &quot;Sample&quot;}
+        ),
     )
 
     METATYPE = &quot;sample_type&quot;
 
-    def __init__(self, name=None, project=None, description=None, sample_type=None, sample_type_id=None,
-                 properties=None, field_values=None):
+    def __init__(
+        self,
+        name=None,
+        project=None,
+        description=None,
+        sample_type=None,
+        sample_type_id=None,
+        properties=None,
+        field_values=None,
+    ):
         &quot;&quot;&quot;
 
         :param name:
@@ -212,20 +221,17 @@ class Sample(FieldValueInterface, ModelBase):
     def _property_accessor(self, fv):
         ft = self.safe_get_field_type(fv)
         if ft:
-            if ft.ftype == &#39;sample&#39;:
+            if ft.ftype == &quot;sample&quot;:
                 return fv.sample
             else:
-                if ft.ftype == &#39;number&#39;:
+                if ft.ftype == &quot;number&quot;:
                     if isinstance(fv.value, str):
                         return json.loads(fv.value)
                 return fv.value
 
     @property
     def properties(self):
-        return self._field_value_dictionary(
-            lambda ft: ft.name,
-            self._property_accessor
-        )
+        return self._field_value_dictionary(lambda ft: ft.name, self._property_accessor)
 
 <div class="viewcode-block" id="Sample.update_properties"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.sample.Sample.update_properties">[docs]</a>    def update_properties(self, prop_dict):
         &quot;&quot;&quot;
@@ -240,9 +246,9 @@ class Sample(FieldValueInterface, ModelBase):
         for name, val in prop_dict.items():
             ft = ft_dict[name]
             if ft.is_parameter():
-                key = &#39;value&#39;
+                key = &quot;value&quot;
             else:
-                key = &#39;sample&#39;
+                key = &quot;sample&quot;
             if issubclass(type(val), Sequence) and ft.array:
                 self.set_field_value_array(name, None, [{key: v} for v in val])
             else:
@@ -262,11 +268,17 @@ class Sample(FieldValueInterface, ModelBase):
             fv.reload(fv.save())
 
         new_fvs = self.field_values
-        server_fvs = self.session.FieldValue.where(dict(parent_id=self.id, parent_class=&quot;Sample&quot;))
+        server_fvs = self.session.FieldValue.where(
+            dict(parent_id=self.id, parent_class=&quot;Sample&quot;)
+        )
 
-        to_remove = [fv for fv in server_fvs if fv.id not in [_fv.id for _fv in new_fvs]]
+        to_remove = [
+            fv for fv in server_fvs if fv.id not in [_fv.id for _fv in new_fvs]
+        ]
         if to_remove:
-            warn(&quot;Trident tried to save a Sample, but it required FieldValues to be deleted.&quot;)
+            warn(
+                &quot;Trident tried to save a Sample, but it required FieldValues to be deleted.&quot;
+            )
         self.reload(self.session.utils.json_save(&quot;Sample&quot;, self.dump()))
         return self
 
@@ -274,12 +286,15 @@ class Sample(FieldValueInterface, ModelBase):
         query = {&quot;name&quot;: object_type_name, &quot;id&quot;: object_type_id}
         query = {k: v for k, v in query.items() if v is not None}
         if query == {}:
-            return [i for i in self.items if i.location != &#39;deleted&#39;]
+            return [i for i in self.items if i.location != &quot;deleted&quot;]
         else:
             object_types = self.session.ObjectType.where(query)
             object_type = object_types[0]
-            return [i for i in self.items if i.location != &#39;deleted&#39; and
-                    i.object_type_id == object_type.id]
+            return [
+                i
+                for i in self.items
+                if i.location != &quot;deleted&quot; and i.object_type_id == object_type.id
+            ]
 
 <div class="viewcode-block" id="Sample.copy"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.sample.Sample.copy">[docs]</a>    def copy(self):
         &quot;&quot;&quot;Return a copy of this sample.&quot;&quot;&quot;
@@ -288,16 +303,18 @@ class Sample(FieldValueInterface, ModelBase):
         return copied</div>
 
     def __str__(self):
-        return self._to_str(&#39;id&#39;, &#39;name&#39;, &#39;sample_type&#39;)</div>
+        return self._to_str(&quot;id&quot;, &quot;name&quot;, &quot;sample_type&quot;)</div>
 
 
 <div class="viewcode-block" id="SampleType"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.sample.SampleType">[docs]</a>@add_schema
 class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
     &quot;&quot;&quot;A SampleType model&quot;&quot;&quot;
+
     fields = dict(
         samples=HasMany(&quot;Sample&quot;, &quot;SampleType&quot;),
-        field_types=HasMany(&quot;FieldType&quot;, ref=&quot;parent_id&quot;, additional_args={&quot;parent_class&quot;: &quot;SampleType&quot;}),
-
+        field_types=HasMany(
+            &quot;FieldType&quot;, ref=&quot;parent_id&quot;, additional_args={&quot;parent_class&quot;: &quot;SampleType&quot;}
+        ),
         # TODO: operation_type_afts
         # TODO: property_afts
         # TODO: add relationships description
@@ -310,7 +327,7 @@ class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
     def properties(self):
         props = {}
         for ft in self.field_types:
-            if ft.ftype == &#39;sample&#39;:
+            if ft.ftype == &quot;sample&quot;:
                 props[ft.name] = [str(aft) for aft in ft.allowable_field_types]
             else:
                 props[ft.name] = ft.ftype
@@ -324,18 +341,18 @@ class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
             sample_type=self,
             description=description,
             project=project,
-            properties=properties
+            properties=properties,
         )
         return sample
 
     def _get_update_json(self):
-        return self.dump(include=(&#39;field_types&#39;,))
+        return self.dump(include=(&quot;field_types&quot;,))
 
     def _get_create_json(self):
-        return self.dump(include=(&#39;field_types&#39;,))
+        return self.dump(include=(&quot;field_types&quot;,))
 
     def __str__(self):
-        return self._to_str(&#39;id&#39;, &#39;name&#39;)</div>
+        return self._to_str(&quot;id&quot;, &quot;name&quot;)</div>
 </pre></div>
 
     </div>

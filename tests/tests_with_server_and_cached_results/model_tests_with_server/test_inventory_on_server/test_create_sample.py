@@ -11,9 +11,7 @@ def test_create_sample(session):
     st = session.SampleType.find_by_name("Yeast Strain")
 
     new_yeast = session.Sample.new(
-        name="mynewsample" + str(uuid4()),
-        project="trident",
-        sample_type_id=st.id,
+        name="mynewsample" + str(uuid4()), project="trident", sample_type_id=st.id
     )
 
     def empty_prop_dict(sample_type):
@@ -37,9 +35,7 @@ def test_create_sample(session):
                 fvs.append(fv)
         return fvs
 
-
     prop = empty_prop_dict(st)
-
 
     plasmid = session.Sample.find(9246)
     prop["Comp_cell_limit"] = "No"
@@ -56,15 +52,14 @@ def test_create_sample(session):
 
 def test_init_sample_with_properties(session):
 
-
     new_yeast = session.Sample.new(
         name="mynewsample" + str(uuid4()),
         project="trident",
         sample_type_id=session.SampleType.find_by_name("Yeast Strain").id,
         properties={
             "Integrant": session.Sample.find_by_name("DummyPlasmid"),
-            "QC_length": 1313
-        }
+            "QC_length": 1313,
+        },
     )
 
     new_yeast.save()
@@ -72,7 +67,7 @@ def test_init_sample_with_properties(session):
 
 def test_create_sample2(session):
     def yeast_integrant_name(yname, pname):
-        return '|'.join([yname.strip(), pname.strip()])
+        return "|".join([yname.strip(), pname.strip()])
 
     def integrate_plasmid(yeast, plasmid):
         yeast_name = yeast_integrant_name(yeast.name, plasmid.name) + str(uuid4())
@@ -86,8 +81,8 @@ def test_create_sample2(session):
                 "Integrant": plasmid,
                 "Has this strain passed QC?": "No",
                 "Parent": yeast,
-                "Integrated Marker(s)": "HIS"  # plasmid.properties["Yeast Marker"]
-            }
+                "Integrated Marker(s)": "HIS",  # plasmid.properties["Yeast Marker"]
+            },
         )
         new_yeast.save()
         return new_yeast

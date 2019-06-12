@@ -61,7 +61,7 @@ def test_find_query_returns_none(monkeypatch, mock_login_post):
 
 
 def find_with_none_raises_value_error(fake_session):
-    invalid_ids = [None, '1']
+    invalid_ids = [None, "1"]
     for invalid_id in invalid_ids:
         with pytest.raises(ValueError):
             fake_session.Sample.find(invalid_id)

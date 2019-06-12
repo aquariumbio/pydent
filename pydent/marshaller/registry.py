@@ -20,7 +20,9 @@ class SchemaRegistry(type):
         super().__init__(name, bases, selfdict)
         if bases != () and name != SchemaRegistry.BASE:
             if name in SchemaRegistry.schemas:
-                raise SchemaRegistryError("Cannot register '{}' since it already exists.".format(name))
+                raise SchemaRegistryError(
+                    "Cannot register '{}' since it already exists.".format(name)
+                )
             SchemaRegistry.schemas[name] = cls
 
     @property
@@ -56,10 +58,11 @@ class SchemaRegistry(type):
     def get_schema(name):
         """Gets model by model_name."""
         if name not in SchemaRegistry.schemas:
-            raise SchemaRegistryError("Schema \"{}\" not found in SchemaRegistry. Available schemas:\n{}".format(
-                name,
-                ','.join(SchemaRegistry.schemas.keys())
-            ))
+            raise SchemaRegistryError(
+                'Schema "{}" not found in SchemaRegistry. Available schemas:\n{}'.format(
+                    name, ",".join(SchemaRegistry.schemas.keys())
+                )
+            )
         else:
             return SchemaRegistry.schemas[name]
 
@@ -76,8 +79,10 @@ class ModelRegistry(type):
     _model_schema = None  # the class attribute to store the model_classes Schema class
     _fields_key = "fields"  # the class level attribute key to instantiate model fields
     _data_key = "__serialized_data"  # the attribute key used to store serialized data
-    _deserialized_key = "__deserialized_data"  # the attribute key used to store serialized data
-    BASE = 'SchemaModel'
+    _deserialized_key = (
+        "__deserialized_data"
+    )  # the attribute key used to store serialized data
+    BASE = "SchemaModel"
 
     def __init__(cls, name, bases, selfdict):
         """Saves model to the registry."""
@@ -94,5 +99,9 @@ class ModelRegistry(type):
     def get_model(name):
         """Gets a model class by name."""
         if name not in ModelRegistry.models:
-            raise ModelRegistryError("Model '{}' not found in registry. Available models:\n{}".format(name, ', '.join(ModelRegistry.models.keys())))
+            raise ModelRegistryError(
+                "Model '{}' not found in registry. Available models:\n{}".format(
+                    name, ", ".join(ModelRegistry.models.keys())
+                )
+            )
         return ModelRegistry.models[name]

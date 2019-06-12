@@ -63,7 +63,7 @@ class DataAccessor(object):
             print("y is not set")
     """
 
-    __slots__ = ['name', 'accessor', 'default']
+    __slots__ = ["name", "accessor", "default"]
     HOLDER = Placeholders.DATA
 
     def __init__(self, name, accessor=None, default=HOLDER):
@@ -73,7 +73,11 @@ class DataAccessor(object):
             default = self.HOLDER
         self.default = default
         if self.name == self.accessor:
-            raise Exception("Descriptor name '{}' cannot be accessor name '{}'".format(self.name, self.accessor))
+            raise Exception(
+                "Descriptor name '{}' cannot be accessor name '{}'".format(
+                    self.name, self.accessor
+                )
+            )
 
     def get_val(self, obj):
         access_data = getattr(obj, self.accessor)
@@ -83,7 +87,10 @@ class DataAccessor(object):
         val = self.get_val(obj)
         if val is self.HOLDER:
             raise AttributeError(
-                "type object '{}' does not have attribute '{}'".format(obj.__class__.__name__, self.name))
+                "type object '{}' does not have attribute '{}'".format(
+                    obj.__class__.__name__, self.name
+                )
+            )
         else:
             return val
 
@@ -99,14 +106,18 @@ class MarshallingAccessor(DataAccessor):
     A generic Marshalling descriptor.
     """
 
-    __slots__ = ['name', 'accessor', 'field', 'deserialized_accessor', 'default']
+    __slots__ = ["name", "accessor", "field", "deserialized_accessor", "default"]
     HOLDER = Placeholders.MARSHALL
 
     def __init__(self, name, field, accessor, deserialized_accessor, default=HOLDER):
         super().__init__(name, accessor, default=default)
         self.deserialized_accessor = deserialized_accessor
         if self.accessor == self.deserialized_accessor:
-            raise Exception("Descriptor accessor '{}' cannot be deserialized accessor '{}'".format(self.accessor, self.deserialized_accessor))
+            raise Exception(
+                "Descriptor accessor '{}' cannot be deserialized accessor '{}'".format(
+                    self.accessor, self.deserialized_accessor
+                )
+            )
         self.field = field
 
     def get_val(self, obj):
@@ -115,10 +126,13 @@ class MarshallingAccessor(DataAccessor):
         except AttributeError as e:
             raise e
         except Exception as e:
-            raise Exception("Error retrieving attribute '{}' from '{}' because:\n".format(
-                self.name,
-                obj.__class__,
-            ) + "{}: ".format(e.__class__.__name__) + str(e)) from e
+            raise Exception(
+                "Error retrieving attribute '{}' from '{}' because:\n".format(
+                    self.name, obj.__class__
+                )
+                + "{}: ".format(e.__class__.__name__)
+                + str(e)
+            ) from e
 
     def __get__(self, obj, objtype):
         val = self.get_val(obj)
@@ -126,7 +140,10 @@ class MarshallingAccessor(DataAccessor):
             val = getattr(obj, self.accessor).get(self.name, self.HOLDER)
             if val is self.HOLDER:
                 raise AttributeError(
-                    "type object '{}' does not have attribute '{}'".format(obj.__class__.__name__, self.name))
+                    "type object '{}' does not have attribute '{}'".format(
+                        obj.__class__.__name__, self.name
+                    )
+                )
             else:
                 return self.field.deserialize(obj, val)
         return val
@@ -139,11 +156,12 @@ class MarshallingAccessor(DataAccessor):
             getattr(obj, self.accessor)[self.name] = serialized
         except Exception as e:
             from traceback import format_tb
-            print('__set__ traceback:')
-            print('\n'.join(format_tb(e.__traceback__)))
-            raise Exception("can't set attribute '{}' for '{}' to '{}' due to:\n{}. See the traceback"
-                            " printed above".format(
-                self.name, obj, val, str(e))
+
+            print("__set__ traceback:")
+            print("\n".join(format_tb(e.__traceback__)))
+            raise Exception(
+                "can't set attribute '{}' for '{}' to '{}' due to:\n{}. See the traceback"
+                " printed above".format(self.name, obj, val, str(e))
             ) from e
 
     def __delete__(self, obj):
@@ -162,7 +180,7 @@ class CallbackAccessor(MarshallingAccessor):
     descriptor once accessed.
     """
 
-    __slots__ = ['name', 'accessor', 'field', 'deserialized_accessor', 'default']
+    __slots__ = ["name", "accessor", "field", "deserialized_accessor", "default"]
     HOLDER = Placeholders.CALLBACK
 
     def __init__(self, name, field, accessor, deserialized_accessor, default=HOLDER):
@@ -183,6 +201,7 @@ class RelationshipAccessor(CallbackAccessor):
     """
     The descriptor for a :class:`pydent.marshaller.fields.Relationship` field
     """
+
     def __set__(self, obj, val):
         deserialized = self.field.deserialize(obj, val)
         serialized = self.field.serialize(obj, deserialized)

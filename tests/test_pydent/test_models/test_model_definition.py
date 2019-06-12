@@ -13,7 +13,6 @@ def base():
     SchemaRegistry.schemas.pop("MyModelSchema", None)
 
 
-
 @pytest.fixture(scope="function")
 def test_model(base, fake_session):
     """
@@ -33,10 +32,7 @@ def test_model(base, fake_session):
 
     @add_schema
     class MyModel(base):
-        fields = dict(
-            ignore=ignored,
-            load_only=loadonly
-        )
+        fields = dict(ignore=ignored, load_only=loadonly)
 
     # load the model from dummy data
     values = range(10)

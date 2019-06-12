@@ -90,7 +90,15 @@ from pydent.models.job import Job, JobAssociation
 from pydent.models.operation import Operation, OperationType
 from pydent.models.plan import Plan, PlanAssociation, Wire
 from pydent.models.sample import Sample, SampleType
-from pydent.models.user import Account, Budget, Group, Invoice, Membership, User, UserBudgetAssociation
+from pydent.models.user import (
+    Account,
+    Budget,
+    Group,
+    Invoice,
+    Membership,
+    User,
+    UserBudgetAssociation,
+)
 
 __all__ = [
     "Account",
@@ -119,5 +127,5 @@ __all__ = [
     "Upload",
     "User",
     "UserBudgetAssociation",
-    "Wire"
+    "Wire",
 ]

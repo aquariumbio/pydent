@@ -127,7 +127,7 @@ class FieldValueInterface(object):
 
         if fv.field_type_id is None:
             fts = self.get_field_types()
-            h = lambda f: '{}_%&^_{}'.format(f.name, f.role)
+            h = lambda f: "{}_%&^_{}".format(f.name, f.role)
             name_role_to_ft = {h(ft): ft for ft in fts}
             ft = name_role_to_ft.get(h(fv), None)
             if ft is not None:
@@ -312,10 +312,7 @@ class FieldValueInterface(object):
         :return: routing dictionary
         :rtype: dict
         """
-        return self._field_value_dictionary(
-            lambda ft: ft.routing,
-            lambda fv: fv.sid
-        )
+        return self._field_value_dictionary(lambda ft: ft.routing, lambda fv: fv.sid)
 
     def update_field_values(self, value_dict, role=None):
         ft_dict = {ft.name: ft for ft in self.get_field_types()}

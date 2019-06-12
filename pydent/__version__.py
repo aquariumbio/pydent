@@ -6,6 +6,6 @@ here = dirname(abspath(__file__))
 
 
 config = configparser.ConfigParser()
-config.read(join(here, '..', 'pyproject.toml'))
+config.read(join(here, "..", "pyproject.toml"))
 
-info = config['tool.poetry']
+info = config["tool.poetry"]

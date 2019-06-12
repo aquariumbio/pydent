@@ -8,26 +8,31 @@ from pydent.marshaller.registry import SchemaRegistry, ModelRegistry
 
 def pytest_configure(config):
     # register an additional marker
-    config.addinivalue_line("markers",
-        "recordmode(mode): mark test to have its requests recorded")
+    config.addinivalue_line(
+        "markers", "recordmode(mode): mark test to have its requests recorded"
+    )
 
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--webtest", action="store_true", default=False, help="run web tests",
+        "--webtest", action="store_true", default=False, help="run web tests"
     )
     parser.addoption(
-        "--recordmode", action="store", default="no", help="[no, all, new_episodes, once, none]"
+        "--recordmode",
+        action="store",
+        default="no",
+        help="[no, all, new_episodes, once, none]",
     )
+
 
 def pytest_collection_modifyitems(config, items):
     skip_web = pytest.mark.skip(reason="need --webtest option to run")
-    record_mode = pytest.mark.record(config.getoption('--recordmode'))
+    record_mode = pytest.mark.record(config.getoption("--recordmode"))
     for item in items:
-        if config.getoption('--recordmode') != 'no':
+        if config.getoption("--recordmode") != "no":
             item.add_marker(record_mode)
         if "webtest" in item.keywords:
-            if not config.getoption('--webtest'):
+            if not config.getoption("--webtest"):
                 item.add_marker(skip_web)
 
 
@@ -54,4 +59,4 @@ def replace_dir(monkeypatch):
                 attrs.remove(f)
         return list(attrs)
 
-    monkeypatch.setattr(SchemaModel, '__dir__', __dir__)
+    monkeypatch.setattr(SchemaModel, "__dir__", __dir__)

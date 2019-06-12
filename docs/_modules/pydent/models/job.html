@@ -136,17 +136,17 @@ Models related to jobs, or operation execution.
 
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import (JSON, HasOne, HasMany,
-                                  HasManyThrough)
+from pydent.relationships import JSON, HasOne, HasMany, HasManyThrough
 
 
 <div class="viewcode-block" id="Job"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.job.Job">[docs]</a>@add_schema
 class Job(ModelBase):
     &quot;&quot;&quot;A Job model&quot;&quot;&quot;
+
     fields = dict(
         job_associations=HasMany(&quot;JobAssociation&quot;, &quot;Job&quot;),
         operations=HasManyThrough(&quot;Operation&quot;, &quot;JobAssociation&quot;),
-        state=JSON()
+        state=JSON(),
     )
 
     @property
@@ -156,24 +156,22 @@ class Job(ModelBase):
     @property
     def uploads(self):
         http = self.session._AqSession__aqhttp
-        return http.get(&quot;krill/uploads?job={}&quot;.format(self.id))[&#39;uploads&#39;]
+        return http.get(&quot;krill/uploads?job={}&quot;.format(self.id))[&quot;uploads&quot;]
 
     @property
     def start_time(self):
-        return self.state[0][&#39;time&#39;]
+        return self.state[0][&quot;time&quot;]
 
     @property
     def end_time(self):
-        return self.state[-2][&#39;time&#39;]</div>
+        return self.state[-2][&quot;time&quot;]</div>
 
 
 <div class="viewcode-block" id="JobAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.job.JobAssociation">[docs]</a>@add_schema
 class JobAssociation(ModelBase):
     &quot;&quot;&quot;A JobAssociation model&quot;&quot;&quot;
-    fields = dict(
-        job=HasOne(&quot;Job&quot;),
-        operation=HasOne(&quot;Operation&quot;)
-    )</div>
+
+    fields = dict(job=HasOne(&quot;Job&quot;), operation=HasOne(&quot;Operation&quot;))</div>
 </pre></div>
 
     </div>

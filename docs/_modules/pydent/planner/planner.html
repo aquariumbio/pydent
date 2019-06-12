@@ -166,19 +166,20 @@ import itertools
     def wrapper(self, *args, **kwargs):
         if not issubclass(self.__class__, Planner):
             raise PlannerException(
-                &quot;Cannot apply &#39;verify_plan_models&#39; to a non-planner instance.&quot;)
+                &quot;Cannot apply &#39;verify_plan_models&#39; to a non-planner instance.&quot;
+            )
         for arg in args:
             if issubclass(arg.__class__, FieldValue):
                 fv = arg
                 if not self._contains_op(fv.operation):
                     fv_ref = &quot;{} {}&quot;.format(fv.role, fv.name)
-                    msg = &quot;FieldValue \&quot;{}\&quot; not found in planner.&quot;
+                    msg = &#39;FieldValue &quot;{}&quot; not found in planner.&#39;
                     raise PlannerException(msg.format(fv_ref))
             elif issubclass(arg.__class__, Operation):
                 op = arg
                 if not self._contains_op(op):
                     op_ref = &quot;{}&quot;.format(op.operation_type.name)
-                    msg = &quot;Operation \&quot;{}\&quot; not found in planner.&quot;
+                    msg = &#39;Operation &quot;{}&quot; not found in planner.&#39;
                     raise PlannerException(msg.format(op_ref))
         return fxn(self, *args, **kwargs)
 
@@ -186,23 +187,26 @@ import itertools
 
 
 class AFTMatcher(object):
-
     @staticmethod
     def _resolve_to_field_types(model, role=None):
         if isinstance(model, FieldValue):
             if model.role == role:
                 return [model.field_type]
             else:
-                msg = &quot;Planner attempted to find matching&quot; \
-                      &quot; allowable_field_types for&quot; \
-                      &quot; an input FieldValue but found an output FieldValue&quot;
+                msg = (
+                    &quot;Planner attempted to find matching&quot;
+                    &quot; allowable_field_types for&quot;
+                    &quot; an input FieldValue but found an output FieldValue&quot;
+                )
                 raise PlannerException(msg)
         elif isinstance(model, Operation):
             return [ft for ft in model.get_field_types() if ft.role == role]
         else:
             raise PlannerException(
-                &quot;Cannot resolve inputs, type must be a FieldValue or Operation, not a \&quot;{}\&quot;&quot;.format(type(model)))
-
+                &#39;Cannot resolve inputs, type must be a FieldValue or Operation, not a &quot;{}&quot;&#39;.format(
+                    type(model)
+                )
+            )
 
     @classmethod
     def _collect_matching_afts(cls, source, destination):
@@ -216,8 +220,8 @@ class AFTMatcher(object):
         :rtype: tuple
         &quot;&quot;&quot;
         &quot;&quot;&quot;Find matching AllowableFieldTypes&quot;&quot;&quot;
-        dest_fts = cls._resolve_to_field_types(destination, role=&#39;input&#39;)
-        src_fts = cls._resolve_to_field_types(source, role=&#39;output&#39;)
+        dest_fts = cls._resolve_to_field_types(destination, role=&quot;input&quot;)
+        src_fts = cls._resolve_to_field_types(source, role=&quot;output&quot;)
 
         matching_afts = []
         matching_inputs = []
@@ -252,8 +256,10 @@ class AFTMatcher(object):
                 in_object_type_id = dest_aft.object_type_id
                 out_sample_type_id = src_aft.sample_type_id
                 in_sample_type_id = dest_aft.sample_type_id
-                if (out_object_type_id == in_object_type_id
-                        and out_sample_type_id == in_sample_type_id):
+                if (
+                    out_object_type_id == in_object_type_id
+                    and out_sample_type_id == in_sample_type_id
+                ):
                     afts.append((src_aft, dest_aft))
         return afts
 
@@ -265,9 +271,13 @@ class AFTMatcher(object):
 
         ANY = &quot;ANY&quot;  # pick the first item that matches the set field_value
         RESTRICT = &quot;RESTRICT&quot;  # restrict to the currently set allowable_field_type
-        PREFERRED = &quot;PREFERRED&quot;  # (default) pick the item that matches the currently set allowable_field_type, else
+        PREFERRED = (
+            &quot;PREFERRED&quot;
+        )  # (default) pick the item that matches the currently set allowable_field_type, else
         # pick ANY item that matches the set field_value
-        RESTRICT_TO_ONE = &quot;RESTRICT TO ONE&quot;  # will not select item if its being used in another active operation
+        RESTRICT_TO_ONE = (
+            &quot;RESTRICT TO ONE&quot;
+        )  # will not select item if its being used in another active operation
         _DEFAULT = PREFERRED
         _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]
 
@@ -286,10 +296,11 @@ class AFTMatcher(object):
 
             if plan_id is not None:
                 # load an existing plan
-                plan = self.browser.find(plan_id, &#39;Plan&#39;)
+                plan = self.browser.find(plan_id, &quot;Plan&quot;)
                 if plan is None:
                     raise PlannerException(
-                        &quot;Could not find plan with id={}&quot;.format(plan_id))
+                        &quot;Could not find plan with id={}&quot;.format(plan_id)
+                    )
                 self.plan = plan
             else:
                 # create a new plan
@@ -319,22 +330,20 @@ class AFTMatcher(object):
             &quot;operations&quot;: {
                 &quot;field_values&quot;: {
                     &quot;wires_as_dest&quot;: {
-                        &#39;source&#39;: &#39;operation&#39;,
-                        &#39;destination&#39;: &#39;operation&#39;
+                        &quot;source&quot;: &quot;operation&quot;,
+                        &quot;destination&quot;: &quot;operation&quot;,
                     },
                     &quot;wires_as_source&quot;: {
-                        &#39;source&#39;: &#39;operation&#39;,
-                        &#39;destination&#39;: &#39;operation&#39;
+                        &quot;source&quot;: &quot;operation&quot;,
+                        &quot;destination&quot;: &quot;operation&quot;,
                     },
                     &quot;sample&quot;: [],
                     &quot;item&quot;: [],
                     &quot;operation&quot;: [],
-                    &quot;field_type&quot;: []
+                    &quot;field_type&quot;: [],
                 },
-                &#39;plan_associations&#39;: [&#39;plan&#39;],
-                &quot;operation_type&quot;: {
-                    &quot;field_types&quot;: []
-                }
+                &quot;plan_associations&quot;: [&quot;plan&quot;],
+                &quot;operation_type&quot;: {&quot;field_types&quot;: []},
             }
         }
 
@@ -383,13 +392,15 @@ class AFTMatcher(object):
 <div class="viewcode-block" id="Planner.create"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.create">[docs]</a>    def create(self):
         &quot;&quot;&quot;Create the plan on Aquarium&quot;&quot;&quot;
         if self.plan.id:
-            raise PlannerException(&quot;Cannot create plan since it already exists on the server (plan_id={})&quot;
-                                   &quot; Did you mean .{save}() push an update to the server plan? You&quot;
-                                   &quot; can also create a copy of the new plan by calling .{replan}().&quot;.format(
-                plan_id=self.plan.id,
-                save=self.save.__name__,
-                replan=self.replan.__name__
-            ))
+            raise PlannerException(
+                &quot;Cannot create plan since it already exists on the server (plan_id={})&quot;
+                &quot; Did you mean .{save}() push an update to the server plan? You&quot;
+                &quot; can also create a copy of the new plan by calling .{replan}().&quot;.format(
+                    plan_id=self.plan.id,
+                    save=self.save.__name__,
+                    replan=self.replan.__name__,
+                )
+            )
 
         self.plan.create()</div>
 
@@ -424,13 +435,13 @@ class AFTMatcher(object):
         &quot;&quot;&quot;Adds a new operation to the plan&quot;&quot;&quot;
         query = {&quot;deployed&quot;: True, &quot;name&quot;: operation_type_name}
         if category is not None:
-            query[&#39;category&#39;] = category
+            query[&quot;category&quot;] = category
         ots = self.session.OperationType.where(query)
         if len(ots) &gt; 1:
-            msg = &quot;Found more than one OperationType for query \&quot;{}\&quot;. Have you tried specifying the category?&quot;
+            msg = &#39;Found more than one OperationType for query &quot;{}&quot;. Have you tried specifying the category?&#39;
             raise PlannerException(msg.format(query))
         if ots is None or len(ots) == 0:
-            msg = &quot;Could not find deployed OperationType \&quot;{}\&quot;.&quot;
+            msg = &#39;Could not find deployed OperationType &quot;{}&quot;.&#39;
             raise PlannerException(msg.format(operation_type_name))
         return self.create_operation_by_type(ots[0])</div>
 
@@ -442,8 +453,10 @@ class AFTMatcher(object):
         elif issubclass(type(name_id_or_ot), OperationType):
             return self.create_operation_by_type(name_id_or_ot)
         else:
-            raise PlannerException(&quot;Expected a string, integer, or OperationType, &quot;
-                                   &quot;not a {}&quot;.format(type(name_id_or_ot)))
+            raise PlannerException(
+                &quot;Expected a string, integer, or OperationType, &quot;
+                &quot;not a {}&quot;.format(type(name_id_or_ot))
+            )
 
     @staticmethod
     def _model_are_equal(model1, model2):
@@ -462,8 +475,9 @@ class AFTMatcher(object):
     @plan_verification_wrapper
     def get_wire(self, fv1, fv2):
         for wire in self.plan.wires:
-            if (self._model_are_equal(wire.source, fv1)
-                    and self._model_are_equal(wire.destination, fv2)):
+            if self._model_are_equal(wire.source, fv1) and self._model_are_equal(
+                wire.destination, fv2
+            ):
                 self._info(&quot;found wire from {} to {}&quot;.format(fv1.name, fv2.name))
                 return wire
 
@@ -619,7 +633,7 @@ class AFTMatcher(object):
         :param fvname: FieldType/FieldValue name of the array
         :return:
         &quot;&quot;&quot;
-        field_type = op.operation_type.field_type(fvname, &#39;input&#39;)
+        field_type = op.operation_type.field_type(fvname, &quot;input&quot;)
         if field_type.array:
             existing_fvs = op.input_array(fvname)
             for fv in existing_fvs:
@@ -643,7 +657,8 @@ class AFTMatcher(object):
         :rtype: Wire
         &quot;&quot;&quot;
         afts, model_inputs, model_outputs = self._collect_matching_afts(
-            source, destination)
+            source, destination
+        )
 
         # TODO: only if matching FVs are ambiguous raise Exception
         # TODO: automatically wire to empty FV if they are equivalent
@@ -651,10 +666,12 @@ class AFTMatcher(object):
             raise PlannerException(
                 &quot;Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}\n&quot;
                 &quot;Instead, try to use `add_wire` method to wire together two FieldValues.&quot;.format(
-                    &#39;, &#39;.join([ft.name for ft in model_inputs]),
+                    &quot;, &quot;.join([ft.name for ft in model_inputs]),
                     model_inputs[0].operation_type.name,
-                    &#39;, &#39;.join([ft.name for ft in model_outputs]),
-                    model_outputs[0].operation_type.name))
+                    &quot;, &quot;.join([ft.name for ft in model_outputs]),
+                    model_outputs[0].operation_type.name,
+                )
+            )
         elif len(afts) &gt; 0:
             for aft1, aft2 in afts:
 
@@ -663,7 +680,9 @@ class AFTMatcher(object):
 
                 # input_fv = None
                 if input_ft.array:
-                    input_fv = self._select_empty_input_array(destination, input_ft.name)
+                    input_fv = self._select_empty_input_array(
+                        destination, input_ft.name
+                    )
                 else:
                     input_fv = destination.input(input_ft.name)
                 output_fv = source.output(output_ft.name)
@@ -674,7 +693,8 @@ class AFTMatcher(object):
             raise PlannerException(
                 &quot;Cannot quick wire. No possible wiring found between inputs {} and {}&quot;.format(
                     source, destination
-                ))</div>
+                )
+            )</div>
 
 <div class="viewcode-block" id="Planner.quick_wire_by_name"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.quick_wire_by_name">[docs]</a>    def quick_wire_by_name(self, otname1, otname2):
         &quot;&quot;&quot;Wires together the last added operations.&quot;&quot;&quot;
@@ -686,7 +706,9 @@ class AFTMatcher(object):
         wires_by_id = {}
         for wire in self.plan.wires:
             if wire.source is not None and wire.destination is not None:
-                _id = &quot;{}_{}&quot;.format(wire.source._primary_key, wire.destination._primary_key)
+                _id = &quot;{}_{}&quot;.format(
+                    wire.source._primary_key, wire.destination._primary_key
+                )
                 wires_by_id[_id] = wire
         for op in self.plan.operations:
             for fv in op.field_values:
@@ -724,19 +746,29 @@ class AFTMatcher(object):
     def _set_wire(self, src_fv, dest_fv, preference=&quot;source&quot;, setter=None):
 
         if len(self.get_incoming_wires(dest_fv)) &gt; 0:
-            raise PlannerException(&quot;Cannot wire because \&quot;{}\&quot; already has an incoming wire and inputs&quot;
-                                   &quot; can only have one incoming wire. Please remove wire&quot;
-                                   &quot; using &#39;canvas.remove_wire(src_fv, dest_fv)&#39; before setting.&quot;.format(dest_fv.name))
+            raise PlannerException(
+                &#39;Cannot wire because &quot;{}&quot; already has an incoming wire and inputs&#39;
+                &quot; can only have one incoming wire. Please remove wire&quot;
+                &quot; using &#39;canvas.remove_wire(src_fv, dest_fv)&#39; before setting.&quot;.format(
+                    dest_fv.name
+                )
+            )
 
         # first collect any matching allowable field types between the field values
         aft_pairs = self._collect_matching_afts(src_fv, dest_fv)[0]
 
         if len(aft_pairs) == 0:
-            raise PlannerException(&quot;Cannot wire \&quot;{}\&quot; to \&quot;{}\&quot;. No allowable field types match.&quot;
-                                   .format(src_fv.name, dest_fv.name))
+            raise PlannerException(
+                &#39;Cannot wire &quot;{}&quot; to &quot;{}&quot;. No allowable field types match.&#39;.format(
+                    src_fv.name, dest_fv.name
+                )
+            )
 
         # select the first aft
-        default_aft_ids = [src_fv.allowable_field_type_id, dest_fv.allowable_field_type_id]
+        default_aft_ids = [
+            src_fv.allowable_field_type_id,
+            dest_fv.allowable_field_type_id,
+        ]
         pref_index = 0
         if preference == &quot;destination&quot;:
             pref_index = 1
@@ -744,7 +776,9 @@ class AFTMatcher(object):
         for pair in aft_pairs:
             if pair[pref_index].id == default_aft_ids[pref_index]:
                 selected_aft_pair = pair
-        assert selected_aft_pair[0].object_type_id == selected_aft_pair[1].object_type_id
+        assert (
+            selected_aft_pair[0].object_type_id == selected_aft_pair[1].object_type_id
+        )
 
         # resolve sample
         samples = [src_fv.sample, dest_fv.sample]
@@ -757,28 +791,46 @@ class AFTMatcher(object):
             selected_sample = samples[pref_index]
 
             # filter afts by sample_type_id
-            aft_pairs = [aft for aft in aft_pairs if aft[0].sample_type_id ==
-                         selected_sample.sample_type_id]
+            aft_pairs = [
+                aft
+                for aft in aft_pairs
+                if aft[0].sample_type_id == selected_sample.sample_type_id
+            ]
             selected_aft_pair = aft_pairs[0]
 
             if len(aft_pairs) == 0:
-                raise PlannerException(&quot;No allowable_field_types were found for FieldValues {} &amp; {} for&quot;
-                                       &quot; Sample {}&quot;.format(src_fv.name, dest_fv.name, selected_sample.name))
+                raise PlannerException(
+                    &quot;No allowable_field_types were found for FieldValues {} &amp; {} for&quot;
+                    &quot; Sample {}&quot;.format(src_fv.name, dest_fv.name, selected_sample.name)
+                )
 
             setter(src_fv, sample=selected_sample)
             setter(dest_fv, sample=selected_sample)
 
-            assert selected_aft_pair[0].sample_type_id == selected_aft_pair[1].sample_type_id
+            assert (
+                selected_aft_pair[0].sample_type_id
+                == selected_aft_pair[1].sample_type_id
+            )
             assert selected_aft_pair[0].sample_type_id == src_fv.sample.sample_type_id
             assert selected_aft_pair[0].sample_type_id == dest_fv.sample.sample_type_id
 
             # set the sample (and allowable_field_type)
-            if src_fv.sample is not None and (dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
+            if src_fv.sample is not None and (
+                dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
+            ):
                 setter(
-                    dest_fv, sample=src_fv.sample, container=selected_aft_pair[0].object_type)
-            elif dest_fv.sample is not None and (src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id):
+                    dest_fv,
+                    sample=src_fv.sample,
+                    container=selected_aft_pair[0].object_type,
+                )
+            elif dest_fv.sample is not None and (
+                src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
+            ):
                 setter(
-                    src_fv, sample=dest_fv.sample, container=selected_aft_pair[0].object_type)
+                    src_fv,
+                    sample=dest_fv.sample,
+                    container=selected_aft_pair[0].object_type,
+                )
 
         setter(src_fv, container=selected_aft_pair[0].object_type)
         setter(dest_fv, container=selected_aft_pair[0].object_type)
@@ -836,20 +888,40 @@ class AFTMatcher(object):
     # TODO: Support for row and column
     # TODO: routing dict does not work with input arrays (it groups them ALL together)
     @plan_verification_wrapper
-    def set_field_value(self, field_value, sample=None, item=None, container=None, value=None, row=None, column=None):
+    def set_field_value(
+        self,
+        field_value,
+        sample=None,
+        item=None,
+        container=None,
+        value=None,
+        row=None,
+        column=None,
+    ):
         self._info(
-            &quot;setting field_value {} to {} - {} - {} - {}&quot;.format(field_value.name, sample, item, container, value))
+            &quot;setting field_value {} to {} - {} - {} - {}&quot;.format(
+                field_value.name, sample, item, container, value
+            )
+        )
         field_value.set_value(
-            sample=sample, item=item, container=container, value=value, row=None, column=None)
+            sample=sample,
+            item=item,
+            container=container,
+            value=value,
+            row=None,
+            column=None,
+        )
         if not field_value.field_type.array:
             routing = field_value.field_type.routing
             fvs = self.get_sample_routing_of_operation(field_value.operation)[routing]
-            if field_value.field_type.ftype == &#39;sample&#39;:
+            if field_value.field_type.ftype == &quot;sample&quot;:
                 for fv in fvs:
                     fv.set_value(sample=sample)
         return field_value
 
-<div class="viewcode-block" id="Planner.set_input_field_value_array"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_input_field_value_array">[docs]</a>    def set_input_field_value_array(self, op, field_value_name, sample=None, item=None, container=None):
+<div class="viewcode-block" id="Planner.set_input_field_value_array"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_input_field_value_array">[docs]</a>    def set_input_field_value_array(
+        self, op, field_value_name, sample=None, item=None, container=None
+    ):
         &quot;&quot;&quot;
         Finds the first &#39;empty&#39; (no incoming wires and no sample set) field value and set the field value.
         If there are no empty field values in the array, create a new field value and set that one.
@@ -868,7 +940,9 @@ class AFTMatcher(object):
         :rtype: FieldValue
         &quot;&quot;&quot;
         input_fv = self._select_empty_input_array(op, field_value_name)
-        return self.set_field_value(input_fv, sample=sample, item=item, container=container)</div>
+        return self.set_field_value(
+            input_fv, sample=sample, item=item, container=container
+        )</div>
 
     def set_field_value_and_propogate(self, field_value, sample=None):
         # ots = self.browser.where(&#39;OperationType&#39;, {&quot;id&quot;: [op.operation_type_id for op in self.plan.operations]})
@@ -878,7 +952,7 @@ class AFTMatcher(object):
         subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
         for node in subgraph:
             n = routing_graph.node[node]
-            fv = n[&#39;fv&#39;]
+            fv = n[&quot;fv&quot;]
             self.set_field_value(fv, sample=sample)
         return field_value
 
@@ -900,20 +974,30 @@ class AFTMatcher(object):
 
     def _item_preference_query(self, sample, field_value, item_preference):
         if item_preference not in self.ITEM_SELECTION_PREFERENCE._CHOICES:
-            raise PlannerException(&quot;Item selection preference \&quot;{}\&quot; not recognized&quot;
-                                   &quot; Please select from one of {}&quot;.format(item_preference, &#39;,&#39;.join(
-                self.ITEM_SELECTION_PREFERENCE._CHOICES)))
+            raise PlannerException(
+                &#39;Item selection preference &quot;{}&quot; not recognized&#39;
+                &quot; Please select from one of {}&quot;.format(
+                    item_preference, &quot;,&quot;.join(self.ITEM_SELECTION_PREFERENCE._CHOICES)
+                )
+            )
         query = {&quot;sample_id&quot;: sample.id}
 
         # restrict allowable_field_types based on preference
         afts = list(field_value.field_type.allowable_field_types)
 
-        if item_preference in [self.ITEM_SELECTION_PREFERENCE.RESTRICT, self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE]:
+        if item_preference in [
+            self.ITEM_SELECTION_PREFERENCE.RESTRICT,
+            self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE,
+        ]:
             afts = [field_value.allowable_field_type]
         # elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
         #     afts = [aft for aft in field_value.field_type.allowable_field_types if aft.sample]
         if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
-            afts = sorted(afts, reverse=True, key=lambda aft: aft.sample_type_id == sample.sample_type_id)
+            afts = sorted(
+                afts,
+                reverse=True,
+                key=lambda aft: aft.sample_type_id == sample.sample_type_id,
+            )
 
         query.update({&quot;object_type_id&quot;: [aft.object_type_id for aft in afts]})
         return query
@@ -922,9 +1006,11 @@ class AFTMatcher(object):
         &quot;&quot;&quot;Returns a dictionary of item_ids and the array of field_values that use them&quot;&quot;&quot;
         browser = self.browser
         item_ids = [i.id for i in items]
-        server_fvs = browser.where({&quot;child_item_id&quot;: item_ids}, model_class=&#39;FieldValue&#39;)
-        browser.retrieve(server_fvs, &#39;operation&#39;)
-        server_fvs = [fv for fv in server_fvs if fv.operation.status != &#39;planning&#39;]
+        server_fvs = browser.where(
+            {&quot;child_item_id&quot;: item_ids}, model_class=&quot;FieldValue&quot;
+        )
+        browser.retrieve(server_fvs, &quot;operation&quot;)
+        server_fvs = [fv for fv in server_fvs if fv.operation.status != &quot;planning&quot;]
 
         these_fvs = []
         for op in self.plan.operations:
@@ -947,8 +1033,7 @@ class AFTMatcher(object):
 
         query = self._item_preference_query(sample, field_value, item_preference)
         available_items = self.session.Item.where(query)
-        available_items = [i for i in available_items if i.location != &#39;deleted&#39;]
-
+        available_items = [i for i in available_items if i.location != &quot;deleted&quot;]
 
         x = len(available_items)
         if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE:
@@ -974,8 +1059,8 @@ class AFTMatcher(object):
         # find all field_values that use this item
         item_id_to_fv = defaultdict(list)
         item_ids = [i.id for i in items]
-        fvs = browser.where({&quot;child_item_id&quot;: item_ids}, model_class=&#39;FieldValue&#39;)
-        browser.retrieve(fvs, &#39;operation&#39;)
+        fvs = browser.where({&quot;child_item_id&quot;: item_ids}, model_class=&quot;FieldValue&quot;)
+        browser.retrieve(fvs, &quot;operation&quot;)
 
         for fv in fvs:
             item_id_to_fv[fv.child_item_id].append(fv)
@@ -986,25 +1071,41 @@ class AFTMatcher(object):
             fvs = item_id_to_fv[item.id]
 
             # filter by operations that are submitted
-            fvs = [fv for fv in fvs if fv.operation.status != &#39;planning&#39;]
+            fvs = [fv for fv in fvs if fv.operation.status != &quot;planning&quot;]
             if len(fvs) &gt; 1:
-                available_items = browser.where({&quot;sample_id&quot;: item.sample_id, &#39;object_type_id&#39;: item.object_type_id},
-                                                model_class=&#39;Item&#39;)
-                available_items = [item for item in available_items if item.location != &#39;deleted&#39;]
-                print(&quot;Item {} {} is used in {} inputs. There are {} available items.&quot;.format(item.id, item.sample.name,
-                                                                                              len(fvs),
-                                                                                              len(available_items)))
+                available_items = browser.where(
+                    {
+                        &quot;sample_id&quot;: item.sample_id,
+                        &quot;object_type_id&quot;: item.object_type_id,
+                    },
+                    model_class=&quot;Item&quot;,
+                )
+                available_items = [
+                    item for item in available_items if item.location != &quot;deleted&quot;
+                ]
+                print(
+                    &quot;Item {} {} is used in {} inputs. There are {} available items.&quot;.format(
+                        item.id, item.sample.name, len(fvs), len(available_items)
+                    )
+                )
 
-                for fv, item in itertools.zip_longest(fvs, available_items, fillvalue=&#39;&amp;&amp;&amp;&#39;):
-                    if fv != &#39;&amp;&amp;&amp;&#39; and item != &#39;&amp;&amp;&amp;&#39;:
+                for fv, item in itertools.zip_longest(
+                    fvs, available_items, fillvalue=&quot;&amp;&amp;&amp;&quot;
+                ):
+                    if fv != &quot;&amp;&amp;&amp;&quot; and item != &quot;&amp;&amp;&amp;&quot;:
                         distributed.append(fv, item)
 
         for fv, item in distributed:
             fv.set_value(item=item)</div>
 
 <div class="viewcode-block" id="Planner.set_to_available_item"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_to_available_item">[docs]</a>    @plan_verification_wrapper
-    def set_to_available_item(self, fv, order_preference=ITEM_ORDER_PREFERENCE._DEFAULT, filter_func=None,
-                              item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT):
+    def set_to_available_item(
+        self,
+        fv,
+        order_preference=ITEM_ORDER_PREFERENCE._DEFAULT,
+        filter_func=None,
+        item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT,
+    ):
         &quot;&quot;&quot;
         Sets the item of the field value to the next available item. Setting recent=False will select
         the oldest item.
@@ -1056,7 +1157,9 @@ class AFTMatcher(object):
         return item</div>
 
 <div class="viewcode-block" id="Planner.set_inputs_using_sample_properties"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.set_inputs_using_sample_properties">[docs]</a>    @plan_verification_wrapper
-    def set_inputs_using_sample_properties(self, operation, sample, routing=None, setter=None):
+    def set_inputs_using_sample_properties(
+        self, operation, sample, routing=None, setter=None
+    ):
         &quot;&quot;&quot;Map the sample field values to the operation inputs. Optionally, a routing dictionary may
         be passed to indicate the mapping between the sample field values and operation inputs.
 
@@ -1100,12 +1203,16 @@ class AFTMatcher(object):
         :rtype:
         &quot;&quot;&quot;
         if fv.role != &quot;output&quot;:
-            raise Exception(&quot;Cannot output. FieldValue {} is a/an {}.&quot;.format(fv.name, fv.role))
+            raise Exception(
+                &quot;Cannot output. FieldValue {} is a/an {}.&quot;.format(fv.name, fv.role)
+            )
         if setter is None:
             setter = self.set_field_value
         setter(fv, sample=sample)
         op = fv.operation
-        self.set_inputs_using_sample_properties(op, sample, routing=routing, setter=setter)</div>
+        self.set_inputs_using_sample_properties(
+            op, sample, routing=routing, setter=setter
+        )</div>
 
 <div class="viewcode-block" id="Planner._json_update"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner._json_update">[docs]</a>    @staticmethod
     def _json_update(model, **params):
@@ -1113,7 +1220,7 @@ class AFTMatcher(object):
         aqhttp = model.session._AqSession__aqhttp
         data = {&quot;model&quot;: {&quot;model&quot;: model.__class__.__name__}}
         data.update(model.dump(**params))
-        model_data = aqhttp.create(&#39;json/save&#39;, json_data=data)
+        model_data = aqhttp.create(&quot;json/save&quot;, json_data=data)
         model.reload(model_data)
         return model</div>
 
@@ -1134,8 +1241,11 @@ class AFTMatcher(object):
         :return: list of operations
         :rtype: list
         &quot;&quot;&quot;
-        return [op for op in self.plan.operations if
-                op.operation_type.name == operation_type_name]</div>
+        return [
+            op
+            for op in self.plan.operations
+            if op.operation_type.name == operation_type_name
+        ]</div>
 
 <div class="viewcode-block" id="Planner.replan"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.replan">[docs]</a>    def replan(self):
         &quot;&quot;&quot;Replan the plan, by &#39;copying&#39; the plan using the Aquarium server.&quot;&quot;&quot;
@@ -1164,14 +1274,14 @@ class AFTMatcher(object):
             &quot;anchor&quot;: {&quot;x&quot;: width, &quot;y&quot;: height},
             &quot;x&quot;: x,
             &quot;y&quot;: y,
-            &quot;markdown&quot;: markdown
+            &quot;markdown&quot;: markdown,
         }
         markdown += &quot;\n&lt;!-- annotated by pydent.planner --&gt;&quot;
-        self.plan.layout.setdefault(&#39;text_boxes&#39;, [])
-        if self.plan.layout[&#39;text_boxes&#39;] is None:
-            self.plan.layout[&#39;text_boxes&#39;] = []
-        if annotation not in self.plan.layout[&#39;text_boxes&#39;]:
-            self.plan.layout[&#39;text_boxes&#39;].append(annotation)
+        self.plan.layout.setdefault(&quot;text_boxes&quot;, [])
+        if self.plan.layout[&quot;text_boxes&quot;] is None:
+            self.plan.layout[&quot;text_boxes&quot;] = []
+        if annotation not in self.plan.layout[&quot;text_boxes&quot;]:
+            self.plan.layout[&quot;text_boxes&quot;].append(annotation)
         return annotation</div>
 
 <div class="viewcode-block" id="Planner.annotate_operations"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.planner.planner.html#pydent.planner.planner.Planner.annotate_operations">[docs]</a>    def annotate_operations(self, ops, markdown, width, height):
@@ -1185,7 +1295,9 @@ class AFTMatcher(object):
         if layout is None:
             layout = self.layout
 
-        x = layout.midpoint()[0] + layout.BOX_WIDTH / 2  # adjust so x is midpoint of &#39;box&#39; on screen
+        x = (
+            layout.midpoint()[0] + layout.BOX_WIDTH / 2
+        )  # adjust so x is midpoint of &#39;box&#39; on screen
         y = layout.y
 
         # center the annotation
@@ -1215,13 +1327,9 @@ class AFTMatcher(object):
         item_id = &quot;none&quot;
         if fv.item is not None:
             item_id = &quot;{}{}&quot;.format(fv.role, fv.item.id)
-        fvhash = &quot;{}:{}:{}:{}&quot;.format(
-            ft.name, ft.role, sid, item_id)
+        fvhash = &quot;{}:{}:{}:{}&quot;.format(ft.name, ft.role, sid, item_id)
         if ft.part:
-            fvhash += &quot;r{row}:c{column}&quot;.format(
-                row=fv.row,
-                column=fv.column,
-            )
+            fvhash += &quot;r{row}:c{column}&quot;.format(row=fv.row, column=fv.column)
         return fvhash
 
     @classmethod
@@ -1258,7 +1366,8 @@ class AFTMatcher(object):
     def ipython_link(self):
         try:
             from IPython.display import display, HTML
-            return display(HTML(&quot;&lt;a href=\&quot;{url}\&quot;&gt;{url}&lt;/a&gt;&quot;.format(url=self.url)))
+
+            return display(HTML(&#39;&lt;a href=&quot;{url}&quot;&gt;{url}&lt;/a&gt;&#39;.format(url=self.url)))
         except ImportError:
             print(&quot;Could not import IPython. This is likely not installed.&quot;)
 
@@ -1278,13 +1387,14 @@ class AFTMatcher(object):
             self._info(&quot;   only_operations={}&quot;.format([op.id for op in operations]))
         self._info(&quot;   ignore_types={}&quot;.format(ignore))
         if operations is None:
-            operations = [
-                op for op in self.plan.operations if op.status == &#39;planning&#39;]
+            operations = [op for op in self.plan.operations if op.status == &quot;planning&quot;]
         if ignore:
             operations = [
-                op for op in operations if op.operation_type.name not in ignore]
-        groups = {k: v for k, v in self._group_ops_by_hashes(
-            operations).items() if len(v) &gt; 1}
+                op for op in operations if op.operation_type.name not in ignore
+            ]
+        groups = {
+            k: v for k, v in self._group_ops_by_hashes(operations).items() if len(v) &gt; 1
+        }
         num_inputs_rewired = 0
         num_outputs_rewired = 0
         ops_to_remove = []
@@ -1295,7 +1405,7 @@ class AFTMatcher(object):
         visited_groups = []
         for node in sorted_nodes:
             node_data = op_graph.node[node]
-            op = node_data[&#39;operation&#39;]
+            op = node_data[&quot;operation&quot;]
             op_hash = self._op_to_hash(op)
             if op_hash in visited_groups or op_hash not in groups:
                 continue
@@ -1342,7 +1452,7 @@ class AFTMatcher(object):
             for n in subgraph:
                 node = subgraph.node[n]
                 if len(list(subgraph.predecessors(n))) == 0:
-                    root = node[&#39;fv&#39;]
+                    root = node[&quot;fv&quot;]
                     roots.append(root)
         return roots</div>
 
@@ -1359,7 +1469,7 @@ class AFTMatcher(object):
                 role=fv.role,
                 name=fv.name,
                 ot=fv.operation.operation_type.name,
-                opid=fv.operation.id
+                opid=fv.operation.id,
             )
 
         routes = {}
@@ -1369,11 +1479,10 @@ class AFTMatcher(object):
             root = None
             for n in subgraph:
                 node = subgraph.node[n]
-                fv = node[&#39;fv&#39;]
+                fv = node[&quot;fv&quot;]
                 value = fv.sample
-                if value is None and fv.field_type.ftype == &#39;sample&#39;:
-                    reasons.append(
-                        &quot;{} has no sample defined&quot;.format(fv_info(fv)))
+                if value is None and fv.field_type.ftype == &quot;sample&quot;:
+                    reasons.append(&quot;{} has no sample defined&quot;.format(fv_info(fv)))
                 else:
                     if fv.item:
                         item = fv.item
@@ -1383,26 +1492,30 @@ class AFTMatcher(object):
                         if item.sample_id != fv.sample.id:
                             reasons.append(
                                 &quot;{} has sample_id={} but generated item has sample_id={}&quot;.format(
-                                    fv_info(fv),
-                                    fv.sample.id, item.sample_id
+                                    fv_info(fv), fv.sample.id, item.sample_id
                                 )
                             )
                     values.append(value)
                 if len(list(subgraph.predecessors(n))) == 0:
                     root = fv
-            if root.item is None and root.role == &quot;input&quot; and root.field_type.ftype == &#39;sample&#39;:
-                reasons.append(
-                    &quot;{} has no item defined&quot;.format(fv_info(fv)))
+            if (
+                root.item is None
+                and root.role == &quot;input&quot;
+                and root.field_type.ftype == &quot;sample&quot;
+            ):
+                reasons.append(&quot;{} has no item defined&quot;.format(fv_info(fv)))
             values = list(set(values))
             if len(values) &gt; 1:
                 reasons.append(&quot;different samples defined in route ({})&quot;.format(values))
-            root_id = &quot;{} for {} ({})&quot;.format(root.name, root.operation.operation_type.name, self._routing_id(root))
+            root_id = &quot;{} for {} ({})&quot;.format(
+                root.name, root.operation.operation_type.name, self._routing_id(root)
+            )
             routes[root_id] = {
                 &quot;root_field_value&quot;: root,
                 &quot;errors&quot;: reasons,
-                &quot;valid&quot;: len(reasons) == 0
+                &quot;valid&quot;: len(reasons) == 0,
             }
-        errors = {k: v for k, v in routes.items() if v[&#39;valid&#39;] != True}
+        errors = {k: v for k, v in routes.items() if v[&quot;valid&quot;] != True}
         return errors</div>
         # return routes
 
@@ -1413,7 +1526,7 @@ class AFTMatcher(object):
         # copy everything execpt plan, which may be large
         copied = empty_copy(self)
         data = self.__dict__.copy()
-        data.pop(&#39;_plan&#39;)
+        data.pop(&quot;_plan&quot;)
         copied.__dict__ = deepcopy(data)
 
         # copy over anonymous copy
@@ -1435,7 +1548,9 @@ class AFTMatcher(object):
 
         sessions = set([p.session for p in plans])
         if len(sessions) &gt; 1:
-            raise PlannerException(&quot;Cannot combine plans, plans must all derive from same session instance&quot;)
+            raise PlannerException(
+                &quot;Cannot combine plans, plans must all derive from same session instance&quot;
+            )
         session = sessions.pop()
 
         new_plan = Planner(session)
@@ -1466,13 +1581,13 @@ class AFTMatcher(object):
 
             # copy over the operations
             opids = list(layout.G.nodes)
-            ops = [layout.G.nodes[opid][&#39;operation&#39;] for opid in opids]
+            ops = [layout.G.nodes[opid][&quot;operation&quot;] for opid in opids]
             wires = []
 
             # copy over relevant wires
             for wire in copied_plan.plan.wires:
                 to_id = wire.destination.operation._primary_key
-                from_id = getattr(wire, &#39;source&#39;).operation._primary_key
+                from_id = getattr(wire, &quot;source&quot;).operation._primary_key
                 if to_id in opids or from_id in opids:
                     wires.append(wire)
 
@@ -1495,7 +1610,7 @@ class AFTMatcher(object):
         edge_colors = []
         for s, e, d in layout.G.edges(data=True):
             color = &quot;black&quot;
-            wire = d[&#39;wire&#39;]
+            wire = d[&quot;wire&quot;]
             if wire.source.sample is None:
                 color = &quot;orange&quot;
             elif wire.destination.sample is None:
@@ -1504,7 +1619,6 @@ class AFTMatcher(object):
                 color = &quot;red&quot;
             edge_colors.append(color)
         nx.draw(self.layout.G, edge_colors=edge_colors, pos=self.layout.pos())</div>
-
 </pre></div>
 
     </div>

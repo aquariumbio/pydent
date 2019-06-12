@@ -4,19 +4,19 @@ User, group, and budget models.
 
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import (HasOne, HasMany,
-                                  HasManyThrough)
+from pydent.relationships import HasOne, HasMany, HasManyThrough
 
 
 @add_schema
 class User(ModelBase):
     """A User model"""
+
     fields = dict(
         groups=HasMany("Group", "User"),
         user_budget_associations=HasMany("UserBudgetAssociation", "User"),
         budgets=HasManyThrough("Budget", "UserBudgetAssociation"),
         additional=("name", "id", "login"),
-        ignore=("password_digest", "remember_token", "key")
+        ignore=("password_digest", "remember_token", "key"),
     )
 
     def __init__(self):
@@ -26,10 +26,8 @@ class User(ModelBase):
 @add_schema
 class UserBudgetAssociation(ModelBase):
     """An association model between a User and a Budget"""
-    fields = dict(
-        budget=HasOne("Budget"),
-        user=HasOne("User")
-    )
+
+    fields = dict(budget=HasOne("Budget"), user=HasOne("User"))
 
     def __init__(self):
         pass
@@ -37,15 +35,13 @@ class UserBudgetAssociation(ModelBase):
 
 @add_schema
 class Membership(ModelBase):
-    fields = dict(
-        user=HasOne("User"),
-        group=HasOne("Group")
-    )
+    fields = dict(user=HasOne("User"), group=HasOne("Group"))
 
 
 @add_schema
 class Group(ModelBase):
     """A Group model"""
+
     pass
 
 
@@ -57,12 +53,12 @@ class Account(ModelBase):
 @add_schema
 class Budget(ModelBase):
     """A Budget model"""
-    fields = dict(
-        user_budget_associations=HasMany("UserBudgetAssociation", "Budget")
-    )
+
+    fields = dict(user_budget_associations=HasMany("UserBudgetAssociation", "Budget"))
 
 
 @add_schema
 class Invoice(ModelBase):
     """A Invoice model"""
+
     pass

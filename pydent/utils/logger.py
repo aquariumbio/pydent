@@ -13,7 +13,9 @@ def new_logger(name, level=logging.ERROR):
         ch = logging.StreamHandler()
         ch.setLevel(level)
 
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        )
         ch.setFormatter(formatter)
         logger.addHandler(ch)
     else:
@@ -40,14 +42,13 @@ def condense_long_lists(d, max_list_len=20):
     elif isinstance(d, list):
         if len(d) > max_list_len:
             g = max_list_len / 2
-            return d[:math.floor(g)] + ['...'] + d[-math.ceil(g):]
+            return d[: math.floor(g)] + ["..."] + d[-math.ceil(g) :]
         else:
             return d[:]
     return str(d)
 
 
-class Loggable():
-
+class Loggable:
     def init_logger(self, name):
         self._logger_name = name
         new_logger(name)
@@ -66,9 +67,16 @@ class Loggable():
         else:
             self._log_handler.setLevel(logging.ERROR)
 
-    def _pprint_data(self, data, width=80, depth=10, max_list_len=20, compact=True, indent=1):
-        return pprint.pformat(condense_long_lists(data, max_list_len=max_list_len), indent=indent, width=width,
-                              depth=depth, compact=compact)
+    def _pprint_data(
+        self, data, width=80, depth=10, max_list_len=20, compact=True, indent=1
+    ):
+        return pprint.pformat(
+            condense_long_lists(data, max_list_len=max_list_len),
+            indent=indent,
+            width=width,
+            depth=depth,
+            compact=compact,
+        )
 
     def _info(self, msg):
         self._logger.info(msg)

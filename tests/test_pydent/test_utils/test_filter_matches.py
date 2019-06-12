@@ -50,5 +50,5 @@ def test_filter_list(example):
     assert isinstance(res, MyList)
     assert res == [f2, f3]
 
-    res = filter_list([f1, f2, f3], happy=True, role='Worker')
+    res = filter_list([f1, f2, f3], happy=True, role="Worker")
     assert res == [f3]

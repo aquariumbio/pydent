@@ -11,18 +11,17 @@ from pydent.relationships import HasOne, One, HasManyGeneric, HasOneFromMany
 @add_schema
 class Code(ModelBase):
     """A Code model"""
+
     fields = dict(
         user=HasOne("User"),
-        operation_type=One(
-            "OperationType", callback="get_parent", callback_args=None),
-        library=One("Library", callback="get_parent", callback_args=None)
+        operation_type=One("OperationType", callback="get_parent", callback_args=None),
+        library=One("Library", callback="get_parent", callback_args=None),
     )
 
     def get_parent(self, parent_class, *args):
         if parent_class != self.parent_class:
             return None
-        return self.session.model_interface(
-            self.parent_class).find(self.parent_id)
+        return self.session.model_interface(self.parent_class).find(self.parent_id)
 
     def update(self):
         # since they may not always be tied to specific parent
@@ -33,13 +32,14 @@ class Code(ModelBase):
 @add_schema
 class Library(ModelBase):
     """A Library model"""
+
     fields = dict(
         codes=HasManyGeneric("Code"),
-        source=HasOneFromMany("Code", ref="parent_id",
-                              additional_args={
-                                  "parent_class": "Library",
-                                  "name": "source"
-                              }),
+        source=HasOneFromMany(
+            "Code",
+            ref="parent_id",
+            additional_args={"parent_class": "Library", "name": "source"},
+        ),
     )
 
     def code(self, accessor):

@@ -7,4 +7,5 @@ from pydent.marshaller.base import SchemaModel
 def base():
     class TestBase(SchemaModel):
         pass
+
     return TestBase

@@ -40,9 +40,15 @@ def test_first_and_last_with_default(session):
     last_models = session.SampleType.last()
     assert len(first_models) == 1, "first() should return exactly one model in a list"
     assert len(last_models) == 1, "last() should return exactly one model in a list"
-    assert first_models[0].id < last_models[0].id, "The first model id should have a smaller id than the last model"
-    assert isinstance(first_models[0], models.SampleType), "The first model should be a SampleType"
-    assert isinstance(last_models[0], models.SampleType), "The last model should be a SampleType"
+    assert (
+        first_models[0].id < last_models[0].id
+    ), "The first model id should have a smaller id than the last model"
+    assert isinstance(
+        first_models[0], models.SampleType
+    ), "The first model should be a SampleType"
+    assert isinstance(
+        last_models[0], models.SampleType
+    ), "The last model should be a SampleType"
 
 
 def test_first_and_last_with_num(session):
@@ -78,18 +84,30 @@ def test_first_and_last_with_diff_models(session):
     last_sample_types = session.SampleType.last()
     last_samples = session.Sample.last()
 
-    assert isinstance(first_sample_types[0], models.SampleType), "The first model should be a SampleType"
-    assert isinstance(last_sample_types[0], models.SampleType), "The last model should be a SampleType"
-    assert isinstance(first_samples[0], models.Sample), "The first model should be a SampleType"
-    assert isinstance(last_samples[0], models.Sample), "The last model should be a SampleType"
+    assert isinstance(
+        first_sample_types[0], models.SampleType
+    ), "The first model should be a SampleType"
+    assert isinstance(
+        last_sample_types[0], models.SampleType
+    ), "The last model should be a SampleType"
+    assert isinstance(
+        first_samples[0], models.Sample
+    ), "The first model should be a SampleType"
+    assert isinstance(
+        last_samples[0], models.Sample
+    ), "The last model should be a SampleType"
 
 
 def test_one_default(session):
     """By default, one returns a single example (default: last)"""
     first = session.SampleType.one(first=True)
     last = session.SampleType.one()
-    assert first.id < last.id, "The first model id should have a smaller id than the last model"
-    assert isinstance(first, models.SampleType), "The first model should be a SampleType"
+    assert (
+        first.id < last.id
+    ), "The first model id should have a smaller id than the last model"
+    assert isinstance(
+        first, models.SampleType
+    ), "The first model should be a SampleType"
     assert isinstance(last, models.SampleType), "The last model should be a SampleType"
 
 

@@ -169,7 +169,8 @@ import json
         Adds a data association with the key and value to this object.
         &quot;&quot;&quot;
         return self.session.utils.create_data_association(
-            self, key, value, upload=upload)</div>
+            self, key, value, upload=upload
+        )</div>
 
 <div class="viewcode-block" id="DataAssociatorMixin.associate_file"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.models.data_associations.html#pydent.models.data_associations.DataAssociatorMixin.associate_file">[docs]</a>    def associate_file(self, key, value, file, job_id=None):
         &quot;&quot;&quot;
@@ -205,7 +206,7 @@ import json
         :return: new data association
         :rtype: :class:`DataAssociation`
         &quot;&quot;&quot;
-        with open(filepath, &#39;rb&#39;) as f:
+        with open(filepath, &quot;rb&quot;) as f:
             return self.associate_file(key, value, f, job_id=job_id)</div>
 
     def get_data_associations(self, key):
@@ -230,10 +231,8 @@ import json
 <div class="viewcode-block" id="DataAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.DataAssociation">[docs]</a>@add_schema
 class DataAssociation(JSONDeleteMixin, ModelBase):
     &quot;&quot;&quot;A DataAssociation model&quot;&quot;&quot;
-    fields = dict(
-        object=JSON(),
-        upload=HasOne(&quot;Upload&quot;)
-    )
+
+    fields = dict(object=JSON(), upload=HasOne(&quot;Upload&quot;))
 
     @property
     def value(self):
@@ -248,9 +247,8 @@ class Upload(ModelBase):
     &quot;&quot;&quot;
     An Upload model
     &quot;&quot;&quot;
-    fields = dict(
-        job=HasOne(&quot;Job&quot;)
-    )
+
+    fields = dict(job=HasOne(&quot;Job&quot;))
 
     def __init__(self, job_id=None, file=None):
         &quot;&quot;&quot;
@@ -261,21 +259,20 @@ class Upload(ModelBase):
         :param file: file to upload
         :type file: file object
         &quot;&quot;&quot;
-        super().__init__(
-            job_id=job_id,
-        )
+        super().__init__(job_id=job_id)
         self.file = file
 
     # def _get_uploads_from_job_id(self, job_id):
 
     def _get_uploads_from_job(self):
         http = self.session._AqSession__aqhttp
-        return http.get(&quot;krill/uploads?job={}&quot;.format(self.job_id))[&#39;uploads&#39;]
+        return http.get(&quot;krill/uploads?job={}&quot;.format(self.job_id))[&quot;uploads&quot;]
 
     def temp_url(self):
-        data = self.session.Upload.where(
-            {&quot;id&quot;: self.id}, methods=[&quot;expiring_url&quot;])[0].raw
-        return data[&#39;expiring_url&#39;]
+        data = self.session.Upload.where({&quot;id&quot;: self.id}, methods=[&quot;expiring_url&quot;])[
+            0
+        ].raw
+        return data[&quot;expiring_url&quot;]
 
 <div class="viewcode-block" id="Upload._download_file_from_url"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.data_associations.Upload._download_file_from_url">[docs]</a>    @staticmethod
     def _download_file_from_url(url, outpath):
@@ -290,7 +287,7 @@ class Upload(ModelBase):
         :rtype: str
         &quot;&quot;&quot;
         response = requests.get(url, stream=True)
-        with open(outpath, &#39;wb&#39;) as out_file:
+        with open(outpath, &quot;wb&quot;) as out_file:
             shutil.copyfileobj(response.raw, out_file)
         return response.raw</div>
 
@@ -343,7 +340,7 @@ class Upload(ModelBase):
         :return: None
         &quot;&quot;&quot;
         if outdir is None:
-            outdir = &#39;.&#39;
+            outdir = &quot;.&quot;
         if filename is None:
             filename = &quot;{}_{}&quot;.format(self.id, self.upload_file_name)
         filepath = os.path.join(outdir, filename)

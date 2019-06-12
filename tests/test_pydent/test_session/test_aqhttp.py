@@ -3,8 +3,12 @@ import os
 
 import pytest
 
-from pydent.exceptions import (TridentJSONDataIncomplete, TridentLoginError,
-                               TridentTimeoutError, TridentRequestError)
+from pydent.exceptions import (
+    TridentJSONDataIncomplete,
+    TridentLoginError,
+    TridentTimeoutError,
+    TridentRequestError,
+)
 from pydent.aqhttp import AqHTTP, url_build
 from pydent.aqhttp import requests
 
@@ -31,7 +35,7 @@ def test_aqhttp_init(aqhttp):
     assert aqhttp.login == "somelogin"
     assert aqhttp.aquarium_url == "http://some.aquarium.url.com"
     assert aqhttp.url == "http://some.aquarium.url.com"
-    assert not hasattr(aqhttp, 'password')
+    assert not hasattr(aqhttp, "password")
 
 
 def test_disallow_null(aqhttp):
@@ -71,9 +75,7 @@ def test_login_no_cookie(monkeypatch):
     """
 
     def mock_post(path, **kwargs):
-        routes = {
-            "sessions.json": {}
-        }
+        routes = {"sessions.json": {}}
         for key, res in routes.items():
             if key in path:
                 response = requests.Response()
@@ -81,7 +83,7 @@ def test_login_no_cookie(monkeypatch):
                 return response
 
     aquarium_url = "http://52.45.55.456:58/"
-    monkeypatch.setattr(requests, 'post', mock_post)
+    monkeypatch.setattr(requests, "post", mock_post)
     with pytest.raises(TridentLoginError):
         AqHTTP("username", "password", aquarium_url)
 
@@ -92,7 +94,6 @@ def test_custom_timeout(monkeypatch, fake_response, aqhttp):
 """
 
     class FakeRequest(object):
-
         def __init__(self, status_code=200, url="myfakeurl.com", method="post"):
             self.status_code = status_code
             self.url = url
@@ -106,7 +107,7 @@ def test_custom_timeout(monkeypatch, fake_response, aqhttp):
             assert timeout == 0.1
             return fake_response(method, path, {}, 200)
 
-    monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
+    monkeypatch.setattr("pydent.aqhttp.requests", mock_request)
     aqhttp.post("someurl", timeout=0.1, json_data={})
 
 
@@ -123,7 +124,7 @@ def test_default_timeout(monkeypatch, fake_response, aqhttp):
             assert timeout == aqhttp.TIMEOUT
             return fake_response(method, path, {}, 200)
 
-    monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
+    monkeypatch.setattr("pydent.aqhttp.requests", mock_request)
     aqhttp.post("someurl", json_data={})
 
 
@@ -135,10 +136,10 @@ def test_aqhttp_repr(aqhttp):
 
 def test_aqhttp_post(monkeypatch, fake_response, aqhttp):
     fake_json = {"id": 456}
-    request_method = 'post'
+    request_method = "post"
     request_timeout = 10
-    request_path = 'cooltuff'
-    extra_kwargs = {'extra': 'stuff'}
+    request_path = "cooltuff"
+    extra_kwargs = {"extra": "stuff"}
 
     # A fake requests sessions object
     class mock_request(object):
@@ -153,29 +154,29 @@ def test_aqhttp_post(monkeypatch, fake_response, aqhttp):
 
             # assert extra kwargs get passed in
             kwargs_copy = dict(kwargs)
-            if 'json' in kwargs:
-                del kwargs_copy['json']
+            if "json" in kwargs:
+                del kwargs_copy["json"]
             assert kwargs_copy == extra_kwargs
 
             # return faked response
-            response.json = lambda: kwargs['json']
+            response.json = lambda: kwargs["json"]
             return response
 
-    monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
+    monkeypatch.setattr("pydent.aqhttp.requests", mock_request)
 
     # test post
     json_result = aqhttp.post(
-        request_path, json_data=fake_json, timeout=request_timeout,
-        **extra_kwargs)
+        request_path, json_data=fake_json, timeout=request_timeout, **extra_kwargs
+    )
     assert json_result == fake_json
 
 
 def test_aqhttp_post_2(monkeypatch, aqhttp, fake_response):
     fake_json = {"id": 456}
-    request_method = 'put'
+    request_method = "put"
     request_timeout = 10
-    request_path = 'somepath'
-    extra_kwargs = {'extra': 'stuff'}
+    request_path = "somepath"
+    extra_kwargs = {"extra": "stuff"}
 
     # A fake requests sessions object
     class mock_request(object):
@@ -188,29 +189,29 @@ def test_aqhttp_post_2(monkeypatch, aqhttp, fake_response):
 
             # assert extra kwargs get passed in
             kwargs_copy = dict(kwargs)
-            if 'json' in kwargs:
-                del kwargs_copy['json']
+            if "json" in kwargs:
+                del kwargs_copy["json"]
             assert kwargs_copy == extra_kwargs
 
             # return faked response
             fake_requests_response = fake_response(method, path, {}, 200)
-            fake_requests_response.json = lambda: kwargs['json']
+            fake_requests_response.json = lambda: kwargs["json"]
             return fake_requests_response
 
-    monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
+    monkeypatch.setattr("pydent.aqhttp.requests", mock_request)
 
     # test put
     json_result = aqhttp.put(
-        request_path, json_data=fake_json, timeout=request_timeout,
-        **extra_kwargs)
+        request_path, json_data=fake_json, timeout=request_timeout, **extra_kwargs
+    )
     assert json_result == fake_json
 
 
 def test_aqhttp_get(monkeypatch, fake_response, aqhttp):
-    request_method = 'get'
+    request_method = "get"
     request_timeout = 10
-    request_path = 'somepath'
-    extra_kwargs = {'extra': 'stuff'}
+    request_path = "somepath"
+    extra_kwargs = {"extra": "stuff"}
 
     # A fake requests sessions object
     class mock_request(object):
@@ -223,8 +224,8 @@ def test_aqhttp_get(monkeypatch, fake_response, aqhttp):
 
             # assert extra kwargs get passed in
             kwargs_copy = dict(kwargs)
-            if 'json' in kwargs:
-                del kwargs_copy['json']
+            if "json" in kwargs:
+                del kwargs_copy["json"]
             assert kwargs_copy == extra_kwargs
 
             # return faked response
@@ -232,35 +233,32 @@ def test_aqhttp_get(monkeypatch, fake_response, aqhttp):
             fake_requests_response.json = lambda: {}
             return fake_requests_response
 
-    monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
+    monkeypatch.setattr("pydent.aqhttp.requests", mock_request)
 
     # test get
-    json_result = aqhttp.get(
-        request_path, timeout=request_timeout, **extra_kwargs)
+    json_result = aqhttp.get(request_path, timeout=request_timeout, **extra_kwargs)
     assert isinstance(json_result, dict) and not json_result
 
 
 def test_authentication_error_via_reroute(monkeypatch, fake_response, aqhttp):
     class mock_request(object):
-
         @staticmethod
         def request(method, path, timeout=None, **kwargs):
             fake_requests_response = fake_response(method, path, {}, 200)
             fake_requests_response.json = lambda: json.loads("not a json")
-            fake_requests_response.url = url_build(
-                aqhttp.aquarium_url, "signin")
+            fake_requests_response.url = url_build(aqhttp.aquarium_url, "signin")
             return fake_requests_response
 
-    monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
+    monkeypatch.setattr("pydent.aqhttp.requests", mock_request)
 
     # test get
     with pytest.raises(TridentRequestError):
         aqhttp.post("someurl", json_data={})
 
 
-def test_improperly_formatted_json_raise_TridentRequestError(monkeypatch,
-                                                             fake_response,
-                                                             aqhttp):
+def test_improperly_formatted_json_raise_TridentRequestError(
+    monkeypatch, fake_response, aqhttp
+):
     """
     If response request returns an object that is not able to formatted to a
     JSON, a TridentRequestError should be raised.
@@ -275,7 +273,7 @@ def test_improperly_formatted_json_raise_TridentRequestError(monkeypatch,
             fake_requests_response.json = lambda: json.loads("not a json")
             return fake_requests_response
 
-    monkeypatch.setattr('pydent.aqhttp.requests', mock_request)
+    monkeypatch.setattr("pydent.aqhttp.requests", mock_request)
 
     # test get
     with pytest.raises(TridentRequestError):

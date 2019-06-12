@@ -176,14 +176,18 @@ pformat = printer.pformat
 
 <div class="viewcode-block" id="url_build"><a class="viewcode-back" href="../../developer/_autosummary/pydent.utils.html#pydent.utils.url_build">[docs]</a>def url_build(*parts):
     &quot;&quot;&quot;Join parts of a url into a string&quot;&quot;&quot;
-    url = &#39;/&#39;.join(p.strip(&#39;/&#39;) for p in parts)
+    url = &quot;/&quot;.join(p.strip(&quot;/&quot;) for p in parts)
     return url</div>
+
 
 <div class="viewcode-block" id="empty_copy"><a class="viewcode-back" href="../../developer/_autosummary/pydent.utils.html#pydent.utils.empty_copy">[docs]</a>def empty_copy(obj):
     &quot;&quot;&quot;Return an empty copy of an object for copying purposes&quot;&quot;&quot;
+
     class Empty(obj.__class__):
-        def __init__(self): pass
-    newcopy = Empty(  )
+        def __init__(self):
+            pass
+
+    newcopy = Empty()
     newcopy.__class__ = obj.__class__
     return newcopy</div>
 
