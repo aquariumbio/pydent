@@ -6,7 +6,7 @@ version: 2
 jobs:
   build-and-test:
     docker:
-      - image: circleci/python:3.6.1
+      - image: circleci/python:3.7.2
 
     working_directory: ~/repo
 
@@ -16,14 +16,13 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "requirements-dev.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - deps-{{ checksum "poetry.lock" }}
 
       - run:
           name: install dependencies
           command: |
             curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+            source $HOME/.poetry/env
             poetry install
 
       - save_cache:
