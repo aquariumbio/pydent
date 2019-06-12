@@ -60,11 +60,11 @@ format:
 	poetry run docformatter . -r -i
 
 
-deploy:
-	rm -rf dist
-	python setup.py sdist
-	python setup.py bdist_wheel
+testdeployconfig
+	poetry config repositories.testpypi https://
 
+testdeploy:
+	poetry publish -r testpypi
 
 lock:
 	poetry update
