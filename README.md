@@ -16,7 +16,7 @@ Trident is the python API scripting for Aquarium.
 
 ## Quick installation
 
-Pydent can be installed using `pip3`
+Pydent can be installed using `pip3`.
 
 ```
     pip3 install pydent
