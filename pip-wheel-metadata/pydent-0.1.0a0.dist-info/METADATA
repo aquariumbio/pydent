@@ -1,0 +1,105 @@
+Metadata-Version: 2.1
+Name: pydent
+Version: 0.1.0a0
+Summary: Aquarium's Python API for planning, executing, and analyzing scientific experiments.
+Home-page: https://www.github.com/klavinslab/trident
+Author: jvrana
+Author-email: justin.vrana@gmail.com
+Requires-Python: >=3.6,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Requires-Dist: inflection (>=0.3.1,<0.4.0)
+Requires-Dist: nbsphinx (>=0.4.2,<0.5.0)
+Requires-Dist: nest-asyncio (>=1.0,<2.0)
+Requires-Dist: networkx (>=2.3,<3.0)
+Requires-Dist: pandas (>=0.24.2,<0.25.0)
+Requires-Dist: requests (>=2.22,<3.0)
+Requires-Dist: tqdm (>=4.32,<5.0)
+Project-URL: Documentation, https://www.klavinslab.org/trident
+Project-URL: Repository, https://www.github.com/klavinslab/trident
+Description-Content-Type: text/markdown
+
+# Trident: Aquarium API Scripting
+
+[![CircleCI](https://circleci.com/gh/klavinslab/trident/tree/master.svg?style=svg&circle-token=88677c59698d55a127a080cba9ca025cf8072f6c)](https://circleci.com/gh/klavinslab/trident/tree/master)
+[![PyPI version](https://badge.fury.io/py/pydent.svg)](https://badge.fury.io/py/pydent)
+
+Trident is the python API scripting for Aquarium.
+
+## Documentation
+
+[API documentation can be found here at klavinslab.org/trident](http://www.klavinslab.org/trident)
+
+## Requirements
+
+* Python > 3.4
+* An Aquarium login
+
+## Quick installation
+
+Pydent can be installed using `pip3`.
+
+```
+    pip3 install pydent
+```
+
+or upgraded using
+
+```
+    pip3 install pydent --upgrade
+```
+
+## Basic Usage
+
+### Logging in
+
+```python
+from pydent import AqSession
+
+# open a session
+mysession = AqSession("username", "password", "www.aquarium_nursery.url")
+
+# find a user
+u = mysession.User.find(1)
+
+# print the user data
+print(u)
+```
+
+### Models
+
+```python
+print(mysession.models)
+```
+
+#### Finding models
+
+* By name: `nursery.SampleType.find_by_name("Primer")`
+
+* By ID: `nursery.SampleType.find(1)`
+
+* By property: `nursery.SampleType.where({'name': 'Primer'})`
+
+* All models: `nursery.SampleType.all()`
+
+#### Getting nested data
+
+```python
+# samples are linked to sample_type
+primer_type = mysession.SampleType.find_by_name("Primer")
+primers = primer_type.samples
+
+# and sample type is linked to sample
+p = primers[0]
+print(p.sample_type)
+```
+
+#### Available nested relationships
+
+```python
+primer_type = mysession.SampleType.find(1)
+print(primer_type.relationships)
+```
+
+
