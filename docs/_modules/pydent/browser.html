@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.browser &#8212; Trident 0.1.0a3 documentation</title>
+    <title>pydent.browser &#8212; &#34;pydent&#34; &#34;0.1.0&#34; documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.0a3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>&#34;0.1.0&#34;</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -157,6 +157,7 @@ from pydent.utils import logger
     # TODO: ability to block model callbacks to enforce cache
 
     INTERFACE_CLASS = QueryInterface
+    ACCEPTED_GET_RELATION_TYPES = [&quot;HasOne&quot;, &quot;HasMany&quot;, &quot;HasManyThrough&quot;, &quot;HasManyGeneric&quot;]
 
     def __init__(self, session):
         &quot;&quot;&quot;
@@ -804,9 +805,8 @@ from pydent.utils import logger
                 raise BrowserException(
                     &#39;Cannot add new relationship &quot;{}&quot; because it already exists in the model definition&#39;.format(
                         relationship_name))
-        accepted_types = [&quot;HasOne&quot;, &quot;HasMany&quot;, &quot;HasManyThrough&quot;, &quot;HasManyGeneric&quot;]
         # TODO: add relationship handler for Many and One
-        if relation.__class__.__name__ not in accepted_types:
+        if relation.__class__.__name__ not in self.ACCEPTED_GET_RELATION_TYPES:
             raise BrowserException(
                 &quot;retrieve is not supported for the \&quot;{}\&quot; relationship&quot;.format(relation.__class__.__name__))
         self._info(&#39;RETRIEVE {}: {}&#39;.format(relationship_name, relation))
@@ -878,14 +878,19 @@ from pydent.utils import logger
         else:
             raise BrowserException(&quot;Type {} for is not recognized for recursive_retrieve&quot;.format(type(relations)))</div>
 
-    def get(self, models, relations, strict=True):
+    def get(self, models, relations=None, strict=True):
         if isinstance(models, ModelBase):
             models = [models]
+        elif isinstance(models, str):
+            models = list(self.model_cache.get(models, {}).values())
 
-        if isinstance(relations, dict):
-            return self.recursive_retrieve(models, relations, strict=strict)
+        if relations:
+            if isinstance(relations, str):
+                return self.retrieve(models, relations, strict=strict)
+            else:
+                return self.recursive_retrieve(models, relations, strict=strict)
         else:
-            return self.retrieve(models, relations, strict=strict)
+            return models
 
 <div class="viewcode-block" id="Browser.samples_to_df"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.samples_to_df">[docs]</a>    def samples_to_df(self, samples):
         &quot;&quot;&quot;

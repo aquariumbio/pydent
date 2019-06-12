@@ -104,8 +104,8 @@ todo_include_todos = False
 
 html_context = {
     'version': version,
-    'github': pydent.__url__,
-    'pypi': pydent.__pypi__,
+    'github': pydent.__homepage__,
+    'repo': pydent.__repo__,
     'aquarium_page': 'https://www.aquarium.bio/'
 }
 
