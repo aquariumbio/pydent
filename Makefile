@@ -9,7 +9,6 @@ init:
 	poerty install
 	poetry run pre-commit install
 
-
 test:
 	poetry run python -m pytest
 
@@ -73,7 +72,7 @@ lock: | pullversion
 	poetry update
 
 build: | pullversion
-    poetry build
+	poetry build
 
 
 hooks: .git/hooks

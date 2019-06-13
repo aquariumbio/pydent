@@ -1,5 +1,5 @@
 import json
-from os.path import dirname, abspath, join
+from os.path import dirname, abspath, join, isfile
 from configparser import ConfigParser
 
 VERSION_JSON_PATH = "version.json"
@@ -21,7 +21,17 @@ def pull_version():
     for k, v in ver_data.items():
         ver_data[k] = clean(v)
 
-    with open(join(VERSION_DIR, VERSION_JSON_PATH), "w") as f:
+    target_path = join(VERSION_DIR, VERSION_JSON_PATH)
+    try:
+        with open(target_path, "r") as f:
+            print(">> Previous Version:")
+            print(f.read())
+    except:
+        pass
+
+    with open(target_path, "w") as f:
+        print("<< New Version (path={}):".format(target_path))
+        print(json.dumps(ver_data, indent=2))
         json.dump(ver_data, f, indent=2)
 
 

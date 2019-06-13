@@ -30,4 +30,5 @@ nest_asyncio.apply()
 from .aqsession import AqSession
 from .base import ModelBase, ModelRegistry
 from .utils import pprint
+from .browser import Browser
 from pydent._version import __version__, __title__, __author__, __homepage__, __repo__
