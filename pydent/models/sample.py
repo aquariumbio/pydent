@@ -3,7 +3,7 @@ Models related to samples, like Samples and SampleTypes
 """
 
 import json
-from collections import Sequence
+from collections.abc import Sequence
 from warnings import warn
 
 from pydent.base import ModelBase
