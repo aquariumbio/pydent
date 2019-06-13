@@ -186,7 +186,7 @@ class Browser(logger.Loggable, object):
         models = fxn(query=query, opts=opts, **params)
         if as_single:
             models = [models]
-        return self._update_model_cache_from_list(model_class, models)
+        return self.update_cache(models).get(model_class, [])
 
     def one(self, model_class=None, sample_type=None, query=None, opts=None):
         """
@@ -336,7 +336,7 @@ class Browser(logger.Loggable, object):
             memo = {}
             ModelBase._flatten_deserialized_data(models, memo)
             models = list(memo.values())
-        return self._update_model_cache(models)
+        return self._group_models_and_update_cache(models)
 
     # TODO: do we really want to simply overwrite the dictionary or update the models?
     def _update_model_cache_helper(self, modelname, modeldict):
@@ -356,20 +356,20 @@ class Browser(logger.Loggable, object):
                 model_cache_dict[mid] = model
         return [model_cache_dict[mid] for mid in modeldict]
 
-    def _update_model_cache_from_list(self, model_name, models):
-        return self._update_model_cache_helper(model_name, {m.id: m for m in models})
-
-    def _update_model_cache(self, models):
+    def _group_models_and_update_cache(self, models):
         grouped_by_type = {}
         for model in models:
             classname = model.__class__.__name__
             arr = grouped_by_type.setdefault(classname, [])
-            arr.append(model)
+            if model is not None:
+                arr.append(model)
 
+        result = {}
         for clstype in grouped_by_type:
-            self._update_model_cache_helper(
+            result[clstype] = self._update_model_cache_helper(
                 clstype, {m._primary_key: m for m in grouped_by_type[clstype]}
             )
+        return result
 
     # TODO: support unsaved models as well
     def cached_find(self, model_class, id):
@@ -452,8 +452,7 @@ class Browser(logger.Loggable, object):
         )
 
         if self.use_cache:
-            self._update_model_cache(filtered)
-
+            self.update_cache(filtered)
         return filtered
 
     def search(self, pattern, ignore_case=True, sample_type=None, **query):
