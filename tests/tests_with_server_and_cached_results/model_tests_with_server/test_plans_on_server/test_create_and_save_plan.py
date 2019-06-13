@@ -69,7 +69,7 @@ def test_plan_with_parameter(session):
     example_sample = session.Sample.one(query={"sample_type_id": primer.id})
 
     # set io
-    order_primer.set_output_sample("Primer", sample=example_sample)
+    order_primer.set_output("Primer", sample=example_sample)
     order_primer.set_input("Urgent?", value="no")
 
     # create a new plan
@@ -124,7 +124,7 @@ def test_submission_1(session):
     gibson_op.field_values = []
 
     # set output
-    gibson_op.set_output_sample(
+    gibson_op.set_output(
         "Assembled Plasmid", sample=session.Sample.find_by_name("pCAG-NLS-HA-Bxb1")
     )
 
@@ -158,14 +158,14 @@ def test_submission_1(session):
         "Reverse Primer", sample=sample.field_value("Forward Primer").sample
     )
     pcr_op.set_input("Template", sample=sample.field_value("Template").sample)
-    pcr_op.set_output_sample("Fragment", sample=sample)
+    pcr_op.set_output("Fragment", sample=sample)
 
     # Run gel
     gel_type = session.OperationType.where({"deployed": True, "name": "Run Gel"})[0]
     gel_op = gel_type.instance()
     gel_op.set_input("Fragment", sample=sample)
     # gel_op.set_input("Gel", sample=sample)
-    gel_op.set_output_sample("Fragment", sample=sample)
+    gel_op.set_output("Fragment", sample=sample)
 
     # extract gel
     extract_type = session.OperationType.where(
@@ -173,7 +173,7 @@ def test_submission_1(session):
     )[0]
     extract_op = extract_type.instance()
     extract_op.set_input("Fragment", sample=sample)
-    extract_op.set_output_sample("Fragment", sample=sample)
+    extract_op.set_output("Fragment", sample=sample)
 
     # purify gel slice
     purify_type = session.OperationType.where(
@@ -181,7 +181,7 @@ def test_submission_1(session):
     )[0]
     purify_op = purify_type.instance()
     purify_op.set_input("Gel", sample=sample)
-    purify_op.set_output_sample("Fragment", sample=sample)
+    purify_op.set_output("Fragment", sample=sample)
 
     # create a new plan and add operations
     p = models.Plan(name="MyPlan")
@@ -244,7 +244,7 @@ def test_submission_2(session):
     # set output
     sample = session.Sample.find_by_name("pCAG-NLS-HA-Bxb1")
     assert sample, 'Sample "pCAG-NLS-HA-Bxb1" not found'
-    gibson_op.set_output_sample("Assembled Plasmid", sample=sample)
+    gibson_op.set_output("Assembled Plasmid", sample=sample)
 
     # set input 1
     sample = session.Sample.find_by_name("SV40NLS1-FLP-SV40NLS2")
@@ -279,7 +279,7 @@ def test_submission_2(session):
     template_sample = sample.field_value("Template").sample
     assert template_sample
     pcr_op.set_input("Template", sample=template_sample)
-    pcr_op.set_output_sample("Fragment", sample=sample)
+    pcr_op.set_output("Fragment", sample=sample)
 
     # Run gel
     op_types = session.OperationType.where({"deployed": True, "name": "Run Gel"})
@@ -287,7 +287,7 @@ def test_submission_2(session):
     gel_type = op_types[0]
     gel_op = gel_type.instance()
     gel_op.set_input("Fragment", sample=sample)
-    gel_op.set_output_sample("Fragment", sample=sample)
+    gel_op.set_output("Fragment", sample=sample)
 
     # extract gel
     op_types = session.OperationType.where(
@@ -297,7 +297,7 @@ def test_submission_2(session):
     extract_type = op_types[0]
     extract_op = extract_type.instance()
     extract_op.set_input("Fragment", sample=sample)
-    extract_op.set_output_sample("Fragment", sample=sample)
+    extract_op.set_output("Fragment", sample=sample)
 
     # purify gel slice
     op_types = session.OperationType.where(
@@ -307,7 +307,7 @@ def test_submission_2(session):
     purify_type = op_types[0]
     purify_op = purify_type.instance()
     purify_op.set_input("Gel", sample=sample)
-    purify_op.set_output_sample("Fragment", sample=sample)
+    purify_op.set_output("Fragment", sample=sample)
 
     # create a new plan and add operations
     p = models.Plan(name="MyPlan")
