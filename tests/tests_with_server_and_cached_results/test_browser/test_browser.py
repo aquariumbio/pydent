@@ -4,8 +4,14 @@ import pytest
 from pydent import models as pydent_models
 from pydent.browser import Browser
 from pydent.marshaller import exceptions as marshaller_exceptions
-import random
-import uuid
+
+
+def test_simple_one_query(session):
+    browser = Browser(session)
+    user = session.User.one(query={"login": session.current_user.login})
+    assert user
+    user = browser.one(query={"login": session.current_user.login}, model_class="User")
+    assert user
 
 
 def test_search(session):
