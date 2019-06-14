@@ -9,6 +9,12 @@ init:
 	poerty install
 	poetry run pre-commit install
 
+clean:
+	rm -rf dist
+	rm -rf pip-wheel-metadata
+	rm -rf docs
+	rm -rf .pytest_cache
+
 test:
 	poetry run python -m pytest
 
@@ -65,6 +71,7 @@ format:
 
 
 testpublish:
+    poetry config repositories.testpypi https://test.pypi.org/legacy/
 	poetry publish -r testpypi
 
 
