@@ -549,7 +549,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
             return []
         return res
 
-    def all(self, include=None, opts=None):
+    def all(self, methods=None, include=None, opts=None):
         """
         Finds all models
         :param include:
@@ -566,6 +566,9 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         opts.update(addopts)
         options = {"offset": self.DEFAULT_OFFSET, "reverse": self.DEFAULT_REVERSE}
         options.update(opts)
+        rest = {}
+        if methods is not None:
+            rest = {"methods": methods}
         return self.array_query(
             method="all", args=None, rest=None, include=include, opts=options
         )
