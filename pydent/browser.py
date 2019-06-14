@@ -849,12 +849,13 @@ class Browser(logger.Loggable, object):
                 )
             )
 
-    def get(self, models, relations=None, strict=True):
+    def get(self, models, relations=None, query=None, strict=True):
         if isinstance(models, ModelBase):
             models = [models]
         elif isinstance(models, str):
             models = list(self.model_cache.get(models, {}).values())
-
+            if query:
+                models, _ = self._find_matches(query, models)
         if relations:
             if isinstance(relations, str):
                 return self.retrieve(models, relations, strict=strict)
