@@ -130,6 +130,11 @@ class Upload(ModelBase):
         super().__init__(job_id=job_id)
         self.file = file
 
+    query_hook =dict(
+        methods=['size', 'name', 'job']
+    )
+
+
     # def _get_uploads_from_job_id(self, job_id):
 
     def _get_uploads_from_job(self):
