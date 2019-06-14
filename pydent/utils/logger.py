@@ -49,6 +49,7 @@ def condense_long_lists(d, max_list_len=20):
 
 
 class Loggable:
+
     def init_logger(self, name):
         self._logger_name = name
         new_logger(name)
@@ -58,14 +59,16 @@ class Loggable:
         return logging.getLogger(self._logger_name)
 
     @property
-    def _log_handler(self):
-        return self._logger.handlers[0]
+    def _log_handlers(self):
+        return self._logger.handlers
 
     def set_verbose(self, verbose):
         if verbose:
-            self._log_handler.setLevel(logging.INFO)
+            for h in self._log_handlers:
+                h.setLevel(logging.INFO)
         else:
-            self._log_handler.setLevel(logging.ERROR)
+            for h in self._log_handlers:
+                h.setLevel(logging.ERROR)
 
     def _pprint_data(
         self, data, width=80, depth=10, max_list_len=20, compact=True, indent=1
