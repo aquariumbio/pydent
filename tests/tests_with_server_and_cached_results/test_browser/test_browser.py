@@ -190,9 +190,9 @@ def test_recursive_cache_plan(session):
     op = ops[-10]
 
     ft = op.operation_type.field_types[0]
-    fv = op.field_value(ft.name, ft.role)
+    fvs = op.field_value_array(ft.name, ft.role)
 
-    assert ft.rid is fv.field_type.rid
+    assert ft.rid is fvs[0].field_type.rid
 
 
 def test_set_model_error(session):
