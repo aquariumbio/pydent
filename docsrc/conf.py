@@ -109,6 +109,11 @@ html_context = {
     "github": pydent.__homepage__,
     "repo": pydent.__repo__,
     "aquarium_page": "https://www.aquarium.bio/",
+    "display_github": True,  # Integrate GitHub
+    "github_user": "klavinslab",  # Username
+    "github_repo": "trident",  # Repo name
+    "github_version": "master",  # Version
+    "conf_py_path": "./",  # Path in the checkout to the docs root
 }
 
 # -- Options for HTML output ----------------------------------------------
