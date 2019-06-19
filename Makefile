@@ -29,8 +29,7 @@ coverage:
 
 
 pullversion:
-	python pydent/_version/__init__.py
-
+	poetry run upver
 
 docs: | pullversion
 	@echo "Updating docs"
@@ -74,6 +73,8 @@ lock: | pullversion
 build: | pullversion
 	poetry build
 
+tag: | pullversion
+	sh scripts/tag.sh
 
 hooks: .git/hooks
 	cp scripts/* .git/hooks
@@ -81,7 +82,6 @@ hooks: .git/hooks
 
 klocs:
 	find . -name '*.py' | xargs wc -l
-
 
 tox:
 	tox

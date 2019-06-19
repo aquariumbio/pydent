@@ -125,4 +125,22 @@ docs directory, which contains generated documentation files:
 Making a Release
 ----------------
 
-ToDo: write documentation on using poetry to publish to pypi
+Once you are confident all tests are passing, a new release can be published using:
+
+::
+
+    sh scripts/makerelease <version>
+
+Which will
+poetry version $1
+poetry run upver
+poetry run verify $1
+make format
+make docs
+poetry publish -r testpypi --build -n
+VER=$(poetry run version)
+git add .
+git commit -m "release $VER"
+git tag $VER
+git push
+git push origin $VER
