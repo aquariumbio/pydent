@@ -125,4 +125,8 @@ docs directory, which contains generated documentation files:
 Making a Release
 ----------------
 
-ToDo: write documentation on using poetry to publish to pypi
+Once you are confident all tests are passing, a new release can be published using:
+
+::
+
+    sh scripts/makerelease <version>
