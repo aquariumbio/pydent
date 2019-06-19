@@ -44,51 +44,36 @@ jobs:
       - store_test_results:
           path: ~/pytest_results
 
-#  deploy:
-#    docker:
-#      - image: circleci/python:3.6
-#    steps:
-#      - checkout
-#
-#      - restore_cache:
-#          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
-#
-#      - run:
-#          name: install python dependencies
-#          command: |
-#            python3 -m venv venv
-#            . venv/bin/activate
-#            pip install -r requirements-dev.txt
-#
-#      - save_cache:
-#          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
-#          paths:
-#            - "venv"
-#
-#      - run:
-#          name: verify git tag vs. version
-#          command: |
-#            python3 -m venv venv
-#            . venv/bin/activate
-#            python setup.py verify
-#
-#      - run:
-#          name: init .pypirc
-#          command: |
-#            echo -e "[pypi]" >> ~/.pypirc
-#            echo -e "username = $PYPI_USER" >> ~/.pypirc
-#            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
-#
-#      - run:
-#          name: create packages
-#          command: |
-#            make deploy
-#
-#      - run:
-#          name: upload to pypi
-#          command: |
-#            . venv/bin/activate
-#            twine upload dist/*
+  deploy:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      -
+      - run:
+          name: verify git tag vs. version
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            python setup.py verify
+
+      - run:
+          name: init .pypirc
+          command: |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = $PYPI_USER" >> ~/.pypirc
+            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+
+      - run:
+          name: create packages
+          command: |
+            make deploy
+
+      - run:
+          name: upload to pypi
+          command: |
+            . venv/bin/activate
+            twine upload dist/*
 
 
 workflows:
