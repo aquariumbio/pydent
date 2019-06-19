@@ -84,7 +84,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#running-tests">Running Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-dependencies">Installing dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#making-a-release">Making a Release</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
@@ -234,26 +233,53 @@ docs directory, which contains generated documentation files:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>make hooks
 </pre></div>
 </div>
-</div>
-<div class="section" id="making-a-release">
-<h2>Making a Release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
-<p>Once you are confident all tests are passing, a new release can be published using:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sh scripts/makerelease &lt;version&gt;
+<div class="section" id="manual-release">
+<h3>Manual release<a class="headerlink" href="#manual-release" title="Permalink to this headline">¶</a></h3>
+<p>You can use poetry to make a manual release using the following script, first
+configure <cite>poetry</cite> for the pypi repositories:</p>
+<p><strong>PyPI repo</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>poetry config repositories.pypi https://pypi.org
+poetry config http-basic.pypi &lt;pypi_username&gt; &lt;pypi_password&gt;
 </pre></div>
 </div>
-<p>Which will
+<p><strong>Testing repo</strong></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>poetry config repositories.testpypi https://test.pypi.org/legacy
+poetry config http-basic.testpypi &lt;pypi_username&gt; &lt;pypi_password&gt;
+</pre></div>
+</div>
+<p>Finally run the following commands</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># choose &quot;pypi&quot; or &quot;testpypi&quot;
+REPO=testpypi
+
+# version bump
 poetry version $1
+
+# parse .toml file for version, update to package
 poetry run upver
-poetry run verify $1
+
+# format the code using black
 make format
+
+# update the documentation
 make docs
-poetry publish -r testpypi –build -n
+
+# save the version number from the package
 VER=$(poetry run version)
+
+# commit changes
 git add .
-git commit -m “release $VER”
-git tag $VER
+git commit -m &quot;release $VER&quot;
 git push
-git push origin $VER</p>
+
+# commit new tag
+git tag $VER
+git push origin $VER
+
+# publish to your repository
+poetry publish -r $REPO --build -n
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
