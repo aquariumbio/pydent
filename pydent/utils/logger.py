@@ -49,7 +49,6 @@ def condense_long_lists(d, max_list_len=20):
 
 
 class Loggable:
-
     def init_logger(self, name):
         self._logger_name = name
         new_logger(name)

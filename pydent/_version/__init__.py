@@ -1,5 +1,7 @@
 import json
 from os.path import dirname, abspath, join, isfile
+from os import getenv
+import sys
 from configparser import ConfigParser
 
 VERSION_JSON_PATH = "version.json"
@@ -46,6 +48,17 @@ if __name__ == "__main__":
 
 
 ver = get_version()
+
+
+def verify():
+    tag = getenv("CIRCLE_TAG")
+
+    if tag != ver["version"]:
+        info = "Git tag: {0} does not match the version of this app: {1}".format(
+            tag, ver["version"]
+        )
+        sys.exit(info)
+
 
 __version__ = ver["version"]
 __title__ = ver["name"]
