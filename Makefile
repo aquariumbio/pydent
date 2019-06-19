@@ -2,25 +2,36 @@ PIP=pip3
 
 .PHONY: docs  # necessary so it doesn't look for 'docs/makefile html'
 
-init:
-	$(PIP) install pipenv --upgrade
-	pipenv install --dev --skip-lock
 
+init:
+	curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+	poetry self:update
+	poerty install
+	poetry run pre-commit install
+
+clean:
+	rm -rf dist
+	rm -rf pip-wheel-metadata
+	rm -rf docs
+	rm -rf .pytest_cache
 
 test:
-	pipenv run tox
+	poetry run python -m pytest
 
 
-pylint:
-	pipenv run pylint -E pydent
+lint:
+	poetry run pylint -E pydent
 
 
 coverage:
 	@echo "Coverage"
-	pipenv run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=pydent tests
+	poetry run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=pydent tests
 
 
-docs:
+pullversion:
+	poetry run upver
+
+docs: | pullversion
 	@echo "Updating docs"
 
 	# copy README.md to README.rst format for Sphinx documentation
@@ -29,33 +40,48 @@ docs:
 
 	pandoc --from=markdown --to=rst --output=README.rst README.md
 	rm -rf docs
-	cd docsrc && pipenv run make html
+	cd docsrc && poetry run make html
 	find docs -type f -exec chmod 444 {} \;
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/html/index.html.\n\033[0m"
 
 	touch docs/.nojekyll
+	open ./docs/index.html
+
 
 doctest:
 	rm -rf docs
-	cd docsrc && pipenv run make doctest
+	cd docsrc && poetry run make doctest
 
 
-testdeploy:
-	rm -rf dist
-	python setup.py sdist
-	twine upload dist/* -r testpypi
+benchmark:
+	rm -rf .benchmarks/images/*svg
+	python -m pytest -m benchmark --benchmark-autosave --benchmark-max-time=0.1 --benchmark-group-by=func --benchmark-histogram=docsrc/_static/benchmark/histogram
 
 
-deploy:
-	rm -rf dist
-	python setup.py sdist
-	python setup.py bdist_wheel
+format:
+	poetry run black pydent
+	poetry run black tests
 
-lock:
-	pipenv lock -r > requirements.txt
-	pipenv lock -r > requirements-dev.txt
-	pipenv lock --dev -r >> requirements-dev.txt
 
+testpublish:
+	sh scripts/testpublish.sh
+
+
+lock: | pullversion
+	poetry update
+
+build: | pullversion
+	poetry build
+
+tag: | pullversion
+	sh scripts/tag.sh
 
 hooks: .git/hooks
 	cp scripts/* .git/hooks
+
+
+klocs:
+	find . -name '*.py' | xargs wc -l
+
+tox:
+	tox

@@ -1,4 +1,5 @@
-"""Serialization/deserialization
+"""
+Serialization/Deserialization
 
 ==========
 marshaller
@@ -10,13 +11,15 @@ Submodules
 .. autosummary::
     :toctree: _autosummary
 
-    marshallerbase
-    field_extensions
-    schema
+    base
+    descriptors
     exceptions
+    fields
+    registry
+    schema
 
 """
 
-from pydent.marshaller.marshallerbase import MarshallerBase
-from pydent.marshaller.field_extensions import fields, Relation, JSON
-from pydent.marshaller.schema import add_schema
+from pydent.marshaller.base import SchemaModel, add_schema
+from pydent.marshaller.registry import SchemaRegistry, ModelRegistry
+from pydent.marshaller import fields, exceptions, descriptors

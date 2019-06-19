@@ -1,0 +1,19 @@
+{% extends "!layout.html" %}
+{% block header %}
+    {% if pagename == 'index' %}
+        <div class="container">
+          <div class="jumbotron">
+            <h1>Trident</h1>
+              <p><a href="{{ aquarium_page }}">Aquarium's</a> Python API for
+                  planning, executing, and analyzing scientific experiments.
+              </p>
+              <hr class="my-4">
+              <span>
+                  <a class="btn btn-primary btn-lg" href={{ pathto('basics/getting_started') }} role="button">Get started with Trident</a>
+                  <a class="btn btn-info btn-lg pull-right" href="{{ aquarium_page }}" role="button">Learn about Aquarium</a>
+              </span>
+          </div>
+        </div>
+        {{ super() }}
+    {% endif %}
+{% endblock %}
