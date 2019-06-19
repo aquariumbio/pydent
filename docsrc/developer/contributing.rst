@@ -122,25 +122,65 @@ docs directory, which contains generated documentation files:
 
     make hooks
 
-Making a Release
-----------------
+Manual release
+~~~~~~~~~~~~~~
 
-Once you are confident all tests are passing, a new release can be published using:
+You can use poetry to make a manual release using the following script, first
+configure `poetry` for the pypi repositories:
+
+**PyPI repo**
 
 ::
 
-    sh scripts/makerelease <version>
+    poetry config repositories.pypi https://pypi.org
+    poetry config http-basic.pypi <pypi_username> <pypi_password>
 
-Which will
-poetry version $1
-poetry run upver
-poetry run verify $1
-make format
-make docs
-poetry publish -r testpypi --build -n
-VER=$(poetry run version)
-git add .
-git commit -m "release $VER"
-git tag $VER
-git push
-git push origin $VER
+
+**Testing repo**
+
+::
+
+    poetry config repositories.testpypi https://test.pypi.org/legacy
+    poetry config http-basic.testpypi <pypi_username> <pypi_password>
+
+
+If you've made any update to the dependencies, run the following to update the lock file:
+
+::
+
+    poetry update
+
+
+Finally run the following commands
+
+::
+
+    # choose "pypi" or "testpypi"
+    REPO=testpypi
+
+    # version bump
+    poetry version $1
+
+    # parse .toml file for version, update to package
+    poetry run upver
+
+    # format the code using black
+    make format
+
+    # update the documentation
+    make docs
+
+    # save the version number from the package
+    VER=$(poetry run version)
+
+    # commit changes
+    git add .
+    git commit -m "release $VER"
+    git push
+
+    # commit new tag
+    git tag $VER
+    git push origin $VER
+
+    # publish to your repository
+    poetry publish -r $REPO --build -n
