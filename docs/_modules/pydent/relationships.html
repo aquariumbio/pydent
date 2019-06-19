@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.relationships &#8212; pydent 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.relationships</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
+Nested model relationships for Aquarium models.
+&quot;&quot;&quot;
+
+import json
+
+import inflection
+
+from pydent.base import ModelBase
+from pydent.marshaller import fields
+from pydent.marshaller.exceptions import ModelValidationError
+
+
+<div class="viewcode-block" id="FieldValidationError"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.FieldValidationError">[docs]</a>class FieldValidationError(ModelValidationError):
+    pass</div>
+
+
+<div class="viewcode-block" id="Raw"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Raw">[docs]</a>class Raw(fields.Field):
+    &quot;&quot;&quot;
+    Field that performs no serialization/deserialization.
+    &quot;&quot;&quot;
+
+    def __init__(self, many=False, data_key=None, allow_none=True, default=None):
+        super().__init__(
+            many=many, data_key=data_key, allow_none=allow_none, default=default
+        )</div>
+
+
+<div class="viewcode-block" id="JSON"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.JSON">[docs]</a>class JSON(Raw):
+    &quot;&quot;&quot;
+    Automatically serializes/deserializes JSON objects.
+    &quot;&quot;&quot;
+
+    def _deserialize(self, owner, data):
+        if isinstance(data, dict):
+            return data
+        return json.loads(data)
+
+    def _serialize(self, owner, data):
+        return json.dumps(data)</div>
+
+
+<div class="viewcode-block" id="Function"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Function">[docs]</a>class Function(fields.Callback):
+    &quot;&quot;&quot;
+    Calls a specified function upon attribute access. Similar to the @property
+    decorator in python, but will search and find an instance method using
+    the method name.
+    &quot;&quot;&quot;
+
+    def __init__(
+        self,
+        callback,
+        callback_args=None,
+        callback_kwargs=None,
+        cache=False,
+        data_key=None,
+        many=None,
+        allow_none=True,
+        always_dump=True,
+    ):
+        super().__init__(
+            callback,
+            callback_args,
+            callback_kwargs,
+            cache,
+            data_key,
+            many,
+            allow_none,
+            always_dump,
+        )</div>
+
+
+<div class="viewcode-block" id="BaseRelationshipAccessor"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationshipAccessor">[docs]</a>class BaseRelationshipAccessor(fields.RelationshipAccessor):
+    &quot;&quot;&quot;
+    Python descriptor that is returned by a field during attribute access.
+    &quot;&quot;&quot;
+
+    HOLDER = None</div>
+
+
+<div class="viewcode-block" id="BaseRelationship"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship">[docs]</a>class BaseRelationship(fields.Relationship):
+    &quot;&quot;&quot;
+    Base class for relationships. By default, if the value is None, attempt a callback. If that fails,
+    fallback to None. If successful, deserialize data to the nested model.
+    &quot;&quot;&quot;
+
+    QUERY_TYPE = None
+    ACCESSOR = BaseRelationshipAccessor
+
+    def __init__(
+        self,
+        nested,
+        callback,
+        callback_args=None,
+        callback_kwargs=None,
+        many=None,
+        allow_none=True,
+    ):
+        super().__init__(
+            nested,
+            callback,
+            callback_args,
+            callback_kwargs,
+            cache=True,
+            data_key=None,
+            many=many,
+            allow_none=allow_none,
+        )
+
+<div class="viewcode-block" id="BaseRelationship.fullfill"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.fullfill">[docs]</a>    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
+        try:
+            return super().fullfill(
+                owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs
+            )
+        except fields.RunTimeCallbackAttributeError as e:
+            return BaseRelationshipAccessor.HOLDER</div>
+
+<div class="viewcode-block" id="BaseRelationship.build_query"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.BaseRelationship.build_query">[docs]</a>    def build_query(self, models):
+        &quot;&quot;&quot;Bundles all of the callback args for the models into a single query&quot;&quot;&quot;
+        args = {}
+        for s in models:
+            callback_args = self.get_callback_args(s)[1:]
+            if self.QUERY_TYPE == &quot;by_id&quot;:
+                args.setdefault(self.attr, [])
+                for x in callback_args:
+                    if x is not None and x not in args[self.attr]:
+                        args[self.attr].append(x)
+            else:
+                for cba in callback_args:
+                    for k in cba:
+                        args.setdefault(k, [])
+                        arg_arr = args[k]
+                        val = cba[k]
+                        if val is not None:
+                            if isinstance(val, list):
+                                for v in val:
+                                    if v not in arg_arr:
+                                        arg_arr.append(v)
+                            elif val not in arg_arr:
+                                arg_arr.append(val)
+        return args</div></div>
+
+
+<div class="viewcode-block" id="One"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.One">[docs]</a>class One(BaseRelationship):
+    &quot;&quot;&quot;
+    Defines a single relationship with another model.
+    Subclass of :class:`pydent.marshaller.Relation`.
+    &quot;&quot;&quot;
+
+    QUERY_TYPE = &quot;by_id&quot;
+
+    def __init__(
+        self,
+        nested,
+        *args,
+        callback=None,
+        callback_args=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
+        &quot;&quot;&quot;
+        One initializer. Uses &quot;find&quot; callback by default.
+
+        :param nested: target model
+        :type nested: basestring
+        :param args: other args for fields.Nested relationship
+        :type args: ...
+        :param attr: attribute to use to find model
+        :type attr: basestring
+        :param kwargs: other kwargs for fields.Nested relationship
+        :type kwargs: ...
+        &quot;&quot;&quot;
+        if callback is None:
+            callback = ModelBase.find_callback.__name__
+        super().__init__(
+            nested,
+            callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            many=False,
+        )</div>
+
+
+<div class="viewcode-block" id="Many"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.Many">[docs]</a>class Many(BaseRelationship):
+    &quot;&quot;&quot;
+    Defines a many relationship with another model.
+    Subclass of :class:`pydent.marshaller.Relation`.
+    &quot;&quot;&quot;
+
+    QUERY_TYPE = &quot;query&quot;
+
+    def __init__(
+        self,
+        nested,
+        *args,
+        callback=None,
+        callback_args=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
+        &quot;&quot;&quot;
+        Many initializer. Uses &quot;where&quot; callback by default.
+
+        :param nested: target model
+        :type nested: basestring
+        :param args: other args for fields.Nested relationship
+        :type args: ...
+        :param attr: attribute to use to find model
+        :type attr: basestring
+        :param kwargs: other kwargs for fields.Nested relationship
+        :type kwargs: ...
+        &quot;&quot;&quot;
+        if callback is None:
+            callback = ModelBase.where_callback.__name__
+        super().__init__(
+            nested,
+            *args,
+            many=True,
+            callback=callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
+
+
+<div class="viewcode-block" id="HasMixin"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMixin">[docs]</a>class HasMixin:
+    &quot;&quot;&quot;
+    Mixin for adding the &#39;set_ref&#39; method. &#39;set_ref&#39; builds a &#39;ref&#39; and &#39;attr&#39;
+    attributes
+    &quot;&quot;&quot;
+
+<div class="viewcode-block" id="HasMixin.set_ref"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMixin.set_ref">[docs]</a>    def set_ref(self, nested=None, ref=None, attr=None):
+        &quot;&quot;&quot;
+        Sets the &#39;ref&#39; and &#39;attr&#39; attributes. These attributes are used to
+        defined parameters for
+        :class:`pydent.marshaller.Relation` classes.
+
+        For example:
+
+        .. code-block:: python
+
+            relation # HasOne, HasMany, or HasManyGeneric, etc.
+            relation.set_ref(ref=&quot;parent_id&quot;)
+            relation.ref    # &quot;parent_id&quot;
+            relation.attr   # &quot;id&quot;
+
+            relation.set_ref(model=&quot;SampleType&quot;)
+            relation.ref   # &quot;sample_type_id&quot;
+            relation.attr  # &quot;id&quot;
+
+            relation.set_ref(attr=&quot;name&quot;, model=&quot;OperationType&quot;)
+            relation.ref   # &quot;operation_type_name
+            relation.attr  # &quot;name&quot;
+        &quot;&quot;&quot;
+        self.ref = ref
+        self.attr = attr
+
+        if not self.attr:
+            self.attr = &quot;id&quot;
+        if ref:
+            self.ref = ref
+        else:
+            if not self.attr:
+                raise FieldValidationError(
+                    &quot;&#39;attr&#39; is None. Relationship &#39;{}&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;.format(
+                        self.__class__
+                    )
+                )
+            if not nested:
+                raise FieldValidationError(
+                    &quot;&#39;model&#39; is None. Relationship &#39;{}&#39; needs an &#39;attr&#39; and &#39;model&#39; parameters&quot;.format(
+                        self.__class__
+                    )
+                )
+            self.ref = &quot;{}_{}&quot;.format(inflection.underscore(nested), self.attr)</div></div>
+
+
+<div class="viewcode-block" id="HasOne"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOne">[docs]</a>class HasOne(HasMixin, One):
+    def __init__(
+        self, nested, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs
+    ):
+        &quot;&quot;&quot;
+        HasOne initializer. Uses the &quot;get_one_generic&quot; callback and
+        automatically assigns attribute as in the following:
+
+        .. code-block:: python
+
+            model=&quot;SampleType&quot;, attr=&quot;id&quot; # equiv. to &#39;lambda self: self.sample_type_id.&#39;
+
+        :param nested: model name of the target model
+        :type nested: basestring
+        :param attr: attribute to append underscored model name
+        :type attr: basestring
+        &quot;&quot;&quot;
+        self.set_ref(nested=nested, attr=attr, ref=ref)
+
+        super().__init__(
+            nested,
+            many=False,
+            callback=callback,
+            callback_args=(self.get_ref,),
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )
+
+    def get_ref(self, instance):
+        return getattr(instance, self.ref)
+
+    def __repr__(self):
+        return &quot;&lt;HasOne (model={}, callback_args=lambda self: self.{})&gt;&quot;.format(
+            self.nested, self.ref
+        )
+
+    def deserialize(self, owner, val):
+        val = super().deserialize(owner, val)
+        if val:
+            setattr(owner, self.ref, getattr(val, self.attr))
+        return val</div>
+
+
+<div class="viewcode-block" id="HasMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasMany">[docs]</a>class HasMany(HasMixin, Many):
+    &quot;&quot;&quot;
+    A relationship that establishes a One-to-Many relationship with another model.
+    &quot;&quot;&quot;
+
+    def __init__(
+        self,
+        nested,
+        ref_model=None,
+        attr=None,
+        ref=None,
+        additional_args=None,
+        callback=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
+        &quot;&quot;&quot;
+        HasMany relationship initializer
+
+        :param nested: Model class name for this relationship
+        :type nested: str
+        :param ref_model: Reference model name of the model owning this relationships.
+
+        .. code-block:: python
+
+            @add_schema
+            class Author(ModelBase):
+                fields=dict(books=HasMany(&quot;Book&quot;, &quot;Author&quot;))  # search for books using &#39;author_id&#39;
+
+        :type ref_model: str
+        :param attr: Attribute name to use with reference model (default=&#39;id&#39;).
+                     For example &quot;Author&quot; =&gt; &#39;author_id&#39;
+        :type attr: str
+        :param ref: The reference to use to find models. If none, a reference is
+                    built from the &#39;ref_model&#39; and &#39;attr&#39; parameters
+        :type ref: str
+        &quot;&quot;&quot;
+        if ref_model is None and ref is None:
+            msg = &quot;&#39;{}&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;
+            raise FieldValidationError(msg.format(self.__class__.__name__))
+        self.set_ref(nested=ref_model, attr=attr, ref=ref)
+
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            query = {self.ref: getattr(slf, self.attr)}
+            query.update(additional_args)
+            return query
+
+        super().__init__(
+            nested,
+            callback=callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
+
+
+<div class="viewcode-block" id="HasManyThrough"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyThrough">[docs]</a>class HasManyThrough(HasMixin, Many):
+    &quot;&quot;&quot;
+    A relationship using an intermediate association model.
+    Establishes a Many-to-Many relationship with another model
+    &quot;&quot;&quot;
+
+    def __init__(
+        self,
+        nested,
+        through,
+        attr=&quot;id&quot;,
+        ref=None,
+        additional_args=None,
+        callback=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
+        self.set_ref(nested=nested, attr=attr, ref=ref)
+
+        # e.g. PlanAssociation &gt;&gt; plan_associations
+        through_model_attr = inflection.pluralize(inflection.underscore(through))
+        self.through_model_attr = through_model_attr
+
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            through_model = getattr(slf, through_model_attr)
+            if through_model is None:
+                return None
+            query = {
+                attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]
+            }
+            query.update(additional_args)
+            return {
+                attr: [getattr(x, self.ref) for x in getattr(slf, through_model_attr)]
+            }
+
+        super().__init__(
+            nested,
+            callback=callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
+
+
+<div class="viewcode-block" id="HasOneFromMany"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasOneFromMany">[docs]</a>class HasOneFromMany(HasMixin, One):
+    &quot;&quot;&quot;
+    Returns a single model from a Many relationship
+    &quot;&quot;&quot;
+
+    QUERY_TYPE = &quot;query&quot;
+
+    def __init__(
+        self,
+        nested,
+        ref_model=None,
+        attr=None,
+        ref=None,
+        additional_args=None,
+        callback=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
+        &quot;&quot;&quot;
+        HasOneFromMany relationship initializer, which is intended to return a single model from
+        a Many query
+
+        :param nested: Model class name for this relationship
+        :type nested: str
+        :param ref_model: Reference model name of the model owning this relationships.
+
+        .. code-block:: python
+
+            @add_schema
+            class Author(ModelBase):
+                fields=dict(books=HasMany(&quot;Book&quot;, &quot;Author&quot;))  # search for books using &#39;author_id&#39;
+
+        :type ref_model: str
+        :param attr: Attribute name to use with reference model (default=&#39;id&#39;).
+                     For example &quot;Author&quot; =&gt; &#39;author_id&#39;
+        :type attr: str
+        :param ref: The reference to use to find models. If none, a reference is
+                    built from the &#39;ref_model&#39; and &#39;attr&#39; parameters
+        :type ref: str
+        &quot;&quot;&quot;
+        if ref_model is None and ref is None:
+            msg = &quot;&#39;{}&#39; needs a &#39;ref_model&#39; or &#39;ref&#39; parameters to initialize&quot;
+            raise FieldValidationError(msg.format(self.__class__.__name__))
+        self.set_ref(nested=ref_model, attr=attr, ref=ref)
+
+        if additional_args is None:
+            additional_args = {}
+
+        def callback_args(slf):
+            query = {self.ref: getattr(slf, self.attr)}
+            query.update(additional_args)
+            return query
+
+        if callback is None:
+            callback = ModelBase.one_callback.__name__
+
+        super().__init__(
+            nested,
+            callback=callback,
+            callback_args=callback_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
+
+
+<div class="viewcode-block" id="HasManyGeneric"><a class="viewcode-back" href="../../developer/_autosummary/pydent.relationships.html#pydent.relationships.HasManyGeneric">[docs]</a>class HasManyGeneric(HasMany):
+    &quot;&quot;&quot;
+    Establishes a One-to-Many relationship using &#39;parent_id&#39; as the attribute
+    to find other models.
+    &quot;&quot;&quot;
+
+    def __init__(
+        self,
+        nested,
+        additional_args=None,
+        callback=None,
+        callback_kwargs=None,
+        **kwargs
+    ):
+        super().__init__(
+            nested,
+            ref=&quot;parent_id&quot;,
+            attr=&quot;id&quot;,
+            callback=callback,
+            additional_args=additional_args,
+            callback_kwargs=callback_kwargs,
+            **kwargs
+        )</div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -6,7 +6,9 @@
 Overview
 ========
 
-Trident is the Python scripting API for Aquarium, the software that runs the 
+Trident is the Python scripting API for
+`Aquarium <https://www.aquarium.bio/>`_
+, the software that runs the
 `UW BIOFAB <http://www.uwbiofab.org>`_.
 The `code respository <https://github.com/klavinslab/trident>`_ is freely available to all.
 
@@ -56,6 +58,3 @@ Links:
    developer/contributing
    advanced/topics
    developer/versions
-
-
-
