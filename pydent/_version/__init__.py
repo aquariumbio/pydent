@@ -1,5 +1,5 @@
 import json
-from os.path import dirname, abspath, join, isfile
+from os.path import dirname, abspath, join
 from os import getenv
 import sys
 from configparser import ConfigParser
@@ -11,6 +11,7 @@ VERSION_DIR = dirname(abspath(__file__))
 
 
 def pull_version():
+    """Pulls version from pyproject.toml and moves to version JSON"""
     rel_dir = join(VERSION_DIR, "..", "..")
     config_filename = join(rel_dir, VERSION_TOML)
 
@@ -37,7 +38,8 @@ def pull_version():
         json.dump(ver_data, f, indent=2)
 
 
-def get_version():
+def parse_version():
+    """Parses version JSON"""
     with open(join(VERSION_DIR, VERSION_JSON_PATH), "r") as f:
         ver = json.load(f)
     return ver
@@ -47,10 +49,16 @@ if __name__ == "__main__":
     pull_version()
 
 
-ver = get_version()
+ver = parse_version()
 
 
-def verify():
+def get_version():
+    v = ver["version"]
+    print(v)
+    return v
+
+
+def verify_ci():
     tag = getenv("CIRCLE_TAG")
 
     if tag != ver["version"]:

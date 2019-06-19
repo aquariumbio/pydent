@@ -47,7 +47,8 @@ docs = ["sphinx", "sphinx-bootstrap-theme", "docformatter", "nbsphinx", "pandoc"
 
 [tool.poetry.scripts]
 upver = 'pydent:_version.pull_version'
-verify = 'pydent:_version.verify'
+civerify = 'pydent:_version.verify_ci'
+version = 'pydent:_version.get_version'
 
 [build-system]
 requires = ["poetry>=0.12"]
