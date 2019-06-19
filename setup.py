@@ -5,9 +5,9 @@ tests_require = ["pytest", "pytest-cov", "vcrpy"]
 install_requires = [
     "inflection",
     "requests",
-    "tqdm==4.23.4",
     "networkx",
     "pandas",
+    "tqdm",
     "nest_asyncio",
 ]
 
