@@ -20,7 +20,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath(".."))
 import pydent
 
 # -- General configuration ------------------------------------------------
@@ -28,16 +28,15 @@ import pydent
 # AUTODOC
 autoclass_content = "both"  # include both class docstring and __init__
 autodoc_default_flags = [
-        # Make sure that any autodoc declarations show the right members
-        "members",
-        "inherited-members",
-        "private-members",
-        "show-inheritance",
+    # Make sure that any autodoc declarations show the right members
+    "members",
+    "inherited-members",
+    "private-members",
+    "show-inheritance",
 ]
 autosummary_generate = True  # Make _autosummary files and include them
 napoleon_numpy_docstring = False  # Force consistency, leave only Google
 napoleon_use_rtype = False  # More legible
-
 
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -48,34 +47,32 @@ napoleon_use_rtype = False  # More legible
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 
-extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.autosummary',
-              'nbsphinx',
-              'sphinx.ext.mathjax',
-                'sphinx.ext.doctest',
-                'sphinx.ext.coverage',
-                'sphinx.ext.viewcode',
-              'sphinx.ext.inheritance_diagram']
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "nbsphinx",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.doctest",
+    "sphinx.ext.coverage",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.inheritance_diagram",
+]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.txt': 'markdown',
-    '.md': 'markdown',
-}
+source_suffix = {".rst": "restructuredtext", ".txt": "markdown", ".md": "markdown"}
 # source_suffix = '.rst'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
 project = pydent.__title__
-copyright = '2019, University of Washington'
+copyright = "2019, University of Washington"
 author = pydent.__author__
 
 # The version info for the project you're documenting, acts as replacement for
@@ -98,20 +95,20 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['docs', 'Thumbs.db', '.DS_Store', '_build', '**.ipynb_checkpoints']
+exclude_patterns = ["docs", "Thumbs.db", ".DS_Store", "_build", "**.ipynb_checkpoints"]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
 
 html_context = {
-    'version': version,
-    'github': pydent.__homepage__,
-    'repo': pydent.__repo__,
-    'aquarium_page': 'https://www.aquarium.bio/'
+    "version": version,
+    "github": pydent.__homepage__,
+    "repo": pydent.__repo__,
+    "aquarium_page": "https://www.aquarium.bio/",
 }
 
 # -- Options for HTML output ----------------------------------------------
@@ -121,34 +118,24 @@ html_context = {
 #
 import sphinx_bootstrap_theme
 
-html_theme = 'bootstrap'
+html_theme = "bootstrap"
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
-
-# Register the theme as an extension to generate a sitemap.xml
-extensions.append("guzzle_sphinx_theme")
 
 # Guzzle theme options (see theme.conf for more information)
 html_theme_options = {
     # Set the name of the project to appear in the sidebar
-    'navbar_title': 'Trident',
-    'navbar_site_name': 'Trident',
-
+    "navbar_title": "Trident",
+    "navbar_site_name": "Trident",
     # Render the next and previous page links in navbar. (Default: true)
-    'navbar_sidebarrel': True,
-
+    "navbar_sidebarrel": True,
     # Render the current pages TOC in the navbar. (Default: true)
-    'navbar_pagenav': False,
-
+    "navbar_pagenav": False,
     # Tab name for the current pages TOC. (Default: "Page")
-    'navbar_pagenav_name': "Page",
-
-    'globaltoc_depth': 2,
-
-
+    "navbar_pagenav_name": "Page",
+    "globaltoc_depth": 2,
     # Location of link to source.
     # Options are "nav" (default), "footer" or anything else to exclude.
-    'source_link_position': "nav",
-
+    "source_link_position": "nav",
     # Bootswatch (http://bootswatch.com/) theme.
     #
     # Options are nothing (default) or the name of a valid theme
@@ -160,13 +147,11 @@ html_theme_options = {
     # Currently, the supported themes are:
     # - Bootstrap 2: https://bootswatch.com/2
     # - Bootstrap 3: https://bootswatch.com/3
-    'bootswatch_theme': "cosmo",
-
+    "bootswatch_theme": "cosmo",
     # Choose Bootstrap version.
     # Values: "3" (default) or "2" (in quotes)
-    'bootstrap_version': "3",
+    "bootstrap_version": "3",
 }
-
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -185,7 +170,7 @@ html_theme_options = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Tridentdoc'
+htmlhelp_basename = "Tridentdoc"
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -194,15 +179,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -212,8 +194,13 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Trident.tex', 'Trident Documentation',
-     'Justin Vrana, Eric Klavins, Ben Keller', 'manual'),
+    (
+        master_doc,
+        "Trident.tex",
+        "Trident Documentation",
+        "Justin Vrana, Eric Klavins, Ben Keller",
+        "manual",
+    )
 ]
 
 
@@ -221,10 +208,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'trident', 'Trident Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, "trident", "Trident Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -233,9 +217,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Trident', 'Trident Documentation',
-     author, 'Trident', 'One line description of project.',
-     'Miscellaneous'),
+    (
+        master_doc,
+        "Trident",
+        "Trident Documentation",
+        author,
+        "Trident",
+        "One line description of project.",
+        "Miscellaneous",
+    )
 ]
 
 # def setup(app):
@@ -243,10 +233,10 @@ texinfo_documents = [
 #
 
 # Default language for syntax highlighting in reST and Markdown cells
-highlight_language = 'none'
+highlight_language = "none"
 
 # Don't add .txt suffix to source files (available for Sphinx >= 1.5):
-html_sourcelink_suffix = ''
+html_sourcelink_suffix = ""
 
 # Work-around until https://github.com/sphinx-doc/sphinx/issues/4229 is solved:
 html_scaled_image_link = False
@@ -284,5 +274,5 @@ nbsphinx_epilog = r"""
 """
 
 mathjax_config = {
-    'TeX': {'equationNumbers': {'autoNumber': 'AMS', 'useLabelIds': True}},
+    "TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": True}}
 }

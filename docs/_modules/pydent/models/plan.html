@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.models.plan &#8212; pydent 0.1.0a0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.models.plan</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
+Models related to plans, plan associations, and wires.
+&quot;&quot;&quot;
+
+import json
+
+from pydent.base import ModelBase
+from pydent.exceptions import AquariumModelError
+from pydent.marshaller import add_schema
+from pydent.models.field_value import FieldValue
+from pydent.models.data_associations import Upload, DataAssociatorMixin
+from pydent.relationships import (
+    Raw,
+    JSON,
+    Many,
+    HasOne,
+    HasMany,
+    HasManyThrough,
+    HasManyGeneric,
+    fields,
+)
+from pydent.models.crud_mixin import SaveMixin, DeleteMixin
+
+
+<div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan">[docs]</a>@add_schema
+class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
+    &quot;&quot;&quot;
+    A Plan model
+    &quot;&quot;&quot;
+
+    fields = dict(
+        data_associations=HasManyGeneric(
+            &quot;DataAssociation&quot;, additional_args={&quot;parent_class&quot;: &quot;Plan&quot;}
+        ),
+        plan_associations=HasMany(&quot;PlanAssociation&quot;, &quot;Plan&quot;),
+        operations=HasManyThrough(&quot;Operation&quot;, &quot;PlanAssociation&quot;),
+        wires=Many(&quot;Wire&quot;, callback=&quot;_get_wires_from_server&quot;),
+        layout=JSON(),
+        status=Raw(default=&quot;planning&quot;),
+    )
+    query_hook = {&quot;include&quot;: &quot;wires&quot;}
+
+    def __init__(self, name=&quot;MyPlan&quot;, status=&quot;planning&quot;):
+        super().__init__(
+            name=name,
+            status=status,
+            data_associations=None,
+            plan_associations=None,
+            layout={
+                &quot;id&quot;: 0,
+                &quot;children&quot;: [],
+                &quot;documentation&quot;: &quot;No documentation of this module&quot;,
+                &quot;height&quot;: 60,
+                &quot;input&quot;: [],
+                &quot;output&quot;: [],
+                &quot;name&quot;: &quot;no_name&quot;,
+                &quot;parent_id&quot;: -1,
+                &quot;width&quot;: 160,
+                &quot;wires&quot;: [],
+            },
+        )
+
+<div class="viewcode-block" id="Plan.add_operation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.add_operation">[docs]</a>    def add_operation(self, operation):
+        &quot;&quot;&quot;
+        Adds an operation to the Plan
+
+        :param operation: Operation to add
+        :type operation: Operation
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
+        self.append_to_many(&quot;operations&quot;, operation)</div>
+
+<div class="viewcode-block" id="Plan.add_operations"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.add_operations">[docs]</a>    def add_operations(self, operations):
+        &quot;&quot;&quot;
+        Adds multiple operations to the Plan
+
+        :param operations: list of Operations
+        :type operations: list
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
+        for operation in operations:
+            self.add_operation(operation)</div>
+
+    def has_operation(self, op):
+        if op is None:
+            return False
+        return self.operations and op.rid in [_op.rid for _op in self.operations]
+
+<div class="viewcode-block" id="Plan.find_wires"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.find_wires">[docs]</a>    def find_wires(self, src, dest):
+        &quot;&quot;&quot;
+        Retrieves the wire between a source and destination FieldValues
+
+        :param src: source FieldValue
+        :type src: FieldValue
+        :param dest: destination FieldValue
+        :type dest: FieldValue
+        :return: array of wires between src and dest FieldValues (determined by rid)
+        :rtype: array of wires
+        &quot;&quot;&quot;
+
+        found = []
+        for wire in self.wires:
+            if src.rid == wire.source.rid and dest.rid == wire.destination.rid:
+                found.append(wire)
+        return found</div>
+
+<div class="viewcode-block" id="Plan.wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.wire">[docs]</a>    def wire(self, src, dest):
+        &quot;&quot;&quot;
+        Creates a new wire between src and dest FieldValues. Returns the new wire
+        if it does not exist in the plan. If the wire already exists and
+        error_if_exists is True, then the existing wire is returned. Else an exception is raised.
+
+        :param src: source field value (the input of the wire)
+        :type src: FieldValue
+        :param dest: destination field value (the output of the wire)
+        :type dest: FieldValue
+        :param error_if_exists: Raise an error if the Wire already exists in the plan.
+        :type error_if_exists: boolean
+        :return: Newly created wire or existing wire (if exists and error_if_exists == False)
+        :rtype: Wire
+        &quot;&quot;&quot;
+
+        if not self.has_operation(src.operation):
+            raise AquariumModelError(
+                &quot;Cannot wire because the wire&#39;s source FieldValue {} does &quot;
+                &quot;not exist in the Plan because its Operation &#39;{}&#39; is not in the plan&quot;.format(
+                    src, src.operation
+                )
+            )
+        if not self.has_operation(dest.operation):
+            raise AquariumModelError(
+                &quot;Cannot wire because the wire&#39;s destination FieldValue {} does not exist &quot;
+                &quot;in the Plan because its Operation &#39;{}&#39; is not in the plan.&quot;.formst(
+                    dest, dest.operation
+                )
+            )
+
+        wire = Wire(source=src, destination=dest)
+        self.append_to_many(&quot;wires&quot;, wire)
+        return wire</div>
+
+    def _collect_wires(self):
+        incoming_wires = []
+        outgoing_wires = []
+        if self.operations:
+            for operation in self.operations:
+                if operation.field_values:
+                    for field_value in operation.field_values:
+                        if field_value.outgoing_wires:
+                            outgoing_wires += field_value.outgoing_wires
+                        if field_value.incoming_wires:
+                            incoming_wires += field_value.incoming_wires
+        return incoming_wires, outgoing_wires
+
+<div class="viewcode-block" id="Plan._get_wire_dict"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan._get_wire_dict">[docs]</a>    def _get_wire_dict(self, wires):
+        &quot;&quot;&quot;Return all wires in the plan grouped by the wire identifier&quot;&quot;&quot;
+        wire_dict = {}
+        for w in wires:
+            wire_dict.setdefault(w.identifier, list())
+            if w not in wire_dict[w.identifier]:
+                wire_dict[w.identifier].append(w)
+        return wire_dict</div>
+
+    def _get_wires_from_server(self, *args):
+        fvs = []
+        if self.operations:
+            for op in self.operations:
+                fvs += op.field_values
+
+        fv_ids = [fv.id for fv in fvs if fv.id is not None]
+        wires_from_server = []
+        if fv_ids:
+            wires_from_server = self.session.Wire.where(
+                {&quot;from_id&quot;: fv_ids, &quot;to_id&quot;: fv_ids}
+            )
+        return wires_from_server
+
+<div class="viewcode-block" id="Plan.submit"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.submit">[docs]</a>    def submit(self, user, budget):
+        &quot;&quot;&quot;
+        Submits the Plan to the Aquarium server.
+
+        :param user: User to submit the Plan
+        :type user: User
+        :param budget: Budget to use for the Plan
+        :type budget: Budget
+        :return: JSON
+        :rtype: dict
+        &quot;&quot;&quot;
+        result = self.session.utils.submit_plan(self, user, budget)
+        return result</div>
+
+    def all_data_associations(self):
+        das = self.data_associations
+        for operation in self.operations:
+            das += operation.data_associations
+            for field_value in operation.field_values:
+                if field_value.item:
+                    das += field_value.item.data_associations
+        return das
+
+<div class="viewcode-block" id="Plan.interface"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.interface">[docs]</a>    @classmethod
+    def interface(cls, session):
+        # get model interface from Base class
+        model_interface = super(Plan, cls).interface(session)
+
+        # make a special find method for plans, as generic method is too minimal.
+        def new_find(model_id):
+            return model_interface.get(&quot;plans/{}.json&quot;.format(model_id))
+
+        # override the old find method
+        model_interface.find = new_find
+
+        return model_interface</div>
+
+<div class="viewcode-block" id="Plan.validate"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.validate">[docs]</a>    def validate(self, raise_error=True):
+        &quot;&quot;&quot;
+        Validates the plan.
+
+        :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.
+        :type raise_error: boolean
+        :return: list of error messages
+        :rtype: array
+        &quot;&quot;&quot;
+        errors = []
+
+        field_values = []
+        for op in self.operations:
+            for fv in op.field_values:
+                field_values.append(fv)
+        fv_keys = [fv._primary_key for fv in field_values]
+        for wire in self.wires:
+            for _fvtype in [&quot;source&quot;, &quot;destination&quot;]:
+                field_value = getattr(wire, _fvtype)
+                if field_value._primary_key not in fv_keys:
+                    msg = (
+                        &quot;The FieldValue of a wire Wire(rid={}).{} is missing from the list&quot;
+                        &quot; of FieldValues in the plan. Did you forget to add an operation to &quot;
+                        &quot; the plan?&quot;.format(wire._primary_key, _fvtype)
+                    )
+                    errors.append(msg)
+        if raise_error and errors:
+            msg = &quot;\n&quot;.join(
+                [&quot;(ErrNo {}) - {}&quot;.format(i, e) for i, e in enumerate(errors)]
+            )
+            raise AquariumModelError(
+                &quot;Plan {} had the following errors:\n{}&quot;.format(self, msg)
+            )
+        return errors</div>
+
+<div class="viewcode-block" id="Plan.to_save_json"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.to_save_json">[docs]</a>    def to_save_json(self):
+        &quot;&quot;&quot;
+        Returns the json representation of the plan for saving and creating
+        Plans on the Aquarium server.
+
+        :return: JSON
+        :rtype: dict
+        &quot;&quot;&quot;
+        if not self.operations:
+            self.operations = []
+
+        if not self.wires:
+            self.wires = []
+
+        self.validate(raise_error=True)
+
+        json_data = self.dump(include={&quot;operations&quot;: {&quot;field_values&quot;: {}}})
+
+        # remove redundant wires
+        wire_dict = {}
+        for wire in self.wires:
+            wire_data = wire.to_save_json()
+            attributes = [
+                wire_data[&quot;from_id&quot;],
+                wire_data[&quot;from&quot;][&quot;rid&quot;],
+                wire_data[&quot;to_id&quot;],
+                wire_data[&quot;to&quot;][&quot;rid&quot;],
+            ]
+            wire_hash = &quot;*&amp;&quot;.join([str(a) for a in attributes])
+            wire_dict[wire_hash] = wire_data
+        json_data[&quot;wires&quot;] = list(wire_dict.values())
+
+        # validate
+        fv_rids = []
+        for op in json_data[&quot;operations&quot;]:
+            for fv in op[&quot;field_values&quot;]:
+                fv_rids.append(fv[&quot;rid&quot;])
+
+        warnings = []
+        for wire_data in json_data[&quot;wires&quot;]:
+            if not wire_data[&quot;from&quot;][&quot;rid&quot;] in fv_rids:
+                warnings.append(&quot;rid {} is missing!&quot;.format(wire_data[&quot;from&quot;][&quot;rid&quot;]))
+            if not wire_data[&quot;to&quot;][&quot;rid&quot;] in fv_rids:
+                warnings.append(&quot;rid {} is missing!&quot;.format(wire_data[&quot;to&quot;][&quot;rid&quot;]))
+        if warnings:
+            print(warnings)
+
+        if json_data[&quot;layout&quot;] is not None:
+            json_data[&quot;layout&quot;] = json.loads(json_data[&quot;layout&quot;])
+        else:
+            del json_data[&quot;layout&quot;]
+
+        return json_data</div>
+
+    def _get_create_json(self):
+        return self.to_save_json()
+
+    def _get_update_json(self):
+        return self.to_save_json()
+
+    def _get_create_params(self):
+        return {&quot;user_id&quot;: self.session.current_user.id}
+
+    def _get_update_params(self):
+        return {&quot;user_id&quot;: self.session.current_user.id}
+
+<div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.estimate_cost">[docs]</a>    def estimate_cost(self):
+        &quot;&quot;&quot;
+        Estimates the cost of the plan on the Aquarium server.
+        This is necessary before plan submission.
+
+        :return: cost
+        :rtype: dict
+        &quot;&quot;&quot;
+        return self.session.utils.estimate_plan_cost(self)</div>
+
+    def field_values(self):
+        raise NotImplementedError()
+
+<div class="viewcode-block" id="Plan.step"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.step">[docs]</a>    def step(self):
+        &quot;&quot;&quot;Steps a plan&quot;&quot;&quot;
+        return self.session.utils.step_plan(self.id)</div>
+
+<div class="viewcode-block" id="Plan.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.show">[docs]</a>    def show(self):
+        &quot;&quot;&quot;Print the plan nicely&quot;&quot;&quot;
+        print(self.name + &quot; id: &quot; + str(self.id))
+        for operation in self.operations:
+            operation.show(pre=&quot;  &quot;)
+        for wire in self.wires:
+            wire.show(pre=&quot;  &quot;)</div>
+
+<div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.replan">[docs]</a>    def replan(self):
+        &quot;&quot;&quot;Copies or replans the plan. Returns a plan copy&quot;&quot;&quot;
+        return self.session.utils.replan(self.id)</div>
+
+<div class="viewcode-block" id="Plan.download_files"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.download_files">[docs]</a>    def download_files(self, outdir=None, overwrite=True):
+        &quot;&quot;&quot;
+        Downloads all uploads associated with the plan. Downloads happen
+        ansynchrounously.
+
+        :param outdir: output directory for downloaded files
+        :param overwrite: whether to overwrite files if they exist
+        :return: None
+        &quot;&quot;&quot;
+        uploads = []
+        for da in self.data_associations:
+            if da.upload is not None:
+                uploads.append(da.upload)
+        return Upload.async_download(uploads, outdir, overwrite)</div></div>
+
+
+<div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.PlanAssociation">[docs]</a>@add_schema
+class PlanAssociation(ModelBase):
+    &quot;&quot;&quot;A PlanAssociation model&quot;&quot;&quot;
+
+    fields = dict(plan=HasOne(&quot;Plan&quot;), operation=HasOne(&quot;Operation&quot;))
+
+    def __init__(self, plan_id=None, operation_id=None):
+        super().__init__(plan_id=plan_id, operation_id=operation_id)</div>
+
+
+<div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire">[docs]</a>@add_schema
+class Wire(DeleteMixin, ModelBase):
+    &quot;&quot;&quot;A Wire model&quot;&quot;&quot;
+
+    fields = {
+        &quot;source&quot;: HasOne(&quot;FieldValue&quot;, ref=&quot;from_id&quot;),
+        &quot;destination&quot;: HasOne(&quot;FieldValue&quot;, ref=&quot;to_id&quot;),
+    }
+
+    WIRABLE_PARENT_CLASSES = [&quot;Operation&quot;]
+
+    def __init__(self, source=None, destination=None):
+
+        self._validate_field_values(source, destination)
+
+        if hasattr(source, &quot;id&quot;):
+            from_id = source.id
+        else:
+            from_id = None
+
+        if hasattr(destination, &quot;id&quot;):
+            to_id = destination.id
+        else:
+            to_id = None
+
+        if (source and not destination) or (destination and not source):
+            raise AquariumModelError(
+                &quot;Cannot wire. Either source ({}) or destination ({}) is None&quot;.format(
+                    source, destination
+                )
+            )
+
+        if source:
+            if not source.role:
+                raise AquariumModelError(
+                    &quot;Cannot wire. FieldValue {} does not have a role&quot;.format(
+                        source.role
+                    )
+                )
+            elif source.role != &quot;output&quot;:
+                raise AquariumModelError(
+                    &quot;Cannot wire an &#39;{}&#39; FieldValue as a source&quot;.format(source.role)
+                )
+
+        if destination:
+            if not destination.role:
+                raise AquariumModelError(
+                    &quot;Cannot wire. FieldValue {} does not have a role&quot;.format(
+                        destination.role
+                    )
+                )
+            elif destination.role != &quot;input&quot;:
+                raise AquariumModelError(
+                    &quot;Cannot wire an &#39;{}&#39; FieldValue as a destination&quot;.format(
+                        destination.role
+                    )
+                )
+
+        super().__init__(
+            **{
+                &quot;source&quot;: source,
+                &quot;from_id&quot;: from_id,
+                &quot;destination&quot;: destination,
+                &quot;to_id&quot;: to_id,
+            },
+            active=True
+        )
+
+    @property
+    def identifier(self):
+
+        if not self.source:
+            source_id = self.from_id
+        else:
+            source_id = &quot;r&quot; + str(self.source.rid)
+
+        if not self.destination:
+            destination_id = self.to_id
+        else:
+            destination_id = &quot;r&quot; + str(self.destination.rid)
+        return &quot;{}_{}&quot;.format(source_id, destination_id)
+
+    @classmethod
+    def _validate_field_values(cls, src, dest):
+        if src:
+            cls._validate_field_value(src, &quot;source&quot;)
+        if dest:
+            cls._validate_field_value(dest, &quot;destination&quot;)
+
+        if src and dest and src.rid == dest.rid:
+            raise AquariumModelError(
+                &quot;Cannot create wire because source and destination are the same instance.&quot;
+            )
+
+    @classmethod
+    def _validate_field_value(cls, fv, name):
+        if not issubclass(type(fv), FieldValue):
+            raise AquariumModelError(
+                &quot;Cannot create wire because {} FieldValue is {}.&quot;.format(
+                    name, fv.__class__.__name__
+                )
+            )
+
+        if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
+            raise AquariumModelError(
+                &quot;Cannot create wire because the {} FieldValue is has &#39;{}&#39; parent class. &quot;
+                &quot;Only {} parent classes are wirable&quot;.format(
+                    name, fv.parent_class, cls.WIRABLE_PARENT_CLASSES
+                )
+            )
+
+    def validate(self):
+        self._validate_field_values(self.source, self.destination)
+
+    def to_save_json(self):
+        save_json = {
+            &quot;id&quot;: self.id,
+            &quot;from_id&quot;: self.source.id,
+            &quot;to_id&quot;: self.destination.id,
+            &quot;from&quot;: {&quot;rid&quot;: self.source.rid},
+            &quot;to&quot;: {&quot;rid&quot;: self.destination.rid},
+            &quot;active&quot;: self.active,
+        }
+        return save_json
+
+<div class="viewcode-block" id="Wire.delete"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.delete">[docs]</a>    def delete(self):
+        &quot;&quot;&quot;
+        Permanently deletes the wire instance on the Aquarium server.
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        return self.session.utils.delete_wire(self)</div>
+
+<div class="viewcode-block" id="Wire.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.show">[docs]</a>    def show(self, pre=&quot;&quot;):
+        &quot;&quot;&quot;Show the wire nicely&quot;&quot;&quot;
+        source = self.source
+        dest = self.destination
+
+        from_op_type_name = &quot;None&quot;
+        from_name = &quot;None&quot;
+        if source:
+            from_op_type_name = self.source.operation.operation_type.name
+            from_name = source.name
+
+        to_op_type_name = &quot;None&quot;
+        to_name = &quot;None&quot;
+        if dest:
+            to_op_type_name = self.destination.operation.operation_type.name
+            to_name = dest.name
+
+        print(
+            pre
+            + from_op_type_name
+            + &quot;:&quot;
+            + from_name
+            + &quot; --&gt; &quot;
+            + to_op_type_name
+            + &quot;:&quot;
+            + to_name
+        )</div>
+
+    def does_wire_to(self, destination):
+        if destination and self.destination:
+            return destination.rid == self.destination.rid
+        return False
+
+    def does_wire_from(self, source):
+        if source and self.source:
+            return source.rid == self.source.rid
+        return False
+
+<div class="viewcode-block" id="Wire.does_wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.does_wire">[docs]</a>    def does_wire(self, source, destination):
+        &quot;&quot;&quot;Checks whether this Wire is a wire between the source and destination FieldValues.
+
+        If any of the source or destination FieldValues are None, returns False.&quot;&quot;&quot;
+        if source and destination and self.source and self.destination:
+            return (
+                source.rid == self.source.rid
+                and destination.rid == self.destination.rid
+            )
+        return False</div>
+
+    def __eq__(self, other):
+        &quot;&quot;&quot;Checks whether this Wire is wired to the same FieldValue instances of another Wire.
+
+        see `does_wire` method.&quot;&quot;&quot;
+        return self.does_wire(other.source, other.destination)</div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

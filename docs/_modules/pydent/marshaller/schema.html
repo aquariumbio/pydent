@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.marshaller.schema &#8212; pydent 0.1.0a0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0a0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.marshaller.schema</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
+Model serialization/deserialization schema
+&quot;&quot;&quot;
+
+import inspect
+
+from pydent.marshaller.descriptors import DataAccessor
+from pydent.marshaller.exceptions import (
+    MultipleValidationError,
+    CallbackValidationError,
+)
+from pydent.marshaller.fields import Field, Callback
+from pydent.marshaller.registry import SchemaRegistry
+from pydent.marshaller.utils import make_signature_str
+
+
+<div class="viewcode-block" id="DynamicSchema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema">[docs]</a>class DynamicSchema(metaclass=SchemaRegistry):
+    &quot;&quot;&quot;
+    A dynamically added schema. Should be added using &#39;@add_schema` decorator.
+    &quot;&quot;&quot;
+
+    ignore = ()
+    fields = dict()
+
+    @classmethod
+    def _get_model_fields(cls):
+        return cls.fields
+
+<div class="viewcode-block" id="DynamicSchema.init_field_accessors"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.init_field_accessors">[docs]</a>    @classmethod
+    def init_field_accessors(cls):
+        &quot;&quot;&quot;Initializes callback accessors.
+
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        for field_name, field in cls._get_model_fields().items():
+            field.register(field_name, cls.model_class)</div>
+
+<div class="viewcode-block" id="DynamicSchema.init_data_accessors"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.init_data_accessors">[docs]</a>    @classmethod
+    def init_data_accessors(cls, instance, data, add_extra=True):
+        &quot;&quot;&quot;Initializes data accessors.
+
+        :param instance:
+        :type instance:
+        :param data:
+        :type data:
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        if cls.model_class is not instance.__class__:
+            raise Exception(&quot;Instance and model class are different&quot;)
+        for k, v in dict(data).items():
+            if k in cls.ignore:
+                data.pop(k, None)
+                continue
+            if not add_extra and k not in cls.model_class.fields:
+                raise AttributeError(
+                    &quot;Expected field missing. Cannot initialize accessor for &#39;{}&#39; for &#39;{}&#39; because it is not a field.&quot;
+                    &quot; It may be missing from the &#39;field&#39; dictionary.&quot;.format(
+                        k, cls.model_class
+                    )
+                )
+            if k not in cls.model_class.__dict__:
+                setattr(cls.model_class, k, DataAccessor(k, cls.model_class._data_key))
+            try:
+                setattr(instance, k, v)
+            except AttributeError as e:
+                raise e</div>
+                # raise AttributeError(&quot;can&#39;t set attribute &#39;{key}&#39; (accessor &#39;{objtype}.{key}&#39; is a {accessor} type) for &#39;{objtype}&#39;&quot;
+                #                      &quot; because:\n{e}&quot;
+                # .format(
+                #     key=k,
+                #     objtype=instance.__class__,
+                #     accessor=instance.__class__.__dict__.get(k, None),
+                #     e=&quot;{}: {}&quot;.format(e.__class__.__name__, e)
+                # )) from e
+
+<div class="viewcode-block" id="DynamicSchema.validate_callbacks"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.validate_callbacks">[docs]</a>    @classmethod
+    def validate_callbacks(cls):
+        &quot;&quot;&quot;Validates expected callback signature found in any callback in the
+        registered model fields.
+
+        :return: None
+        :rtype: None
+        :raises: ModelValidationError
+        &quot;&quot;&quot;
+        missing_callbacks = []
+        not_callable = []
+        wrong_signature = []
+        model_class = cls.model_class
+        for rname, callback_field in cls.grouped_fields[Callback.__name__].items():
+            callback_func = callback_field.callback
+            if callback_func is None:
+                missing_callbacks.append(
+                    &quot;Callback for {model}.{name} cannot be None&quot;.format(
+                        model=model_class.__name__, name=rname
+                    )
+                )
+                continue
+            error_prefix = &quot;Callback &#39;{callback}&#39; for relationship &#39;{model}.{name}&#39;&quot;.format(
+                callback=callback_func, model=model_class.__name__, name=rname
+            )
+            if not callable(callback_func) and not hasattr(model_class, callback_func):
+                if callback_func not in missing_callbacks:
+                    missing_callbacks.append(error_prefix + &quot; is missing.&quot;)
+            else:
+                args_to_send = list(callback_field.callback_args)
+                kwargs_to_send = dict(callback_field.callback_kwargs)
+                if isinstance(callback_func, str):
+                    callback_func = getattr(model_class, callback_func)
+                    args_to_send = [&quot;self&quot;] + args_to_send
+                if not callable(callback_func):
+                    not_callable.append(error_prefix + &quot; is not callable.&quot;)
+                else:
+                    signature = inspect.getfullargspec(callback_func)
+                    expected_args = signature.args
+                    expected_kwargs = {}
+                    if signature.defaults:
+                        default_args = expected_args[-len(signature.defaults) :]
+                        expected_args = expected_args[: -len(signature.defaults)]
+                        expected_kwargs = dict(zip(default_args, signature.defaults))
+
+                    if (
+                        len(expected_args) != len(args_to_send)
+                        and not signature.varargs
+                    ):
+                        wrong_signature.append(
+                            error_prefix
+                            + &quot; expects arguments {receive_args} but would receive arguments {sent_args}.&quot;.format(
+                                receive_args=make_signature_str(
+                                    expected_args, expected_kwargs
+                                ),
+                                sent_args=make_signature_str(
+                                    list(args_to_send), kwargs_to_send
+                                ),
+                            )
+                        )
+                    else:
+                        for k in kwargs_to_send:
+                            invalid_keys = []
+                            if k not in expected_kwargs and not signature.varkw:
+                                invalid_keys.append(k)
+                            if invalid_keys:
+                                wrong_signature.append(
+                                    error_prefix
+                                    + &quot; does not recognize named key(s) {invalid_keys} from signature {receive_args}.&quot;.format(
+                                        invalid_keys=&quot;, &quot;.join(
+                                            [&#39;&quot;{}&quot;&#39;.format(key) for key in invalid_keys]
+                                        ),
+                                        receive_args=make_signature_str(
+                                            expected_args, expected_kwargs
+                                        ),
+                                    )
+                                )
+                                wrong_signature.append(callback_func)
+
+        with MultipleValidationError(&quot;&quot;) as e:
+            if missing_callbacks:
+                for w in missing_callbacks:
+                    e.r(CallbackValidationError(w))
+            if not_callable:
+                for w in not_callable:
+                    e.r(CallbackValidationError(w))
+            if wrong_signature:
+                for w in wrong_signature:
+                    e.r(CallbackValidationError(w))</div>
+
+<div class="viewcode-block" id="DynamicSchema.register"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.schema.html#pydent.marshaller.schema.DynamicSchema.register">[docs]</a>    @classmethod
+    def register(cls, model_class):
+        &quot;&quot;&quot;Registers the schema to a model class. Saves the schema class to the
+        class attribute.
+
+        :param model_class: a model class
+        :type model_class: type
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
+        setattr(model_class, &quot;_model_schema&quot;, cls)
+
+        schema_fields = {}
+        ignored_fields = {}
+        fields_key = model_class._fields_key
+        if hasattr(model_class, fields_key):
+            model_fields = getattr(model_class, fields_key)
+
+            ignore = model_fields.pop(&quot;ignore&quot;, ())
+            if isinstance(ignore, str):
+                ignore = (ignore,)
+            cls.ignore = ignore
+
+            for field_name, field in model_fields.items():
+                if field_name in cls.ignore:
+                    ignored_fields[field_name] = field
+                elif issubclass(type(field), Field):
+                    if field.data_key is None:
+                        field.data_key = field_name
+                    if issubclass(type(field), Field):
+                        schema_fields[field_name] = field
+            setattr(model_class, fields_key, schema_fields)
+            setattr(model_class, &quot;_ignored_fields&quot;, ignored_fields)
+        setattr(cls, &quot;_fields&quot;, schema_fields)
+        setattr(cls, &quot;_ignored_fields&quot;, ignored_fields)
+        cls.init_field_accessors()
+        cls.validate_callbacks()</div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
