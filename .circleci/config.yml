@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build-and-test:
+  test:
     docker:
       - image: circleci/python:3.7.2
 
@@ -44,12 +44,63 @@ jobs:
       - store_test_results:
           path: ~/pytest_results
 
+  testdeploy:
+    docker:
+      - image: circleci/python:3.7.2
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - deps-{{ checksum "poetry.lock" }}
+
+      - run:
+          name: install dependencies
+          command: |
+            curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+            source $HOME/.poetry/env
+            poetry install
+
+      - save_cache:
+          key: deps-{{ checksum "poetry.lock" }}
+          paths:
+            - /home/circleci/.cache/pypoetry/virtualenvs
+
+      - run:
+          name: init repository
+          command: |
+            poetry config repositories.testpypi https://test.pypi.org/legacy/
+            poetry config http-basic.testpypi $PYPI_USER $PYPI_PASSWORD
+
+      - run:
+          name: create packages
+          command: |
+            poetry run upver
+            poetry build
+
+      - run:
+          name: upload to pypi
+          command: |
+            poetry publish -r testpypi
+
 
 workflows:
   version: 2
-  build_and_deploy:
+  test_build_and_deploy:
     jobs:
-      - build-and-test:
+      - test:
           filters:
             tags:
               only: /.*/
+      - testdeploy:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
