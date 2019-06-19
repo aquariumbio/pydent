@@ -1,7 +1,7 @@
-"""Designer
+"""Aquarium experiment planner
 
 ==========
-designer
+planner
 ==========
 
 Submodules
@@ -10,7 +10,7 @@ Submodules
 .. autosummary::
     :toctree: _autosummary
 
-    canvas
+    planner
     layout
 
 """

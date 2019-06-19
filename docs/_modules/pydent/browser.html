@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.browser &#8212; pydent 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.browser</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
+Browsing class for searching and caching query results.
+&quot;&quot;&quot;
+
+import re
+from collections import OrderedDict
+from difflib import get_close_matches
+
+import pandas as pd
+
+from pydent.marshaller import ModelRegistry
+from pydent import models as pydent_models
+from pydent.base import ModelBase
+
+# TODO: browser documentation
+# TODO: examples in sphinx
+# TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
+from pydent.interfaces import QueryInterface
+from pydent.utils import logger
+
+
+<div class="viewcode-block" id="BrowserException"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.BrowserException">[docs]</a>class BrowserException(Exception):
+    &quot;&quot;&quot;Generic browser exception&quot;&quot;&quot;</div>
+
+
+<div class="viewcode-block" id="Browser"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser">[docs]</a>class Browser(logger.Loggable, object):
+    &quot;&quot;&quot;
+    A class for browsing models and Aquarium inventory
+    &quot;&quot;&quot;
+
+    # TODO: ability to block model callbacks to enforce cache
+
+    INTERFACE_CLASS = QueryInterface
+    ACCEPTED_GET_RELATION_TYPES = [
+        &quot;HasOne&quot;,
+        &quot;HasMany&quot;,
+        &quot;HasManyThrough&quot;,
+        &quot;HasManyGeneric&quot;,
+    ]
+
+    def __init__(self, session):
+        &quot;&quot;&quot;
+        Instantiates a new browser from a AqSession instance.
+
+        :param session: a session instance
+        :type session: AqSession
+        &quot;&quot;&quot;
+        self.session = session
+        self._list_models_fxn = self.sample_list
+        self.use_cache = True
+        self.model_name = &quot;Sample&quot;
+        self.model_list_cache = {}
+        self.model_cache = {}
+        self.init_logger(&quot;Browser@{}&quot;.format(session.url))
+
+    # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
+    # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
+
+    @property
+    def models(self):
+        models = []
+        for v in self.model_cache.values():
+            models += list(v.values())
+        return models
+
+<div class="viewcode-block" id="Browser.set_model"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.set_model">[docs]</a>    def set_model(self, model_name):
+        &quot;&quot;&quot;Sets the default model of this browser&quot;&quot;&quot;
+        ModelRegistry.get_model(model_name)
+        self.model_name = model_name
+        if model_name == &quot;Sample&quot;:
+            self._list_models_fxn = self.sample_list
+        else:
+            self._list_models_fxn = self._generic_list_models</div>
+
+<div class="viewcode-block" id="Browser.interface"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.interface">[docs]</a>    def interface(self, model_class=None):
+        &quot;&quot;&quot;
+        Returns a new model query interface
+
+        :param model_class:
+        :type model_class: basestring
+        :return: Interface
+        :rtype: QueryInterface
+        &quot;&quot;&quot;
+        if model_class is None:
+            model_class = self.model_name
+        return self.session.model_interface(
+            model_class, interface_class=self.INTERFACE_CLASS
+        )</div>
+
+    def _generic_list_models(self, **query):
+        models = self.where(query, self.model_name)
+        return [&quot;{}: {}&quot;.format(m.id, m.name) for m in models]
+
+<div class="viewcode-block" id="Browser.sample_list"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.sample_list">[docs]</a>    def sample_list(self, sample_type_id=None):
+        &quot;&quot;&quot;Returns a sample list&quot;&quot;&quot;
+        path = &quot;sample_list&quot;
+        if sample_type_id is not None:
+            path += &quot;/&quot; + str(sample_type_id)
+        return self.session.utils.aqhttp.get(path)</div>
+
+<div class="viewcode-block" id="Browser.clear"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.clear">[docs]</a>    def clear(self):
+        &quot;&quot;&quot;Clears the model cache.&quot;&quot;&quot;
+        self.model_list_cache = {}
+        self.model_cache = {}</div>
+
+    def list_models(self, *args, **kwargs):
+        get_models = lambda: self._list_models_fxn(*args, **kwargs)
+
+        if self.use_cache:
+            models_cache = self.model_list_cache.get(&quot;models&quot;, {})
+            if self.model_name in models_cache:
+                model_list = models_cache[self.model_name]
+            else:
+                model_list = get_models()
+        else:
+            model_list = get_models()
+        self.model_list_cache.setdefault(&quot;models&quot;, {})
+        self.model_list_cache[&quot;models&quot;][self.model_name] = model_list[:]
+        return model_list
+
+<div class="viewcode-block" id="Browser.where"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.where">[docs]</a>    def where(
+        self, query, model_class=None, primary_key=&quot;id&quot;, sample_type=None, **kwargs
+    ):
+        &quot;&quot;&quot;
+        Perform a &#39;where&#39; query. If models are found in the browser cache, those are returned,
+        else new http queries are made to find the models.
+
+        :param query: query as a dictionary
+        :param model_class: model class to use (str)
+        :param primary_key: which primary key to use (default: &#39;id&#39;)
+        :param sample_type: optional sample_type short cut for finding samples
+        :param kwargs: other kwargs
+        :return: returned model list
+        &quot;&quot;&quot;
+        if model_class is None:
+            model_class = self.model_name
+        if sample_type is not None:
+            sample_type_id = self.find_by_name(sample_type, &quot;SampleType&quot;).id
+            query.update({&quot;sample_type_id&quot;: sample_type_id})
+        if self.use_cache:
+            return self.cached_where(query, model_class, primary_key=primary_key)
+        return self.interface(model_class).where(query, **kwargs)</div>
+
+    def __query_helper(
+        self,
+        fname,
+        query,
+        model_class,
+        sample_type=None,
+        opts=None,
+        params=None,
+        as_single=False,
+    ):
+        &quot;&quot;&quot;
+        Builds a custom query for the browser.
+
+        :param fname: the function name
+        :type fname: basestring
+        :param query: the query
+        :type query: dict
+        :param model_class: the name of the model class (e.g. &quot;Sample&quot;)
+        :type model_class: basestring
+        :param sample_type: optional sample_type name
+        :type sample_type: basestring
+        :param opts: options to send to the function
+        :type opts: dict
+        :param params: additionaly keyword arguments to send to the function
+        :type params: dict
+        :param as_single: if True, will return the first model of the array or None if array is empty
+        :type as_single: bool
+        :return: Aquarium model or list of Aquarium models
+        :rtype: ModelBase | list
+        &quot;&quot;&quot;
+        if model_class is None:
+            model_class = self.model_name
+        if query is None:
+            query = dict()
+        if params is None:
+            params = dict()
+        if sample_type is not None:
+            query.update(
+                {&quot;sample_type_id&quot;: self.find_by_name(sample_type, &quot;SampleType&quot;).id}
+            )
+        interface = self.interface(model_class)
+        fxn = getattr(interface, fname)
+        models = fxn(query=query, opts=opts, **params)
+        if as_single:
+            models = [models]
+        return self.update_cache(models).get(model_class, [])
+
+<div class="viewcode-block" id="Browser.one"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.one">[docs]</a>    def one(self, model_class=None, sample_type=None, query=None, opts=None):
+        &quot;&quot;&quot;
+        Finds one instance of a model (or returns None)
+
+        :param model_class: the name of the model class (e.g. &quot;Sample&quot;)
+        :type model_class: basestring
+        :param sample_type: optional sample_type name
+        :type sample_type: basestring
+        :param query: additional query to filter models
+        :type query: dict
+        :param opts: additional options
+        :type opts: dict
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        models = self.__query_helper(
+            &quot;one&quot;, query, model_class, sample_type, opts=opts, as_single=True
+        )
+        if not models:
+            return None
+        return models[0]</div>
+
+<div class="viewcode-block" id="Browser.last"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.last">[docs]</a>    def last(self, num=1, model_class=None, sample_type=None, query=None):
+        &quot;&quot;&quot;
+        Finds last models. Will NOT return cached models.
+
+        :param num: number of models to return
+        :type num: int
+        :param model_class: the name of the model class (e.g. &quot;Sample&quot;)
+        :type model_class: basestring
+        :param sample_type: optional sample_type name
+        :type sample_type: basestring
+        :param query: additional query to filter models
+        :type query: dict
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        return self.__query_helper(
+            &quot;last&quot;, query, model_class, sample_type, params=dict(num=num)
+        )</div>
+
+<div class="viewcode-block" id="Browser.first"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.first">[docs]</a>    def first(self, num=1, model_class=None, sample_type=None, query=None):
+        &quot;&quot;&quot;
+        Finds first models. Will NOT return cached models.
+
+        :param num: number of models to return
+        :type num: int
+        :param model_class: the name of the model class (e.g. &quot;Sample&quot;)
+        :type model_class: basestring
+        :param sample_type: optional sample_type name
+        :type sample_type: basestring
+        :param query: additional query to filter models
+        :type query: dict
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        return self.__query_helper(
+            &quot;first&quot;, query, model_class, sample_type, params=dict(num=num)
+        )</div>
+
+<div class="viewcode-block" id="Browser.find"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.find">[docs]</a>    def find(self, model_id, model_class=None):
+        &quot;&quot;&quot;
+        Finds a model by id. Will returned cached model if possible.
+
+        :param model_id: model_id
+        :type model_id: int
+        :param model_class: the name of the model class (e.g. &quot;Sample&quot;)
+        :type model_class: basestring
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        if model_class is None:
+            model_class = self.model_name
+        if self.use_cache:
+            return self.cached_find(model_class, model_id)
+        return self.interface(model_class).find(model_id)</div>
+
+<div class="viewcode-block" id="Browser.find_by_name"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.find_by_name">[docs]</a>    def find_by_name(self, name, model_class=None, primary_key=&quot;id&quot;):
+        &quot;&quot;&quot;
+        Find model by name. Will return cached model if possible.
+
+        :param name: name of the model
+        :param model_class: the name of the model class (e.g. &quot;Sample&quot;)
+        :type model_class: basestring
+        :param primary_key:
+        :return:
+        &quot;&quot;&quot;
+        models = self.where({&quot;name&quot;: name}, model_class, primary_key=primary_key)
+        if not models:
+            return None
+        return models[0]</div>
+
+<div class="viewcode-block" id="Browser.all"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.all">[docs]</a>    def all(self, model_class=None, opts=None):
+        &quot;&quot;&quot;
+        Return all models of a model_class.
+
+        :param model_class: the name of the model class (e.g. &quot;Sample&quot;)
+        :type model_class: basestring
+        :param opts:
+        :type opts:
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        return self.__query_helper(&quot;all&quot;, model_class=model_class, opts=opts)</div>
+
+<div class="viewcode-block" id="Browser._match_query"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser._match_query">[docs]</a>    @staticmethod
+    def _match_query(query, model_dict):
+        &quot;&quot;&quot;
+        Matches a query against a model dictionary
+
+        :param query: query dictionary
+        :type query: dict
+        :param model_dict: model dictionary (e.g. model.__dict__)
+        :type model_dict: dict
+        :return: whether the model matches the query
+        :rtype: bool
+        &quot;&quot;&quot;
+        for query_key in query:
+            if query_key not in model_dict:
+                return False
+            query_val = query[query_key]
+            model_val = model_dict[query_key]
+            if isinstance(query_val, list):
+                if model_val not in query_val:
+                    return False
+            elif model_val != query_val:
+                return False
+        return {k: model_dict[k] for k in query}</div>
+
+    @classmethod
+    def _find_matches(cls, query, models):
+        found = []
+        found_queries = []
+        for m in models:
+            match = cls._match_query(query, m._get_data())
+            if match:
+                found.append(m)
+                found_queries.append(match)
+        return found, found_queries
+
+<div class="viewcode-block" id="Browser.update_cache"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.update_cache">[docs]</a>    def update_cache(self, models, recursive=True):
+        &quot;&quot;&quot;Updates the model cache with models. If recursive=True, recursively collect all models contained
+        in the relationships and use those to update the cache as well.&quot;&quot;&quot;
+        assert isinstance(models, list)
+        if recursive:
+            memo = {}
+            ModelBase._flatten_deserialized_data(models, memo)
+            models = list(memo.values())
+        return self._group_models_and_update_cache(models)</div>
+
+    # TODO: do we really want to simply overwrite the dictionary or update the models?
+<div class="viewcode-block" id="Browser._update_model_cache_helper"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser._update_model_cache_helper">[docs]</a>    def _update_model_cache_helper(self, modelname, modeldict):
+        &quot;&quot;&quot;Updates the browser&#39;s model cache with models from the provided model dict&quot;&quot;&quot;
+        self._info(
+            &quot;CACHE updated cached with {} {} models&quot;.format(len(modeldict), modelname)
+        )
+        self.model_cache.setdefault(modelname, {})
+
+        model_cache_dict = self.model_cache[modelname]
+        for mid in modeldict:
+            model = modeldict[mid]
+            if mid in model_cache_dict:
+                cached_model = model_cache_dict[mid]
+                vars(cached_model).update(vars(model))
+            else:
+                model_cache_dict[mid] = model
+        return [model_cache_dict[mid] for mid in modeldict]</div>
+
+    def _group_models_and_update_cache(self, models):
+        grouped_by_type = {}
+        for model in models:
+            classname = model.__class__.__name__
+            arr = grouped_by_type.setdefault(classname, [])
+            if model is not None:
+                arr.append(model)
+
+        result = {}
+        for clstype in grouped_by_type:
+            result[clstype] = self._update_model_cache_helper(
+                clstype, {m._primary_key: m for m in grouped_by_type[clstype]}
+            )
+        return result
+
+    # TODO: support unsaved models as well
+    def cached_find(self, model_class, id):
+        if isinstance(id, list):
+            return self.cached_where({&quot;id&quot;: id}, model_class)
+        cached_models = self.model_cache.get(model_class, {})
+        found_model = cached_models.get(id, None)
+        if found_model is None:
+            found_model = self.interface(model_class).find(id)
+        else:
+            self._info(
+                &quot;CACHE found {} model with id={} in cache&quot;.format(model_class, id)
+            )
+        if found_model is None:
+            return None
+        return self._update_model_cache_helper(
+            model_class, {found_model.id: found_model}
+        )[0]
+
+    def cached_where(self, query, model, primary_key=&quot;id&quot;):
+        if [] in query.values():
+            return []
+        cached_models = self.model_cache.get(model, {})
+        found, found_queries = self._find_matches(query, list(cached_models.values()))
+        found_dict = {f.id: f for f in found}
+        remaining_query = dict(query)
+        if primary_key in query:
+            found_ids = [q[primary_key] for q in found_queries]
+            query_id_list = query[primary_key]
+            if isinstance(query_id_list, str) or isinstance(query_id_list, int):
+                query_id_list = [query_id_list]
+            remaining_ids = list(set(query_id_list).difference(set(found_ids)))
+            remaining_query[primary_key] = remaining_ids
+        self._info(
+            &quot;CACHE found {num} {model} models in cache using query {query}&quot;.format(
+                num=len(found_dict), model=model, query=self._pprint_data(query)
+            )
+        )
+
+        # TODO: this code may be sketchy... here {&#39;id&#39;: []}, really means we found all of the models..
+        if primary_key in remaining_query and not remaining_query[primary_key]:
+            return list(found_dict.values())
+        server_models = self.interface(model).where(remaining_query)
+
+        models_dict = OrderedDict({s.id: s for s in server_models})
+        models_dict.update(found_dict)
+        return self._update_model_cache_helper(model, models_dict)
+
+    def _search_helper(self, pattern, filter_fxn, sample_type=None, **query):
+        sample_type_id = None
+        if sample_type is not None:
+            if isinstance(sample_type, pydent_models.SampleType):
+                sample_type_id = sample_type.id
+            else:
+                sample_type_id = self.find_by_name(sample_type, &quot;SampleType&quot;).id
+
+        if sample_type_id is not None:
+            query.update({&quot;sample_type_id&quot;: sample_type_id})
+
+        model_list = self.list_models()
+        self._info(
+            &quot;SEARCH found {} total models of type {}&quot;.format(
+                len(model_list), self.model_name
+            )
+        )
+        matches = filter_fxn(pattern, model_list)
+
+        if not matches:
+            return []
+
+        if query:
+            query.update({&quot;id&quot;: matches})
+            filtered = self.where(query, self.model_name)
+        else:
+            filtered = self.interface().find(matches)
+        self._info(
+            &quot;SEARCH filtered to {} total models of type {}&quot;.format(
+                len(filtered), self.model_name
+            )
+        )
+
+        if self.use_cache:
+            self.update_cache(filtered)
+        return filtered
+
+<div class="viewcode-block" id="Browser.search"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.search">[docs]</a>    def search(self, pattern, ignore_case=True, sample_type=None, **query):
+        &quot;&quot;&quot;
+        Performs a regular expression search of Samples
+
+        :param pattern: regular expression pattern
+        :type pattern: basestring
+        :param ignore_case: whether to ignore case for regex search (default: True)
+        :type ignore_case: bool
+        :param sample_type: sample_type_name to filter samples (optional)
+        :type sample_type: basestring
+        :param query: additional query parameters to filter by
+        :type query: dict
+        :return: list of samples
+        :rtype: list
+        &quot;&quot;&quot;
+
+        def regex_filter(pattern, sample_list):
+            matches = []
+            for name in sample_list:
+                args = []
+                if ignore_case:
+                    args.append(re.IGNORECASE)
+                m = re.search(pattern, name, *args)
+                if m is not None:
+                    matches.append(name)
+            return matches
+
+        return self._search_helper(
+            pattern, regex_filter, sample_type=sample_type, **query
+        )</div>
+
+<div class="viewcode-block" id="Browser.search_description"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.search_description">[docs]</a>    def search_description(
+        self, pattern, samples=None, sample_type=None, ignore_case=True
+    ):
+        &quot;&quot;&quot;
+        Search samples by their description.
+
+        :param pattern: regex pattern
+        :type pattern: basestring
+        :param samples: samples to search. If left blank, a search to find samples will be performed
+        :type samples: list
+        :param sample_type: restrict to a particular sample type
+        :type sample_type: name
+        :param ignore_case: ignore case for regular pattern search (default True)
+        :type ignore_case: bool
+        :return: list of samples
+        :rtype: list
+        &quot;&quot;&quot;
+        matches = []
+        args = []
+        if samples is None:
+            samples = self.search(&quot;.*&quot;, sample_type=sample_type)
+        if ignore_case:
+            args.append(re.IGNORECASE)
+        for sample in samples:
+            description = sample.description
+            if description is None:
+                continue
+            if re.search(pattern, sample.description, *args):
+                matches.append(sample)
+        return matches</div>
+
+<div class="viewcode-block" id="Browser.close_matches"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.close_matches">[docs]</a>    def close_matches(self, pattern, sample_type=None, **query):
+        &quot;&quot;&quot;
+        Finds samples whose names closely match the pattern
+
+        :param pattern: regular expression pattern
+        :type pattern: basestring
+        :param sample_type: sample_type_name to filter samples (optional)
+        :type sample_type: basestring
+        :param query: additional query parameters to filter by
+        :type query: dict
+        :return: list of samples
+        :rtype: list
+        &quot;&quot;&quot;
+        return self._search_helper(
+            pattern, get_close_matches, sample_type=sample_type, **query
+        )</div>
+
+<div class="viewcode-block" id="Browser.list_field_values"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.list_field_values">[docs]</a>    def list_field_values(self, model_ids, **query):
+        &quot;&quot;&quot;
+        Lists sample field values. May supply an additional query to filter :class:`FieldValue`s.
+        &quot;&quot;&quot;
+        query.update({&quot;parent_class&quot;: self.model_name, &quot;parent_id&quot;: model_ids})
+        return self.where(query, &quot;FieldValue&quot;)</div>
+
+<div class="viewcode-block" id="Browser._group_by_attribute"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser._group_by_attribute">[docs]</a>    @staticmethod
+    def _group_by_attribute(models, attribute):
+        &quot;&quot;&quot;Group models by the given attribute&quot;&quot;&quot;
+        d = {}
+        for s in models:
+            arr = d.setdefault(getattr(s, attribute), [])
+            arr.append(s)
+        return d</div>
+
+    def new_sample(self, sample_type, name, description, project, properties=None):
+        st = self.find_by_name(sample_type, &quot;SampleType&quot;, primary_key=&quot;name&quot;)
+        if st._get_deserialized_data().get(&quot;field_types&quot;, None) is None:
+            fts = self.where(
+                {&quot;parent_class&quot;: &quot;SampleType&quot;, &quot;parent_id&quot;: st.id}, &quot;FieldType&quot;
+            )
+            st.field_types = fts
+        return st.new_sample(name, description, project, properties=properties)
+
+    # TODO: handle not-yet existant samples using rid
+<div class="viewcode-block" id="Browser._retrieve_has_many_or_has_one"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser._retrieve_has_many_or_has_one">[docs]</a>    def _retrieve_has_many_or_has_one(
+        self, models, relationship_name, relation=None, strict=True
+    ):
+        &quot;&quot;&quot;Performs exactly 1 query to fullfill some relationship for a list of models&quot;&quot;&quot;
+        if not models:
+            return []
+        models = models[:]
+        if relation is None:
+            relation = models[0].get_relationships()[relationship_name]
+
+        ref = relation.ref  # sample_id
+        attr = relation.attr  # id
+        model_class2 = relation.nested
+
+        # todo: collect existing fullfilled relationship
+        # todo: partition, then collect callback
+        # todo: how to handle when model_attr is absent?, or just raise error?
+
+        retrieve_query = relation.build_query(models)
+        retrieved_models = self.where(retrieve_query, model_class2)
+        self._info(
+            &quot;RETRIEVE retrieved {num} {cls} models using query {query}&quot;.format(
+                num=len(retrieved_models),
+                cls=model_class2,
+                query=self._pprint_data(retrieve_query),
+            )
+        )
+
+        if not retrieved_models:
+            return []
+
+        if relation.QUERY_TYPE == &quot;query&quot;:
+            model_dict = {m1.id: list() for m1 in models}
+            for model in retrieved_models:
+                model_ref = getattr(model, ref)
+                if model_ref is not None:
+                    if not strict:
+                        model_dict.setdefault(model_ref, []).append(model)
+                    else:
+                        model_dict[model_ref].append(model)
+                else:
+                    self._error(
+                        &quot;RETRIEVE ref: {ref} {model_ref}, attr: {attr}&quot;.format(
+                            ref=ref, attr=attr, model_ref=model_ref
+                        )
+                    )
+        elif relation.QUERY_TYPE == &quot;by_id&quot;:
+            retrieved_dict = {getattr(m2, attr): m2 for m2 in retrieved_models}
+            model_dict = {m1.id: None for m1 in models}
+            missing_models = []
+            for model in models:
+                model_attr = getattr(model, attr)
+                model_ref = getattr(model, ref)
+                if model_ref is not None:
+                    if model_attr is not None:
+                        if model_ref not in retrieved_dict:
+                            self._info(strict)
+                        else:
+                            model_dict[model_attr] = retrieved_dict[model_ref]
+                    else:
+                        self._error(
+                            &quot;attr: {attr}={model_attr}, ref: {ref}={model_ref}&quot;.format(
+                                m1=model,
+                                ref=ref,
+                                attr=attr,
+                                model_attr=model_attr,
+                                model_ref=model_ref,
+                            )
+                        )
+                    if model_ref not in retrieved_dict:
+                        missing_models.append(model_ref)
+            if missing_models:
+                self._error(
+                    &quot;INCONSISTENT AQUARIUM DATABASE - There where {l} missing {cls} models &quot;
+                    &quot;from the Aquarium database, which were ignored by trident. &quot;
+                    &quot;This happens when models are deleted from Aquarium which &quot;
+                    &quot;results in an inconsistent server database. Trident was unable &quot;
+                    &quot;resolve the following relationships which returned no models from the server: &quot;
+                    &quot;{cls}.where({attr}={missing})&quot;.format(
+                        l=len(missing_models),
+                        cls=model_class2,
+                        missing=missing_models,
+                        attr=attr,
+                    )
+                )
+        else:
+            raise BrowserException(
+                &quot;QUERY_TYPE &#39;{}&#39; for relation &#39;{}&#39; not recognized.&quot;.format(
+                    relation.QUERY_TYPE, relationship_name
+                )
+            )
+        for model in models:
+            found_models = model_dict[getattr(model, attr)]
+            setattr(model, relationship_name, found_models)
+
+        return retrieved_models</div>
+
+<div class="viewcode-block" id="Browser._retrieve_has_many_through"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser._retrieve_has_many_through">[docs]</a>    def _retrieve_has_many_through(self, models, relationship_name, strict=True):
+        &quot;&quot;&quot;Performs exactly 2 queries to establish a HasManyThrough relationship&quot;&quot;&quot;
+        relation = models[0].get_relationships()[relationship_name]
+        association_relation = models[0].get_relationships()[
+            relation.through_model_attr
+        ]
+        attr = relation.attr
+        ref = association_relation.ref
+
+        # find other key
+        association_class = ModelRegistry.get_model(association_relation.nested)
+        association_relationships = association_class.get_relationships()
+        other_ref = None
+        for r in association_relationships:
+            ar = association_relationships[r]
+            if ar.nested == relation.nested:
+                other_ref = r
+
+        associations = self._retrieve_has_many_or_has_one(
+            models, relation.through_model_attr, strict=strict
+        )
+        self._retrieve_has_many_or_has_one(associations, other_ref, strict=strict)
+
+        associations_by_mid = {}
+        for a in associations:
+            associations_by_mid.setdefault(getattr(a, ref), []).append(a)
+
+        all_models = []
+        for m in models:
+            mid = getattr(m, attr)
+            if mid in associations_by_mid:
+                associations = associations_by_mid[mid]
+                _models = [getattr(a, other_ref) for a in associations]
+                setattr(m, relationship_name, _models)
+                all_models += _models
+            else:
+                setattr(m, relationship_name, None)
+        return list(set(all_models))</div>
+
+<div class="viewcode-block" id="Browser.retrieve"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.retrieve">[docs]</a>    def retrieve(self, models, relationship_name, relation=None, strict=True):
+        &quot;&quot;&quot;
+        Retrieves a model relationship for the list of models. Compared to a `for` loop,
+        `retrieve` is &gt;10X faster for most queries.
+
+        .. code-block:: python
+
+            # FAST code example
+            samples = browser.search(&quot;.*mCherry.*&quot;)
+            items = browser.retrieve(samples, &#39;items&#39;)
+            for s in samples:
+                sample_items = s.items
+                # do something with items
+
+
+        .. code-block:: python
+
+            # very SLOW code example. DO NOT USE.
+            samples = browser.search(&quot;.*mCherry.*&quot;)
+            for s in samples:
+                sample_items = s.items
+                # do something with itmes
+
+
+        :param models: list of models to retrieve the attribute
+        :type models: list
+        :param relationship_name: name of the attribute to retrieve
+        :type relationship_name: basestring
+        :param relation: the relation to retrieve (operational)
+        :type relation: pydent.relationships.Relation
+        :param strict: wither to ignore database inconsistencies
+        :type bool
+        :return: list of models retrieved
+        :rtype: list
+        &quot;&quot;&quot;
+        if not models:
+            return []
+        self._info(&#39;RETRIEVE retrieving &quot;{}&quot;&#39;.format(relationship_name))
+        model_classes = set([m.__class__.__name__ for m in models])
+        assert (
+            len(model_classes) == 1
+        ), &quot;Models must be all of the same BaseModel, but found {}&quot;.format(
+            model_classes
+        )
+        if relation is None:
+            relation = models[0].get_relationships().get(relationship_name, None)
+            if relation is None:
+                if strict:
+                    raise BrowserException(
+                        &quot;Relation &#39;{}&#39; not found in relationships for {}&quot;.format(
+                            relationship_name, type(models[0])
+                        )
+                    )
+                else:
+                    return []
+        else:
+            if relationship_name in models[0].get_relationships():
+                raise BrowserException(
+                    &#39;Cannot add new relationship &quot;{}&quot; because it already exists in the model definition&#39;.format(
+                        relationship_name
+                    )
+                )
+        # TODO: add relationship handler for Many and One
+        if relation.__class__.__name__ not in self.ACCEPTED_GET_RELATION_TYPES:
+            raise BrowserException(
+                &#39;retrieve is not supported for the &quot;{}&quot; relationship&#39;.format(
+                    relation.__class__.__name__
+                )
+            )
+        self._info(&quot;RETRIEVE {}: {}&quot;.format(relationship_name, relation))
+        if hasattr(relation, &quot;through_model_attr&quot;):
+            found_models = self._retrieve_has_many_through(
+                models, relationship_name, strict=strict
+            )
+        else:
+            found_models = self._retrieve_has_many_or_has_one(
+                models, relationship_name, relation, strict=strict
+            )
+        self._info(
+            &#39;RETRIEVE retrieved {} for &quot;{}&quot;&#39;.format(
+                len(found_models), relationship_name
+            )
+        )
+        return found_models</div>
+
+<div class="viewcode-block" id="Browser.recursive_retrieve"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.recursive_retrieve">[docs]</a>    def recursive_retrieve(self, models, relations, strict=True):
+        &quot;&quot;&quot;
+        Efficiently retrieve a model relationship recursively from an iterable. The relations_dict iterable may be
+        either a list or a dictionary. For example, the following will collect all of the field_values
+        and their incoming and outgoing wires, the connecting field_values, and finally those FieldValues&#39;
+        operations.
+
+        .. code-block::
+
+            relation_dict = {
+                &quot;field_values&quot;: {
+                    &quot;wires_as_dest&quot;: {
+                        &quot;source&quot;: &quot;operation&quot;,
+                        &quot;destination&quot;: &quot;operation&quot;
+                    },
+                    &quot;wires_as_source&quot;: {
+                        &quot;source&quot;: &quot;operation&quot;,
+                        &quot;destination&quot;: &quot;operation&quot;
+                    },
+                }
+            }
+            browser.retrieve(operations, relation_dict)
+
+
+        :param models: models to retrieve from
+        :type models: list
+        :param relations: the relation to retrieve. This may either be a string (by attribute name), a list, or a dict.
+        :type relations: list|dict|basestring
+        :param strict: wither to ignore database inconsistencies
+        :type bool
+        :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
+        :rtype: dictionary
+        &quot;&quot;&quot;
+        self._info(&quot;RETRIEVE recursively retrieving {}&quot;.format(relations))
+        if isinstance(relations, str):
+            self._info(&#39;RETRIEVE retrieving &quot;{}&quot;&#39;.format(relations))
+            return {relations: self.retrieve(models, relations, strict=strict)}
+        elif (
+            isinstance(relations, list)
+            or isinstance(relations, set)
+            or isinstance(relations, dict)
+            or isinstance(relations, tuple)
+        ):
+            models_by_attr = {}
+            for relation_name in relations:
+                models_by_attr.setdefault(relation_name, [])
+                new_models = self.retrieve(models, relation_name, strict=strict)
+                models_by_attr[relation_name] += new_models
+                if isinstance(relations, dict):
+                    _models_by_attr = self.recursive_retrieve(
+                        new_models, dict(relations).pop(relation_name), strict=strict
+                    )
+                    for attr in _models_by_attr:
+                        _models = _models_by_attr[attr]
+                        if attr in models_by_attr:
+                            models_by_attr[attr] += _models
+                        else:
+                            models_by_attr[attr] = _models_by_attr[attr]
+            return models_by_attr
+        elif not strict:
+            return []
+        else:
+            raise BrowserException(
+                &quot;Type {} for is not recognized for recursive_retrieve&quot;.format(
+                    type(relations)
+                )
+            )</div>
+
+    def get(self, models, relations=None, query=None, strict=True):
+        if isinstance(models, ModelBase):
+            models = [models]
+        elif isinstance(models, str):
+            models = list(self.model_cache.get(models, {}).values())
+            if query:
+                models, _ = self._find_matches(query, models)
+        if relations:
+            if isinstance(relations, str):
+                return self.retrieve(models, relations, strict=strict)
+            else:
+                return self.recursive_retrieve(models, relations, strict=strict)
+        else:
+            return models
+
+<div class="viewcode-block" id="Browser.samples_to_df"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.samples_to_df">[docs]</a>    def samples_to_df(self, samples):
+        &quot;&quot;&quot;
+        Returns a pandas data frame representing the samples
+
+        :param samples: list of samples
+        :type samples: list
+        :return: the samples dataframe
+        :rtype: pandas.DataFrame
+        &quot;&quot;&quot;
+        df = pd.DataFrame(self.samples_to_rows(samples))
+        st = samples[0].sample_type
+        columns = [st.name, &quot;Description&quot;, &quot;Project&quot;] + [
+            ft.name for ft in st.field_types
+        ]
+        df = df[columns]
+        # pd.DataFrame(df[&#39;Fragments&#39;].values.tolist())
+        for ft in st.field_types:
+            if ft.array:
+                df2 = pd.DataFrame(df[ft.name].values.tolist())
+                df2.columns = [ft.name] * len(df2.columns)
+                del df[ft.name]
+                df = df.join(df2)
+        df.drop_duplicates(inplace=True)
+        df = df.set_index(st.name)
+        return df</div>
+
+<div class="viewcode-block" id="Browser.export_samples_to_csv"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.export_samples_to_csv">[docs]</a>    def export_samples_to_csv(self, samples, out):
+        &quot;&quot;&quot;
+        Exports the samples to a csv (for Aquarium import)
+
+        :param samples: list of samples
+        :type samples: list
+        :param out: output path of csv file
+        :type out: basestring
+        :return: pandas dataframe used for the csv
+        :rtype: pandas.DataFrame
+        &quot;&quot;&quot;
+        df = self.samples_to_df(samples)
+        df.to_csv(out)
+        return df</div>
+
+<div class="viewcode-block" id="Browser.samples_to_rows"><a class="viewcode-back" href="../../developer/_autosummary/pydent.browser.html#pydent.browser.Browser.samples_to_rows">[docs]</a>    def samples_to_rows(self, samples, sample_resolver=None):
+        &quot;&quot;&quot;
+        Return row of dictionaries containing sample information and their properties. Can be
+        imported into a pandas DataFrame:
+
+        .. code-block:: python
+
+            import pandas
+
+            df = pandas.DataFrame(samples_to_rows(samples))
+
+
+        :param samples: samples, all of same sample type
+        :type samples: list
+        :param sample_resolver: callable to resolve a sample object if the field value property contains a sample.
+        Defaults to return the sample anme
+        :type sample_resolver: callable
+        :return: list of dictionaries containing sample info and properties
+        :rtype: list
+        &quot;&quot;&quot;
+
+        assert (
+            len(set([s.sample_type_id for s in samples])) == 1
+        ), &quot;Samples be the of the same SampleType&quot;
+        sample_type = samples[0].sample_type
+
+        # self.recursive_retrieve(samples, {
+        #     &quot;field_values&quot;: &quot;sample&quot;,
+        #     &quot;sample_type&quot;: {
+        #         &quot;field_types&quot;
+        #     }
+        # })
+        if sample_resolver is None:
+
+            def default_resolver(sample):
+                if isinstance(sample, pydent_models.Sample):
+                    return sample.name
+                if isinstance(sample, list):
+                    resolved_samples = []
+                    for s in sample:
+                        if isinstance(s, pydent_models.Sample):
+                            resolved_samples.append(s.name)
+                        else:
+                            resolved_samples.append(s)
+                    sample = resolved_samples
+                return sample
+
+            sample_resolver = default_resolver
+        rows = []
+        for s in samples:
+            row = {
+                sample_type.name: s.name,
+                &quot;Description&quot;: s.description,
+                &quot;Project&quot;: s.project,
+            }
+            props = {k: sample_resolver(v) for k, v in s.properties.items()}
+            row.update(props)
+            rows.append(row)
+        return rows</div>
+
+    # TODO: add to change log
+    @staticmethod
+    def _inspect_header(model, name=None, _id=&quot;id&quot;):
+        if name is not None:
+            name = eval(&quot;model.{}&quot;.format(name))
+        else:
+            name = &quot;&quot;
+        return &quot;{model_class}: {_id} {name}&quot;.format(
+            model_class=model.__class__.__name__,
+            name=name,
+            _id=eval(&quot;model.{}&quot;.format(_id)),
+        )
+
+    # TODO: add to change log
+    @staticmethod
+    def _inspect_rows(model, attributes, indent=2):
+        rows = []
+        for attr in attributes:
+            rows.append(
+                &quot;{attr}: {val}&quot;.format(attr=attr, val=eval(&quot;model.{}&quot;.format(attr)))
+            )
+        sep = &quot;\n&quot; + &quot; &quot; * indent
+        s = sep + sep.join(rows)
+        return s
+
+    # TODO: add to change log
+    @classmethod
+    def inspect(cls, model, header, attributes):
+        model_header = cls._inspect_header(model, **header)
+        rows = cls._inspect_rows(model, attributes)
+        return &quot;{header}{rows}&quot;.format(header=model_header, rows=rows)</div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

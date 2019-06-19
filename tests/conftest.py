@@ -1,80 +1,62 @@
-import json
-import os
+import functools
 
 import pytest
-import requests
 
-from pydent.aqsession import AqSession
-
-
-# TODO: use os.environ by default, fall back to config.json.secret
-@pytest.fixture(scope="session")
-def config():
-    """
-    Returns the config dictionary for live tests.
-    """
-    dir = os.path.dirname(os.path.abspath(__file__))
-
-    config_path = os.path.join(dir, "secrets", "config.json.secret")
-    with open(config_path, 'rU') as f:
-        config = json.load(f)
-    return config
+from pydent.marshaller import SchemaModel
+from pydent.marshaller.registry import SchemaRegistry, ModelRegistry
 
 
-@pytest.fixture(scope="session")
-def session():
-    """
-    Returns a live aquarium connection.
-    """
-    session = AqSession(**config())
-    # session.set_timeout(30)
-    return session
+def pytest_configure(config):
+    # register an additional marker
+    config.addinivalue_line(
+        "markers", "recordmode(mode): mark test to have its requests recorded"
+    )
 
 
-@pytest.fixture(scope="session")
-def mock_login_post():
-    """
-    A fake cookie to fake a logged in account
-    """
-
-    def post(path, **kwargs):
-        routes = {
-            "sessions.json": dict(
-                cookies={
-                    "remember_token_NURSERY_production": "SLLRrvtYchvNLhWHJR3FVg; path=/; expires=Tue, 10-Nov"
-                    "-2037 00:15:54 GMT, XSRF-TOKEN=tlhdb%2BXY1FVupNSe0GdOvzNNFULtwW4Xzfkiya5gAbU%3D; pat"
-                    "h=/, _aquarium_NURSERY_production_session=dfsdf"
-                    "VwTlNlMEdkT3Z6Tk5GVUx0d1c0WHpsdfsma2l5YTVnQWJVPQY6BkVGSSIKZmxhc2gGOwZUbzolQWN0aW9uRGlzcG"
-                    "F0Y2g6OkZsYXNoOjpGbGFzaEhhc2gJOgpAdXNsdfsdfsMmY4NDliMDY1MWJiOGVlNzJlZTlm"
-                    "NjJlZjU1NmQ4YWQGOwZU-"
-                    "-9e441bf82be44d39e7ec95f475b02751bb7b3c46; path=/; HttpOnly"
-                }
-            )
-        }
-        for key, res in routes.items():
-            if key in path:
-                response = requests.Response()
-                response.__dict__.update(res)
-                return response
-
-    return post
+def pytest_addoption(parser):
+    parser.addoption(
+        "--webtest", action="store_true", default=False, help="run web tests"
+    )
+    parser.addoption(
+        "--recordmode",
+        action="store",
+        default="no",
+        help="[no, all, new_episodes, once, none]",
+    )
 
 
-@pytest.fixture(scope="function")
-def fake_session(monkeypatch, mock_login_post):
-    """
-    Returns a fake session using a fake cookie
-    """
-    monkeypatch.setattr(requests, "post", mock_login_post)
-    aquarium_url = "http://52.52.525.52"
-    session = AqSession("username", "password", aquarium_url)
-    return session
+def pytest_collection_modifyitems(config, items):
+    skip_web = pytest.mark.skip(reason="need --webtest option to run")
+    record_mode = pytest.mark.record(config.getoption("--recordmode"))
+    for item in items:
+        if config.getoption("--recordmode") != "no":
+            item.add_marker(record_mode)
+        if "webtest" in item.keywords:
+            if not config.getoption("--webtest"):
+                item.add_marker(skip_web)
 
 
-# # Uncomment the following code to turn off requests
-# import pytest
-#
-#
-# @pytest.fixture(autouse=True)
-# def no_requests(monkeypatch):
-#     monkeypatch.delattr("requests.sessions.Session.request")
+@pytest.fixture(autouse=True)
+def rollback_registries():
+    """Rollback registries so that any newly created classes will not persist while testing."""
+    old_schemas = dict(SchemaRegistry.schemas)
+    old_models = dict(ModelRegistry.models)
+    yield
+    SchemaRegistry.schemas = old_schemas
+    ModelRegistry.models = old_models
+
+
+@pytest.fixture(autouse=True)
+def replace_dir(monkeypatch):
+    """Monkey_patches the __dir__ function so that the python debugger does not
+    step through the __getattr__ methods of the field descriptors."""
+    dir_func = functools.partial(SchemaModel.__dir__)
+
+    def __dir__(self):
+        attrs = dir_func(self)
+        for f in self.model_schema.fields:
+            if f in attrs:
+                attrs.remove(f)
+        return list(attrs)
+
+    monkeypatch.setattr(SchemaModel, "__dir__", __dir__)

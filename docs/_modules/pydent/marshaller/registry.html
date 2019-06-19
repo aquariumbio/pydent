@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.marshaller.registry &#8212; pydent 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#making-a-release">Making a Release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">Version History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.0</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.marshaller.registry</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
+Model and schema registry meta-classes
+&quot;&quot;&quot;
+
+from collections import defaultdict
+
+from pydent.marshaller.exceptions import ModelRegistryError, SchemaRegistryError
+
+
+<div class="viewcode-block" id="SchemaRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry">[docs]</a>class SchemaRegistry(type):
+    &quot;&quot;&quot;Stores a list of models that can be accessed by name.&quot;&quot;&quot;
+
+    schemas = {}  # the registry of Schemas instantiated
+    _fields = None  # list of fields instantiated
+    _model_class = None  # reference to model class the schema is attached to
+    BASE = &quot;DynamicSchema&quot;
+
+    def __init__(cls, name, bases, selfdict):
+        &quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;
+        super().__init__(name, bases, selfdict)
+        if bases != () and name != SchemaRegistry.BASE:
+            if name in SchemaRegistry.schemas:
+                raise SchemaRegistryError(
+                    &quot;Cannot register &#39;{}&#39; since it already exists.&quot;.format(name)
+                )
+            SchemaRegistry.schemas[name] = cls
+
+    @property
+    def model_class(cls):
+        &quot;&quot;&quot;The registered model class.&quot;&quot;&quot;
+        return cls._model_class
+
+    @property
+    def fields(cls):
+        &quot;&quot;&quot;The shcmea fields.&quot;&quot;&quot;
+        return cls._fields
+
+    @property
+    def grouped_fields(cls):
+        &quot;&quot;&quot;Fields grouped by their base classes.
+
+        Returns empty list of base class not in fields.
+        &quot;&quot;&quot;
+        grouped = defaultdict(dict)
+        for fname, field in cls.fields.items():
+            mro = field.__class__.__mro__
+            for b in mro[:-2]:
+                grouped[b.__name__][fname] = field
+        return grouped
+
+<div class="viewcode-block" id="SchemaRegistry.make_schema_name"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.make_schema_name">[docs]</a>    @staticmethod
+    def make_schema_name(name):
+        &quot;&quot;&quot;Makes a Schema class name from a model name (appending &#39;Schema&#39; to
+        name)&quot;&quot;&quot;
+        return name + &quot;Schema&quot;</div>
+
+<div class="viewcode-block" id="SchemaRegistry.get_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_schema">[docs]</a>    @staticmethod
+    def get_schema(name):
+        &quot;&quot;&quot;Gets model by model_name.&quot;&quot;&quot;
+        if name not in SchemaRegistry.schemas:
+            raise SchemaRegistryError(
+                &#39;Schema &quot;{}&quot; not found in SchemaRegistry. Available schemas:\n{}&#39;.format(
+                    name, &quot;,&quot;.join(SchemaRegistry.schemas.keys())
+                )
+            )
+        else:
+            return SchemaRegistry.schemas[name]</div>
+
+<div class="viewcode-block" id="SchemaRegistry.get_model_schema"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.SchemaRegistry.get_model_schema">[docs]</a>    @staticmethod
+    def get_model_schema(model_name):
+        &quot;&quot;&quot;Gets a model schema from a model name.&quot;&quot;&quot;
+        return SchemaRegistry.get_schema(SchemaRegistry.make_schema_name(model_name))</div></div>
+
+
+<div class="viewcode-block" id="ModelRegistry"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry">[docs]</a>class ModelRegistry(type):
+    &quot;&quot;&quot;Stores list of all models instantiated from the SchemaModel base.&quot;&quot;&quot;
+
+    models = {}  # the dictionary of model classes instantiated
+    _model_schema = None  # the class attribute to store the model_classes Schema class
+    _fields_key = &quot;fields&quot;  # the class level attribute key to instantiate model fields
+    _data_key = &quot;__serialized_data&quot;  # the attribute key used to store serialized data
+    _deserialized_key = (
+        &quot;__deserialized_data&quot;
+    )  # the attribute key used to store serialized data
+    BASE = &quot;SchemaModel&quot;
+
+    def __init__(cls, name, bases, selfdict):
+        &quot;&quot;&quot;Saves model to the registry.&quot;&quot;&quot;
+        super().__init__(name, bases, selfdict)
+        if bases != () and bases[0].__name__ != ModelRegistry.BASE:
+            ModelRegistry.models[name] = cls
+
+    @property
+    def model_schema(cls):
+        &quot;&quot;&quot;Returns the class&#39;s schema.&quot;&quot;&quot;
+        return cls._model_schema
+
+<div class="viewcode-block" id="ModelRegistry.get_model"><a class="viewcode-back" href="../../../developer/_autosummary/_autosummary/pydent.marshaller.registry.html#pydent.marshaller.registry.ModelRegistry.get_model">[docs]</a>    @staticmethod
+    def get_model(name):
+        &quot;&quot;&quot;Gets a model class by name.&quot;&quot;&quot;
+        if name not in ModelRegistry.models:
+            raise ModelRegistryError(
+                &quot;Model &#39;{}&#39; not found in registry. Available models:\n{}&quot;.format(
+                    name, &quot;, &quot;.join(ModelRegistry.models.keys())
+                )
+            )
+        return ModelRegistry.models[name]</div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

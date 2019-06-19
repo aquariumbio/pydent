@@ -4,6 +4,7 @@ PlannerLayout
 
 import networkx as nx
 from collections import OrderedDict
+from pydent.planner.utils import _id_getter, get_subgraphs
 from pydent.utils import make_async
 from pydent.models import Operation, Plan
 from typing import Iterable, Tuple
@@ -14,7 +15,7 @@ class PlannerLayout(object):
     TOP_RIGHT = (100, 100)
     BOX_DELTA_X = 170
     BOX_DELTA_Y = 70
-    BOX_WIDTH = 100
+    BOX_WIDTH = 150
     BOX_HEIGHT = 70
     STATUS_COLORS = {
         "waiting": "orange",
@@ -23,7 +24,7 @@ class PlannerLayout(object):
         "running": "green",
         "delayed": "magenta",
         "done": "black",
-        "planning": "grey"
+        "planning": "grey",
     }
 
     def __init__(self, G=None):
@@ -35,16 +36,35 @@ class PlannerLayout(object):
     @classmethod
     def from_plan(cls, plan: Plan):
         """Creates a layout from a :class:`pydent.models.Plan` instance"""
-        layout = cls(nx.DiGraph())
-        edges = []
+        G = nx.DiGraph()
+        layout = cls(G)
+
+        # store reference of operation
+        fv_to_op_dict = {}
+        for op in plan.operations:
+            for fv in op.field_values:
+                fv_to_op_dict[fv.rid] = op
 
         @make_async(10, progress_bar=False)
         def add_wires(wires):
+            missing_operations = []
             for wire in wires:
-                from_id = layout._id_getter(wire.source.operation)
-                to_id = layout._id_getter(wire.destination.operation)
+                # TODO:
+                try:
+                    from_id = _id_getter(fv_to_op_dict[wire.source.rid])
+                    to_id = _id_getter(fv_to_op_dict[wire.destination.rid])
+                except KeyError as e:
+                    pass
+                    raise e
                 if from_id is not None and to_id is not None:
-                    edges.append((from_id, to_id))
+                    if from_id not in G:
+                        missing_operations.append(from_id)
+                    if to_id not in G:
+                        missing_operations.append(to_id)
+                    if from_id in G and to_id in G:
+                        G.add_edge(from_id, to_id, wire=wire)
+            # if missing_operations:
+            #     raise Exception("The following operations are missing from the graph: {}".format(missing_operations))
             return wires
 
         @make_async(10, progress_bar=False)
@@ -53,9 +73,8 @@ class PlannerLayout(object):
                 layout._add_operation(op)
             return ops
 
-        add_wires(plan.wires)
         add_ops(plan.operations)
-        layout.G.add_edges_from(edges)
+        add_wires(plan.wires)
 
         # fix operation coordinates if None
         for op in layout.operations:
@@ -66,13 +85,6 @@ class PlannerLayout(object):
 
         return layout
 
-    @staticmethod
-    def _id_getter(model):
-        id = model.id
-        if id is None:
-            id = "r{}".format(model.rid)
-        return id
-
     @property
     def nodes(self):
         return self.G.nodes
@@ -80,7 +92,13 @@ class PlannerLayout(object):
     @property
     def operations(self):
         for node in self.G.nodes:
-            yield self.G.node[node]['operation']
+            if "operation" in self.G.node[node]:
+                yield self.G.node[node]["operation"]
+
+    def iter_operations(self):
+        for node in self.G.nodes:
+            if "operation" in self.G.node[node]:
+                yield (node, self.G.node[node]["operation"])
 
     def _add_operation(self, operation: Operation):
         """
@@ -91,7 +109,7 @@ class PlannerLayout(object):
         :return: None
         :rtype: None
         """
-        return self.G.add_node(self._id_getter(operation), operation=operation)
+        return self.G.add_node(_id_getter(operation), operation=operation)
 
     def subgraph(self, nodes):
         """Returns a subgraph layout from a list of node_ids"""
@@ -99,11 +117,11 @@ class PlannerLayout(object):
 
     def nodes_to_ops(self, nodes):
         """Returns operations from a list of node_ids"""
-        return [self.G.node[n]['operation'] for n in nodes]
+        return [self.G.node[n]["operation"] for n in nodes]
 
     def ops_to_nodes(self, ops):
         """Returns node_ids for each operation"""
-        return [self._id_getter(op) for op in ops]
+        return [_id_getter(op) for op in ops]
 
     def ops_to_layout(self, ops):
         """Returns a sub-layout containing only the operations"""
@@ -116,17 +134,9 @@ class PlannerLayout(object):
         :return: list of PlannerLayout
         :rtype: list
         """
-        node_list = list(self.G.nodes)
-        subgraphs = []
-        while len(node_list) > 0:
-            node = node_list[-1]
-            subgraph = nx.bfs_tree(self.G.to_undirected(), node)
-            for n in subgraph.nodes:
-                node_list.remove(n)
-            nxsubgraph = self.G.subgraph(subgraph.nodes)
-            sublayout = self.__class__(G=nxsubgraph)
-            subgraphs.append(sublayout)
-        return subgraphs
+        subgraphs = get_subgraphs(self.G)
+        sublayouts = [self.__class__(G=g) for g in subgraphs]
+        return sublayouts
 
     def _topological_sort(self):
         subgraphs = self.get_independent_layouts()
@@ -153,6 +163,9 @@ class PlannerLayout(object):
         self._topological_sort()
         self.move(*self.TOP_RIGHT)
 
+    def prettify(self):
+        return self.topo_sort()
+
     @classmethod
     def arrange_layouts(cls, layouts):
         x = 0
@@ -162,8 +175,9 @@ class PlannerLayout(object):
             x += layout.width + cls.BOX_DELTA_X
             y = layout.y
 
-    def to_grid(self, columns: int, axis: int = 1,
-                border_x: int = None, border_y: int = None):
+    def to_grid(
+        self, columns: int, axis: int = 1, border_x: int = None, border_y: int = None
+    ):
         """
         Arrange layouts in a grid format.
 
@@ -234,13 +248,14 @@ class PlannerLayout(object):
                 max_depth[n] = max(max_depth.get(n, d), d)
 
         # push roots 'up' so they are not stuck on layer one
-        for root in self.roots():
+        for root in roots:
             successors = list(self.successors(root))
             if len(successors) > 0:
                 min_depth = min([max_depth[s] for s in successors])
                 max_depth[root] = min_depth - 1
 
         by_depth = OrderedDict()
+
         for node, depth in max_depth.items():
             by_depth.setdefault(depth, [])
             by_depth[depth].append(node)
@@ -256,9 +271,10 @@ class PlannerLayout(object):
                     x, _ = self.subgraph(predecessors).midpoint()
                     predecessor_avg_x.append((x, op_id))
                 else:
-                    predecessor_avg_x.append((x+1, op_id))
-            sorted_op_ids = [op_id for _, op_id in sorted(
-                predecessor_avg_x, key=lambda x: x[0])]
+                    predecessor_avg_x.append((x + 1, op_id))
+            sorted_op_ids = [
+                op_id for _, op_id in sorted(predecessor_avg_x, key=lambda x: x[0])
+            ]
 
             x = _x
             # sorted_op_ids = sorted(op_ids)
@@ -269,7 +285,7 @@ class PlannerLayout(object):
                 x += delta_x
             layer = self.subgraph(op_ids)
             predecessor_layout = self.predecessor_layout(layer)
-            layer.align_x_midpoints(predecessor_layout)
+            layer.align_x_midpoints_to(predecessor_layout)
             y += delta_y
 
         # readjust
@@ -407,7 +423,7 @@ class PlannerLayout(object):
     def ops_to_roots(self):
         return self.nodes_to_ops(self.roots())
 
-    def align_x_midpoints(self, other_layout):
+    def align_x_midpoints_to(self, other_layout):
         """
         Align the midpoint x-coordinate of this layout with that of another.
 
@@ -420,9 +436,10 @@ class PlannerLayout(object):
             return
         other_x, _ = other_layout.midpoint()
         x, _ = self.midpoint()
-        self.translate(other_x - x, 0)
+        deltax = other_x - x
+        self.translate(deltax, 0)
 
-    def align_y_midpoints(self, other_layout):
+    def align_y_midpoints_to(self, other_layout):
         """
         Align this midpoint y-coordinates of this layout with another layout
 
@@ -450,7 +467,7 @@ class PlannerLayout(object):
         """
         layout1 = self.ops_to_layout(ops1)
         layout2 = self.ops_to_layout(ops2)
-        return layout1.align_x_midpoints(layout2)
+        return layout1.align_x_midpoints_to(layout2)
 
     @property
     def xy(self):
@@ -511,13 +528,14 @@ class PlannerLayout(object):
         for op in self.operations:
             op.x += delta_x
             op.y += delta_y
+        return self.operations
 
     def move(self, x, y):
         self.x = x
         self.y = y
 
     def center(self, x, y):
-        self.move(x - self.width/2, y - self.height/2)
+        self.move(x - self.width / 2, y - self.height / 2)
 
     @property
     def width(self):
@@ -527,16 +545,20 @@ class PlannerLayout(object):
     def height(self):
         return self.bounds()[1][1] - self.bounds()[0][1]
 
-    def draw(self):
+    def pos(self):
         pos = {}
-        for n in self.nodes:
-            op = self.G.node[n]['operation']
+        for n, op in self.iter_operations():
             pos[n] = (op.x, -op.y)
+        return pos
 
-        node_color = [self.STATUS_COLORS.get(
-            op.status, "rosybrown") for op in self.operations]
+    def _status_colors(self):
+        node_color = [
+            self.STATUS_COLORS.get(op.status, "rosybrown") for op in self.operations
+        ]
+        return node_color
 
-        return nx.draw(self.G, pos=pos, node_color=node_color)
+    def draw(self):
+        return nx.draw(self.G, pos=self.pos(), node_color=self._status_colors())
 
     def __len__(self):
         return len(self.G)
