@@ -7,14 +7,13 @@ Version History
 Feature changes in 0.1.0
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Planner class
-* Browser class
+* Planner class - a convenience class creating and editing plans in Aquarium.
+* `Browser` - a convenience class for browsing Samples and other models. Includes caching and query bundling to reduce
+number of queries and increase script speed.
 * new queries (one, last, first)
 * removed requirement of Marshmallow serialization/deserialization dependency, replaced by faster code
 * Removed `marshmallow` as a serialization/deserialization library. A custom library is now used that avoids unnecessary
 field validation. As a result, model `load` and `dump` is many fold faster.
-* `Browser` - a convinience method for browsing Samples and other models. Includes cacheing and query bundling to reduce
-number of queries and increase script speed.
 
 Details in 0.1.0
 ~~~~~~~~~~~~~~~~
@@ -40,4 +39,3 @@ Testing in 0.1.0
 
   * vcrpy` is used to cache and store queries for deterministic testing.
   * Improved documentation.
-  * Testing pytest-benchmarks (TODO: store previous versions)
