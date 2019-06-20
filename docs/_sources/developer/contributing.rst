@@ -144,6 +144,13 @@ configure `poetry` for the pypi repositories:
     poetry config http-basic.testpypi <pypi_username> <pypi_password>
 
 
+If you've made any update to the dependencies, run the following to update the lock file:
+
+::
+
+    poetry update
+
+
 Finally run the following commands
 
 ::

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Version History &#8212; pydent 0.1.0 documentation</title>
+    <title>Version History &#8212; pydent v0.1.2-alpha documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>v0.1.2-alpha</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -144,15 +144,14 @@
 <div class="section" id="feature-changes-in-0-1-0">
 <h3>Feature changes in 0.1.0<a class="headerlink" href="#feature-changes-in-0-1-0" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Planner class</p></li>
-<li><p>Browser class</p></li>
-<li><p>new queries (one, last, first)</p></li>
-<li><p>removed requirement of Marshmallow serialization/deserialization dependency, replaced by faster code</p></li>
-<li><p>Removed <cite>marshmallow</cite> as a serialization/deserialization library. A custom library is now used that avoids unnecessary</p></li>
+<li><p>Planner class - a convenience class creating and editing plans in Aquarium.</p></li>
+<li><p><cite>Browser</cite> - a convenience class for browsing Samples and other models. Includes caching and query bundling to reduce</p></li>
 </ul>
-<p>field validation. As a result, model <cite>load</cite> and <cite>dump</cite> is many fold faster.
-* <cite>Browser</cite> - a convinience method for browsing Samples and other models. Includes cacheing and query bundling to reduce
-number of queries and increase script speed.</p>
+<p>number of queries and increase script speed.
+* new queries (one, last, first)
+* removed requirement of Marshmallow serialization/deserialization dependency, replaced by faster code
+* Removed <cite>marshmallow</cite> as a serialization/deserialization library. A custom library is now used that avoids unnecessary
+field validation. As a result, model <cite>load</cite> and <cite>dump</cite> is many fold faster.</p>
 </div>
 <div class="section" id="details-in-0-1-0">
 <h3>Details in 0.1.0<a class="headerlink" href="#details-in-0-1-0" title="Permalink to this headline">¶</a></h3>
@@ -186,7 +185,6 @@ number of queries and increase script speed.</p>
 <div><ul class="simple">
 <li><p>vcrpy` is used to cache and store queries for deterministic testing.</p></li>
 <li><p>Improved documentation.</p></li>
-<li><p>Testing pytest-benchmarks (TODO: store previous versions)</p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -205,7 +203,7 @@ number of queries and increase script speed.</p>
       
     </p>
     <p>
-        &copy; Copyright 2019, University of Washington.<br/>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
     </p>
   </div>
