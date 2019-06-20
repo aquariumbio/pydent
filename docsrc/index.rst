@@ -11,8 +11,9 @@ Trident is the Python scripting API for
 , the software that runs the
 `UW BIOFAB <http://www.uwbiofab.org>`_.
 The `code respository <https://github.com/klavinslab/trident>`_ is freely available to all.
+Trident was built by members of the `Klavins lab <http://klavinslab.org/>`_ Github
 
-`Klavins lab <https://github.com/klavinslab/>`_ Github
+With Trident, you may pull down data, submit plans, create samples, and more.
 
 Links:
 ~~~~~~
