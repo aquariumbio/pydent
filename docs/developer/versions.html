@@ -91,7 +91,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Version History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">0.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alpha">0.1.2-alpha</a></li>
 </ul>
 </li>
 </ul>
@@ -139,10 +139,10 @@
       
   <div class="section" id="version-history">
 <h1>Version History<a class="headerlink" href="#version-history" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2>0.1.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="feature-changes-in-0-1-0">
-<h3>Feature changes in 0.1.0<a class="headerlink" href="#feature-changes-in-0-1-0" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="alpha">
+<h2>0.1.2-alpha<a class="headerlink" href="#alpha" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="major-changes">
+<h3>Major changes<a class="headerlink" href="#major-changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Planner class - a convenience class creating and editing plans in Aquarium.</p></li>
 <li><p><cite>Browser</cite> - a convenience class for browsing Samples and other models. Includes caching and query bundling to reduce</p></li>
@@ -153,40 +153,24 @@
 * Removed <cite>marshmallow</cite> as a serialization/deserialization library. A custom library is now used that avoids unnecessary
 field validation. As a result, model <cite>load</cite> and <cite>dump</cite> is many fold faster.</p>
 </div>
-<div class="section" id="details-in-0-1-0">
-<h3>Details in 0.1.0<a class="headerlink" href="#details-in-0-1-0" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="minor-changes">
+<h3>Minor changes<a class="headerlink" href="#minor-changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Continuous validation - Cannot set Nested/Relationship attributes to arbitrary values. E.g. <cite>sample_type.sample = 5</cite> will raise an Exception, but setting <cite>sample_type.sample = mysample</cite> will not.</p></li>
-<li><p>Automatic setting of primary_keys (TODO):</p>
-<ul>
-<li><p><cite>sample_type.sample = mysample</cite> will also automatically set the <cite>sample_id</cite> attribute, since this is defined in the HasOne relationship as an attribute_key. But setting <cite>sample_type.sample.id = 5</cite> will not change the <cite>sample_id</cite> key.</p></li>
-</ul>
-</li>
-<li><p>setting <cite>None</cite> will no longer trigger a query attempt. In previous versions, a relationship whose value was set to <cite>None</cite> would intialize a query attempt anytime <cite>getattr</cite> accessed a model attribute, using round-about exception handling to avoid errors; this made it impossible to set a relationship attribute to <cite>None.</cite> Now, a query will only be initiated if the key does not exist in the models underlying data. This means that data received from Aquarium will be used as expected (i.e. setting <cite>{“sample”: None}</cite> will not try to initiate a query next time <cite>model.sample</cite> is called).</p>
-<ul>
-<li><p>tldr;
-* Use: <cite>del model.attr</cite> will reset model to trigger a query
-* Settings <cite>model.attr = None</cite> will not trigger a query next time <cite>model.attr</cite> is called.
-* Data used to load models will be used as is (e.g. <cite>{‘sample’: None}</cite> will not initiate a query if <cite>model.sample</cite> is called)</p></li>
-</ul>
-</li>
-<li><p>Setting FieldValue (TODO)</p>
-<ul>
-<li><p><cite>FieldValue.set_value</cite> now handles None values. In previous version, None values passed into set_field_value would be ignored, making it difficult to <em>reset</em> a FieldValue. For example <cite>field_value.set_value(sample=None)</cite> will now reset the sample value for the FieldValue instead of being ignored.</p></li>
-</ul>
-</li>
+<li><p>Continuous validation - Cannot set Nested/Relationship attributes to arbitrary values. E.g. <cite>sample_type.sample = 5</cite> will raise an Exception, but setting <cite>sample_type.sample = mysample</cite> will not.
+* <cite>sample_type.sample = mysample</cite> will also automatically set the <cite>sample_id</cite> attribute, since this is defined in the HasOne relationship as an attribute_key. But setting <cite>sample_type.sample.id = 5</cite> will not change the <cite>sample_id</cite> key.</p></li>
+<li><p>setting <cite>None</cite> will no longer trigger a query attempt. In previous versions, a relationship whose value was set to <cite>None</cite> would intialize a query attempt anytime <cite>getattr</cite> accessed a model attribute, using round-about exception handling to avoid errors; this made it impossible to set a relationship attribute to <cite>None.</cite> Now, a query will only be initiated if the key does not exist in the models underlying data. This means that data received from Aquarium will be used as expected (i.e. setting <cite>{“sample”: None}</cite> will not try to initiate a query next time <cite>model.sample</cite> is called).
+* <cite>FieldValue.set_value</cite> now handles None values. In previous version, None values passed into set_field_value would be ignored, making it difficult to <em>reset</em> a FieldValue. For example <cite>field_value.set_value(sample=None)</cite> will now reset the sample value for the FieldValue instead of being ignored.</p></li>
 <li><p><cite>primary_key</cite> will return an <cite>id</cite>. If <cite>id==None</cite>, then the <cite>rid</cite> is returned (e.g. <cite>rid1023</cite>)</p></li>
 <li><p><cite>HasOne</cite> relationship will automatically set the corresponding model reference when setting attributes. E.g. <cite>sample.sample_type = myst</cite> will also automatically set <cite>sample.sample_type_id = myst.id</cite> since this is defined in the <cite>HasOne</cite> field. Similar tracking is not implemented for other relationships.</p></li>
 </ul>
 </div>
-<div class="section" id="testing-in-0-1-0">
-<h3>Testing in 0.1.0<a class="headerlink" href="#testing-in-0-1-0" title="Permalink to this headline">¶</a></h3>
-<blockquote>
-<div><ul class="simple">
+<div class="section" id="developer-changes">
+<h3>Developer changes<a class="headerlink" href="#developer-changes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><cite>poetry</cite> <a class="reference external" href="https://poetry.eustace.io/">https://poetry.eustace.io/</a> now used as the package manager, replacing <em>pipenv</em></p></li>
 <li><p>vcrpy` is used to cache and store queries for deterministic testing.</p></li>
 <li><p>Improved documentation.</p></li>
 </ul>
-</div></blockquote>
 </div>
 </div>
 </div>
