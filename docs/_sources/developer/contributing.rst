@@ -125,7 +125,17 @@ docs directory, which contains generated documentation files:
 Building documentation
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Install the extras:
 
+::
+
+    poetry install -E docs
+
+Then build the docs using:
+
+::
+
+    make docs
 
 Manual release
 ~~~~~~~~~~~~~~
