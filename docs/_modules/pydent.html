@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Advanced topics &#8212; pydent v0.1.3-alpha documentation</title>
+    <title>pydent &#8212; pydent v0.1.3-alpha documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -14,8 +14,6 @@
     <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Speeding up queries" href="caching.html" />
-    <link rel="prev" title="Contributing" href="../developer/contributing.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -55,7 +53,7 @@
      href="../index.html">Trident <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
+      aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
 </ul>
@@ -86,9 +84,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="caching.html">Speeding up queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="planner_tutorial.html">Planner tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">Version History</a><ul>
@@ -104,24 +102,12 @@
             
               
                 
-  <li>
-    <a href="../developer/contributing.html" title="Previous Chapter: Contributing"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Contributing</span>
-    </a>
-  </li>
-  <li>
-    <a href="caching.html" title="Next Chapter: Speeding up queries"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Speeding up queries &raquo;</span>
-    </a>
-  </li>
               
             
             
             
             
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="../_sources/advanced/topics.rst"
-     rel="nofollow">Source</a>
-</div></li>
+              <li class="hidden-sm"></li>
             
           </ul>
 
@@ -143,20 +129,61 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="advanced-topics">
-<h1>Advanced topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="caching.html">Speeding up queries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="caching.html#temporary-sessions">Temporary Sessions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="caching.html#optimized-queries">Optimized queries</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="planner_tutorial.html">Planner tutorial</a></li>
-</ul>
-</div>
-</div>
+  <h1>Source code for pydent</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
 
+.. module:: pydent
+
+Submodules
+==========
+
+.. autosummary::
+    :toctree: _autosummary
+
+    aqhttp
+    aqsession
+    base
+    exceptions
+    interfaces
+    models
+    relationships
+    browser
+    planner
+    marshaller
+    utils
+
+&quot;&quot;&quot;
+
+# without nest_asyncio, Jupyter notebooks will crash if an async method is used
+import nest_asyncio
+
+nest_asyncio.apply()
+
+from .aqsession import AqSession
+from .base import ModelBase, ModelRegistry
+from .utils import pprint
+from .browser import Browser
+from pydent._version import __version__, __title__, __author__, __homepage__, __repo__
+import getpass
+
+
+<div class="viewcode-block" id="login"><a class="viewcode-back" href="../developer/api_reference.html#pydent.login">[docs]</a>def login(user, url, password=None):
+    &quot;&quot;&quot;
+    Create a new AqSession instance from login information.
+
+    :param user: user login
+    :type user: basestring
+    :param url: server url
+    :type url: basestring
+    :param password: optional password. If left blank, a secure prompt will ask for the password.
+    :type password: basestring | None
+    :return: the session
+    :rtype: AqSession
+    &quot;&quot;&quot;
+    if password is None:
+        return AqSession(user, getpass.getpass(), url)
+    return AqSession(user, password, url)</div>
+</pre></div>
 
     </div>
       
