@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Contributing &#8212; pydent v0.1.2-alpha documentation</title>
+    <title>Contributing &#8212; pydent v0.1.3-alpha documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>v0.1.2-alpha</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>v0.1.3-alpha</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -233,56 +233,19 @@ docs directory, which contains generated documentation files:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>make hooks
 </pre></div>
 </div>
+<div class="section" id="building-documentation">
+<h3>Building documentation<a class="headerlink" href="#building-documentation" title="Permalink to this headline">¶</a></h3>
+</div>
 <div class="section" id="manual-release">
 <h3>Manual release<a class="headerlink" href="#manual-release" title="Permalink to this headline">¶</a></h3>
-<p>You can use poetry to make a manual release using the following script, first
-configure <cite>poetry</cite> for the pypi repositories:</p>
-<p><strong>PyPI repo</strong></p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>poetry config repositories.pypi https://pypi.org
-poetry config http-basic.pypi &lt;pypi_username&gt; &lt;pypi_password&gt;
+<p>To release, make sure your tests are passing. To make a new release,
+run the <cite>scripts/release.sh</cite> script by calling:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>make release
 </pre></div>
 </div>
-<p><strong>Testing repo</strong></p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>poetry config repositories.testpypi https://test.pypi.org/legacy
-poetry config http-basic.testpypi &lt;pypi_username&gt; &lt;pypi_password&gt;
-</pre></div>
-</div>
-<p>If you’ve made any update to the dependencies, run the following to update the lock file:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>poetry update
-</pre></div>
-</div>
-<p>Finally run the following commands</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># choose &quot;pypi&quot; or &quot;testpypi&quot;
-REPO=testpypi
-
-# version bump
-poetry version $1
-
-# parse .toml file for version, update to package
-poetry run upver
-
-# format the code using black
-make format
-
-# update the documentation
-make docs
-
-# save the version number from the package
-VER=$(poetry run version)
-
-# commit changes
-git add .
-git commit -m &quot;release $VER&quot;
-git push
-
-# commit new tag
-git tag $VER
-git push origin $VER
-
-# publish to your repository
-poetry publish -r $REPO --build -n
-</pre></div>
-</div>
+<p>Which will call an interactive script to make a new release which will
+make your documents, format your code, optionally make a git commit, optionally
+push changes to remote, and finally publish to PyPI.</p>
 </div>
 </div>
 </div>
