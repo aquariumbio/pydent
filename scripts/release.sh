@@ -12,6 +12,7 @@ END="\e[0m"
 
 COMMIT=0
 PUSH=0
+DOCS=1
 REPO=""
 VERSION=""
 
@@ -37,6 +38,12 @@ if [ "$COMMIT" == 1 ]; then
     read input
     if [ "$input" == "y" ]; then
         PUSH=1
+    fi
+
+    printf "$CINPUT Would you like to build the documentation as well? ([y]/n): $END"
+    read input
+    if [ "$input" == "n" ]; then
+        DOCS=0
     fi
 fi
 
