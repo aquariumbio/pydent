@@ -28,6 +28,10 @@ coverage:
 	poetry run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=pydent tests
 
 
+release:
+	sh scripts/release.sh
+
+
 pullversion:
 	poetry run upver
 
