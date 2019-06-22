@@ -64,6 +64,6 @@ def verify_ci():
 
 __version__ = ver["version"]
 __title__ = ver["name"]
-__author__ = ver["authors"]
+__author__ = ', '.join(ver["authors"])
 __homepage__ = ver["homepage"]
 __repo__ = ver["repository"]
