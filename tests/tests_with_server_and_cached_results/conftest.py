@@ -80,6 +80,12 @@ def pytest_collection_modifyitems(items):
 # Fixtures
 ###########
 
+DEFAULTCONFIG = {
+    "login": "neptune",
+    "password": "aquarium",
+    "aquarium_url": "http://0.0.0.0:80"
+}
+
 
 @pytest.fixture(scope="session")
 def config():
@@ -89,9 +95,13 @@ def config():
     dir = os.path.dirname(os.path.abspath(__file__))
 
     config_path = os.path.join(dir, "secrets", "config.json.secret")
-    with open(config_path, "rU") as f:
-        config = json.load(f)
-    return config
+    if os.path.isfile(config_path):
+        with open(config_path, "rU") as f:
+            config = json.load(f)
+        return config
+    else:
+        raise FileNotFoundError("No session login credentials found at {}. Please add file"
+                                " to complete live tests.".format(config_path))
 
 
 @pytest.fixture(scope="session")
