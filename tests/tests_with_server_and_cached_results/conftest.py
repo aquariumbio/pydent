@@ -83,7 +83,7 @@ def pytest_collection_modifyitems(items):
 DEFAULTCONFIG = {
     "login": "neptune",
     "password": "aquarium",
-    "aquarium_url": "http://0.0.0.0:80"
+    "aquarium_url": "http://0.0.0.0:80",
 }
 
 
@@ -100,8 +100,10 @@ def config():
             config = json.load(f)
         return config
     else:
-        raise FileNotFoundError("No session login credentials found at {}. Please add file"
-                                " to complete live tests.".format(config_path))
+        raise FileNotFoundError(
+            "No session login credentials found at {}. Please add file"
+            " to complete live tests.".format(config_path)
+        )
 
 
 @pytest.fixture(scope="session")
