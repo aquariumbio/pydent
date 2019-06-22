@@ -9,13 +9,14 @@ install_requires = [
     "pandas",
     "tqdm",
     "nest_asyncio",
+    'toml'
 ]
 
 # setup
 setup(
     title="Trident",
     name="pydent",
-    version="0.1.0a",
+    version="0.1.3a",
     packages=["pydent", "pydent.marshaller", "pydent.utils", "pydent.planner"],
     tests_require=tests_require,
     install_requires=install_requires,
