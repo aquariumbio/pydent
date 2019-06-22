@@ -11,7 +11,7 @@ s = session.Sample.one()
 print(s)
 print(s.properties)
 primertype = session.SampleType.find_by_name("Primer")
-newprimer = session.Sample.new(name="MyNewPrimer", project="Demo", sample_type_id=primertype.id)
+newprimer = session.Sample.new(name="MyDemoPrimer", project="Demo", sample_type_id=primertype.id)
 newprimer.field_values = []
 newprimer.update_properties({'Anneal Sequence': 'AGGGTTCTGGGTTGTGCTGTA'})
 newprimer.save()
