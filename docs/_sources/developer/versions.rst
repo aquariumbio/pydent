@@ -1,6 +1,12 @@
 Version History
 ===============
 
+0.1.3-alpha
+-----------
+
+* added `pydent.login` method, which returns an `AqSession` instance with option to input password
+securely. Useful for live demos.
+
 0.1.2-alpha
 -----------
 

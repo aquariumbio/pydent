@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Intro to Programmatic Science &#8212; pydent 0.1.4a documentation</title>
+    <title>pydent &#8212; pydent 0.1.4a documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -107,11 +107,7 @@
             
             
             
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="../_sources/other/intro.rst"
-     rel="nofollow">Source</a>
-</div></li>
+              <li class="hidden-sm"></li>
             
           </ul>
 
@@ -133,50 +129,61 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="intro-to-programmatic-science">
-<h1>Intro to Programmatic Science<a class="headerlink" href="#intro-to-programmatic-science" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="aquarium">
-<h2>Aquarium<a class="headerlink" href="#aquarium" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="aquarium-subsystems">
-<h3>Aquarium Subsystems<a class="headerlink" href="#aquarium-subsystems" title="Permalink to this headline">¶</a></h3>
-<img alt="../_images/Fig1_Subsystems.png" src="../_images/Fig1_Subsystems.png" style="width: 80%;" />
-</div>
-<div class="section" id="information-management-system">
-<h3>Information Management System<a class="headerlink" href="#information-management-system" title="Permalink to this headline">¶</a></h3>
-<img alt="../_images/Fig2_LIMS.png" src="../_images/Fig2_LIMS.png" style="width: 90%;" />
-</div>
-<div class="section" id="experimental-planning">
-<h3>Experimental planning<a class="headerlink" href="#experimental-planning" title="Permalink to this headline">¶</a></h3>
-<img alt="../_images/Fig3_Planning.png" src="../_images/Fig3_Planning.png" style="width: 90%;" />
-</div>
-<div class="section" id="operational-state-machine">
-<h3>Operational State Machine<a class="headerlink" href="#operational-state-machine" title="Permalink to this headline">¶</a></h3>
-<img alt="../_images/Fig4_OperationStatus.png" src="../_images/Fig4_OperationStatus.png" style="width: 90%;" />
-</div>
-<div class="section" id="aquarium-protocol-language-apl">
-<h3>Aquarium Protocol Language (APL)<a class="headerlink" href="#aquarium-protocol-language-apl" title="Permalink to this headline">¶</a></h3>
-<img alt="../_images/Fig5_KrillCode.png" src="../_images/Fig5_KrillCode.png" style="width: 90%;" />
-</div>
-<div class="section" id="aquarium-workflow-language-awl">
-<h3>Aquarium Workflow Language (AWL)<a class="headerlink" href="#aquarium-workflow-language-awl" title="Permalink to this headline">¶</a></h3>
-<img alt="../_images/Fig6_DesignerPage.png" src="../_images/Fig6_DesignerPage.png" style="width: 90%;" />
-</div>
-<div class="section" id="developer">
-<h3>Developer<a class="headerlink" href="#developer" title="Permalink to this headline">¶</a></h3>
-<img alt="other/_static/Fig7_DeveloperPage.png" src="other/_static/Fig7_DeveloperPage.png" style="width: 90%;" />
-</div>
-</div>
-<div class="section" id="reproducibility">
-<h2>Reproducibility<a class="headerlink" href="#reproducibility" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="experimental-throughput">
-<h2>Experimental Throughput<a class="headerlink" href="#experimental-throughput" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="human-less-science">
-<h2>Human-less Science<a class="headerlink" href="#human-less-science" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
+  <h1>Source code for pydent</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
 
+.. module:: pydent
+
+Submodules
+==========
+
+.. autosummary::
+    :toctree: _autosummary
+
+    aqhttp
+    aqsession
+    base
+    exceptions
+    interfaces
+    models
+    relationships
+    browser
+    planner
+    marshaller
+    utils
+
+&quot;&quot;&quot;
+
+# without nest_asyncio, Jupyter notebooks will crash if an async method is used
+import nest_asyncio
+
+nest_asyncio.apply()
+
+from .aqsession import AqSession
+from .base import ModelBase, ModelRegistry
+from .utils import pprint
+from .browser import Browser
+from pydent._version import __version__, __title__, __author__, __homepage__, __repo__
+import getpass
+
+
+<div class="viewcode-block" id="login"><a class="viewcode-back" href="../developer/api_reference.html#pydent.login">[docs]</a>def login(user, url, password=None):
+    &quot;&quot;&quot;
+    Create a new AqSession instance from login information.
+
+    :param user: user login
+    :type user: basestring
+    :param url: server url
+    :type url: basestring
+    :param password: optional password. If left blank, a secure prompt will ask for the password.
+    :type password: basestring | None
+    :return: the session
+    :rtype: AqSession
+    &quot;&quot;&quot;
+    if password is None:
+        return AqSession(user, getpass.getpass(), url)
+    return AqSession(user, password, url)</div>
+</pre></div>
 
     </div>
       
