@@ -252,7 +252,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
     @property
     def url(self):
-        return self.session.url + "plans?plan_id={}".format(self.plan.id)
+        return self.session.url + "/plans?plan_id={}".format(self.plan.id)
 
     def open(self):
         webbrowser.open(self.url)
