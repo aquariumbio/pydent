@@ -252,7 +252,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
     @property
     def url(self):
-        return self.session.url + "plans?plan_id={}".format(self.plan.id)
+        return self.session.url + "/plans?plan_id={}".format(self.plan.id)
 
     def open(self):
         webbrowser.open(self.url)
@@ -281,10 +281,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
 
     def update(self):
         """Save the plan on Aquarium"""
-        prev_timeout = self.session._AqSession__aqhttp.timeout
-        self.session.set_timeout(60)
         self.plan.save()
-        self.session.set_timeout(prev_timeout)
         return self.plan
 
     def create_operation_by_type(self, ot, status="planning"):

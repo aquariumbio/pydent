@@ -90,6 +90,7 @@ else
 fi
 
 # tagging
+TAG="v$VERSION"
 printf "\n$SEP Tagging branch $SEP\n"
 if [ "$COMMIT" == 1 ]; then
     git tag $TAG
