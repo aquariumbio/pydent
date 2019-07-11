@@ -28,12 +28,11 @@ coverage:
 	poetry run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=pydent tests
 
 
-release:
-	sh scripts/release.sh
-
-
 pullversion:
-	poetry run upver
+	poetry run keats version up
+	poetry run keats changelog up
+	cp .keats/changelog.md docsrc/developer/versions.md
+
 
 docs: | pullversion
 	@echo "Updating docs"
@@ -65,19 +64,6 @@ format:
 	poetry run black tests
 
 
-testpublish:
-	sh scripts/testpublish.sh
-
-
-lock: | pullversion
-	poetry update
-
-build: | pullversion
-	poetry build
-
-tag: | pullversion
-	sh scripts/tag.sh
-
 hooks: .git/hooks
 	cp scripts/* .git/hooks
 
@@ -85,5 +71,6 @@ hooks: .git/hooks
 klocs:
 	find . -name '*.py' | xargs wc -l
 
+
 tox:
-	tox
+	poetry run tox

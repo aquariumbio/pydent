@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.models.inventory &#8212; pydent 0.1.5a1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.models.inventory</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
+Models related to inventory, like Items, Collections, ObjectTypes, and PartAssociations
+&quot;&quot;&quot;
+
+from pydent.base import ModelBase
+from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.relationships import Raw, HasOne, HasMany, HasManyThrough, HasManyGeneric
+
+
+<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item">[docs]</a>@add_schema
+class Item(DataAssociatorMixin, SaveMixin, ModelBase):
+    &quot;&quot;&quot;
+    A physical object in the lab, which a location and unique id.
+    &quot;&quot;&quot;
+
+    fields = dict(
+        sample=HasOne(&quot;Sample&quot;),
+        object_type=HasOne(&quot;ObjectType&quot;),
+        data_associations=HasManyGeneric(
+            &quot;DataAssociation&quot;, additional_args={&quot;parent_class&quot;: &quot;Item&quot;}
+        ),
+        data=Raw(),
+        ignore=(&quot;locator_id&quot;,),
+        part_associations=HasMany(
+            &quot;PartAssociation&quot;, ref=&quot;part_id&quot;
+        ),  # TODO: add to change log
+        collections=HasManyThrough(
+            &quot;Collection&quot;, &quot;PartAssociation&quot;
+        ),  # TODO: add to change log
+    )
+    query_hook = {&quot;methods&quot;: [&quot;is_part&quot;]}
+
+    def __init__(
+        self=None, sample_id=None, sample=None, object_type=None, object_type_id=None
+    ):
+        super().__init__(
+            object_type_id=object_type_id,
+            object_type=object_type,
+            sample_id=sample_id,
+            sample=sample,
+        )
+
+<div class="viewcode-block" id="Item.make"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item.make">[docs]</a>    def make(self):
+        &quot;&quot;&quot;Makes the Item on the Aquarium server. Requires
+        this Item to be connected to a session.&quot;&quot;&quot;
+        result = self.session.utils.create_items([self])
+        return self.reload(result[0][&quot;item&quot;])</div>
+
+<div class="viewcode-block" id="Item.save"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item.save">[docs]</a>    def save(self):
+        &quot;&quot;&quot;A synonym for `make`&quot;&quot;&quot;
+        return self.make()</div>
+
+    def is_deleted(self):
+        return self.location == &quot;deleted&quot;
+
+    @property
+    def containing_collection(self):
+        &quot;&quot;&quot;
+        Returns the collection of which this Item is a part.
+
+        Returns the collection object if the Item is a part, otherwise
+        returns None.
+        &quot;&quot;&quot;
+        if not self.is_part:
+            return None
+
+        assoc_list = self.session.PartAssociation.where({&quot;part_id&quot;: self.id})
+        if not assoc_list:
+            return
+
+        if len(assoc_list) != 1:
+            return None
+
+        part_assoc = next(iter(assoc_list))
+        if not part_assoc:
+            return None
+
+        return self.session.Collection.find(part_assoc.collection_id)
+
+<div class="viewcode-block" id="Item.as_collection"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Item.as_collection">[docs]</a>    def as_collection(self):
+        &quot;&quot;&quot;
+        Returns the Collection object with the ID of this Item, which must be a
+        collection.
+
+        Returns None if this Item is not a collection.
+        &quot;&quot;&quot;
+        if not self.is_collection:
+            return None
+
+        return self.session.Collection.find(self.id)</div>
+
+    @property
+    def is_collection(self):
+        &quot;&quot;&quot;
+        Returns True if this Item is a collection in a PartAssociation.
+
+        Note: this is not how Aquarium does this test in the `collection?` method.
+        &quot;&quot;&quot;
+        assoc_list = self.session.PartAssociation.where({&quot;collection_id&quot;: self.id})
+        return bool(assoc_list)
+
+    # TODO: add to change log
+    @property
+    def collection(self):
+        return self.collections[0]
+
+    # TODO: add to change log
+    @property
+    def part_association(self):
+        return self.part_associations[0]</div>
+
+
+<div class="viewcode-block" id="Collection"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Collection">[docs]</a>@add_schema
+class Collection(
+    DataAssociatorMixin, ModelBase
+):  # pylint: disable=too-few-public-methods
+    &quot;&quot;&quot;A Collection model, such as a 96-well plate, which contains many `parts`, each
+    of which can be associated with a different sample.&quot;&quot;&quot;
+
+    fields = dict(
+        object_type=HasOne(&quot;ObjectType&quot;),
+        data_associations=HasManyGeneric(
+            &quot;DataAssociation&quot;, additional_args={&quot;parent_class&quot;: &quot;Collection&quot;}
+        ),
+        part_associations=HasMany(&quot;PartAssociation&quot;, &quot;Collection&quot;),
+        parts=HasManyThrough(&quot;Item&quot;, &quot;PartAssociation&quot;, ref=&quot;part_id&quot;),
+    )
+    query_hook = {&quot;methods&quot;: [&quot;dimensions&quot;]}
+
+    @property
+    def matrix(self):
+        &quot;&quot;&quot;
+        Returns the matrix of Samples for this Collection.
+
+        (Consider using samples of parts directly.)
+        &quot;&quot;&quot;
+        num_row, num_col = self.dimensions
+        sample_matrix = list()
+        for row in range(num_row):
+            row_list = list()
+            for col in range(num_col):
+                sample_id = None
+                part = self.part(row, col)
+                if part:
+                    sample_id = part.sample.id
+                row_list.append(sample_id)
+            sample_matrix.append(row_list)
+        return sample_matrix
+
+<div class="viewcode-block" id="Collection.part"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Collection.part">[docs]</a>    def part(self, row, col):
+        &quot;&quot;&quot;
+        Returns the part Item at (row, col) of this Collection (zero-based).
+        &quot;&quot;&quot;
+        parts = [
+            assoc.part
+            for assoc in self.part_associations
+            if assoc.row == row and assoc.column == col
+        ]
+
+        if not parts:
+            return None
+
+        return next(iter(parts))</div>
+
+<div class="viewcode-block" id="Collection.as_item"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.Collection.as_item">[docs]</a>    def as_item(self):
+        &quot;&quot;&quot;
+        Returns the Item object with the ID of this Collection
+        &quot;&quot;&quot;
+        return self.session.Item.find(self.id)</div>
+
+    def create(self):
+        self.as_item().create()
+
+    def update(self):
+        self.as_item().update()
+
+    def save(self):
+        self.as_item().save()</div>
+
+
+<div class="viewcode-block" id="ObjectType"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.ObjectType">[docs]</a>@add_schema
+class ObjectType(SaveMixin, ModelBase):
+    &quot;&quot;&quot;A ObjectType model that represents the type of container an item is.&quot;&quot;&quot;
+
+    fields = dict(items=HasMany(&quot;Item&quot;, &quot;ObjectType&quot;), sample_type=HasOne(&quot;SampleType&quot;))
+
+    def __str__(self):
+        return self._to_str(&quot;id&quot;, &quot;name&quot;)</div>
+
+
+<div class="viewcode-block" id="PartAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.inventory.PartAssociation">[docs]</a>@add_schema
+class PartAssociation(ModelBase):
+    &quot;&quot;&quot;
+    Represents a PartAssociation linking a part to a collection. Collections contain
+    many `parts`, each of which can refer to a different sample.
+    &quot;&quot;&quot;
+
+    fields = dict(part=HasOne(&quot;Item&quot;, ref=&quot;part_id&quot;), collection=HasOne(&quot;Collection&quot;))
+
+    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
+        super().__init__(
+            part_id=part_id, collection_id=collection_id, row=row, column=column
+        )</div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

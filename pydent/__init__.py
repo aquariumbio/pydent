@@ -31,7 +31,7 @@ from .aqsession import AqSession
 from .base import ModelBase, ModelRegistry
 from .utils import pprint
 from .browser import Browser
-from pydent._version import __version__, __title__, __author__, __homepage__, __repo__
+from .__version__ import __version__, __title__, __authors__, __homepage__, __repo__
 import getpass
 
 
