@@ -56,6 +56,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
     "sphinx.ext.inheritance_diagram",
+    "recommonmark"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -73,7 +74,7 @@ master_doc = "index"
 # General information about the project.
 project = pydent.__title__
 copyright = "2017-2019, University of Washington"
-author = pydent.__author__
+author = ', '.join(pydent.__authors__)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
