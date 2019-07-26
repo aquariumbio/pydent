@@ -4,7 +4,7 @@
 installation of keats
 
  - keats manager tool installation
- - remove warnings that occured during plan.save() and plan.update()
+ - remove warnings that occurred during plan.save() and plan.update()
 
 
 ## 0.1.5a
