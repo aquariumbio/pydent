@@ -1,6 +1,16 @@
 # pydent change log
+## 0.1.5a2
+**2019-07-28T13:08:07.331007**
+minor bug fixes
+
+ - Fixed error that occurred when Planner and PlannerLayout had no operations
+ - Added 'using_verbose' to session factory. Create a verbose session using `session(using_verbose=True)`
+ - Improved logging library. Logging library accessible via '<model>.log' as in `session.log.info(<msg>)`
+ - Traceback limit for logging can be set using `session.log.set_tb_limit(<limit>)`
+
+
 ## 0.1.5a1
-**2019-07-09T19:39:58.276296**
+**2019-07-26T08:46:10.461557**
 installation of keats
 
  - keats manager tool installation
