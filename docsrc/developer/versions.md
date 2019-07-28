@@ -1,9 +1,10 @@
 # pydent change log
 ## 0.1.5a1
-**2019-07-09T18:52:21.759597**
+**2019-07-09T19:39:58.276296**
 installation of keats
 
  - keats manager tool installation
+ - remove warnings that occurred during plan.save() and plan.update()
 
 
 ## 0.1.5a
