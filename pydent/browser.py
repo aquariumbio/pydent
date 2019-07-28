@@ -18,6 +18,7 @@ from pydent.base import ModelBase
 from pydent.interfaces import QueryInterface
 from pydent.utils import Loggable
 
+
 class BrowserException(Exception):
     """Generic browser exception"""
 
