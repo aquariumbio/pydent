@@ -111,12 +111,12 @@ class AqSession(SessionABC):
     def session(self):
         return self
 
-    def set_verbose(self, verbose):
-        self._aqhttp.set_verbose(verbose)
+    def set_verbose(self, verbose, tb_limit=None):
+        self._aqhttp.log.set_verbose(verbose, tb_limit=tb_limit)
 
     def _log_to_aqhttp(self, msg):
         """Sends a log message to the aqhttp's logger"""
-        self._aqhttp._info(msg)
+        self._aqhttp.log.info(msg)
 
     def _register_interface(self, model_name):
         # get model interface from model class

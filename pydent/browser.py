@@ -16,14 +16,13 @@ from pydent.base import ModelBase
 # TODO: examples in sphinx
 # TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
 from pydent.interfaces import QueryInterface
-from pydent.utils import logger
-
+from pydent.utils import Loggable
 
 class BrowserException(Exception):
     """Generic browser exception"""
 
 
-class Browser(logger.Loggable, object):
+class Browser(object):
     """
     A class for browsing models and Aquarium inventory
     """
@@ -51,7 +50,7 @@ class Browser(logger.Loggable, object):
         self.model_name = "Sample"
         self.model_list_cache = {}
         self.model_cache = {}
-        self.init_logger("Browser@{}".format(session.url))
+        self.log = Loggable(self, name="Browser@{}".format(session.url))
 
     # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
     # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
@@ -341,7 +340,7 @@ class Browser(logger.Loggable, object):
     # TODO: do we really want to simply overwrite the dictionary or update the models?
     def _update_model_cache_helper(self, modelname, modeldict):
         """Updates the browser's model cache with models from the provided model dict"""
-        self._info(
+        self.log.info(
             "CACHE updated cached with {} {} models".format(len(modeldict), modelname)
         )
         self.model_cache.setdefault(modelname, {})
@@ -380,7 +379,7 @@ class Browser(logger.Loggable, object):
         if found_model is None:
             found_model = self.interface(model_class).find(id)
         else:
-            self._info(
+            self.log.info(
                 "CACHE found {} model with id={} in cache".format(model_class, id)
             )
         if found_model is None:
@@ -403,9 +402,9 @@ class Browser(logger.Loggable, object):
                 query_id_list = [query_id_list]
             remaining_ids = list(set(query_id_list).difference(set(found_ids)))
             remaining_query[primary_key] = remaining_ids
-        self._info(
+        self.log.info(
             "CACHE found {num} {model} models in cache using query {query}".format(
-                num=len(found_dict), model=model, query=self._pprint_data(query)
+                num=len(found_dict), model=model, query=self.log.pprint_data(query)
             )
         )
 
@@ -430,7 +429,7 @@ class Browser(logger.Loggable, object):
             query.update({"sample_type_id": sample_type_id})
 
         model_list = self.list_models()
-        self._info(
+        self.log.info(
             "SEARCH found {} total models of type {}".format(
                 len(model_list), self.model_name
             )
@@ -445,7 +444,7 @@ class Browser(logger.Loggable, object):
             filtered = self.where(query, self.model_name)
         else:
             filtered = self.interface().find(matches)
-        self._info(
+        self.log.info(
             "SEARCH filtered to {} total models of type {}".format(
                 len(filtered), self.model_name
             )
@@ -580,11 +579,11 @@ class Browser(logger.Loggable, object):
 
         retrieve_query = relation.build_query(models)
         retrieved_models = self.where(retrieve_query, model_class2)
-        self._info(
+        self.log.info(
             "RETRIEVE retrieved {num} {cls} models using query {query}".format(
                 num=len(retrieved_models),
                 cls=model_class2,
-                query=self._pprint_data(retrieve_query),
+                query=self.log.pprint_data(retrieve_query),
             )
         )
 
@@ -601,7 +600,7 @@ class Browser(logger.Loggable, object):
                     else:
                         model_dict[model_ref].append(model)
                 else:
-                    self._error(
+                    self.log.error(
                         "RETRIEVE ref: {ref} {model_ref}, attr: {attr}".format(
                             ref=ref, attr=attr, model_ref=model_ref
                         )
@@ -616,11 +615,11 @@ class Browser(logger.Loggable, object):
                 if model_ref is not None:
                     if model_attr is not None:
                         if model_ref not in retrieved_dict:
-                            self._info(strict)
+                            self.log.info(strict)
                         else:
                             model_dict[model_attr] = retrieved_dict[model_ref]
                     else:
-                        self._error(
+                        self.log.error(
                             "attr: {attr}={model_attr}, ref: {ref}={model_ref}".format(
                                 m1=model,
                                 ref=ref,
@@ -632,7 +631,7 @@ class Browser(logger.Loggable, object):
                     if model_ref not in retrieved_dict:
                         missing_models.append(model_ref)
             if missing_models:
-                self._error(
+                self.log.error(
                     "INCONSISTENT AQUARIUM DATABASE - There where {l} missing {cls} models "
                     "from the Aquarium database, which were ignored by trident. "
                     "This happens when models are deleted from Aquarium which "
@@ -733,7 +732,7 @@ class Browser(logger.Loggable, object):
         """
         if not models:
             return []
-        self._info('RETRIEVE retrieving "{}"'.format(relationship_name))
+        self.log.info('RETRIEVE retrieving "{}"'.format(relationship_name))
         model_classes = set([m.__class__.__name__ for m in models])
         assert (
             len(model_classes) == 1
@@ -765,7 +764,7 @@ class Browser(logger.Loggable, object):
                     relation.__class__.__name__
                 )
             )
-        self._info("RETRIEVE {}: {}".format(relationship_name, relation))
+        self.log.info("RETRIEVE {}: {}".format(relationship_name, relation))
         if hasattr(relation, "through_model_attr"):
             found_models = self._retrieve_has_many_through(
                 models, relationship_name, strict=strict
@@ -774,7 +773,7 @@ class Browser(logger.Loggable, object):
             found_models = self._retrieve_has_many_or_has_one(
                 models, relationship_name, relation, strict=strict
             )
-        self._info(
+        self.log.info(
             'RETRIEVE retrieved {} for "{}"'.format(
                 len(found_models), relationship_name
             )
@@ -814,9 +813,9 @@ class Browser(logger.Loggable, object):
         :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
         :rtype: dictionary
         """
-        self._info("RETRIEVE recursively retrieving {}".format(relations))
+        self.log.info("RETRIEVE recursively retrieving {}".format(relations))
         if isinstance(relations, str):
-            self._info('RETRIEVE retrieving "{}"'.format(relations))
+            self.log.info('RETRIEVE retrieving "{}"'.format(relations))
             return {relations: self.retrieve(models, relations, strict=strict)}
         elif (
             isinstance(relations, list)

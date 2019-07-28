@@ -162,7 +162,7 @@ def test_recursive_cache(session):
     # should retrieve the exact model that was preloaded
     print(browser.model_cache)
     session.set_verbose(True)
-    browser.set_verbose(True)
+    browser.session.set_verbose(True)
     browser.retrieve(samples, "sample_type")
     print(st)
     print(samples[0]._get_data()["sample_type"])
@@ -178,7 +178,7 @@ def test_recursive_cache_plan(session):
     browser = Browser(session)
 
     ops = session.Operation.last(50)
-    browser.set_verbose(True)
+    browser.log.set_verbose(True)
     browser.recursive_retrieve(
         ops,
         {

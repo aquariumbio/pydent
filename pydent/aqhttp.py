@@ -21,10 +21,10 @@ from pydent.exceptions import (
     TridentJSONDataIncomplete,
     ForbiddenRequestError,
 )
-from pydent.utils import url_build, logger
+from pydent.utils import url_build, Loggable
 
 
-class AqHTTP(logger.Loggable, object):
+class AqHTTP(object):
     """
     Defines a session/connection to Aquarium.
     Makes HTTP requests to Aquarium and returns JSON.
@@ -52,7 +52,7 @@ class AqHTTP(logger.Loggable, object):
         self._requests_session = None
         self.timeout = self.__class__.TIMEOUT
         self._login(login, password)
-        self.init_logger("AqHTTP@{}".format(aquarium_url))
+        self.log = Loggable(self, name="AqHTTP@{}".format(aquarium_url))
         self._using_requests = True
         self.num_requests = 0
 
@@ -192,7 +192,7 @@ class AqHTTP(logger.Loggable, object):
             method, url, timeout=timeout, cookies=self.cookies, **kwargs
         )
 
-        self._info(self._format_response_info(response))
+        self.log.info(self._format_response_info(response))
         if response.status_code >= 400:
             response_info = self._format_response_info(response)
             request_status = self._format_request_status(response)
@@ -225,7 +225,7 @@ class AqHTTP(logger.Loggable, object):
         except json.JSONDecodeError:
             msg = "Response is not JSON formatted"
             msg += "\nMessage:\n" + response.text
-            self._error(self._format_response_info(response))
+            self.log.error(self._format_response_info(response))
             raise TridentRequestError(msg, response)
         if response_json:
             if "errors" in response_json:

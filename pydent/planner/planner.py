@@ -14,7 +14,7 @@ from pydent.aqsession import AqSession
 from pydent.models import FieldValue, Operation, Plan, OperationType
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
-from pydent.utils import make_async, logger, empty_copy
+from pydent.utils import make_async, Loggable, empty_copy
 from copy import deepcopy
 
 import itertools
@@ -132,7 +132,7 @@ class AFTMatcher(object):
         return afts
 
 
-class Planner(logger.Loggable, AFTMatcher, object):
+class Planner(AFTMatcher, object):
     """A user-interface for making experimental plans and layouts."""
 
     class ITEM_SELECTION_PREFERENCE:
@@ -178,7 +178,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
             plan = session_or_plan
             self.session = plan.session
             self.plan = plan
-        self.init_logger("Planner@plan_rid={}".format(self.plan.rid))
+        self.log = Loggable(self, "Planner@plan_rid={}".format(self.plan.rid))
 
     @property
     def browser(self):
@@ -288,7 +288,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         op = ot.instance()
         op.status = status
         self.plan.add_operation(op)
-        self._info("{} created".format(ot.name))
+        self.log.info("{} created".format(ot.name))
         return op
 
     def create_operation_by_type_id(self, ot_id):
@@ -343,7 +343,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
             if self._model_are_equal(wire.source, fv1) and self._model_are_equal(
                 wire.destination, fv2
             ):
-                self._info("found wire from {} to {}".format(fv1.name, fv2.name))
+                self.log.info("found wire from {} to {}".format(fv1.name, fv2.name))
                 return wire
 
     @plan_verification_wrapper
@@ -357,7 +357,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         wire = self.get_wire(fv1, fv2)
         wires = list(self.plan.wires)
         if wire:
-            self._info("removing wire from {} to {}".format(fv1.name, fv2.name))
+            self.log.info("removing wire from {} to {}".format(fv1.name, fv2.name))
             wires_as_source = fv1.wires_as_source
             wires_as_dest = fv2.wires_as_dest
 
@@ -473,7 +473,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
             run_gel = new_ops[1]
             planner.chain("Pour Gel", run_gel)
         """
-        self._info("QUICK CREATE CHAIN {}".format(op_or_otnames))
+        self.log.info("QUICK CREATE CHAIN {}".format(op_or_otnames))
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
         if any([op for op in ops if op is None]):
             raise Exception("Could not find some operations: {}".format(ops))
@@ -708,7 +708,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
             # wire does not exist, so create it
             self._set_wire(fv1, fv2)
             wire = self.plan.wire(fv1, fv2)
-            self._info("wired {} to {}".format(fv1.name, fv2.name))
+            self.log.info("wired {} to {}".format(fv1.name, fv2.name))
         return wire
 
     @classmethod
@@ -763,7 +763,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         row=None,
         column=None,
     ):
-        self._info(
+        self.log.info(
             "setting field_value {} to {} - {} - {} - {}".format(
                 field_value.name, sample, item, container, value
             )
@@ -904,7 +904,7 @@ class Planner(logger.Loggable, AFTMatcher, object):
         if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE:
             reserved = self.reserved_items(available_items)
             available_items = [i for i in available_items if len(reserved[i.id]) == 0]
-            self._info("{} items are reserved".format(x - len(available_items)))
+            self.log.info("{} items are reserved".format(x - len(available_items)))
         return available_items
 
     def distribute_items_of_object_type(self, object_type):
@@ -1247,10 +1247,10 @@ class Planner(logger.Loggable, AFTMatcher, object):
         :param planner:
         :return:
         """
-        self._info("Optimizing plan...")
+        self.log.info("Optimizing plan...")
         if operations is not None:
-            self._info("   only_operations={}".format([op.id for op in operations]))
-        self._info("   ignore_types={}".format(ignore))
+            self.log.info("   only_operations={}".format([op.id for op in operations]))
+        self.log.info("   ignore_types={}".format(ignore))
         if operations is None:
             operations = [op for op in self.plan.operations if op.status == "planning"]
         if ignore:
@@ -1306,9 +1306,9 @@ class Planner(logger.Loggable, AFTMatcher, object):
         for op in ops_to_remove:
             operations_list.remove(op)
         self.plan.operations = operations_list
-        self._info("\t{} operations removed".format(len(ops_to_remove)))
-        self._info("\t{} input wires re-wired".format(num_inputs_rewired))
-        self._info("\t{} output wires re-wired".format(num_outputs_rewired))
+        self.log.info("\t{} operations removed".format(len(ops_to_remove)))
+        self.log.info("\t{} input wires re-wired".format(num_inputs_rewired))
+        self.log.info("\t{} output wires re-wired".format(num_outputs_rewired))
 
     def roots(self):
         """Get field values that have no predecessors (i.e. are 'roots')"""
