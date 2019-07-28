@@ -41,12 +41,16 @@ class PlannerLayout(object):
 
         # store reference of operation
         fv_to_op_dict = {}
+        if not plan.operations:
+            return layout
         for op in plan.operations:
             for fv in op.field_values:
                 fv_to_op_dict[fv.rid] = op
 
         @make_async(10, progress_bar=False)
         def add_wires(wires):
+            if not wires:
+                return
             missing_operations = []
             for wire in wires:
                 # TODO:
@@ -69,6 +73,8 @@ class PlannerLayout(object):
 
         @make_async(10, progress_bar=False)
         def add_ops(ops: Iterable[Operation]):
+            if not ops:
+                return
             for op in ops:
                 layout._add_operation(op)
             return ops
