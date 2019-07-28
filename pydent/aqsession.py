@@ -253,20 +253,26 @@ class AqSession(SessionABC):
         instance.using_cache = self.using_cache
         return instance
 
-    def with_cache(self, using_requests=None, using_models=False, timeout=None):
+    def with_cache(
+        self, using_requests=None, using_models=False, timeout=None, verbose=None
+    ):
         return self(
             using_cache=True,
             using_models=using_models,
             using_requests=using_requests,
             timeout=timeout,
+            using_verbose=verbose,
         )
 
-    def with_requests_off(self, using_cache=None, using_models=True, timeout=None):
+    def with_requests_off(
+        self, using_cache=None, using_models=True, timeout=None, verbose=None
+    ):
         return self(
             using_cache=using_cache,
             using_models=using_models,
             using_requests=False,
             timeout=timeout,
+            using_verbose=verbose,
         )
 
     @staticmethod
@@ -279,7 +285,12 @@ class AqSession(SessionABC):
             m._session = to_session
 
     def __call__(
-        self, using_cache=None, using_requests=None, timeout=None, using_models=None
+        self,
+        using_cache=None,
+        using_requests=None,
+        timeout=None,
+        using_models=None,
+        using_verbose=None,
     ):
         new_session = self.copy()
         new_session.parent_session = self
@@ -291,6 +302,8 @@ class AqSession(SessionABC):
             new_session.set_timeout(timeout)
         if using_models and self.browser:
             new_session.browser.update_cache(self.browser.models)
+        if using_verbose is not None:
+            new_session.set_verbose(using_verbose)
         return new_session
 
     def __enter__(self):
