@@ -22,6 +22,7 @@ from pydent.relationships import (
 from pydent.models.crud_mixin import SaveMixin, DeleteMixin
 from warnings import warn
 
+
 @add_schema
 class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     """
@@ -289,21 +290,25 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         fv_id_to_rids = {}
         for op in json_data["operations"]:
             for fv in op["field_values"]:
-                if fv['id']:
-                    fv_id_to_rids[fv['id']] = fv['rid']
+                if fv["id"]:
+                    fv_id_to_rids[fv["id"]] = fv["rid"]
                 fv_rids.append(fv["rid"])
 
         # fix json rids and ids
         warnings = []
         for wire_data in json_data["wires"]:
-            if wire_data['from_id'] in fv_id_to_rids:
-                wire_data['from']['rid'] = fv_id_to_rids[wire_data['from_id']]
-            if wire_data['to_id'] in fv_id_to_rids:
-                wire_data['to']['rid'] = fv_id_to_rids[wire_data['to_id']]
+            if wire_data["from_id"] in fv_id_to_rids:
+                wire_data["from"]["rid"] = fv_id_to_rids[wire_data["from_id"]]
+            if wire_data["to_id"] in fv_id_to_rids:
+                wire_data["to"]["rid"] = fv_id_to_rids[wire_data["to_id"]]
             if not wire_data["from"]["rid"] in fv_rids:
-                warnings.append("FieldValue rid={} is missing.".format(wire_data["from"]["rid"]))
+                warnings.append(
+                    "FieldValue rid={} is missing.".format(wire_data["from"]["rid"])
+                )
             if not wire_data["to"]["rid"] in fv_rids:
-                warnings.append("FieldValue rid={} is missing.".format(wire_data["to"]["rid"]))
+                warnings.append(
+                    "FieldValue rid={} is missing.".format(wire_data["to"]["rid"])
+                )
         if warnings:
             print(fv_rids)
             warn(",".join(warnings))
