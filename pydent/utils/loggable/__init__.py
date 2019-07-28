@@ -1,6 +1,8 @@
 import logging
 import math
 import pprint
+import traceback
+from logging import DEBUG, INFO, CRITICAL, ERROR, WARNING
 
 
 def new_logger(name, level=logging.ERROR):
@@ -12,9 +14,9 @@ def new_logger(name, level=logging.ERROR):
     if not logger.handlers:
         ch = logging.StreamHandler()
         ch.setLevel(level)
-
+        ch.tb_limit = 0
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            "%(levelname)s - %(name)s - %(asctime)s - %(message)s"
         )
         ch.setFormatter(formatter)
         logger.addHandler(ch)
@@ -48,28 +50,35 @@ def condense_long_lists(d, max_list_len=20):
     return str(d)
 
 
-class Loggable:
-    def init_logger(self, name):
-        self._logger_name = name
-        new_logger(name)
-
-    @property
-    def _logger(self):
-        return logging.getLogger(self._logger_name)
-
-    @property
-    def _log_handlers(self):
-        return self._logger.handlers
-
-    def set_verbose(self, verbose):
-        if verbose:
-            for h in self._log_handlers:
-                h.setLevel(logging.INFO)
+class Loggable(object):
+    def __init__(self, inst, name=None):
+        self.instance = inst
+        if name is None:
+            self.name = "{}(id={})".format(self.instance.__class__, id(self.instance))
         else:
-            for h in self._log_handlers:
-                h.setLevel(logging.ERROR)
+            self.name = name
 
-    def _pprint_data(
+    @property
+    def logger(self):
+        return new_logger(self.name)[0]
+
+    def set_tb_limit(self, limit):
+        for h in self.logger.handlers:
+            h.tb_limit = limit
+
+    def set_log_level(self, level, tb_limit=None):
+        for h in self.logger.handlers:
+            h.setLevel(level)
+        if tb_limit is not None:
+            self.set_tb_limit(tb_limit)
+
+    def set_verbose(self, verbose, tb_limit=0):
+        if verbose:
+            self.set_log_level(logging.INFO, tb_limit)
+        else:
+            self.set_log_level(logging.ERROR, tb_limit)
+
+    def pprint_data(
         self, data, width=80, depth=10, max_list_len=20, compact=True, indent=1
     ):
         return pprint.pformat(
@@ -80,8 +89,24 @@ class Loggable:
             compact=compact,
         )
 
-    def _info(self, msg):
-        self._logger.info(msg)
+    def log(self, msg, level):
+        self.logger.log(level, msg)
+        if self.logger.isEnabledFor(level):
+            tb_limit = self.logger.handlers[0].tb_limit
+            if tb_limit:
+                traceback.print_stack(limit=tb_limit)
 
-    def _error(self, msg):
-        self._logger.error(msg)
+    def critical(self, msg):
+        self.log(msg, CRITICAL)
+
+    def error(self, msg):
+        self.log(msg, ERROR)
+
+    def warn(self, msg):
+        self.log(msg, WARNING)
+
+    def info(self, msg):
+        self.log(msg, INFO)
+
+    def debug(self, msg):
+        self.log(msg, DEBUG)

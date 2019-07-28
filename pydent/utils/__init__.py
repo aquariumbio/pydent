@@ -18,7 +18,7 @@ Submodules
 import pprint as pprint_module
 
 from pydent.utils.async_requests import make_async
-
+from .loggable import Loggable
 
 printer = pprint_module.PrettyPrinter(indent=1)
 pprint = printer.pprint
