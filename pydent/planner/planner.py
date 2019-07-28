@@ -1467,7 +1467,8 @@ class Planner(logger.Loggable, AFTMatcher, object):
         return self.combine([self] * num)
 
     def prettify(self):
-        self.layout.topo_sort()
+        if self.plan.operations:
+            self.layout.topo_sort()
 
     # TODO: implement individual wires and things
     def draw(self):
