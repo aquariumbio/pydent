@@ -3,6 +3,7 @@ import math
 import pprint
 import traceback
 from logging import DEBUG, INFO, CRITICAL, ERROR, WARNING
+from colorlog import ColoredFormatter
 
 
 def new_logger(name, level=logging.ERROR):
@@ -12,17 +13,25 @@ def new_logger(name, level=logging.ERROR):
 
     # make stream handler
     if not logger.handlers:
-        ch = logging.StreamHandler()
-        ch.setLevel(level)
-        ch.tb_limit = 0
-        formatter = logging.Formatter(
-            "%(levelname)s - %(name)s - %(asctime)s - %(message)s"
+        handler = logging.StreamHandler()
+        handler.setLevel(level)
+        handler.tb_limit = 0
+        formatter = ColoredFormatter(
+            "%(log_color)s%(levelname)s - %(name)s - %(asctime)s - %(message)s",
+            log_colors={
+                "DEBUG": "cyan",
+                "INFO": "white",
+                "SUCCESS:": "green",
+                "WARNING": "yellow",
+                "ERROR": "red",
+                "CRITICAL": "red,bg_white",
+            },
         )
-        ch.setFormatter(formatter)
-        logger.addHandler(ch)
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
     else:
-        ch = logger.handlers[0]
-    return logger, ch
+        handler = logger.handlers[0]
+    return logger, handler
 
 
 def condense_long_lists(d, max_list_len=20):
