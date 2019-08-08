@@ -875,7 +875,7 @@ class Planner(AFTMatcher, object):
             {"child_item_id": item_ids}, model_class="FieldValue"
         )
         browser.retrieve(server_fvs, "operation")
-        server_fvs = [fv for fv in server_fvs if fv.operation.status != "planning"]
+        server_fvs = [fv for fv in server_fvs if fv.operation and fv.operation.status != "planning"]
 
         these_fvs = []
         for op in self.plan.operations:
@@ -936,7 +936,7 @@ class Planner(AFTMatcher, object):
             fvs = item_id_to_fv[item.id]
 
             # filter by operations that are submitted
-            fvs = [fv for fv in fvs if fv.operation.status != "planning"]
+            fvs = [fv for fv in fvs if fv.operation and fv.operation.status != "planning"]
             if len(fvs) > 1:
                 available_items = browser.where(
                     {
