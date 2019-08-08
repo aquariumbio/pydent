@@ -880,7 +880,7 @@ class Planner(AFTMatcher, object):
             server_fvs = [
                 fv
                 for fv in server_fvs
-                if fv.operation and fv.operation.status != "planning"
+                if fv.operation and fv.operation and fv.operation.status != "planning"
             ]
         else:
             server_fvs = []
