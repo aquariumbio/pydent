@@ -73,7 +73,7 @@ def test_combine_plans(planner_example):
 
 # TODO: more tests for setting items
 @pytest.mark.parametrize("restrict_to_one", [True, False])
-class TestSetItem():
+class TestSetItem:
     def test_restrict_to_one(self, session, restrict_to_one):
         with session.with_cache() as sess:
             sess.set_verbose(True)
@@ -81,18 +81,28 @@ class TestSetItem():
             for i in range(2):
 
                 comp_cell_type = session.ObjectType.find_by_name("Yeast Competent Cell")
-                comp_cells = session.Item.last(100, query='object_type_id = {} AND location != "deleted"'.format(comp_cell_type.id))
+                comp_cells = session.Item.last(
+                    100,
+                    query='object_type_id = {} AND location != "deleted"'.format(
+                        comp_cell_type.id
+                    ),
+                )
                 grouped_by_samples = {}
                 for c in comp_cells:
                     grouped_by_samples.setdefault(c.sample_id, list()).append(c)
-                more_than_one = [cells for cells in grouped_by_samples.values() if len(cells) > 1][0]
+                more_than_one = [
+                    cells for cells in grouped_by_samples.values() if len(cells) > 1
+                ][0]
                 assert more_than_one
                 parent_sample = more_than_one[0].sample
 
                 op = p.create_operation_by_name("Yeast Transformation")
                 p.set_field_value(op.input("Parent"), sample=parent_sample)
                 if restrict_to_one:
-                    p.set_to_available_item(op.input("Parent"), item_preference=p.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE)
+                    p.set_to_available_item(
+                        op.input("Parent"),
+                        item_preference=p.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE,
+                    )
                 else:
                     p.set_to_available_item(op.input("Parent"))
             items = set()
