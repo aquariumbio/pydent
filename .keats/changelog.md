@@ -1,4 +1,20 @@
 # pydent change log
+## 0.1.5a4
+**2019-08-08T14:37:26.698386**
+bug fix with setting available items
+
+ - fixed RESTRICT_TO_ONE for item_preference in planner
+ - added RESTRICT_TO_ONE_ON_SERVER that looks at all reserved items on the server
+
+
+## 0.1.5a3
+**2019-08-06T14:42:09.748998**
+bug fixes
+
+ - fixes find(id=0) bug that raised a mysterious error
+ - session.<Model>.all() no longer raises error when cache is being used
+
+
 ## 0.1.5a2
 **2019-07-28T13:08:07.331007**
 minor bug fixes
