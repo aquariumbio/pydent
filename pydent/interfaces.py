@@ -384,14 +384,6 @@ class QueryInterfaceABC(ABC):
     def one(self):
         pass
 
-    @abstractmethod
-    def new(self):
-        pass
-
-    @abstractmethod
-    def load(self):
-        pass
-
     @property
     def model_name(self):
         """
@@ -470,6 +462,8 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         except TridentRequestError as err:
             if err.args[1].status_code == 422:
                 return None
+            else:
+                raise err
 
         if post_response is not None and self._do_load:
             return self.load(post_response)

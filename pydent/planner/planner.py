@@ -146,6 +146,7 @@ class Planner(AFTMatcher, object):
         RESTRICT_TO_ONE = (
             "RESTRICT TO ONE"
         )  # will not select item if its being used in another active operation
+        RESTRICT_TO_ONE_ON_SERVER = "RESTRICT TO ONE ON SERVER"
         _DEFAULT = PREFERRED
         _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]
 
@@ -867,27 +868,34 @@ class Planner(AFTMatcher, object):
         query.update({"object_type_id": [aft.object_type_id for aft in afts]})
         return query
 
-    def reserved_items(self, items):
+    def reserved_items(self, items, search_server=False):
         """Returns a dictionary of item_ids and the array of field_values that use them"""
         browser = self.browser
         item_ids = [i.id for i in items]
-        server_fvs = browser.where(
-            {"child_item_id": item_ids}, model_class="FieldValue"
-        )
-        browser.retrieve(server_fvs, "operation")
-        server_fvs = [fv for fv in server_fvs if fv.operation.status != "planning"]
+        if search_server:
+            server_fvs = browser.where(
+                {"child_item_id": item_ids}, model_class="FieldValue"
+            )
+            browser.retrieve(server_fvs, "operation")
+            server_fvs = [
+                fv
+                for fv in server_fvs
+                if fv.operation and fv.operation and fv.operation.status != "planning"
+            ]
+        else:
+            server_fvs = []
 
         these_fvs = []
         for op in self.plan.operations:
             for fv in op.inputs:
-                if fv.child_item_id in item_ids:
-                    these_fvs.append(fv)
+                these_fvs.append(fv)
 
         fvs = list(set(server_fvs + these_fvs))
 
         item_id_to_fv = defaultdict(list)
         for fv in fvs:
-            item_id_to_fv[fv.child_item_id].append(fv)
+            if fv.child_item_id:
+                item_id_to_fv[fv.child_item_id].append(fv)
         return item_id_to_fv
 
     @plan_verification_wrapper
@@ -901,8 +909,12 @@ class Planner(AFTMatcher, object):
         available_items = [i for i in available_items if i.location != "deleted"]
 
         x = len(available_items)
-        if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE:
-            reserved = self.reserved_items(available_items)
+        if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE_ON_SERVER:
+            reserved = self.reserved_items(available_items, search_server=True)
+            available_items = [i for i in available_items if len(reserved[i.id]) == 0]
+            self.log.info("{} items are reserved".format(x - len(available_items)))
+        elif item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE:
+            reserved = self.reserved_items(available_items, search_server=False)
             available_items = [i for i in available_items if len(reserved[i.id]) == 0]
             self.log.info("{} items are reserved".format(x - len(available_items)))
         return available_items
@@ -936,7 +948,9 @@ class Planner(AFTMatcher, object):
             fvs = item_id_to_fv[item.id]
 
             # filter by operations that are submitted
-            fvs = [fv for fv in fvs if fv.operation.status != "planning"]
+            fvs = [
+                fv for fv in fvs if fv.operation and fv.operation.status != "planning"
+            ]
             if len(fvs) > 1:
                 available_items = browser.where(
                     {

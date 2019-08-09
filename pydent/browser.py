@@ -17,13 +17,15 @@ from pydent.base import ModelBase
 # TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
 from pydent.interfaces import QueryInterface
 from pydent.utils import Loggable
+from pydent.interfaces import QueryInterfaceABC
+from pydent.models import Sample
 
 
 class BrowserException(Exception):
     """Generic browser exception"""
 
 
-class Browser(object):
+class Browser(QueryInterfaceABC):
     """
     A class for browsing models and Aquarium inventory
     """
@@ -48,7 +50,7 @@ class Browser(object):
         self.session = session
         self._list_models_fxn = self.sample_list
         self.use_cache = True
-        self.model_name = "Sample"
+        self.model = Sample
         self.model_list_cache = {}
         self.model_cache = {}
         self.log = Loggable(self, name="Browser@{}".format(session.url))
@@ -65,8 +67,7 @@ class Browser(object):
 
     def set_model(self, model_name):
         """Sets the default model of this browser"""
-        ModelRegistry.get_model(model_name)
-        self.model_name = model_name
+        self.model = ModelRegistry.get_model(model_name)
         if model_name == "Sample":
             self._list_models_fxn = self.sample_list
         else:
@@ -183,7 +184,10 @@ class Browser(object):
             )
         interface = self.interface(model_class)
         fxn = getattr(interface, fname)
-        models = fxn(query=query, opts=opts, **params)
+        if fname == "all":
+            models = fxn(opts=opts, **params)
+        else:
+            models = fxn(query=query, opts=opts, **params)
         if as_single:
             models = [models]
         return self.update_cache(models).get(model_class, [])
@@ -291,7 +295,7 @@ class Browser(object):
         :return:
         :rtype:
         """
-        return self.__query_helper("all", model_class=model_class, opts=opts)
+        return self.__query_helper("all", query={}, model_class=model_class, opts=opts)
 
     @staticmethod
     def _match_query(query, model_dict):
