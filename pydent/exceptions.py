@@ -2,8 +2,6 @@
 Trident exceptions
 """
 
-from requests.exceptions import RequestException, ConnectTimeout
-
 class TridentBaseException(Exception):
     """Base exception for all trident errors"""
 
