@@ -438,10 +438,10 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         oid = "none"
         if self.object_type is not None:
             oid = self.object_type.name
-        msg = "No allowable field types found for {} {} using {} {}."
+        msg = "No allowable field types found for {}:{}:{} using {}:{}."
         msg += " Available afts: {}"
         raise AquariumModelError(
-            msg.format(self.role, self.name, sid, oid, ", ".join(aft_list))
+            msg.format(self.operation.operation_type.name, self.role, self.name, sid, oid, ", ".join(aft_list))
         )
 
     def set_aft(self):
