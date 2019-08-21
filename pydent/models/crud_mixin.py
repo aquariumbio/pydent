@@ -61,6 +61,10 @@ class JSONSaveMixin(object):
         result = self.session.utils.json_save(name, data)
         return result
 
+    # TODO: add update to JSONMixin?
+    # def update(self):
+    #     self.save()
+
     def _get_save_json(self):
         return self.dump()
 

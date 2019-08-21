@@ -15,6 +15,7 @@ from pydent.models.crud_mixin import JSONDeleteMixin, JSONSaveMixin
 import json
 
 
+# TODO: changing the value of a association (and saving it) shouldn't be difficult
 class DataAssociatorMixin:
     """
     Mixin for handling data associations
