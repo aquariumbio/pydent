@@ -115,6 +115,8 @@ from pydent.interfaces import QueryInterfaceABC
 from pydent.interfaces import UtilityInterface
 from pydent.models import __all__ as allmodels
 from pydent.sessionabc import SessionABC
+from pydent.interfaces import SessionInterface
+from typing import List, Union, Type
 
 
 class AqSession(SessionABC):
@@ -128,8 +130,11 @@ class AqSession(SessionABC):
         # <User(id=1,...)>
     """
 
-    def __init__(self, login, password, aquarium_url, name=None, aqhttp=None):
+    def __init__(self, login: str, password: str,
+                 aquarium_url: str, name: str = None,
+                 aqhttp: str = None):
         """
+        Initializes a new tridennt Session.
 
         :param login: the Aquarium login for the user
         :type login: str
@@ -162,12 +167,12 @@ class AqSession(SessionABC):
         self.init_cache()
 
     @property
-    def interface_class(self):
+    def interface_class(self) -> Type[SessionInterface]:
         """Returns the session's interface class."""
         return self._interface_class
 
     @interface_class.setter
-    def interface_class(self, c):
+    def interface_class(self, c: Type[SessionInterface]):
         """Sets the session's interface class."""
         if not issubclass(c, QueryInterfaceABC):
             raise ValueError(
@@ -188,25 +193,25 @@ class AqSession(SessionABC):
         webbrowser.open(self._aqhttp.url)
 
     @property
-    def session(self):
+    def session(self) -> 'AqSession':
         """Return self."""
         return self
 
-    def set_verbose(self, verbose, tb_limit=None):
+    def set_verbose(self, verbose: bool, tb_limit: int = None):
         self._aqhttp.log.set_verbose(verbose, tb_limit=tb_limit)
 
-    def _log_to_aqhttp(self, msg):
+    def _log_to_aqhttp(self, msg: str):
         """Sends a log message to the aqhttp's logger."""
         self._aqhttp.log.info(msg)
 
-    def _register_interface(self, model_name):
+    def _register_interface(self, model_name: str):
         # get model interface from model class
         model_interface = self.interface_class(model_name, self._aqhttp, self)
 
         # set interface to session attribute (e.g. session.Sample calls Sample model interface)
         setattr(self, model_name, model_interface)
 
-    def set_timeout(self, timeout_in_seconds):
+    def set_timeout(self, timeout_in_seconds: int):
         """Sets the request timeout."""
         self._aqhttp.timeout = timeout_in_seconds
 
@@ -216,13 +221,13 @@ class AqSession(SessionABC):
         return self._aqhttp.aquarium_url
 
     @property
-    def login(self):
+    def login(self) -> str:
         """Logs into aquarium, generating the necessary headers to perform
         requests to Aquarium."""
         return self._aqhttp.login
 
     @property
-    def current_user(self):
+    def current_user(self) -> 'ModelBase':
         """Returns the current User associated with this session.
 
         Returns None if no user is found (as in cases where the Aquarium
@@ -235,7 +240,7 @@ class AqSession(SessionABC):
             self._current_user = self.User.where({"login": self._aqhttp.login})[0]
         return self._current_user
 
-    def logged_in(self):
+    def logged_in(self) -> bool:
         """Returns whether the user is logged in. If the session is able to
         return the User model instance using the session's login credentials,
         the user is considered to be logged in.
@@ -248,11 +253,12 @@ class AqSession(SessionABC):
         return True
 
     @property
-    def models(self):
+    def models(self) -> List[str]:
         """Returns list of all models available."""
         return list(ModelRegistry.models.keys())
 
-    def model_interface(self, model_name, interface_class=None):
+    def model_interface(self, model_name: str,
+                        interface_class: SessionInterface = None) -> SessionInterface:
         """Returns model interface by name."""
         if interface_class is None:
             interface_class = self.interface_class
@@ -263,16 +269,19 @@ class AqSession(SessionABC):
         """Instantiates a utility interface."""
         return UtilityInterface(self._aqhttp, self)
 
+    def _ping_function(self):
+        return self.User.one()
+
     # TODO: put 'ping' in documentation
-    def ping(self, num=5):
+    def ping(self, num: int = 5) -> Union[None, int]:
         """Performs a number of simple requests (pings) to estimate the speed
         of the server.
 
         Displays a message about the average time each ping took.
         """
+        ping_function = self._ping_function()
+        ping_function_source = inspect.getsource(ping_function).strip()
         try:
-            ping_function = lambda: self.User.find(1)
-            ping_function_source = inspect.getsource(ping_function).strip()
             secs = timeit.timeit(ping_function, number=num)
             print(
                 "{} pings (using the function '{}')".format(num, ping_function_source)
@@ -282,7 +291,9 @@ class AqSession(SessionABC):
         except ReadTimeout as e:
             print("Error: {}".format(e))
             print(
-                "Aquarium ({}) looks like its down. The function '{}' raised a {} exception, but should not have.".format(
+                "The Aquarium server ({}) looks like its down. The function '{}' "
+                "raised a {} exception, but should not have."
+                .format(
                     self.url, ping_function_source, ReadTimeout
                 )
             )
@@ -299,22 +310,22 @@ class AqSession(SessionABC):
         self.browser.clear()
 
     @property
-    def using_requests(self):
+    def using_requests(self) -> bool:
         return self._aqhttp._using_requests
 
     @using_requests.setter
-    def using_requests(self, b):
+    def using_requests(self, b: bool):
         if b:
             self._aqhttp.on()
         else:
             self._aqhttp.off()
 
     @property
-    def using_cache(self):
+    def using_cache(self) -> bool:
         return self._using_cache
 
     @using_cache.setter
-    def using_cache(self, b):
+    def using_cache(self, b: bool):
         if b:
             self.interface_class = BrowserInterface
             if self.browser is None:
@@ -335,8 +346,9 @@ class AqSession(SessionABC):
         return instance
 
     def with_cache(
-        self, using_requests=None, using_models=False, timeout=None, verbose=None
-    ):
+        self, using_requests: bool = None, using_models: bool = False,
+            timeout: int = None, verbose=None
+    ) -> 'AqSession':
         return self(
             using_cache=True,
             using_models=using_models,
@@ -346,8 +358,10 @@ class AqSession(SessionABC):
         )
 
     def with_requests_off(
-        self, using_cache=None, using_models=True, timeout=None, verbose=None
-    ):
+        self, using_cache: bool = None,
+            using_models: bool = True,
+            timeout: int = None, verbose=None
+    ) -> 'AqSession':
         return self(
             using_cache=using_cache,
             using_models=using_models,
@@ -367,12 +381,12 @@ class AqSession(SessionABC):
 
     def __call__(
         self,
-        using_cache=None,
-        using_requests=None,
-        timeout=None,
-        using_models=None,
-        using_verbose=None,
-    ):
+        using_cache: bool = None,
+        using_requests: bool = None,
+        timeout: int = None,
+        using_models: bool = None,
+        using_verbose: bool = None,
+    ) -> 'AqSession':
         new_session = self.copy()
         new_session.parent_session = self
         if using_cache is not None:
@@ -387,14 +401,14 @@ class AqSession(SessionABC):
             new_session.set_verbose(using_verbose)
         return new_session
 
-    def __enter__(self):
+    def __enter__(self) -> 'AqSession':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if hasattr(self, "parent_session"):
             self._swap_sessions(self, self.parent_session)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<{}(name={}, AqHTTP={}))>".format(
             self.__class__.__name__, self.name, self._aqhttp
         )
