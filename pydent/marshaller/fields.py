@@ -14,7 +14,7 @@ from pydent.marshaller.exceptions import AllowNoneFieldValidationError
 from pydent.marshaller.exceptions import RunTimeCallbackAttributeError
 from pydent.marshaller.registry import ModelRegistry
 from pydent.marshaller.utils import make_signature_str
-from typing import Any
+from typing import Any, Type, Union, List
 
 
 class FieldABC(ABC):
@@ -25,19 +25,19 @@ class FieldABC(ABC):
     _FIELD_ALLOW_NONE_DEFAULT = True
 
     @abstractmethod
-    def serialize(self, owner, data):
+    def serialize(self, owner: ModelRegistry, data: dict):
         pass
 
     @abstractmethod
-    def deserialize(self, owner, data):
+    def deserialize(self, owner: ModelRegistry, data: dict):
         pass
 
     @abstractmethod
-    def _serialize(self, owner, data):
+    def _serialize(self, owner: ModelRegistry, data: dict):
         pass
 
     @abstractmethod
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner: ModelRegistry, data: dict):
         pass
 
 
@@ -49,7 +49,10 @@ class Field(FieldABC):
     ACCESSOR = MarshallingAccessor
 
     def __init__(
-        self, many=None, data_key=None, allow_none=None, default=Placeholders.DEFAULT
+        self, many: bool = None,
+            data_key: str = None,
+            allow_none: bool = None,
+            default: Any = Placeholders.DEFAULT
     ):
         """
         A standard field. Performs no functions on serialized and deserialized
@@ -80,16 +83,16 @@ class Field(FieldABC):
         self.allow_none = allow_none
         self.default = default
 
-    def set_data_key(self, key):
+    def set_data_key(self, key: str):
         self.data_key = key
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner: ModelRegistry, data: dict) -> dict:
         return data
 
-    def _serialize(self, owner, data):
+    def _serialize(self, owner: ModelRegistry, data: dict) -> dict:
         return data
 
-    def deserialize(self, owner, data):
+    def deserialize(self, owner: ModelRegistry, data: dict) -> Union[dict, None]:
         if data is None:
             if not self.allow_none:
                 raise AllowNoneFieldValidationError(
@@ -102,7 +105,7 @@ class Field(FieldABC):
             return data
         return self._deserialize(owner, data)
 
-    def serialize(self, owner, data):
+    def serialize(self, owner: ModelRegistry, data: dict) -> Union[dict, None, List]:
         if data is None:
             if not self.allow_none:
                 raise AllowNoneFieldValidationError(
@@ -113,15 +116,13 @@ class Field(FieldABC):
             return [self._serialize(owner, d) for d in data]
         return self._serialize(owner, data)
 
-    def register(self, name, objtype):
+    def register(self, name: str, objtype: Type[ModelRegistry]):
         """
         Registers the field to a nested class. Instantiates the corresponding
         descriptor (i.e. accessor)
 
         :param name: name of the field
-        :type name: basestring
         :param objtype: the nested class to register the field to
-        :type objtype: SchemaModel
         :return: None
         :rtype: None
         """
@@ -143,8 +144,9 @@ class Field(FieldABC):
                 ),
             )
 
-    def __str__(self):
-        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>".format(
+    def __str__(self) -> str:
+        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>"\
+        .format(
             cls=self.__class__.__name__,
             key=self.data_key,
             many=self.many,
@@ -158,7 +160,11 @@ class Nested(Field):
     Represents a field that returns another nested instance.
     """
 
-    def __init__(self, nested, many=None, data_key=None, allow_none=None, lazy=None):
+    def __init__(self, nested: ModelRegistry,
+                 many: bool = None,
+                 data_key: str = None,
+                 allow_none: bool = None,
+                 lazy: bool = None):
         """
         Nested relationship initializer.
 
@@ -192,14 +198,14 @@ class Nested(Field):
     def get_model(self):
         return ModelRegistry.get_model(self.nested)
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner: ModelRegistry, data: dict):
         if data is None and self.allow_none:
             return None
         elif self.lazy and isinstance(data, self.get_model()):
             return data
         return self.get_model()._set_data(data, owner)
 
-    def _serialize(self, owner, obj):
+    def _serialize(self, owner: ModelRegistry, obj):
         if obj is None and self.allow_none:
             return None
         elif self.lazy and not isinstance(obj, self.get_model()):
@@ -285,7 +291,8 @@ class Callback(Field):
             func=self.callback, args=make_signature_str(args, kwargs)
         )
 
-    def get_callback_args(self, owner, extra_args=None):
+    def get_callback_args(self, owner: ModelRegistry, extra_args: dict = None) \
+            -> List[Any]:
         """
         Processes the callback args.
         """
@@ -311,7 +318,7 @@ class Callback(Field):
             ) from e
         return args
 
-    def get_callback_kwargs(self, owner, extra_kwargs):
+    def get_callback_kwargs(self, owner: ModelRegistry, extra_kwargs: dict) -> dict:
         """
         Processes the callback kwargs.
         """
@@ -338,7 +345,7 @@ class Callback(Field):
             ) from e
         return kwargs
 
-    def fullfill(self, owner: 'SchemaModel',
+    def fullfill(self, owner: ModelRegistry,
                  cache: bool = None,
                  extra_args: tuple = None,
                  extra_kwargs: dict = None) -> Any:
@@ -381,7 +388,7 @@ class Callback(Field):
     def cache_result(self, owner, val):
         setattr(owner, self.data_key, val)
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner: ModelRegistry, data: dict):
         raise NotImplementedError(
             "_deserialize is not implemented for field {}".format(self)
         )
@@ -402,7 +409,7 @@ class Relationship(Callback):
 
     def __init__(
         self,
-        nested,
+        nested: ModelRegistry,
         callback,
         callback_args=None,
         callback_kwargs=None,
@@ -457,10 +464,10 @@ class Relationship(Callback):
         self.nested = nested
         self.callback_args = tuple([nested] + list(self.callback_args))
 
-    def deserialize(self, owner, val):
+    def deserialize(self, owner: ModelRegistry, val):
         return self.nested_field.deserialize(owner, val)
 
-    def serialize(self, owner, obj):
+    def serialize(self, owner: ModelRegistry, obj):
         return self.nested_field.serialize(owner, obj)
 
 
