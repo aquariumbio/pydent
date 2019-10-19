@@ -38,6 +38,9 @@ from inflection import underscore
 from .base import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
+from typing import Union, List
+
+from abc import ABC, abstractmethod
 
 
 class SessionInterface:
@@ -74,17 +77,17 @@ class CRUDInterface(SessionInterface):
     #     if not hasattr(model, 'id') or model.id is None:
     #         raise TridentRequestError("Model {} has no id.".format(model))
 
-    def _model_controller(self, method, table, model_id, data, params=None):
+    def _model_controller(self, method: str, table: str,
+                          model_id: Union[str, int, None], data: Union[None, dict],
+                          params=None)\
+            -> dict:
         """Method for create, updating, and deleting models.
 
         :param method: Request method name (one of 'put', 'post', 'delete'
-        :type method: basestring
         :param table: Table name of model (e.g. 'samples' or 'data_associations')
-        :type table: basestring
         :param model_id: Optional model_id (not required for 'post')
-        :type model_id: int
-        :param model_data: Model data to send to server controller
-        :type model_data: dict
+        :param data: data
+        :param params
         :return: json formatted server response
         :rtype: dict
         """
@@ -108,7 +111,8 @@ class CRUDInterface(SessionInterface):
         return self._model_controller("delete", table, model_id, None, params)
 
     def _json_controller(
-        self, method, model_name, model_data, record_methods=None, record_getters=None
+        self, method, model_name, model_data, record_methods: List[str] = None,
+            record_getters: List[str] = None
     ):
         """Method for create, updating, and deleting models using Aquariums
         JSON controller.
@@ -152,29 +156,31 @@ class CRUDInterface(SessionInterface):
             post_response = self.aqhttp.post(url, json_data=data)
             return post_response
         except TridentRequestError as err:
-            # if err.strerror.status_code == 422:
-            #     return None
             raise err
 
-        result = self.aqhttp.post("json" + method, json_data=data)
-        return result
+        # TODO: is this code necessary?
+        # result = self.aqhttp.post("json" + method, json_data=data)
+        # return result
 
     def json_delete(
-        self, model_name, model_data, record_methods=None, record_getters=None
+        self, model_name, model_data, record_methods: List[str] = None,
+            record_getters: List[str] = None
     ):
         return self._json_controller(
             "delete", model_name, model_data, record_methods, record_getters
         )
 
     def json_save(
-        self, model_name, model_data, record_methods=None, record_getters=None
-    ):
+        self, model_name, model_data, record_methods: List[str] = None,
+            record_getters: List[str] = None
+    ) -> dict:
         return self._json_controller(
             "save", model_name, model_data, record_methods, record_getters
         )
 
     def json_post(
-        self, model_name, model_data, record_methods=None, record_getters=None
+        self, model_name, model_data, record_methods: List[str] = None,
+            record_getters: List[str] = None
     ):
         return self._json_controller(
             None, model_name, model_data, record_methods, record_getters
@@ -192,10 +198,10 @@ class UtilityInterface(CRUDInterface):
 
     # TODO: have ability to save new properties
     def create_samples(self, samples):
-        json = [s.dump(include=("field_values",)) for s in samples]
+        json_data = [s.dump(include=("field_values",)) for s in samples]
 
         updated_sample_data = self.aqhttp.post(
-            "browser/create_samples", {"samples": json}
+            "browser/create_samples", {"samples": json_data}
         )
         updated_samples = updated_sample_data["samples"]
         assert len(samples) == len(updated_samples)
@@ -326,18 +332,15 @@ class UtilityInterface(CRUDInterface):
         return items
 
 
-from abc import ABC, abstractmethod
-
-
 class QueryInterfaceABC(ABC):
     """Interface that is used by models to find other models."""
 
     @abstractmethod
-    def find(self):
+    def find(self, mid):
         pass
 
     @abstractmethod
-    def find_by_name(self):
+    def find_by_name(self, name):
         pass
 
     @abstractmethod
@@ -345,7 +348,7 @@ class QueryInterfaceABC(ABC):
         pass
 
     @abstractmethod
-    def where(self):
+    def where(self, query, **kwargs):
         pass
 
     @abstractmethod
@@ -360,10 +363,10 @@ class QueryInterfaceABC(ABC):
     def one(self):
         pass
 
-    @property
+    @abstractmethod
     def model_name(self):
         """Alias for self.model.__name__"""
-        return self.model.__name__
+        pass
 
 
 class QueryInterface(SessionInterface, QueryInterfaceABC):
@@ -379,7 +382,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
     DEFAULT_REVERSE = False
     DEFAULT_LIMIT = -1
 
-    def __init__(self, model_name, aqhttp, session, assigned_session=None):
+    def __init__(self, model_name, aqhttp, session):
         """Instantiates a new model interface. Uses aqhttp to make requests,
         and deserializes response to models.
 
@@ -389,13 +392,15 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         :type aqhttp: AqHTTP
         :param session:
         :type session:
-        :param assigned_session:
-        :type assigned_session:
         """
         super().__init__(aqhttp, session)
         self.crud = CRUDInterface(aqhttp, session)
         self.model = ModelRegistry.get_model(model_name)
         self._do_load = True
+
+    @property
+    def model_name(self):
+        return self.model.__name__
 
     def _prepost_query_hook(self, query):
         """Method for modifying the query before posting."""
@@ -435,7 +440,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         try:
             post_response = self.crud.json_post(self.model_name, data_dict)
         except TridentRequestError as err:
-            if err.args[1].status_code == 422:
+            if err.response.status_code == 422:
                 return None
             else:
                 raise err
@@ -458,18 +463,18 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         try:
             response = self.aqhttp.get(path)
         except TridentRequestError as err:
-            if err.strerror.status_code == 404:
+            if err.response.status_code == 404:
                 return None
             raise err
         return self.load(response)
 
-    def find(self, model_id, include=None, opts=None):
+    def find(self, model_id, include=None, opts: dict = None):
         """Finds model by id."""
         if model_id is None:
             raise ValueError("model_id in 'find' cannot be None")
         return self._post_json({"id": model_id, "include": include, "options": opts})
 
-    def find_by_name(self, name, include=None, opts=None):
+    def find_by_name(self, name, include=None, opts: dict = None):
         """Finds model by name."""
         if name is None:
             raise ValueError("name in 'find_by_name' cannot be None")
@@ -482,7 +487,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
             }
         )
 
-    def array_query(self, method, args, rest=None, include=None, opts=None):
+    def array_query(self, method, args, rest=None, include=None, opts: dict = None):
         """Finds models based on a query."""
         if opts is None:
             opts = {}
@@ -510,9 +515,10 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
             return []
         return res
 
-    def all(self, methods=None, include=None, opts=None):
+    def all(self, methods: List[str] = None, include=None, opts: dict = None):
         """Finds all models.
 
+        :param methods:
         :param include:
         :type include:
         :param opts: additional options ("offset", "limit", "reverse", etc.)
@@ -527,14 +533,12 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         opts.update(addopts)
         options = {"offset": self.DEFAULT_OFFSET, "reverse": self.DEFAULT_REVERSE}
         options.update(opts)
-        rest = {}
-        if methods is not None:
-            rest = {"methods": methods}
         return self.array_query(
             method="all", args=None, rest=None, include=include, opts=options
         )
 
-    def where(self, criteria, methods=None, include=None, opts=None):
+    def where(self, criteria: dict, methods: List[str] = None,
+              include: List[str] = None, opts: dict = None):
         """Performs a query for models.
 
         :param criteria: query to find models
@@ -543,6 +547,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         :type methods: list
         :param opts: additional options ("offset", "limit", "reverse", etc.)
         :type opts: dict
+        :param include:
         :return: list of models
         :rtype: list
         """
@@ -556,7 +561,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         )
 
     # TODO: Refactor 'last' so query is an argument, not part of kwargs
-    def last(self, num=None, query=None, include=None, opts=None):
+    def last(self, num: int = None, query: dict=None, include=None, opts: dict = None):
         """Find the last added models.
 
         :param num: number of models to return. If not provided, assumes 1
@@ -578,13 +583,15 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         return self.where(query, include=include, opts=opts)
 
     # TODO: Refactor 'first' so query is an argument, not part of kwargs
-    def first(self, num=None, query=None, include=None, opts=None):
+    def first(self, num: int = None, query: dict = None, include = None,
+              opts: dict = None):
         """Find the first added models.
 
         :param num: number of models to return. If not provided, assumes 1
         :type num: int
         :param query: additional query to find models
         :type query: dict
+        :param include:
         :param opts: additional options ("offset", "limit", "reverse", etc.)
         :type opts: dict
         :return: list of models
@@ -600,7 +607,10 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         return self.where(query, include=include, opts=opts)
 
     # TODO: Refactor 'one' so query is an argument, not part of kwargs
-    def one(self, query=None, first=False, include=None, opts=None):
+    def one(self, query: dict=None,
+            first: bool = False,
+            include=None,
+            opts: dict = None):
         """Return one model. Returns the last model by default. Returns None if
         no model is found.
 
@@ -657,27 +667,31 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
         self._preload_field_values = None
 
     @property
+    def model_name(self):
+        return self.model.__name__
+
+    @property
     def browser(self):
         return self.session.browser
 
-    def find(self, id):
-        return self.browser.find(id, model_class=self.model_name)
+    def find(self, model_id):
+        return self.browser.find(model_id, model_class=self.model_name)
 
     def find_by_name(self, name):
         return self.browser.find_by_name(name, model_class=self.model_name)
 
-    def where(self, criteria, methods=None, opts=None):
+    def where(self, criteria, methods: List[str] = None, opts: bool = None):
         return self.browser.where(
             criteria, model_class=self.model_name, methods=methods, opts=opts
         )
 
-    def one(self, query=None, first=False, opts=None):
+    def one(self, query: dict=None, first: bool = False, opts: bool = None):
         return self.browser.one(model_class=self.model_name, query=query, opts=opts)
 
-    def first(self, num=1, query=None, opts=None):
+    def first(self, num: int = 1, query: dict = None, opts: bool = None):
         return self.browser.first(num, model_class=self.model_name, query=query)
 
-    def last(self, num=1, query=None, opts=None):
+    def last(self, num: int = 1, query: dict = None, opts: bool = None):
         return self.browser.last(num, model_class=self.model_name, query=query)
 
     def new(self, *args, **kwargs):
@@ -686,11 +700,11 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
         self.browser.update_cache([instance])
         return instance
 
-    def all(self, opts=None):
+    def all(self, opts: bool = None):
         return self.browser.all(model_class=self.model_name, opts=opts)
 
     # TODO: load_from using new session
-    def load(self, post_response):
+    def load(self, post_response: dict) -> List['ModelBase']:
         """Loads model instance(s) from data.
 
         Model instances will be of class defined by self.model. If data

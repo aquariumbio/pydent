@@ -15,6 +15,10 @@ class TridentBaseException(Exception):
 class TridentRequestError(TridentBaseException):
     """There was an ambiguous exception that occurred handling your request."""
 
+    def __init__(self, msg, response):
+        super().__init__(msg)
+        self.response = response
+
 
 class AquariumError(TridentBaseException):
     """Aquarium raised an error."""

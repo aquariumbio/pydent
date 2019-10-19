@@ -63,6 +63,10 @@ class Browser(QueryInterfaceABC):
         self.model_cache = {}
         self.log = Loggable(self, name="Browser@{}".format(session.url))
 
+    @property
+    def model_name(self):
+        return self.model.__name__
+
     # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
     # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
 
