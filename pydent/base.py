@@ -53,7 +53,7 @@ from pydent.marshaller import fields
 from pydent.marshaller import ModelRegistry
 from pydent.marshaller import SchemaModel
 from pydent.sessionabc import SessionABC
-from pydent.interfaces import SessionInterface
+from pydent.interfaces import BrowserInterface, QueryInterface
 from typing import Union, List, Dict
 
 
@@ -172,7 +172,8 @@ class ModelBase(SchemaModel):
         )
 
     @classmethod
-    def load_from(cls, data: dict, owner: 'ModelBase' = None) -> 'ModelBase':
+    def load_from(cls, data: dict, owner: 'ModelBase' = None) \
+            -> Union[List['ModelBase'], 'ModelBase']:
         """Create a new model instance from loaded attributes.
 
         'obj' should have a o
@@ -274,11 +275,11 @@ class ModelBase(SchemaModel):
         """Callback that always returns None."""
         return None
 
-    def create_interface(self) -> SessionInterface:
+    def create_interface(self) -> Union[QueryInterface, BrowserInterface]:
         return self.interface(self.session)
 
     @classmethod
-    def interface(cls, session: 'AqSession') -> SessionInterface:
+    def interface(cls, session: 'AqSession') -> Union[QueryInterface, BrowserInterface]:
         """Creates a model interface from this class and a session.
 
         This method can be overridden in model definitions for special
@@ -293,7 +294,8 @@ class ModelBase(SchemaModel):
         return interface.find(model_id)
 
     @classmethod
-    def where(cls, session: 'AqSession', params: Dict) -> List['ModelBase']:
+    def where(cls, session: 'AqSession', params: Dict) \
+            -> Union[None, List['ModelBase']]:
         """Finds a list of models by some parameters."""
         if params is None:
             return None
@@ -328,7 +330,8 @@ class ModelBase(SchemaModel):
         )
         return model.find(self.session, model_id)
 
-    def where_callback(self, model_name: str, *args, **kwargs) -> List['ModelBase']:
+    def where_callback(self, model_name: str, *args, **kwargs) \
+            -> Union[None, List['ModelBase']]:
         """Finds models using a model interface and a set of parameters.
 
         Used to find models in model relationships.
