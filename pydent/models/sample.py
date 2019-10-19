@@ -71,7 +71,8 @@ class Sample(FieldValueInterface, ModelBase):
     def field_value(self, name):
         """Returns the :class:`FieldValue` associated with the sample by its
         name. If the there is more than one FieldValue with the same name (as
-        in field_value arrays), it will return the first FieldValue. See the
+        in field_value arrays), it will return the first FieldValue. See the.
+
         :method:`Sample.field_value_array` method.
 
         :param name: name of the field value

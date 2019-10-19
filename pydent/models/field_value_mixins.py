@@ -136,6 +136,7 @@ class FieldValueInterface:
 
     def get_metatype(self):
         """Returns the instance's metatype (e.g.
+
         :class:`pydent.models.SampleType` or
         :class:`pydent.models.OperationType`). The metatype class name is
         stored as `METATYPE` in the class definition.

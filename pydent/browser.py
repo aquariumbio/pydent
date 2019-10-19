@@ -26,6 +26,7 @@ from pydent.marshaller import ModelRegistry
 from pydent.models import Sample
 from pydent.relationships import BaseRelationship
 from pydent.utils import Loggable
+
 # TODO: browser documentation
 # TODO: examples in sphinx
 # TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
