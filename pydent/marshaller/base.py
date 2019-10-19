@@ -89,8 +89,17 @@ class SchemaModel(metaclass=ModelRegistry):
     def get_deserialized(self, name):
         return self._get_deserialized_data()[name]
 
-    def has_deserialize(self, name):
-        assert name in self._get_deserialized_data()
+    def is_deserialized(self, name: str) -> bool:
+        """
+        Check if a given key has already been deserialized.
+
+        :param name: name of the attribute
+        :return: True if key has been deserialized.
+        """
+        data = self._get_deserialized_data()
+        if name in data and data[name] is not None:
+            return True
+        return False
 
     @classmethod
     def _set_data(cls, data, calling_obj=None):
