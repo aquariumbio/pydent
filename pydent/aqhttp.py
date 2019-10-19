@@ -89,30 +89,24 @@ class AqHTTP:
             msg = "REQUEST: (t={seconds}s)  {method} {url}".format(**info)
             if include_body:
                 body = info["body"]
-                if isinstance(body, str):
-                    try:
-                        my_json = body.decode("utf8").replace("'", '"')
-                        body = json.loads(my_json)
-                        body = pprint_data(body, max_list_len=10)
-                    except json.JSONDecodeError:
-                        pass
-                    except Exception:
-                        pass
+                try:
+                    my_json = body.decode("utf8").replace("'", '"')
+                    body = json.loads(my_json)
+                    body = pprint_data(body, max_list_len=10)
+                except:
+                    pass
                 msg = msg + "\n" + "BODY: {body}".format(body=body)
             if include_text:
                 text = getattr(response, "text", "")
                 try:
                     text = json.dumps(json.loads(text), indent=2)
-                except json.JSONDecodeError:
-                    pass
-                except Exception:
+                except:
                     pass
                 msg = msg + "\n" + "TEXT: {text}".format(text=text)
             return msg
         return "RESPONSE: NO RESPONSE"
 
-    @staticmethod
-    def _format_request_status(response: requests.Response) -> str:
+    def _format_request_status(self, response: requests.Response) -> str:
         if response is not None:
             return "STATUS:  {} {}".format(response.status_code, response.reason)
         return "STATUS: NO RESPONSE"
