@@ -6,8 +6,9 @@ from pydent.marshaller.exceptions import CallbackValidationError
 from pydent.marshaller.exceptions import MultipleValidationError
 from pydent.marshaller.fields import Callback
 from pydent.marshaller.fields import Field
-from pydent.marshaller.registry import SchemaRegistry
+from pydent.marshaller.registry import SchemaRegistry, ModelRegistry
 from pydent.marshaller.utils import make_signature_str
+from typing import Type
 
 
 class DynamicSchema(metaclass=SchemaRegistry):
@@ -41,6 +42,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
         :type instance:
         :param data:
         :type data:
+        :param add_extra:
         :return:
         :rtype:
         """
@@ -52,7 +54,8 @@ class DynamicSchema(metaclass=SchemaRegistry):
                 continue
             if not add_extra and k not in cls.model_class.fields:
                 raise AttributeError(
-                    "Expected field missing. Cannot initialize accessor for '{}' for '{}' because it is not a field."
+                    "Expected field missing. Cannot initialize accessor for '{}' for "
+                    "'{}' because it is not a field."
                     " It may be missing from the 'field' dictionary.".format(
                         k, cls.model_class
                     )
@@ -63,14 +66,6 @@ class DynamicSchema(metaclass=SchemaRegistry):
                 setattr(instance, k, v)
             except AttributeError as e:
                 raise e
-                # raise AttributeError("can't set attribute '{key}' (accessor '{objtype}.{key}' is a {accessor} type) for '{objtype}'"
-                #                      " because:\n{e}"
-                # .format(
-                #     key=k,
-                #     objtype=instance.__class__,
-                #     accessor=instance.__class__.__dict__.get(k, None),
-                #     e="{}: {}".format(e.__class__.__name__, e)
-                # )) from e
 
     @classmethod
     def validate_callbacks(cls):
@@ -94,7 +89,8 @@ class DynamicSchema(metaclass=SchemaRegistry):
                     )
                 )
                 continue
-            error_prefix = "Callback '{callback}' for relationship '{model}.{name}'".format(
+            error_prefix = "Callback '{callback}' for relationship '{model}.{name}'"\
+            .format(
                 callback=callback_func, model=model_class.__name__, name=rname
             )
             if not callable(callback_func) and not hasattr(model_class, callback_func):
@@ -123,7 +119,8 @@ class DynamicSchema(metaclass=SchemaRegistry):
                     ):
                         wrong_signature.append(
                             error_prefix
-                            + " expects arguments {receive_args} but would receive arguments {sent_args}.".format(
+                            + " expects arguments {receive_args} but would receive "
+                              "arguments {sent_args}.".format(
                                 receive_args=make_signature_str(
                                     expected_args, expected_kwargs
                                 ),
@@ -140,7 +137,8 @@ class DynamicSchema(metaclass=SchemaRegistry):
                             if invalid_keys:
                                 wrong_signature.append(
                                     error_prefix
-                                    + " does not recognize named key(s) {invalid_keys} from signature {receive_args}.".format(
+                                    + " does not recognize named key(s) {invalid_keys} "
+                                      "from signature {receive_args}.".format(
                                         invalid_keys=", ".join(
                                             ['"{}"'.format(key) for key in invalid_keys]
                                         ),
@@ -163,7 +161,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
                     e.r(CallbackValidationError(w))
 
     @classmethod
-    def register(cls, model_class):
+    def register(cls, model_class: Type[ModelRegistry]):
         """Registers the schema to a model class. Saves the schema class to the
         class attribute.
 

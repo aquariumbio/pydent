@@ -65,7 +65,7 @@ class ExceptionCollection(Exception):
 
     def raise_exception_class(self, exception_class):
         """Raise an exception class, if it was collected."""
-        errors = self.group_errors.get(exception_class.__name__, [])
+        errors = self.group_errors().get(exception_class.__name__, [])
         if errors:
             raise exception_class(errors)
 

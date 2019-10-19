@@ -65,7 +65,8 @@ class SchemaModel(metaclass=ModelRegistry):
                 pass
             raise SchemaModelException(
                 "Cannot initialize a {} without a {}. "
-                "Use '@{}' to decorate the class definition for '{}' located in {}".format(
+                "Use '@{}' to decorate the class definition for '{}' located in {}"
+                .format(
                     SchemaModel.__name__,
                     DynamicSchema.__name__,
                     add_schema.__name__,

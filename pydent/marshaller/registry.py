@@ -57,7 +57,8 @@ class SchemaRegistry(type):
         """Gets model by model_name."""
         if name not in SchemaRegistry.schemas:
             raise SchemaRegistryError(
-                'Schema "{}" not found in SchemaRegistry. Available schemas:\n{}'.format(
+                'Schema "{}" not found in SchemaRegistry. Available schemas:\n{}'
+                .format(
                     name, ",".join(SchemaRegistry.schemas.keys())
                 )
             )
