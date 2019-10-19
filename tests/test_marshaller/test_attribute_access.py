@@ -247,3 +247,33 @@ class TestCallbackAccess:
 
         m = MyModel({"field": 6})
         assert m.dump(include={"field"}) == {"field": 6}
+
+
+    def test_is_deserialized(self, base):
+        """The `is_deserialized` method should check if a specified key
+        has been deserialized."""
+
+        @add_schema
+        class MyModel(base):
+            fields = dict(field=Callback("find", cache=True))
+
+            def find(self):
+                return 5
+
+        mymodel = MyModel()
+
+        # field is not deserialized
+        assert not mymodel.is_deserialized('field')
+
+        # field gets cached
+        assert mymodel.field == 5
+
+        # field is now derserialized
+        print(mymodel._get_deserialized_data())
+        assert mymodel.is_deserialized('field')
+
+        # reset the field by setting to None
+        mymodel.field = None
+        assert not mymodel.is_deserialized('field')
+        assert mymodel.field == 5
+        assert mymodel.is_deserialized('field')
