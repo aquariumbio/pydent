@@ -24,6 +24,8 @@ class FieldABC(ABC):
     Field abstract base class
     """
 
+    _FIELD_ALLOW_NONE_DEFAULT = True
+
     @abstractmethod
     def serialize(self):
         pass
@@ -64,7 +66,7 @@ class Field(FieldABC):
         """
 
         if allow_none is None:
-            allow_none = True
+            allow_none = self._FIELD_ALLOW_NONE_DEFAULT
         if many is None:
             many = False
         self.many = many
@@ -170,7 +172,7 @@ class Nested(Field):
         if lazy is None:
             self.lazy = True
         if allow_none is None:
-            allow_none = True
+            allow_none = self._FIELD_ALLOW_NONE_DEFAULT
         super().__init__(many, data_key, allow_none)
 
     def get_model(self):

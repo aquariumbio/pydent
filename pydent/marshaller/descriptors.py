@@ -5,6 +5,10 @@ Data descriptors.
 from enum import Enum, auto
 
 
+class MarshallingAttributeAccessError(Exception):
+    """Generic error that arises from while accessing an attribute"""
+
+
 class Placeholders(Enum):
     DATA = auto()
     MARSHALL = auto()
@@ -73,7 +77,7 @@ class DataAccessor(object):
             default = self.HOLDER
         self.default = default
         if self.name == self.accessor:
-            raise Exception(
+            raise MarshallingAttributeAccessError(
                 "Descriptor name '{}' cannot be accessor name '{}'".format(
                     self.name, self.accessor
                 )
@@ -113,7 +117,7 @@ class MarshallingAccessor(DataAccessor):
         super().__init__(name, accessor, default=default)
         self.deserialized_accessor = deserialized_accessor
         if self.accessor == self.deserialized_accessor:
-            raise Exception(
+            raise MarshallingAttributeAccessError(
                 "Descriptor accessor '{}' cannot be deserialized accessor '{}'".format(
                     self.accessor, self.deserialized_accessor
                 )
@@ -126,7 +130,7 @@ class MarshallingAccessor(DataAccessor):
         except AttributeError as e:
             raise e
         except Exception as e:
-            raise Exception(
+            raise MarshallingAttributeAccessError(
                 "Error retrieving attribute '{}' from '{}' because:\n".format(
                     self.name, obj.__class__
                 )
@@ -159,9 +163,9 @@ class MarshallingAccessor(DataAccessor):
 
             print("__set__ traceback:")
             print("\n".join(format_tb(e.__traceback__)))
-            raise Exception(
-                "can't set attribute '{}' for '{}' to '{}' due to:\n{}. See the traceback"
-                " printed above".format(self.name, obj, val, str(e))
+            raise MarshallingAttributeAccessError(
+                "can't set attribute '{}' for '{}' to '{}' due to:\n{}. "
+                "See the traceback printed above".format(self.name, obj, val, str(e))
             ) from e
 
     def __delete__(self, obj):
