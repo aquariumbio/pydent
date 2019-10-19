@@ -29,6 +29,6 @@ Exceptions
 
     PlannerException
 """
-
-from pydent.planner.planner import Planner, PlannerException
 from pydent.planner.layout import PlannerLayout
+from pydent.planner.planner import Planner
+from pydent.planner.planner import PlannerException

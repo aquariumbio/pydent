@@ -25,8 +25,10 @@ After initializing a session, models are accessible from the Session:
     first10 = session.SampleType.first(10)
     mysamples = session.Sample.last(10, query={'user_id': 66})
 
-See the :ref:`Models <models>` documentation for more information on how to
-manipulate and query models.
+.. seealso::
+    Models :ref:`Models <models>`
+        documentation for more information on how to
+        manipulate and query models.
 
 
 
@@ -49,8 +51,14 @@ up and caching results from the server, which is covered in
 .. currentmodule: pydent.planner.planner
 
 The Planner allows users to create new experimental plans and upload them to
-the Aquarium server for experiment execution. For more information, see
-the :ref:`Planning <planning>` and :ref:`Advanced Topics <advancedtopics>` documents
+the Aquarium server for experiment execution.
+
+.. seealso::
+    Planning :ref:`Planning <planning>`
+
+
+    Advanced Topics :ref:`Advanced Topics <advancedtopics>`
+
 
 .. autosummary::
     :toctree: generated/
@@ -90,39 +98,34 @@ Aquarium models from the server.
     UtilityInterface
 
 """
-
 import inspect
 import timeit
 import webbrowser
+from copy import copy
 from decimal import Decimal
 
 from requests.exceptions import ReadTimeout
 
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
-from pydent.interfaces import (
-    QueryInterfaceABC,
-    QueryInterface,
-    UtilityInterface,
-    BrowserInterface,
-)
-from pydent.models import __all__ as allmodels
 from pydent.browser import Browser
+from pydent.interfaces import BrowserInterface
+from pydent.interfaces import QueryInterface
+from pydent.interfaces import QueryInterfaceABC
+from pydent.interfaces import UtilityInterface
+from pydent.models import __all__ as allmodels
 from pydent.sessionabc import SessionABC
-from copy import copy
 
 
 class AqSession(SessionABC):
-    """
-    Holds an AqHTTP with login information.
-    Creates SessionInterfaces for models.
+    """Holds an AqHTTP with login information. Creates SessionInterfaces for
+    models.
 
     .. code-block:: python
 
         session1 = AqSession(username, password, aquairum_url)
         session1.User.find(1)
         # <User(id=1,...)>
-
     """
 
     def __init__(self, login, password, aquarium_url, name=None, aqhttp=None):
@@ -175,7 +178,7 @@ class AqSession(SessionABC):
         self._interface_class = c
 
     def _initialize_interfaces(self):
-        """Initializes the session's interfaces"""
+        """Initializes the session's interfaces."""
         # initialize model interfaces
         for model_name in allmodels:
             self._register_interface(model_name)
@@ -186,14 +189,14 @@ class AqSession(SessionABC):
 
     @property
     def session(self):
-        """Return self"""
+        """Return self."""
         return self
 
     def set_verbose(self, verbose, tb_limit=None):
         self._aqhttp.log.set_verbose(verbose, tb_limit=tb_limit)
 
     def _log_to_aqhttp(self, msg):
-        """Sends a log message to the aqhttp's logger"""
+        """Sends a log message to the aqhttp's logger."""
         self._aqhttp.log.info(msg)
 
     def _register_interface(self, model_name):
@@ -209,22 +212,21 @@ class AqSession(SessionABC):
 
     @property
     def url(self):
-        """Returns the aquarium_url for this session"""
+        """Returns the aquarium_url for this session."""
         return self._aqhttp.aquarium_url
 
     @property
     def login(self):
-        """
-        Logs into aquarium, generating the necessary headers to perform requests
-        to Aquarium
-        """
+        """Logs into aquarium, generating the necessary headers to perform
+        requests to Aquarium."""
         return self._aqhttp.login
 
     @property
     def current_user(self):
-        """
-        Returns the current User associated with this session. Returns None
-        if no user is found (as in cases where the Aquarium connection is down).
+        """Returns the current User associated with this session.
+
+        Returns None if no user is found (as in cases where the Aquarium
+        connection is down).
         """
         if self._current_user is None:
             user = self.User.where({"login": self._aqhttp.login})
@@ -234,11 +236,9 @@ class AqSession(SessionABC):
         return self._current_user
 
     def logged_in(self):
-        """
-        Returns whether the user is logged in. If the session
-        is able to return the User model instance using the
-        session's login credentials, the user is considered
-        to be logged in.
+        """Returns whether the user is logged in. If the session is able to
+        return the User model instance using the session's login credentials,
+        the user is considered to be logged in.
 
         :return: whether user is currently logged in
         :rtype: boolean
@@ -249,24 +249,27 @@ class AqSession(SessionABC):
 
     @property
     def models(self):
-        """Returns list of all models available"""
+        """Returns list of all models available."""
         return list(ModelRegistry.models.keys())
 
     def model_interface(self, model_name, interface_class=None):
-        """Returns model interface by name"""
+        """Returns model interface by name."""
         if interface_class is None:
             interface_class = self.interface_class
         return interface_class(model_name, self._aqhttp, self)
 
     @property
     def utils(self):
-        """Instantiates a utility interface"""
+        """Instantiates a utility interface."""
         return UtilityInterface(self._aqhttp, self)
 
     # TODO: put 'ping' in documentation
     def ping(self, num=5):
-        """Performs a number of simple requests (pings) to estimate the speed of the server.
-        Displays a message about the average time each ping took."""
+        """Performs a number of simple requests (pings) to estimate the speed
+        of the server.
+
+        Displays a message about the average time each ping took.
+        """
         try:
             ping_function = lambda: self.User.find(1)
             ping_function_source = inspect.getsource(ping_function).strip()

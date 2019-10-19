@@ -42,19 +42,22 @@ relationships - models relationships are stored
     primer_type = s.sample_type
 
 """
-
-from pydent.exceptions import AquariumModelError, NoSessionError
-from pydent.marshaller import SchemaModel, ModelRegistry, fields
-from inflection import tableize
 import itertools
 from copy import deepcopy
+
+from inflection import tableize
+
+from pydent.exceptions import AquariumModelError
+from pydent.exceptions import NoSessionError
+from pydent.marshaller import fields
+from pydent.marshaller import ModelRegistry
+from pydent.marshaller import SchemaModel
 from pydent.sessionabc import SessionABC
 
 
 class ModelBase(SchemaModel):
-    """
-    Base class for Aquarium models.
-    Subclass of :class:`pydent.marshaller.MarshallerBase`
+    """Base class for Aquarium models. Subclass of
+    :class:`pydent.marshaller.MarshallerBase`
 
     - creates instances from JSON using `load`
     - contains a reference to the :class:`pydent.session.aqsession.AqSession`
@@ -70,7 +73,7 @@ class ModelBase(SchemaModel):
     rid = None
 
     def __new__(cls, *args, session=None, **kwargs):
-        instance = super(ModelBase, cls).__new__(cls)
+        instance = super().__new__(cls)
         instance._session = None
         instance.session = session
         instance._rid = next(ModelBase.counter)
@@ -114,7 +117,8 @@ class ModelBase(SchemaModel):
 
     @property
     def _primary_key(self):
-        """Returns the primary key (e.g. 'id') or the rid if id does not exist or is None"""
+        """Returns the primary key (e.g. 'id') or the rid if id does not exist
+        or is None."""
         if hasattr(self, ModelBase.PRIMARY_KEY):
             pk = getattr(self, ModelBase.PRIMARY_KEY)
             if pk:
@@ -122,8 +126,7 @@ class ModelBase(SchemaModel):
         return "r{}".format(self.rid)
 
     def append_to_many(self, name, model):
-        """
-        Appends a model to the many relationship
+        """Appends a model to the many relationship.
 
         :param name: name of the relationship or attribute
         :type name: str
@@ -167,7 +170,8 @@ class ModelBase(SchemaModel):
     def load_from(cls, data, owner=None):
         """Create a new model instance from loaded attributes.
 
-        'obj' should have a o"""
+        'obj' should have a o
+        """
         if isinstance(data, list):
             models = []
             for d in data:
@@ -180,8 +184,7 @@ class ModelBase(SchemaModel):
 
     # TODO: rename reload to something else, implement 'refresh' method and associated tests
     def reload(self, data):
-        """
-        Reload model attributes from new data
+        """Reload model attributes from new data.
 
         :param data: data to update model instance
         :type data: dict
@@ -195,8 +198,7 @@ class ModelBase(SchemaModel):
         return self
 
     def refresh(self):
-        """
-        Refresh this model from data from the server.
+        """Refresh this model from data from the server.
 
         :return: self
         :rtype: self
@@ -237,13 +239,14 @@ class ModelBase(SchemaModel):
         self._session = new_session
 
     def connect_to_session(self, session):
-        """Connect model instance to a session. Does nothing if session already exists."""
+        """Connect model instance to a session.
+
+        Does nothing if session already exists.
+        """
         self.session = session
 
     def _check_for_session(self):
-        """
-        Raises error if model is not connected to a session
-        """
+        """Raises error if model is not connected to a session."""
         if self.session is None:
             raise NoSessionError(
                 "No AqSession instance found for '{name}' but one is required for the method."
@@ -260,7 +263,7 @@ class ModelBase(SchemaModel):
             )
 
     def no_getter(self, *_):
-        """Callback that always returns None"""
+        """Callback that always returns None."""
         return None
 
     def create_interface(self):
@@ -268,21 +271,22 @@ class ModelBase(SchemaModel):
 
     @classmethod
     def interface(cls, session):
-        """Creates a model interface from this class and a session
+        """Creates a model interface from this class and a session.
 
-        This method can be overridden in model definitions for special cases.
+        This method can be overridden in model definitions for special
+        cases.
         """
         return session.model_interface(cls.__name__)
 
     @classmethod
     def find(cls, session, model_id):
-        """Finds a model instance by its model_id"""
+        """Finds a model instance by its model_id."""
         interface = cls.interface(session)
         return interface.find(model_id)
 
     @classmethod
     def where(cls, session, params):
-        """Finds a list of models by some parameters"""
+        """Finds a list of models by some parameters."""
         if params is None:
             return None
         interface = cls.interface(session)
@@ -301,8 +305,10 @@ class ModelBase(SchemaModel):
         return model.one(self.session, *args, **kwargs)
 
     def find_callback(self, model_name, model_id):
-        """Finds a model using the model interface and model_id. Used to find
-        models in model relationships."""
+        """Finds a model using the model interface and model_id.
+
+        Used to find models in model relationships.
+        """
         self._check_for_session()
         if model_id is None:
             return None
@@ -315,8 +321,7 @@ class ModelBase(SchemaModel):
         return model.find(self.session, model_id)
 
     def where_callback(self, model_name, *args, **kwargs):
-        """
-        Finds models using a model interface and a set of parameters.
+        """Finds models using a model interface and a set of parameters.
 
         Used to find models in model relationships.
         """
@@ -361,8 +366,7 @@ class ModelBase(SchemaModel):
 
     # TODO: anonymize the keys for relationships as well
     def anonymize(self):
-        """
-        Resets the primary key of the model and assigns a new rid.
+        """Resets the primary key of the model and assigns a new rid.
 
         Metatypes cannot be annonymized.
 
@@ -387,10 +391,9 @@ class ModelBase(SchemaModel):
                     setattr(self, relation.ref, None)
 
     def copy(self, keep=None):
-        """
-        Provides a deepcopy of the model, but annonymizes the primary and global keys unless
-        class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
-        found in list of 'keep'
+        """Provides a deepcopy of the model, but annonymizes the primary and
+        global keys unless class is a metatype (e.g. OperationType, SampleType,
+        FieldType) or class name is found in list of 'keep'.
 
         By default, inventory classes such as Sample, Item, and Collection are 'kept'.
 
@@ -420,7 +423,8 @@ class ModelBase(SchemaModel):
 
     @classmethod
     def _flatten_deserialized_data(cls, models, memo):
-        """Flattens all of the relationships found in the models, returning a rid: model dictionary"""
+        """Flattens all of the relationships found in the models, returning a
+        rid: model dictionary."""
         if models is None:
             return memo
         for model in models:
@@ -441,7 +445,8 @@ class ModelBase(SchemaModel):
         return memo
 
     def _rid_dict(self):
-        """Dictionary of all models attached to this model keyed by their rid"""
+        """Dictionary of all models attached to this model keyed by their
+        rid."""
         memo = {}
         self._flatten_deserialized_data([self], memo)
         return memo

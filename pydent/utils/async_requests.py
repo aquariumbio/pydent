@@ -1,11 +1,16 @@
 import asyncio
-from functools import wraps, partial
-from tqdm import tqdm
 import itertools
+from functools import partial
+from functools import wraps
+
+from tqdm import tqdm
 
 
 def chunkify(list, n):
-    """Breaks a list into n chunks. Last chunk may not be equal in size to other chunks"""
+    """Breaks a list into n chunks.
+
+    Last chunk may not be equal in size to other chunks
+    """
     l = list
     return [l[i : i + n] for i in range(0, len(l), n)]
 
@@ -21,8 +26,7 @@ def with_index(fxn):
 async def exec_async_fxn(
     fxn, arg_list, kwargs, chunk_size=1, desc="", progress_bar=True
 ):
-    """
-    Executes an asynchronous function
+    """Executes an asynchronous function.
 
     :param fxn: function to execute in parallel
     :type fxn: callable
@@ -62,8 +66,7 @@ async def exec_async_fxn(
 
 
 def asyncfunc(fxn, arg_list, kwargs=None, chunk_size=1, progress_bar=True, desc=None):
-    """
-    Runs a function asynchronously.
+    """Runs a function asynchronously.
 
     :param fxn: function to run asynchronously
     :type fxn: function or lambda
@@ -93,8 +96,7 @@ def asyncfunc(fxn, arg_list, kwargs=None, chunk_size=1, progress_bar=True, desc=
 
 
 def make_async(chunk_size, progress_bar=True, as_classmethod=False, data_pos=0):
-    """
-    Wrapper to make a function run asynchrounously.
+    """Wrapper to make a function run asynchrounously.
 
     :param chunk_size: size of array to apply to each worker
     :type chunk_size: int

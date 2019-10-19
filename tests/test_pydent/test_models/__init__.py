@@ -1,3 +1,2 @@
-"""
-Tests using monkeypatched requests (aka mock models) using pydent.models and related classes
-"""
+"""Tests using monkeypatched requests (aka mock models) using pydent.models and
+related classes."""

@@ -1,6 +1,7 @@
 import re
 
 import pytest
+
 from pydent import models as pydent_models
 from pydent.browser import Browser
 from pydent.marshaller import exceptions as marshaller_exceptions
@@ -71,7 +72,7 @@ def test_close_match(session):
 
 
 def test_nested_cache(session):
-    """Tests whether the sample pulled """
+    """Tests whether the sample pulled."""
     browser = Browser(session)
     browser.use_cache = True
 
@@ -293,7 +294,7 @@ def test_retrieve_with_many_through_for_collections_and_parts(session):
 
 def test_collect_callbacks_for_retrieve_for_QUERYTYPE_BYID(session):
     models = session.Sample.last(10)
-    sample_type_ids = set([m.sample_type_id for m in models])
+    sample_type_ids = {m.sample_type_id for m in models}
 
     args = models[0].get_relationships()["sample_type"].build_query(models)
     assert "id" in args
@@ -305,11 +306,12 @@ def test_collect_callbacks_for_retrieve_for_QUERYTYPE_QUERY(session):
     models = session.SampleType.last(10)
     args = models[0].get_relationships()["samples"].build_query(models)
     assert "sample_type_id" in args
-    assert set(args["sample_type_id"]) == set([st.id for st in models])
+    assert set(args["sample_type_id"]) == {st.id for st in models}
 
 
 def test_retrieve(session):
-    """Should be able to parse HasOne, HasMany, and HasManyThrough without specifying the type of relationship."""
+    """Should be able to parse HasOne, HasMany, and HasManyThrough without
+    specifying the type of relationship."""
     browser = Browser(session)
 
     collections = session.Collection.first(100) + session.Collection.last(100)
@@ -378,7 +380,7 @@ def test_recursive_retrieve(session):
 
 
 def test_retrieve_fidelity(session):
-    """Retrieve should never change the model definition"""
+    """Retrieve should never change the model definition."""
 
     items = session.Sample.last(10)
     fvs = []
@@ -398,7 +400,8 @@ def test_retrieve_fidelity(session):
 
 # TODO: do we want retrieve to force a new query?, if its new, it is just ignored for now..
 def test_retrieve_with_new_operations(session):
-    """We expect when we create new models for the model relationships to be maintained"""
+    """We expect when we create new models for the model relationships to be
+    maintained."""
 
     ots = [
         session.OperationType.find_by_name(x)
@@ -421,7 +424,8 @@ def test_retrieve_with_new_operations(session):
 
 
 def test_retrieve_with_new_samples(session):
-    """We expect when we create new models for the model relationships to be maintained"""
+    """We expect when we create new models for the model relationships to be
+    maintained."""
 
     samp1 = session.SampleType.find_by_name("Primer").new_sample(
         "", "", "", properties={"Anneal Sequence": "AGTAGTATGA"}
@@ -447,8 +451,11 @@ def test_retrieve_with_new_samples(session):
 
 
 def test_update_model_cache_without_id(session):
-    """We expect to be able to update the model cache with a newly created item.
-    The model key should be equivalent to the record id ('rid')"""
+    """We expect to be able to update the model cache with a newly created
+    item.
+
+    The model key should be equivalent to the record id ('rid')
+    """
     browser = Browser(session)
 
     s = session.Sample.new()

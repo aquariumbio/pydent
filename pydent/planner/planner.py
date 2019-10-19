@@ -1,34 +1,35 @@
-"""
-Planner
-"""
-
+"""Planner."""
+import itertools
 import random
 import webbrowser
 from collections import defaultdict
+from copy import deepcopy
 from functools import wraps
 from uuid import uuid4
 
 import networkx as nx
 
 from pydent.aqsession import AqSession
-from pydent.models import FieldValue, Operation, Plan, OperationType
+from pydent.models import FieldValue
+from pydent.models import Operation
+from pydent.models import OperationType
+from pydent.models import Plan
 from pydent.planner.layout import PlannerLayout
-from pydent.planner.utils import arr_to_pairs, _id_getter, get_subgraphs
-from pydent.utils import make_async, Loggable, empty_copy
-from copy import deepcopy
-
-import itertools
+from pydent.planner.utils import _id_getter
+from pydent.planner.utils import arr_to_pairs
+from pydent.planner.utils import get_subgraphs
+from pydent.utils import empty_copy
+from pydent.utils import Loggable
+from pydent.utils import make_async
 
 
 class PlannerException(Exception):
-    """Generic planner Exception"""
+    """Generic planner Exception."""
 
 
 def plan_verification_wrapper(fxn):
-    """
-    A wrapper that verifies that all FieldValues or Operations passed
-    as arguments exist in the plan.
-    """
+    """A wrapper that verifies that all FieldValues or Operations passed as
+    arguments exist in the plan."""
 
     @wraps(fxn)
     def wrapper(self, *args, **kwargs):
@@ -54,7 +55,7 @@ def plan_verification_wrapper(fxn):
     return wrapper
 
 
-class AFTMatcher(object):
+class AFTMatcher:
     @staticmethod
     def _resolve_to_field_types(model, role=None):
         if isinstance(model, FieldValue):
@@ -107,7 +108,7 @@ class AFTMatcher(object):
 
     @staticmethod
     def _find_matching_afts(src_ft, dest_ft):
-        """Finds matching afts between two FieldTypes"""
+        """Finds matching afts between two FieldTypes."""
         afts = []
         src_afts = src_ft.allowable_field_types
         dest_afts = dest_ft.allowable_field_types
@@ -132,7 +133,7 @@ class AFTMatcher(object):
         return afts
 
 
-class Planner(AFTMatcher, object):
+class Planner(AFTMatcher):
     """A user-interface for making experimental plans and layouts."""
 
     class ITEM_SELECTION_PREFERENCE:
@@ -187,7 +188,7 @@ class Planner(AFTMatcher, object):
 
     @classmethod
     def _check_plans_for_single_session(cls, models):
-        session_ids = set([id(m.session) for m in models])
+        session_ids = {id(m.session) for m in models}
         if len(session_ids) > 1:
             raise PlannerException("Plans have different session ids")
         if models:
@@ -259,7 +260,7 @@ class Planner(AFTMatcher, object):
         webbrowser.open(self.url)
 
     def create(self):
-        """Create the plan on Aquarium"""
+        """Create the plan on Aquarium."""
         if self.plan.id:
             raise PlannerException(
                 "Cannot create plan since it already exists on the server (plan_id={})"
@@ -281,7 +282,7 @@ class Planner(AFTMatcher, object):
             self.update()
 
     def update(self):
-        """Save the plan on Aquarium"""
+        """Save the plan on Aquarium."""
         self.plan.save()
         return self.plan
 
@@ -298,7 +299,7 @@ class Planner(AFTMatcher, object):
         return self.create_operation_by_type(ot)
 
     def create_operation_by_name(self, operation_type_name, category=None):
-        """Adds a new operation to the plan"""
+        """Adds a new operation to the plan."""
         query = {"deployed": True, "name": operation_type_name}
         if category is not None:
             query["category"] = category
@@ -349,8 +350,8 @@ class Planner(AFTMatcher, object):
 
     @plan_verification_wrapper
     def remove_wire(self, fv1, fv2):
-        """
-        Removes a wire between two field values from a plan
+        """Removes a wire between two field values from a plan.
+
         :param fv1:
         :param fv2:
         :return:
@@ -439,11 +440,10 @@ class Planner(AFTMatcher, object):
         return op
 
     def chain(self, *op_or_otnames, category=None, return_as_dict=False):
-        """
-        Creates a chain of operations by *guessing* wires between operations
+        """Creates a chain of operations by *guessing* wires between operations
         based on the AllowableFieldTypes between the inputs and outputs of each
-        operation type.
-        Sample inputs and outputs will be set along the wire if possible.
+        operation type. Sample inputs and outputs will be set along the wire if
+        possible.
 
         e.g.
 
@@ -489,11 +489,10 @@ class Planner(AFTMatcher, object):
         return ops
 
     def _select_empty_input_array(self, op, fvname):
-        """
-        Selects the first 'empty' (i.e. field_values with no Sample set)
-        field value in the :class:`FieldValue` array.
-        Returns None if the FieldType is not an array. If there are no current
-        'empty' field values, a new one is instantiated and returned.
+        """Selects the first 'empty' (i.e. field_values with no Sample set)
+        field value in the :class:`FieldValue` array. Returns None if the
+        FieldType is not an array. If there are no current 'empty' field
+        values, a new one is instantiated and returned.
 
         :param op: Operation
         :param fvname: FieldType/FieldValue name of the array
@@ -703,7 +702,7 @@ class Planner(AFTMatcher, object):
 
     @plan_verification_wrapper
     def add_wire(self, fv1, fv2):
-        """Note that fv2.operation will not inherit parent_id of fv1"""
+        """Note that fv2.operation will not inherit parent_id of fv1."""
         wire = self.get_wire(fv1, fv2)
         if wire is None:
             # wire does not exist, so create it
@@ -734,8 +733,12 @@ class Planner(AFTMatcher, object):
         return routing_dict
 
     def _routing_graph(self):
-        """Get sample routing graph. A property of a valid plan is that any two routing nodes
-        that are connected by an edge must have the same sample. Edges are treated as 'sample wires'"""
+        """Get sample routing graph.
+
+        A property of a valid plan is that any two routing nodes that
+        are connected by an edge must have the same sample. Edges are
+        treated as 'sample wires'
+        """
         G = nx.DiGraph()
         for op in self.plan.operations:
             for fv in op.field_values:
@@ -788,9 +791,9 @@ class Planner(AFTMatcher, object):
     def set_input_field_value_array(
         self, op, field_value_name, sample=None, item=None, container=None
     ):
-        """
-        Finds the first 'empty' (no incoming wires and no sample set) field value and set the field value.
-        If there are no empty field values in the array, create a new field value and set that one.
+        """Finds the first 'empty' (no incoming wires and no sample set) field
+        value and set the field value. If there are no empty field values in
+        the array, create a new field value and set that one.
 
         :param op: operation
         :type op: Operation
@@ -869,7 +872,8 @@ class Planner(AFTMatcher, object):
         return query
 
     def reserved_items(self, items, search_server=False):
-        """Returns a dictionary of item_ids and the array of field_values that use them"""
+        """Returns a dictionary of item_ids and the array of field_values that
+        use them."""
         browser = self.browser
         item_ids = [i.id for i in items]
         if search_server:
@@ -920,9 +924,12 @@ class Planner(AFTMatcher, object):
         return available_items
 
     def distribute_items_of_object_type(self, object_type):
-        """Distribute items of a particular object_type across non-planning operations across
-         existing plans and these operations in this Planner instance. E.g. distributing
-         one-shot yeast competent cell aliquots"""
+        """Distribute items of a particular object_type across non-planning
+        operations across existing plans and these operations in this Planner
+        instance.
+
+        E.g. distributing one-shot yeast competent cell aliquots
+        """
         # collect items of that type used
         items = []
         browser = self.browser
@@ -985,9 +992,8 @@ class Planner(AFTMatcher, object):
         filter_func=None,
         item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT,
     ):
-        """
-        Sets the item of the field value to the next available item. Setting recent=False will select
-        the oldest item.
+        """Sets the item of the field value to the next available item. Setting
+        recent=False will select the oldest item.
 
         :param fv: The field value to set.
         :type fv: FieldValue
@@ -1039,8 +1045,9 @@ class Planner(AFTMatcher, object):
     def set_inputs_using_sample_properties(
         self, operation, sample, routing=None, setter=None
     ):
-        """Map the sample field values to the operation inputs. Optionally, a routing dictionary may
-        be passed to indicate the mapping between the sample field values and operation inputs.
+        """Map the sample field values to the operation inputs. Optionally, a
+        routing dictionary may be passed to indicate the mapping between the
+        sample field values and operation inputs.
 
         For example, the following would map the "Integrant" sample field value to the "Template"
         operation input, and so on...:
@@ -1067,10 +1074,11 @@ class Planner(AFTMatcher, object):
 
     @plan_verification_wrapper
     def set_output_sample(self, fv, sample=None, routing=None, setter=None):
-        """
-        Sets the output of the field value to the sample. If the field_value names between the Sample and
-        the field_value's operation inputs, these will be set as well. Optionally, a routing dictionary may
-        be passed to indicate the mapping between the sample field values and the operation field values.
+        """Sets the output of the field value to the sample. If the field_value
+        names between the Sample and the field_value's operation inputs, these
+        will be set as well. Optionally, a routing dictionary may be passed to
+        indicate the mapping between the sample field values and the operation
+        field values.
 
         :param fv: the output field value
         :type fv:
@@ -1095,7 +1103,7 @@ class Planner(AFTMatcher, object):
 
     @staticmethod
     def _json_update(model, **params):
-        """Temporary method to update"""
+        """Temporary method to update."""
         aqhttp = model.session._AqSession__aqhttp
         data = {"model": {"model": model.__class__.__name__}}
         data.update(model.dump(**params))
@@ -1112,8 +1120,7 @@ class Planner(AFTMatcher, object):
         cls._json_update(pa)
 
     def get_op_by_name(self, operation_type_name):
-        """
-        Find operations by their operation_type_name
+        """Find operations by their operation_type_name.
 
         :param operation_type_name: The operation type name
         :type operation_type_name: basestring
@@ -1133,8 +1140,7 @@ class Planner(AFTMatcher, object):
         return planner
 
     def annotate(self, markdown, x, y, width, height):
-        """
-        Annotates the plan with Markdown text.
+        """Annotates the plan with Markdown text.
 
         :param markdown: text to annotate (in markdown format)
         :type markdown: basestring
@@ -1164,13 +1170,16 @@ class Planner(AFTMatcher, object):
         return annotation
 
     def annotate_operations(self, ops, markdown, width, height):
-        """Annotates above the operations. Estimates the x-midpoint and y and makes a
-        text annotation at that location."""
+        """Annotates above the operations.
+
+        Estimates the x-midpoint and y and makes a text annotation at
+        that location.
+        """
         layout = self.layout.ops_to_layout(ops)
         return self.annotate_above_layout(markdown, width, height, layout=layout)
 
     def annotate_above_layout(self, markdown, width, height, layout=None):
-        """Annotates text directly above a layout"""
+        """Annotates text directly above a layout."""
         if layout is None:
             layout = self.layout
 
@@ -1217,7 +1226,8 @@ class Planner(AFTMatcher, object):
 
     @classmethod
     def _op_to_hash(cls, op):
-        """Turns a operation into a hash using the operation_type_id, item_id, and sample_id"""
+        """Turns a operation into a hash using the operation_type_id, item_id,
+        and sample_id."""
         ot_id = op.operation_type.id
 
         field_type_ids = []
@@ -1256,8 +1266,8 @@ class Planner(AFTMatcher, object):
     # TODO: procedure should run on topologically sorted operations, if there is the case that
     # two operations have different parents, then these operations are NOT mergable
     def optimize_plan(self, operations=None, ignore=None):
-        """
-        Optimizes a plan by removing redundent operations.
+        """Optimizes a plan by removing redundent operations.
+
         :param planner:
         :return:
         """
@@ -1336,8 +1346,7 @@ class Planner(AFTMatcher, object):
         return roots
 
     def validate(self):
-        """
-        Validates sample routes in the plan.
+        """Validates sample routes in the plan.
 
         :return: dictionary of each sample route and validation errors
         :rtype: dict
@@ -1400,8 +1409,12 @@ class Planner(AFTMatcher, object):
 
     # TODO: implement planner.copy and anonymize the operations and field_values by removing their ids
     def copy(self):
-        """Return a copy of this planner, with a new anonymous copy of the plan. Browser cache is copied as well,
-        but model_cache in browser are not anonymous"""
+        """Return a copy of this planner, with a new anonymous copy of the
+        plan.
+
+        Browser cache is copied as well, but model_cache in browser are
+        not anonymous
+        """
         # copy everything execpt plan, which may be large
         copied = empty_copy(self)
         data = self.__dict__.copy()
@@ -1417,15 +1430,15 @@ class Planner(AFTMatcher, object):
 
     @staticmethod
     def combine(plans):
-        """
-        Merges a list of plans into a single plan by combining operations and wires.
+        """Merges a list of plans into a single plan by combining operations
+        and wires.
 
         :param plans: list of Aquarium Plans instances
         :return: new Plan
         """
         copied_plans = [c.copy() for c in plans]
 
-        sessions = set([p.session for p in plans])
+        sessions = {p.session for p in plans}
         if len(sessions) > 1:
             raise PlannerException(
                 "Cannot combine plans, plans must all derive from same session instance"
@@ -1440,11 +1453,15 @@ class Planner(AFTMatcher, object):
         return new_plan
 
     def split(self):
-        """Split the plan into several distinct plans, if possible. This first convert the plan
-         to an operation graph, find subgraphs that are not connected to each other,
-         and create new plans based on these subgraphs. This will return anonymous copies of all
-        the plans, meaning operations and field_values will be anonymized. Sample and items attached to
-        field values will remain to avoid re-creating samples and items."""
+        """Split the plan into several distinct plans, if possible.
+
+        This first convert the plan  to an operation graph, find
+        subgraphs that are not connected to each other,  and create new
+        plans based on these subgraphs. This will return anonymous
+        copies of all the plans, meaning operations and field_values
+        will be anonymized. Sample and items attached to field values
+        will remain to avoid re-creating samples and items.
+        """
 
         # copy this plan
         copied_plan = self.copy()

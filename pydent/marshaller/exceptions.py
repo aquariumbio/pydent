@@ -1,18 +1,16 @@
-"""
-Marshalling exceptions
-"""
+"""Marshalling exceptions."""
 
 
 class SchemaRegistryError(Exception):
-    """Generic schema registry exception"""
+    """Generic schema registry exception."""
 
 
 class SchemaException(Exception):
-    """A generic schema exception"""
+    """A generic schema exception."""
 
 
 class SchemaModelException(Exception):
-    """A generic model exception"""
+    """A generic model exception."""
 
 
 """
@@ -21,19 +19,19 @@ Field validation exceptions
 
 
 class FieldValidationError(Exception):
-    """A generic field validation error"""
+    """A generic field validation error."""
 
 
 class AllowNoneFieldValidationError(FieldValidationError):
-    """A field validation error for getting or setting None values"""
+    """A field validation error for getting or setting None values."""
 
 
 class CallbackValidationError(Exception):
-    """A generic callback validation error"""
+    """A generic callback validation error."""
 
 
 class RunTimeCallbackAttributeError(AttributeError):
-    """Error that occurs during executing a field callback"""
+    """Error that occurs during executing a field callback."""
 
 
 """
@@ -46,7 +44,7 @@ class ModelRegistryError(Exception):
 
 
 class ModelValidationError(Exception):
-    """A model validation error"""
+    """A model validation error."""
 
 
 class ExceptionCollection(Exception):

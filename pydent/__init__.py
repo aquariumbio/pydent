@@ -1,5 +1,4 @@
-"""pydent"""
-
+"""pydent."""
 # without nest_asyncio, Jupyter notebooks will crash if an async method is used
 import nest_asyncio
 
@@ -14,8 +13,7 @@ import getpass
 
 
 def login(user, url, password=None):
-    """
-    Create a new AqSession instance from login information.
+    """Create a new AqSession instance from login information.
 
     :param user: user login
     :type user: basestring

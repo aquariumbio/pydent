@@ -1,23 +1,27 @@
-"""
-Models related to field values and sample properties.
-"""
-
+"""Models related to field values and sample properties."""
 import json
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
-from pydent.models.crud_mixin import JSONSaveMixin, JSONDeleteMixin
+from pydent.models.crud_mixin import JSONDeleteMixin
+from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldMixin
-from pydent.models.inventory import Item, Collection, ObjectType
+from pydent.models.inventory import Collection
+from pydent.models.inventory import Item
+from pydent.models.inventory import ObjectType
 from pydent.models.sample import Sample
-from pydent.relationships import HasOne, Function, Raw, fields, HasMany
+from pydent.relationships import fields
+from pydent.relationships import Function
+from pydent.relationships import HasMany
+from pydent.relationships import HasOne
+from pydent.relationships import Raw
 from pydent.utils import filter_list
 
 
 @add_schema
 class AllowableFieldType(ModelBase):
-    """A AllowableFieldType model"""
+    """A AllowableFieldType model."""
 
     fields = dict(
         field_type=HasOne("FieldType"),
@@ -41,7 +45,7 @@ class AllowableFieldType(ModelBase):
 
 @add_schema
 class FieldType(FieldMixin, ModelBase):
-    """A FieldType model"""
+    """A FieldType model."""
 
     fields = dict(
         allowable_field_types=HasMany("AllowableFieldType", "FieldType"),
@@ -130,8 +134,8 @@ class FieldType(FieldMixin, ModelBase):
         return field_type
 
     def initialize_field_value(self, field_value=None, parent=None):
-        """
-        Updates or initializes a new :class:`FieldValue` from this FieldType
+        """Updates or initializes a new :class:`FieldValue` from this
+        FieldType.
 
         :param field_value: optional FieldValue to update with this FieldType
         :type field_value: FieldValue
@@ -153,8 +157,7 @@ class FieldType(FieldMixin, ModelBase):
 
 @add_schema
 class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
-    """
-    A FieldValue model. One of the more complex models.
+    """A FieldValue model. One of the more complex models.
 
     Change Log:
     * 2019_06_03 FieldValues no longer have 'wires_as_source' or 'wires_as_dest' fields. Wires may only be accessed
@@ -293,7 +296,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
             print("{}{}.{}:{}".format(pre, self.role, self.name, self.value))
 
     def reset(self):
-        """Resets the inputs of the field_value"""
+        """Resets the inputs of the field_value."""
         self.value = None
         self.allowable_field_type_id = None
         self.allowable_field_type = None
@@ -441,7 +444,14 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         msg = "No allowable field types found for {}:{}:{} using {}:{}."
         msg += " Available afts: {}"
         raise AquariumModelError(
-            msg.format(self.operation.operation_type.name, self.role, self.name, sid, oid, ", ".join(aft_list))
+            msg.format(
+                self.operation.operation_type.name,
+                self.role,
+                self.name,
+                sid,
+                oid,
+                ", ".join(aft_list),
+            )
         )
 
     def set_aft(self):
@@ -516,9 +526,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         self.sample = sample
 
     def set_field_type(self, field_type):
-        """
-        Sets properties from a field_type
-        """
+        """Sets properties from a field_type."""
 
         self.field_type = field_type
         self.field_type_id = field_type.id
@@ -544,7 +552,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         self.allowable_field_type_id = allowable_field_type.id
 
     def choose_item(self, first=True):
-        """Set the item associated with the field value"""
+        """Set the item associated with the field value."""
         index = 0
         if not first:
             index = -1
@@ -556,7 +564,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         return None
 
     def compatible_items(self):
-        """Find items compatible with the field value"""
+        """Find items compatible with the field value."""
         return self.session.utils.compatible_items(
             self.sample.id, self.allowable_field_type.object_type_id
         )

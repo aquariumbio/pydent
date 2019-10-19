@@ -1,5 +1,4 @@
-"""
-Session interfaces for interacting with Aquarium.
+"""Session interfaces for interacting with Aquarium.
 
 Session interfaces are created by an AqSession instance and use an AqHTTP
 instance to make http requests to Aquarium.
@@ -31,19 +30,18 @@ Example:
     session1.create.samples(list_of_samples)
     # creates samples from a list by calling method CreateInterface.samples
 """
-
 import json
 
-from inflection import pluralize, underscore
+from inflection import pluralize
+from inflection import underscore
 
 from .base import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
 
 
-class SessionInterface(object):
-    """
-    Generic session interface.
+class SessionInterface:
+    """Generic session interface.
 
     Trident users should only be able to make requests through a
     SessionInterface to avoid making arbitrary and potentially damaging
@@ -53,8 +51,7 @@ class SessionInterface(object):
     __slots__ = ["aqhttp", "session"]
 
     def __init__(self, aqhttp, session):
-        """
-        Initializer for SessionInterface
+        """Initializer for SessionInterface.
 
         :param aqhttp: aqhttp instance for this interface
         :type aqhttp: AqHTTP
@@ -66,9 +63,9 @@ class SessionInterface(object):
 
 
 class CRUDInterface(SessionInterface):
-    """
-    Create, Update, Delete interface. Methods for communicating with
-    Aquarium's JSON controller.
+    """Create, Update, Delete interface.
+
+    Methods for communicating with Aquarium's JSON controller.
     """
 
     __slots__ = ["aqhttp", "session"]
@@ -78,8 +75,7 @@ class CRUDInterface(SessionInterface):
     #         raise TridentRequestError("Model {} has no id.".format(model))
 
     def _model_controller(self, method, table, model_id, data, params=None):
-        """
-        Method for create, updating, and deleting models.
+        """Method for create, updating, and deleting models.
 
         :param method: Request method name (one of 'put', 'post', 'delete'
         :type method: basestring
@@ -114,8 +110,8 @@ class CRUDInterface(SessionInterface):
     def _json_controller(
         self, method, model_name, model_data, record_methods=None, record_getters=None
     ):
-        """
-        Method for create, updating, and deleting models using Aquariums JSON controller.
+        """Method for create, updating, and deleting models using Aquariums
+        JSON controller.
 
         :param method: Method name (e.g. "save", "delete")
         :type method: basestring
@@ -186,9 +182,7 @@ class CRUDInterface(SessionInterface):
 
 
 class UtilityInterface(CRUDInterface):
-    """
-    Miscellaneous and specialized requests for creating, updating, etc.
-    """
+    """Miscellaneous and specialized requests for creating, updating, etc."""
 
     __slots__ = ["aqhttp", "session"]
 
@@ -250,9 +244,7 @@ class UtilityInterface(CRUDInterface):
     ##############################
 
     def update_code(self, code):
-        """
-        Updates code for a operation_type
-        """
+        """Updates code for a operation_type."""
         controller = underscore(pluralize(code.parent_class))
 
         code_data = {"id": code.parent_id, "name": code.name, "content": code.content}
@@ -271,9 +263,7 @@ class UtilityInterface(CRUDInterface):
     ##############################
 
     def estimate_plan_cost(self, plan):
-        """
-        Estimates the plan cost
-        """
+        """Estimates the plan cost."""
         result = self.aqhttp.post("launcher/estimate", {"id": plan.id})
         total = 0
         for operation in plan.operations:
@@ -290,9 +280,7 @@ class UtilityInterface(CRUDInterface):
         return None
 
     def replan(self, plan_id):
-        """
-        Copies a plan
-        """
+        """Copies a plan."""
         result = self.aqhttp.get("plans/replan/{plan_id}".format(plan_id=plan_id))
         plan_copy = self.session.Plan.load(result)
         return plan_copy
@@ -302,34 +290,24 @@ class UtilityInterface(CRUDInterface):
         return result
 
     def batch_operations(self, operation_ids):
-        """
-        Batches operations from a list of operation_ids
-        """
+        """Batches operations from a list of operation_ids."""
         self.aqhttp.post("operations/batch", json_data=operation_ids)
 
     def unbatch_operations(self, operation_ids):
-        """
-        Unbatches operations from a list of operation_ids
-        """
+        """Unbatches operations from a list of operation_ids."""
         self.aqhttp.post("operations/batch", json_data=operation_ids)
 
     def set_operation_status(self, operation_id, status):
-        """
-        Sets an operation's status
-        """
+        """Sets an operation's status."""
         msg = "operations/{oid}/status/{status}".format(oid=operation_id, status=status)
         self.aqhttp.get(msg)
 
     def job_debug(self, job_id):
-        """
-        Runs debug on a job with id=job_id
-        """
+        """Runs debug on a job with id=job_id."""
         self.aqhttp.get("krill/debug/{jid}".format(jid=job_id))
 
     def submit_plan(self, plan, user, budget):
-        """
-        Submits a plan
-        """
+        """Submits a plan."""
         user_query = "&user_id=" + str(user.id)
         budget_query = "?budget_id=" + str(budget.id)
         result = self.aqhttp.get(
@@ -338,9 +316,7 @@ class UtilityInterface(CRUDInterface):
         return result
 
     def compatible_items(self, sample_id, object_type_id):
-        """
-        Find items compatible with the field value.
-        """
+        """Find items compatible with the field value."""
         result = self.aqhttp.post(
             "json/items", {"sid": sample_id, "oid": object_type_id}
         )
@@ -386,16 +362,15 @@ class QueryInterfaceABC(ABC):
 
     @property
     def model_name(self):
-        """
-        Alias for self.model.__name__
-        """
+        """Alias for self.model.__name__"""
         return self.model.__name__
 
 
 class QueryInterface(SessionInterface, QueryInterfaceABC):
-    """
-    Makes requests using AqHTTP that are model specific.
-    Establishes a connection between a session object and an Aquarium model.
+    """Makes requests using AqHTTP that are model specific.
+
+    Establishes a connection between a session object and an Aquarium
+    model.
     """
 
     __slots__ = ["aqhttp", "session", "model", "__dict__"]
@@ -405,8 +380,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
     DEFAULT_LIMIT = -1
 
     def __init__(self, model_name, aqhttp, session, assigned_session=None):
-        """
-        Instantiates a new model interface. Uses aqhttp to make requests,
+        """Instantiates a new model interface. Uses aqhttp to make requests,
         and deserializes response to models.
 
         :param model_name: Model name (e.g. 'Sample' or 'FieldValue')
@@ -424,7 +398,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         self._do_load = True
 
     def _prepost_query_hook(self, query):
-        """Method for modifying the query before posting"""
+        """Method for modifying the query before posting."""
 
         additional_query = {}
         if hasattr(self.model, self.MERGE):
@@ -449,9 +423,10 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         return query
 
     def _post_json(self, data):
-        """
-        Posts a json request to session for this interface.
-        Attaches raw json and this session instance to the models it retrieves.
+        """Posts a json request to session for this interface.
+
+        Attaches raw json and this session instance to the models it
+        retrieves.
         """
         data_dict = {"model": self.model_name}
         data_dict = self._prepost_query_hook(data_dict)
@@ -470,18 +445,16 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         return post_response
 
     def load(self, post_response):
-        """
-        Loads model instance(s) from data.
-        Model instances will be of class defined by self.model.
-        If data is a list, will return a list of model instances.
+        """Loads model instance(s) from data.
+
+        Model instances will be of class defined by self.model. If data
+        is a list, will return a list of model instances.
         """
         models = self.model.load_from(post_response, self.session)
         return models
 
     def get(self, path):
-        """
-        Makes a generic get request
-        """
+        """Makes a generic get request."""
         try:
             response = self.aqhttp.get(path)
         except TridentRequestError as err:
@@ -491,17 +464,13 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         return self.load(response)
 
     def find(self, model_id, include=None, opts=None):
-        """
-        Finds model by id
-        """
+        """Finds model by id."""
         if model_id is None:
             raise ValueError("model_id in 'find' cannot be None")
         return self._post_json({"id": model_id, "include": include, "options": opts})
 
     def find_by_name(self, name, include=None, opts=None):
-        """
-        Finds model by name
-        """
+        """Finds model by name."""
         if name is None:
             raise ValueError("name in 'find_by_name' cannot be None")
         return self._post_json(
@@ -514,9 +483,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         )
 
     def array_query(self, method, args, rest=None, include=None, opts=None):
-        """
-        Finds models based on a query
-        """
+        """Finds models based on a query."""
         if opts is None:
             opts = {}
         options = {
@@ -544,8 +511,8 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         return res
 
     def all(self, methods=None, include=None, opts=None):
-        """
-        Finds all models
+        """Finds all models.
+
         :param include:
         :type include:
         :param opts: additional options ("offset", "limit", "reverse", etc.)
@@ -568,8 +535,8 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         )
 
     def where(self, criteria, methods=None, include=None, opts=None):
-        """
-        Performs a query for models
+        """Performs a query for models.
+
         :param criteria: query to find models
         :type criteria: dict
         :param methods: server side methods to implement
@@ -590,8 +557,8 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
 
     # TODO: Refactor 'last' so query is an argument, not part of kwargs
     def last(self, num=None, query=None, include=None, opts=None):
-        """
-        Find the last added models
+        """Find the last added models.
+
         :param num: number of models to return. If not provided, assumes 1
         :type num: int
         :param query: additional query to find models
@@ -612,8 +579,8 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
 
     # TODO: Refactor 'first' so query is an argument, not part of kwargs
     def first(self, num=None, query=None, include=None, opts=None):
-        """
-        Find the first added models
+        """Find the first added models.
+
         :param num: number of models to return. If not provided, assumes 1
         :type num: int
         :param query: additional query to find models
@@ -634,8 +601,9 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
 
     # TODO: Refactor 'one' so query is an argument, not part of kwargs
     def one(self, query=None, first=False, include=None, opts=None):
-        """
-        Return one model. Returns the last model by default. Returns None if no model is found.
+        """Return one model. Returns the last model by default. Returns None if
+        no model is found.
+
         :param first: whether to return the first model (default: False
         :type first: bool
         :return: model
@@ -661,8 +629,9 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
     #     return result
 
     def new(self, *args, **kwargs):
-        """
-        Creates a new model instance. Attach a session by calling __new__ with session kwargs.
+        """Creates a new model instance.
+
+        Attach a session by calling __new__ with session kwargs.
         """
         instance = self.model.__new__(self.model, *args, session=self.session, **kwargs)
         self.model.__init__(instance, *args, **kwargs)
@@ -722,10 +691,10 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
 
     # TODO: load_from using new session
     def load(self, post_response):
-        """
-        Loads model instance(s) from data.
-        Model instances will be of class defined by self.model.
-        If data is a list, will return a list of model instances.
+        """Loads model instance(s) from data.
+
+        Model instances will be of class defined by self.model. If data
+        is a list, will return a list of model instances.
         """
         models = self.model.load_from(post_response, self.session)
         return models

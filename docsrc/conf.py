@@ -12,11 +12,9 @@
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
-
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-
 import os
 import sys
 
@@ -79,7 +77,7 @@ master_doc = "index"
 # General information about the project.
 project = pydent.__title__
 copyright = "2017-2019, University of Washington"
-author = ', '.join(pydent.__authors__)
+author = ", ".join(pydent.__authors__)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -248,8 +246,11 @@ texinfo_documents = [
     )
 ]
 
+
 def setup(app):
-    app.add_stylesheet('css/style.css')
+    app.add_stylesheet("css/style.css")
+
+
 #
 
 # Default language for syntax highlighting in reST and Markdown cells

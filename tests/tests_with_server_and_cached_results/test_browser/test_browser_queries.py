@@ -1,4 +1,5 @@
 import pytest
+
 from pydent.browser import Browser
 
 

@@ -9,34 +9,34 @@ Browser (:mod:`pydent.browser`)
 
 Browser class for searching and cacheing results.
 """
-
 import re
 from collections import OrderedDict
 from difflib import get_close_matches
+from typing import Dict
+from typing import List
+from typing import Union
 
 import pandas as pd
 
-from pydent.marshaller import ModelRegistry
 from pydent import models as pydent_models
 from pydent.base import ModelBase
-
+from pydent.interfaces import QueryInterface
+from pydent.interfaces import QueryInterfaceABC
+from pydent.marshaller import ModelRegistry
+from pydent.models import Sample
+from pydent.relationships import BaseRelationship
+from pydent.utils import Loggable
 # TODO: browser documentation
 # TODO: examples in sphinx
 # TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
-from pydent.interfaces import QueryInterface
-from pydent.utils import Loggable
-from pydent.interfaces import QueryInterfaceABC
-from pydent.models import Sample
 
 
 class BrowserException(Exception):
-    """Generic browser exception"""
+    """Generic browser exception."""
 
 
 class Browser(QueryInterfaceABC):
-    """
-    A class for browsing models and Aquarium inventory
-    """
+    """A class for browsing models and Aquarium inventory."""
 
     # TODO: ability to block model callbacks to enforce cache
 
@@ -49,8 +49,7 @@ class Browser(QueryInterfaceABC):
     ]
 
     def __init__(self, session):
-        """
-        Instantiates a new browser from a AqSession instance.
+        """Instantiates a new browser from a AqSession instance.
 
         :param session: a session instance
         :type session: AqSession
@@ -74,7 +73,7 @@ class Browser(QueryInterfaceABC):
         return models
 
     def set_model(self, model_name):
-        """Sets the default model of this browser"""
+        """Sets the default model of this browser."""
         self.model = ModelRegistry.get_model(model_name)
         if model_name == "Sample":
             self._list_models_fxn = self.sample_list
@@ -82,8 +81,7 @@ class Browser(QueryInterfaceABC):
             self._list_models_fxn = self._generic_list_models
 
     def interface(self, model_class=None):
-        """
-        Returns a new model query interface
+        """Returns a new model query interface.
 
         :param model_class:
         :type model_class: basestring
@@ -101,7 +99,7 @@ class Browser(QueryInterfaceABC):
         return ["{}: {}".format(m.id, m.name) for m in models]
 
     def sample_list(self, sample_type_id=None):
-        """Returns a sample list"""
+        """Returns a sample list."""
         path = "sample_list"
         if sample_type_id is not None:
             path += "/" + str(sample_type_id)
@@ -130,9 +128,8 @@ class Browser(QueryInterfaceABC):
     def where(
         self, query, model_class=None, primary_key="id", sample_type=None, **kwargs
     ):
-        """
-        Perform a 'where' query. If models are found in the browser cache, those are returned,
-        else new http queries are made to find the models.
+        """Perform a 'where' query. If models are found in the browser cache,
+        those are returned, else new http queries are made to find the models.
 
         :param query: query as a dictionary
         :param model_class: model class to use (str)
@@ -160,8 +157,7 @@ class Browser(QueryInterfaceABC):
         params=None,
         as_single=False,
     ):
-        """
-        Builds a custom query for the browser.
+        """Builds a custom query for the browser.
 
         :param fname: the function name
         :type fname: basestring
@@ -201,8 +197,7 @@ class Browser(QueryInterfaceABC):
         return self.update_cache(models).get(model_class, [])
 
     def one(self, model_class=None, sample_type=None, query=None, opts=None):
-        """
-        Finds one instance of a model (or returns None)
+        """Finds one instance of a model (or returns None)
 
         :param model_class: the name of the model class (e.g. "Sample")
         :type model_class: basestring
@@ -223,8 +218,7 @@ class Browser(QueryInterfaceABC):
         return models[0]
 
     def last(self, num=1, model_class=None, sample_type=None, query=None):
-        """
-        Finds last models. Will NOT return cached models.
+        """Finds last models. Will NOT return cached models.
 
         :param num: number of models to return
         :type num: int
@@ -242,8 +236,7 @@ class Browser(QueryInterfaceABC):
         )
 
     def first(self, num=1, model_class=None, sample_type=None, query=None):
-        """
-        Finds first models. Will NOT return cached models.
+        """Finds first models. Will NOT return cached models.
 
         :param num: number of models to return
         :type num: int
@@ -261,8 +254,7 @@ class Browser(QueryInterfaceABC):
         )
 
     def find(self, model_id, model_class=None):
-        """
-        Finds a model by id. Will returned cached model if possible.
+        """Finds a model by id. Will returned cached model if possible.
 
         :param model_id: model_id
         :type model_id: int
@@ -278,8 +270,7 @@ class Browser(QueryInterfaceABC):
         return self.interface(model_class).find(model_id)
 
     def find_by_name(self, name, model_class=None, primary_key="id"):
-        """
-        Find model by name. Will return cached model if possible.
+        """Find model by name. Will return cached model if possible.
 
         :param name: name of the model
         :param model_class: the name of the model class (e.g. "Sample")
@@ -293,8 +284,7 @@ class Browser(QueryInterfaceABC):
         return models[0]
 
     def all(self, model_class=None, opts=None):
-        """
-        Return all models of a model_class.
+        """Return all models of a model_class.
 
         :param model_class: the name of the model class (e.g. "Sample")
         :type model_class: basestring
@@ -307,8 +297,7 @@ class Browser(QueryInterfaceABC):
 
     @staticmethod
     def _match_query(query, model_dict):
-        """
-        Matches a query against a model dictionary
+        """Matches a query against a model dictionary.
 
         :param query: query dictionary
         :type query: dict
@@ -341,8 +330,11 @@ class Browser(QueryInterfaceABC):
         return found, found_queries
 
     def update_cache(self, models, recursive=True):
-        """Updates the model cache with models. If recursive=True, recursively collect all models contained
-        in the relationships and use those to update the cache as well."""
+        """Updates the model cache with models.
+
+        If recursive=True, recursively collect all models contained in
+        the relationships and use those to update the cache as well.
+        """
         assert isinstance(models, list)
         if recursive:
             memo = {}
@@ -352,7 +344,8 @@ class Browser(QueryInterfaceABC):
 
     # TODO: do we really want to simply overwrite the dictionary or update the models?
     def _update_model_cache_helper(self, modelname, modeldict):
-        """Updates the browser's model cache with models from the provided model dict"""
+        """Updates the browser's model cache with models from the provided
+        model dict."""
         self.log.info(
             "CACHE updated cached with {} {} models".format(len(modeldict), modelname)
         )
@@ -468,8 +461,7 @@ class Browser(QueryInterfaceABC):
         return filtered
 
     def search(self, pattern, ignore_case=True, sample_type=None, **query):
-        """
-        Performs a regular expression search of Samples
+        """Performs a regular expression search of Samples.
 
         :param pattern: regular expression pattern
         :type pattern: basestring
@@ -501,8 +493,7 @@ class Browser(QueryInterfaceABC):
     def search_description(
         self, pattern, samples=None, sample_type=None, ignore_case=True
     ):
-        """
-        Search samples by their description.
+        """Search samples by their description.
 
         :param pattern: regex pattern
         :type pattern: basestring
@@ -530,8 +521,7 @@ class Browser(QueryInterfaceABC):
         return matches
 
     def close_matches(self, pattern, sample_type=None, **query):
-        """
-        Finds samples whose names closely match the pattern
+        """Finds samples whose names closely match the pattern.
 
         :param pattern: regular expression pattern
         :type pattern: basestring
@@ -547,15 +537,16 @@ class Browser(QueryInterfaceABC):
         )
 
     def list_field_values(self, model_ids, **query):
-        """
-        Lists sample field values. May supply an additional query to filter :class:`FieldValue`s.
+        """Lists sample field values.
+
+        May supply an additional query to filter :class:`FieldValue`s.
         """
         query.update({"parent_class": self.model_name, "parent_id": model_ids})
         return self.where(query, "FieldValue")
 
     @staticmethod
     def _group_by_attribute(models, attribute):
-        """Group models by the given attribute"""
+        """Group models by the given attribute."""
         d = {}
         for s in models:
             arr = d.setdefault(getattr(s, attribute), [])
@@ -575,7 +566,8 @@ class Browser(QueryInterfaceABC):
     def _retrieve_has_many_or_has_one(
         self, models, relationship_name, relation=None, strict=True
     ):
-        """Performs exactly 1 query to fullfill some relationship for a list of models"""
+        """Performs exactly 1 query to fullfill some relationship for a list of
+        models."""
         if not models:
             return []
         models = models[:]
@@ -669,8 +661,11 @@ class Browser(QueryInterfaceABC):
 
         return retrieved_models
 
-    def _retrieve_has_many_through(self, models, relationship_name, strict=True):
-        """Performs exactly 2 queries to establish a HasManyThrough relationship"""
+    def _retrieve_has_many_through(
+        self, models: List[ModelBase], relationship_name: str, strict: bool = True
+    ):
+        """Performs exactly 2 queries to establish a HasManyThrough
+        relationship."""
         relation = models[0].get_relationships()[relationship_name]
         association_relation = models[0].get_relationships()[
             relation.through_model_attr
@@ -708,10 +703,16 @@ class Browser(QueryInterfaceABC):
                 setattr(m, relationship_name, None)
         return list(set(all_models))
 
-    def retrieve(self, models, relationship_name, relation=None, strict=True):
-        """
-        Retrieves a model relationship for the list of models. Compared to a `for` loop,
-        `retrieve` is >10X faster for most queries.
+    def retrieve(
+        self,
+        models: List[ModelBase],
+        relationship_name: str,
+        relation: BaseRelationship = None,
+        strict: bool = True,
+        force_refresh: bool = False,
+    ) -> List[ModelBase]:
+        """Retrieves a model relationship for the list of models. Compared to a
+        `for` loop, `retrieve` is >10X faster for most queries.
 
         .. code-block:: python
 
@@ -746,7 +747,7 @@ class Browser(QueryInterfaceABC):
         if not models:
             return []
         self.log.info('RETRIEVE retrieving "{}"'.format(relationship_name))
-        model_classes = set([m.__class__.__name__ for m in models])
+        model_classes = {m.__class__.__name__ for m in models}
         assert (
             len(model_classes) == 1
         ), "Models must be all of the same BaseModel, but found {}".format(
@@ -778,27 +779,50 @@ class Browser(QueryInterfaceABC):
                 )
             )
         self.log.info("RETRIEVE {}: {}".format(relationship_name, relation))
+
+        if not force_refresh:
+            needs_refresh = [
+                m for m in models if not m.is_deserialized(relationship_name)
+            ]
+            no_refresh = [m for m in models if m.is_deserialized(relationship_name)]
+        else:
+            needs_refresh = [m for m in models if m.is_deserialized(relationship_name)]
+            no_refresh = []
+
         if hasattr(relation, "through_model_attr"):
             found_models = self._retrieve_has_many_through(
-                models, relationship_name, strict=strict
+                needs_refresh, relationship_name, strict=strict
             )
         else:
             found_models = self._retrieve_has_many_or_has_one(
-                models, relationship_name, relation, strict=strict
+                needs_refresh, relationship_name, relation, strict=strict
             )
+
         self.log.info(
             'RETRIEVE retrieved {} for "{}"'.format(
                 len(found_models), relationship_name
             )
         )
+        for model in no_refresh:
+            val = getattr(model, relationship_name)
+            if isinstance(val, list):
+                found_models += val
+            else:
+                found_models.append(val)
         return found_models
 
-    def recursive_retrieve(self, models, relations, strict=True):
-        """
-        Efficiently retrieve a model relationship recursively from an iterable. The relations_dict iterable may be
-        either a list or a dictionary. For example, the following will collect all of the field_values
-        and their incoming and outgoing wires, the connecting field_values, and finally those FieldValues'
-        operations.
+    def recursive_retrieve(
+        self,
+        models: List[ModelBase],
+        relations: Union[str, List[BaseRelationship], Dict],
+        strict: bool = True,
+        force_refresh: bool = False,
+    ):
+        """Efficiently retrieve a model relationship recursively from an
+        iterable. The relations_dict iterable may be either a list or a
+        dictionary. For example, the following will collect all of the
+        field_values and their incoming and outgoing wires, the connecting
+        field_values, and finally those FieldValues' operations.
 
         .. code-block::
 
@@ -822,6 +846,7 @@ class Browser(QueryInterfaceABC):
         :param relations: the relation to retrieve. This may either be a string (by attribute name), a list, or a dict.
         :type relations: list|dict|basestring
         :param strict: wither to ignore database inconsistencies
+        :param force_refresh:
         :type bool
         :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
         :rtype: dictionary
@@ -829,7 +854,11 @@ class Browser(QueryInterfaceABC):
         self.log.info("RETRIEVE recursively retrieving {}".format(relations))
         if isinstance(relations, str):
             self.log.info('RETRIEVE retrieving "{}"'.format(relations))
-            return {relations: self.retrieve(models, relations, strict=strict)}
+            return {
+                relations: self.retrieve(
+                    models, relations, strict=strict, force_refresh=force_refresh
+                )
+            }
         elif (
             isinstance(relations, list)
             or isinstance(relations, set)
@@ -839,11 +868,16 @@ class Browser(QueryInterfaceABC):
             models_by_attr = {}
             for relation_name in relations:
                 models_by_attr.setdefault(relation_name, [])
-                new_models = self.retrieve(models, relation_name, strict=strict)
+                new_models = self.retrieve(
+                    models, relation_name, strict=strict, force_refresh=force_refresh
+                )
                 models_by_attr[relation_name] += new_models
                 if isinstance(relations, dict):
                     _models_by_attr = self.recursive_retrieve(
-                        new_models, dict(relations).pop(relation_name), strict=strict
+                        new_models,
+                        dict(relations).pop(relation_name),
+                        strict=strict,
+                        force_refresh=force_refresh,
                     )
                     for attr in _models_by_attr:
                         _models = _models_by_attr[attr]
@@ -861,7 +895,23 @@ class Browser(QueryInterfaceABC):
                 )
             )
 
-    def get(self, models, relations=None, query=None, strict=True):
+    def get(
+        self,
+        models: List[ModelBase],
+        relations: List[BaseRelationship],
+        query: dict = None,
+        strict: bool = True,
+        force_refresh: bool = True,
+    ) -> Union[Dict[str, List[ModelBase]], List[ModelBase]]:
+        """
+
+        :param models:
+        :param relations:
+        :param query:
+        :param strict:
+        :param force_refresh:
+        :return:
+        """
         if isinstance(models, ModelBase):
             models = [models]
         elif isinstance(models, str):
@@ -870,15 +920,18 @@ class Browser(QueryInterfaceABC):
                 models, _ = self._find_matches(query, models)
         if relations:
             if isinstance(relations, str):
-                return self.retrieve(models, relations, strict=strict)
+                return self.retrieve(
+                    models, relations, strict=strict, force_refresh=force_refresh
+                )
             else:
-                return self.recursive_retrieve(models, relations, strict=strict)
+                return self.recursive_retrieve(
+                    models, relations, strict=strict, force_refresh=force_refresh
+                )
         else:
             return models
 
     def samples_to_df(self, samples):
-        """
-        Returns a pandas data frame representing the samples
+        """Returns a pandas data frame representing the samples.
 
         :param samples: list of samples
         :type samples: list
@@ -903,8 +956,7 @@ class Browser(QueryInterfaceABC):
         return df
 
     def export_samples_to_csv(self, samples, out):
-        """
-        Exports the samples to a csv (for Aquarium import)
+        """Exports the samples to a csv (for Aquarium import)
 
         :param samples: list of samples
         :type samples: list
@@ -918,9 +970,8 @@ class Browser(QueryInterfaceABC):
         return df
 
     def samples_to_rows(self, samples, sample_resolver=None):
-        """
-        Return row of dictionaries containing sample information and their properties. Can be
-        imported into a pandas DataFrame:
+        """Return row of dictionaries containing sample information and their
+        properties. Can be imported into a pandas DataFrame:
 
         .. code-block:: python
 
@@ -939,7 +990,7 @@ class Browser(QueryInterfaceABC):
         """
 
         assert (
-            len(set([s.sample_type_id for s in samples])) == 1
+            len({s.sample_type_id for s in samples}) == 1
         ), "Samples be the of the same SampleType"
         sample_type = samples[0].sample_type
 

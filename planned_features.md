@@ -12,3 +12,7 @@ using the `force_refresh` flag. BACKWARD-INCOMPATIBLE
 * browser sample hierarchy methods
 * tests for RESTRICT_TO_ONE_ON_SERVER
 * resolve any TODOs
+* fix documents style
+* fix samples properties bug (older samples)
+* enforce flake8 coding style
+* enforce coding styles through pre-commits

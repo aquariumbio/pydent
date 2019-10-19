@@ -1,6 +1,9 @@
 import json
+
 import pytest
-from pydent.models import Collection, PartAssociation
+
+from pydent.models import Collection
+from pydent.models import PartAssociation
 
 
 @pytest.fixture

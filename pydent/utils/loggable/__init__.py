@@ -2,12 +2,20 @@ import logging
 import math
 import pprint
 import traceback
-from logging import DEBUG, INFO, CRITICAL, ERROR, WARNING
+from logging import CRITICAL
+from logging import DEBUG
+from logging import ERROR
+from logging import INFO
+from logging import WARNING
+
 from colorlog import ColoredFormatter
 
 
 def new_logger(name, level=logging.ERROR):
-    """Instantiate a new logger with the given name. If channel handler exists, do not create a new one."""
+    """Instantiate a new logger with the given name.
+
+    If channel handler exists, do not create a new one.
+    """
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
@@ -35,8 +43,7 @@ def new_logger(name, level=logging.ERROR):
 
 
 def condense_long_lists(d, max_list_len=20):
-    """
-    Condense the long lists in a dictionary
+    """Condense the long lists in a dictionary.
 
     :param d: dictionary to condense
     :type d: dict
@@ -59,7 +66,7 @@ def condense_long_lists(d, max_list_len=20):
     return str(d)
 
 
-class Loggable(object):
+class Loggable:
     def __init__(self, inst, name=None):
         self.instance = inst
         if name is None:

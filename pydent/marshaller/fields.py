@@ -1,28 +1,21 @@
-"""
-Fields
-"""
+"""Fields."""
+from abc import ABC
+from abc import abstractmethod
+from enum import auto
+from enum import Enum
 
-from abc import ABC, abstractmethod
-from enum import Enum, auto
-
-from pydent.marshaller.descriptors import (
-    CallbackAccessor,
-    MarshallingAccessor,
-    RelationshipAccessor,
-    Placeholders,
-)
-from pydent.marshaller.exceptions import (
-    AllowNoneFieldValidationError,
-    RunTimeCallbackAttributeError,
-)
+from pydent.marshaller.descriptors import CallbackAccessor
+from pydent.marshaller.descriptors import MarshallingAccessor
+from pydent.marshaller.descriptors import Placeholders
+from pydent.marshaller.descriptors import RelationshipAccessor
+from pydent.marshaller.exceptions import AllowNoneFieldValidationError
+from pydent.marshaller.exceptions import RunTimeCallbackAttributeError
 from pydent.marshaller.registry import ModelRegistry
 from pydent.marshaller.utils import make_signature_str
 
 
 class FieldABC(ABC):
-    """
-    Field abstract base class
-    """
+    """Field abstract base class."""
 
     _FIELD_ALLOW_NONE_DEFAULT = True
 
@@ -109,8 +102,8 @@ class Field(FieldABC):
         return self._serialize(owner, data)
 
     def register(self, name, objtype):
-        """Registers the field to a nested class. Instantiates the corresponding
-        descriptor (i.e. accessor)
+        """Registers the field to a nested class. Instantiates the
+        corresponding descriptor (i.e. accessor)
 
         :param name: name of the field
         :type name: basestring
@@ -260,7 +253,7 @@ class Callback(Field):
         )
 
     def get_callback_args(self, owner, extra_args=None):
-        """Processes the callback args"""
+        """Processes the callback args."""
         args = []
         callback_args = list(self.callback_args)
         if extra_args:
@@ -283,7 +276,7 @@ class Callback(Field):
         return args
 
     def get_callback_kwargs(self, owner, extra_kwargs):
-        """Processes the callback kwargs"""
+        """Processes the callback kwargs."""
         kwargs = {}
         callback_kwargs = dict(self.callback_kwargs)
         if extra_kwargs:
@@ -307,9 +300,9 @@ class Callback(Field):
         return kwargs
 
     def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
-        """Calls the callback function using the owner object. A
-        Callback.SELF arg value will be replaced to be equivalent to the
-        owner instance model.
+        """Calls the callback function using the owner object. A Callback.SELF
+        arg value will be replaced to be equivalent to the owner instance
+        model.
 
         :param owner: the owning object
         :type owner: SchemaModel
@@ -355,9 +348,8 @@ class Callback(Field):
 
 
 class Relationship(Callback):
-    """
-    A composition (Callback/Nested) field that uses a callback to retrieve a model.
-    """
+    """A composition (Callback/Nested) field that uses a callback to retrieve a
+    model."""
 
     ACCESSOR = RelationshipAccessor
 
@@ -373,8 +365,7 @@ class Relationship(Callback):
         allow_none=None,
         always_dump=False,
     ):
-        """
-        Relationship initializer
+        """Relationship initializer.
 
         :param nested: the nested name of nested field. Should exist in the ModelRegistery.
         :type nested: SchemaModel
@@ -418,12 +409,11 @@ class Relationship(Callback):
 
 
 class Alias(Callback):
-    """A shallow alias to another field. """
+    """A shallow alias to another field."""
 
     def __init__(self, field_name):
-        """
-        Alias field initialize. Exposes a shallow alias to another field that can be accessed by
-        a different attribute key.
+        """Alias field initialize. Exposes a shallow alias to another field
+        that can be accessed by a different attribute key.
 
         :param field_name: the key of the other field
         :type field_name: basestring

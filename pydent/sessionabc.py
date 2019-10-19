@@ -2,7 +2,7 @@ from abc import ABC
 
 
 class SessionABC(ABC):
-    """Session abstract base class"""
+    """Session abstract base class."""
 
     Account = None  #: Account model interface
     AllowableFieldType = None  #: AllowableFieldType model interface

@@ -1,8 +1,10 @@
-from copy import deepcopy
-import pytest
-from pydent.interfaces import BrowserInterface
 from abc import ABC
+from copy import deepcopy
+
+import pytest
+
 from pydent.exceptions import ForbiddenRequestError
+from pydent.interfaces import BrowserInterface
 
 
 def test_regular_session(session):

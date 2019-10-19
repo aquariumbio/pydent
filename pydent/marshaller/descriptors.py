@@ -1,22 +1,29 @@
-"""
-Data descriptors.
-"""
-
-from enum import Enum, auto
+"""Data descriptors that provide special behaviors when attributes are
+accessed."""
+from enum import auto
+from enum import Enum
 
 
 class MarshallingAttributeAccessError(Exception):
-    """Generic error that arises from while accessing an attribute"""
+    """Generic error that arises from while accessing an attribute."""
 
 
 class Placeholders(Enum):
-    DATA = auto()
-    MARSHALL = auto()
-    CALLBACK = auto()
-    DEFAULT = auto()
+    """Accessor placeholders.
+
+    Special behaviors can occur when the descriptor returns a value in
+    the Placeholder class. For example, when the `Placeholders.CALLBACK`
+    value is returned and cache=True, this indicates that the callback
+    function needs to be called and the result cached.
+    """
+
+    DATA = auto()  #: DATA accessor holder.
+    MARSHALL = auto()  #: MARSHALL accessor holder.
+    CALLBACK = auto()  #: CALLBACK accessor holder.
+    DEFAULT = auto()  #: DEFAULT accessor holder.
 
 
-class DataAccessor(object):
+class DataAccessor:
     """A descriptor that will dynamically access an instance's dictionary named
     by the `accessor` key. If the key is not in the dictionary or the value
     received from the dictionary is a :class:`Placeholders.DATA` enumerator, an
@@ -106,9 +113,7 @@ class DataAccessor(object):
 
 
 class MarshallingAccessor(DataAccessor):
-    """
-    A generic Marshalling descriptor.
-    """
+    """A generic Marshalling descriptor."""
 
     __slots__ = ["name", "accessor", "field", "deserialized_accessor", "default"]
     HOLDER = Placeholders.MARSHALL
@@ -202,9 +207,8 @@ class CallbackAccessor(MarshallingAccessor):
 
 
 class RelationshipAccessor(CallbackAccessor):
-    """
-    The descriptor for a :class:`pydent.marshaller.fields.Relationship` field
-    """
+    """The descriptor for a :class:`pydent.marshaller.fields.Relationship`
+    field."""
 
     def __set__(self, obj, val):
         deserialized = self.field.deserialize(obj, val)
