@@ -42,29 +42,6 @@ def new_logger(name, level=logging.ERROR):
     return logger, handler
 
 
-def condense_long_lists(d, max_list_len=20):
-    """Condense the long lists in a dictionary.
-
-    :param d: dictionary to condense
-    :type d: dict
-    :param max_len: max length of lists to display
-    :type max_len: int
-    :return:
-    :rtype:
-    """
-    if isinstance(d, dict):
-        return_dict = {}
-        for k in d:
-            return_dict[k] = condense_long_lists(dict(d).pop(k))
-        return dict(return_dict)
-    elif isinstance(d, list):
-        if len(d) > max_list_len:
-            g = max_list_len / 2
-            return d[: math.floor(g)] + ["..."] + d[-math.ceil(g) :]
-        else:
-            return d[:]
-    return str(d)
-
 
 class Loggable:
     def __init__(self, inst, name=None):
@@ -93,17 +70,6 @@ class Loggable:
             self.set_log_level(logging.INFO, tb_limit)
         else:
             self.set_log_level(logging.ERROR, tb_limit)
-
-    def pprint_data(
-        self, data, width=80, depth=10, max_list_len=20, compact=True, indent=1
-    ):
-        return pprint.pformat(
-            condense_long_lists(data, max_list_len=max_list_len),
-            indent=indent,
-            width=width,
-            depth=depth,
-            compact=compact,
-        )
 
     def log(self, msg, level):
         self.logger.log(level, msg)
