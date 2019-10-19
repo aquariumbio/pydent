@@ -41,7 +41,7 @@ class FieldABC(ABC):
         pass
 
 
-class Field(FieldABC):
+class Field(FieldABC, object):
     """
     A serialization/deserialization field.
     """
