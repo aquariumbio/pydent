@@ -31,6 +31,10 @@ Example:
     # creates samples from a list by calling method CreateInterface.samples
 """
 import json
+from abc import ABC
+from abc import abstractmethod
+from typing import List
+from typing import Union
 
 from inflection import pluralize
 from inflection import underscore
@@ -38,9 +42,6 @@ from inflection import underscore
 from .base import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
-from typing import Union, List
-
-from abc import ABC, abstractmethod
 
 
 class SessionInterface:

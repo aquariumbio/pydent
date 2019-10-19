@@ -1,10 +1,12 @@
-"""
-Fields.
-"""
+"""Fields."""
 from abc import ABC
 from abc import abstractmethod
 from enum import auto
 from enum import Enum
+from typing import Any
+from typing import List
+from typing import Type
+from typing import Union
 
 from pydent.marshaller.descriptors import CallbackAccessor
 from pydent.marshaller.descriptors import MarshallingAccessor
@@ -14,13 +16,10 @@ from pydent.marshaller.exceptions import AllowNoneFieldValidationError
 from pydent.marshaller.exceptions import RunTimeCallbackAttributeError
 from pydent.marshaller.registry import ModelRegistry
 from pydent.marshaller.utils import make_signature_str
-from typing import Any, Type, Union, List
 
 
 class FieldABC(ABC):
-    """
-    Field abstract base class.
-    """
+    """Field abstract base class."""
 
     _FIELD_ALLOW_NONE_DEFAULT = True
 
@@ -41,10 +40,8 @@ class FieldABC(ABC):
         pass
 
 
-class Field(FieldABC, object):
-    """
-    A serialization/deserialization field.
-    """
+class Field(FieldABC):
+    """A serialization/deserialization field."""
 
     ACCESSOR = MarshallingAccessor
 
@@ -55,9 +52,8 @@ class Field(FieldABC, object):
         allow_none: bool = None,
         default: Any = Placeholders.DEFAULT,
     ):
-        """
-        A standard field. Performs no functions on serialized and deserialized
-        data.
+        """A standard field. Performs no functions on serialized and
+        deserialized data.
 
         :param many: whether to treat serializations and deserializations as a per-item
         basis in a list
@@ -118,9 +114,8 @@ class Field(FieldABC, object):
         return self._serialize(owner, data)
 
     def register(self, name: str, objtype: Type[ModelRegistry]):
-        """
-        Registers the field to a nested class. Instantiates the corresponding
-        descriptor (i.e. accessor)
+        """Registers the field to a nested class. Instantiates the
+        corresponding descriptor (i.e. accessor)
 
         :param name: name of the field
         :param objtype: the nested class to register the field to
@@ -156,9 +151,7 @@ class Field(FieldABC, object):
 
 
 class Nested(Field):
-    """
-    Represents a field that returns another nested instance.
-    """
+    """Represents a field that returns another nested instance."""
 
     def __init__(
         self,
@@ -168,8 +161,7 @@ class Nested(Field):
         allow_none: bool = None,
         lazy: bool = None,
     ):
-        """
-        Nested relationship initializer.
+        """Nested relationship initializer.
 
         :param nested: the nested name of nested field. Should exist in the
         ModelRegistery.
@@ -217,9 +209,7 @@ class Nested(Field):
 
 
 class Callback(Field):
-    """
-    Make a callback when called.
-    """
+    """Make a callback when called."""
 
     class __FLAGS(Enum):
         SELF = auto()
@@ -238,8 +228,7 @@ class Callback(Field):
         allow_none=None,
         always_dump=False,
     ):
-        """
-        A Callback field initializer.
+        """A Callback field initializer.
 
         :param callback: name of the callback function or a callable. If a name, the
         name should exist
@@ -297,9 +286,7 @@ class Callback(Field):
     def get_callback_args(
         self, owner: ModelRegistry, extra_args: dict = None
     ) -> List[Any]:
-        """
-        Processes the callback args.
-        """
+        """Processes the callback args."""
         args = []
         callback_args = list(self.callback_args)
         if extra_args:
@@ -323,9 +310,7 @@ class Callback(Field):
         return args
 
     def get_callback_kwargs(self, owner: ModelRegistry, extra_kwargs: dict) -> dict:
-        """
-        Processes the callback kwargs.
-        """
+        """Processes the callback kwargs."""
         kwargs = {}
         callback_kwargs = dict(self.callback_kwargs)
         if extra_kwargs:
@@ -356,9 +341,9 @@ class Callback(Field):
         extra_args: tuple = None,
         extra_kwargs: dict = None,
     ) -> Any:
-        """
-        Calls the callback function using the owner object. A Callback.SELF arg
-        value will be replaced to be equivalent to the owner instance model.
+        """Calls the callback function using the owner object. A Callback.SELF
+        arg value will be replaced to be equivalent to the owner instance
+        model.
 
         :param owner: the owning object
         :param cache: if True, will cache the return in the deserialized data.
@@ -407,10 +392,8 @@ class Callback(Field):
 
 
 class Relationship(Callback):
-    """
-    A composition (Callback/Nested) field that uses a callback to retrieve a
-    model.
-    """
+    """A composition (Callback/Nested) field that uses a callback to retrieve a
+    model."""
 
     ACCESSOR = RelationshipAccessor
 
@@ -426,8 +409,7 @@ class Relationship(Callback):
         allow_none=None,
         always_dump=False,
     ):
-        """
-        Relationship initializer.
+        """Relationship initializer.
 
         :param nested: the nested name of nested field. Should exist in the
         ModelRegistery.
@@ -479,14 +461,11 @@ class Relationship(Callback):
 
 
 class Alias(Callback):
-    """
-    A shallow alias to another field.
-    """
+    """A shallow alias to another field."""
 
     def __init__(self, field_name):
-        """
-        Alias field initialize. Exposes a shallow alias to another field that
-        can be accessed by a different attribute key.
+        """Alias field initialize. Exposes a shallow alias to another field
+        that can be accessed by a different attribute key.
 
         :param field_name: the key of the other field
         :type field_name: basestring

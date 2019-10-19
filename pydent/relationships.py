@@ -11,7 +11,6 @@ Relationships (:mod:`pydent.relationships`)
     BaseRelationshipAccessor
     Function
 """
-
 import json
 
 import inflection
@@ -26,9 +25,7 @@ class FieldValidationError(ModelValidationError):
 
 
 class Raw(fields.Field):
-    """
-    Field that performs no serialization/deserialization.
-    """
+    """Field that performs no serialization/deserialization."""
 
     def __init__(self, many=False, data_key=None, allow_none=True, default=None):
         super().__init__(
@@ -37,9 +34,7 @@ class Raw(fields.Field):
 
 
 class JSON(Raw):
-    """
-    Automatically serializes/deserializes JSON objects.
-    """
+    """Automatically serializes/deserializes JSON objects."""
 
     def _deserialize(self, owner, data):
         if isinstance(data, dict):
@@ -51,10 +46,10 @@ class JSON(Raw):
 
 
 class Function(fields.Callback):
-    """
-    Calls a specified function upon attribute access. Similar to the @property
-    decorator in python, but will search and find an instance method using
-    the method name.
+    """Calls a specified function upon attribute access.
+
+    Similar to the @property decorator in python, but will search and
+    find an instance method using the method name.
     """
 
     def __init__(
@@ -81,17 +76,17 @@ class Function(fields.Callback):
 
 
 class BaseRelationshipAccessor(fields.RelationshipAccessor):
-    """
-    Python descriptor that is returned by a field during attribute access.
-    """
+    """Python descriptor that is returned by a field during attribute
+    access."""
 
     HOLDER = None
 
 
 class BaseRelationship(fields.Relationship):
-    """
-    Base class for relationships. By default, if the value is None, attempt a callback.
-    If that fails, fallback to None. If successful, deserialize data to the nested
+    """Base class for relationships.
+
+    By default, if the value is None, attempt a callback. If that fails,
+    fallback to None. If successful, deserialize data to the nested
     model.
     """
 
@@ -123,9 +118,9 @@ class BaseRelationship(fields.Relationship):
         )
 
     def _get_ref_attr(self, nested=None, ref=None, attr=None):
-        """
-        Sets the 'ref' and 'attr' attributes. These attributes are used to
-        defined parameters for
+        """Sets the 'ref' and 'attr' attributes. These attributes are used to
+        defined parameters for.
+
         :class:`pydent.marshaller.Relation` classes.
 
         For example:
@@ -154,16 +149,12 @@ class BaseRelationship(fields.Relationship):
             if not attr:
                 raise FieldValidationError(
                     "'attr' is None. Relationship '{}' needs an 'attr' and 'model' "
-                    "parameters".format(
-                        self.__class__
-                    )
+                    "parameters".format(self.__class__)
                 )
             if not nested:
                 raise FieldValidationError(
                     "'model' is None. Relationship '{}' needs an 'attr' and 'model' "
-                    "parameters".format(
-                        self.__class__
-                    )
+                    "parameters".format(self.__class__)
                 )
             ref = "{}_{}".format(inflection.underscore(nested), attr)
         return ref, attr
@@ -177,7 +168,8 @@ class BaseRelationship(fields.Relationship):
             return BaseRelationshipAccessor.HOLDER
 
     def build_query(self, models):
-        """Bundles all of the callback args for the models into a single query"""
+        """Bundles all of the callback args for the models into a single
+        query."""
         args = {}
         for s in models:
             callback_args = self.get_callback_args(s)[1:]
@@ -203,8 +195,8 @@ class BaseRelationship(fields.Relationship):
 
 
 class One(BaseRelationship):
-    """
-    Defines a single relationship with another model.
+    """Defines a single relationship with another model.
+
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
@@ -220,8 +212,7 @@ class One(BaseRelationship):
         callback_kwargs=None,
         **kwargs
     ):
-        """
-        One initializer. Uses "find" callback by default.
+        """One initializer. Uses "find" callback by default.
 
         :param nested: target model
         :type nested: basestring
@@ -246,8 +237,8 @@ class One(BaseRelationship):
 
 
 class Many(BaseRelationship):
-    """
-    Defines a many relationship with another model.
+    """Defines a many relationship with another model.
+
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
@@ -263,8 +254,7 @@ class Many(BaseRelationship):
         callback_kwargs=None,
         **kwargs
     ):
-        """
-        Many initializer. Uses "where" callback by default.
+        """Many initializer. Uses "where" callback by default.
 
         :param nested: target model
         :type nested: basestring
@@ -293,8 +283,7 @@ class HasOne(One):
     def __init__(
         self, nested, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs
     ):
-        """
-        HasOne initializer. Uses the "get_one_generic" callback and
+        """HasOne initializer. Uses the "get_one_generic" callback and
         automatically assigns attribute as in the following:
 
         .. code-block:: python
@@ -338,9 +327,8 @@ class HasOne(One):
 
 
 class HasMany(Many):
-    """
-    A relationship that establishes a One-to-Many relationship with another model.
-    """
+    """A relationship that establishes a One-to-Many relationship with another
+    model."""
 
     def __init__(
         self,
@@ -353,8 +341,7 @@ class HasMany(Many):
         callback_kwargs=None,
         **kwargs
     ):
-        """
-        HasMany relationship initializer
+        """HasMany relationship initializer.
 
         :param nested: Model class name for this relationship
         :type nested: str
@@ -401,8 +388,8 @@ class HasMany(Many):
 
 
 class HasManyThrough(Many):
-    """
-    A relationship using an intermediate association model.
+    """A relationship using an intermediate association model.
+
     Establishes a Many-to-Many relationship with another model
     """
 
@@ -452,9 +439,7 @@ class HasManyThrough(Many):
 
 
 class HasOneFromMany(One):
-    """
-    Returns a single model from a Many relationship
-    """
+    """Returns a single model from a Many relationship."""
 
     QUERY_TYPE = "query"
 
@@ -469,9 +454,8 @@ class HasOneFromMany(One):
         callback_kwargs=None,
         **kwargs
     ):
-        """
-        HasOneFromMany relationship initializer, which is intended to return a single model from
-        a Many query
+        """HasOneFromMany relationship initializer, which is intended to return
+        a single model from a Many query.
 
         :param nested: Model class name for this relationship
         :type nested: str
@@ -522,10 +506,8 @@ class HasOneFromMany(One):
 
 
 class HasManyGeneric(HasMany):
-    """
-    Establishes a One-to-Many relationship using 'parent_id' as the attribute
-    to find other models.
-    """
+    """Establishes a One-to-Many relationship using 'parent_id' as the
+    attribute to find other models."""
 
     def __init__(
         self,

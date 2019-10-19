@@ -1,14 +1,15 @@
 """Model serialization/deserialization schema."""
 import inspect
+from typing import Type
 
 from pydent.marshaller.descriptors import DataAccessor
 from pydent.marshaller.exceptions import CallbackValidationError
 from pydent.marshaller.exceptions import MultipleValidationError
 from pydent.marshaller.fields import Callback
 from pydent.marshaller.fields import Field
-from pydent.marshaller.registry import SchemaRegistry, ModelRegistry
+from pydent.marshaller.registry import ModelRegistry
+from pydent.marshaller.registry import SchemaRegistry
 from pydent.marshaller.utils import make_signature_str
-from typing import Type
 
 
 class DynamicSchema(metaclass=SchemaRegistry):

@@ -44,17 +44,20 @@ relationships - models relationships are stored
 """
 import itertools
 from copy import deepcopy
+from typing import Dict
+from typing import List
+from typing import Union
 
 from inflection import tableize
 
 from pydent.exceptions import AquariumModelError
 from pydent.exceptions import NoSessionError
+from pydent.interfaces import BrowserInterface
+from pydent.interfaces import QueryInterface
 from pydent.marshaller import fields
 from pydent.marshaller import ModelRegistry
 from pydent.marshaller import SchemaModel
 from pydent.sessionabc import SessionABC
-from pydent.interfaces import BrowserInterface, QueryInterface
-from typing import Union, List, Dict
 
 
 class ModelBase(SchemaModel):
@@ -256,7 +259,8 @@ class ModelBase(SchemaModel):
     def _check_for_session(self):
         """Raises error if model is not connected to a session.
 
-        :raises NoSessionError"""
+        :raises NoSessionError
+        """
         if self.session is None:
             raise NoSessionError(
                 "No AqSession instance found for '{name}' but one is required for the "

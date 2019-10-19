@@ -103,6 +103,9 @@ import timeit
 import webbrowser
 from copy import copy
 from decimal import Decimal
+from typing import List
+from typing import Type
+from typing import Union
 
 from requests.exceptions import ReadTimeout
 
@@ -112,11 +115,10 @@ from pydent.browser import Browser
 from pydent.interfaces import BrowserInterface
 from pydent.interfaces import QueryInterface
 from pydent.interfaces import QueryInterfaceABC
+from pydent.interfaces import SessionInterface
 from pydent.interfaces import UtilityInterface
 from pydent.models import __all__ as allmodels
 from pydent.sessionabc import SessionABC
-from pydent.interfaces import SessionInterface
-from typing import List, Union, Type
 
 
 class AqSession(SessionABC):
@@ -138,8 +140,7 @@ class AqSession(SessionABC):
         name: str = None,
         aqhttp: str = None,
     ):
-        """
-        Initializes a new tridennt Session.
+        """Initializes a new tridennt Session.
 
         :param login: the Aquarium login for the user
         :type login: str

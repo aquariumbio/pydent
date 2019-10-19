@@ -16,9 +16,10 @@ Submodules
 """
 import pprint as pprint_module
 
-from pydent.utils.async_requests import make_async
+from .loggable import condense_long_lists
 from .loggable import Loggable
-from .loggable import pprint_data, condense_long_lists
+from .loggable import pprint_data
+from pydent.utils.async_requests import make_async
 
 printer = pprint_module.PrettyPrinter(indent=1)
 pprint = printer.pprint
