@@ -7,8 +7,9 @@ Exceptions (:mod:`pydent.exceptions`)
 Trident exceptions
 """
 
+
 class TridentBaseException(Exception):
-    """Base exception for all trident errors"""
+    """Base exception for all trident errors."""
 
 
 class TridentRequestError(TridentBaseException):
@@ -16,7 +17,7 @@ class TridentRequestError(TridentBaseException):
 
 
 class AquariumError(TridentBaseException):
-    """Aquarium raised an error"""
+    """Aquarium raised an error."""
 
 
 class ForbiddenRequestError(TridentBaseException):
@@ -30,11 +31,13 @@ class TridentJSONDataIncomplete(TridentBaseException):
 
 class TridentLoginError(TridentBaseException):
     """Trident is not properly connected to the server.
-     Verify login credentials are correct."""
+
+    Verify login credentials are correct.
+    """
 
 
 class TridentTimeoutError(TridentBaseException):
-    """Trident took too long to respond"""
+    """Trident took too long to respond."""
 
 
 class TridentModelNotFoundError(TridentBaseException):
@@ -42,7 +45,7 @@ class TridentModelNotFoundError(TridentBaseException):
 
 
 class AquariumModelError(TridentBaseException):
-    """An error occurred with this Aquarium model"""
+    """An error occurred with this Aquarium model."""
 
 
 class NoSessionError(TridentBaseException):

@@ -1,15 +1,14 @@
-"""
-User, group, and budget models.
-"""
-
+"""User, group, and budget models."""
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import HasOne, HasMany, HasManyThrough
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
 
 
 @add_schema
 class User(ModelBase):
-    """A User model"""
+    """A User model."""
 
     fields = dict(
         groups=HasMany("Group", "User"),
@@ -25,7 +24,7 @@ class User(ModelBase):
 
 @add_schema
 class UserBudgetAssociation(ModelBase):
-    """An association model between a User and a Budget"""
+    """An association model between a User and a Budget."""
 
     fields = dict(budget=HasOne("Budget"), user=HasOne("User"))
 
@@ -40,25 +39,25 @@ class Membership(ModelBase):
 
 @add_schema
 class Group(ModelBase):
-    """A Group model"""
+    """A Group model."""
 
     pass
 
 
 @add_schema
 class Account(ModelBase):
-    """An Account model"""
+    """An Account model."""
 
 
 @add_schema
 class Budget(ModelBase):
-    """A Budget model"""
+    """A Budget model."""
 
     fields = dict(user_budget_associations=HasMany("UserBudgetAssociation", "Budget"))
 
 
 @add_schema
 class Invoice(ModelBase):
-    """A Invoice model"""
+    """A Invoice model."""
 
     pass

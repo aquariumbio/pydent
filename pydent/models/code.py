@@ -1,16 +1,16 @@
-"""
-Models related to protocol code, which is associated with operation types.
-"""
-
+"""Models related to protocol code, which is associated with operation
+types."""
 from pydent.base import ModelBase
-
 from pydent.marshaller import add_schema
-from pydent.relationships import HasOne, One, HasManyGeneric, HasOneFromMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasOne
+from pydent.relationships import HasOneFromMany
+from pydent.relationships import One
 
 
 @add_schema
 class Code(ModelBase):
-    """A Code model"""
+    """A Code model."""
 
     fields = dict(
         user=HasOne("User"),
@@ -31,7 +31,7 @@ class Code(ModelBase):
 
 @add_schema
 class Library(ModelBase):
-    """A Library model"""
+    """A Library model."""
 
     fields = dict(
         codes=HasManyGeneric("Code"),
@@ -43,7 +43,7 @@ class Library(ModelBase):
     )
 
     def code(self, accessor):
-        """Reminant from previous API"""
+        """Reminant from previous API."""
         # raise DeprecationWarning("This method is depreciated. Use '.source' directly")
         if accessor == "source":
             return self.source

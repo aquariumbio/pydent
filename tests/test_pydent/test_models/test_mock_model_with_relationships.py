@@ -1,16 +1,19 @@
-from pydent.models import User, Group, Sample, SampleType
 import requests
+
 from pydent import AqSession
 from pydent.aqhttp import AqHTTP
 from pydent.exceptions import TridentRequestError
+from pydent.models import Group
+from pydent.models import Sample
+from pydent.models import SampleType
+from pydent.models import User
 
 
 def test_load_model_from_json(monkeypatch, mock_login_post):
-    """
-    Tests heirarchical loading of a JSON file into Trident Models.
+    """Tests heirarchical loading of a JSON file into Trident Models.
 
-    Should return a User with name and login attributes.
-    Groups attribute should contain a list of Group models.
+    Should return a User with name and login attributes. Groups
+    attribute should contain a list of Group models.
     """
     # Create a mock session
     monkeypatch.setattr(requests, "post", mock_login_post)
@@ -50,7 +53,8 @@ def test_load_model_from_json(monkeypatch, mock_login_post):
 def test_load_model_with_database_connection(monkeypatch, mock_login_post):
     """Tests a relationship using a database connection.
 
-    Should return a Sample instance with an accessible SampleType instance.
+    Should return a Sample instance with an accessible SampleType
+    instance.
     """
     # Create a mock session
     monkeypatch.setattr(requests, "post", mock_login_post)
@@ -93,7 +97,8 @@ def test_load_model_with_database_connection(monkeypatch, mock_login_post):
 def test_load_model_with_many(monkeypatch, mock_login_post):
     """Tests a relationship using a database connection.
 
-        Should return a Sample instance with an accessible SampleType instance.
+    Should return a Sample instance with an accessible SampleType
+    instance.
     """
 
     # Create a mock session
@@ -129,8 +134,8 @@ def test_load_model_with_many(monkeypatch, mock_login_post):
 def test_load_model_with_many_through(monkeypatch, mock_login_post):
     """Tests a relationship using a database connection.
 
-        Should return a Sample instance with an accessible SampleType
-        instance.
+    Should return a Sample instance with an accessible SampleType
+    instance.
     """
 
     # Create a mock session

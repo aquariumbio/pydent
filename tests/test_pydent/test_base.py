@@ -1,14 +1,16 @@
-"""Tests for pydent.base.py"""
-
+"""Tests for pydent.base.py."""
 import copy
 
 import pytest
 
 from pydent import AqSession
-from pydent import ModelBase, ModelRegistry
-from pydent.marshaller import exceptions
-from pydent.marshaller import add_schema, fields, SchemaRegistry
+from pydent import ModelBase
+from pydent import ModelRegistry
 from pydent.exceptions import NoSessionError
+from pydent.marshaller import add_schema
+from pydent.marshaller import exceptions
+from pydent.marshaller import fields
+from pydent.marshaller import SchemaRegistry
 
 # def test_model_base():
 #     """
@@ -45,11 +47,8 @@ def mymodel(base):
 
 
 def test_record_id():
-    """
-    Creating a ModelBase should create a new record id 'rid.'
-    For each instance, a new 'rid' should be
-    created.
-    """
+    """Creating a ModelBase should create a new record id 'rid.' For each
+    instance, a new 'rid' should be created."""
 
     @add_schema
     class MyModel(ModelBase):
@@ -68,7 +67,7 @@ def test_record_id():
 
 
 def test_deepcopy():
-    """Deepcopy should retain attributes exactly"""
+    """Deepcopy should retain attributes exactly."""
 
     @add_schema
     class MyModel(ModelBase):
@@ -84,7 +83,7 @@ def test_deepcopy():
     [pytest.param(lambda x: x.copy()), pytest.param(lambda x: copy.copy(x))],
 )
 def test_copy(copy_method):
-    """Copy should anonymize models"""
+    """Copy should anonymize models."""
 
     @add_schema
     class MyModel(ModelBase):
@@ -98,7 +97,7 @@ def test_copy(copy_method):
 
 
 def test_copy_anonymizes_nested_relationships():
-    """Copy should recursively anonymize all models"""
+    """Copy should recursively anonymize all models."""
 
     @add_schema
     class MyModel(ModelBase):
@@ -135,9 +134,7 @@ def test_copy_anonymizes_nested_relationships():
 
 
 def test_basic_constructor(mymodel):
-    """
-    Model should absorb the kwargs.
-    """
+    """Model should absorb the kwargs."""
     m = mymodel(name="SomeName", id=2)
     assert m.name == "SomeName"
     assert m.id == 2
@@ -148,8 +145,10 @@ def test_basic_constructor(mymodel):
 
 def test_base_constructor_with_marshaller(mymodel):
     """MyModel initializes should absorb kwargs into attributes.
-    With a schema, those
-    attributes are also tracked and available for dumping."""
+
+    With a schema, those attributes are also tracked and available for
+    dumping.
+    """
     m = mymodel(name="model", id=5)
     assert m.name == "model"
     assert m.id == 5
@@ -159,8 +158,7 @@ def test_base_constructor_with_marshaller(mymodel):
 
 
 def test_connect_to_session(mymodel, fake_session):
-    """Connecting to other sessions
-    afterward should not be allowed."""
+    """Connecting to other sessions afterward should not be allowed."""
     m = mymodel()
     assert m.session is None
 
@@ -181,9 +179,8 @@ def test_empty_relationships(mymodel):
 
 
 def test_check_for_session(mymodel, fake_session):
-    """
-    If session is none, _check_for_session should raise an AttributeError
-    """
+    """If session is none, _check_for_session should raise an
+    AttributeError."""
     m = mymodel()
     with pytest.raises(NoSessionError):
         m._check_for_session()
@@ -193,9 +190,7 @@ def test_check_for_session(mymodel, fake_session):
 
 
 def test_model_registry(mymodel):
-    """
-    We expect get_model to return the value in the models dictionary
-    """
+    """We expect get_model to return the value in the models dictionary."""
 
     assert "MyModel" in ModelRegistry.models
     assert ModelRegistry.models["MyModel"] == mymodel
@@ -204,43 +199,35 @@ def test_model_registry(mymodel):
 
 
 def test_no_model_in_registry():
-    """
-    ModelRegistry should raise error if model doesn't exist
-    """
+    """ModelRegistry should raise error if model doesn't exist."""
     with pytest.raises(exceptions.ModelRegistryError):
         ModelRegistry.get_model("SomeModelThatDoesntExist")
 
 
 def test_find_no_session(mymodel):
-    """
-    ModelBase should raise AttributeError if no session is attacheded
-    """
+    """ModelBase should raise AttributeError if no session is attacheded."""
     m = mymodel()
     with pytest.raises(NoSessionError):
         m.find_callback(None, None)
 
 
 def test_where_no_session(mymodel):
-    """
-    ModelBase should raise AttributeError if no session is attacheded
-    """
+    """ModelBase should raise AttributeError if no session is attacheded."""
     m = mymodel()
     with pytest.raises(NoSessionError):
         m.where_callback(None, None)
 
 
 def test_where_and_find(mymodel, monkeypatch, fake_session):
-    """
-    Calling the 'where' wrapper on a ModelBase should attempt to
-    get a model interface and call 'where' or 'find' on the interface.
-    In this case, a fake model interface is returned in which the methods
-    return the parameter passed in
+    """Calling the 'where' wrapper on a ModelBase should attempt to get a model
+    interface and call 'where' or 'find' on the interface.
+
+    In this case, a fake model interface is returned in which the
+    methods return the parameter passed in
     """
 
     def fake_model_interface(self, model_name):
-        """
-        A fake model interface to test where
-        """
+        """A fake model interface to test where."""
 
         class FakeInterface:
             def find(id):

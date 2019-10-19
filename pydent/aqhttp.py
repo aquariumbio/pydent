@@ -14,38 +14,34 @@ class.
 Users should only access these methods indirectly through a ``Session`` or
 ``SessionInterface`` instance.
 """
-
 import json
 
 import requests
 
-from pydent.exceptions import (
-    TridentRequestError,
-    TridentLoginError,
-    TridentTimeoutError,
-    TridentJSONDataIncomplete,
-    ForbiddenRequestError,
-)
-from pydent.utils import url_build, Loggable
+from pydent.exceptions import ForbiddenRequestError
+from pydent.exceptions import TridentJSONDataIncomplete
+from pydent.exceptions import TridentLoginError
+from pydent.exceptions import TridentRequestError
+from pydent.exceptions import TridentTimeoutError
+from pydent.utils import Loggable
+from pydent.utils import url_build
 
 
-class AqHTTP(object):
-    """
-    Defines a Python to Aquarium server connection.
-    Makes HTTP requests to Aquarium and returns JSON.
+class AqHTTP:
+    """Defines a Python to Aquarium server connection. Makes HTTP requests to
+    Aquarium and returns JSON.
 
-    This class should be obscured from Trident user so that users cannot make
-    arbitrary requests to an Aquarium server and get sensitive information
-    (e.g. User json that is returned contains api_key, password_digest, etc.)
-    or make damaging posts.
-    Instead, a SessionInterface should be the object that makes these requests.
+    This class should be obscured from Trident user so that users cannot
+    make arbitrary requests to an Aquarium server and get sensitive
+    information (e.g. User json that is returned contains api_key,
+    password_digest, etc.) or make damaging posts. Instead, a
+    SessionInterface should be the object that makes these requests.
     """
 
     TIMEOUT = 10
 
     def __init__(self, login, password, aquarium_url):
-        """
-        Initializes an aquarium session with login, password, and server.
+        """Initializes an aquarium session with login, password, and server.
 
         :param login: Aquarium login
         :type login: str
@@ -100,7 +96,7 @@ class AqHTTP(object):
 
     @property
     def url(self):
-        """An alias of aquarium_url"""
+        """An alias of aquarium_url."""
         return self.aquarium_url
 
     @staticmethod
@@ -108,9 +104,7 @@ class AqHTTP(object):
         return {"session": {"login": login, "password": password}}
 
     def _login(self, login, password):
-        """
-        Login to aquarium and saves header as a requests.Session()
-        """
+        """Login to aquarium and saves header as a requests.Session()"""
         session_data = self.create_session_json(login, password)
         try:
             res = requests.post(
@@ -137,7 +131,7 @@ class AqHTTP(object):
             self.cookies = dict(cookies)
         except requests.exceptions.MissingSchema as error:
             raise TridentLoginError(
-                "Aquarium URL {0} incorrectly formatted. {1}".format(
+                "Aquarium URL {} incorrectly formatted. {}".format(
                     self.aquarium_url, error.args[0]
                 )
             )
@@ -160,8 +154,7 @@ class AqHTTP(object):
         return json.dumps({"url": url, "method": method, "body": body}, sort_keys=True)
 
     def request(self, method, path, timeout=None, allow_none=True, **kwargs):
-        """
-        Performs a http request.
+        """Performs a http request.
 
         :param method: request method (e.g. 'put', 'post', 'get', etc.)
         :type method: str
@@ -213,8 +206,8 @@ class AqHTTP(object):
         return self._response_to_json(response)
 
     def _response_to_json(self, response):
-        """
-        Turns :class:`requests.Request` instance into a json.
+        """Turns :class:`requests.Request` instance into a json.
+
         Raises TridentRequestError if an error occurs.
         """
 
@@ -243,18 +236,15 @@ class AqHTTP(object):
 
     @staticmethod
     def _disallow_null_in_json(json_data):
-        """
-        Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if
-        json data being sent contains a null value
-        """
+        """Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception
+        if json data being sent contains a null value."""
         if None in json_data.values():
             raise TridentJSONDataIncomplete(
                 "JSON data {} contains a null value.".format(json_data)
             )
 
     def post(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
-        """
-        Make a post request to the session
+        """Make a post request to the session.
 
         :param path: url
         :type path: str
@@ -281,8 +271,7 @@ class AqHTTP(object):
         )
 
     def put(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
-        """
-        Make a put request to the session
+        """Make a put request to the session.
 
         :param path: url
         :type path: str
@@ -309,8 +298,7 @@ class AqHTTP(object):
         )
 
     def get(self, path, timeout=None, allow_none=True, **kwargs):
-        """
-        Make a get request to the session
+        """Make a get request to the session.
 
         :param path: url
         :type path: str

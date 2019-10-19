@@ -1,15 +1,15 @@
-"""
-Models related to jobs, or operation execution.
-"""
-
+"""Models related to jobs, or operation execution."""
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import JSON, HasOne, HasMany, HasManyThrough
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import JSON
 
 
 @add_schema
 class Job(ModelBase):
-    """A Job model"""
+    """A Job model."""
 
     fields = dict(
         job_associations=HasMany("JobAssociation", "Job"),
@@ -37,6 +37,6 @@ class Job(ModelBase):
 
 @add_schema
 class JobAssociation(ModelBase):
-    """A JobAssociation model"""
+    """A JobAssociation model."""
 
     fields = dict(job=HasOne("Job"), operation=HasOne("Operation"))

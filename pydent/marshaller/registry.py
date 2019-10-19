@@ -1,10 +1,8 @@
-"""
-Model and schema registry meta-classes
-"""
-
+"""Model and schema registry meta-classes."""
 from collections import defaultdict
 
-from pydent.marshaller.exceptions import ModelRegistryError, SchemaRegistryError
+from pydent.marshaller.exceptions import ModelRegistryError
+from pydent.marshaller.exceptions import SchemaRegistryError
 
 
 class SchemaRegistry(type):

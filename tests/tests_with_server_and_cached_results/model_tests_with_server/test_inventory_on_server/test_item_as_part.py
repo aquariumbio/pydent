@@ -1,5 +1,8 @@
 import pytest
-from pydent.models import Collection, Item, PartAssociation
+
+from pydent.models import Collection
+from pydent.models import Item
+from pydent.models import PartAssociation
 
 
 @pytest.fixture

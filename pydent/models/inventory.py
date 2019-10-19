@@ -1,19 +1,19 @@
-"""
-Models related to inventory, like Items, Collections, ObjectTypes, and PartAssociations
-"""
-
+"""Models related to inventory, like Items, Collections, ObjectTypes, and
+PartAssociations."""
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import SaveMixin
 from pydent.models.data_associations import DataAssociatorMixin
-from pydent.relationships import Raw, HasOne, HasMany, HasManyThrough, HasManyGeneric
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import Raw
 
 
 @add_schema
 class Item(DataAssociatorMixin, SaveMixin, ModelBase):
-    """
-    A physical object in the lab, which a location and unique id.
-    """
+    """A physical object in the lab, which a location and unique id."""
 
     fields = dict(
         sample=HasOne("Sample"),
@@ -43,8 +43,10 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         )
 
     def make(self):
-        """Makes the Item on the Aquarium server. Requires
-        this Item to be connected to a session."""
+        """Makes the Item on the Aquarium server.
+
+        Requires this Item to be connected to a session.
+        """
         result = self.session.utils.create_items([self])
         return self.reload(result[0]["item"])
 
@@ -57,8 +59,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
     @property
     def containing_collection(self):
-        """
-        Returns the collection of which this Item is a part.
+        """Returns the collection of which this Item is a part.
 
         Returns the collection object if the Item is a part, otherwise
         returns None.
@@ -80,9 +81,8 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         return self.session.Collection.find(part_assoc.collection_id)
 
     def as_collection(self):
-        """
-        Returns the Collection object with the ID of this Item, which must be a
-        collection.
+        """Returns the Collection object with the ID of this Item, which must
+        be a collection.
 
         Returns None if this Item is not a collection.
         """
@@ -93,8 +93,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
     @property
     def is_collection(self):
-        """
-        Returns True if this Item is a collection in a PartAssociation.
+        """Returns True if this Item is a collection in a PartAssociation.
 
         Note: this is not how Aquarium does this test in the `collection?` method.
         """
@@ -116,8 +115,8 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 class Collection(
     DataAssociatorMixin, ModelBase
 ):  # pylint: disable=too-few-public-methods
-    """A Collection model, such as a 96-well plate, which contains many `parts`, each
-    of which can be associated with a different sample."""
+    """A Collection model, such as a 96-well plate, which contains many
+    `parts`, each of which can be associated with a different sample."""
 
     fields = dict(
         object_type=HasOne("ObjectType"),
@@ -131,8 +130,7 @@ class Collection(
 
     @property
     def matrix(self):
-        """
-        Returns the matrix of Samples for this Collection.
+        """Returns the matrix of Samples for this Collection.
 
         (Consider using samples of parts directly.)
         """
@@ -150,9 +148,8 @@ class Collection(
         return sample_matrix
 
     def part(self, row, col):
-        """
-        Returns the part Item at (row, col) of this Collection (zero-based).
-        """
+        """Returns the part Item at (row, col) of this Collection (zero-
+        based)."""
         parts = [
             assoc.part
             for assoc in self.part_associations
@@ -165,9 +162,7 @@ class Collection(
         return next(iter(parts))
 
     def as_item(self):
-        """
-        Returns the Item object with the ID of this Collection
-        """
+        """Returns the Item object with the ID of this Collection."""
         return self.session.Item.find(self.id)
 
     def create(self):
@@ -192,9 +187,10 @@ class ObjectType(SaveMixin, ModelBase):
 
 @add_schema
 class PartAssociation(ModelBase):
-    """
-    Represents a PartAssociation linking a part to a collection. Collections contain
-    many `parts`, each of which can refer to a different sample.
+    """Represents a PartAssociation linking a part to a collection.
+
+    Collections contain many `parts`, each of which can refer to a
+    different sample.
     """
 
     fields = dict(part=HasOne("Item", ref="part_id"), collection=HasOne("Collection"))

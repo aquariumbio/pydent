@@ -1,4 +1,5 @@
 from uuid import uuid4
+
 import pytest
 
 
@@ -18,9 +19,11 @@ class TestDataAssociation:
 
     @pytest.mark.record_mode("no")
     def test_successive_queries(self, session):
-        """We expect the length of the associations to be unchanged. The 'where' query for
-        data associations occasionally has strange behavior, retrieving only some of the data
-        associations."""
+        """We expect the length of the associations to be unchanged.
+
+        The 'where' query for data associations occasionally has strange
+        behavior, retrieving only some of the data associations.
+        """
 
         lengths = []
         for i in range(3):

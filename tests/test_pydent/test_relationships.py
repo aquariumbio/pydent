@@ -1,22 +1,18 @@
-"""
-Test for pydent.relationships.py
-"""
-
-from pydent.relationships import (
-    One,
-    Many,
-    HasOne,
-    HasMany,
-    HasManyGeneric,
-    HasManyThrough,
-)
+"""Test for pydent.relationships.py."""
 from pydent import ModelBase
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import Many
+from pydent.relationships import One
 
 
 def test_one():
-    """
-    Tests the One relationship. The relationship holds a callback function_name
-    and a set of parameters. Callback should default to 'find'
+    """Tests the One relationship.
+
+    The relationship holds a callback function_name and a set of
+    parameters. Callback should default to 'find'
     """
 
     # default attributes
@@ -34,10 +30,10 @@ def test_one():
 
 
 def test_many():
-    """
-    Tests the Many relationship.
-    The relationship holds a callback function_name
-    and a set of parameters. Callback should default to 'where'
+    """Tests the Many relationship.
+
+    The relationship holds a callback function_name and a set of
+    parameters. Callback should default to 'where'
     """
 
     # basic attributes
@@ -79,14 +75,12 @@ def test_has_many():
 
 
 def test_has_one():
-    """
-    Tests the HasOne relationship. Its expected that with MyModel,
-    that the returned params should be:
+    """Tests the HasOne relationship. Its expected that with MyModel, that the
+    returned params should be:
 
     .. code-block:: python
 
         params = lambda x: x.my_model_id
-
     """
 
     class MyModel:
@@ -104,14 +98,12 @@ def test_has_one():
 
 
 def test_has_one_with_ref():
-    """
-    Tests the HasOne relationship. Its expected that with MyModel,
-    that the returned params should be:
+    """Tests the HasOne relationship. Its expected that with MyModel, that the
+    returned params should be:
 
     .. code-block:: python
 
         params = lambda x: x.my_model_id
-
     """
 
     class MyModel:
@@ -126,8 +118,7 @@ def test_has_one_with_ref():
 
 
 def test_has_many_generic():
-    """
-    Tests the HasManyGeneric relationship. Its expected that with MyModel,
+    """Tests the HasManyGeneric relationship. Its expected that with MyModel,
     that the returned params should be:
 
     .. code-block:: python
@@ -153,8 +144,7 @@ def test_has_many_generic():
 
 
 def test_has_many_through():
-    """
-    Tests the HasManyThrough relationship. This is a little more complicated
+    """Tests the HasManyThrough relationship. This is a little more complicated
     than the other relationships, but its expected that with MyModel and
     ThroughModel that the returned params should be:
 

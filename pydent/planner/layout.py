@@ -1,19 +1,23 @@
-"""
-PlannerLayout
-"""
+"""PlannerLayout."""
+from collections import OrderedDict
+from typing import Iterable
+from typing import Tuple
 
 import networkx as nx
-from collections import OrderedDict
-from pydent.planner.utils import _id_getter, get_subgraphs
+
+from pydent.models import Operation
+from pydent.models import Plan
+from pydent.planner.utils import _id_getter
+from pydent.planner.utils import get_subgraphs
 from pydent.utils import make_async
-from pydent.models import Operation, Plan
-from typing import Iterable, Tuple
 
 
-class PlannerLayout(object):
+class PlannerLayout:
     """Layout module for :class:`Planner <pydent.planner.Planner>`.
+
     Positions :class:`Operations <pydent.models.Operation>` for the
-    Aquarium GUI"""
+    Aquarium GUI
+    """
 
     TOP_RIGHT = (100, 100)
     BOX_DELTA_X = 170
@@ -31,8 +35,8 @@ class PlannerLayout(object):
     }
 
     def __init__(self, G=None):
-        """
-        Initializes a new planner layout.
+        """Initializes a new planner layout.
+
         :param G:
         """
         if G is None:
@@ -42,7 +46,7 @@ class PlannerLayout(object):
 
     @classmethod
     def from_plan(cls, plan: Plan):
-        """Creates a layout from a :class:`pydent.models.Plan` instance"""
+        """Creates a layout from a :class:`pydent.models.Plan` instance."""
         G = nx.DiGraph()
         layout = cls(G)
 
@@ -114,8 +118,7 @@ class PlannerLayout(object):
                 yield (node, self.G.node[node]["operation"])
 
     def _add_operation(self, operation: Operation):
-        """
-        Adds an Operation to the Layout
+        """Adds an Operation to the Layout.
 
         :param op: operation
         :type op: pydent.models.Operation
@@ -125,24 +128,23 @@ class PlannerLayout(object):
         return self.G.add_node(_id_getter(operation), operation=operation)
 
     def subgraph(self, nodes):
-        """Returns a subgraph layout from a list of node_ids"""
+        """Returns a subgraph layout from a list of node_ids."""
         return self.__class__(G=self.G.subgraph(nodes))
 
     def nodes_to_ops(self, nodes):
-        """Returns operations from a list of node_ids"""
+        """Returns operations from a list of node_ids."""
         return [self.G.node[n]["operation"] for n in nodes]
 
     def ops_to_nodes(self, ops):
-        """Returns node_ids for each operation"""
+        """Returns node_ids for each operation."""
         return [_id_getter(op) for op in ops]
 
     def ops_to_layout(self, ops):
-        """Returns a sub-layout containing only the operations"""
+        """Returns a sub-layout containing only the operations."""
         return self.subgraph(self.ops_to_nodes(ops))
 
     def get_independent_layouts(self):
-        """
-        Finds all independent subgraphs.
+        """Finds all independent subgraphs.
 
         :return: list of PlannerLayout
         :rtype: list
@@ -164,8 +166,7 @@ class PlannerLayout(object):
         self.translate(cx - cx2, cy - cy2)
 
     def topo_sort(self):
-        """
-        Does a topological sort of the operations in this layout.
+        """Does a topological sort of the operations in this layout.
 
         Discovers individual subgraphs and topologically sorts each subgraph,
         and then aligns subgraphs horizontally.
@@ -191,8 +192,7 @@ class PlannerLayout(object):
     def to_grid(
         self, columns: int, axis: int = 1, border_x: int = None, border_y: int = None
     ):
-        """
-        Arrange layouts in a grid format.
+        """Arrange layouts in a grid format.
 
         :param columns: maximum number of columns (or rows when axis=0)
         :type columns: int
@@ -245,7 +245,7 @@ class PlannerLayout(object):
 
     # TODO: minimize crossings
     def _topological_sort_helper(self):
-        """Attempt a rudimentary topological sort on the plan"""
+        """Attempt a rudimentary topological sort on the plan."""
 
         _x, _y = self.TOP_RIGHT
 
@@ -305,8 +305,7 @@ class PlannerLayout(object):
         self.move(_x, _y)
 
     def align_ops_with_successors(self, ops):
-        """
-        Aligns the Operations to their successors by midpoints.
+        """Aligns the Operations to their successors by midpoints.
 
         Used in topological sorting of plans.
 
@@ -319,8 +318,7 @@ class PlannerLayout(object):
         self.align_x_of_ops(ops, successors)
 
     def align_ops_with_predecessors(self, ops):
-        """
-        Aligns the Operations to their predecessors by midpoints.
+        """Aligns the Operations to their predecessors by midpoints.
 
         Used in topological sorting of plans.
 
@@ -333,8 +331,7 @@ class PlannerLayout(object):
         self.align_x_of_ops(ops, predecessors)
 
     def predecessors(self, node):
-        """
-        Return predecessor nodes
+        """Return predecessor nodes.
 
         :param node: node id
         :type node: basestring
@@ -344,8 +341,7 @@ class PlannerLayout(object):
         return self.G.predecessors(node)
 
     def successors(self, node):
-        """
-        Return successors nodes
+        """Return successors nodes.
 
         :param node: node id
         :type node: basestring
@@ -363,8 +359,7 @@ class PlannerLayout(object):
         return self.subgraph(n_bunch)
 
     def collect_predecessors(self, nodes):
-        """
-        Return all predecessors from a list of nodes
+        """Return all predecessors from a list of nodes.
 
         :param nodes: list of node ids
         :type nodes: list
@@ -377,8 +372,7 @@ class PlannerLayout(object):
         return list(set(predecessors))
 
     def collect_successors(self, nodes):
-        """
-        Return all successors from a list of nodes
+        """Return all successors from a list of nodes.
 
         :param nodes: list of node ids
         :type nodes: list
@@ -391,8 +385,7 @@ class PlannerLayout(object):
         return list(set(successors))
 
     def ops_to_predecessors(self, ops):
-        """
-        Return all predecessor operations from a list of operations
+        """Return all predecessor operations from a list of operations.
 
         :param nodes: list of :class:`pydent.models.Operation`
         :type nodes: list
@@ -403,8 +396,7 @@ class PlannerLayout(object):
         return self.nodes_to_ops(nodes)
 
     def ops_to_successors(self, ops):
-        """
-        Return all successor operations from a list of operations
+        """Return all successor operations from a list of operations.
 
         :param nodes: list of :class:`pydent.models.Operation`
         :type nodes: list
@@ -415,7 +407,7 @@ class PlannerLayout(object):
         return self.nodes_to_ops(nodes)
 
     def leaves(self):
-        """Returns the leaves of this layout"""
+        """Returns the leaves of this layout."""
         leaves = []
         for n in self.nodes:
             if len(list(self.successors(n))) == 0:
@@ -423,7 +415,7 @@ class PlannerLayout(object):
         return leaves
 
     def roots(self):
-        """Returns the roots of this layout"""
+        """Returns the roots of this layout."""
         roots = []
         for n in self.nodes:
             if len(list(self.predecessors(n))) == 0:
@@ -437,8 +429,7 @@ class PlannerLayout(object):
         return self.nodes_to_ops(self.roots())
 
     def align_x_midpoints_to(self, other_layout):
-        """
-        Align the midpoint x-coordinate of this layout with that of another.
+        """Align the midpoint x-coordinate of this layout with that of another.
 
         :param other_layout: the other canvas layout
         :type other_layout: PlannerLayout
@@ -453,8 +444,8 @@ class PlannerLayout(object):
         self.translate(deltax, 0)
 
     def align_y_midpoints_to(self, other_layout):
-        """
-        Align this midpoint y-coordinates of this layout with another layout
+        """Align this midpoint y-coordinates of this layout with another
+        layout.
 
         :param other_layout: the other canvas layout
         :type other_layout: PlannerLayout
@@ -467,9 +458,8 @@ class PlannerLayout(object):
         self.y = other_y
 
     def align_x_of_ops(self, ops1, ops2):
-        """
-        Aligns a set of Operations with another set of Operations within this
-        PlannerLayout
+        """Aligns a set of Operations with another set of Operations within
+        this PlannerLayout.
 
         :param ops1: list of :class:`pydent.models.Operation`
         :type ops1: list
@@ -505,9 +495,8 @@ class PlannerLayout(object):
         self.translate(0, delta_y)
 
     def bounds(self) -> Tuple[int, int]:
-        """
-        Returns the bounding box of the layout as the upper-left and
-        lower-right coordinates.
+        """Returns the bounding box of the layout as the upper-left and lower-
+        right coordinates.
 
         :return: x,y coordinate
         :rtype: tuple
@@ -517,8 +506,7 @@ class PlannerLayout(object):
         return ((min(x_arr), min(y_arr)), (max(x_arr), max(y_arr)))
 
     def midpoint(self) -> Tuple[int, int]:
-        """
-        Returns the midpoint x,y coordinates of the layout
+        """Returns the midpoint x,y coordinates of the layout.
 
         :return: x,y coordinate
         :rtype: tuple
@@ -528,8 +516,7 @@ class PlannerLayout(object):
         return x, y
 
     def translate(self, delta_x, delta_y):
-        """
-        Translates the layout by the x,y coordinates
+        """Translates the layout by the x,y coordinates.
 
         :param delta_x: delta x
         :type delta_x: int

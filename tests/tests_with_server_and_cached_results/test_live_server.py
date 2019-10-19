@@ -1,5 +1,5 @@
-import requests
 import pytest
+import requests
 
 
 @pytest.mark.record_mode("no")
@@ -20,7 +20,8 @@ def test_login_with_requests(config):
 
 @pytest.mark.record_mode("no")
 def test_login(session, config):
-    """Test actually logging into the Aquarium server detailed in the config."""
+    """Test actually logging into the Aquarium server detailed in the
+    config."""
     aqhttp = session.User.aqhttp
     res = aqhttp.get("users/current.json")
     assert res

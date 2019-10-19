@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.browser &#8212; pydent 0.1.5a6 documentation</title>
+    <title>pydent.browser &#8212; pydent 0.1.5a7 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -199,16 +199,15 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">pydent change log</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a6">0.1.5a6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a5">0.1.5a5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a4">0.1.5a4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../developer/versions.html#major-changes">Major changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
@@ -265,16 +264,15 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">pydent change log</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a6">0.1.5a6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a5">0.1.5a5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a4">0.1.5a4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../developer/versions.html#major-changes">Major changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
@@ -338,6 +336,9 @@ import pandas as pd
 from pydent.marshaller import ModelRegistry
 from pydent import models as pydent_models
 from pydent.base import ModelBase
+from pydent.relationships import BaseRelationship
+import networkx as nx
+from typing import List, Dict, Union
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -988,7 +989,9 @@ from pydent.models import Sample
 
         return retrieved_models</div>
 
-<div class="viewcode-block" id="Browser._retrieve_has_many_through"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser._retrieve_has_many_through">[docs]</a>    def _retrieve_has_many_through(self, models, relationship_name, strict=True):
+<div class="viewcode-block" id="Browser._retrieve_has_many_through"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser._retrieve_has_many_through">[docs]</a>    def _retrieve_has_many_through(self, models: List[ModelBase],
+                                   relationship_name: str,
+                                   strict: bool = True):
         &quot;&quot;&quot;Performs exactly 2 queries to establish a HasManyThrough relationship&quot;&quot;&quot;
         relation = models[0].get_relationships()[relationship_name]
         association_relation = models[0].get_relationships()[
@@ -1027,7 +1030,10 @@ from pydent.models import Sample
                 setattr(m, relationship_name, None)
         return list(set(all_models))</div>
 
-<div class="viewcode-block" id="Browser.retrieve"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.retrieve">[docs]</a>    def retrieve(self, models, relationship_name, relation=None, strict=True):
+<div class="viewcode-block" id="Browser.retrieve"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.retrieve">[docs]</a>    def retrieve(self, models: List[ModelBase], relationship_name: str,
+                 relation: BaseRelationship = None,
+                 strict: bool = True,
+                 force_refresh: bool = False) -&gt; List[ModelBase]:
         &quot;&quot;&quot;
         Retrieves a model relationship for the list of models. Compared to a `for` loop,
         `retrieve` is &gt;10X faster for most queries.
@@ -1097,22 +1103,38 @@ from pydent.models import Sample
                 )
             )
         self.log.info(&quot;RETRIEVE {}: {}&quot;.format(relationship_name, relation))
+
+        if not force_refresh:
+            needs_refresh = [m for m in models if
+                             not m.is_deserialized(relationship_name)]
+            no_refresh = [m for m in models if
+                            m.is_deserialized(relationship_name)]
+        else:
+            needs_refresh = [m for m in models if
+                             m.is_deserialized(relationship_name)]
+            no_refresh = []
+
         if hasattr(relation, &quot;through_model_attr&quot;):
             found_models = self._retrieve_has_many_through(
-                models, relationship_name, strict=strict
+                needs_refresh, relationship_name, strict=strict
             )
         else:
             found_models = self._retrieve_has_many_or_has_one(
-                models, relationship_name, relation, strict=strict
+                needs_refresh, relationship_name, relation, strict=strict
             )
+
         self.log.info(
             &#39;RETRIEVE retrieved {} for &quot;{}&quot;&#39;.format(
                 len(found_models), relationship_name
             )
         )
+        found_models += [getattr(m, relationship_name) for m in no_refresh]
         return found_models</div>
 
-<div class="viewcode-block" id="Browser.recursive_retrieve"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.recursive_retrieve">[docs]</a>    def recursive_retrieve(self, models, relations, strict=True):
+<div class="viewcode-block" id="Browser.recursive_retrieve"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.recursive_retrieve">[docs]</a>    def recursive_retrieve(self, models: List[ModelBase],
+                           relations: Union[str, List[BaseRelationship], Dict],
+                           strict: bool = True,
+                           force_refresh: bool = False):
         &quot;&quot;&quot;
         Efficiently retrieve a model relationship recursively from an iterable. The relations_dict iterable may be
         either a list or a dictionary. For example, the following will collect all of the field_values
@@ -1141,6 +1163,7 @@ from pydent.models import Sample
         :param relations: the relation to retrieve. This may either be a string (by attribute name), a list, or a dict.
         :type relations: list|dict|basestring
         :param strict: wither to ignore database inconsistencies
+        :param force_refresh:
         :type bool
         :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
         :rtype: dictionary
@@ -1148,7 +1171,7 @@ from pydent.models import Sample
         self.log.info(&quot;RETRIEVE recursively retrieving {}&quot;.format(relations))
         if isinstance(relations, str):
             self.log.info(&#39;RETRIEVE retrieving &quot;{}&quot;&#39;.format(relations))
-            return {relations: self.retrieve(models, relations, strict=strict)}
+            return {relations: self.retrieve(models, relations, strict=strict, force_refresh=force_refresh)}
         elif (
             isinstance(relations, list)
             or isinstance(relations, set)
@@ -1158,11 +1181,11 @@ from pydent.models import Sample
             models_by_attr = {}
             for relation_name in relations:
                 models_by_attr.setdefault(relation_name, [])
-                new_models = self.retrieve(models, relation_name, strict=strict)
+                new_models = self.retrieve(models, relation_name, strict=strict, force_refresh=force_refresh)
                 models_by_attr[relation_name] += new_models
                 if isinstance(relations, dict):
                     _models_by_attr = self.recursive_retrieve(
-                        new_models, dict(relations).pop(relation_name), strict=strict
+                        new_models, dict(relations).pop(relation_name), strict=strict, force_refresh=force_refresh
                     )
                     for attr in _models_by_attr:
                         _models = _models_by_attr[attr]
@@ -1180,7 +1203,18 @@ from pydent.models import Sample
                 )
             )</div>
 
-    def get(self, models, relations=None, query=None, strict=True):
+<div class="viewcode-block" id="Browser.get"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.get">[docs]</a>    def get(self, models: List[ModelBase], relations: List[BaseRelationship],
+            query: dict = None, strict: bool = True, force_refresh: bool = True) \
+            -&gt; Union[Dict[str, List[ModelBase]], List[ModelBase]]:
+        &quot;&quot;&quot;
+
+        :param models:
+        :param relations:
+        :param query:
+        :param strict:
+        :param force_refresh:
+        :return:
+        &quot;&quot;&quot;
         if isinstance(models, ModelBase):
             models = [models]
         elif isinstance(models, str):
@@ -1189,11 +1223,13 @@ from pydent.models import Sample
                 models, _ = self._find_matches(query, models)
         if relations:
             if isinstance(relations, str):
-                return self.retrieve(models, relations, strict=strict)
+                return self.retrieve(models, relations, strict=strict,
+                                     force_refresh=force_refresh)
             else:
-                return self.recursive_retrieve(models, relations, strict=strict)
+                return self.recursive_retrieve(models, relations, strict=strict,
+                                               force_refresh=force_refresh)
         else:
-            return models
+            return models</div>
 
 <div class="viewcode-block" id="Browser.samples_to_df"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.samples_to_df">[docs]</a>    def samples_to_df(self, samples):
         &quot;&quot;&quot;

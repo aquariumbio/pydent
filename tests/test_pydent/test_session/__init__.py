@@ -1,3 +1,1 @@
-"""
-Tests related to testing AqHTTP, AqSession, and SessionInterfaces
-"""
+"""Tests related to testing AqHTTP, AqSession, and SessionInterfaces."""

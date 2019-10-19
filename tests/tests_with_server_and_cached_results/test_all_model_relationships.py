@@ -1,4 +1,5 @@
 import pytest
+
 from pydent.marshaller import ModelRegistry
 
 # skip tests
@@ -15,8 +16,7 @@ for model in ModelRegistry.models.values():
 
 
 class TestModelRelationships:
-    """
-    Tests expected relationship access to Aquarium models.
+    """Tests expected relationship access to Aquarium models.
 
     For example, a Sample is expected to have access to a SampleType model
     through its 'sample_type' attribute. These tests will check that
@@ -28,9 +28,7 @@ class TestModelRelationships:
 
     @pytest.mark.parametrize("model_class,attr,relationship", relationship_pairs)
     def test_model_relationships(self, session, model_class, attr, relationship):
-        """
-        Tries to access nested relationships in an a model
-        """
+        """Tries to access nested relationships in an a model."""
         interface = session.model_interface(model_class.__name__)
 
         print("\nRelationships:")

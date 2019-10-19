@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Models (pydent.models) &#8212; pydent 0.1.5a6 documentation</title>
+    <title>Models (pydent.models) &#8212; pydent 0.1.5a7 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -201,16 +201,15 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developer/versions.html">pydent change log</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a6">0.1.5a6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id1">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a5">0.1.5a5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a4">0.1.5a4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="developer/versions.html#major-changes">Major changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
@@ -267,16 +266,15 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developer/versions.html">pydent change log</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a6">0.1.5a6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id1">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a5">0.1.5a5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a4">0.1.5a4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="developer/versions.html#major-changes">Major changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
@@ -668,6 +666,12 @@ information from the Aquarium server if necesssary.</p>
 <dd><p>Return the model’s data</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydent.models.Account._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pydent.models.Account._model_schema">
 <code class="sig-name descname">_model_schema</code><a class="headerlink" href="#pydent.models.Account._model_schema" title="Permalink to this definition">¶</a></dt>
@@ -789,10 +793,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Account.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Account.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Account.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -863,6 +905,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Account.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Account.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Account.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Account.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -910,6 +970,12 @@ models in model relationships.</p>
 <dt id="pydent.models.AllowableFieldType._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.AllowableFieldType._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1033,10 +1099,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.AllowableFieldType.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.AllowableFieldType.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.AllowableFieldType.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -1107,6 +1211,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.AllowableFieldType.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.AllowableFieldType.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.AllowableFieldType.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.AllowableFieldType.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -1154,6 +1276,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Budget._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Budget._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1277,10 +1405,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Budget.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Budget.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Budget.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -1351,6 +1517,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Budget.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Budget.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Budget.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Budget.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -1398,6 +1582,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Code._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Code._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1521,10 +1711,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Code.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Code.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Code.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -1595,6 +1823,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Code.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Code.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Code.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Code.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -1643,6 +1889,12 @@ of which can be associated with a different sample.</p>
 <dt id="pydent.models.Collection._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1837,10 +2089,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Collection.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Collection.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -1924,6 +2214,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Collection.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Collection.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Collection.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -1971,6 +2279,12 @@ models in model relationships.</p>
 <dt id="pydent.models.DataAssociation._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.DataAssociation._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2094,10 +2408,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.DataAssociation.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.DataAssociation.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.DataAssociation.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -2168,6 +2520,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.DataAssociation.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.DataAssociation.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.DataAssociation.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.DataAssociation.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -2209,6 +2579,12 @@ models in model relationships.</p>
 <dt id="pydent.models.FieldType._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldType._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2340,6 +2716,24 @@ If parent_class does not match the expected nested model name
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.FieldType.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.FieldType.initialize_field_value">
 <code class="sig-name descname">initialize_field_value</code><span class="sig-paren">(</span><em class="sig-param">field_value=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/field_value.html#FieldType.initialize_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldType.initialize_field_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates or initializes a new <a class="reference internal" href="#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code></a> from this FieldType</p>
@@ -2361,6 +2755,26 @@ If parent_class does not match the expected nested model name
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldType.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -2431,6 +2845,24 @@ If parent_class does not match the expected nested model name
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.FieldType.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldType.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.FieldType.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.FieldType.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -2486,6 +2918,12 @@ and its Plan to obtain wires.</p>
 <dt id="pydent.models.FieldValue._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldValue._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2629,6 +3067,24 @@ If parent_class does not match the expected nested model name
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.FieldValue.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.FieldValue.get_sid">
 <code class="sig-name descname">get_sid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/field_value.html#FieldValue.get_sid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue.get_sid" title="Permalink to this definition">¶</a></dt>
 <dd><p>The FieldValues sample identifier.</p>
@@ -2639,6 +3095,26 @@ If parent_class does not match the expected nested model name
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.FieldValue.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -2715,6 +3191,24 @@ If parent_class does not match the expected nested model name
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.FieldValue.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.FieldValue.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.FieldValue.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.FieldValue.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -2768,6 +3262,12 @@ If parent_class does not match the expected nested model name
 <dt id="pydent.models.Group._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Group._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2891,10 +3391,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Group.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Group.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Group.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -2965,6 +3503,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Group.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Group.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Group.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -3012,6 +3568,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Invoice._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Invoice._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3135,10 +3697,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Invoice.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Invoice.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Invoice.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -3209,6 +3809,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Invoice.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Invoice.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Invoice.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Invoice.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -3250,6 +3868,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Item._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3454,6 +4078,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Item.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Item.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
@@ -3465,6 +4107,26 @@ models in model relationships.</p>
 <em class="property">property </em><code class="sig-name descname">is_collection</code><a class="headerlink" href="#pydent.models.Item.is_collection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if this Item is a collection in a PartAssociation.</p>
 <p>Note: this is not how Aquarium does this test in the <cite>collection?</cite> method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Item.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -3542,6 +4204,24 @@ this Item to be connected to a session.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Item.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Item.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Item.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/inventory.html#Item.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Item.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>A synonym for <cite>make</cite></p>
@@ -3595,6 +4275,12 @@ this Item to be connected to a session.</p>
 <dt id="pydent.models.Job._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Job._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3718,10 +4404,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Job.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Job.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Job.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -3792,6 +4516,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Job.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Job.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Job.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Job.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -3839,6 +4581,12 @@ models in model relationships.</p>
 <dt id="pydent.models.JobAssociation._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3962,10 +4710,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.JobAssociation.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.JobAssociation.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4036,6 +4822,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.JobAssociation.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.JobAssociation.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.JobAssociation.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -4083,6 +4887,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Library._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Library._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4212,10 +5022,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Library.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Library.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Library.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4286,6 +5134,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Library.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Library.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Library.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Library.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -4332,6 +5198,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Membership._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Membership._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4455,10 +5327,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Membership.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Membership.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Membership.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4529,6 +5439,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Membership.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Membership.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Membership.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Membership.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -4576,6 +5504,12 @@ models in model relationships.</p>
 <dt id="pydent.models.ObjectType._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.ObjectType._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4699,10 +5633,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.ObjectType.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.ObjectType.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.ObjectType.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4773,6 +5745,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.ObjectType.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.ObjectType.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.ObjectType.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.ObjectType.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -4814,6 +5804,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Operation._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5065,6 +6061,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Operation.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Operation.get_field_type">
 <code class="sig-name descname">get_field_type</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">role</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.get_field_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a <a class="reference internal" href="#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by its name and role
@@ -5199,6 +6213,26 @@ parent <a class="reference internal" href="#pydent.models.Operation" title="pyde
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -5337,6 +6371,24 @@ instance. Optionally, a values dictionary may be provided with the following for
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Operation.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5534,6 +6586,12 @@ Aquarium.</p>
 <dd><p>Return the model’s data</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydent.models.OperationType._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pydent.models.OperationType._model_schema">
 <code class="sig-name descname">_model_schema</code><a class="headerlink" href="#pydent.models.OperationType._model_schema" title="Permalink to this definition">¶</a></dt>
@@ -5675,10 +6733,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.OperationType.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.OperationType.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.OperationType.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -5749,6 +6845,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.OperationType.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.OperationType.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.OperationType.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/operation.html#OperationType.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.OperationType.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the Operation Type to the Aquarium server. Requires
@@ -5804,6 +6918,12 @@ many <cite>parts</cite>, each of which can refer to a different sample.</p>
 <dt id="pydent.models.PartAssociation._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PartAssociation._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5927,10 +7047,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.PartAssociation.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.PartAssociation.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PartAssociation.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -6001,6 +7159,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.PartAssociation.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PartAssociation.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.PartAssociation.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.PartAssociation.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -6042,6 +7218,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Plan._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="method">
@@ -6323,10 +7505,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Plan.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Plan.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/plan.html#Plan.interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -6400,6 +7620,24 @@ models in model relationships.</p>
 <dt id="pydent.models.Plan.replan">
 <code class="sig-name descname">replan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/plan.html#Plan.replan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Plan.replan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copies or replans the plan. Returns a plan copy</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Plan.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Plan.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -6539,6 +7777,12 @@ error_if_exists is True, then the existing wire is returned. Else an exception i
 <dd><p>Return the model’s data</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pydent.models.PlanAssociation._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pydent.models.PlanAssociation._model_schema">
 <code class="sig-name descname">_model_schema</code><a class="headerlink" href="#pydent.models.PlanAssociation._model_schema" title="Permalink to this definition">¶</a></dt>
@@ -6660,10 +7904,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.PlanAssociation.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.PlanAssociation.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.PlanAssociation.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -6734,6 +8016,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.PlanAssociation.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.PlanAssociation.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.PlanAssociation.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.PlanAssociation.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -6786,6 +8086,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Sample._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Sample._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6910,6 +8216,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Sample.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Sample.get_field_type">
 <code class="sig-name descname">get_field_type</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">role</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.get_field_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a <a class="reference internal" href="#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by its name and role
@@ -7031,6 +8355,26 @@ as <cite>METATYPE</cite> in the class definition.</p>
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Sample.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -7162,6 +8506,24 @@ instance. Optionally, a values dictionary may be provided with the following for
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Sample.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Sample.safe_get_field_type">
 <code class="sig-name descname">safe_get_field_type</code><span class="sig-paren">(</span><em class="sig-param">fv</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Sample.safe_get_field_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Safely returns the field value’s <a class="reference internal" href="#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a>
@@ -7264,6 +8626,12 @@ as in the following:</p>
 <dt id="pydent.models.SampleType._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.SampleType._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7407,10 +8775,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.SampleType.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.SampleType.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.SampleType.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -7476,6 +8882,24 @@ models in model relationships.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.SampleType.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.SampleType.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7572,6 +8996,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Upload._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Upload._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7748,10 +9178,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Upload.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Upload.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Upload.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -7822,6 +9290,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Upload.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Upload.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Upload.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Upload.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -7869,6 +9355,12 @@ models in model relationships.</p>
 <dt id="pydent.models.User._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.User._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7992,10 +9484,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.User.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.User.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.User.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -8066,6 +9596,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.User.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.User.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.User.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.User.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -8113,6 +9661,12 @@ models in model relationships.</p>
 <dt id="pydent.models.UserBudgetAssociation._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.UserBudgetAssociation._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -8236,10 +9790,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.UserBudgetAssociation.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.UserBudgetAssociation.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.UserBudgetAssociation.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -8310,6 +9902,24 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.UserBudgetAssociation.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.UserBudgetAssociation.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.UserBudgetAssociation.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.UserBudgetAssociation.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -8351,6 +9961,12 @@ models in model relationships.</p>
 <dt id="pydent.models.Wire._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire._get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Wire._get_deserialized_data">
+<code class="sig-name descname">_get_deserialized_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire._get_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the deserialized model data.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -8489,10 +10105,48 @@ models in model relationships.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Wire.get_deserialized">
+<code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.get_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deserialized data by name</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
+Use self._get_deserialized_data[name] instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Wire.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a model interface from this class and a session</p>
 <p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Wire.is_deserialized">
+<code class="sig-name descname">is_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.is_deserialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given key has already been deserialized.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if key has been deserialized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -8558,6 +10212,24 @@ models in model relationships.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Wire.reset_field">
+<code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Wire.reset_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the field descriptor to its placeholder value,
+returning the behavior</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>

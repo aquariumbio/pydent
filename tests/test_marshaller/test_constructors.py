@@ -1,12 +1,13 @@
 import pytest
 
-from pydent.marshaller.base import SchemaModel, ModelRegistry, add_schema
-from pydent.marshaller.exceptions import (
-    SchemaException,
-    ModelValidationError,
-    SchemaRegistryError,
-)
-from pydent.marshaller.fields import Callback, Relationship
+from pydent.marshaller.base import add_schema
+from pydent.marshaller.base import ModelRegistry
+from pydent.marshaller.base import SchemaModel
+from pydent.marshaller.exceptions import ModelValidationError
+from pydent.marshaller.exceptions import SchemaException
+from pydent.marshaller.exceptions import SchemaRegistryError
+from pydent.marshaller.fields import Callback
+from pydent.marshaller.fields import Relationship
 from pydent.marshaller.schema import SchemaRegistry
 
 
@@ -22,7 +23,7 @@ class TestModelConstructors:
         with pytest.raises(SchemaException):
 
             @add_schema
-            class TestBase(object):
+            class TestBase:
                 pass
 
     def test_model_registry(self):

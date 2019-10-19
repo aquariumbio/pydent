@@ -1,10 +1,11 @@
-from pydent.utils.async_requests import make_async
-import time
 import random
+import time
+
+from pydent.utils.async_requests import make_async
 
 
 def test_async_basic():
-    """Expect array to be return in correct order"""
+    """Expect array to be return in correct order."""
 
     @make_async(3)
     def myfxn(arr):
@@ -42,7 +43,7 @@ def test_async_with_kwargs():
 
 
 def test_async_class_method():
-    class Foo(object):
+    class Foo:
         @make_async(2, as_classmethod=True)
         def myfxn(self, arr, arg0, kwarg0=1):
             time.sleep(0.5)

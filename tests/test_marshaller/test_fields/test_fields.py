@@ -3,7 +3,10 @@ import json
 import pytest
 
 from pydent.marshaller.base import add_schema
-from pydent.marshaller.fields import Field, Callback, Relationship, Nested
+from pydent.marshaller.fields import Callback
+from pydent.marshaller.fields import Field
+from pydent.marshaller.fields import Nested
+from pydent.marshaller.fields import Relationship
 
 
 def test_default(base):

@@ -1,5 +1,6 @@
-from pydent.planner import Planner, PlannerLayout
 from pydent import ModelBase
+from pydent.planner import Planner
+from pydent.planner import PlannerLayout
 
 
 def test_add_operation_by_name(session):
@@ -290,9 +291,9 @@ class TestCanvasLayout:
         ops[-2].x = 200
         ops[-3].x = 100
 
-        assert not len(set([op.x for op in ops])) == 1
+        assert not len({op.x for op in ops}) == 1
         canvas.layout.topo_sort()
-        assert len(set([op.x for op in ops])) == 1
+        assert len({op.x for op in ops}) == 1
 
     def test_topo_sort(self, session):
         canvas = Planner(session)

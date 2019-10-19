@@ -1,22 +1,19 @@
-"""
-Model serialization/deserialization schema
-"""
-
+"""Model serialization/deserialization schema."""
 import inspect
 
 from pydent.marshaller.descriptors import DataAccessor
-from pydent.marshaller.exceptions import (
-    MultipleValidationError,
-    CallbackValidationError,
-)
-from pydent.marshaller.fields import Field, Callback
+from pydent.marshaller.exceptions import CallbackValidationError
+from pydent.marshaller.exceptions import MultipleValidationError
+from pydent.marshaller.fields import Callback
+from pydent.marshaller.fields import Field
 from pydent.marshaller.registry import SchemaRegistry
 from pydent.marshaller.utils import make_signature_str
 
 
 class DynamicSchema(metaclass=SchemaRegistry):
-    """
-    A dynamically added schema. Should be added using '@add_schema` decorator.
+    """A dynamically added schema.
+
+    Should be added using '@add_schema` decorator.
     """
 
     ignore = ()

@@ -1,9 +1,9 @@
+import functools
 import os
 
 import pytest
 
 from pydent.exceptions import AquariumModelError
-import functools
 
 here = os.path.dirname(os.path.abspath(__file__))
 dump_location = os.path.join(here, "yeast_strain_dump.json")
@@ -142,8 +142,12 @@ class TestUpdateFieldValueArrays:
 
     @pytest.fixture(scope="module")
     def get_samples(self, session, example_sample_type):
-        """Returns a function that queries for samples that match the field_value of the FieldValue array specified
-        in the default values above. These samples can be used to set the properties for the tests."""
+        """Returns a function that queries for samples that match the
+        field_value of the FieldValue array specified in the default values
+        above.
+
+        These samples can be used to set the properties for the tests.
+        """
         allowable_field_types = example_sample_type.field_type(
             self.FIELD_TYPE_NAME
         ).allowable_field_types
@@ -201,8 +205,11 @@ class TestUpdateFieldValueArrays:
     ids=["{} field values".format(x) for x in range(3)],
 )
 def test_update_properties_using_array(session, num_field_values):
-    """Test updating a sample properties array. Requires a 'Fragment' SampleType in the database with a 'Fragment Mix Array'
-    FieldType."""
+    """Test updating a sample properties array.
+
+    Requires a 'Fragment' SampleType in the database with a 'Fragment
+    Mix Array' FieldType.
+    """
 
     # grab example Fragment
     fragment_type = session.SampleType.find_by_name("Fragment")
@@ -221,9 +228,9 @@ def test_update_properties_using_array(session, num_field_values):
 
     # verify local changes
     assert len(sample.field_value_array("Fragment Mix Array")) == len(fragments)
-    assert set([s.id for s in sample.properties["Fragment Mix Array"]]) == set(
-        [s.id for s in fragments]
-    )
+    assert {s.id for s in sample.properties["Fragment Mix Array"]} == {
+        s.id for s in fragments
+    }
     assert sample.properties["Length"] == 1000
 
     # verify server changes
@@ -239,7 +246,7 @@ def test_update_properties_using_array(session, num_field_values):
 
     # verify local changes
     assert len(sample.field_value_array("Fragment Mix Array")) == len(new_set_fragments)
-    assert set([s.id for s in sample.properties["Fragment Mix Array"]]) == set(
-        [s.id for s in new_set_fragments]
-    )
+    assert {s.id for s in sample.properties["Fragment Mix Array"]} == {
+        s.id for s in new_set_fragments
+    }
     assert sample.properties["Length"] == 1100

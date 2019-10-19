@@ -1,8 +1,9 @@
-from pydent.utils import Loggable
 from uuid import uuid4
 
+from pydent.utils import Loggable
 
-class Foo(object):
+
+class Foo:
     def __init__(self):
         self.log = Loggable(self)
 

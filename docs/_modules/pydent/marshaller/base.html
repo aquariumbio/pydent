@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.marshaller.base &#8212; pydent 0.1.5a6 documentation</title>
+    <title>pydent.marshaller.base &#8212; pydent 0.1.5a7 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -199,16 +199,15 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
@@ -265,16 +264,15 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
@@ -402,14 +400,51 @@ import inspect
         &quot;&quot;&quot;Return the model&#39;s data&quot;&quot;&quot;
         return getattr(self, self.__class__._data_key)</div>
 
-    def _get_deserialized_data(self):
-        return getattr(self, self.__class__._deserialized_key)
+<div class="viewcode-block" id="SchemaModel._get_deserialized_data"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel._get_deserialized_data">[docs]</a>    def _get_deserialized_data(self):
+        &quot;&quot;&quot;Return the deserialized model data.&quot;&quot;&quot;
+        return getattr(self, self.__class__._deserialized_key)</div>
 
-    def get_deserialized(self, name):
-        return self._get_deserialized_data()[name]
+<div class="viewcode-block" id="SchemaModel.get_deserialized"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.get_deserialized">[docs]</a>    def get_deserialized(self, name):
+        &quot;&quot;&quot;
+        Get deserialized data by name
 
-    def has_deserialize(self, name):
-        assert name in self._get_deserialized_data()
+        .. deprecated:: 0.1.5a7
+            method will be removed in 0.2.
+            Use self._get_deserialized_data[name] instead.
+
+        :param name: name of attribute
+        :return:
+        &quot;&quot;&quot;
+        return self._get_deserialized_data()[name]</div>
+
+<div class="viewcode-block" id="SchemaModel.is_deserialized"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.is_deserialized">[docs]</a>    def is_deserialized(self, name: str) -&gt; bool:
+        &quot;&quot;&quot;
+        Check if a given key has already been deserialized.
+
+        .. versionadded:: 0.1.5a7
+            Method added
+
+        :param name: name of the attribute
+        :return: True if key has been deserialized.
+        &quot;&quot;&quot;
+        data = self._get_deserialized_data()
+        accessor = self.fields[name]
+        if name in data and data[name] is not accessor.ACCESSOR.HOLDER:
+            return True
+        return False</div>
+
+<div class="viewcode-block" id="SchemaModel.reset_field"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.reset_field">[docs]</a>    def reset_field(self, name: str):
+        &quot;&quot;&quot;
+        Reset the field descriptor to its placeholder value,
+        returning the behavior
+
+        .. versionadded:: 0.1.5a7
+            Method added
+
+        :param name: name of the attribute
+        :return: None
+        &quot;&quot;&quot;
+        del self._get_deserialized_data()[name]</div>
 
     @classmethod
     def _set_data(cls, data, calling_obj=None):

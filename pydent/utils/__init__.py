@@ -14,11 +14,10 @@ Submodules
     logger
 
 """
-
 import pprint as pprint_module
 
-from pydent.utils.async_requests import make_async
 from .loggable import Loggable
+from pydent.utils.async_requests import make_async
 
 printer = pprint_module.PrettyPrinter(indent=1)
 pprint = printer.pprint
@@ -26,7 +25,7 @@ pformat = printer.pformat
 
 
 def filter_list(objlist, **kwargs):
-    """Filters a list of objects based on attributes in kwargs"""
+    """Filters a list of objects based on attributes in kwargs."""
     intersection = []
     for obj in objlist:
         is_ok = True
@@ -43,13 +42,13 @@ def filter_list(objlist, **kwargs):
 
 
 def url_build(*parts):
-    """Join parts of a url into a string"""
+    """Join parts of a url into a string."""
     url = "/".join(p.strip("/") for p in parts)
     return url
 
 
 def empty_copy(obj):
-    """Return an empty copy of an object for copying purposes"""
+    """Return an empty copy of an object for copying purposes."""
 
     class Empty(obj.__class__):
         def __init__(self):

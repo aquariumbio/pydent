@@ -4,32 +4,33 @@ from pydent import models
 
 
 def test_return_none(session):
-    """Find should return None if not model found"""
+    """Find should return None if not model found."""
     s = session.Sample.find(23489759837458723497502987)
     assert s is None
 
 
 def test_where_returns_empty_array(session):
-    """Where queries should return an empty array if no models are found (not None)"""
+    """Where queries should return an empty array if no models are found (not
+    None)"""
     x = session.Operation.where({"id": 293847901823458971263465})
     assert x == []
 
 
 def test_first_default_params(session):
-    """First should return a length of 1 by default"""
+    """First should return a length of 1 by default."""
     x = session.SampleType.first()
     assert len(x) == 1
     assert x[0].id == 1
 
 
 def test_first_with_5(session):
-    """First should return a length of models equal to size passed in"""
+    """First should return a length of models equal to size passed in."""
     x = session.SampleType.first(5)
     assert len(x) == 5
 
 
 def test_last_default_params(session):
-    """Last should return a length of 1 by default"""
+    """Last should return a length of 1 by default."""
     x = session.SampleType.last()
     assert len(x) == 1
     assert x[0].id > 1
@@ -52,7 +53,8 @@ def test_first_and_last_with_default(session):
 
 
 def test_first_and_last_with_num(session):
-    """Calling first and last on interface should return the interface model"""
+    """Calling first and last on interface should return the interface
+    model."""
     first_models = session.SampleType.first(5)
     last_models = session.SampleType.last(6)
 
@@ -67,7 +69,7 @@ def test_first_and_last_with_num(session):
 
 
 def test_first_and_last_with_query(session):
-    """First and last should be able to filter by query parameters"""
+    """First and last should be able to filter by query parameters."""
     first_samples = session.Sample.first(2, dict(sample_type_id=1))
     last_samples = session.Sample.last(3, dict(sample_type_id=1))
 
@@ -78,7 +80,8 @@ def test_first_and_last_with_query(session):
 
 
 def test_first_and_last_with_diff_models(session):
-    """First and last with different interfaces should return different models"""
+    """First and last with different interfaces should return different
+    models."""
     first_sample_types = session.SampleType.first()
     first_samples = session.Sample.first()
     last_sample_types = session.SampleType.last()
@@ -118,7 +121,7 @@ def test_one_with_query(session):
 
 
 def test_one_returns_none(session):
-    """One returns None if it cannot find model with query"""
+    """One returns None if it cannot find model with query."""
     last = session.Sample.one(dict(sample_id=-10))
     assert last is None, "should be None"
 

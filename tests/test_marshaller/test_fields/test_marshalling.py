@@ -1,14 +1,19 @@
-import pytest
-
-from pydent.marshaller.base import add_schema, ModelRegistry
-from pydent.marshaller.fields import Field, Nested, Relationship, Callback, Alias
-
 from uuid import uuid4
 
+import pytest
 
-class TestDump(object):
+from pydent.marshaller.base import add_schema
+from pydent.marshaller.base import ModelRegistry
+from pydent.marshaller.fields import Alias
+from pydent.marshaller.fields import Callback
+from pydent.marshaller.fields import Field
+from pydent.marshaller.fields import Nested
+from pydent.marshaller.fields import Relationship
+
+
+class TestDump:
     def test_dump_empty_data(self, base):
-        """Dump should produce an empty dictionary"""
+        """Dump should produce an empty dictionary."""
 
         @add_schema
         class MyModel(base):
@@ -18,7 +23,7 @@ class TestDump(object):
         assert model.dump() == {}
 
     def test_dump_empty_data_with_non_tracked_attrs(self, base):
-        """Expect that non-tracked attributes are excluded from the dump"""
+        """Expect that non-tracked attributes are excluded from the dump."""
 
         @add_schema
         class MyModel(base):
@@ -29,7 +34,7 @@ class TestDump(object):
         assert model.dump() == {}
 
     def test_dump_loaded_data(self, base):
-        """Manually set data should appear in the dump"""
+        """Manually set data should appear in the dump."""
 
         @add_schema
         class MyModel(base):
@@ -39,7 +44,7 @@ class TestDump(object):
         assert model.dump() == {"id": 5, "name": "MyName"}
 
     def test_dump_loaded_data_and_overwrite(self, base):
-        """Manually set data can be overridden by setting attributes"""
+        """Manually set data can be overridden by setting attributes."""
 
         @add_schema
         class MyModel(base):
@@ -50,7 +55,7 @@ class TestDump(object):
         assert model.dump() == {"id": 6, "name": "MyName"}
 
     def test_dump_empty_field(self, base):
-        """Empty fields should return an empty dictionary"""
+        """Empty fields should return an empty dictionary."""
 
         @add_schema
         class MyModel(base):
@@ -104,8 +109,12 @@ class TestDump(object):
         print(model._get_data())
 
     def test_alias(self, base):
-        """Expect that alias fields refer to exactly the attribute set in the alias.
-        That means, the 'source' field should refer to the 'field' attribute."""
+        """Expect that alias fields refer to exactly the attribute set in the
+        alias.
+
+        That means, the 'source' field should refer to the 'field'
+        attribute.
+        """
 
         @add_schema
         class MyModel(base):
@@ -133,7 +142,8 @@ class TestDump(object):
         assert model.dump() == {"field": 7}
 
     def test_dump_marshalling_field(self, base):
-        """Expect the custom HTMLTag field to be properly serialized/deserialized."""
+        """Expect the custom HTMLTag field to be properly
+        serialized/deserialized."""
 
         class HTMLTag(Field):
             def serialize(self, caller, val):
@@ -152,8 +162,8 @@ class TestDump(object):
         assert model.dump() == {"h1": "<h1>This is a Heading 1 Title</h1>"}
 
     def test_always_dump(self, base):
-        """Expect that fields with 'always_dump' are, by default, dumped as empty
-        constructors event when they are empty"""
+        """Expect that fields with 'always_dump' are, by default, dumped as
+        empty constructors event when they are empty."""
 
         @add_schema
         class MyModel(base):
@@ -171,7 +181,7 @@ class TestDump(object):
         assert m.dump(ignore="field2") == {}
 
     def test_empty_list_field(self, base):
-        """Expect """
+        """Expect."""
 
         @add_schema
         class ModelWithList(base):
@@ -184,8 +194,8 @@ class TestDump(object):
         assert model.mylist == [5]
 
 
-class TestNested(object):
-    """Tests for nested serialization/deserialization"""
+class TestNested:
+    """Tests for nested serialization/deserialization."""
 
     @pytest.fixture(scope="function")
     def Company(self, base):
@@ -342,7 +352,7 @@ class TestNested(object):
         assert author_list.author.publisher.company.name == "LexCorp"
 
 
-class TestRelationship(object):
+class TestRelationship:
     @pytest.fixture(scope="function")
     def Company(self, base):
         @add_schema
