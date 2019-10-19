@@ -89,8 +89,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
                     )
                 )
                 continue
-            error_prefix = "Callback '{callback}' for relationship '{model}.{name}'"\
-            .format(
+            error_prefix = "Callback '{callback}' for relationship '{model}.{name}'".format(
                 callback=callback_func, model=model_class.__name__, name=rname
             )
             if not callable(callback_func) and not hasattr(model_class, callback_func):
@@ -120,7 +119,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
                         wrong_signature.append(
                             error_prefix
                             + " expects arguments {receive_args} but would receive "
-                              "arguments {sent_args}.".format(
+                            "arguments {sent_args}.".format(
                                 receive_args=make_signature_str(
                                     expected_args, expected_kwargs
                                 ),
@@ -138,7 +137,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
                                 wrong_signature.append(
                                     error_prefix
                                     + " does not recognize named key(s) {invalid_keys} "
-                                      "from signature {receive_args}.".format(
+                                    "from signature {receive_args}.".format(
                                         invalid_keys=", ".join(
                                             ['"{}"'.format(key) for key in invalid_keys]
                                         ),
