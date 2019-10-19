@@ -1,4 +1,9 @@
 """
+AqHTTP (:mod:`pydent.aqhttp`)
+=============================
+
+.. currentmodule:: pydent.aqhttp
+
 Request class for making raw http requests to Aquarium
 
 This module contains the AqHTTP class, which can make arbitrary post/put/get
@@ -26,7 +31,7 @@ from pydent.utils import url_build, Loggable
 
 class AqHTTP(object):
     """
-    Defines a session/connection to Aquarium.
+    Defines a Python to Aquarium server connection.
     Makes HTTP requests to Aquarium and returns JSON.
 
     This class should be obscured from Trident user so that users cannot make

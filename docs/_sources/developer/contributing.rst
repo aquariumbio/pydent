@@ -140,13 +140,21 @@ Then build the docs using:
 Manual release
 ~~~~~~~~~~~~~~
 
+.. versionadded::
+    *keats* package now governs the release script
+
 To release, make sure your tests are passing. To make a new release,
-run the `scripts/release.sh` script by calling:
+call *keats release*:
 
 ::
 
-    make release
+    poetry run keats release
 
 Which will call an interactive script to make a new release which will
 make your documents, format your code, optionally make a git commit, optionally
 push changes to remote, and finally publish to PyPI.
+
+.. warning::
+    There is a known `Lockfile` bug in *keats* that will not allow the version to bump.
+    To fix this, simply run `poetry version <optional version>` to bump the version.
+    Alternatively, just edit the `pyproject.toml` file.

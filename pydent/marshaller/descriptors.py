@@ -1,5 +1,5 @@
 """
-Descriptors
+Data descriptors.
 """
 
 from enum import Enum, auto

@@ -1,4 +1,9 @@
 """
+Base (:mod:`pydent.base`)
+=========================
+
+.. currentmodule:: pydent.base
+
 Aquarium model baseclass
 
 This module contains the base classes for Trident models.

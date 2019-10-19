@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.models.JobAssociation &#8212; pydent 0.1.5a6 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pydent.models.Plan" href="pydent.models.Plan.html" />
+    <link rel="prev" title="pydent.models.Job" href="pydent.models.Job.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a6</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../models.html#model-classes">Model Classes</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pydent.models.Job.html" title="Previous Chapter: pydent.models.Job"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pydent.models.Job</span>
+    </a>
+  </li>
+  <li>
+    <a href="pydent.models.Plan.html" title="Next Chapter: pydent.models.Plan"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pydent.models.Plan &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/generated/pydent.models.JobAssociation.rst"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="pydent-models-jobassociation">
+<h1>pydent.models.JobAssociation<a class="headerlink" href="#pydent-models-jobassociation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pydent.models.JobAssociation">
+<em class="property">class </em><code class="sig-prename descclassname">pydent.models.</code><code class="sig-name descname">JobAssociation</code><span class="sig-paren">(</span><em class="sig-param">**data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/job.html#JobAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.JobAssociation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<p>A JobAssociation model</p>
+<p>The model initializer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to add to the model</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pydent.models.JobAssociation.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">**data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The model initializer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to add to the model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.JobAssociation.__init__" title="pydent.models.JobAssociation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(**data)</p></td>
+<td><p>The model initializer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.add_data" title="pydent.models.JobAssociation.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(data)</p></td>
+<td><p>Initializes fake attributes that correspond to data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.anonymize" title="pydent.models.JobAssociation.anonymize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anonymize</span></code></a>()</p></td>
+<td><p>Resets the primary key of the model and assigns a new rid.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.append_to_many" title="pydent.models.JobAssociation.append_to_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_to_many</span></code></a>(name, model)</p></td>
+<td><p>Appends a model to the many relationship</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.connect_to_session" title="pydent.models.JobAssociation.connect_to_session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect_to_session</span></code></a>(session)</p></td>
+<td><p>Connect model instance to a session.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.copy" title="pydent.models.JobAssociation.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([keep])</p></td>
+<td><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless class is a metatype (e.g.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_interface</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.dump" title="pydent.models.JobAssociation.dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code></a>([only, include, ignore])</p></td>
+<td><p>Dump/serializes the model to a json-like dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.find" title="pydent.models.JobAssociation.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(session, model_id)</p></td>
+<td><p>Finds a model instance by its model_id</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.find_callback" title="pydent.models.JobAssociation.find_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_callback</span></code></a>(model_name, model_id)</p></td>
+<td><p>Finds a model using the model interface and model_id.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_deserialized</span></code>(name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_relationships</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_server_model_name</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tableized_name</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_deserialize</span></code>(name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.interface" title="pydent.models.JobAssociation.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(session)</p></td>
+<td><p>Creates a model interface from this class and a session</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.load" title="pydent.models.JobAssociation.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deserialize the data to a model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.load_from" title="pydent.models.JobAssociation.load_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from</span></code></a>(data[, owner])</p></td>
+<td><p>Create a new model instance from loaded attributes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.no_getter" title="pydent.models.JobAssociation.no_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_getter</span></code></a>(*_)</p></td>
+<td><p>Callback that always returns None</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">one</span></code>(session, query, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_callback</span></code>(model_name, *args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.refresh" title="pydent.models.JobAssociation.refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh</span></code></a>()</p></td>
+<td><p>Refresh this model from data from the server.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.reload" title="pydent.models.JobAssociation.reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code></a>(data)</p></td>
+<td><p>Reload model attributes from new data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.where" title="pydent.models.JobAssociation.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(session, params)</p></td>
+<td><p>Finds a list of models by some parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.where_callback" title="pydent.models.JobAssociation.where_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where_callback</span></code></a>(model_name, *args, **kwargs)</p></td>
+<td><p>Finds models using a model interface and a set of parameters.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_COPY_KEEP_UNANONYMOUS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">GLOBAL_KEY</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PRIMARY_KEY</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">SERVER_MODEL_NAME</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">counter</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fields</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JobAssociation.job</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JobAssociation.operation</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rid</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.JobAssociation.session" title="pydent.models.JobAssociation.session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code></a></p></td>
+<td><p>The connected session instance.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydent.models.JobAssociation._check_for_session">
+<code class="sig-name descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._check_for_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises error if model is not connected to a session</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation._flatten_deserialized_data">
+<em class="property">classmethod </em><code class="sig-name descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em class="sig-param">models</em>, <em class="sig-param">memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation._get_data">
+<code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the model’s data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.models.JobAssociation._model_schema">
+<code class="sig-name descname">_model_schema</code><a class="headerlink" href="#pydent.models.JobAssociation._model_schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.base.JobAssociationSchema</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation._primary_key">
+<em class="property">property </em><code class="sig-name descname">_primary_key</code><a class="headerlink" href="#pydent.models.JobAssociation._primary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation._rid_dict">
+<code class="sig-name descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation._rid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.add_data">
+<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.add_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes fake attributes that correspond to data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.anonymize">
+<code class="sig-name descname">anonymize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.anonymize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the primary key of the model and assigns a new rid.</p>
+<p>Metatypes cannot be annonymized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.append_to_many">
+<code class="sig-name descname">append_to_many</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">model</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.append_to_many" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends a model to the many relationship</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of the relationship or attribute</p></li>
+<li><p><strong>model</strong> (<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><em>ModelBase</em></a>) – model to append</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.connect_to_session">
+<code class="sig-name descname">connect_to_session</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.connect_to_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
+class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
+found in list of ‘keep’</p>
+<p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of the
+inventory used in the operations is maintained. These are the items that refer
+to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
+there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>copied model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.dump">
+<code class="sig-name descname">dump</code><span class="sig-paren">(</span><em class="sig-param">only=None</em>, <em class="sig-param">include=None</em>, <em class="sig-param">ignore=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump/serializes the model to a json-like dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>only</strong> (<em>basestring|list|tuple|dict</em>) – restricts dump/serialization to the provided keys</p></li>
+<li><p><strong>include</strong> (<em>basestring|list|tuple|dict</em>) – include any callback fields in the dump/serialization</p></li>
+<li><p><strong>ignore</strong> (<em>basestring|list|tuple|dict</em>) – ignores fields in the dump/serialization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the serialized data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.find">
+<em class="property">classmethod </em><code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">model_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a model instance by its model_id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.find_callback">
+<code class="sig-name descname">find_callback</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">model_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.find_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a model using the model interface and model_id. Used to find
+models in model relationships.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.interface">
+<em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a model interface from this class and a session</p>
+<p>This method can be overridden in model definitions for special cases.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.load">
+<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deserialize the data to a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to deserialize</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the deserialized model</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel">SchemaModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.load_from">
+<em class="property">classmethod </em><code class="sig-name descname">load_from</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.load_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new model instance from loaded attributes.</p>
+<p>‘obj’ should have a o</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.models.JobAssociation.model_schema">
+<code class="sig-name descname">model_schema</code><a class="headerlink" href="#pydent.models.JobAssociation.model_schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.base.JobAssociationSchema</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.no_getter">
+<code class="sig-name descname">no_getter</code><span class="sig-paren">(</span><em class="sig-param">*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.no_getter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback that always returns None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.refresh">
+<code class="sig-name descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh this model from data from the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.reload">
+<code class="sig-name descname">reload</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload model attributes from new data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to update model instance</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>model instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.session">
+<em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.JobAssociation.session" title="Permalink to this definition">¶</a></dt>
+<dd><p>The connected session instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.where">
+<em class="property">classmethod </em><code class="sig-name descname">where</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">params</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.where" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a list of models by some parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.JobAssociation.where_callback">
+<code class="sig-name descname">where_callback</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.JobAssociation.where_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds models using a model interface and a set of parameters.</p>
+<p>Used to find models in model relationships.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

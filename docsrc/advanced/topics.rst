@@ -1,3 +1,5 @@
+.. _advancedtopics:
+
 Advanced topics
 ===============
 
