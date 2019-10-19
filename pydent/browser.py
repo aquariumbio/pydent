@@ -1,5 +1,13 @@
 """
-Browsing class for searching and caching query results.
+Browser (:mod:`pydent.browser`)
+=================================
+
+.. versionadded:: 0.1
+    Browser class created
+
+.. currentmodule:: pydent.browser
+
+Browser class for searching and cacheing results.
 """
 
 import re

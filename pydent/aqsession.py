@@ -1,21 +1,94 @@
 """
-Session class for interacting with Trident and Aquarium
+Session (:mod:`pydent.aqsession`)
+=================================
 
-This module defines the AqSession class, which is the main entry point for
-accessing the request methods.
-Multiple session instances can be created using a user's Aquarium login
-information.
-From there, the session instance is used to make http requests
-(like finding models, updating plans, etc.)
+.. currentmodule:: pydent.aqsession
 
-AqSession creates SessionInterfaces which can make http requests to Aquarium
-but does not itself make the requests.
+Session class for interacting with Trident and Aquarium. To initialize
+a new session, you'll need your Aquarium login credentials and a url:
 
-Interfaces are accessed by:
+.. code-block:: python
 
-(1) session.<ModelName> - access the model interface
-(2) session.create - access the create interface
-(3) session.update - access the update interface
+    from pydent import AqSession
+    session = AqSession('joeshmoe', 'pass123', 'http://myaquariumurl.org`)
+
+.. note::
+    To login discretely with a hidden password, you may use
+    the :meth:`pydent.login <pydent.login>` method.
+
+After initializing a session, models are accessible from the Session:
+
+.. code-block:: python
+
+    sample = session.Sample.one()
+    last50 = session.Item.last(50)
+    first10 = session.SampleType.first(10)
+    mysamples = session.Sample.last(10, query={'user_id': 66})
+
+See the :ref:`Models <models>` documentation for more information on how to
+manipulate and query models.
+
+
+
+User Objects
+------------
+
+The AqSession and Browser are the main interaction object for querying the
+Aquarium server. The Browser class provides special methods for speeding
+up and caching results from the server, which is covered in
+:ref:`Advanced Topics <cache>`.
+
+.. currentmodule: pydent.aqsession
+
+.. autosummary::
+    :toctree: generated/
+
+    AqSession
+    Browser
+
+.. currentmodule: pydent.planner.planner
+
+The Planner allows users to create new experimental plans and upload them to
+the Aquarium server for experiment execution. For more information, see
+the :ref:`Planning <planning>` and :ref:`Advanced Topics <advancedtopics>` documents
+
+.. autosummary::
+    :toctree: generated/
+
+    Planner
+
+Non-User Objects
+----------------
+
+These modules provide utility support for Trident. These are not relevant for most
+users.
+
+.. currentmodule: pydent.aqsession
+
+.. autosummary::
+    :toctree: generated/
+
+    SessionABC
+    AqHTTP
+
+Interfaces
+^^^^^^^^^^
+
+.. currentmodule:: pydent.interfaces
+
+Interfaces govern how the session searches, loads, and dumps
+Aquarium models from the server.
+
+.. autosummary::
+    :toctree: generated/
+
+    BrowserInterface
+    CRUDInterface
+    QueryInterface
+    QueryInterfaceABC
+    SessionInterface
+    UtilityInterface
+
 """
 
 import inspect
@@ -46,9 +119,9 @@ class AqSession(SessionABC):
 
     .. code-block:: python
 
-    session1 = AqSession(username, password, aquairum_url)
-    session1.User.find(1)
-    # <User(id=1,...)>
+        session1 = AqSession(username, password, aquairum_url)
+        session1.User.find(1)
+        # <User(id=1,...)>
 
     """
 
@@ -67,8 +140,8 @@ class AqSession(SessionABC):
         :param name: (optional) name for this session
         :type name: str or None
         """
-        self.name = name
-        self._aqhttp = None
+        self.name = name  #: optional name of the session
+        self._aqhttp = None  #: requests interface
         if login is None and password is None and aquarium_url is None:
             if aqhttp is not None:
                 self._aqhttp = aqhttp
@@ -80,17 +153,19 @@ class AqSession(SessionABC):
             self._aqhttp = AqHTTP(login, password, aquarium_url)
         self._current_user = None
         self._interface_class = QueryInterface
-        self.initialize_interfaces()
+        self._initialize_interfaces()
         self._browser = None
         self._using_cache = False
         self.init_cache()
 
     @property
     def interface_class(self):
+        """Returns the session's interface class."""
         return self._interface_class
 
     @interface_class.setter
     def interface_class(self, c):
+        """Sets the session's interface class."""
         if not issubclass(c, QueryInterfaceABC):
             raise ValueError(
                 "Interface {} is not a subclass of {}".format(
@@ -99,16 +174,19 @@ class AqSession(SessionABC):
             )
         self._interface_class = c
 
-    def initialize_interfaces(self):
+    def _initialize_interfaces(self):
+        """Initializes the session's interfaces"""
         # initialize model interfaces
         for model_name in allmodels:
             self._register_interface(model_name)
 
     def open(self):
+        """Open Aquarium in a web browser window."""
         webbrowser.open(self._aqhttp.url)
 
     @property
     def session(self):
+        """Return self"""
         return self
 
     def set_verbose(self, verbose, tb_limit=None):
@@ -238,12 +316,12 @@ class AqSession(SessionABC):
             self.interface_class = BrowserInterface
             if self.browser is None:
                 self.init_cache()
-            self.initialize_interfaces()
+            self._initialize_interfaces()
             self._using_cache = True
         else:
             self._using_cache = False
             self.interface_class = QueryInterface
-            self.initialize_interfaces()
+            self._initialize_interfaces()
 
     def copy(self):
         instance = self.__class__(

@@ -11,6 +11,9 @@ from typing import Iterable, Tuple
 
 
 class PlannerLayout(object):
+    """Layout module for :class:`Planner <pydent.planner.Planner>`.
+    Positions :class:`Operations <pydent.models.Operation>` for the
+    Aquarium GUI"""
 
     TOP_RIGHT = (100, 100)
     BOX_DELTA_X = 170
@@ -28,6 +31,10 @@ class PlannerLayout(object):
     }
 
     def __init__(self, G=None):
+        """
+        Initializes a new planner layout.
+        :param G:
+        """
         if G is None:
             G = nx.DiGraph()
         self.G = G

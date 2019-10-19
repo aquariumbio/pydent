@@ -1,4 +1,9 @@
 """
+Exceptions (:mod:`pydent.exceptions`)
+=====================================
+
+.. currentmodule:: pydent.exceptions
+
 Trident exceptions
 """
 

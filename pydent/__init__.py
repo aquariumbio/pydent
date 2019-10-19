@@ -1,26 +1,4 @@
-"""
-
-.. module:: pydent
-
-Submodules
-==========
-
-.. autosummary::
-    :toctree: _autosummary
-
-    aqhttp
-    aqsession
-    base
-    exceptions
-    interfaces
-    models
-    relationships
-    browser
-    planner
-    marshaller
-    utils
-
-"""
+"""pydent"""
 
 # without nest_asyncio, Jupyter notebooks will crash if an async method is used
 import nest_asyncio

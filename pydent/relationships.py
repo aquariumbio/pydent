@@ -1,5 +1,15 @@
 """
-Nested model relationships for Aquarium models.
+Relationships (:mod:`pydent.relationships`)
+===========================================
+
+.. currentmodule:: pydent.relationships
+
+.. autosummary::
+    :toctree: generated/
+
+    BaseRelationship
+    BaseRelationshipAccessor
+    Function
 """
 
 import json

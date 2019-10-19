@@ -26,7 +26,7 @@ def test_session_with_browser(session):
     session = deepcopy(session)
     session.interface_class = BrowserInterface
     session.init_cache()
-    session.initialize_interfaces()
+    session._initialize_interfaces()
 
     s1 = session.Sample.find(4)
     st1 = s1.sample_type

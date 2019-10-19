@@ -1,18 +1,33 @@
-"""Aquarium experiment planner
+"""
+Planner (:mod:`pydent.planner`)
+===============================
 
-==========
-planner
-==========
+.. versionadded:: 0.1
+    Planning module created
 
-Submodules
-==========
+.. currentmodule:: pydent.planner
+
+The planner module allows users to plan and submit simple and complex scientific
+experiments and upload the plan to the Aquarium server for execution.
+For more information on how to plan experiments using Trident,
+see :ref:`Planning Docs <planning>` and the :ref:`Advanced Topics <advancedtopics>`.
+
+Classes
+-------
 
 .. autosummary::
-    :toctree: _autosummary
+    :toctree: generated/
 
-    planner
-    layout
+    Planner
+    PlannerLayout
 
+Exceptions
+----------
+
+.. autosummary::
+    :toctree: generated/
+
+    PlannerException
 """
 
 from pydent.planner.planner import Planner, PlannerException
