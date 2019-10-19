@@ -130,9 +130,14 @@ class AqSession(SessionABC):
         # <User(id=1,...)>
     """
 
-    def __init__(self, login: str, password: str,
-                 aquarium_url: str, name: str = None,
-                 aqhttp: str = None):
+    def __init__(
+        self,
+        login: str,
+        password: str,
+        aquarium_url: str,
+        name: str = None,
+        aqhttp: str = None,
+    ):
         """
         Initializes a new tridennt Session.
 
@@ -193,7 +198,7 @@ class AqSession(SessionABC):
         webbrowser.open(self._aqhttp.url)
 
     @property
-    def session(self) -> 'AqSession':
+    def session(self) -> "AqSession":
         """Return self."""
         return self
 
@@ -227,7 +232,7 @@ class AqSession(SessionABC):
         return self._aqhttp.login
 
     @property
-    def current_user(self) -> 'ModelBase':
+    def current_user(self) -> "ModelBase":
         """Returns the current User associated with this session.
 
         Returns None if no user is found (as in cases where the Aquarium
@@ -257,8 +262,9 @@ class AqSession(SessionABC):
         """Returns list of all models available."""
         return list(ModelRegistry.models.keys())
 
-    def model_interface(self, model_name: str,
-                        interface_class: SessionInterface = None) -> SessionInterface:
+    def model_interface(
+        self, model_name: str, interface_class: SessionInterface = None
+    ) -> SessionInterface:
         """Returns model interface by name."""
         if interface_class is None:
             interface_class = self.interface_class
@@ -292,8 +298,7 @@ class AqSession(SessionABC):
             print("Error: {}".format(e))
             print(
                 "The Aquarium server ({}) looks like its down. The function '{}' "
-                "raised a {} exception, but should not have."
-                .format(
+                "raised a {} exception, but should not have.".format(
                     self.url, ping_function_source, ReadTimeout
                 )
             )
@@ -346,9 +351,12 @@ class AqSession(SessionABC):
         return instance
 
     def with_cache(
-        self, using_requests: bool = None, using_models: bool = False,
-            timeout: int = None, verbose=None
-    ) -> 'AqSession':
+        self,
+        using_requests: bool = None,
+        using_models: bool = False,
+        timeout: int = None,
+        verbose=None,
+    ) -> "AqSession":
         return self(
             using_cache=True,
             using_models=using_models,
@@ -358,10 +366,12 @@ class AqSession(SessionABC):
         )
 
     def with_requests_off(
-        self, using_cache: bool = None,
-            using_models: bool = True,
-            timeout: int = None, verbose=None
-    ) -> 'AqSession':
+        self,
+        using_cache: bool = None,
+        using_models: bool = True,
+        timeout: int = None,
+        verbose=None,
+    ) -> "AqSession":
         return self(
             using_cache=using_cache,
             using_models=using_models,
@@ -386,7 +396,7 @@ class AqSession(SessionABC):
         timeout: int = None,
         using_models: bool = None,
         using_verbose: bool = None,
-    ) -> 'AqSession':
+    ) -> "AqSession":
         new_session = self.copy()
         new_session.parent_session = self
         if using_cache is not None:
@@ -401,7 +411,7 @@ class AqSession(SessionABC):
             new_session.set_verbose(using_verbose)
         return new_session
 
-    def __enter__(self) -> 'AqSession':
+    def __enter__(self) -> "AqSession":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

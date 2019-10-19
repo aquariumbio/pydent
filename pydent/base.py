@@ -87,7 +87,7 @@ class ModelBase(SchemaModel):
         self.add_data({"rid": self._rid, "id": data.get("id", None)})
 
     @classmethod
-    def _set_data(cls, data: dict, owner: 'ModelBase') -> 'ModelBase':
+    def _set_data(cls, data: dict, owner: "ModelBase") -> "ModelBase":
         if not hasattr(owner, "session"):
             raise NoSessionError(
                 "Cannot instantiate new model because its data parent"
@@ -128,7 +128,7 @@ class ModelBase(SchemaModel):
                 return pk
         return "r{}".format(self.rid)
 
-    def append_to_many(self, name: str, model: 'ModelBase') -> 'ModelBase':
+    def append_to_many(self, name: str, model: "ModelBase") -> "ModelBase":
         """Appends a model to the many relationship.
 
         :param name: name of the relationship or attribute
@@ -172,8 +172,9 @@ class ModelBase(SchemaModel):
         )
 
     @classmethod
-    def load_from(cls, data: dict, owner: 'ModelBase' = None) \
-            -> Union[List['ModelBase'], 'ModelBase']:
+    def load_from(
+        cls, data: dict, owner: "ModelBase" = None
+    ) -> Union[List["ModelBase"], "ModelBase"]:
         """Create a new model instance from loaded attributes.
 
         'obj' should have a o
@@ -190,7 +191,7 @@ class ModelBase(SchemaModel):
 
     # TODO: rename reload to something else, implement 'refresh' method and
     #       associated tests
-    def reload(self, data: dict) -> 'ModelBase':
+    def reload(self, data: dict) -> "ModelBase":
         """Reload model attributes from new data.
 
         :param data: data to update model instance
@@ -233,7 +234,7 @@ class ModelBase(SchemaModel):
         return self._session
 
     @session.setter
-    def session(self, new_session: 'AqSession'):
+    def session(self, new_session: "AqSession"):
         if new_session is not None and not issubclass(type(new_session), SessionABC):
             raise NoSessionError(
                 "Cannot instantiate new model because its data parent "
@@ -245,7 +246,7 @@ class ModelBase(SchemaModel):
             )
         self._session = new_session
 
-    def connect_to_session(self, session: 'AqSession'):
+    def connect_to_session(self, session: "AqSession"):
         """Connect model instance to a session.
 
         Does nothing if session already exists.
@@ -279,7 +280,7 @@ class ModelBase(SchemaModel):
         return self.interface(self.session)
 
     @classmethod
-    def interface(cls, session: 'AqSession') -> Union[QueryInterface, BrowserInterface]:
+    def interface(cls, session: "AqSession") -> Union[QueryInterface, BrowserInterface]:
         """Creates a model interface from this class and a session.
 
         This method can be overridden in model definitions for special
@@ -288,14 +289,15 @@ class ModelBase(SchemaModel):
         return session.model_interface(cls.__name__)
 
     @classmethod
-    def find(cls, session: 'AqSession', model_id: Union[int, str]) -> 'ModelBase':
+    def find(cls, session: "AqSession", model_id: Union[int, str]) -> "ModelBase":
         """Finds a model instance by its model_id."""
         interface = cls.interface(session)
         return interface.find(model_id)
 
     @classmethod
-    def where(cls, session: 'AqSession', params: Dict) \
-            -> Union[None, List['ModelBase']]:
+    def where(
+        cls, session: "AqSession", params: Dict
+    ) -> Union[None, List["ModelBase"]]:
         """Finds a list of models by some parameters."""
         if params is None:
             return None
@@ -303,18 +305,18 @@ class ModelBase(SchemaModel):
         return interface.where(params)
 
     @classmethod
-    def one(cls, session: 'AqSession', query: Dict, **kwargs) -> 'ModelBase':
+    def one(cls, session: "AqSession", query: Dict, **kwargs) -> "ModelBase":
         interface = cls.interface(session)
         query = dict(query)
         query.update(kwargs)
         return interface.one(query)
 
-    def one_callback(self, model_name: str, *args, **kwargs) -> 'ModelBase':
+    def one_callback(self, model_name: str, *args, **kwargs) -> "ModelBase":
         self._check_for_session()
         model = ModelRegistry.get_model(model_name)
         return model.one(self.session, *args, **kwargs)
 
-    def find_callback(self, model_name: str, model_id: Union[str, int]) -> 'ModelBase':
+    def find_callback(self, model_name: str, model_id: Union[str, int]) -> "ModelBase":
         """Finds a model using the model interface and model_id.
 
         Used to find models in model relationships.
@@ -330,8 +332,9 @@ class ModelBase(SchemaModel):
         )
         return model.find(self.session, model_id)
 
-    def where_callback(self, model_name: str, *args, **kwargs) \
-            -> Union[None, List['ModelBase']]:
+    def where_callback(
+        self, model_name: str, *args, **kwargs
+    ) -> Union[None, List["ModelBase"]]:
         """Finds models using a model interface and a set of parameters.
 
         Used to find models in model relationships.
@@ -401,7 +404,7 @@ class ModelBase(SchemaModel):
                 else:
                     setattr(self, relation.ref, None)
 
-    def copy(self, keep: bool = None) -> 'ModelBase':
+    def copy(self, keep: bool = None) -> "ModelBase":
         """Provides a deepcopy of the model, but annonymizes the primary and
         global keys unless class is a metatype (e.g. OperationType, SampleType,
         FieldType) or class name is found in list of 'keep'.
@@ -436,8 +439,7 @@ class ModelBase(SchemaModel):
         return copied
 
     @classmethod
-    def _flatten_deserialized_data(cls, models: List['ModelBase'], memo: dict) \
-            -> dict:
+    def _flatten_deserialized_data(cls, models: List["ModelBase"], memo: dict) -> dict:
         """Flattens all of the relationships found in the models, returning a
         rid: model dictionary."""
         if models is None:
@@ -466,7 +468,7 @@ class ModelBase(SchemaModel):
         self._flatten_deserialized_data([self], memo)
         return memo
 
-    def __copy__(self) -> 'ModelBase':
+    def __copy__(self) -> "ModelBase":
         return self.copy()
 
     #     return cp

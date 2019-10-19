@@ -78,9 +78,12 @@ class AqHTTP:
         """
         self._using_requests = False
 
-    def _format_response_info(self, response: requests.Response,
-                              include_text: bool = False,
-                              include_body: bool = True) -> str:
+    def _format_response_info(
+        self,
+        response: requests.Response,
+        include_text: bool = False,
+        include_body: bool = True,
+    ) -> str:
         if response is not None:
             if response.status_code >= 400:
                 include_text = True
@@ -180,8 +183,14 @@ class AqHTTP:
     def _serialize_request(url: str, method: str, body: dict) -> str:
         return json.dumps({"url": url, "method": method, "body": body}, sort_keys=True)
 
-    def request(self, method: str, path: str, timeout: int = None,
-                allow_none: bool = True, **kwargs) -> dict:
+    def request(
+        self,
+        method: str,
+        path: str,
+        timeout: int = None,
+        allow_none: bool = True,
+        **kwargs
+    ) -> dict:
         """Performs a http request.
 
         :param method: request method (e.g. 'put', 'post', 'get', etc.)
@@ -204,9 +213,7 @@ class AqHTTP:
         if not self._using_requests:
             raise ForbiddenRequestError(
                 "Attempted a request ({} {}) when requests have been turned OFF."
-                "\nDATA: {}".format(
-                    method.upper(), url, kwargs["json"]
-                )
+                "\nDATA: {}".format(method.upper(), url, kwargs["json"])
             )
 
         if timeout is None:
@@ -276,8 +283,14 @@ class AqHTTP:
                 "JSON data {} contains a null value.".format(json_data)
             )
 
-    def post(self, path: str, json_data: dict = None, timeout: int = None,
-             allow_none: bool = True, **kwargs) -> dict:
+    def post(
+        self,
+        path: str,
+        json_data: dict = None,
+        timeout: int = None,
+        allow_none: bool = True,
+        **kwargs
+    ) -> dict:
         """Make a post request to the session.
 
         :param path: url
@@ -304,8 +317,14 @@ class AqHTTP:
             **kwargs
         )
 
-    def put(self, path: str, json_data: dict = None, timeout: int = None,
-            allow_none: bool = True, **kwargs) -> dict:
+    def put(
+        self,
+        path: str,
+        json_data: dict = None,
+        timeout: int = None,
+        allow_none: bool = True,
+        **kwargs
+    ) -> dict:
         """Make a put request to the session.
 
         :param path: url
@@ -332,8 +351,9 @@ class AqHTTP:
             **kwargs
         )
 
-    def get(self, path: str, timeout: int = None, allow_none: bool = True, **kwargs) \
-            -> dict:
+    def get(
+        self, path: str, timeout: int = None, allow_none: bool = True, **kwargs
+    ) -> dict:
         """Make a get request to the session.
 
         :param path: url

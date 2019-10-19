@@ -49,10 +49,11 @@ class Field(FieldABC, object):
     ACCESSOR = MarshallingAccessor
 
     def __init__(
-        self, many: bool = None,
-            data_key: str = None,
-            allow_none: bool = None,
-            default: Any = Placeholders.DEFAULT
+        self,
+        many: bool = None,
+        data_key: str = None,
+        allow_none: bool = None,
+        default: Any = Placeholders.DEFAULT,
     ):
         """
         A standard field. Performs no functions on serialized and deserialized
@@ -145,8 +146,7 @@ class Field(FieldABC, object):
             )
 
     def __str__(self) -> str:
-        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>"\
-        .format(
+        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>".format(
             cls=self.__class__.__name__,
             key=self.data_key,
             many=self.many,
@@ -160,11 +160,14 @@ class Nested(Field):
     Represents a field that returns another nested instance.
     """
 
-    def __init__(self, nested: ModelRegistry,
-                 many: bool = None,
-                 data_key: str = None,
-                 allow_none: bool = None,
-                 lazy: bool = None):
+    def __init__(
+        self,
+        nested: ModelRegistry,
+        many: bool = None,
+        data_key: str = None,
+        allow_none: bool = None,
+        lazy: bool = None,
+    ):
         """
         Nested relationship initializer.
 
@@ -291,8 +294,9 @@ class Callback(Field):
             func=self.callback, args=make_signature_str(args, kwargs)
         )
 
-    def get_callback_args(self, owner: ModelRegistry, extra_args: dict = None) \
-            -> List[Any]:
+    def get_callback_args(
+        self, owner: ModelRegistry, extra_args: dict = None
+    ) -> List[Any]:
         """
         Processes the callback args.
         """
@@ -345,10 +349,13 @@ class Callback(Field):
             ) from e
         return kwargs
 
-    def fullfill(self, owner: ModelRegistry,
-                 cache: bool = None,
-                 extra_args: tuple = None,
-                 extra_kwargs: dict = None) -> Any:
+    def fullfill(
+        self,
+        owner: ModelRegistry,
+        cache: bool = None,
+        extra_args: tuple = None,
+        extra_kwargs: dict = None,
+    ) -> Any:
         """
         Calls the callback function using the owner object. A Callback.SELF arg
         value will be replaced to be equivalent to the owner instance model.

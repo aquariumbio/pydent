@@ -90,8 +90,9 @@ class BaseRelationshipAccessor(fields.RelationshipAccessor):
 
 class BaseRelationship(fields.Relationship):
     """
-    Base class for relationships. By default, if the value is None, attempt a callback. If that fails,
-    fallback to None. If successful, deserialize data to the nested model.
+    Base class for relationships. By default, if the value is None, attempt a callback.
+    If that fails, fallback to None. If successful, deserialize data to the nested
+    model.
     """
 
     QUERY_TYPE = None
@@ -152,13 +153,15 @@ class BaseRelationship(fields.Relationship):
         else:
             if not attr:
                 raise FieldValidationError(
-                    "'attr' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(
+                    "'attr' is None. Relationship '{}' needs an 'attr' and 'model' "
+                    "parameters".format(
                         self.__class__
                     )
                 )
             if not nested:
                 raise FieldValidationError(
-                    "'model' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(
+                    "'model' is None. Relationship '{}' needs an 'attr' and 'model' "
+                    "parameters".format(
                         self.__class__
                     )
                 )
@@ -210,8 +213,8 @@ class One(BaseRelationship):
     def __init__(
         self,
         nested,
-            ref=None,
-            attr=None,
+        ref=None,
+        attr=None,
         callback=None,
         callback_args=None,
         callback_kwargs=None,
@@ -285,6 +288,7 @@ class Many(BaseRelationship):
             **kwargs
         )
 
+
 class HasOne(One):
     def __init__(
         self, nested, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs
@@ -295,7 +299,8 @@ class HasOne(One):
 
         .. code-block:: python
 
-            model="SampleType", attr="id" # equiv. to 'lambda self: self.sample_type_id.'
+            # equiv. to 'lambda self: self.sample_type_id.'
+            model="SampleType", attr="id"
 
         :param nested: model name of the target model
         :type nested: basestring
@@ -412,7 +417,7 @@ class HasManyThrough(Many):
         callback_kwargs=None,
         **kwargs
     ):
-        ref, attr =self._get_ref_attr(nested=nested, attr=attr, ref=ref)
+        ref, attr = self._get_ref_attr(nested=nested, attr=attr, ref=ref)
         self.ref = ref
         self.attr = attr
 
@@ -476,7 +481,8 @@ class HasOneFromMany(One):
 
             @add_schema
             class Author(ModelBase):
-                fields=dict(books=HasMany("Book", "Author"))  # search for books using 'author_id'
+                # search for books using 'author_id'
+                fields=dict(books=HasMany("Book", "Author"))
 
         :type ref_model: str
         :param attr: Attribute name to use with reference model (default='id').

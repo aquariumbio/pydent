@@ -35,8 +35,7 @@ def condense_long_lists(d, max_list_len=20):
     return str(d)
 
 
-def pprint_data(data, width=80, depth=10, max_list_len=20, compact=True, indent=1
-                 ):
+def pprint_data(data, width=80, depth=10, max_list_len=20, compact=True, indent=1):
     return pprint.pformat(
         condense_long_lists(data, max_list_len=max_list_len),
         indent=indent,
@@ -75,7 +74,6 @@ def new_logger(name, level=logging.ERROR):
     else:
         handler = logger.handlers[0]
     return logger, handler
-
 
 
 class Loggable:

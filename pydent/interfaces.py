@@ -77,10 +77,14 @@ class CRUDInterface(SessionInterface):
     #     if not hasattr(model, 'id') or model.id is None:
     #         raise TridentRequestError("Model {} has no id.".format(model))
 
-    def _model_controller(self, method: str, table: str,
-                          model_id: Union[str, int, None], data: Union[None, dict],
-                          params=None)\
-            -> dict:
+    def _model_controller(
+        self,
+        method: str,
+        table: str,
+        model_id: Union[str, int, None],
+        data: Union[None, dict],
+        params=None,
+    ) -> dict:
         """Method for create, updating, and deleting models.
 
         :param method: Request method name (one of 'put', 'post', 'delete'
@@ -111,8 +115,12 @@ class CRUDInterface(SessionInterface):
         return self._model_controller("delete", table, model_id, None, params)
 
     def _json_controller(
-        self, method, model_name, model_data, record_methods: List[str] = None,
-            record_getters: List[str] = None
+        self,
+        method,
+        model_name,
+        model_data,
+        record_methods: List[str] = None,
+        record_getters: List[str] = None,
     ):
         """Method for create, updating, and deleting models using Aquariums
         JSON controller.
@@ -163,24 +171,33 @@ class CRUDInterface(SessionInterface):
         # return result
 
     def json_delete(
-        self, model_name, model_data, record_methods: List[str] = None,
-            record_getters: List[str] = None
+        self,
+        model_name,
+        model_data,
+        record_methods: List[str] = None,
+        record_getters: List[str] = None,
     ):
         return self._json_controller(
             "delete", model_name, model_data, record_methods, record_getters
         )
 
     def json_save(
-        self, model_name, model_data, record_methods: List[str] = None,
-            record_getters: List[str] = None
+        self,
+        model_name,
+        model_data,
+        record_methods: List[str] = None,
+        record_getters: List[str] = None,
     ) -> dict:
         return self._json_controller(
             "save", model_name, model_data, record_methods, record_getters
         )
 
     def json_post(
-        self, model_name, model_data, record_methods: List[str] = None,
-            record_getters: List[str] = None
+        self,
+        model_name,
+        model_data,
+        record_methods: List[str] = None,
+        record_getters: List[str] = None,
     ):
         return self._json_controller(
             None, model_name, model_data, record_methods, record_getters
@@ -537,8 +554,13 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
             method="all", args=None, rest=None, include=include, opts=options
         )
 
-    def where(self, criteria: dict, methods: List[str] = None,
-              include: List[str] = None, opts: dict = None):
+    def where(
+        self,
+        criteria: dict,
+        methods: List[str] = None,
+        include: List[str] = None,
+        opts: dict = None,
+    ):
         """Performs a query for models.
 
         :param criteria: query to find models
@@ -561,7 +583,9 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         )
 
     # TODO: Refactor 'last' so query is an argument, not part of kwargs
-    def last(self, num: int = None, query: dict=None, include=None, opts: dict = None):
+    def last(
+        self, num: int = None, query: dict = None, include=None, opts: dict = None
+    ):
         """Find the last added models.
 
         :param num: number of models to return. If not provided, assumes 1
@@ -583,8 +607,9 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         return self.where(query, include=include, opts=opts)
 
     # TODO: Refactor 'first' so query is an argument, not part of kwargs
-    def first(self, num: int = None, query: dict = None, include = None,
-              opts: dict = None):
+    def first(
+        self, num: int = None, query: dict = None, include=None, opts: dict = None
+    ):
         """Find the first added models.
 
         :param num: number of models to return. If not provided, assumes 1
@@ -607,10 +632,9 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         return self.where(query, include=include, opts=opts)
 
     # TODO: Refactor 'one' so query is an argument, not part of kwargs
-    def one(self, query: dict=None,
-            first: bool = False,
-            include=None,
-            opts: dict = None):
+    def one(
+        self, query: dict = None, first: bool = False, include=None, opts: dict = None
+    ):
         """Return one model. Returns the last model by default. Returns None if
         no model is found.
 
@@ -685,7 +709,7 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
             criteria, model_class=self.model_name, methods=methods, opts=opts
         )
 
-    def one(self, query: dict=None, first: bool = False, opts: bool = None):
+    def one(self, query: dict = None, first: bool = False, opts: bool = None):
         return self.browser.one(model_class=self.model_name, query=query, opts=opts)
 
     def first(self, num: int = 1, query: dict = None, opts: bool = None):
@@ -704,7 +728,7 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
         return self.browser.all(model_class=self.model_name, opts=opts)
 
     # TODO: load_from using new session
-    def load(self, post_response: dict) -> List['ModelBase']:
+    def load(self, post_response: dict) -> List["ModelBase"]:
         """Loads model instance(s) from data.
 
         Model instances will be of class defined by self.model. If data
