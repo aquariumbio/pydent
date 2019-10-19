@@ -15,6 +15,7 @@ Users should only access these methods indirectly through a ``Session`` or
 ``SessionInterface`` instance.
 """
 import json
+from typing import Dict
 
 import requests
 
@@ -24,8 +25,8 @@ from pydent.exceptions import TridentLoginError
 from pydent.exceptions import TridentRequestError
 from pydent.exceptions import TridentTimeoutError
 from pydent.utils import Loggable
-from pydent.utils import url_build, pprint_data
-from typing import Dict
+from pydent.utils import pprint_data
+from pydent.utils import url_build
 
 
 class AqHTTP:
@@ -59,8 +60,8 @@ class AqHTTP:
         self.num_requests = 0  #: number of requests counter
 
     def on(self):
-        """
-        Turn on requests. When requests are off, this causes
+        """Turn on requests. When requests are off, this causes.
+
         :class:`ForbiddenRequestError <pydent.exceptions.ForbiddenRequestError>`
         to be raised if a request is made.
 
@@ -69,8 +70,8 @@ class AqHTTP:
         self._using_requests = True
 
     def off(self):
-        """
-        Turn off requests. Will cause
+        """Turn off requests. Will cause.
+
         :class:`ForbiddenRequestError <pydent.exceptions.ForbiddenRequestError>`
         to be raised if a request is made.
 
@@ -124,8 +125,7 @@ class AqHTTP:
         return {"session": {"login": login, "password": password}}
 
     def _login(self, login: str, password: str):
-        """
-        Login to aquarium and saves header as a requests.Session()
+        """Login to aquarium and saves header as a requests.Session()
 
         :param login: Aquarium login
         :param password: Aquarium password
