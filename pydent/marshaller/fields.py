@@ -6,7 +6,7 @@ from enum import Enum
 from typing import Any
 from typing import List
 from typing import Type
-from typing import Union
+from typing import Union, Dict, Callable, Tuple
 
 from pydent.marshaller.descriptors import CallbackAccessor
 from pydent.marshaller.descriptors import MarshallingAccessor
@@ -141,13 +141,14 @@ class Field(FieldABC):
             )
 
     def __str__(self) -> str:
-        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>".format(
-            cls=self.__class__.__name__,
-            key=self.data_key,
-            many=self.many,
-            allow_none=self.allow_none,
-            objtype=self.objtype,
-        )
+        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>"\
+            .format(
+                cls=self.__class__.__name__,
+                key=self.data_key,
+                many=self.many,
+                allow_none=self.allow_none,
+                objtype=self.objtype,
+            )
 
 
 class Nested(Field):
@@ -219,14 +220,14 @@ class Callback(Field):
 
     def __init__(
         self,
-        callback,
-        callback_args=None,
-        callback_kwargs=None,
-        cache=False,
-        data_key=None,
-        many=None,
-        allow_none=None,
-        always_dump=False,
+        callback: Union[Callable, str],
+        callback_args: Tuple = None,
+        callback_kwargs: Dict[str, Any] = None,
+        cache: bool = False,
+        data_key: str = None,
+        many: bool = None,
+        allow_none: bool = None,
+        always_dump: bool = False,
     ):
         """A Callback field initializer.
 
@@ -400,14 +401,14 @@ class Relationship(Callback):
     def __init__(
         self,
         nested: ModelRegistry,
-        callback,
-        callback_args=None,
-        callback_kwargs=None,
-        cache=True,
-        data_key=None,
-        many=None,
-        allow_none=None,
-        always_dump=False,
+        callback: Union[Callable, str],
+        callback_args: Tuple = None,
+        callback_kwargs: Dict[str, Any] = None,
+        cache: bool = True,
+        data_key: str = None,
+        many: bool = None,
+        allow_none: bool = None,
+        always_dump: bool = False,
     ):
         """Relationship initializer.
 
@@ -431,12 +432,13 @@ class Relationship(Callback):
         serialization and deserialization procedures detailed in the corresponding
         field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializations and deserializations as a
+        :param many: whether to treat serializaations and deserializations as a
         per-item basis in a list
         :type many: bool
         :param data_key: the data_key, or attribute name, of this field. Calling this
         as an attribute to the registered
         nested should return this field's descriptor.
+
         """
 
         super().__init__(
@@ -463,7 +465,7 @@ class Relationship(Callback):
 class Alias(Callback):
     """A shallow alias to another field."""
 
-    def __init__(self, field_name):
+    def __init__(self, field_name: str):
         """Alias field initialize. Exposes a shallow alias to another field
         that can be accessed by a different attribute key.
 
@@ -480,5 +482,5 @@ class Alias(Callback):
         )
 
     @staticmethod
-    def alias_callback(m, field_name):
+    def alias_callback(m, field_name: str) -> Any:
         return getattr(m, field_name)
