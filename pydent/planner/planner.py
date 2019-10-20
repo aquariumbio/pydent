@@ -137,27 +137,31 @@ class Planner(AFTMatcher):
     """A user-interface for making experimental plans and layouts."""
 
     class ITEM_SELECTION_PREFERENCE:
+        """Item selection options"""
 
-        ANY = "ANY"  # pick the first item that matches the set field_value
-        RESTRICT = "RESTRICT"  # restrict to the currently set allowable_field_type
+        ANY = "ANY"  #: pick the first item that matches the set field_value
+        RESTRICT = "RESTRICT"  #: restrict to the currently set allowable_field_type
         PREFERRED = (
             "PREFERRED"
         )  # (default) pick the item that matches the currently set allowable_field_type, else
         # pick ANY item that matches the set field_value
         RESTRICT_TO_ONE = (
             "RESTRICT TO ONE"
-        )  # will not select item if its being used in another active operation
-        RESTRICT_TO_ONE_ON_SERVER = "RESTRICT TO ONE ON SERVER"
-        _DEFAULT = PREFERRED
-        _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]
+        )  #: will not select item if its being used in another active operation
+        RESTRICT_TO_ONE_ON_SERVER = (
+            "RESTRICT TO ONE ON SERVER"
+        )  #: will restrict to a single item across the plans on the server.
+        _DEFAULT = PREFERRED  #: default item selection preference
+        _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]  #: all choices
 
     class ITEM_ORDER_PREFERENCE:
+        """Item order options"""
 
-        FIRST = "FIRST"  # select first item
-        LAST = "LAST"  # select last item
-        RANDOM = "RANDOM"  # select random item
-        _DEFAULT = LAST
-        _CHOICES = [FIRST, LAST, RANDOM]
+        FIRST = "FIRST"  #: select first item
+        LAST = "LAST"  #: select last item
+        RANDOM = "RANDOM"  #: select random item
+        _DEFAULT = LAST  #: the default choice
+        _CHOICES = [FIRST, LAST, RANDOM]  #: all choices
 
     def __init__(self, session_or_plan=None, plan_id=None):
         if issubclass(type(session_or_plan), AqSession):

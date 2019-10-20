@@ -17,7 +17,6 @@ pydent.aqsession.AqSession
       ~AqSession.clear_cache
       ~AqSession.copy
       ~AqSession.init_cache
-      ~AqSession.initialize_interfaces
       ~AqSession.logged_in
       ~AqSession.model_interface
       ~AqSession.open

@@ -173,12 +173,12 @@ class AqSession(SessionABC):
         self.init_cache()
 
     @property
-    def interface_class(self) -> Type[SessionInterface]:
+    def interface_class(self) -> Type:
         """Returns the session's interface class."""
         return self._interface_class
 
     @interface_class.setter
-    def interface_class(self, c: Type[SessionInterface]):
+    def interface_class(self, c: Type):
         """Sets the session's interface class."""
         if not issubclass(c, QueryInterfaceABC):
             raise ValueError(

@@ -28,8 +28,8 @@ pydent.models.DataAssociation
       ~DataAssociation.get_relationships
       ~DataAssociation.get_server_model_name
       ~DataAssociation.get_tableized_name
-      ~DataAssociation.has_deserialize
       ~DataAssociation.interface
+      ~DataAssociation.is_deserialized
       ~DataAssociation.load
       ~DataAssociation.load_from
       ~DataAssociation.no_getter
@@ -38,6 +38,7 @@ pydent.models.DataAssociation
       ~DataAssociation.print
       ~DataAssociation.refresh
       ~DataAssociation.reload
+      ~DataAssociation.reset_field
       ~DataAssociation.where
       ~DataAssociation.where_callback
    

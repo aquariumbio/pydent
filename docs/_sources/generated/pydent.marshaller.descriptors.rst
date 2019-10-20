@@ -23,4 +23,10 @@ pydent.marshaller.descriptors
 
    
    
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      MarshallingAttributeAccessError
+   
    

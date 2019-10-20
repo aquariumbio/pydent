@@ -19,17 +19,12 @@ pydent.interfaces.QueryInterfaceABC
       ~QueryInterfaceABC.find_by_name
       ~QueryInterfaceABC.first
       ~QueryInterfaceABC.last
+      ~QueryInterfaceABC.model_name
       ~QueryInterfaceABC.one
       ~QueryInterfaceABC.where
    
    
 
    
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-   
-      ~QueryInterfaceABC.model_name
    
    

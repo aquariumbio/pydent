@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,26 +314,30 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.field_value</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to field values and sample properties.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to field values and sample properties.&quot;&quot;&quot;
 import json
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
-from pydent.models.crud_mixin import JSONSaveMixin, JSONDeleteMixin
+from pydent.models.crud_mixin import JSONDeleteMixin
+from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldMixin
-from pydent.models.inventory import Item, Collection, ObjectType
+from pydent.models.inventory import Collection
+from pydent.models.inventory import Item
+from pydent.models.inventory import ObjectType
 from pydent.models.sample import Sample
-from pydent.relationships import HasOne, Function, Raw, fields, HasMany
+from pydent.relationships import fields
+from pydent.relationships import Function
+from pydent.relationships import HasMany
+from pydent.relationships import HasOne
+from pydent.relationships import Raw
 from pydent.utils import filter_list
 
 
 <div class="viewcode-block" id="AllowableFieldType"><a class="viewcode-back" href="../../../models.html#pydent.models.AllowableFieldType">[docs]</a>@add_schema
 class AllowableFieldType(ModelBase):
-    &quot;&quot;&quot;A AllowableFieldType model&quot;&quot;&quot;
+    &quot;&quot;&quot;A AllowableFieldType model.&quot;&quot;&quot;
 
     fields = dict(
         field_type=HasOne(&quot;FieldType&quot;),
@@ -358,7 +361,7 @@ class AllowableFieldType(ModelBase):
 
 <div class="viewcode-block" id="FieldType"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldType">[docs]</a>@add_schema
 class FieldType(FieldMixin, ModelBase):
-    &quot;&quot;&quot;A FieldType model&quot;&quot;&quot;
+    &quot;&quot;&quot;A FieldType model.&quot;&quot;&quot;
 
     fields = dict(
         allowable_field_types=HasMany(&quot;AllowableFieldType&quot;, &quot;FieldType&quot;),
@@ -447,8 +450,8 @@ class FieldType(FieldMixin, ModelBase):
         return field_type
 
 <div class="viewcode-block" id="FieldType.initialize_field_value"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldType.initialize_field_value">[docs]</a>    def initialize_field_value(self, field_value=None, parent=None):
-        &quot;&quot;&quot;
-        Updates or initializes a new :class:`FieldValue` from this FieldType
+        &quot;&quot;&quot;Updates or initializes a new :class:`FieldValue` from this
+        FieldType.
 
         :param field_value: optional FieldValue to update with this FieldType
         :type field_value: FieldValue
@@ -470,8 +473,7 @@ class FieldType(FieldMixin, ModelBase):
 
 <div class="viewcode-block" id="FieldValue"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue">[docs]</a>@add_schema
 class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
-    &quot;&quot;&quot;
-    A FieldValue model. One of the more complex models.
+    &quot;&quot;&quot;A FieldValue model. One of the more complex models.
 
     Change Log:
     * 2019_06_03 FieldValues no longer have &#39;wires_as_source&#39; or &#39;wires_as_dest&#39; fields. Wires may only be accessed
@@ -610,7 +612,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
             print(&quot;{}{}.{}:{}&quot;.format(pre, self.role, self.name, self.value))
 
 <div class="viewcode-block" id="FieldValue.reset"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.reset">[docs]</a>    def reset(self):
-        &quot;&quot;&quot;Resets the inputs of the field_value&quot;&quot;&quot;
+        &quot;&quot;&quot;Resets the inputs of the field_value.&quot;&quot;&quot;
         self.value = None
         self.allowable_field_type_id = None
         self.allowable_field_type = None
@@ -758,7 +760,14 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         msg = &quot;No allowable field types found for {}:{}:{} using {}:{}.&quot;
         msg += &quot; Available afts: {}&quot;
         raise AquariumModelError(
-            msg.format(self.operation.operation_type.name, self.role, self.name, sid, oid, &quot;, &quot;.join(aft_list))
+            msg.format(
+                self.operation.operation_type.name,
+                self.role,
+                self.name,
+                sid,
+                oid,
+                &quot;, &quot;.join(aft_list),
+            )
         )
 
     def set_aft(self):
@@ -833,9 +842,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         self.sample = sample
 
 <div class="viewcode-block" id="FieldValue.set_field_type"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.set_field_type">[docs]</a>    def set_field_type(self, field_type):
-        &quot;&quot;&quot;
-        Sets properties from a field_type
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;Sets properties from a field_type.&quot;&quot;&quot;
 
         self.field_type = field_type
         self.field_type_id = field_type.id
@@ -861,7 +868,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         self.allowable_field_type_id = allowable_field_type.id
 
 <div class="viewcode-block" id="FieldValue.choose_item"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.choose_item">[docs]</a>    def choose_item(self, first=True):
-        &quot;&quot;&quot;Set the item associated with the field value&quot;&quot;&quot;
+        &quot;&quot;&quot;Set the item associated with the field value.&quot;&quot;&quot;
         index = 0
         if not first:
             index = -1
@@ -873,7 +880,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         return None</div>
 
 <div class="viewcode-block" id="FieldValue.compatible_items"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.compatible_items">[docs]</a>    def compatible_items(self):
-        &quot;&quot;&quot;Find items compatible with the field value&quot;&quot;&quot;
+        &quot;&quot;&quot;Find items compatible with the field value.&quot;&quot;&quot;
         return self.session.utils.compatible_items(
             self.sample.id, self.allowable_field_type.object_type_id
         )</div>

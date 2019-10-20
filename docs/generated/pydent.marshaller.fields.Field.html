@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -339,17 +338,25 @@
 deserialized data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>many</strong> (<em>bool</em>) – whether to treat serializations and deserializations as a per-item basis in a list</p></li>
-<li><p><strong>data_key</strong> – the data_key, or attribute name, of this field. Calling this as an attribute to the registered</p></li>
-</ul>
+<dd class="field-odd"><p><strong>many</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – whether to treat serializations and deserializations as a per-item</p>
 </dd>
 </dl>
-<p>nested should return this field’s descriptor.
+<p>basis in a list
+:type many: bool
+:type data_key: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]
+:param data_key: the data_key, or attribute name, of this field. Calling this as
+an attribute to the registered
+nested should return this field’s descriptor.
 :type data_key: basestring
-:param allow_none: whether to return None if None is received in deserialization or serializaiton methods
-:type allow_none: bool
-:raises AllowNoneFieldValidationError if None is received in serialize and deserialized methods
+:type allow_none: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]
+:param allow_none: whether to return None if None is received in deserialization</p>
+<blockquote>
+<div><p>or serializaiton methods</p>
+</div></blockquote>
+<dl class="field-list simple">
+</dl>
+<p>:raises AllowNoneFieldValidationError if None is received in serialize and
+deserialized methods
 and self.allow_none == False</p>
 <dl class="method">
 <dt id="pydent.marshaller.fields.Field.__init__">
@@ -358,17 +365,25 @@ and self.allow_none == False</p>
 deserialized data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>many</strong> (<em>bool</em>) – whether to treat serializations and deserializations as a per-item basis in a list</p></li>
-<li><p><strong>data_key</strong> – the data_key, or attribute name, of this field. Calling this as an attribute to the registered</p></li>
-</ul>
+<dd class="field-odd"><p><strong>many</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – whether to treat serializations and deserializations as a per-item</p>
 </dd>
 </dl>
-<p>nested should return this field’s descriptor.
+<p>basis in a list
+:type many: bool
+:type data_key: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]
+:param data_key: the data_key, or attribute name, of this field. Calling this as
+an attribute to the registered
+nested should return this field’s descriptor.
 :type data_key: basestring
-:param allow_none: whether to return None if None is received in deserialization or serializaiton methods
-:type allow_none: bool
-:raises AllowNoneFieldValidationError if None is received in serialize and deserialized methods
+:type allow_none: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]
+:param allow_none: whether to return None if None is received in deserialization</p>
+<blockquote>
+<div><p>or serializaiton methods</p>
+</div></blockquote>
+<dl class="field-list simple">
+</dl>
+<p>:raises AllowNoneFieldValidationError if None is received in serialize and
+deserialized methods
 and self.allow_none == False</p>
 </dd></dl>
 
@@ -383,13 +398,23 @@ and self.allow_none == False</p>
 <td><p>A standard field.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">deserialize</span></code>(owner, data)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Field.register" title="pydent.marshaller.fields.Field.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(name, objtype)</p></td>
 <td><p>Registers the field to a nested class.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">serialize</span></code>(owner, data)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[~T]]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_data_key</span></code>(key)</p></td>
 <td><p></p></td>
@@ -405,13 +430,13 @@ and self.allow_none == False</p>
 <dl class="method">
 <dt id="pydent.marshaller.fields.Field.register">
 <code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/fields.html#Field.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Field.register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Registers the field to a nested class. Instantiates the corresponding
-descriptor (i.e. accessor)</p>
+<dd><p>Registers the field to a nested class. Instantiates the
+corresponding descriptor (i.e. accessor)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
-<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[+CT_co]) – the nested class to register the field to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

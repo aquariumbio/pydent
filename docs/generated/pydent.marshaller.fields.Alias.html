@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -335,8 +334,8 @@
 <em class="property">class </em><code class="sig-prename descclassname">pydent.marshaller.fields.</code><code class="sig-name descname">Alias</code><span class="sig-paren">(</span><em class="sig-param">field_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/fields.html#Alias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Alias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback</span></code></a></p>
 <p>A shallow alias to another field.</p>
-<p>Alias field initialize. Exposes a shallow alias to another field that can be accessed by
-a different attribute key.</p>
+<p>Alias field initialize. Exposes a shallow alias to another field
+that can be accessed by a different attribute key.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>field_name</strong> (<em>basestring</em>) – the key of the other field</p>
@@ -345,8 +344,8 @@ a different attribute key.</p>
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">field_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/fields.html#Alias.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.fields.Alias.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias field initialize. Exposes a shallow alias to another field that can be accessed by
-a different attribute key.</p>
+<dd><p>Alias field initialize. Exposes a shallow alias to another field
+that can be accessed by a different attribute key.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>field_name</strong> (<em>basestring</em>) – the key of the other field</p>
@@ -365,7 +364,12 @@ a different attribute key.</p>
 <td><p>Alias field initialize.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">alias_callback</span></code>(m, field_name)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache_result</span></code>(owner, val)</p></td>
 <td><p></p></td>
@@ -377,16 +381,21 @@ a different attribute key.</p>
 <td><p>Calls the callback function using the owner object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Alias.get_callback_args" title="pydent.marshaller.fields.Alias.get_callback_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_callback_args</span></code></a>(owner[, extra_args])</p></td>
-<td><p>Processes the callback args</p></td>
+<td><p>Processes the callback args.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Alias.get_callback_kwargs" title="pydent.marshaller.fields.Alias.get_callback_kwargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_callback_kwargs</span></code></a>(owner, extra_kwargs)</p></td>
-<td><p>Processes the callback kwargs</p></td>
+<td><p>Processes the callback kwargs.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.fields.Alias.register" title="pydent.marshaller.fields.Alias.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(name, objtype)</p></td>
 <td><p>Registers the field to a nested class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">serialize</span></code>(owner, data)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[~T]]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_data_key</span></code>(key)</p></td>
 <td><p></p></td>
@@ -420,44 +429,58 @@ a different attribute key.</p>
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.fullfill">
 <code class="sig-name descname">fullfill</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">cache=None</em>, <em class="sig-param">extra_args=None</em>, <em class="sig-param">extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.fullfill" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls the callback function using the owner object. A
-Callback.SELF arg value will be replaced to be equivalent to the
-owner instance model.</p>
+<dd><p>Calls the callback function using the owner object. A Callback.SELF
+arg value will be replaced to be equivalent to the owner instance
+model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel"><em>SchemaModel</em></a>) – the owning object</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>function result</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>any</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>owner</strong> – the owning object</p></li>
+<li><p><strong>cache</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – if True, will cache the return in the deserialized data.</p></li>
+</ul>
 </dd>
 </dl>
+<p>On next call, the cached result will be returned.
+:type extra_args: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]
+:param extra_args: extra args to pass to the callback function
+:type extra_kwargs: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]
+:param extra_kwargs: extra kwargs to pass to the callback function
+:return: function result
+:rtype: any</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.get_callback_args">
 <code class="sig-name descname">get_callback_args</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Processes the callback args</p>
+<dd><p>Processes the callback args.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.get_callback_kwargs">
 <code class="sig-name descname">get_callback_kwargs</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Processes the callback kwargs</p>
+<dd><p>Processes the callback kwargs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.marshaller.fields.Alias.register">
 <code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.fields.Alias.register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Registers the field to a nested class. Instantiates the corresponding
-descriptor (i.e. accessor)</p>
+<dd><p>Registers the field to a nested class. Instantiates the
+corresponding descriptor (i.e. accessor)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
-<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[+CT_co]) – the nested class to register the field to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

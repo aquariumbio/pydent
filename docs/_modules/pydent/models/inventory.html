@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,22 +314,22 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.inventory</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to inventory, like Items, Collections, ObjectTypes, and PartAssociations
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to inventory, like Items, Collections, ObjectTypes, and
+PartAssociations.&quot;&quot;&quot;
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import SaveMixin
 from pydent.models.data_associations import DataAssociatorMixin
-from pydent.relationships import Raw, HasOne, HasMany, HasManyThrough, HasManyGeneric
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import Raw
 
 
 <div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../models.html#pydent.models.Item">[docs]</a>@add_schema
 class Item(DataAssociatorMixin, SaveMixin, ModelBase):
-    &quot;&quot;&quot;
-    A physical object in the lab, which a location and unique id.
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;A physical object in the lab, which a location and unique id.&quot;&quot;&quot;
 
     fields = dict(
         sample=HasOne(&quot;Sample&quot;),
@@ -360,8 +359,10 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         )</div>
 
 <div class="viewcode-block" id="Item.make"><a class="viewcode-back" href="../../../models.html#pydent.models.Item.make">[docs]</a>    def make(self):
-        &quot;&quot;&quot;Makes the Item on the Aquarium server. Requires
-        this Item to be connected to a session.&quot;&quot;&quot;
+        &quot;&quot;&quot;Makes the Item on the Aquarium server.
+
+        Requires this Item to be connected to a session.
+        &quot;&quot;&quot;
         result = self.session.utils.create_items([self])
         return self.reload(result[0][&quot;item&quot;])</div>
 
@@ -374,8 +375,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
     @property
     def containing_collection(self):
-        &quot;&quot;&quot;
-        Returns the collection of which this Item is a part.
+        &quot;&quot;&quot;Returns the collection of which this Item is a part.
 
         Returns the collection object if the Item is a part, otherwise
         returns None.
@@ -397,9 +397,8 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         return self.session.Collection.find(part_assoc.collection_id)
 
 <div class="viewcode-block" id="Item.as_collection"><a class="viewcode-back" href="../../../models.html#pydent.models.Item.as_collection">[docs]</a>    def as_collection(self):
-        &quot;&quot;&quot;
-        Returns the Collection object with the ID of this Item, which must be a
-        collection.
+        &quot;&quot;&quot;Returns the Collection object with the ID of this Item, which must
+        be a collection.
 
         Returns None if this Item is not a collection.
         &quot;&quot;&quot;
@@ -410,8 +409,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
     @property
     def is_collection(self):
-        &quot;&quot;&quot;
-        Returns True if this Item is a collection in a PartAssociation.
+        &quot;&quot;&quot;Returns True if this Item is a collection in a PartAssociation.
 
         Note: this is not how Aquarium does this test in the `collection?` method.
         &quot;&quot;&quot;
@@ -433,8 +431,8 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 class Collection(
     DataAssociatorMixin, ModelBase
 ):  # pylint: disable=too-few-public-methods
-    &quot;&quot;&quot;A Collection model, such as a 96-well plate, which contains many `parts`, each
-    of which can be associated with a different sample.&quot;&quot;&quot;
+    &quot;&quot;&quot;A Collection model, such as a 96-well plate, which contains many
+    `parts`, each of which can be associated with a different sample.&quot;&quot;&quot;
 
     fields = dict(
         object_type=HasOne(&quot;ObjectType&quot;),
@@ -448,8 +446,7 @@ class Collection(
 
     @property
     def matrix(self):
-        &quot;&quot;&quot;
-        Returns the matrix of Samples for this Collection.
+        &quot;&quot;&quot;Returns the matrix of Samples for this Collection.
 
         (Consider using samples of parts directly.)
         &quot;&quot;&quot;
@@ -467,9 +464,8 @@ class Collection(
         return sample_matrix
 
 <div class="viewcode-block" id="Collection.part"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection.part">[docs]</a>    def part(self, row, col):
-        &quot;&quot;&quot;
-        Returns the part Item at (row, col) of this Collection (zero-based).
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;Returns the part Item at (row, col) of this Collection (zero-
+        based).&quot;&quot;&quot;
         parts = [
             assoc.part
             for assoc in self.part_associations
@@ -482,9 +478,7 @@ class Collection(
         return next(iter(parts))</div>
 
 <div class="viewcode-block" id="Collection.as_item"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection.as_item">[docs]</a>    def as_item(self):
-        &quot;&quot;&quot;
-        Returns the Item object with the ID of this Collection
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;Returns the Item object with the ID of this Collection.&quot;&quot;&quot;
         return self.session.Item.find(self.id)</div>
 
     def create(self):
@@ -509,9 +503,10 @@ class ObjectType(SaveMixin, ModelBase):
 
 <div class="viewcode-block" id="PartAssociation"><a class="viewcode-back" href="../../../models.html#pydent.models.PartAssociation">[docs]</a>@add_schema
 class PartAssociation(ModelBase):
-    &quot;&quot;&quot;
-    Represents a PartAssociation linking a part to a collection. Collections contain
-    many `parts`, each of which can refer to a different sample.
+    &quot;&quot;&quot;Represents a PartAssociation linking a part to a collection.
+
+    Collections contain many `parts`, each of which can refer to a
+    different sample.
     &quot;&quot;&quot;
 
     fields = dict(part=HasOne(&quot;Item&quot;, ref=&quot;part_id&quot;), collection=HasOne(&quot;Collection&quot;))

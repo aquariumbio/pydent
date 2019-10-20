@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -334,7 +333,7 @@
 <dt id="pydent.interfaces.BrowserInterface">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.interfaces.</code><code class="sig-name descname">BrowserInterface</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">aqhttp</em>, <em class="sig-param">session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#BrowserInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.BrowserInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.interfaces.SessionInterface.html#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a>, <a class="reference internal" href="pydent.interfaces.QueryInterfaceABC.html#pydent.interfaces.QueryInterfaceABC" title="pydent.interfaces.QueryInterfaceABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.QueryInterfaceABC</span></code></a></p>
-<p>Initializer for SessionInterface</p>
+<p>Initializer for SessionInterface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -346,7 +345,7 @@
 <dl class="method">
 <dt id="pydent.interfaces.BrowserInterface.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">aqhttp</em>, <em class="sig-param">session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#BrowserInterface.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.BrowserInterface.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializer for SessionInterface</p>
+<dd><p>Initializer for SessionInterface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -365,12 +364,12 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.interfaces.BrowserInterface.__init__" title="pydent.interfaces.BrowserInterface.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(model_name, aqhttp, session)</p></td>
-<td><p>Initializer for SessionInterface</p></td>
+<td><p>Initializer for SessionInterface.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code>([opts])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code>(id)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code>(model_id)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_by_name</span></code>(name)</p></td>
@@ -435,9 +434,14 @@
 <dl class="method">
 <dt id="pydent.interfaces.BrowserInterface.load">
 <code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">post_response</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#BrowserInterface.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.BrowserInterface.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads model instance(s) from data.
-Model instances will be of class defined by self.model.
-If data is a list, will return a list of model instances.</p>
+<dd><p>Loads model instance(s) from data.</p>
+<p>Model instances will be of class defined by self.model. If data
+is a list, will return a list of model instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

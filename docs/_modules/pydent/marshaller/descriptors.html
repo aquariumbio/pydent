@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,31 +314,32 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.descriptors</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Data descriptors that provide special behaviors when attributes are accessed.
-&quot;&quot;&quot;
-
-from enum import Enum, auto
+<span></span>&quot;&quot;&quot;Data descriptors that provide special behaviors when attributes are
+accessed.&quot;&quot;&quot;
+from enum import auto
+from enum import Enum
 
 
 <div class="viewcode-block" id="MarshallingAttributeAccessError"><a class="viewcode-back" href="../../../generated/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.MarshallingAttributeAccessError">[docs]</a>class MarshallingAttributeAccessError(Exception):
-    &quot;&quot;&quot;Generic error that arises from while accessing an attribute&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;Generic error that arises from while accessing an attribute.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="Placeholders"><a class="viewcode-back" href="../../../generated/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.Placeholders">[docs]</a>class Placeholders(Enum):
+    &quot;&quot;&quot;Accessor placeholders.
+
+    Special behaviors can occur when the descriptor returns a value in
+    the Placeholder class. For example, when the `Placeholders.CALLBACK`
+    value is returned and cache=True, this indicates that the callback
+    function needs to be called and the result cached.
     &quot;&quot;&quot;
-    Accessor placeholders. Special behaviors can occur when the descriptor
-    returns a value in the Placeholder class. For example, when the
-    `Placeholders.CALLBACK` value is returned and cache=True, this indicates
-    that the callback function needs to be called and the result cached.
-    &quot;&quot;&quot;
-    DATA = auto()       #: DATA accessor holder.
-    MARSHALL = auto()   #: MARSHALL accessor holder.
-    CALLBACK = auto()   #: CALLBACK accessor holder.
-    DEFAULT = auto()    #: DEFAULT accessor holder.</div>
+
+    DATA = auto()  #: DATA accessor holder.
+    MARSHALL = auto()  #: MARSHALL accessor holder.
+    CALLBACK = auto()  #: CALLBACK accessor holder.
+    DEFAULT = auto()  #: DEFAULT accessor holder.</div>
 
 
-<div class="viewcode-block" id="DataAccessor"><a class="viewcode-back" href="../../../generated/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.DataAccessor">[docs]</a>class DataAccessor(object):
+<div class="viewcode-block" id="DataAccessor"><a class="viewcode-back" href="../../../generated/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.DataAccessor">[docs]</a>class DataAccessor:
     &quot;&quot;&quot;A descriptor that will dynamically access an instance&#39;s dictionary named
     by the `accessor` key. If the key is not in the dictionary or the value
     received from the dictionary is a :class:`Placeholders.DATA` enumerator, an
@@ -429,9 +429,7 @@ from enum import Enum, auto
 
 
 <div class="viewcode-block" id="MarshallingAccessor"><a class="viewcode-back" href="../../../generated/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.MarshallingAccessor">[docs]</a>class MarshallingAccessor(DataAccessor):
-    &quot;&quot;&quot;
-    A generic Marshalling descriptor.
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;A generic Marshalling descriptor.&quot;&quot;&quot;
 
     __slots__ = [&quot;name&quot;, &quot;accessor&quot;, &quot;field&quot;, &quot;deserialized_accessor&quot;, &quot;default&quot;]
     HOLDER = Placeholders.MARSHALL
@@ -525,9 +523,8 @@ from enum import Enum, auto
 
 
 <div class="viewcode-block" id="RelationshipAccessor"><a class="viewcode-back" href="../../../generated/pydent.marshaller.descriptors.html#pydent.marshaller.descriptors.RelationshipAccessor">[docs]</a>class RelationshipAccessor(CallbackAccessor):
-    &quot;&quot;&quot;
-    The descriptor for a :class:`pydent.marshaller.fields.Relationship` field
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;The descriptor for a :class:`pydent.marshaller.fields.Relationship`
+    field.&quot;&quot;&quot;
 
     def __set__(self, obj, val):
         deserialized = self.field.deserialize(obj, val)

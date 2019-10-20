@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,18 +314,17 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.user</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-User, group, and budget models.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;User, group, and budget models.&quot;&quot;&quot;
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import HasOne, HasMany, HasManyThrough
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
 
 
 <div class="viewcode-block" id="User"><a class="viewcode-back" href="../../../models.html#pydent.models.User">[docs]</a>@add_schema
 class User(ModelBase):
-    &quot;&quot;&quot;A User model&quot;&quot;&quot;
+    &quot;&quot;&quot;A User model.&quot;&quot;&quot;
 
     fields = dict(
         groups=HasMany(&quot;Group&quot;, &quot;User&quot;),
@@ -342,7 +340,7 @@ class User(ModelBase):
 
 <div class="viewcode-block" id="UserBudgetAssociation"><a class="viewcode-back" href="../../../models.html#pydent.models.UserBudgetAssociation">[docs]</a>@add_schema
 class UserBudgetAssociation(ModelBase):
-    &quot;&quot;&quot;An association model between a User and a Budget&quot;&quot;&quot;
+    &quot;&quot;&quot;An association model between a User and a Budget.&quot;&quot;&quot;
 
     fields = dict(budget=HasOne(&quot;Budget&quot;), user=HasOne(&quot;User&quot;))
 
@@ -357,26 +355,26 @@ class Membership(ModelBase):
 
 <div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../../models.html#pydent.models.Group">[docs]</a>@add_schema
 class Group(ModelBase):
-    &quot;&quot;&quot;A Group model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Group model.&quot;&quot;&quot;
 
     pass</div>
 
 
 <div class="viewcode-block" id="Account"><a class="viewcode-back" href="../../../models.html#pydent.models.Account">[docs]</a>@add_schema
 class Account(ModelBase):
-    &quot;&quot;&quot;An Account model&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;An Account model.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="Budget"><a class="viewcode-back" href="../../../models.html#pydent.models.Budget">[docs]</a>@add_schema
 class Budget(ModelBase):
-    &quot;&quot;&quot;A Budget model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Budget model.&quot;&quot;&quot;
 
     fields = dict(user_budget_associations=HasMany(&quot;UserBudgetAssociation&quot;, &quot;Budget&quot;))</div>
 
 
 <div class="viewcode-block" id="Invoice"><a class="viewcode-back" href="../../../models.html#pydent.models.Invoice">[docs]</a>@add_schema
 class Invoice(ModelBase):
-    &quot;&quot;&quot;A Invoice model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Invoice model.&quot;&quot;&quot;
 
     pass</div>
 </pre></div>

@@ -27,8 +27,8 @@ pydent.models.Account
       ~Account.get_relationships
       ~Account.get_server_model_name
       ~Account.get_tableized_name
-      ~Account.has_deserialize
       ~Account.interface
+      ~Account.is_deserialized
       ~Account.load
       ~Account.load_from
       ~Account.no_getter
@@ -37,6 +37,7 @@ pydent.models.Account
       ~Account.print
       ~Account.refresh
       ~Account.reload
+      ~Account.reset_field
       ~Account.where
       ~Account.where_callback
    

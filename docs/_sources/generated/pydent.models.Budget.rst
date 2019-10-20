@@ -27,8 +27,8 @@ pydent.models.Budget
       ~Budget.get_relationships
       ~Budget.get_server_model_name
       ~Budget.get_tableized_name
-      ~Budget.has_deserialize
       ~Budget.interface
+      ~Budget.is_deserialized
       ~Budget.load
       ~Budget.load_from
       ~Budget.no_getter
@@ -37,6 +37,7 @@ pydent.models.Budget
       ~Budget.print
       ~Budget.refresh
       ~Budget.reload
+      ~Budget.reset_field
       ~Budget.where
       ~Budget.where_callback
    

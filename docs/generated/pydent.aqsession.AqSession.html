@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -334,13 +333,14 @@
 <dt id="pydent.aqsession.AqSession">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.aqsession.</code><code class="sig-name descname">AqSession</code><span class="sig-paren">(</span><em class="sig-param">login</em>, <em class="sig-param">password</em>, <em class="sig-param">aquarium_url</em>, <em class="sig-param">name=None</em>, <em class="sig-param">aqhttp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.sessionabc.SessionABC</span></code></p>
-<p>Holds an AqHTTP with login information.
-Creates SessionInterfaces for models.</p>
+<p>Holds an AqHTTP with login information. Creates SessionInterfaces for
+models.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session1</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">aquairum_url</span><span class="p">)</span>
 <span class="n">session1</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># &lt;User(id=1,...)&gt;</span>
 </pre></div>
 </div>
+<p>Initializes a new tridennt Session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -357,7 +357,8 @@ authentication for the Aquarium API</p></li>
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">login</em>, <em class="sig-param">password</em>, <em class="sig-param">aquarium_url</em>, <em class="sig-param">name=None</em>, <em class="sig-param">aqhttp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Initializes a new tridennt Session.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>login</strong> (<em>str</em>) – the Aquarium login for the user</p></li>
@@ -380,12 +381,7 @@ authentication for the Aquarium API</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.__init__" title="pydent.aqsession.AqSession.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(login, password, aquarium_url[, …])</p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">param login</dt>
-<dd class="field-odd"><p>the Aquarium login for the user</p>
-</dd>
-</dl>
-</p></td>
+<td><p>Initializes a new tridennt Session.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_cache</span></code>()</p></td>
 <td><p></p></td>
@@ -396,32 +392,39 @@ authentication for the Aquarium API</p></li>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_cache</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">AqSession.initialize_interfaces</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.logged_in" title="pydent.aqsession.AqSession.logged_in"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logged_in</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.logged_in" title="pydent.aqsession.AqSession.logged_in"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logged_in</span></code></a>()</p></td>
 <td><p>Returns whether the user is logged in.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.model_interface" title="pydent.aqsession.AqSession.model_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_interface</span></code></a>(model_name[, interface_class])</p></td>
-<td><p>Returns model interface by name</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.model_interface" title="pydent.aqsession.AqSession.model_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_interface</span></code></a>(model_name[, interface_class])</p></td>
+<td><p>Returns model interface by name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.open" title="pydent.aqsession.AqSession.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.open" title="pydent.aqsession.AqSession.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a>()</p></td>
 <td><p>Open Aquarium in a web browser window.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.ping" title="pydent.aqsession.AqSession.ping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ping</span></code></a>([num])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.ping" title="pydent.aqsession.AqSession.ping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ping</span></code></a>([num])</p></td>
 <td><p>Performs a number of simple requests (pings) to estimate the speed of the server.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.set_timeout" title="pydent.aqsession.AqSession.set_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_timeout</span></code></a>(timeout_in_seconds)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.set_timeout" title="pydent.aqsession.AqSession.set_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_timeout</span></code></a>(timeout_in_seconds)</p></td>
 <td><p>Sets the request timeout.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_verbose</span></code>(verbose[, tb_limit])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_verbose</span></code>(verbose[, tb_limit])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_cache</span></code>([using_requests, using_models, …])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_cache</span></code>([using_requests, using_models, …])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a></p>
+</dd>
+</dl>
+</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_requests_off</span></code>([using_cache, …])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_requests_off</span></code>([using_cache, …])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 </tbody>
 </table>
@@ -523,25 +526,35 @@ authentication for the Aquarium API</p></li>
 <td><p>Returns the session’s interface class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.login" title="pydent.aqsession.AqSession.login"><code class="xref py py-obj docutils literal notranslate"><span class="pre">login</span></code></a></p></td>
-<td><p>Logs into aquarium, generating the necessary headers to perform requests to Aquarium</p></td>
+<td><p>Logs into aquarium, generating the necessary headers to perform requests to Aquarium.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.models" title="pydent.aqsession.AqSession.models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">models</span></code></a></p></td>
-<td><p>Returns list of all models available</p></td>
+<td><p>Returns list of all models available.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.session" title="pydent.aqsession.AqSession.session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code></a></p></td>
-<td><p>Return self</p></td>
+<td><p>Return self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.url" title="pydent.aqsession.AqSession.url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">url</span></code></a></p></td>
-<td><p>Returns the aquarium_url for this session</p></td>
+<td><p>Returns the aquarium_url for this session.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">using_cache</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">using_requests</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.utils" title="pydent.aqsession.AqSession.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils</span></code></a></p></td>
-<td><p>Instantiates a utility interface</p></td>
+<td><p>Instantiates a utility interface.</p></td>
 </tr>
 </tbody>
 </table>
@@ -554,13 +567,13 @@ authentication for the Aquarium API</p></li>
 <dl class="method">
 <dt id="pydent.aqsession.AqSession._initialize_interfaces">
 <code class="sig-name descname">_initialize_interfaces</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession._initialize_interfaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession._initialize_interfaces" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializes the session’s interfaces</p>
+<dd><p>Initializes the session’s interfaces.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqSession._log_to_aqhttp">
 <code class="sig-name descname">_log_to_aqhttp</code><span class="sig-paren">(</span><em class="sig-param">msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession._log_to_aqhttp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession._log_to_aqhttp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sends a log message to the aqhttp’s logger</p>
+<dd><p>Sends a log message to the aqhttp’s logger.</p>
 </dd></dl>
 
 <dl class="method">
@@ -572,23 +585,33 @@ authentication for the Aquarium API</p></li>
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.current_user">
 <em class="property">property </em><code class="sig-name descname">current_user</code><a class="headerlink" href="#pydent.aqsession.AqSession.current_user" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the current User associated with this session. Returns None
-if no user is found (as in cases where the Aquarium connection is down).</p>
+<dd><p>Returns the current User associated with this session.</p>
+<p>Returns None if no user is found (as in cases where the Aquarium
+connection is down).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.interface_class">
 <em class="property">property </em><code class="sig-name descname">interface_class</code><a class="headerlink" href="#pydent.aqsession.AqSession.interface_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the session’s interface class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[+CT_co]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.logged_in">
 <code class="sig-name descname">logged_in</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.logged_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.logged_in" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns whether the user is logged in. If the session
-is able to return the User model instance using the
-session’s login credentials, the user is considered
-to be logged in.</p>
+<dd><p>Returns whether the user is logged in. If the session is able to
+return the User model instance using the session’s login credentials,
+the user is considered to be logged in.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>whether user is currently logged in</p>
@@ -602,20 +625,35 @@ to be logged in.</p>
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.login">
 <em class="property">property </em><code class="sig-name descname">login</code><a class="headerlink" href="#pydent.aqsession.AqSession.login" title="Permalink to this definition">¶</a></dt>
-<dd><p>Logs into aquarium, generating the necessary headers to perform requests
-to Aquarium</p>
+<dd><p>Logs into aquarium, generating the necessary headers to perform
+requests to Aquarium.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.model_interface">
 <code class="sig-name descname">model_interface</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">interface_class=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.model_interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.model_interface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns model interface by name</p>
+<dd><p>Returns model interface by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.interfaces.SessionInterface.html#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionInterface</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.models">
 <em class="property">property </em><code class="sig-name descname">models</code><a class="headerlink" href="#pydent.aqsession.AqSession.models" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns list of all models available</p>
+<dd><p>Returns list of all models available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -633,14 +671,25 @@ to Aquarium</p>
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.ping">
 <code class="sig-name descname">ping</code><span class="sig-paren">(</span><em class="sig-param">num=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.ping" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs a number of simple requests (pings) to estimate the speed of the server.
-Displays a message about the average time each ping took.</p>
+<dd><p>Performs a number of simple requests (pings) to estimate the speed
+of the server.</p>
+<p>Displays a message about the average time each ping took.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.aqsession.AqSession.session" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return self</p>
+<dd><p>Return self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -652,13 +701,13 @@ Displays a message about the average time each ping took.</p>
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pydent.aqsession.AqSession.url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the aquarium_url for this session</p>
+<dd><p>Returns the aquarium_url for this session.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.utils">
 <em class="property">property </em><code class="sig-name descname">utils</code><a class="headerlink" href="#pydent.aqsession.AqSession.utils" title="Permalink to this definition">¶</a></dt>
-<dd><p>Instantiates a utility interface</p>
+<dd><p>Instantiates a utility interface.</p>
 </dd></dl>
 
 </dd></dl>

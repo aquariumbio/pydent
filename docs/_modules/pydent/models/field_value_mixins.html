@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,10 +314,8 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.field_value_mixins</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Mixins for FieldValues and those objects using FieldValues and FieldTypes.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Mixins for FieldValues and those objects using FieldValues and
+FieldTypes.&quot;&quot;&quot;
 from collections.abc import Sequence
 from itertools import zip_longest
 
@@ -327,13 +324,11 @@ from pydent.utils import filter_list
 
 
 <div class="viewcode-block" id="FieldMixin"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldMixin.html#pydent.models.FieldMixin">[docs]</a>class FieldMixin:
-    &quot;&quot;&quot;
-    Mixin for finding FieldType and FieldValue relationships
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;Mixin for finding FieldType and FieldValue relationships.&quot;&quot;&quot;
 
 <div class="viewcode-block" id="FieldMixin.find_field_parent"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldMixin.html#pydent.models.FieldMixin.find_field_parent">[docs]</a>    def find_field_parent(self, model_name, model_id):
-        &quot;&quot;&quot;
-        Callback for finding operation_type or sample_type.
+        &quot;&quot;&quot;Callback for finding operation_type or sample_type.
+
         If parent_class does not match the expected nested model name
         (OperationType or SampleType), callback will return None
         &quot;&quot;&quot;
@@ -344,13 +339,14 @@ from pydent.utils import filter_list
             return fxn(model_name, model_id)</div></div>
 
 
-<div class="viewcode-block" id="FieldTypeInterface"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html#pydent.models.FieldTypeInterface">[docs]</a>class FieldTypeInterface(object):
+<div class="viewcode-block" id="FieldTypeInterface"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html#pydent.models.FieldTypeInterface">[docs]</a>class FieldTypeInterface:
     &quot;&quot;&quot;An interface for things that have field types (i.e.
-    :class:`pydent.models.OperationType` and :class:`pydent.models.SampleType`).&quot;&quot;&quot;
+
+    :class:`pydent.models.OperationType` and :class:`pydent.models.SampleType`).
+    &quot;&quot;&quot;
 
 <div class="viewcode-block" id="FieldTypeInterface.field_type"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html#pydent.models.FieldTypeInterface.field_type">[docs]</a>    def field_type(self, name, role):
-        &quot;&quot;&quot;
-        Returns a :class:`pydent.models.FieldType` by its name and role.
+        &quot;&quot;&quot;Returns a :class:`pydent.models.FieldType` by its name and role.
 
         :param name: its name
         :type name: basestring
@@ -365,8 +361,9 @@ from pydent.utils import filter_list
                 return fts[0]</div></div>
 
 
-<div class="viewcode-block" id="FieldValueInterface"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface">[docs]</a>class FieldValueInterface(object):
-    &quot;&quot;&quot;A common interface for things (i.e. Operations and Samples) that have FieldValues and FieldTypes&quot;&quot;&quot;
+<div class="viewcode-block" id="FieldValueInterface"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface">[docs]</a>class FieldValueInterface:
+    &quot;&quot;&quot;A common interface for things (i.e. Operations and Samples) that have
+    FieldValues and FieldTypes.&quot;&quot;&quot;
 
 <div class="viewcode-block" id="FieldValueInterface.new_field_value_from_field_type"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.new_field_value_from_field_type">[docs]</a>    def new_field_value_from_field_type(self, field_type, values_dict=None):
         &quot;&quot;&quot;
@@ -435,11 +432,13 @@ from pydent.utils import filter_list
         return fv</div>
 
 <div class="viewcode-block" id="FieldValueInterface.safe_get_field_type"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.safe_get_field_type">[docs]</a>    def safe_get_field_type(self, fv):
-        &quot;&quot;&quot;
-        Safely returns the field value&#39;s :class:`pydent.models.FieldType`
-        from the model. If the field value has no reference to the field type,
-        its metatype (e.g. :class:`pydent.models.SampleType` or :class:`pydent.models.OperationType`)
-        is used to recover the field type.
+        &quot;&quot;&quot;Safely returns the field value&#39;s :class:`pydent.models.FieldType`
+        from the model.
+
+        If the field value has no reference to the field type, its
+        metatype (e.g. :class:`pydent.models.SampleType` or
+        :class:`pydent.models.OperationType`) is used to recover the
+        field type.
         &quot;&quot;&quot;
 
         if fv.field_type_id is None:
@@ -452,10 +451,11 @@ from pydent.utils import filter_list
         return fv.field_type</div>
 
 <div class="viewcode-block" id="FieldValueInterface.get_metatype"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_metatype">[docs]</a>    def get_metatype(self):
-        &quot;&quot;&quot;
-        Returns the instance&#39;s metatype (e.g. :class:`pydent.models.SampleType`
-        or :class:`pydent.models.OperationType`). The metatype class name is stored
-        as `METATYPE` in the class definition.
+        &quot;&quot;&quot;Returns the instance&#39;s metatype (e.g.
+
+        :class:`pydent.models.SampleType` or
+        :class:`pydent.models.OperationType`). The metatype class name is
+        stored as `METATYPE` in the class definition.
 
         :return: the instances metatype (e.g. :class:`pydent.models.SampleType`
         or :class:`pydent.models.OperationType`)
@@ -467,8 +467,7 @@ from pydent.utils import filter_list
         return metatype</div>
 
 <div class="viewcode-block" id="FieldValueInterface.get_field_value"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_field_value">[docs]</a>    def get_field_value(self, name, role=None):
-        &quot;&quot;&quot;
-        Returns a :class:`pydent.models.FieldValue` by its name and role.
+        &quot;&quot;&quot;Returns a :class:`pydent.models.FieldValue` by its name and role.
 
         :param name: its name
         :type name: basestring
@@ -483,8 +482,8 @@ from pydent.utils import filter_list
             return fv_array[0]</div>
 
 <div class="viewcode-block" id="FieldValueInterface.get_field_value_array"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_field_value_array">[docs]</a>    def get_field_value_array(self, name, role=None):
-        &quot;&quot;&quot;
-        Returns a list of :class:`pydent.models.FieldValue` by their name and role.
+        &quot;&quot;&quot;Returns a list of :class:`pydent.models.FieldValue` by their name
+        and role.
 
         :param name: its name
         :type name: basestring
@@ -505,9 +504,8 @@ from pydent.utils import filter_list
         return fvs</div>
 
 <div class="viewcode-block" id="FieldValueInterface.get_field_types"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_field_types">[docs]</a>    def get_field_types(self, name=None, role=None):
-        &quot;&quot;&quot;
-        Returns a list of :class:`pydent.models.FieldType` by their name and role
-        from the instance&#39;s metaclass.
+        &quot;&quot;&quot;Returns a list of :class:`pydent.models.FieldType` by their name and
+        role from the instance&#39;s metaclass.
 
         :param name: its name
         :type name: basestring
@@ -525,9 +523,8 @@ from pydent.utils import filter_list
         return fts</div>
 
 <div class="viewcode-block" id="FieldValueInterface.get_field_type"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_field_type">[docs]</a>    def get_field_type(self, name, role):
-        &quot;&quot;&quot;
-        Returns a :class:`pydent.models.FieldType` by its name and role
-        from the instance&#39;s metaclass.
+        &quot;&quot;&quot;Returns a :class:`pydent.models.FieldType` by its name and role from
+        the instance&#39;s metaclass.
 
         :param name: its name
         :type name: basestring
@@ -623,8 +620,7 @@ from pydent.utils import filter_list
         return self</div>
 
 <div class="viewcode-block" id="FieldValueInterface.get_routing"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_routing">[docs]</a>    def get_routing(self):
-        &quot;&quot;&quot;
-        Returns the routing dictionary for this instance.
+        &quot;&quot;&quot;Returns the routing dictionary for this instance.
 
         :return: routing dictionary
         :rtype: dict

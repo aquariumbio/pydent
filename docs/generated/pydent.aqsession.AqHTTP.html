@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -334,13 +333,13 @@
 <dt id="pydent.aqsession.AqHTTP">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.aqsession.</code><code class="sig-name descname">AqHTTP</code><span class="sig-paren">(</span><em class="sig-param">login</em>, <em class="sig-param">password</em>, <em class="sig-param">aquarium_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Defines a Python to Aquarium server connection.
-Makes HTTP requests to Aquarium and returns JSON.</p>
-<p>This class should be obscured from Trident user so that users cannot make
-arbitrary requests to an Aquarium server and get sensitive information
-(e.g. User json that is returned contains api_key, password_digest, etc.)
-or make damaging posts.
-Instead, a SessionInterface should be the object that makes these requests.</p>
+<p>Defines a Python to Aquarium server connection. Makes HTTP requests to
+Aquarium and returns JSON.</p>
+<p>This class should be obscured from Trident user so that users cannot
+make arbitrary requests to an Aquarium server and get sensitive
+information (e.g. User json that is returned contains api_key,
+password_digest, etc.) or make damaging posts. Instead, a
+SessionInterface should be the object that makes these requests.</p>
 <p>Initializes an aquarium session with login, password, and server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -375,25 +374,35 @@ Instead, a SessionInterface should be the object that makes these requests.</p>
 <td><p>Initializes an aquarium session with login, password, and server.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_session_json</span></code>(login, password)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[~KT, ~VT]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code>(path[, timeout])</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqHTTP.get" title="pydent.aqsession.AqHTTP.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(path[, timeout, allow_none])</p></td>
-<td><p>Make a get request to the session</p></td>
+<td><p>Make a get request to the session.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">off</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqHTTP.off" title="pydent.aqsession.AqHTTP.off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">off</span></code></a>()</p></td>
+<td><p>Turn off requests.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqHTTP.on" title="pydent.aqsession.AqHTTP.on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on</span></code></a>()</p></td>
+<td><p>Turn on requests.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqHTTP.post" title="pydent.aqsession.AqHTTP.post"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post</span></code></a>(path[, json_data, timeout, allow_none])</p></td>
-<td><p>Make a post request to the session</p></td>
+<td><p>Make a post request to the session.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqHTTP.put" title="pydent.aqsession.AqHTTP.put"><code class="xref py py-obj docutils literal notranslate"><span class="pre">put</span></code></a>(path[, json_data, timeout, allow_none])</p></td>
-<td><p>Make a put request to the session</p></td>
+<td><p>Make a put request to the session.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqHTTP.request" title="pydent.aqsession.AqHTTP.request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">request</span></code></a>(method, path[, timeout, allow_none])</p></td>
 <td><p>Performs a http request.</p></td>
@@ -411,34 +420,78 @@ Instead, a SessionInterface should be the object that makes these requests.</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqHTTP.url" title="pydent.aqsession.AqHTTP.url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">url</span></code></a></p></td>
-<td><p>An alias of aquarium_url</p></td>
+<td><p>An alias of aquarium_url.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="pydent.aqsession.AqHTTP._disallow_null_in_json">
 <em class="property">static </em><code class="sig-name descname">_disallow_null_in_json</code><span class="sig-paren">(</span><em class="sig-param">json_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP._disallow_null_in_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP._disallow_null_in_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if
-json data being sent contains a null value</p>
+<dd><p>Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception
+if json data being sent contains a null value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>TridentJSONDataIncomplete: if json data containers a null or None value.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqHTTP._login">
 <code class="sig-name descname">_login</code><span class="sig-paren">(</span><em class="sig-param">login</em>, <em class="sig-param">password</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP._login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP._login" title="Permalink to this definition">¶</a></dt>
 <dd><p>Login to aquarium and saves header as a requests.Session()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>login</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Aquarium login</p></li>
+<li><p><strong>password</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Aquarium password</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>TridentLoginError: If Aquarium authentication fails or server could not
+be contacted
+TridentTimeoutError: If response time exceeds specified timeout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqHTTP._requests_session">
+<code class="sig-name descname">_requests_session</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqHTTP._requests_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>the requests session</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqHTTP._response_to_json">
 <code class="sig-name descname">_response_to_json</code><span class="sig-paren">(</span><em class="sig-param">response</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP._response_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP._response_to_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turns <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Request</span></code> instance into a json.
-Raises TridentRequestError if an error occurs.</p>
+<dd><p>Turns <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Request</span></code> instance into a json.</p>
+<p>Raises TridentRequestError if an error occurs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqHTTP._using_requests">
+<code class="sig-name descname">_using_requests</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqHTTP._using_requests" title="Permalink to this definition">¶</a></dt>
+<dd><p>if False, any HTTP requests will throw and error</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqHTTP.aquarium_url">
+<code class="sig-name descname">aquarium_url</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqHTTP.aquarium_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>the aquarium url</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.aqsession.AqHTTP.get">
 <code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a get request to the session</p>
+<dd><p>Make a get request to the session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -459,10 +512,54 @@ or None value (default: True)</p></li>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydent.aqsession.AqHTTP.log">
+<code class="sig-name descname">log</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqHTTP.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>the logger</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqHTTP.login">
+<code class="sig-name descname">login</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqHTTP.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>the user login name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqHTTP.num_requests">
+<code class="sig-name descname">num_requests</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqHTTP.num_requests" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of requests counter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqHTTP.off">
+<code class="sig-name descname">off</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP.off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP.off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn off requests. Will cause.</p>
+<p><a class="reference internal" href="../exceptions.html#pydent.exceptions.ForbiddenRequestError" title="pydent.exceptions.ForbiddenRequestError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForbiddenRequestError</span></code></a>
+to be raised if a request is made.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqHTTP.on">
+<code class="sig-name descname">on</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP.on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP.on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn on requests. When requests are off, this causes.</p>
+<p><a class="reference internal" href="../exceptions.html#pydent.exceptions.ForbiddenRequestError" title="pydent.exceptions.ForbiddenRequestError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForbiddenRequestError</span></code></a>
+to be raised if a request is made.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.aqsession.AqHTTP.post">
 <code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">json_data=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a post request to the session</p>
+<dd><p>Make a post request to the session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -487,7 +584,7 @@ or None value (default True)</p></li>
 <dl class="method">
 <dt id="pydent.aqsession.AqHTTP.put">
 <code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">json_data=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqhttp.html#AqHTTP.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqHTTP.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make a put request to the session</p>
+<dd><p>Make a put request to the session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -534,10 +631,21 @@ contains a None or null value (default: True)</p></li>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydent.aqsession.AqHTTP.timeout">
+<code class="sig-name descname">timeout</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqHTTP.timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>the timeout (s) for requests</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.aqsession.AqHTTP.url">
 <em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pydent.aqsession.AqHTTP.url" title="Permalink to this definition">¶</a></dt>
-<dd><p>An alias of aquarium_url</p>
+<dd><p>An alias of aquarium_url.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

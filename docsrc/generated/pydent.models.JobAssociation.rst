@@ -27,8 +27,8 @@ pydent.models.JobAssociation
       ~JobAssociation.get_relationships
       ~JobAssociation.get_server_model_name
       ~JobAssociation.get_tableized_name
-      ~JobAssociation.has_deserialize
       ~JobAssociation.interface
+      ~JobAssociation.is_deserialized
       ~JobAssociation.load
       ~JobAssociation.load_from
       ~JobAssociation.no_getter
@@ -37,6 +37,7 @@ pydent.models.JobAssociation
       ~JobAssociation.print
       ~JobAssociation.refresh
       ~JobAssociation.reload
+      ~JobAssociation.reset_field
       ~JobAssociation.where
       ~JobAssociation.where_callback
    

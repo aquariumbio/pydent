@@ -23,7 +23,6 @@ pydent.relationships.HasOneFromMany
       ~HasOneFromMany.register
       ~HasOneFromMany.serialize
       ~HasOneFromMany.set_data_key
-      ~HasOneFromMany.set_ref
    
    
 

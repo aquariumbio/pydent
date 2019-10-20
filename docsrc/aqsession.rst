@@ -1,2 +1,1 @@
 .. automodule:: pydent.aqsession
-    :members:

@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,18 +314,18 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.base</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Model base class
-&quot;&quot;&quot;
-
-from pydent.marshaller.exceptions import SchemaException, SchemaModelException
-from pydent.marshaller.schema import DynamicSchema, SchemaRegistry
-from pydent.marshaller.fields import Callback
-from pydent.marshaller.registry import ModelRegistry
-from pydent.marshaller.descriptors import DataAccessor
-from copy import deepcopy
+<span></span>&quot;&quot;&quot;Model base class.&quot;&quot;&quot;
 import functools
 import inspect
+from copy import deepcopy
+
+from pydent.marshaller.descriptors import DataAccessor
+from pydent.marshaller.exceptions import SchemaException
+from pydent.marshaller.exceptions import SchemaModelException
+from pydent.marshaller.fields import Callback
+from pydent.marshaller.registry import ModelRegistry
+from pydent.marshaller.schema import DynamicSchema
+from pydent.marshaller.schema import SchemaRegistry
 
 
 <div class="viewcode-block" id="add_schema"><a class="viewcode-back" href="../../../generated/pydent.marshaller.add_schema.html#pydent.base.add_schema">[docs]</a>def add_schema(cls):
@@ -344,15 +343,13 @@ import inspect
 
 
 <div class="viewcode-block" id="SchemaModel"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel">[docs]</a>class SchemaModel(metaclass=ModelRegistry):
-    &quot;&quot;&quot;
-    A Schema class that holds information on serialization/deserialization
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;A Schema class that holds information on
+    serialization/deserialization.&quot;&quot;&quot;
 
     __slots__ = [ModelRegistry._data_key, ModelRegistry._deserialized_key, &quot;__dict__&quot;]
 
 <div class="viewcode-block" id="SchemaModel.__init__"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.__init__">[docs]</a>    def __init__(self, data=None):
-        &quot;&quot;&quot;
-        The model initializer.
+        &quot;&quot;&quot;The model initializer.
 
         :param data: data to add to the model
         :type data: dict
@@ -367,8 +364,7 @@ import inspect
 
     @property
     def model_schema(self):
-        &quot;&quot;&quot;
-        Returns the attached model schema.
+        &quot;&quot;&quot;Returns the attached model schema.
 
         :return: the model&#39;s schema class
         :rtype: DynamicSchema
@@ -397,7 +393,7 @@ import inspect
             self.__class__.model_schema.init_data_accessors(self, data)</div>
 
 <div class="viewcode-block" id="SchemaModel._get_data"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel._get_data">[docs]</a>    def _get_data(self):
-        &quot;&quot;&quot;Return the model&#39;s data&quot;&quot;&quot;
+        &quot;&quot;&quot;Return the model&#39;s data.&quot;&quot;&quot;
         return getattr(self, self.__class__._data_key)</div>
 
 <div class="viewcode-block" id="SchemaModel._get_deserialized_data"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel._get_deserialized_data">[docs]</a>    def _get_deserialized_data(self):
@@ -405,8 +401,7 @@ import inspect
         return getattr(self, self.__class__._deserialized_key)</div>
 
 <div class="viewcode-block" id="SchemaModel.get_deserialized"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.get_deserialized">[docs]</a>    def get_deserialized(self, name):
-        &quot;&quot;&quot;
-        Get deserialized data by name
+        &quot;&quot;&quot;Get deserialized data by name.
 
         .. deprecated:: 0.1.5a7
             method will be removed in 0.2.
@@ -418,8 +413,7 @@ import inspect
         return self._get_deserialized_data()[name]</div>
 
 <div class="viewcode-block" id="SchemaModel.is_deserialized"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.is_deserialized">[docs]</a>    def is_deserialized(self, name: str) -&gt; bool:
-        &quot;&quot;&quot;
-        Check if a given key has already been deserialized.
+        &quot;&quot;&quot;Check if a given key has already been deserialized.
 
         .. versionadded:: 0.1.5a7
             Method added
@@ -434,9 +428,8 @@ import inspect
         return False</div>
 
 <div class="viewcode-block" id="SchemaModel.reset_field"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.reset_field">[docs]</a>    def reset_field(self, name: str):
-        &quot;&quot;&quot;
-        Reset the field descriptor to its placeholder value,
-        returning the behavior
+        &quot;&quot;&quot;Reset the field descriptor to its placeholder value, returning the
+        behavior.
 
         .. versionadded:: 0.1.5a7
             Method added
@@ -521,8 +514,7 @@ import inspect
         return data
 
 <div class="viewcode-block" id="SchemaModel.dump"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.dump">[docs]</a>    def dump(self, only=None, include=None, ignore=None):
-        &quot;&quot;&quot;
-        Dump/serializes the model to a json-like dictionary.
+        &quot;&quot;&quot;Dump/serializes the model to a json-like dictionary.
 
         :param only: restricts dump/serialization to the provided keys
         :type only: basestring|list|tuple|dict
@@ -540,8 +532,7 @@ import inspect
 
 <div class="viewcode-block" id="SchemaModel.load"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaModel.html#pydent.base.SchemaModel.load">[docs]</a>    @classmethod
     def load(cls, data):
-        &quot;&quot;&quot;
-        Deserialize the data to a model.
+        &quot;&quot;&quot;Deserialize the data to a model.
 
         :param data: data to deserialize
         :type data: dict
@@ -551,12 +542,17 @@ import inspect
         return cls._set_data(data)</div>
 
     def __setstate__(self, state):
-        &quot;&quot;&quot;Overrides how models are unpickled. The default way pickling works by dumping
-        the __dict__ along with the class definition. Since the way data is handle in
-        the marshaller object involves dynamic creation of descriptors, these are not properly
-        handled upon load. Here we will create these descriptors upon
-        unpickling. Unlike serialized data, deserialized data is handled explicitly using &#39;fields&#39; in the
-        schema/model definition, it is not necessary to do anything with these descriptors.&quot;&quot;&quot;
+        &quot;&quot;&quot;Overrides how models are unpickled.
+
+        The default way pickling works by dumping the __dict__ along
+        with the class definition. Since the way data is handle in the
+        marshaller object involves dynamic creation of descriptors,
+        these are not properly handled upon load. Here we will create
+        these descriptors upon unpickling. Unlike serialized data,
+        deserialized data is handled explicitly using &#39;fields&#39; in the
+        schema/model definition, it is not necessary to do anything with
+        these descriptors.
+        &quot;&quot;&quot;
         self.__dict__ = state
 
         # add data accessors

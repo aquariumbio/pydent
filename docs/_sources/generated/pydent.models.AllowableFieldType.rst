@@ -27,8 +27,8 @@ pydent.models.AllowableFieldType
       ~AllowableFieldType.get_relationships
       ~AllowableFieldType.get_server_model_name
       ~AllowableFieldType.get_tableized_name
-      ~AllowableFieldType.has_deserialize
       ~AllowableFieldType.interface
+      ~AllowableFieldType.is_deserialized
       ~AllowableFieldType.load
       ~AllowableFieldType.load_from
       ~AllowableFieldType.no_getter
@@ -37,6 +37,7 @@ pydent.models.AllowableFieldType
       ~AllowableFieldType.print
       ~AllowableFieldType.refresh
       ~AllowableFieldType.reload
+      ~AllowableFieldType.reset_field
       ~AllowableFieldType.where
       ~AllowableFieldType.where_callback
    

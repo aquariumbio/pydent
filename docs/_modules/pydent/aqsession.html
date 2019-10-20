@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -415,43 +414,49 @@ Aquarium models from the server.
     UtilityInterface
 
 &quot;&quot;&quot;
-
 import inspect
 import timeit
 import webbrowser
+from copy import copy
 from decimal import Decimal
+from typing import List
+from typing import Type
+from typing import Union
 
 from requests.exceptions import ReadTimeout
 
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
-from pydent.interfaces import (
-    QueryInterfaceABC,
-    QueryInterface,
-    UtilityInterface,
-    BrowserInterface,
-)
-from pydent.models import __all__ as allmodels
 from pydent.browser import Browser
+from pydent.interfaces import BrowserInterface
+from pydent.interfaces import QueryInterface
+from pydent.interfaces import QueryInterfaceABC
+from pydent.interfaces import SessionInterface
+from pydent.interfaces import UtilityInterface
+from pydent.models import __all__ as allmodels
 from pydent.sessionabc import SessionABC
-from copy import copy
 
 
 <div class="viewcode-block" id="AqSession"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession">[docs]</a>class AqSession(SessionABC):
-    &quot;&quot;&quot;
-    Holds an AqHTTP with login information.
-    Creates SessionInterfaces for models.
+    &quot;&quot;&quot;Holds an AqHTTP with login information. Creates SessionInterfaces for
+    models.
 
     .. code-block:: python
 
         session1 = AqSession(username, password, aquairum_url)
         session1.User.find(1)
         # &lt;User(id=1,...)&gt;
-
     &quot;&quot;&quot;
 
-<div class="viewcode-block" id="AqSession.__init__"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.__init__">[docs]</a>    def __init__(self, login, password, aquarium_url, name=None, aqhttp=None):
-        &quot;&quot;&quot;
+<div class="viewcode-block" id="AqSession.__init__"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.__init__">[docs]</a>    def __init__(
+        self,
+        login: str,
+        password: str,
+        aquarium_url: str,
+        name: str = None,
+        aqhttp: str = None,
+    ):
+        &quot;&quot;&quot;Initializes a new tridennt Session.
 
         :param login: the Aquarium login for the user
         :type login: str
@@ -484,12 +489,12 @@ from copy import copy
         self.init_cache()</div>
 
     @property
-    def interface_class(self):
+    def interface_class(self) -&gt; Type:
         &quot;&quot;&quot;Returns the session&#39;s interface class.&quot;&quot;&quot;
         return self._interface_class
 
     @interface_class.setter
-    def interface_class(self, c):
+    def interface_class(self, c: Type):
         &quot;&quot;&quot;Sets the session&#39;s interface class.&quot;&quot;&quot;
         if not issubclass(c, QueryInterfaceABC):
             raise ValueError(
@@ -500,7 +505,7 @@ from copy import copy
         self._interface_class = c
 
 <div class="viewcode-block" id="AqSession._initialize_interfaces"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession._initialize_interfaces">[docs]</a>    def _initialize_interfaces(self):
-        &quot;&quot;&quot;Initializes the session&#39;s interfaces&quot;&quot;&quot;
+        &quot;&quot;&quot;Initializes the session&#39;s interfaces.&quot;&quot;&quot;
         # initialize model interfaces
         for model_name in allmodels:
             self._register_interface(model_name)</div>
@@ -510,46 +515,45 @@ from copy import copy
         webbrowser.open(self._aqhttp.url)</div>
 
     @property
-    def session(self):
-        &quot;&quot;&quot;Return self&quot;&quot;&quot;
+    def session(self) -&gt; &quot;AqSession&quot;:
+        &quot;&quot;&quot;Return self.&quot;&quot;&quot;
         return self
 
-    def set_verbose(self, verbose, tb_limit=None):
+    def set_verbose(self, verbose: bool, tb_limit: int = None):
         self._aqhttp.log.set_verbose(verbose, tb_limit=tb_limit)
 
-<div class="viewcode-block" id="AqSession._log_to_aqhttp"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession._log_to_aqhttp">[docs]</a>    def _log_to_aqhttp(self, msg):
-        &quot;&quot;&quot;Sends a log message to the aqhttp&#39;s logger&quot;&quot;&quot;
+<div class="viewcode-block" id="AqSession._log_to_aqhttp"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession._log_to_aqhttp">[docs]</a>    def _log_to_aqhttp(self, msg: str):
+        &quot;&quot;&quot;Sends a log message to the aqhttp&#39;s logger.&quot;&quot;&quot;
         self._aqhttp.log.info(msg)</div>
 
-    def _register_interface(self, model_name):
+    def _register_interface(self, model_name: str):
         # get model interface from model class
         model_interface = self.interface_class(model_name, self._aqhttp, self)
 
         # set interface to session attribute (e.g. session.Sample calls Sample model interface)
         setattr(self, model_name, model_interface)
 
-<div class="viewcode-block" id="AqSession.set_timeout"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.set_timeout">[docs]</a>    def set_timeout(self, timeout_in_seconds):
+<div class="viewcode-block" id="AqSession.set_timeout"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.set_timeout">[docs]</a>    def set_timeout(self, timeout_in_seconds: int):
         &quot;&quot;&quot;Sets the request timeout.&quot;&quot;&quot;
         self._aqhttp.timeout = timeout_in_seconds</div>
 
     @property
     def url(self):
-        &quot;&quot;&quot;Returns the aquarium_url for this session&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns the aquarium_url for this session.&quot;&quot;&quot;
         return self._aqhttp.aquarium_url
 
     @property
-    def login(self):
-        &quot;&quot;&quot;
-        Logs into aquarium, generating the necessary headers to perform requests
-        to Aquarium
-        &quot;&quot;&quot;
+    def login(self) -&gt; str:
+        &quot;&quot;&quot;Logs into aquarium, generating the necessary headers to perform
+        requests to Aquarium.&quot;&quot;&quot;
         return self._aqhttp.login
 
     @property
-    def current_user(self):
-        &quot;&quot;&quot;
-        Returns the current User associated with this session. Returns None
-        if no user is found (as in cases where the Aquarium connection is down).
+    def current_user(self) -&gt; &quot;ModelBase&quot;:
+        &quot;&quot;&quot;Returns the current User associated with this session.
+
+        Returns None if no user is found (as in cases where the Aquarium
+        connection is down).
         &quot;&quot;&quot;
         if self._current_user is None:
             user = self.User.where({&quot;login&quot;: self._aqhttp.login})
@@ -558,12 +562,10 @@ from copy import copy
             self._current_user = self.User.where({&quot;login&quot;: self._aqhttp.login})[0]
         return self._current_user
 
-<div class="viewcode-block" id="AqSession.logged_in"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.logged_in">[docs]</a>    def logged_in(self):
-        &quot;&quot;&quot;
-        Returns whether the user is logged in. If the session
-        is able to return the User model instance using the
-        session&#39;s login credentials, the user is considered
-        to be logged in.
+<div class="viewcode-block" id="AqSession.logged_in"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.logged_in">[docs]</a>    def logged_in(self) -&gt; bool:
+        &quot;&quot;&quot;Returns whether the user is logged in. If the session is able to
+        return the User model instance using the session&#39;s login credentials,
+        the user is considered to be logged in.
 
         :return: whether user is currently logged in
         :rtype: boolean
@@ -573,28 +575,36 @@ from copy import copy
         return True</div>
 
     @property
-    def models(self):
-        &quot;&quot;&quot;Returns list of all models available&quot;&quot;&quot;
+    def models(self) -&gt; List[str]:
+        &quot;&quot;&quot;Returns list of all models available.&quot;&quot;&quot;
         return list(ModelRegistry.models.keys())
 
-<div class="viewcode-block" id="AqSession.model_interface"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.model_interface">[docs]</a>    def model_interface(self, model_name, interface_class=None):
-        &quot;&quot;&quot;Returns model interface by name&quot;&quot;&quot;
+<div class="viewcode-block" id="AqSession.model_interface"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.model_interface">[docs]</a>    def model_interface(
+        self, model_name: str, interface_class: SessionInterface = None
+    ) -&gt; SessionInterface:
+        &quot;&quot;&quot;Returns model interface by name.&quot;&quot;&quot;
         if interface_class is None:
             interface_class = self.interface_class
         return interface_class(model_name, self._aqhttp, self)</div>
 
     @property
     def utils(self):
-        &quot;&quot;&quot;Instantiates a utility interface&quot;&quot;&quot;
+        &quot;&quot;&quot;Instantiates a utility interface.&quot;&quot;&quot;
         return UtilityInterface(self._aqhttp, self)
 
+    def _ping_function(self):
+        return self.User.one()
+
     # TODO: put &#39;ping&#39; in documentation
-<div class="viewcode-block" id="AqSession.ping"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.ping">[docs]</a>    def ping(self, num=5):
-        &quot;&quot;&quot;Performs a number of simple requests (pings) to estimate the speed of the server.
-        Displays a message about the average time each ping took.&quot;&quot;&quot;
+<div class="viewcode-block" id="AqSession.ping"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.ping">[docs]</a>    def ping(self, num: int = 5) -&gt; Union[None, int]:
+        &quot;&quot;&quot;Performs a number of simple requests (pings) to estimate the speed
+        of the server.
+
+        Displays a message about the average time each ping took.
+        &quot;&quot;&quot;
+        ping_function = self._ping_function()
+        ping_function_source = inspect.getsource(ping_function).strip()
         try:
-            ping_function = lambda: self.User.find(1)
-            ping_function_source = inspect.getsource(ping_function).strip()
             secs = timeit.timeit(ping_function, number=num)
             print(
                 &quot;{} pings (using the function &#39;{}&#39;)&quot;.format(num, ping_function_source)
@@ -604,7 +614,8 @@ from copy import copy
         except ReadTimeout as e:
             print(&quot;Error: {}&quot;.format(e))
             print(
-                &quot;Aquarium ({}) looks like its down. The function &#39;{}&#39; raised a {} exception, but should not have.&quot;.format(
+                &quot;The Aquarium server ({}) looks like its down. The function &#39;{}&#39; &quot;
+                &quot;raised a {} exception, but should not have.&quot;.format(
                     self.url, ping_function_source, ReadTimeout
                 )
             )
@@ -621,22 +632,22 @@ from copy import copy
         self.browser.clear()
 
     @property
-    def using_requests(self):
+    def using_requests(self) -&gt; bool:
         return self._aqhttp._using_requests
 
     @using_requests.setter
-    def using_requests(self, b):
+    def using_requests(self, b: bool):
         if b:
             self._aqhttp.on()
         else:
             self._aqhttp.off()
 
     @property
-    def using_cache(self):
+    def using_cache(self) -&gt; bool:
         return self._using_cache
 
     @using_cache.setter
-    def using_cache(self, b):
+    def using_cache(self, b: bool):
         if b:
             self.interface_class = BrowserInterface
             if self.browser is None:
@@ -657,8 +668,12 @@ from copy import copy
         return instance
 
     def with_cache(
-        self, using_requests=None, using_models=False, timeout=None, verbose=None
-    ):
+        self,
+        using_requests: bool = None,
+        using_models: bool = False,
+        timeout: int = None,
+        verbose=None,
+    ) -&gt; &quot;AqSession&quot;:
         return self(
             using_cache=True,
             using_models=using_models,
@@ -668,8 +683,12 @@ from copy import copy
         )
 
     def with_requests_off(
-        self, using_cache=None, using_models=True, timeout=None, verbose=None
-    ):
+        self,
+        using_cache: bool = None,
+        using_models: bool = True,
+        timeout: int = None,
+        verbose=None,
+    ) -&gt; &quot;AqSession&quot;:
         return self(
             using_cache=using_cache,
             using_models=using_models,
@@ -689,12 +708,12 @@ from copy import copy
 
     def __call__(
         self,
-        using_cache=None,
-        using_requests=None,
-        timeout=None,
-        using_models=None,
-        using_verbose=None,
-    ):
+        using_cache: bool = None,
+        using_requests: bool = None,
+        timeout: int = None,
+        using_models: bool = None,
+        using_verbose: bool = None,
+    ) -&gt; &quot;AqSession&quot;:
         new_session = self.copy()
         new_session.parent_session = self
         if using_cache is not None:
@@ -709,14 +728,14 @@ from copy import copy
             new_session.set_verbose(using_verbose)
         return new_session
 
-    def __enter__(self):
+    def __enter__(self) -&gt; &quot;AqSession&quot;:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if hasattr(self, &quot;parent_session&quot;):
             self._swap_sessions(self, self.parent_session)
 
-    def __repr__(self):
+    def __repr__(self) -&gt; str:
         return &quot;&lt;{}(name={}, AqHTTP={}))&gt;&quot;.format(
             self.__class__.__name__, self.name, self._aqhttp
         )</div>

@@ -28,8 +28,8 @@ pydent.models.ObjectType
       ~ObjectType.get_relationships
       ~ObjectType.get_server_model_name
       ~ObjectType.get_tableized_name
-      ~ObjectType.has_deserialize
       ~ObjectType.interface
+      ~ObjectType.is_deserialized
       ~ObjectType.load
       ~ObjectType.load_from
       ~ObjectType.no_getter
@@ -38,6 +38,7 @@ pydent.models.ObjectType
       ~ObjectType.print
       ~ObjectType.refresh
       ~ObjectType.reload
+      ~ObjectType.reset_field
       ~ObjectType.save
       ~ObjectType.update
       ~ObjectType.where

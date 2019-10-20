@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -334,9 +333,9 @@
 <dt id="pydent.interfaces.CRUDInterface">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.interfaces.</code><code class="sig-name descname">CRUDInterface</code><span class="sig-paren">(</span><em class="sig-param">aqhttp</em>, <em class="sig-param">session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#CRUDInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.CRUDInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.interfaces.SessionInterface.html#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.SessionInterface</span></code></a></p>
-<p>Create, Update, Delete interface. Methods for communicating with
-Aquarium’s JSON controller.</p>
-<p>Initializer for SessionInterface</p>
+<p>Create, Update, Delete interface.</p>
+<p>Methods for communicating with Aquarium’s JSON controller.</p>
+<p>Initializer for SessionInterface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -348,7 +347,7 @@ Aquarium’s JSON controller.</p>
 <dl class="method">
 <dt id="pydent.interfaces.CRUDInterface.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">aqhttp</em>, <em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.interfaces.CRUDInterface.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializer for SessionInterface</p>
+<dd><p>Initializer for SessionInterface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -367,7 +366,7 @@ Aquarium’s JSON controller.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.interfaces.CRUDInterface.__init__" title="pydent.interfaces.CRUDInterface.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(aqhttp, session)</p></td>
-<td><p>Initializer for SessionInterface</p></td>
+<td><p>Initializer for SessionInterface.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_delete</span></code>(model_name, model_data[, …])</p></td>
 <td><p></p></td>
@@ -376,7 +375,12 @@ Aquarium’s JSON controller.</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_save</span></code>(model_name, model_data[, …])</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_create</span></code>(table, data[, params])</p></td>
 <td><p></p></td>
@@ -407,7 +411,8 @@ Aquarium’s JSON controller.</p>
 <dl class="method">
 <dt id="pydent.interfaces.CRUDInterface._json_controller">
 <code class="sig-name descname">_json_controller</code><span class="sig-paren">(</span><em class="sig-param">method</em>, <em class="sig-param">model_name</em>, <em class="sig-param">model_data</em>, <em class="sig-param">record_methods=None</em>, <em class="sig-param">record_getters=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/interfaces.html#CRUDInterface._json_controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.interfaces.CRUDInterface._json_controller" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method for create, updating, and deleting models using Aquariums JSON controller.</p>
+<dd><p>Method for create, updating, and deleting models using Aquariums
+JSON controller.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -434,19 +439,16 @@ Aquarium’s JSON controller.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> (<em>basestring</em>) – Request method name (one of ‘put’, ‘post’, ‘delete’</p></li>
-<li><p><strong>table</strong> (<em>basestring</em>) – Table name of model (e.g. ‘samples’ or ‘data_associations’)</p></li>
-<li><p><strong>model_id</strong> (<em>int</em>) – Optional model_id (not required for ‘post’)</p></li>
-<li><p><strong>model_data</strong> (<em>dict</em>) – Model data to send to server controller</p></li>
+<li><p><strong>method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Request method name (one of ‘put’, ‘post’, ‘delete’</p></li>
+<li><p><strong>table</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Table name of model (e.g. ‘samples’ or ‘data_associations’)</p></li>
+<li><p><strong>model_id</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>]) – Optional model_id (not required for ‘post’)</p></li>
+<li><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – data</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>json formatted server response</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
 </dl>
+<p>:param params
+:return: json formatted server response
+:rtype: dict</p>
 </dd></dl>
 
 </dd></dl>

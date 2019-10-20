@@ -28,8 +28,8 @@ pydent.models.SampleType
       ~SampleType.get_relationships
       ~SampleType.get_server_model_name
       ~SampleType.get_tableized_name
-      ~SampleType.has_deserialize
       ~SampleType.interface
+      ~SampleType.is_deserialized
       ~SampleType.load
       ~SampleType.load_from
       ~SampleType.new_sample
@@ -39,6 +39,7 @@ pydent.models.SampleType
       ~SampleType.print
       ~SampleType.refresh
       ~SampleType.reload
+      ~SampleType.reset_field
       ~SampleType.save
       ~SampleType.where
       ~SampleType.where_callback

@@ -27,8 +27,8 @@ pydent.models.Invoice
       ~Invoice.get_relationships
       ~Invoice.get_server_model_name
       ~Invoice.get_tableized_name
-      ~Invoice.has_deserialize
       ~Invoice.interface
+      ~Invoice.is_deserialized
       ~Invoice.load
       ~Invoice.load_from
       ~Invoice.no_getter
@@ -37,6 +37,7 @@ pydent.models.Invoice
       ~Invoice.print
       ~Invoice.refresh
       ~Invoice.reload
+      ~Invoice.reset_field
       ~Invoice.where
       ~Invoice.where_callback
    

@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,10 +314,7 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.sample</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to samples, like Samples and SampleTypes
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to samples, like Samples and SampleTypes.&quot;&quot;&quot;
 import json
 from collections.abc import Sequence
 from warnings import warn
@@ -326,14 +322,15 @@ from warnings import warn
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import JSONSaveMixin
-from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
-from pydent.relationships import HasOne, HasMany
+from pydent.models.field_value_mixins import FieldTypeInterface
+from pydent.models.field_value_mixins import FieldValueInterface
+from pydent.relationships import HasMany
+from pydent.relationships import HasOne
 
 
 <div class="viewcode-block" id="Sample"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample">[docs]</a>@add_schema
 class Sample(FieldValueInterface, ModelBase):
-    &quot;&quot;&quot;A Sample model
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;A Sample model.&quot;&quot;&quot;
 
     fields = dict(
         # sample relationships
@@ -384,14 +381,15 @@ class Sample(FieldValueInterface, ModelBase):
 
     @property
     def identifier(self):
-        &quot;&quot;&quot;Return the identifier used by Aquarium in autocompletes&quot;&quot;&quot;
+        &quot;&quot;&quot;Return the identifier used by Aquarium in autocompletes.&quot;&quot;&quot;
         return &quot;{}: {}&quot;.format(self.id, self.name)
 
 <div class="viewcode-block" id="Sample.field_value"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.field_value">[docs]</a>    def field_value(self, name):
-        &quot;&quot;&quot;
-        Returns the :class:`FieldValue` associated with the sample by its name. If the there is more than one FieldValue
-        with the same name (as in field_value arrays), it will return the first FieldValue.
-        See the :method:`Sample.field_value_array` method.
+        &quot;&quot;&quot;Returns the :class:`FieldValue` associated with the sample by its
+        name. If the there is more than one FieldValue with the same name (as
+        in field_value arrays), it will return the first FieldValue. See the.
+
+        :meth:`Sample.field_value_array` method.
 
         :param name: name of the field value
         :type name: str
@@ -419,8 +417,7 @@ class Sample(FieldValueInterface, ModelBase):
         return self._field_value_dictionary(lambda ft: ft.name, self._property_accessor)
 
 <div class="viewcode-block" id="Sample.update_properties"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.update_properties">[docs]</a>    def update_properties(self, prop_dict):
-        &quot;&quot;&quot;
-        Update the FieldValues properties for this sample.
+        &quot;&quot;&quot;Update the FieldValues properties for this sample.
 
         :param prop_dict: values to update
         :type pro fp_dict: dict
@@ -493,7 +490,7 @@ class Sample(FieldValueInterface, ModelBase):
 
 <div class="viewcode-block" id="SampleType"><a class="viewcode-back" href="../../../models.html#pydent.models.SampleType">[docs]</a>@add_schema
 class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
-    &quot;&quot;&quot;A SampleType model&quot;&quot;&quot;
+    &quot;&quot;&quot;A SampleType model.&quot;&quot;&quot;
 
     fields = dict(
         samples=HasMany(&quot;Sample&quot;, &quot;SampleType&quot;),

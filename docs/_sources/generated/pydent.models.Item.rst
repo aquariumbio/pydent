@@ -34,9 +34,9 @@ pydent.models.Item
       ~Item.get_relationships
       ~Item.get_server_model_name
       ~Item.get_tableized_name
-      ~Item.has_deserialize
       ~Item.interface
       ~Item.is_deleted
+      ~Item.is_deserialized
       ~Item.load
       ~Item.load_from
       ~Item.make
@@ -46,6 +46,7 @@ pydent.models.Item
       ~Item.print
       ~Item.refresh
       ~Item.reload
+      ~Item.reset_field
       ~Item.save
       ~Item.update
       ~Item.where
