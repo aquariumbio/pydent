@@ -39,7 +39,7 @@ from typing import Union
 from inflection import pluralize
 from inflection import underscore
 
-from .base import ModelRegistry
+from pydent.marshaller.registry import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
 
