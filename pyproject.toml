@@ -45,6 +45,25 @@ tox-conda = "^0.2.0"
 sphinx_autodoc_typehints = "^1.8"
 autodocsumm = "^0.1.11"
 
+[tool.black]
+line-length = 88
+target-version = ['py36', 'py37', 'py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
 [tool.poetry.extras]
 docs = ["sphinx", "sphinx-bootstrap-theme", "docformatter", "nbsphinx", "pandoc", "recommonmark"]
 
