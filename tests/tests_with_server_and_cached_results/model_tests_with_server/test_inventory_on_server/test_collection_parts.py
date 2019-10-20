@@ -8,36 +8,50 @@ from pydent.models import PartAssociation
 
 @pytest.fixture
 def example_part_association(session):
+    """An example part association"""
     part_association = session.PartAssociation.one()
     return part_association
 
 
 @pytest.fixture
 def example_collection(session, example_part_association):
+    """An example collection. Supposed to have a part"""
     return example_part_association.collection
 
 
 class TestCollection:
-    def test_parts(self, session, example_collection):
+    def test_part_method(self, session, example_collection):
+        """We expect .part(r, c) to retrieve a part."""
         collection = example_collection
         part_associations = collection.part_associations
 
-        # TODO: this test is failing with StopIteration???
+        # the part associations have been deserialized
+        # therefore, part(row, col) should return exactly the part
+        part_association = part_associations[0]
+        expected_part = part_association.part
+        row = part_association.row
+        col = part_association.column
+        assert collection.part(row, col) is expected_part
 
-        expected_part = part_associations[0].part
-        # expected_part = next(
-        #     iter(
-        #         [
-        #             assoc.part
-        #             for assoc in part_associations
-        #             if assoc.row == 0 and assoc.column == 0
-        #         ]
-        #     )
-        # )
+    def test_part_retrieval_from_server(self, session, example_collection):
+        """We expect .part(r, c) to retrieve a part from the server."""
+        collection = example_collection
+        part_associations = collection.part_associations
 
-        assert collection.part(0, 0) is not None
-        actual_part = collection.part(0, 0)
-        assert expected_part.id == actual_part.id
+        # the part associations have been deserialized
+        # therefore, part(row, col) should return exactly the part
+        part_association = part_associations[0]
+        row = part_association.row
+        col = part_association.column
+        expected_part = part_association.part
+
+        # now we will remove the cached data and re-retrieve it
+        # from the server by calling the .part method.
+        collection.reset_field('part_associations')
+        assert not collection.is_deserialized('part_associations')
+        retrieved_part = collection.part(row, col)
+        assert retrieved_part.id == expected_part.id
+        assert retrieved_part is not expected_part
 
     def test_dimensions(self, session, example_collection):
         collection = example_collection
