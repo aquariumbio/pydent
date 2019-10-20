@@ -35,9 +35,9 @@ pydent.models.FieldValue
       ~FieldValue.get_sid
       ~FieldValue.get_tableized_name
       ~FieldValue.get_wires
-      ~FieldValue.has_deserialize
       ~FieldValue.incoming_wires
       ~FieldValue.interface
+      ~FieldValue.is_deserialized
       ~FieldValue.load
       ~FieldValue.load_from
       ~FieldValue.no_getter
@@ -48,6 +48,7 @@ pydent.models.FieldValue
       ~FieldValue.refresh
       ~FieldValue.reload
       ~FieldValue.reset
+      ~FieldValue.reset_field
       ~FieldValue.save
       ~FieldValue.set_aft
       ~FieldValue.set_allowable_field_type

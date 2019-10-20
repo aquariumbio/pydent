@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,21 +314,19 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.exceptions</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Marshalling exceptions
-&quot;&quot;&quot;
+<span></span>&quot;&quot;&quot;Marshalling exceptions.&quot;&quot;&quot;
 
 
 <div class="viewcode-block" id="SchemaRegistryError"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaRegistryError">[docs]</a>class SchemaRegistryError(Exception):
-    &quot;&quot;&quot;Generic schema registry exception&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;Generic schema registry exception.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="SchemaException"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaException">[docs]</a>class SchemaException(Exception):
-    &quot;&quot;&quot;A generic schema exception&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;A generic schema exception.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="SchemaModelException"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.SchemaModelException">[docs]</a>class SchemaModelException(Exception):
-    &quot;&quot;&quot;A generic model exception&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;A generic model exception.&quot;&quot;&quot;</div>
 
 
 &quot;&quot;&quot;
@@ -338,19 +335,19 @@ Field validation exceptions
 
 
 <div class="viewcode-block" id="FieldValidationError"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.FieldValidationError">[docs]</a>class FieldValidationError(Exception):
-    &quot;&quot;&quot;A generic field validation error&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;A generic field validation error.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="AllowNoneFieldValidationError"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.AllowNoneFieldValidationError">[docs]</a>class AllowNoneFieldValidationError(FieldValidationError):
-    &quot;&quot;&quot;A field validation error for getting or setting None values&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;A field validation error for getting or setting None values.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="CallbackValidationError"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.CallbackValidationError">[docs]</a>class CallbackValidationError(Exception):
-    &quot;&quot;&quot;A generic callback validation error&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;A generic callback validation error.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="RunTimeCallbackAttributeError"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.RunTimeCallbackAttributeError">[docs]</a>class RunTimeCallbackAttributeError(AttributeError):
-    &quot;&quot;&quot;Error that occurs during executing a field callback&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;Error that occurs during executing a field callback.&quot;&quot;&quot;</div>
 
 
 &quot;&quot;&quot;
@@ -363,7 +360,7 @@ Model validation exceptions
 
 
 <div class="viewcode-block" id="ModelValidationError"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ModelValidationError">[docs]</a>class ModelValidationError(Exception):
-    &quot;&quot;&quot;A model validation error&quot;&quot;&quot;</div>
+    &quot;&quot;&quot;A model validation error.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="ExceptionCollection"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ExceptionCollection">[docs]</a>class ExceptionCollection(Exception):
@@ -384,7 +381,7 @@ Model validation exceptions
 
 <div class="viewcode-block" id="ExceptionCollection.raise_exception_class"><a class="viewcode-back" href="../../../generated/pydent.marshaller.exceptions.html#pydent.marshaller.exceptions.ExceptionCollection.raise_exception_class">[docs]</a>    def raise_exception_class(self, exception_class):
         &quot;&quot;&quot;Raise an exception class, if it was collected.&quot;&quot;&quot;
-        errors = self.group_errors.get(exception_class.__name__, [])
+        errors = self.group_errors().get(exception_class.__name__, [])
         if errors:
             raise exception_class(errors)</div>
 

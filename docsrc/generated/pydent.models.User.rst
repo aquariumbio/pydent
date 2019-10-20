@@ -27,8 +27,8 @@ pydent.models.User
       ~User.get_relationships
       ~User.get_server_model_name
       ~User.get_tableized_name
-      ~User.has_deserialize
       ~User.interface
+      ~User.is_deserialized
       ~User.load
       ~User.load_from
       ~User.no_getter
@@ -37,6 +37,7 @@ pydent.models.User
       ~User.print
       ~User.refresh
       ~User.reload
+      ~User.reset_field
       ~User.where
       ~User.where_callback
    

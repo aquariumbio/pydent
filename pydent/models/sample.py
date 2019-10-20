@@ -73,7 +73,7 @@ class Sample(FieldValueInterface, ModelBase):
         name. If the there is more than one FieldValue with the same name (as
         in field_value arrays), it will return the first FieldValue. See the.
 
-        :method:`Sample.field_value_array` method.
+        :meth:`Sample.field_value_array` method.
 
         :param name: name of the field value
         :type name: str

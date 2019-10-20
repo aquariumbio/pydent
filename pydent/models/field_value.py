@@ -443,9 +443,15 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
             oid = self.object_type.name
         msg = "No allowable field types found for {}:{}:{} using {}:{}."
         msg += " Available afts: {}"
+        try:
+            otname = self.operation.operation_type.name
+        except AttributeError:
+            pass
+        finally:
+            otname = None
         raise AquariumModelError(
             msg.format(
-                self.operation.operation_type.name,
+                otname,
                 self.role,
                 self.name,
                 sid,

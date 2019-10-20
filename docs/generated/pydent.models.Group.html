@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -334,7 +333,7 @@
 <dt id="pydent.models.Group">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.models.</code><code class="sig-name descname">Group</code><span class="sig-paren">(</span><em class="sig-param">**data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/user.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
-<p>A Group model</p>
+<p>A Group model.</p>
 <p>The model initializer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -369,7 +368,7 @@
 <td><p>Resets the primary key of the model and assigns a new rid.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.append_to_many" title="pydent.models.Group.append_to_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_to_many</span></code></a>(name, model)</p></td>
-<td><p>Appends a model to the many relationship</p></td>
+<td><p>Appends a model to the many relationship.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.connect_to_session" title="pydent.models.Group.connect_to_session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect_to_session</span></code></a>(session)</p></td>
 <td><p>Connect model instance to a session.</p></td>
@@ -378,19 +377,24 @@
 <td><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless class is a metatype (e.g.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_interface</span></code>()</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="pydent.interfaces.QueryInterface.html#pydent.interfaces.QueryInterface" title="pydent.interfaces.QueryInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryInterface</span></code></a>, <a class="reference internal" href="pydent.interfaces.BrowserInterface.html#pydent.interfaces.BrowserInterface" title="pydent.interfaces.BrowserInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrowserInterface</span></code></a>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.dump" title="pydent.models.Group.dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code></a>([only, include, ignore])</p></td>
 <td><p>Dump/serializes the model to a json-like dictionary.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.find" title="pydent.models.Group.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(session, model_id)</p></td>
-<td><p>Finds a model instance by its model_id</p></td>
+<td><p>Finds a model instance by its model_id.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.find_callback" title="pydent.models.Group.find_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_callback</span></code></a>(model_name, model_id)</p></td>
 <td><p>Finds a model using the model interface and model_id.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.get_deserialized" title="pydent.models.Group.get_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_deserialized</span></code></a>(name)</p></td>
-<td><p>Get deserialized data by name</p></td>
+<td><p>Get deserialized data by name.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_relationships</span></code>()</p></td>
 <td><p></p></td>
@@ -401,11 +405,11 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tableized_name</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Group.has_deserialize</span></code></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.interface" title="pydent.models.Group.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(session)</p></td>
+<td><p>Creates a model interface from this class and a session.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.interface" title="pydent.models.Group.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(session)</p></td>
-<td><p>Creates a model interface from this class and a session</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.is_deserialized" title="pydent.models.Group.is_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_deserialized</span></code></a>(name)</p></td>
+<td><p>Check if a given key has already been deserialized.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.load" title="pydent.models.Group.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Deserialize the data to a model.</p></td>
@@ -414,13 +418,23 @@
 <td><p>Create a new model instance from loaded attributes.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.no_getter" title="pydent.models.Group.no_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_getter</span></code></a>(*_)</p></td>
-<td><p>Callback that always returns None</p></td>
+<td><p>Callback that always returns None.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">one</span></code>(session, query, **kwargs)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p>ModelBase</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_callback</span></code>(model_name, *args, **kwargs)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code>()</p></td>
 <td><p></p></td>
@@ -429,12 +443,15 @@
 <td><p>Refresh this model from data from the server.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.reload" title="pydent.models.Group.reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code></a>(data)</p></td>
-<td><p>Reload model attributes from new data</p></td>
+<td><p>Reload model attributes from new data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.where" title="pydent.models.Group.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(session, params)</p></td>
-<td><p>Finds a list of models by some parameters</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.reset_field" title="pydent.models.Group.reset_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_field</span></code></a>(name)</p></td>
+<td><p>Reset the field descriptor to its placeholder value, returning the behavior.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.where_callback" title="pydent.models.Group.where_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where_callback</span></code></a>(model_name, *args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.where" title="pydent.models.Group.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(session, params)</p></td>
+<td><p>Finds a list of models by some parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.where_callback" title="pydent.models.Group.where_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where_callback</span></code></a>(model_name, *args, **kwargs)</p></td>
 <td><p>Finds models using a model interface and a set of parameters.</p></td>
 </tr>
 </tbody>
@@ -465,7 +482,12 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rid</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Group.session" title="pydent.models.Group.session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code></a></p></td>
 <td><p>The connected session instance.</p></td>
@@ -475,19 +497,26 @@
 <dl class="method">
 <dt id="pydent.models.Group._check_for_session">
 <code class="sig-name descname">_check_for_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._check_for_session" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raises error if model is not connected to a session</p>
+<dd><p>Raises error if model is not connected to a session.</p>
+<p>:raises NoSessionError</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Group._flatten_deserialized_data">
 <em class="property">classmethod </em><code class="sig-name descname">_flatten_deserialized_data</code><span class="sig-paren">(</span><em class="sig-param">models</em>, <em class="sig-param">memo</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._flatten_deserialized_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Flattens all of the relationships found in the models, returning a rid: model dictionary</p>
+<dd><p>Flattens all of the relationships found in the models, returning a
+rid: model dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Group._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._get_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the model’s data</p>
+<dd><p>Return the model’s data.</p>
 </dd></dl>
 
 <dl class="method">
@@ -505,13 +534,15 @@
 <dl class="method">
 <dt id="pydent.models.Group._primary_key">
 <em class="property">property </em><code class="sig-name descname">_primary_key</code><a class="headerlink" href="#pydent.models.Group._primary_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist or is None</p>
+<dd><p>Returns the primary key (e.g. ‘id’) or the rid if id does not exist
+or is None.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Group._rid_dict">
 <code class="sig-name descname">_rid_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group._rid_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dictionary of all models attached to this model keyed by their rid</p>
+<dd><p>Dictionary of all models attached to this model keyed by their
+rid.</p>
 </dd></dl>
 
 <dl class="method">
@@ -535,7 +566,7 @@
 <dl class="method">
 <dt id="pydent.models.Group.append_to_many">
 <code class="sig-name descname">append_to_many</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">model</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.append_to_many" title="Permalink to this definition">¶</a></dt>
-<dd><p>Appends a model to the many relationship</p>
+<dd><p>Appends a model to the many relationship.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -555,29 +586,36 @@
 <dl class="method">
 <dt id="pydent.models.Group.connect_to_session">
 <code class="sig-name descname">connect_to_session</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.connect_to_session" title="Permalink to this definition">¶</a></dt>
-<dd><p>Connect model instance to a session. Does nothing if session already exists.</p>
+<dd><p>Connect model instance to a session.</p>
+<p>Does nothing if session already exists.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Group.copy">
 <code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless
-class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
-found in list of ‘keep’</p>
+<dd><p>Provides a deepcopy of the model, but annonymizes the primary and
+global keys unless class is a metatype (e.g. OperationType, SampleType,
+FieldType) or class name is found in list of ‘keep’.</p>
 <p>By default, inventory classes such as Sample, Item, and Collection are ‘kept’.</p>
-<p>This specific usecase is that when copying whole plans, that the integrity of the
-inventory used in the operations is maintained. These are the items that refer
-to physical inventory in the laboratory and are referred to by their <cite>rids</cite>, and
-so it is important to that any of these inventory are always maintain their <cite>rids</cite>.
-Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
-there is only ONE instance of inventory that is referred to by its rid.</p>
+<p>This specific usecase is that when copying whole plans, that the integrity of
+the inventory used in the operations is maintained. These are the items that
+refer to physical inventory in the laboratory and are referred to by their
+<cite>rids</cite>, and
+so it is important to that any of these inventory are always maintain their
+<cite>rids</cite>.
+Meaning in the lab, their is only ONE instance of the inventory. In Trident
+and Aquarium, there is only ONE instance of inventory that is referred to by
+its rid.</p>
 <p>Similarly, any metatype model must also maintain their <cite>rid</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>keep</strong> – list of model classes (as a list of strings) to keep un-anonymous</p>
+<dd class="field-odd"><p><strong>keep</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – list of model classes (as a list of strings) to keep un-anonymous</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>copied model</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>copied model</p>
 </dd>
 </dl>
 </dd></dl>
@@ -606,20 +644,30 @@ there is only ONE instance of inventory that is referred to by its rid.</p>
 <dl class="method">
 <dt id="pydent.models.Group.find">
 <em class="property">classmethod </em><code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">model_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.find" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a model instance by its model_id</p>
+<dd><p>Finds a model instance by its model_id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Group.find_callback">
 <code class="sig-name descname">find_callback</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">model_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.find_callback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a model using the model interface and model_id. Used to find
-models in model relationships.</p>
+<dd><p>Finds a model using the model interface and model_id.</p>
+<p>Used to find models in model relationships.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.models.Group.get_deserialized">
 <code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.get_deserialized" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get deserialized data by name</p>
+<dd><p>Get deserialized data by name.</p>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
 Use self._get_deserialized_data[name] instead.</p>
@@ -637,8 +685,14 @@ Use self._get_deserialized_data[name] instead.</p>
 <dl class="method">
 <dt id="pydent.models.Group.interface">
 <em class="property">classmethod </em><code class="sig-name descname">interface</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.interface" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a model interface from this class and a session</p>
-<p>This method can be overridden in model definitions for special cases.</p>
+<dd><p>Creates a model interface from this class and a session.</p>
+<p>This method can be overridden in model definitions for special
+cases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="pydent.interfaces.QueryInterface.html#pydent.interfaces.QueryInterface" title="pydent.interfaces.QueryInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryInterface</span></code></a>, <a class="reference internal" href="pydent.interfaces.BrowserInterface.html#pydent.interfaces.BrowserInterface" title="pydent.interfaces.BrowserInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrowserInterface</span></code></a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -683,6 +737,11 @@ Use self._get_deserialized_data[name] instead.</p>
 <em class="property">classmethod </em><code class="sig-name descname">load_from</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">owner=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.load_from" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new model instance from loaded attributes.</p>
 <p>‘obj’ should have a o</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>], <a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -694,7 +753,7 @@ Use self._get_deserialized_data[name] instead.</p>
 <dl class="method">
 <dt id="pydent.models.Group.no_getter">
 <code class="sig-name descname">no_getter</code><span class="sig-paren">(</span><em class="sig-param">*_</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.no_getter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback that always returns None</p>
+<dd><p>Callback that always returns None.</p>
 </dd></dl>
 
 <dl class="method">
@@ -714,7 +773,7 @@ Use self._get_deserialized_data[name] instead.</p>
 <dl class="method">
 <dt id="pydent.models.Group.reload">
 <code class="sig-name descname">reload</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.reload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reload model attributes from new data</p>
+<dd><p>Reload model attributes from new data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to update model instance</p>
@@ -731,8 +790,8 @@ Use self._get_deserialized_data[name] instead.</p>
 <dl class="method">
 <dt id="pydent.models.Group.reset_field">
 <code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.reset_field" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reset the field descriptor to its placeholder value,
-returning the behavior</p>
+<dd><p>Reset the field descriptor to its placeholder value, returning the
+behavior.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
 </div>
@@ -755,7 +814,12 @@ returning the behavior</p>
 <dl class="method">
 <dt id="pydent.models.Group.where">
 <em class="property">classmethod </em><code class="sig-name descname">where</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">params</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.where" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a list of models by some parameters</p>
+<dd><p>Finds a list of models by some parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef('ModelBase')</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -763,6 +827,11 @@ returning the behavior</p>
 <code class="sig-name descname">where_callback</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Group.where_callback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds models using a model interface and a set of parameters.</p>
 <p>Used to find models in model relationships.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

@@ -161,7 +161,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
                     e.r(CallbackValidationError(w))
 
     @classmethod
-    def register(cls, model_class: Type[ModelRegistry]):
+    def register(cls, model_class: Type):
         """Registers the schema to a model class. Saves the schema class to the
         class attribute.
 

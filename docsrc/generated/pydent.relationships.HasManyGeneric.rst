@@ -23,7 +23,6 @@ pydent.relationships.HasManyGeneric
       ~HasManyGeneric.register
       ~HasManyGeneric.serialize
       ~HasManyGeneric.set_data_key
-      ~HasManyGeneric.set_ref
    
    
 

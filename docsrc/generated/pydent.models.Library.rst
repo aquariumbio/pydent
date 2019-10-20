@@ -28,8 +28,8 @@ pydent.models.Library
       ~Library.get_relationships
       ~Library.get_server_model_name
       ~Library.get_tableized_name
-      ~Library.has_deserialize
       ~Library.interface
+      ~Library.is_deserialized
       ~Library.load
       ~Library.load_from
       ~Library.no_getter
@@ -38,6 +38,7 @@ pydent.models.Library
       ~Library.print
       ~Library.refresh
       ~Library.reload
+      ~Library.reset_field
       ~Library.where
       ~Library.where_callback
    

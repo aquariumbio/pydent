@@ -27,8 +27,8 @@ pydent.models.PartAssociation
       ~PartAssociation.get_relationships
       ~PartAssociation.get_server_model_name
       ~PartAssociation.get_tableized_name
-      ~PartAssociation.has_deserialize
       ~PartAssociation.interface
+      ~PartAssociation.is_deserialized
       ~PartAssociation.load
       ~PartAssociation.load_from
       ~PartAssociation.no_getter
@@ -37,6 +37,7 @@ pydent.models.PartAssociation
       ~PartAssociation.print
       ~PartAssociation.refresh
       ~PartAssociation.reload
+      ~PartAssociation.reset_field
       ~PartAssociation.where
       ~PartAssociation.where_callback
    

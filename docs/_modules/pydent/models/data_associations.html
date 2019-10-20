@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,10 +314,8 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.data_associations</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to data associations
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to data associations.&quot;&quot;&quot;
+import json
 import os
 import shutil
 
@@ -326,21 +323,19 @@ import requests
 
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import HasOne, JSON
+from pydent.models.crud_mixin import JSONDeleteMixin
+from pydent.models.crud_mixin import JSONSaveMixin
+from pydent.relationships import HasOne
+from pydent.relationships import JSON
 from pydent.utils import make_async
-from pydent.models.crud_mixin import JSONDeleteMixin, JSONSaveMixin
-import json
 
 
 # TODO: changing the value of a association (and saving it) shouldn&#39;t be difficult
 <div class="viewcode-block" id="DataAssociatorMixin"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin">[docs]</a>class DataAssociatorMixin:
-    &quot;&quot;&quot;
-    Mixin for handling data associations
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;Mixin for handling data associations.&quot;&quot;&quot;
 
 <div class="viewcode-block" id="DataAssociatorMixin.associate"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin.associate">[docs]</a>    def associate(self, key, value, upload=None):
-        &quot;&quot;&quot;
-        Adds a data association with the key and value to this object.
+        &quot;&quot;&quot;Adds a data association with the key and value to this object.
 
         :param key: Key of the association
         :type key: str
@@ -359,8 +354,7 @@ import json
         )</div>
 
 <div class="viewcode-block" id="DataAssociatorMixin.associate_file"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin.associate_file">[docs]</a>    def associate_file(self, key, value, file, job_id=None):
-        &quot;&quot;&quot;
-        Associate a file
+        &quot;&quot;&quot;Associate a file.
 
         :param key: association key
         :type key: str or json
@@ -378,8 +372,7 @@ import json
         return self.associate(key, value, upload=u)</div>
 
 <div class="viewcode-block" id="DataAssociatorMixin.associate_file_from_path"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin.associate_file_from_path">[docs]</a>    def associate_file_from_path(self, key, value, filepath, job_id=None):
-        &quot;&quot;&quot;
-        Associate a file from a filepath
+        &quot;&quot;&quot;Associate a file from a filepath.
 
         :param key: association key
         :type key: str or json
@@ -416,7 +409,7 @@ import json
 
 <div class="viewcode-block" id="DataAssociation"><a class="viewcode-back" href="../../../models.html#pydent.models.DataAssociation">[docs]</a>@add_schema
 class DataAssociation(JSONDeleteMixin, ModelBase):
-    &quot;&quot;&quot;A DataAssociation model&quot;&quot;&quot;
+    &quot;&quot;&quot;A DataAssociation model.&quot;&quot;&quot;
 
     fields = dict(object=JSON(), upload=HasOne(&quot;Upload&quot;))
 
@@ -430,15 +423,12 @@ class DataAssociation(JSONDeleteMixin, ModelBase):
 
 <div class="viewcode-block" id="Upload"><a class="viewcode-back" href="../../../models.html#pydent.models.Upload">[docs]</a>@add_schema
 class Upload(ModelBase):
-    &quot;&quot;&quot;
-    An Upload model
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;An Upload model.&quot;&quot;&quot;
 
     fields = dict(job=HasOne(&quot;Job&quot;))
 
     def __init__(self, job_id=None, file=None):
-        &quot;&quot;&quot;
-        Create a new upload
+        &quot;&quot;&quot;Create a new upload.
 
         :param job_id: job id to associate the upload to
         :type job_id: int
@@ -464,8 +454,7 @@ class Upload(ModelBase):
 
 <div class="viewcode-block" id="Upload._download_file_from_url"><a class="viewcode-back" href="../../../models.html#pydent.models.Upload._download_file_from_url">[docs]</a>    @staticmethod
     def _download_file_from_url(url, outpath):
-        &quot;&quot;&quot;
-        Downloads a file from a url
+        &quot;&quot;&quot;Downloads a file from a url.
 
         :param url: url of file
         :type url: str
@@ -482,8 +471,7 @@ class Upload(ModelBase):
 <div class="viewcode-block" id="Upload.async_download"><a class="viewcode-back" href="../../../models.html#pydent.models.Upload.async_download">[docs]</a>    @staticmethod
     @make_async(1)
     def async_download(uploads, outdir=None, overwrite=True):
-        &quot;&quot;&quot;
-        Asynchronously downloads from list of :class:`Upload` models.
+        &quot;&quot;&quot;Asynchronously downloads from list of :class:`Upload` models.
 
         :param uploads: list of Uploads
         :type uploads: list
@@ -498,8 +486,7 @@ class Upload(ModelBase):
 
 <div class="viewcode-block" id="Upload._download_files"><a class="viewcode-back" href="../../../models.html#pydent.models.Upload._download_files">[docs]</a>    @staticmethod
     def _download_files(uploads, outdir, overwrite):
-        &quot;&quot;&quot;
-        Downloads uploaded file from list of :class:`Upload` models.
+        &quot;&quot;&quot;Downloads uploaded file from list of :class:`Upload` models.
 
         :param uploads: list of Uploads
         :type uploads: list
@@ -517,9 +504,8 @@ class Upload(ModelBase):
         return filepaths</div>
 
 <div class="viewcode-block" id="Upload.download"><a class="viewcode-back" href="../../../models.html#pydent.models.Upload.download">[docs]</a>    def download(self, outdir=None, filename=None, overwrite=True):
-        &quot;&quot;&quot;
-        Downloads the uploaded file to the specified output directory. If
-        no output directory is specified, the file will be downloaded to the
+        &quot;&quot;&quot;Downloads the uploaded file to the specified output directory. If no
+        output directory is specified, the file will be downloaded to the
         current directory.
 
         :param outdir: path of directory of output file (default is current directory)

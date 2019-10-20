@@ -23,7 +23,6 @@ pydent.relationships.HasMany
       ~HasMany.register
       ~HasMany.serialize
       ~HasMany.set_data_key
-      ~HasMany.set_ref
    
    
 

@@ -17,8 +17,9 @@ pydent.marshaller.SchemaModel
       ~SchemaModel.add_data
       ~SchemaModel.dump
       ~SchemaModel.get_deserialized
-      ~SchemaModel.has_deserialize
+      ~SchemaModel.is_deserialized
       ~SchemaModel.load
+      ~SchemaModel.reset_field
    
    
 

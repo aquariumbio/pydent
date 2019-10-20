@@ -100,7 +100,6 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -333,9 +332,10 @@
 <dl class="class">
 <dt id="pydent.relationships.HasMany">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.relationships.</code><code class="sig-name descname">HasMany</code><span class="sig-paren">(</span><em class="sig-param">nested</em>, <em class="sig-param">ref_model=None</em>, <em class="sig-param">attr=None</em>, <em class="sig-param">ref=None</em>, <em class="sig-param">additional_args=None</em>, <em class="sig-param">callback=None</em>, <em class="sig-param">callback_kwargs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/relationships.html#HasMany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasMany" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.relationships.HasMixin.html#pydent.relationships.HasMixin" title="pydent.relationships.HasMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.HasMixin</span></code></a>, <a class="reference internal" href="pydent.relationships.Many.html#pydent.relationships.Many" title="pydent.relationships.Many"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.Many</span></code></a></p>
-<p>A relationship that establishes a One-to-Many relationship with another model.</p>
-<p>HasMany relationship initializer</p>
+<dd><p>Bases: <a class="reference internal" href="pydent.relationships.Many.html#pydent.relationships.Many" title="pydent.relationships.Many"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.relationships.Many</span></code></a></p>
+<p>A relationship that establishes a One-to-Many relationship with another
+model.</p>
+<p>HasMany relationship initializer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -362,7 +362,7 @@ built from the ‘ref_model’ and ‘attr’ parameters</p></li>
 <dl class="method">
 <dt id="pydent.relationships.HasMany.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">nested</em>, <em class="sig-param">ref_model=None</em>, <em class="sig-param">attr=None</em>, <em class="sig-param">ref=None</em>, <em class="sig-param">additional_args=None</em>, <em class="sig-param">callback=None</em>, <em class="sig-param">callback_kwargs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/relationships.html#HasMany.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.HasMany.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>HasMany relationship initializer</p>
+<dd><p>HasMany relationship initializer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -396,10 +396,10 @@ built from the ‘ref_model’ and ‘attr’ parameters</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.HasMany.__init__" title="pydent.relationships.HasMany.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(nested[, ref_model, attr, ref, …])</p></td>
-<td><p>HasMany relationship initializer</p></td>
+<td><p>HasMany relationship initializer.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.relationships.HasMany.build_query" title="pydent.relationships.HasMany.build_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_query</span></code></a>(models)</p></td>
-<td><p>Bundles all of the callback args for the models into a single query</p></td>
+<td><p>Bundles all of the callback args for the models into a single query.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache_result</span></code>(owner, val)</p></td>
 <td><p></p></td>
@@ -411,10 +411,10 @@ built from the ‘ref_model’ and ‘attr’ parameters</p></li>
 <td><p>Calls the callback function using the owner object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.relationships.HasMany.get_callback_args" title="pydent.relationships.HasMany.get_callback_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_callback_args</span></code></a>(owner[, extra_args])</p></td>
-<td><p>Processes the callback args</p></td>
+<td><p>Processes the callback args.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.HasMany.get_callback_kwargs" title="pydent.relationships.HasMany.get_callback_kwargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_callback_kwargs</span></code></a>(owner, extra_kwargs)</p></td>
-<td><p>Processes the callback kwargs</p></td>
+<td><p>Processes the callback kwargs.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.relationships.HasMany.register" title="pydent.relationships.HasMany.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(name, objtype)</p></td>
 <td><p>Registers the field to a nested class.</p></td>
@@ -424,9 +424,6 @@ built from the ‘ref_model’ and ‘attr’ parameters</p></li>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_data_key</span></code>(key)</p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.HasMany.set_ref" title="pydent.relationships.HasMany.set_ref"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_ref</span></code></a>([nested, ref, attr])</p></td>
-<td><p>Sets the ‘ref’ and ‘attr’ attributes.</p></td>
 </tr>
 </tbody>
 </table>
@@ -458,69 +455,11 @@ built from the ‘ref_model’ and ‘attr’ parameters</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.relationships.HasMany.build_query">
-<code class="sig-name descname">build_query</code><span class="sig-paren">(</span><em class="sig-param">models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.build_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bundles all of the callback args for the models into a single query</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.fullfill">
-<code class="sig-name descname">fullfill</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">cache=None</em>, <em class="sig-param">extra_args=None</em>, <em class="sig-param">extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.fullfill" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls the callback function using the owner object. A
-Callback.SELF arg value will be replaced to be equivalent to the
-owner instance model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel"><em>SchemaModel</em></a>) – the owning object</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>function result</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>any</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.get_callback_args">
-<code class="sig-name descname">get_callback_args</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Processes the callback args</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.get_callback_kwargs">
-<code class="sig-name descname">get_callback_kwargs</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Processes the callback kwargs</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.register">
-<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Registers the field to a nested class. Instantiates the corresponding
-descriptor (i.e. accessor)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
-<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.relationships.HasMany.set_ref">
-<code class="sig-name descname">set_ref</code><span class="sig-paren">(</span><em class="sig-param">nested=None</em>, <em class="sig-param">ref=None</em>, <em class="sig-param">attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.set_ref" title="Permalink to this definition">¶</a></dt>
+<dt id="pydent.relationships.HasMany._get_ref_attr">
+<code class="sig-name descname">_get_ref_attr</code><span class="sig-paren">(</span><em class="sig-param">nested=None</em>, <em class="sig-param">ref=None</em>, <em class="sig-param">attr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany._get_ref_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the ‘ref’ and ‘attr’ attributes. These attributes are used to
-defined parameters for
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code> classes.</p>
+defined parameters for.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.Relation</span></code> classes.</p>
 <p>For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">relation</span> <span class="c1"># HasOne, HasMany, or HasManyGeneric, etc.</span>
 <span class="n">relation</span><span class="o">.</span><span class="n">set_ref</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="s2">&quot;parent_id&quot;</span><span class="p">)</span>
@@ -536,6 +475,77 @@ defined parameters for
 <span class="n">relation</span><span class="o">.</span><span class="n">attr</span>  <span class="c1"># &quot;name&quot;</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasMany.build_query">
+<code class="sig-name descname">build_query</code><span class="sig-paren">(</span><em class="sig-param">models</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.build_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bundles all of the callback args for the models into a single
+query.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasMany.fullfill">
+<code class="sig-name descname">fullfill</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">cache=None</em>, <em class="sig-param">extra_args=None</em>, <em class="sig-param">extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.fullfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the callback function using the owner object. A Callback.SELF
+arg value will be replaced to be equivalent to the owner instance
+model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>owner</strong> – the owning object</p></li>
+<li><p><strong>cache</strong> – if True, will cache the return in the deserialized data.</p></li>
+</ul>
+</dd>
+</dl>
+<p>On next call, the cached result will be returned.
+:param extra_args: extra args to pass to the callback function
+:param extra_kwargs: extra kwargs to pass to the callback function
+:return: function result
+:rtype: any</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasMany.get_callback_args">
+<code class="sig-name descname">get_callback_args</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback args.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasMany.get_callback_kwargs">
+<code class="sig-name descname">get_callback_kwargs</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the callback kwargs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.relationships.HasMany.register">
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.HasMany.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the field to a nested class. Instantiates the
+corresponding descriptor (i.e. accessor)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[+CT_co]) – the nested class to register the field to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

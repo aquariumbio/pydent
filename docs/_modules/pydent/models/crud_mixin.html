@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,12 +314,10 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.crud_mixin</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-The create, read, update, destroy (CRUD) mixins used for some models.
-&quot;&quot;&quot;
+<span></span>&quot;&quot;&quot;The create, read, update, destroy (CRUD) mixins used for some models.&quot;&quot;&quot;
 
 
-<div class="viewcode-block" id="CreateMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html#pydent.models.crud_mixin.CreateMixin">[docs]</a>class CreateMixin(object):
+<div class="viewcode-block" id="CreateMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html#pydent.models.crud_mixin.CreateMixin">[docs]</a>class CreateMixin:
     def create(self):
         data = self._get_create_json()
         params = self._get_create_params()
@@ -336,7 +333,7 @@ The create, read, update, destroy (CRUD) mixins used for some models.
         return None</div>
 
 
-<div class="viewcode-block" id="UpdateMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html#pydent.models.crud_mixin.UpdateMixin">[docs]</a>class UpdateMixin(object):
+<div class="viewcode-block" id="UpdateMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html#pydent.models.crud_mixin.UpdateMixin">[docs]</a>class UpdateMixin:
     def update(self):
         data = self._get_create_json()
         params = self._get_update_params()
@@ -360,7 +357,7 @@ The create, read, update, destroy (CRUD) mixins used for some models.
             self.create()</div>
 
 
-<div class="viewcode-block" id="DeleteMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.DeleteMixin.html#pydent.models.crud_mixin.DeleteMixin">[docs]</a>class DeleteMixin(object):
+<div class="viewcode-block" id="DeleteMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.DeleteMixin.html#pydent.models.crud_mixin.DeleteMixin">[docs]</a>class DeleteMixin:
     def delete(self):
         name = self.get_tableized_name()
         params = self._get_delete_params()
@@ -371,7 +368,7 @@ The create, read, update, destroy (CRUD) mixins used for some models.
         return None</div>
 
 
-<div class="viewcode-block" id="JSONSaveMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html#pydent.models.crud_mixin.JSONSaveMixin">[docs]</a>class JSONSaveMixin(object):
+<div class="viewcode-block" id="JSONSaveMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html#pydent.models.crud_mixin.JSONSaveMixin">[docs]</a>class JSONSaveMixin:
     def save(self):
         name = self.get_server_model_name()
         data = self._get_save_json()
@@ -386,7 +383,7 @@ The create, read, update, destroy (CRUD) mixins used for some models.
         return self.dump()</div>
 
 
-<div class="viewcode-block" id="JSONDeleteMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html#pydent.models.crud_mixin.JSONDeleteMixin">[docs]</a>class JSONDeleteMixin(object):
+<div class="viewcode-block" id="JSONDeleteMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html#pydent.models.crud_mixin.JSONDeleteMixin">[docs]</a>class JSONDeleteMixin:
     def delete(self):
         name = self.get_server_model_name()
         data = self._get_delete_json()

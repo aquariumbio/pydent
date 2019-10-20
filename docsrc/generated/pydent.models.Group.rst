@@ -27,8 +27,8 @@ pydent.models.Group
       ~Group.get_relationships
       ~Group.get_server_model_name
       ~Group.get_tableized_name
-      ~Group.has_deserialize
       ~Group.interface
+      ~Group.is_deserialized
       ~Group.load
       ~Group.load_from
       ~Group.no_getter
@@ -37,6 +37,7 @@ pydent.models.Group
       ~Group.print
       ~Group.refresh
       ~Group.reload
+      ~Group.reset_field
       ~Group.where
       ~Group.where_callback
    

@@ -27,8 +27,8 @@ pydent.models.UserBudgetAssociation
       ~UserBudgetAssociation.get_relationships
       ~UserBudgetAssociation.get_server_model_name
       ~UserBudgetAssociation.get_tableized_name
-      ~UserBudgetAssociation.has_deserialize
       ~UserBudgetAssociation.interface
+      ~UserBudgetAssociation.is_deserialized
       ~UserBudgetAssociation.load
       ~UserBudgetAssociation.load_from
       ~UserBudgetAssociation.no_getter
@@ -37,6 +37,7 @@ pydent.models.UserBudgetAssociation
       ~UserBudgetAssociation.print
       ~UserBudgetAssociation.refresh
       ~UserBudgetAssociation.reload
+      ~UserBudgetAssociation.reset_field
       ~UserBudgetAssociation.where
       ~UserBudgetAssociation.where_callback
    

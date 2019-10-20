@@ -30,10 +30,10 @@ pydent.models.OperationType
       ~OperationType.get_relationships
       ~OperationType.get_server_model_name
       ~OperationType.get_tableized_name
-      ~OperationType.has_deserialize
       ~OperationType.input
       ~OperationType.instance
       ~OperationType.interface
+      ~OperationType.is_deserialized
       ~OperationType.load
       ~OperationType.load_from
       ~OperationType.no_getter
@@ -43,6 +43,7 @@ pydent.models.OperationType
       ~OperationType.print
       ~OperationType.refresh
       ~OperationType.reload
+      ~OperationType.reset_field
       ~OperationType.save
       ~OperationType.to_save_json
       ~OperationType.update

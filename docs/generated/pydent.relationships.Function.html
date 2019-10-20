@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -334,31 +333,48 @@
 <dt id="pydent.relationships.Function">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.relationships.</code><code class="sig-name descname">Function</code><span class="sig-paren">(</span><em class="sig-param">callback</em>, <em class="sig-param">callback_args=None</em>, <em class="sig-param">callback_kwargs=None</em>, <em class="sig-param">cache=False</em>, <em class="sig-param">data_key=None</em>, <em class="sig-param">many=None</em>, <em class="sig-param">allow_none=True</em>, <em class="sig-param">always_dump=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/relationships.html#Function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.relationships.Function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.fields.Callback</span></code></a></p>
-<p>Calls a specified function upon attribute access. Similar to the &#64;property
-decorator in python, but will search and find an instance method using
-the method name.</p>
+<p>Calls a specified function upon attribute access.</p>
+<p>Similar to the &#64;property decorator in python, but will search and
+find an instance method using the method name.</p>
 <p>A Callback field initializer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>callback</strong> – name of the callback function or a callable. If a name, the name should exist</p>
+<dd class="field-odd"><p><strong>callback</strong> – name of the callback function or a callable. If a name, the</p>
 </dd>
 </dl>
-<p>as a function in the owner instance. Invalid callback signatures are captures on class creation.
+<p>name should exist
+as a function in the owner instance. Invalid callback signatures are captures
+on class creation.
 :type callback: callable|basestring
-:param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
-values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
+:param callback_args: a tuple of arguments to use in the callback. If any of
+the callback arguments  or
+values of the callback kwargs are callable, the owner will be passed to the
+callable. The owner instance will
 replace any arguments that are <cite>Callback.SElF</cite>
 :type callback_args: tuple
 :param callback_kwargs: a dictionary of kwargs to use in the callback
 :type callback_kwargs: dict
-:param cache: whether to cache the result using <cite>setattr</cite> on the owner instance. This will initialize the
-serialization and deserialization procedures detailed in the corresponding field/descriptor.
+:param cache: whether to cache the result using <cite>setattr</cite> on the owner instance.</p>
+<blockquote>
+<div><p>This will initialize the</p>
+</div></blockquote>
+<p>serialization and deserialization procedures detailed in the corresponding
+field/descriptor.
 :type cache: bool
-:param many: whether to treat serializations and deserializations as a per-item basis in a list
-:type many: bool
-:param allow_none: whether to return None if None is received in deserialization or serializaiton methods
-:type allow_none: bool
-:param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+:param many: whether to treat serializations and deserializations as a per-item</p>
+<blockquote>
+<div><p>basis in a list</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allow_none</strong> (<em>bool</em>) – whether to return None if None is received in deserialization
+or serializaiton methods</p></li>
+<li><p><strong>data_key</strong> – the data_key, or attribute name, of this field. Calling this</p></li>
+</ul>
+</dd>
+</dl>
+<p>as an attribute to the registered
 nested should return this field’s descriptor.
 :param always_dump: if True, this field will be serialized by default
 :type always_dump: bool</p>
@@ -368,25 +384,42 @@ nested should return this field’s descriptor.
 <dd><p>A Callback field initializer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>callback</strong> – name of the callback function or a callable. If a name, the name should exist</p>
+<dd class="field-odd"><p><strong>callback</strong> – name of the callback function or a callable. If a name, the</p>
 </dd>
 </dl>
-<p>as a function in the owner instance. Invalid callback signatures are captures on class creation.
+<p>name should exist
+as a function in the owner instance. Invalid callback signatures are captures
+on class creation.
 :type callback: callable|basestring
-:param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
-values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
+:param callback_args: a tuple of arguments to use in the callback. If any of
+the callback arguments  or
+values of the callback kwargs are callable, the owner will be passed to the
+callable. The owner instance will
 replace any arguments that are <cite>Callback.SElF</cite>
 :type callback_args: tuple
 :param callback_kwargs: a dictionary of kwargs to use in the callback
 :type callback_kwargs: dict
-:param cache: whether to cache the result using <cite>setattr</cite> on the owner instance. This will initialize the
-serialization and deserialization procedures detailed in the corresponding field/descriptor.
+:param cache: whether to cache the result using <cite>setattr</cite> on the owner instance.</p>
+<blockquote>
+<div><p>This will initialize the</p>
+</div></blockquote>
+<p>serialization and deserialization procedures detailed in the corresponding
+field/descriptor.
 :type cache: bool
-:param many: whether to treat serializations and deserializations as a per-item basis in a list
-:type many: bool
-:param allow_none: whether to return None if None is received in deserialization or serializaiton methods
-:type allow_none: bool
-:param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+:param many: whether to treat serializations and deserializations as a per-item</p>
+<blockquote>
+<div><p>basis in a list</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allow_none</strong> (<em>bool</em>) – whether to return None if None is received in deserialization
+or serializaiton methods</p></li>
+<li><p><strong>data_key</strong> – the data_key, or attribute name, of this field. Calling this</p></li>
+</ul>
+</dd>
+</dl>
+<p>as an attribute to the registered
 nested should return this field’s descriptor.
 :param always_dump: if True, this field will be serialized by default
 :type always_dump: bool</p>
@@ -412,16 +445,21 @@ nested should return this field’s descriptor.
 <td><p>Calls the callback function using the owner object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.Function.get_callback_args" title="pydent.relationships.Function.get_callback_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_callback_args</span></code></a>(owner[, extra_args])</p></td>
-<td><p>Processes the callback args</p></td>
+<td><p>Processes the callback args.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.relationships.Function.get_callback_kwargs" title="pydent.relationships.Function.get_callback_kwargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_callback_kwargs</span></code></a>(owner, extra_kwargs)</p></td>
-<td><p>Processes the callback kwargs</p></td>
+<td><p>Processes the callback kwargs.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.relationships.Function.register" title="pydent.relationships.Function.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(name, objtype)</p></td>
 <td><p>Registers the field to a nested class.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">serialize</span></code>(owner, data)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[~T]]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_data_key</span></code>(key)</p></td>
 <td><p></p></td>
@@ -455,44 +493,58 @@ nested should return this field’s descriptor.
 <dl class="method">
 <dt id="pydent.relationships.Function.fullfill">
 <code class="sig-name descname">fullfill</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">cache=None</em>, <em class="sig-param">extra_args=None</em>, <em class="sig-param">extra_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.fullfill" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls the callback function using the owner object. A
-Callback.SELF arg value will be replaced to be equivalent to the
-owner instance model.</p>
+<dd><p>Calls the callback function using the owner object. A Callback.SELF
+arg value will be replaced to be equivalent to the owner instance
+model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>owner</strong> (<a class="reference internal" href="pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel"><em>SchemaModel</em></a>) – the owning object</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>function result</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>any</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>owner</strong> – the owning object</p></li>
+<li><p><strong>cache</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – if True, will cache the return in the deserialized data.</p></li>
+</ul>
 </dd>
 </dl>
+<p>On next call, the cached result will be returned.
+:type extra_args: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>]
+:param extra_args: extra args to pass to the callback function
+:type extra_kwargs: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]
+:param extra_kwargs: extra kwargs to pass to the callback function
+:return: function result
+:rtype: any</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.Function.get_callback_args">
 <code class="sig-name descname">get_callback_args</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_args=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.get_callback_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Processes the callback args</p>
+<dd><p>Processes the callback args.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.Function.get_callback_kwargs">
 <code class="sig-name descname">get_callback_kwargs</code><span class="sig-paren">(</span><em class="sig-param">owner</em>, <em class="sig-param">extra_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.get_callback_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Processes the callback kwargs</p>
+<dd><p>Processes the callback kwargs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.relationships.Function.register">
 <code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">objtype</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.relationships.Function.register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Registers the field to a nested class. Instantiates the corresponding
-descriptor (i.e. accessor)</p>
+<dd><p>Registers the field to a nested class. Instantiates the
+corresponding descriptor (i.e. accessor)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>basestring</em>) – name of the field</p></li>
-<li><p><strong>objtype</strong> (<a class="reference internal" href="pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel"><em>SchemaModel</em></a>) – the nested class to register the field to</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the field</p></li>
+<li><p><strong>objtype</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[+CT_co]) – the nested class to register the field to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

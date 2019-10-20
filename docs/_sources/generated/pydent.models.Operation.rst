@@ -42,11 +42,11 @@ pydent.models.Operation
       ~Operation.get_routing
       ~Operation.get_server_model_name
       ~Operation.get_tableized_name
-      ~Operation.has_deserialize
       ~Operation.init_field_values
       ~Operation.input
       ~Operation.input_array
       ~Operation.interface
+      ~Operation.is_deserialized
       ~Operation.load
       ~Operation.load_from
       ~Operation.new_field_value
@@ -59,6 +59,7 @@ pydent.models.Operation
       ~Operation.print
       ~Operation.refresh
       ~Operation.reload
+      ~Operation.reset_field
       ~Operation.safe_get_field_type
       ~Operation.set_field_value
       ~Operation.set_field_value_array

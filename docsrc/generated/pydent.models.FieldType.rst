@@ -31,9 +31,9 @@ pydent.models.FieldType
       ~FieldType.get_relationships
       ~FieldType.get_server_model_name
       ~FieldType.get_tableized_name
-      ~FieldType.has_deserialize
       ~FieldType.initialize_field_value
       ~FieldType.interface
+      ~FieldType.is_deserialized
       ~FieldType.is_parameter
       ~FieldType.load
       ~FieldType.load_from
@@ -43,6 +43,7 @@ pydent.models.FieldType
       ~FieldType.print
       ~FieldType.refresh
       ~FieldType.reload
+      ~FieldType.reset_field
       ~FieldType.where
       ~FieldType.where_callback
    

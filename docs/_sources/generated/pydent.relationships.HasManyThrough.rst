@@ -23,7 +23,6 @@ pydent.relationships.HasManyThrough
       ~HasManyThrough.register
       ~HasManyThrough.serialize
       ~HasManyThrough.set_data_key
-      ~HasManyThrough.set_ref
    
    
 

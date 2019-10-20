@@ -27,8 +27,8 @@ pydent.models.Job
       ~Job.get_relationships
       ~Job.get_server_model_name
       ~Job.get_tableized_name
-      ~Job.has_deserialize
       ~Job.interface
+      ~Job.is_deserialized
       ~Job.load
       ~Job.load_from
       ~Job.no_getter
@@ -37,6 +37,7 @@ pydent.models.Job
       ~Job.print
       ~Job.refresh
       ~Job.reload
+      ~Job.reset_field
       ~Job.where
       ~Job.where_callback
    

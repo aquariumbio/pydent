@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,36 +314,31 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.plan</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to plans, plan associations, and wires.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to plans, plan associations, and wires.&quot;&quot;&quot;
 import json
+from warnings import warn
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import DeleteMixin
+from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.models.data_associations import Upload
 from pydent.models.field_value import FieldValue
-from pydent.models.data_associations import Upload, DataAssociatorMixin
-from pydent.relationships import (
-    Raw,
-    JSON,
-    Many,
-    HasOne,
-    HasMany,
-    HasManyThrough,
-    HasManyGeneric,
-    fields,
-)
-from pydent.models.crud_mixin import SaveMixin, DeleteMixin
-from warnings import warn
+from pydent.relationships import fields
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import JSON
+from pydent.relationships import Many
+from pydent.relationships import Raw
 
 
 <div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan">[docs]</a>@add_schema
 class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
-    &quot;&quot;&quot;
-    A Plan model
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;A Plan model.&quot;&quot;&quot;
 
     fields = dict(
         data_associations=HasManyGeneric(
@@ -379,8 +373,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         )</div>
 
 <div class="viewcode-block" id="Plan.add_operation"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.add_operation">[docs]</a>    def add_operation(self, operation):
-        &quot;&quot;&quot;
-        Adds an operation to the Plan
+        &quot;&quot;&quot;Adds an operation to the Plan.
 
         :param operation: Operation to add
         :type operation: Operation
@@ -390,8 +383,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         self.append_to_many(&quot;operations&quot;, operation)</div>
 
 <div class="viewcode-block" id="Plan.add_operations"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.add_operations">[docs]</a>    def add_operations(self, operations):
-        &quot;&quot;&quot;
-        Adds multiple operations to the Plan
+        &quot;&quot;&quot;Adds multiple operations to the Plan.
 
         :param operations: list of Operations
         :type operations: list
@@ -407,8 +399,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return self.operations and op.rid in [_op.rid for _op in self.operations]
 
 <div class="viewcode-block" id="Plan.find_wires"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.find_wires">[docs]</a>    def find_wires(self, src, dest):
-        &quot;&quot;&quot;
-        Retrieves the wire between a source and destination FieldValues
+        &quot;&quot;&quot;Retrieves the wire between a source and destination FieldValues.
 
         :param src: source FieldValue
         :type src: FieldValue
@@ -425,10 +416,10 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return found</div>
 
 <div class="viewcode-block" id="Plan.wire"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.wire">[docs]</a>    def wire(self, src, dest):
-        &quot;&quot;&quot;
-        Creates a new wire between src and dest FieldValues. Returns the new wire
-        if it does not exist in the plan. If the wire already exists and
-        error_if_exists is True, then the existing wire is returned. Else an exception is raised.
+        &quot;&quot;&quot;Creates a new wire between src and dest FieldValues. Returns the new
+        wire if it does not exist in the plan. If the wire already exists and
+        error_if_exists is True, then the existing wire is returned. Else an
+        exception is raised.
 
         :param src: source field value (the input of the wire)
         :type src: FieldValue
@@ -473,7 +464,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return incoming_wires, outgoing_wires
 
 <div class="viewcode-block" id="Plan._get_wire_dict"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan._get_wire_dict">[docs]</a>    def _get_wire_dict(self, wires):
-        &quot;&quot;&quot;Return all wires in the plan grouped by the wire identifier&quot;&quot;&quot;
+        &quot;&quot;&quot;Return all wires in the plan grouped by the wire identifier.&quot;&quot;&quot;
         wire_dict = {}
         for w in wires:
             wire_dict.setdefault(w.identifier, list())
@@ -496,8 +487,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return wires_from_server
 
 <div class="viewcode-block" id="Plan.submit"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.submit">[docs]</a>    def submit(self, user, budget):
-        &quot;&quot;&quot;
-        Submits the Plan to the Aquarium server.
+        &quot;&quot;&quot;Submits the Plan to the Aquarium server.
 
         :param user: User to submit the Plan
         :type user: User
@@ -521,7 +511,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
 <div class="viewcode-block" id="Plan.interface"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.interface">[docs]</a>    @classmethod
     def interface(cls, session):
         # get model interface from Base class
-        model_interface = super(Plan, cls).interface(session)
+        model_interface = super().interface(session)
 
         # make a special find method for plans, as generic method is too minimal.
         def new_find(model_id):
@@ -533,8 +523,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return model_interface</div>
 
 <div class="viewcode-block" id="Plan.validate"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.validate">[docs]</a>    def validate(self, raise_error=True):
-        &quot;&quot;&quot;
-        Validates the plan.
+        &quot;&quot;&quot;Validates the plan.
 
         :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.
         :type raise_error: boolean
@@ -568,8 +557,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return errors</div>
 
 <div class="viewcode-block" id="Plan.to_save_json"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.to_save_json">[docs]</a>    def to_save_json(self):
-        &quot;&quot;&quot;
-        Returns the json representation of the plan for saving and creating
+        &quot;&quot;&quot;Returns the json representation of the plan for saving and creating
         Plans on the Aquarium server.
 
         :return: JSON
@@ -650,9 +638,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return {&quot;user_id&quot;: self.session.current_user.id}
 
 <div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.estimate_cost">[docs]</a>    def estimate_cost(self):
-        &quot;&quot;&quot;
-        Estimates the cost of the plan on the Aquarium server.
-        This is necessary before plan submission.
+        &quot;&quot;&quot;Estimates the cost of the plan on the Aquarium server. This is
+        necessary before plan submission.
 
         :return: cost
         :rtype: dict
@@ -663,11 +650,11 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         raise NotImplementedError()
 
 <div class="viewcode-block" id="Plan.step"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.step">[docs]</a>    def step(self):
-        &quot;&quot;&quot;Steps a plan&quot;&quot;&quot;
+        &quot;&quot;&quot;Steps a plan.&quot;&quot;&quot;
         return self.session.utils.step_plan(self.id)</div>
 
 <div class="viewcode-block" id="Plan.show"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.show">[docs]</a>    def show(self):
-        &quot;&quot;&quot;Print the plan nicely&quot;&quot;&quot;
+        &quot;&quot;&quot;Print the plan nicely.&quot;&quot;&quot;
         print(self.name + &quot; id: &quot; + str(self.id))
         for operation in self.operations:
             operation.show(pre=&quot;  &quot;)
@@ -675,12 +662,14 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             wire.show(pre=&quot;  &quot;)</div>
 
 <div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.replan">[docs]</a>    def replan(self):
-        &quot;&quot;&quot;Copies or replans the plan. Returns a plan copy&quot;&quot;&quot;
+        &quot;&quot;&quot;Copies or replans the plan.
+
+        Returns a plan copy
+        &quot;&quot;&quot;
         return self.session.utils.replan(self.id)</div>
 
 <div class="viewcode-block" id="Plan.download_files"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.download_files">[docs]</a>    def download_files(self, outdir=None, overwrite=True):
-        &quot;&quot;&quot;
-        Downloads all uploads associated with the plan. Downloads happen
+        &quot;&quot;&quot;Downloads all uploads associated with the plan. Downloads happen
         ansynchrounously.
 
         :param outdir: output directory for downloaded files
@@ -696,7 +685,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
 
 <div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../../models.html#pydent.models.PlanAssociation">[docs]</a>@add_schema
 class PlanAssociation(ModelBase):
-    &quot;&quot;&quot;A PlanAssociation model&quot;&quot;&quot;
+    &quot;&quot;&quot;A PlanAssociation model.&quot;&quot;&quot;
 
     fields = dict(plan=HasOne(&quot;Plan&quot;), operation=HasOne(&quot;Operation&quot;))
 
@@ -706,7 +695,7 @@ class PlanAssociation(ModelBase):
 
 <div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../../models.html#pydent.models.Wire">[docs]</a>@add_schema
 class Wire(DeleteMixin, ModelBase):
-    &quot;&quot;&quot;A Wire model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Wire model.&quot;&quot;&quot;
 
     fields = {
         &quot;source&quot;: HasOne(&quot;FieldValue&quot;, ref=&quot;from_id&quot;),
@@ -830,15 +819,15 @@ class Wire(DeleteMixin, ModelBase):
         return save_json
 
 <div class="viewcode-block" id="Wire.delete"><a class="viewcode-back" href="../../../models.html#pydent.models.Wire.delete">[docs]</a>    def delete(self):
-        &quot;&quot;&quot;
-        Permanently deletes the wire instance on the Aquarium server.
+        &quot;&quot;&quot;Permanently deletes the wire instance on the Aquarium server.
+
         :return:
         :rtype:
         &quot;&quot;&quot;
         return self.session.utils.delete_wire(self)</div>
 
 <div class="viewcode-block" id="Wire.show"><a class="viewcode-back" href="../../../models.html#pydent.models.Wire.show">[docs]</a>    def show(self, pre=&quot;&quot;):
-        &quot;&quot;&quot;Show the wire nicely&quot;&quot;&quot;
+        &quot;&quot;&quot;Show the wire nicely.&quot;&quot;&quot;
         source = self.source
         dest = self.destination
 
@@ -876,9 +865,12 @@ class Wire(DeleteMixin, ModelBase):
         return False
 
 <div class="viewcode-block" id="Wire.does_wire"><a class="viewcode-back" href="../../../models.html#pydent.models.Wire.does_wire">[docs]</a>    def does_wire(self, source, destination):
-        &quot;&quot;&quot;Checks whether this Wire is a wire between the source and destination FieldValues.
+        &quot;&quot;&quot;Checks whether this Wire is a wire between the source and
+        destination FieldValues.
 
-        If any of the source or destination FieldValues are None, returns False.&quot;&quot;&quot;
+        If any of the source or destination FieldValues are None,
+        returns False.
+        &quot;&quot;&quot;
         if source and destination and self.source and self.destination:
             return (
                 source.rid == self.source.rid
@@ -887,9 +879,11 @@ class Wire(DeleteMixin, ModelBase):
         return False</div>
 
     def __eq__(self, other):
-        &quot;&quot;&quot;Checks whether this Wire is wired to the same FieldValue instances of another Wire.
+        &quot;&quot;&quot;Checks whether this Wire is wired to the same FieldValue instances
+        of another Wire.
 
-        see `does_wire` method.&quot;&quot;&quot;
+        see `does_wire` method.
+        &quot;&quot;&quot;
         return self.does_wire(other.source, other.destination)</div>
 </pre></div>
 

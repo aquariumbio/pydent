@@ -28,8 +28,8 @@ pydent.models.Code
       ~Code.get_relationships
       ~Code.get_server_model_name
       ~Code.get_tableized_name
-      ~Code.has_deserialize
       ~Code.interface
+      ~Code.is_deserialized
       ~Code.load
       ~Code.load_from
       ~Code.no_getter
@@ -38,6 +38,7 @@ pydent.models.Code
       ~Code.print
       ~Code.refresh
       ~Code.reload
+      ~Code.reset_field
       ~Code.update
       ~Code.where
       ~Code.where_callback

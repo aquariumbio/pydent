@@ -24,7 +24,6 @@ pydent.relationships.HasOne
       ~HasOne.register
       ~HasOne.serialize
       ~HasOne.set_data_key
-      ~HasOne.set_ref
    
    
 

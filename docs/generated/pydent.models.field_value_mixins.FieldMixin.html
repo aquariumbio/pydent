@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -334,7 +333,7 @@
 <dt id="pydent.models.field_value_mixins.FieldMixin">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.models.field_value_mixins.</code><code class="sig-name descname">FieldMixin</code><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Mixin for finding FieldType and FieldValue relationships</p>
+<p>Mixin for finding FieldType and FieldValue relationships.</p>
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldMixin.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.field_value_mixins.FieldMixin.__init__" title="Permalink to this definition">¶</a></dt>
@@ -359,8 +358,8 @@
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldMixin.find_field_parent">
 <code class="sig-name descname">find_field_parent</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">model_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldMixin.find_field_parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldMixin.find_field_parent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback for finding operation_type or sample_type.
-If parent_class does not match the expected nested model name
+<dd><p>Callback for finding operation_type or sample_type.</p>
+<p>If parent_class does not match the expected nested model name
 (OperationType or SampleType), callback will return None</p>
 </dd></dl>
 

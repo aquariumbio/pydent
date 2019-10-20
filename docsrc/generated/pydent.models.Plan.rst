@@ -41,9 +41,9 @@ pydent.models.Plan
       ~Plan.get_relationships
       ~Plan.get_server_model_name
       ~Plan.get_tableized_name
-      ~Plan.has_deserialize
       ~Plan.has_operation
       ~Plan.interface
+      ~Plan.is_deserialized
       ~Plan.load
       ~Plan.load_from
       ~Plan.no_getter
@@ -53,6 +53,7 @@ pydent.models.Plan
       ~Plan.refresh
       ~Plan.reload
       ~Plan.replan
+      ~Plan.reset_field
       ~Plan.save
       ~Plan.show
       ~Plan.step

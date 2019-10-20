@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,18 +314,18 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.job</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to jobs, or operation execution.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to jobs, or operation execution.&quot;&quot;&quot;
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import JSON, HasOne, HasMany, HasManyThrough
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import JSON
 
 
 <div class="viewcode-block" id="Job"><a class="viewcode-back" href="../../../models.html#pydent.models.Job">[docs]</a>@add_schema
 class Job(ModelBase):
-    &quot;&quot;&quot;A Job model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Job model.&quot;&quot;&quot;
 
     fields = dict(
         job_associations=HasMany(&quot;JobAssociation&quot;, &quot;Job&quot;),
@@ -354,7 +353,7 @@ class Job(ModelBase):
 
 <div class="viewcode-block" id="JobAssociation"><a class="viewcode-back" href="../../../models.html#pydent.models.JobAssociation">[docs]</a>@add_schema
 class JobAssociation(ModelBase):
-    &quot;&quot;&quot;A JobAssociation model&quot;&quot;&quot;
+    &quot;&quot;&quot;A JobAssociation model.&quot;&quot;&quot;
 
     fields = dict(job=HasOne(&quot;Job&quot;), operation=HasOne(&quot;Operation&quot;))</div>
 </pre></div>

@@ -100,7 +100,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -334,7 +333,8 @@
 <dt id="pydent.marshaller.SchemaModel">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.marshaller.</code><code class="sig-name descname">SchemaModel</code><span class="sig-paren">(</span><em class="sig-param">data=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/base.html#SchemaModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.SchemaModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A Schema class that holds information on serialization/deserialization</p>
+<p>A Schema class that holds information on
+serialization/deserialization.</p>
 <p>The model initializer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -369,13 +369,16 @@
 <td><p>Dump/serializes the model to a json-like dictionary.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.SchemaModel.get_deserialized" title="pydent.marshaller.SchemaModel.get_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_deserialized</span></code></a>(name)</p></td>
-<td><p>Get deserialized data by name</p></td>
+<td><p>Get deserialized data by name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemaModel.has_deserialize</span></code></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.SchemaModel.is_deserialized" title="pydent.marshaller.SchemaModel.is_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_deserialized</span></code></a>(name)</p></td>
+<td><p>Check if a given key has already been deserialized.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.SchemaModel.load" title="pydent.marshaller.SchemaModel.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(data)</p></td>
 <td><p>Deserialize the data to a model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.SchemaModel.reset_field" title="pydent.marshaller.SchemaModel.reset_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_field</span></code></a>(name)</p></td>
+<td><p>Reset the field descriptor to its placeholder value, returning the behavior.</p></td>
 </tr>
 </tbody>
 </table>
@@ -394,7 +397,7 @@
 <dl class="method">
 <dt id="pydent.marshaller.SchemaModel._get_data">
 <code class="sig-name descname">_get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/base.html#SchemaModel._get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.SchemaModel._get_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the model’s data</p>
+<dd><p>Return the model’s data.</p>
 </dd></dl>
 
 <dl class="method">
@@ -433,7 +436,7 @@
 <dl class="method">
 <dt id="pydent.marshaller.SchemaModel.get_deserialized">
 <code class="sig-name descname">get_deserialized</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/base.html#SchemaModel.get_deserialized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.SchemaModel.get_deserialized" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get deserialized data by name</p>
+<dd><p>Get deserialized data by name.</p>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 0.1.5a7: </span>method will be removed in 0.2.
 Use self._get_deserialized_data[name] instead.</p>
@@ -488,8 +491,8 @@ Use self._get_deserialized_data[name] instead.</p>
 <dl class="method">
 <dt id="pydent.marshaller.SchemaModel.reset_field">
 <code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/base.html#SchemaModel.reset_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.SchemaModel.reset_field" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reset the field descriptor to its placeholder value,
-returning the behavior</p>
+<dd><p>Reset the field descriptor to its placeholder value, returning the
+behavior.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
 </div>

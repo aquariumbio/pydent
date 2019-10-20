@@ -27,8 +27,8 @@ pydent.models.PlanAssociation
       ~PlanAssociation.get_relationships
       ~PlanAssociation.get_server_model_name
       ~PlanAssociation.get_tableized_name
-      ~PlanAssociation.has_deserialize
       ~PlanAssociation.interface
+      ~PlanAssociation.is_deserialized
       ~PlanAssociation.load
       ~PlanAssociation.load_from
       ~PlanAssociation.no_getter
@@ -37,6 +37,7 @@ pydent.models.PlanAssociation
       ~PlanAssociation.print
       ~PlanAssociation.refresh
       ~PlanAssociation.reload
+      ~PlanAssociation.reset_field
       ~PlanAssociation.where
       ~PlanAssociation.where_callback
    

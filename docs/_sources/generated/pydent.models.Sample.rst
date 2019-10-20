@@ -37,8 +37,8 @@ pydent.models.Sample
       ~Sample.get_routing
       ~Sample.get_server_model_name
       ~Sample.get_tableized_name
-      ~Sample.has_deserialize
       ~Sample.interface
+      ~Sample.is_deserialized
       ~Sample.load
       ~Sample.load_from
       ~Sample.new_field_value
@@ -49,6 +49,7 @@ pydent.models.Sample
       ~Sample.print
       ~Sample.refresh
       ~Sample.reload
+      ~Sample.reset_field
       ~Sample.safe_get_field_type
       ~Sample.save
       ~Sample.set_field_value

@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -359,19 +358,28 @@ relationships - models relationships are stored
     primer_type = s.sample_type
 
 &quot;&quot;&quot;
-
-from pydent.exceptions import AquariumModelError, NoSessionError
-from pydent.marshaller import SchemaModel, ModelRegistry, fields
-from inflection import tableize
 import itertools
 from copy import deepcopy
+from typing import Dict
+from typing import List
+from typing import Union
+
+from inflection import tableize
+
+from pydent.exceptions import AquariumModelError
+from pydent.exceptions import NoSessionError
+from pydent.interfaces import BrowserInterface
+from pydent.interfaces import QueryInterface
+from pydent.marshaller import fields
+from pydent.marshaller import ModelRegistry
+from pydent.marshaller import SchemaModel
 from pydent.sessionabc import SessionABC
 
 
 <div class="viewcode-block" id="ModelBase"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase">[docs]</a>class ModelBase(SchemaModel):
-    &quot;&quot;&quot;
-    Base class for Aquarium models.
-    Subclass of :class:`pydent.marshaller.MarshallerBase`
+    &quot;&quot;&quot;Base class for Aquarium models. Subclass of.
+
+    :class:`pydent.marshaller.MarshallerBase`
 
     - creates instances from JSON using `load`
     - contains a reference to the :class:`pydent.session.aqsession.AqSession`
@@ -387,7 +395,7 @@ from pydent.sessionabc import SessionABC
     rid = None
 
     def __new__(cls, *args, session=None, **kwargs):
-        instance = super(ModelBase, cls).__new__(cls)
+        instance = super().__new__(cls)
         instance._session = None
         instance.session = session
         instance._rid = next(ModelBase.counter)
@@ -398,7 +406,7 @@ from pydent.sessionabc import SessionABC
         self.add_data({&quot;rid&quot;: self._rid, &quot;id&quot;: data.get(&quot;id&quot;, None)})
 
     @classmethod
-    def _set_data(cls, data, owner):
+    def _set_data(cls, data: dict, owner: &quot;ModelBase&quot;) -&gt; &quot;ModelBase&quot;:
         if not hasattr(owner, &quot;session&quot;):
             raise NoSessionError(
                 &quot;Cannot instantiate new model because its data parent&quot;
@@ -421,26 +429,26 @@ from pydent.sessionabc import SessionABC
         return tableize(cls.get_server_model_name())
 
     @property
-    def rid(self):
+    def rid(self) -&gt; int:
         return self._rid
 
     @rid.setter
-    def rid(self, _rid):
+    def rid(self, _rid: int):
         self._rid = _rid
         self.add_data({&quot;rid&quot;: self._rid})
 
     @property
     def _primary_key(self):
-        &quot;&quot;&quot;Returns the primary key (e.g. &#39;id&#39;) or the rid if id does not exist or is None&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns the primary key (e.g. &#39;id&#39;) or the rid if id does not exist
+        or is None.&quot;&quot;&quot;
         if hasattr(self, ModelBase.PRIMARY_KEY):
             pk = getattr(self, ModelBase.PRIMARY_KEY)
             if pk:
                 return pk
         return &quot;r{}&quot;.format(self.rid)
 
-<div class="viewcode-block" id="ModelBase.append_to_many"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.append_to_many">[docs]</a>    def append_to_many(self, name, model):
-        &quot;&quot;&quot;
-        Appends a model to the many relationship
+<div class="viewcode-block" id="ModelBase.append_to_many"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.append_to_many">[docs]</a>    def append_to_many(self, name: str, model: &quot;ModelBase&quot;) -&gt; &quot;ModelBase&quot;:
+        &quot;&quot;&quot;Appends a model to the many relationship.
 
         :param name: name of the relationship or attribute
         :type name: str
@@ -473,18 +481,23 @@ from pydent.sessionabc import SessionABC
             &quot;This method is now depreciated as of version 0.1.0. Trident now requires&quot;
             &quot; model instantiations to be explicitly attached to an AqSession object.&quot;
             &quot;\nPlease use the following&quot;
-            &quot; methods to initialize your models, which will automatically attach your session object to&quot;
+            &quot; methods to initialize your models, which will automatically attach your &quot;
+            &quot;session object to&quot;
             &quot; the newly constructed instance.&quot;
-            &quot;\n(1) `session.{name}.new(*args, **kwargs)` to initialize a new model using a constructor.&quot;
+            &quot;\n(1) `session.{name}.new(*args, **kwargs)` to initialize a new model &quot;
+            &quot;using a constructor.&quot;
             &quot;\n(2) `session.{name}.load(data)  # to initialize a model with data.&quot;
             &quot;\n(3) `{name}.load_from(data, session)&quot;.format(name=cls.__name__)
         )</div>
 
 <div class="viewcode-block" id="ModelBase.load_from"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.load_from">[docs]</a>    @classmethod
-    def load_from(cls, data, owner=None):
+    def load_from(
+        cls, data: dict, owner: &quot;ModelBase&quot; = None
+    ) -&gt; Union[List[&quot;ModelBase&quot;], &quot;ModelBase&quot;]:
         &quot;&quot;&quot;Create a new model instance from loaded attributes.
 
-        &#39;obj&#39; should have a o&quot;&quot;&quot;
+        &#39;obj&#39; should have a o
+        &quot;&quot;&quot;
         if isinstance(data, list):
             models = []
             for d in data:
@@ -495,10 +508,10 @@ from pydent.sessionabc import SessionABC
             model = cls._set_data(data, owner)
         return model</div>
 
-    # TODO: rename reload to something else, implement &#39;refresh&#39; method and associated tests
-<div class="viewcode-block" id="ModelBase.reload"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.reload">[docs]</a>    def reload(self, data):
-        &quot;&quot;&quot;
-        Reload model attributes from new data
+    # TODO: rename reload to something else, implement &#39;refresh&#39; method and
+    #       associated tests
+<div class="viewcode-block" id="ModelBase.reload"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.reload">[docs]</a>    def reload(self, data: dict) -&gt; &quot;ModelBase&quot;:
+        &quot;&quot;&quot;Reload model attributes from new data.
 
         :param data: data to update model instance
         :type data: dict
@@ -512,8 +525,7 @@ from pydent.sessionabc import SessionABC
         return self</div>
 
 <div class="viewcode-block" id="ModelBase.refresh"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.refresh">[docs]</a>    def refresh(self):
-        &quot;&quot;&quot;
-        Refresh this model from data from the server.
+        &quot;&quot;&quot;Refresh this model from data from the server.
 
         :return: self
         :rtype: self
@@ -541,7 +553,7 @@ from pydent.sessionabc import SessionABC
         return self._session
 
     @session.setter
-    def session(self, new_session):
+    def session(self, new_session: &quot;AqSession&quot;):
         if new_session is not None and not issubclass(type(new_session), SessionABC):
             raise NoSessionError(
                 &quot;Cannot instantiate new model because its data parent &quot;
@@ -553,18 +565,22 @@ from pydent.sessionabc import SessionABC
             )
         self._session = new_session
 
-<div class="viewcode-block" id="ModelBase.connect_to_session"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.connect_to_session">[docs]</a>    def connect_to_session(self, session):
-        &quot;&quot;&quot;Connect model instance to a session. Does nothing if session already exists.&quot;&quot;&quot;
+<div class="viewcode-block" id="ModelBase.connect_to_session"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.connect_to_session">[docs]</a>    def connect_to_session(self, session: &quot;AqSession&quot;):
+        &quot;&quot;&quot;Connect model instance to a session.
+
+        Does nothing if session already exists.
+        &quot;&quot;&quot;
         self.session = session</div>
 
 <div class="viewcode-block" id="ModelBase._check_for_session"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase._check_for_session">[docs]</a>    def _check_for_session(self):
-        &quot;&quot;&quot;
-        Raises error if model is not connected to a session
+        &quot;&quot;&quot;Raises error if model is not connected to a session.
+
+        :raises NoSessionError
         &quot;&quot;&quot;
         if self.session is None:
             raise NoSessionError(
-                &quot;No AqSession instance found for &#39;{name}&#39; but one is required for the method.&quot;
-                &quot;\nDo one of the following:&quot;
+                &quot;No AqSession instance found for &#39;{name}&#39; but one is required for the &quot;
+                &quot;method.\nDo one of the following:&quot;
                 &quot;\n(1) - Use &#39;connect_to_session&#39; after initializing your model.&quot;
                 &quot;\n(2) - If initializing a model use the session model constructor.&quot;
                 &quot;\n\t &gt;&gt; USE: \t\t&#39;session.{name}.new(*args, **kwargs)&#39;&quot;
@@ -577,49 +593,54 @@ from pydent.sessionabc import SessionABC
             )</div>
 
 <div class="viewcode-block" id="ModelBase.no_getter"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.no_getter">[docs]</a>    def no_getter(self, *_):
-        &quot;&quot;&quot;Callback that always returns None&quot;&quot;&quot;
+        &quot;&quot;&quot;Callback that always returns None.&quot;&quot;&quot;
         return None</div>
 
-    def create_interface(self):
+    def create_interface(self) -&gt; Union[QueryInterface, BrowserInterface]:
         return self.interface(self.session)
 
 <div class="viewcode-block" id="ModelBase.interface"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.interface">[docs]</a>    @classmethod
-    def interface(cls, session):
-        &quot;&quot;&quot;Creates a model interface from this class and a session
+    def interface(cls, session: &quot;AqSession&quot;) -&gt; Union[QueryInterface, BrowserInterface]:
+        &quot;&quot;&quot;Creates a model interface from this class and a session.
 
-        This method can be overridden in model definitions for special cases.
+        This method can be overridden in model definitions for special
+        cases.
         &quot;&quot;&quot;
         return session.model_interface(cls.__name__)</div>
 
 <div class="viewcode-block" id="ModelBase.find"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.find">[docs]</a>    @classmethod
-    def find(cls, session, model_id):
-        &quot;&quot;&quot;Finds a model instance by its model_id&quot;&quot;&quot;
+    def find(cls, session: &quot;AqSession&quot;, model_id: Union[int, str]) -&gt; &quot;ModelBase&quot;:
+        &quot;&quot;&quot;Finds a model instance by its model_id.&quot;&quot;&quot;
         interface = cls.interface(session)
         return interface.find(model_id)</div>
 
 <div class="viewcode-block" id="ModelBase.where"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.where">[docs]</a>    @classmethod
-    def where(cls, session, params):
-        &quot;&quot;&quot;Finds a list of models by some parameters&quot;&quot;&quot;
+    def where(
+        cls, session: &quot;AqSession&quot;, params: Dict
+    ) -&gt; Union[None, List[&quot;ModelBase&quot;]]:
+        &quot;&quot;&quot;Finds a list of models by some parameters.&quot;&quot;&quot;
         if params is None:
             return None
         interface = cls.interface(session)
         return interface.where(params)</div>
 
     @classmethod
-    def one(cls, session, query, **kwargs):
+    def one(cls, session: &quot;AqSession&quot;, query: Dict, **kwargs) -&gt; &quot;ModelBase&quot;:
         interface = cls.interface(session)
         query = dict(query)
         query.update(kwargs)
         return interface.one(query)
 
-    def one_callback(self, model_name, *args, **kwargs):
+    def one_callback(self, model_name: str, *args, **kwargs) -&gt; &quot;ModelBase&quot;:
         self._check_for_session()
         model = ModelRegistry.get_model(model_name)
         return model.one(self.session, *args, **kwargs)
 
-<div class="viewcode-block" id="ModelBase.find_callback"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.find_callback">[docs]</a>    def find_callback(self, model_name, model_id):
-        &quot;&quot;&quot;Finds a model using the model interface and model_id. Used to find
-        models in model relationships.&quot;&quot;&quot;
+<div class="viewcode-block" id="ModelBase.find_callback"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.find_callback">[docs]</a>    def find_callback(self, model_name: str, model_id: Union[str, int]) -&gt; &quot;ModelBase&quot;:
+        &quot;&quot;&quot;Finds a model using the model interface and model_id.
+
+        Used to find models in model relationships.
+        &quot;&quot;&quot;
         self._check_for_session()
         if model_id is None:
             return None
@@ -631,9 +652,10 @@ from pydent.sessionabc import SessionABC
         )
         return model.find(self.session, model_id)</div>
 
-<div class="viewcode-block" id="ModelBase.where_callback"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.where_callback">[docs]</a>    def where_callback(self, model_name, *args, **kwargs):
-        &quot;&quot;&quot;
-        Finds models using a model interface and a set of parameters.
+<div class="viewcode-block" id="ModelBase.where_callback"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.where_callback">[docs]</a>    def where_callback(
+        self, model_name: str, *args, **kwargs
+    ) -&gt; Union[None, List[&quot;ModelBase&quot;]]:
+        &quot;&quot;&quot;Finds models using a model interface and a set of parameters.
 
         Used to find models in model relationships.
         &quot;&quot;&quot;
@@ -661,10 +683,10 @@ from pydent.sessionabc import SessionABC
         data.update(relationships)
         print(data)
 
-    def __str__(self):
+    def __str__(self) -&gt; str:
         return self._to_str(&quot;id&quot;, &quot;rid&quot;)
 
-    def _to_str(self, *attributes, **kwargs):
+    def _to_str(self, *attributes, **kwargs) -&gt; str:
         if &quot;rid&quot; not in attributes:
             attributes = list(attributes)
             attributes.append(&quot;rid&quot;)
@@ -678,8 +700,7 @@ from pydent.sessionabc import SessionABC
 
     # TODO: anonymize the keys for relationships as well
 <div class="viewcode-block" id="ModelBase.anonymize"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.anonymize">[docs]</a>    def anonymize(self):
-        &quot;&quot;&quot;
-        Resets the primary key of the model and assigns a new rid.
+        &quot;&quot;&quot;Resets the primary key of the model and assigns a new rid.
 
         Metatypes cannot be annonymized.
 
@@ -701,22 +722,29 @@ from pydent.sessionabc import SessionABC
                 elif keep and relation.nested in keep:
                     continue
                 else:
-                    setattr(self, relation.ref, None)
+                    try:
+                        setattr(self, relation.ref, None)
+                    except TypeError as e:
+                        msg = &quot;An error occured while trying to anonymize relation:\n{}&quot;\
+                            .format(relation)
+                        raise e.__class__(msg + &quot;\nerr msg: &quot; + str(e))
 
-<div class="viewcode-block" id="ModelBase.copy"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.copy">[docs]</a>    def copy(self, keep=None):
-        &quot;&quot;&quot;
-        Provides a deepcopy of the model, but annonymizes the primary and global keys unless
-        class is a metatype (e.g. OperationType, SampleType, FieldType) or class name is
-        found in list of &#39;keep&#39;
+<div class="viewcode-block" id="ModelBase.copy"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase.copy">[docs]</a>    def copy(self, keep: bool = None) -&gt; &quot;ModelBase&quot;:
+        &quot;&quot;&quot;Provides a deepcopy of the model, but annonymizes the primary and
+        global keys unless class is a metatype (e.g. OperationType, SampleType,
+        FieldType) or class name is found in list of &#39;keep&#39;.
 
         By default, inventory classes such as Sample, Item, and Collection are &#39;kept&#39;.
 
-        This specific usecase is that when copying whole plans, that the integrity of the
-        inventory used in the operations is maintained. These are the items that refer
-        to physical inventory in the laboratory and are referred to by their `rids`, and
-        so it is important to that any of these inventory are always maintain their `rids`.
-        Meaning in the lab, their is only ONE instance of the inventory. In Trident and Aquarium,
-        there is only ONE instance of inventory that is referred to by its rid.
+        This specific usecase is that when copying whole plans, that the integrity of
+        the inventory used in the operations is maintained. These are the items that
+        refer to physical inventory in the laboratory and are referred to by their
+        `rids`, and
+        so it is important to that any of these inventory are always maintain their
+        `rids`.
+        Meaning in the lab, their is only ONE instance of the inventory. In Trident
+        and Aquarium, there is only ONE instance of inventory that is referred to by
+        its rid.
 
         Similarly, any metatype model must also maintain their `rid`.
 
@@ -736,8 +764,9 @@ from pydent.sessionabc import SessionABC
         return copied</div>
 
 <div class="viewcode-block" id="ModelBase._flatten_deserialized_data"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase._flatten_deserialized_data">[docs]</a>    @classmethod
-    def _flatten_deserialized_data(cls, models, memo):
-        &quot;&quot;&quot;Flattens all of the relationships found in the models, returning a rid: model dictionary&quot;&quot;&quot;
+    def _flatten_deserialized_data(cls, models: List[&quot;ModelBase&quot;], memo: dict) -&gt; dict:
+        &quot;&quot;&quot;Flattens all of the relationships found in the models, returning a
+        rid: model dictionary.&quot;&quot;&quot;
         if models is None:
             return memo
         for model in models:
@@ -758,12 +787,13 @@ from pydent.sessionabc import SessionABC
         return memo</div>
 
 <div class="viewcode-block" id="ModelBase._rid_dict"><a class="viewcode-back" href="../../base.html#pydent.base.ModelBase._rid_dict">[docs]</a>    def _rid_dict(self):
-        &quot;&quot;&quot;Dictionary of all models attached to this model keyed by their rid&quot;&quot;&quot;
+        &quot;&quot;&quot;Dictionary of all models attached to this model keyed by their
+        rid.&quot;&quot;&quot;
         memo = {}
         self._flatten_deserialized_data([self], memo)
         return memo</div>
 
-    def __copy__(self):
+    def __copy__(self) -&gt; &quot;ModelBase&quot;:
         return self.copy()</div>
 
     #     return cp

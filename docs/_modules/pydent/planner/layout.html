@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,22 +314,26 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.planner.layout</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-PlannerLayout
-&quot;&quot;&quot;
+<span></span>&quot;&quot;&quot;PlannerLayout.&quot;&quot;&quot;
+from collections import OrderedDict
+from typing import Iterable
+from typing import Tuple
 
 import networkx as nx
-from collections import OrderedDict
-from pydent.planner.utils import _id_getter, get_subgraphs
+
+from pydent.models import Operation
+from pydent.models import Plan
+from pydent.planner.utils import _id_getter
+from pydent.planner.utils import get_subgraphs
 from pydent.utils import make_async
-from pydent.models import Operation, Plan
-from typing import Iterable, Tuple
 
 
-<div class="viewcode-block" id="PlannerLayout"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout">[docs]</a>class PlannerLayout(object):
+<div class="viewcode-block" id="PlannerLayout"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout">[docs]</a>class PlannerLayout:
     &quot;&quot;&quot;Layout module for :class:`Planner &lt;pydent.planner.Planner&gt;`.
+
     Positions :class:`Operations &lt;pydent.models.Operation&gt;` for the
-    Aquarium GUI&quot;&quot;&quot;
+    Aquarium GUI
+    &quot;&quot;&quot;
 
     TOP_RIGHT = (100, 100)
     BOX_DELTA_X = 170
@@ -348,8 +351,8 @@ from typing import Iterable, Tuple
     }
 
 <div class="viewcode-block" id="PlannerLayout.__init__"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.__init__">[docs]</a>    def __init__(self, G=None):
-        &quot;&quot;&quot;
-        Initializes a new planner layout.
+        &quot;&quot;&quot;Initializes a new planner layout.
+
         :param G:
         &quot;&quot;&quot;
         if G is None:
@@ -359,7 +362,7 @@ from typing import Iterable, Tuple
 
 <div class="viewcode-block" id="PlannerLayout.from_plan"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.from_plan">[docs]</a>    @classmethod
     def from_plan(cls, plan: Plan):
-        &quot;&quot;&quot;Creates a layout from a :class:`pydent.models.Plan` instance&quot;&quot;&quot;
+        &quot;&quot;&quot;Creates a layout from a :class:`pydent.models.Plan` instance.&quot;&quot;&quot;
         G = nx.DiGraph()
         layout = cls(G)
 
@@ -422,17 +425,16 @@ from typing import Iterable, Tuple
     @property
     def operations(self):
         for node in self.G.nodes:
-            if &quot;operation&quot; in self.G.node[node]:
-                yield self.G.node[node][&quot;operation&quot;]
+            if &quot;operation&quot; in self.G.nodes[node]:
+                yield self.G.nodes[node][&quot;operation&quot;]
 
     def iter_operations(self):
         for node in self.G.nodes:
-            if &quot;operation&quot; in self.G.node[node]:
-                yield (node, self.G.node[node][&quot;operation&quot;])
+            if &quot;operation&quot; in self.G.nodes[node]:
+                yield (node, self.G.nodes[node][&quot;operation&quot;])
 
 <div class="viewcode-block" id="PlannerLayout._add_operation"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout._add_operation">[docs]</a>    def _add_operation(self, operation: Operation):
-        &quot;&quot;&quot;
-        Adds an Operation to the Layout
+        &quot;&quot;&quot;Adds an Operation to the Layout.
 
         :param op: operation
         :type op: pydent.models.Operation
@@ -442,24 +444,23 @@ from typing import Iterable, Tuple
         return self.G.add_node(_id_getter(operation), operation=operation)</div>
 
 <div class="viewcode-block" id="PlannerLayout.subgraph"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.subgraph">[docs]</a>    def subgraph(self, nodes):
-        &quot;&quot;&quot;Returns a subgraph layout from a list of node_ids&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns a subgraph layout from a list of node_ids.&quot;&quot;&quot;
         return self.__class__(G=self.G.subgraph(nodes))</div>
 
 <div class="viewcode-block" id="PlannerLayout.nodes_to_ops"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.nodes_to_ops">[docs]</a>    def nodes_to_ops(self, nodes):
-        &quot;&quot;&quot;Returns operations from a list of node_ids&quot;&quot;&quot;
-        return [self.G.node[n][&quot;operation&quot;] for n in nodes]</div>
+        &quot;&quot;&quot;Returns operations from a list of node_ids.&quot;&quot;&quot;
+        return [self.G.nodes[n][&quot;operation&quot;] for n in nodes]</div>
 
 <div class="viewcode-block" id="PlannerLayout.ops_to_nodes"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.ops_to_nodes">[docs]</a>    def ops_to_nodes(self, ops):
-        &quot;&quot;&quot;Returns node_ids for each operation&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns node_ids for each operation.&quot;&quot;&quot;
         return [_id_getter(op) for op in ops]</div>
 
 <div class="viewcode-block" id="PlannerLayout.ops_to_layout"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.ops_to_layout">[docs]</a>    def ops_to_layout(self, ops):
-        &quot;&quot;&quot;Returns a sub-layout containing only the operations&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns a sub-layout containing only the operations.&quot;&quot;&quot;
         return self.subgraph(self.ops_to_nodes(ops))</div>
 
 <div class="viewcode-block" id="PlannerLayout.get_independent_layouts"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.get_independent_layouts">[docs]</a>    def get_independent_layouts(self):
-        &quot;&quot;&quot;
-        Finds all independent subgraphs.
+        &quot;&quot;&quot;Finds all independent subgraphs.
 
         :return: list of PlannerLayout
         :rtype: list
@@ -481,8 +482,7 @@ from typing import Iterable, Tuple
         self.translate(cx - cx2, cy - cy2)
 
 <div class="viewcode-block" id="PlannerLayout.topo_sort"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.topo_sort">[docs]</a>    def topo_sort(self):
-        &quot;&quot;&quot;
-        Does a topological sort of the operations in this layout.
+        &quot;&quot;&quot;Does a topological sort of the operations in this layout.
 
         Discovers individual subgraphs and topologically sorts each subgraph,
         and then aligns subgraphs horizontally.
@@ -508,8 +508,7 @@ from typing import Iterable, Tuple
 <div class="viewcode-block" id="PlannerLayout.to_grid"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.to_grid">[docs]</a>    def to_grid(
         self, columns: int, axis: int = 1, border_x: int = None, border_y: int = None
     ):
-        &quot;&quot;&quot;
-        Arrange layouts in a grid format.
+        &quot;&quot;&quot;Arrange layouts in a grid format.
 
         :param columns: maximum number of columns (or rows when axis=0)
         :type columns: int
@@ -562,7 +561,7 @@ from typing import Iterable, Tuple
 
     # TODO: minimize crossings
 <div class="viewcode-block" id="PlannerLayout._topological_sort_helper"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout._topological_sort_helper">[docs]</a>    def _topological_sort_helper(self):
-        &quot;&quot;&quot;Attempt a rudimentary topological sort on the plan&quot;&quot;&quot;
+        &quot;&quot;&quot;Attempt a rudimentary topological sort on the plan.&quot;&quot;&quot;
 
         _x, _y = self.TOP_RIGHT
 
@@ -622,8 +621,7 @@ from typing import Iterable, Tuple
         self.move(_x, _y)</div>
 
 <div class="viewcode-block" id="PlannerLayout.align_ops_with_successors"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.align_ops_with_successors">[docs]</a>    def align_ops_with_successors(self, ops):
-        &quot;&quot;&quot;
-        Aligns the Operations to their successors by midpoints.
+        &quot;&quot;&quot;Aligns the Operations to their successors by midpoints.
 
         Used in topological sorting of plans.
 
@@ -636,8 +634,7 @@ from typing import Iterable, Tuple
         self.align_x_of_ops(ops, successors)</div>
 
 <div class="viewcode-block" id="PlannerLayout.align_ops_with_predecessors"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.align_ops_with_predecessors">[docs]</a>    def align_ops_with_predecessors(self, ops):
-        &quot;&quot;&quot;
-        Aligns the Operations to their predecessors by midpoints.
+        &quot;&quot;&quot;Aligns the Operations to their predecessors by midpoints.
 
         Used in topological sorting of plans.
 
@@ -650,8 +647,7 @@ from typing import Iterable, Tuple
         self.align_x_of_ops(ops, predecessors)</div>
 
 <div class="viewcode-block" id="PlannerLayout.predecessors"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.predecessors">[docs]</a>    def predecessors(self, node):
-        &quot;&quot;&quot;
-        Return predecessor nodes
+        &quot;&quot;&quot;Return predecessor nodes.
 
         :param node: node id
         :type node: basestring
@@ -661,8 +657,7 @@ from typing import Iterable, Tuple
         return self.G.predecessors(node)</div>
 
 <div class="viewcode-block" id="PlannerLayout.successors"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.successors">[docs]</a>    def successors(self, node):
-        &quot;&quot;&quot;
-        Return successors nodes
+        &quot;&quot;&quot;Return successors nodes.
 
         :param node: node id
         :type node: basestring
@@ -680,8 +675,7 @@ from typing import Iterable, Tuple
         return self.subgraph(n_bunch)
 
 <div class="viewcode-block" id="PlannerLayout.collect_predecessors"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.collect_predecessors">[docs]</a>    def collect_predecessors(self, nodes):
-        &quot;&quot;&quot;
-        Return all predecessors from a list of nodes
+        &quot;&quot;&quot;Return all predecessors from a list of nodes.
 
         :param nodes: list of node ids
         :type nodes: list
@@ -694,8 +688,7 @@ from typing import Iterable, Tuple
         return list(set(predecessors))</div>
 
 <div class="viewcode-block" id="PlannerLayout.collect_successors"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.collect_successors">[docs]</a>    def collect_successors(self, nodes):
-        &quot;&quot;&quot;
-        Return all successors from a list of nodes
+        &quot;&quot;&quot;Return all successors from a list of nodes.
 
         :param nodes: list of node ids
         :type nodes: list
@@ -708,8 +701,7 @@ from typing import Iterable, Tuple
         return list(set(successors))</div>
 
 <div class="viewcode-block" id="PlannerLayout.ops_to_predecessors"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.ops_to_predecessors">[docs]</a>    def ops_to_predecessors(self, ops):
-        &quot;&quot;&quot;
-        Return all predecessor operations from a list of operations
+        &quot;&quot;&quot;Return all predecessor operations from a list of operations.
 
         :param nodes: list of :class:`pydent.models.Operation`
         :type nodes: list
@@ -720,8 +712,7 @@ from typing import Iterable, Tuple
         return self.nodes_to_ops(nodes)</div>
 
 <div class="viewcode-block" id="PlannerLayout.ops_to_successors"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.ops_to_successors">[docs]</a>    def ops_to_successors(self, ops):
-        &quot;&quot;&quot;
-        Return all successor operations from a list of operations
+        &quot;&quot;&quot;Return all successor operations from a list of operations.
 
         :param nodes: list of :class:`pydent.models.Operation`
         :type nodes: list
@@ -732,7 +723,7 @@ from typing import Iterable, Tuple
         return self.nodes_to_ops(nodes)</div>
 
 <div class="viewcode-block" id="PlannerLayout.leaves"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.leaves">[docs]</a>    def leaves(self):
-        &quot;&quot;&quot;Returns the leaves of this layout&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns the leaves of this layout.&quot;&quot;&quot;
         leaves = []
         for n in self.nodes:
             if len(list(self.successors(n))) == 0:
@@ -740,7 +731,7 @@ from typing import Iterable, Tuple
         return leaves</div>
 
 <div class="viewcode-block" id="PlannerLayout.roots"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.roots">[docs]</a>    def roots(self):
-        &quot;&quot;&quot;Returns the roots of this layout&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns the roots of this layout.&quot;&quot;&quot;
         roots = []
         for n in self.nodes:
             if len(list(self.predecessors(n))) == 0:
@@ -754,8 +745,7 @@ from typing import Iterable, Tuple
         return self.nodes_to_ops(self.roots())
 
 <div class="viewcode-block" id="PlannerLayout.align_x_midpoints_to"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.align_x_midpoints_to">[docs]</a>    def align_x_midpoints_to(self, other_layout):
-        &quot;&quot;&quot;
-        Align the midpoint x-coordinate of this layout with that of another.
+        &quot;&quot;&quot;Align the midpoint x-coordinate of this layout with that of another.
 
         :param other_layout: the other canvas layout
         :type other_layout: PlannerLayout
@@ -770,8 +760,8 @@ from typing import Iterable, Tuple
         self.translate(deltax, 0)</div>
 
 <div class="viewcode-block" id="PlannerLayout.align_y_midpoints_to"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.align_y_midpoints_to">[docs]</a>    def align_y_midpoints_to(self, other_layout):
-        &quot;&quot;&quot;
-        Align this midpoint y-coordinates of this layout with another layout
+        &quot;&quot;&quot;Align this midpoint y-coordinates of this layout with another
+        layout.
 
         :param other_layout: the other canvas layout
         :type other_layout: PlannerLayout
@@ -784,9 +774,8 @@ from typing import Iterable, Tuple
         self.y = other_y</div>
 
 <div class="viewcode-block" id="PlannerLayout.align_x_of_ops"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.align_x_of_ops">[docs]</a>    def align_x_of_ops(self, ops1, ops2):
-        &quot;&quot;&quot;
-        Aligns a set of Operations with another set of Operations within this
-        PlannerLayout
+        &quot;&quot;&quot;Aligns a set of Operations with another set of Operations within
+        this PlannerLayout.
 
         :param ops1: list of :class:`pydent.models.Operation`
         :type ops1: list
@@ -822,9 +811,8 @@ from typing import Iterable, Tuple
         self.translate(0, delta_y)
 
 <div class="viewcode-block" id="PlannerLayout.bounds"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.bounds">[docs]</a>    def bounds(self) -&gt; Tuple[int, int]:
-        &quot;&quot;&quot;
-        Returns the bounding box of the layout as the upper-left and
-        lower-right coordinates.
+        &quot;&quot;&quot;Returns the bounding box of the layout as the upper-left and lower-
+        right coordinates.
 
         :return: x,y coordinate
         :rtype: tuple
@@ -834,8 +822,7 @@ from typing import Iterable, Tuple
         return ((min(x_arr), min(y_arr)), (max(x_arr), max(y_arr)))</div>
 
 <div class="viewcode-block" id="PlannerLayout.midpoint"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.midpoint">[docs]</a>    def midpoint(self) -&gt; Tuple[int, int]:
-        &quot;&quot;&quot;
-        Returns the midpoint x,y coordinates of the layout
+        &quot;&quot;&quot;Returns the midpoint x,y coordinates of the layout.
 
         :return: x,y coordinate
         :rtype: tuple
@@ -845,8 +832,7 @@ from typing import Iterable, Tuple
         return x, y</div>
 
 <div class="viewcode-block" id="PlannerLayout.translate"><a class="viewcode-back" href="../../../generated/pydent.planner.PlannerLayout.html#pydent.planner.PlannerLayout.translate">[docs]</a>    def translate(self, delta_x, delta_y):
-        &quot;&quot;&quot;
-        Translates the layout by the x,y coordinates
+        &quot;&quot;&quot;Translates the layout by the x,y coordinates.
 
         :param delta_x: delta x
         :type delta_x: int

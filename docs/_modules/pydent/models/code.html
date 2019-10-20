@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,19 +314,19 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.code</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to protocol code, which is associated with operation types.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to protocol code, which is associated with operation
+types.&quot;&quot;&quot;
 from pydent.base import ModelBase
-
 from pydent.marshaller import add_schema
-from pydent.relationships import HasOne, One, HasManyGeneric, HasOneFromMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasOne
+from pydent.relationships import HasOneFromMany
+from pydent.relationships import One
 
 
 <div class="viewcode-block" id="Code"><a class="viewcode-back" href="../../../models.html#pydent.models.Code">[docs]</a>@add_schema
 class Code(ModelBase):
-    &quot;&quot;&quot;A Code model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Code model.&quot;&quot;&quot;
 
     fields = dict(
         user=HasOne(&quot;User&quot;),
@@ -348,7 +347,7 @@ class Code(ModelBase):
 
 <div class="viewcode-block" id="Library"><a class="viewcode-back" href="../../../models.html#pydent.models.Library">[docs]</a>@add_schema
 class Library(ModelBase):
-    &quot;&quot;&quot;A Library model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Library model.&quot;&quot;&quot;
 
     fields = dict(
         codes=HasManyGeneric(&quot;Code&quot;),
@@ -360,7 +359,7 @@ class Library(ModelBase):
     )
 
 <div class="viewcode-block" id="Library.code"><a class="viewcode-back" href="../../../models.html#pydent.models.Library.code">[docs]</a>    def code(self, accessor):
-        &quot;&quot;&quot;Reminant from previous API&quot;&quot;&quot;
+        &quot;&quot;&quot;Reminant from previous API.&quot;&quot;&quot;
         # raise DeprecationWarning(&quot;This method is depreciated. Use &#39;.source&#39; directly&quot;)
         if accessor == &quot;source&quot;:
             return self.source

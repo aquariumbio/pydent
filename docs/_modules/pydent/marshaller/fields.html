@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,48 +314,45 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.marshaller.fields</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Fields
-&quot;&quot;&quot;
+<span></span>&quot;&quot;&quot;Fields.&quot;&quot;&quot;
+from abc import ABC
+from abc import abstractmethod
+from enum import auto
+from enum import Enum
+from typing import Any
+from typing import List
+from typing import Type
+from typing import Union, Dict, Callable, Tuple
 
-from abc import ABC, abstractmethod
-from enum import Enum, auto
-
-from pydent.marshaller.descriptors import (
-    CallbackAccessor,
-    MarshallingAccessor,
-    RelationshipAccessor,
-    Placeholders,
-)
-from pydent.marshaller.exceptions import (
-    AllowNoneFieldValidationError,
-    RunTimeCallbackAttributeError,
-)
+from pydent.marshaller.descriptors import CallbackAccessor
+from pydent.marshaller.descriptors import MarshallingAccessor
+from pydent.marshaller.descriptors import Placeholders
+from pydent.marshaller.descriptors import RelationshipAccessor
+from pydent.marshaller.exceptions import AllowNoneFieldValidationError
+from pydent.marshaller.exceptions import RunTimeCallbackAttributeError
 from pydent.marshaller.registry import ModelRegistry
 from pydent.marshaller.utils import make_signature_str
 
 
 <div class="viewcode-block" id="FieldABC"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.FieldABC.html#pydent.marshaller.fields.FieldABC">[docs]</a>class FieldABC(ABC):
-    &quot;&quot;&quot;
-    Field abstract base class
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;Field abstract base class.&quot;&quot;&quot;
 
     _FIELD_ALLOW_NONE_DEFAULT = True
 
     @abstractmethod
-    def serialize(self):
+    def serialize(self, owner, data: dict):
         pass
 
     @abstractmethod
-    def deserialize(self):
+    def deserialize(self, owner, data: dict):
         pass
 
     @abstractmethod
-    def _serialize(self):
+    def _serialize(self, owner, data: dict):
         pass
 
     @abstractmethod
-    def _deserialize(self):
+    def _deserialize(self, owner, data: dict):
         pass</div>
 
 
@@ -366,19 +362,27 @@ from pydent.marshaller.utils import make_signature_str
     ACCESSOR = MarshallingAccessor
 
 <div class="viewcode-block" id="Field.__init__"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Field.html#pydent.marshaller.fields.Field.__init__">[docs]</a>    def __init__(
-        self, many=None, data_key=None, allow_none=None, default=Placeholders.DEFAULT
+        self,
+        many: bool = None,
+        data_key: str = None,
+        allow_none: bool = None,
+        default: Any = Placeholders.DEFAULT,
     ):
         &quot;&quot;&quot;A standard field. Performs no functions on serialized and
         deserialized data.
 
-        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :param many: whether to treat serializations and deserializations as a per-item
+        basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        :param data_key: the data_key, or attribute name, of this field. Calling this as
+        an attribute to the registered
         nested should return this field&#39;s descriptor.
         :type data_key: basestring
-        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :param allow_none: whether to return None if None is received in deserialization
+         or serializaiton methods
         :type allow_none: bool
-        :raises AllowNoneFieldValidationError if None is received in serialize and deserialized methods
+        :raises AllowNoneFieldValidationError if None is received in serialize and
+        deserialized methods
         and self.allow_none == False
         &quot;&quot;&quot;
 
@@ -392,16 +396,16 @@ from pydent.marshaller.utils import make_signature_str
         self.allow_none = allow_none
         self.default = default</div>
 
-    def set_data_key(self, key):
+    def set_data_key(self, key: str):
         self.data_key = key
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner, data: dict) -&gt; dict:
         return data
 
-    def _serialize(self, owner, data):
+    def _serialize(self, owner, data: dict) -&gt; dict:
         return data
 
-    def deserialize(self, owner, data):
+    def deserialize(self, owner, data: dict) -&gt; Union[dict, None]:
         if data is None:
             if not self.allow_none:
                 raise AllowNoneFieldValidationError(
@@ -414,7 +418,7 @@ from pydent.marshaller.utils import make_signature_str
             return data
         return self._deserialize(owner, data)
 
-    def serialize(self, owner, data):
+    def serialize(self, owner, data: dict) -&gt; Union[dict, None, List]:
         if data is None:
             if not self.allow_none:
                 raise AllowNoneFieldValidationError(
@@ -425,14 +429,12 @@ from pydent.marshaller.utils import make_signature_str
             return [self._serialize(owner, d) for d in data]
         return self._serialize(owner, data)
 
-<div class="viewcode-block" id="Field.register"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Field.html#pydent.marshaller.fields.Field.register">[docs]</a>    def register(self, name, objtype):
-        &quot;&quot;&quot;Registers the field to a nested class. Instantiates the corresponding
-        descriptor (i.e. accessor)
+<div class="viewcode-block" id="Field.register"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Field.html#pydent.marshaller.fields.Field.register">[docs]</a>    def register(self, name: str, objtype: Type):
+        &quot;&quot;&quot;Registers the field to a nested class. Instantiates the
+        corresponding descriptor (i.e. accessor)
 
         :param name: name of the field
-        :type name: basestring
         :param objtype: the nested class to register the field to
-        :type objtype: SchemaModel
         :return: None
         :rtype: None
         &quot;&quot;&quot;
@@ -454,32 +456,45 @@ from pydent.marshaller.utils import make_signature_str
                 ),
             )</div>
 
-    def __str__(self):
-        return &quot;&lt;{cls} key=&#39;{objtype}.{key}&#39; many={many} allow_none={allow_none}&gt;&quot;.format(
-            cls=self.__class__.__name__,
-            key=self.data_key,
-            many=self.many,
-            allow_none=self.allow_none,
-            objtype=self.objtype,
-        )</div>
+    def __str__(self) -&gt; str:
+        return &quot;&lt;{cls} key=&#39;{objtype}.{key}&#39; many={many} allow_none={allow_none}&gt;&quot;\
+            .format(
+                cls=self.__class__.__name__,
+                key=self.data_key,
+                many=self.many,
+                allow_none=self.allow_none,
+                objtype=self.objtype,
+            )</div>
 
 
 <div class="viewcode-block" id="Nested"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Nested.html#pydent.marshaller.fields.Nested">[docs]</a>class Nested(Field):
     &quot;&quot;&quot;Represents a field that returns another nested instance.&quot;&quot;&quot;
 
-<div class="viewcode-block" id="Nested.__init__"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Nested.html#pydent.marshaller.fields.Nested.__init__">[docs]</a>    def __init__(self, nested, many=None, data_key=None, allow_none=None, lazy=None):
+<div class="viewcode-block" id="Nested.__init__"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Nested.html#pydent.marshaller.fields.Nested.__init__">[docs]</a>    def __init__(
+        self,
+        nested,
+        many: bool = None,
+        data_key: str = None,
+        allow_none: bool = None,
+        lazy: bool = None,
+    ):
         &quot;&quot;&quot;Nested relationship initializer.
 
-        :param nested: the nested name of nested field. Should exist in the ModelRegistery.
+        :param nested: the nested name of nested field. Should exist in the
+        ModelRegistery.
         :type nested: SchemaModel
-        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :param many: whether to treat serializations and deserializations as a per-item
+        basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        :param data_key: the data_key, or attribute name, of this field. Calling this as
+         an attribute to the registered
         nested should return this field&#39;s descriptor.
         :type data_key: basestring
-        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :param allow_none: whether to return None if None is received in deserialization
+         or serializaiton methods
         :type allow_none: bool
-        :param lazy: if set to True (default), perform lazy serialization and deserialization. If the data received
+        :param lazy: if set to True (default), perform lazy serialization and
+        deserialization. If the data received
         by `deserialize` is the expected nested, return that data. If the object
         recieved by `serialize` is not the expected nested, return that data.
         :type lazy:
@@ -495,7 +510,7 @@ from pydent.marshaller.utils import make_signature_str
     def get_model(self):
         return ModelRegistry.get_model(self.nested)
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner, data: dict):
         if data is None and self.allow_none:
             return None
         elif self.lazy and isinstance(data, self.get_model()):
@@ -521,34 +536,43 @@ from pydent.marshaller.utils import make_signature_str
 
 <div class="viewcode-block" id="Callback.__init__"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback.__init__">[docs]</a>    def __init__(
         self,
-        callback,
-        callback_args=None,
-        callback_kwargs=None,
-        cache=False,
-        data_key=None,
-        many=None,
-        allow_none=None,
-        always_dump=False,
+        callback: Union[Callable, str],
+        callback_args: Tuple = None,
+        callback_kwargs: Dict[str, Any] = None,
+        cache: bool = False,
+        data_key: str = None,
+        many: bool = None,
+        allow_none: bool = None,
+        always_dump: bool = False,
     ):
         &quot;&quot;&quot;A Callback field initializer.
 
-        :param callback: name of the callback function or a callable. If a name, the name should exist
-        as a function in the owner instance. Invalid callback signatures are captures on class creation.
+        :param callback: name of the callback function or a callable. If a name, the
+        name should exist
+        as a function in the owner instance. Invalid callback signatures are captures
+        on class creation.
         :type callback: callable|basestring
-        :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
-        values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
+        :param callback_args: a tuple of arguments to use in the callback. If any of
+        the callback arguments  or
+        values of the callback kwargs are callable, the owner will be passed to the
+        callable. The owner instance will
         replace any arguments that are `Callback.SElF`
         :type callback_args: tuple
         :param callback_kwargs: a dictionary of kwargs to use in the callback
         :type callback_kwargs: dict
-        :param cache: whether to cache the result using `setattr` on the owner instance. This will initialize the
-        serialization and deserialization procedures detailed in the corresponding field/descriptor.
+        :param cache: whether to cache the result using `setattr` on the owner instance.
+         This will initialize the
+        serialization and deserialization procedures detailed in the corresponding
+        field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :param many: whether to treat serializations and deserializations as a per-item
+         basis in a list
         :type many: bool
-        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :param allow_none: whether to return None if None is received in deserialization
+         or serializaiton methods
         :type allow_none: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        :param data_key: the data_key, or attribute name, of this field. Calling this
+        as an attribute to the registered
         nested should return this field&#39;s descriptor.
         :param always_dump: if True, this field will be serialized by default
         :type always_dump: bool
@@ -576,8 +600,10 @@ from pydent.marshaller.utils import make_signature_str
             func=self.callback, args=make_signature_str(args, kwargs)
         )
 
-<div class="viewcode-block" id="Callback.get_callback_args"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback.get_callback_args">[docs]</a>    def get_callback_args(self, owner, extra_args=None):
-        &quot;&quot;&quot;Processes the callback args&quot;&quot;&quot;
+<div class="viewcode-block" id="Callback.get_callback_args"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback.get_callback_args">[docs]</a>    def get_callback_args(
+        self, owner, extra_args: dict = None
+    ) -&gt; List[Any]:
+        &quot;&quot;&quot;Processes the callback args.&quot;&quot;&quot;
         args = []
         callback_args = list(self.callback_args)
         if extra_args:
@@ -592,15 +618,16 @@ from pydent.marshaller.utils import make_signature_str
                     args.append(a)
         except AttributeError as e:
             raise RunTimeCallbackAttributeError(
-                &quot;There was an error retrieving callback arguments for &#39;{sig}&#39; due to:\n{e}&quot;.format(
+                &quot;There was an error retrieving callback arguments for &#39;{sig}&#39; due to:\n&quot;
+                &quot;{e}&quot;.format(
                     sig=self._callback_signature(),
                     e=&quot;{}: {}&quot;.format(e.__class__.__name__, e),
                 )
             ) from e
         return args</div>
 
-<div class="viewcode-block" id="Callback.get_callback_kwargs"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback.get_callback_kwargs">[docs]</a>    def get_callback_kwargs(self, owner, extra_kwargs):
-        &quot;&quot;&quot;Processes the callback kwargs&quot;&quot;&quot;
+<div class="viewcode-block" id="Callback.get_callback_kwargs"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback.get_callback_kwargs">[docs]</a>    def get_callback_kwargs(self, owner, extra_kwargs: dict) -&gt; dict:
+        &quot;&quot;&quot;Processes the callback kwargs.&quot;&quot;&quot;
         kwargs = {}
         callback_kwargs = dict(self.callback_kwargs)
         if extra_kwargs:
@@ -615,7 +642,8 @@ from pydent.marshaller.utils import make_signature_str
                     kwargs[k] = v
         except AttributeError as e:
             raise RunTimeCallbackAttributeError(
-                &quot;There was an error retrieving callback keyword arguments for &#39;{func}(args)&#39; due to:\n{e}&quot;.format(
+                &quot;There was an error retrieving callback keyword arguments for &quot;
+                &quot;&#39;{func}(args)&#39; due to:\n{e}&quot;.format(
                     func=self.callback,
                     args=self._callback_signature(),
                     e=&quot;{}: {}&quot;.format(e.__class__.__name__, e),
@@ -623,13 +651,22 @@ from pydent.marshaller.utils import make_signature_str
             ) from e
         return kwargs</div>
 
-<div class="viewcode-block" id="Callback.fullfill"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback.fullfill">[docs]</a>    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
-        &quot;&quot;&quot;Calls the callback function using the owner object. A
-        Callback.SELF arg value will be replaced to be equivalent to the
-        owner instance model.
+<div class="viewcode-block" id="Callback.fullfill"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback.fullfill">[docs]</a>    def fullfill(
+        self,
+        owner,
+        cache: bool = None,
+        extra_args: tuple = None,
+        extra_kwargs: dict = None,
+    ) -&gt; Any:
+        &quot;&quot;&quot;Calls the callback function using the owner object. A Callback.SELF
+        arg value will be replaced to be equivalent to the owner instance
+        model.
 
         :param owner: the owning object
-        :type owner: SchemaModel
+        :param cache: if True, will cache the return in the deserialized data.
+        On next call, the cached result will be returned.
+        :param extra_args: extra args to pass to the callback function
+        :param extra_kwargs: extra kwargs to pass to the callback function
         :return: function result
         :rtype: any
         &quot;&quot;&quot;
@@ -660,7 +697,7 @@ from pydent.marshaller.utils import make_signature_str
     def cache_result(self, owner, val):
         setattr(owner, self.data_key, val)
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner, data: dict):
         raise NotImplementedError(
             &quot;_deserialize is not implemented for field {}&quot;.format(self)
         )
@@ -672,45 +709,52 @@ from pydent.marshaller.utils import make_signature_str
 
 
 <div class="viewcode-block" id="Relationship"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Relationship.html#pydent.marshaller.fields.Relationship">[docs]</a>class Relationship(Callback):
-    &quot;&quot;&quot;
-    A composition (Callback/Nested) field that uses a callback to retrieve a model.
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;A composition (Callback/Nested) field that uses a callback to retrieve a
+    model.&quot;&quot;&quot;
 
     ACCESSOR = RelationshipAccessor
 
 <div class="viewcode-block" id="Relationship.__init__"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Relationship.html#pydent.marshaller.fields.Relationship.__init__">[docs]</a>    def __init__(
         self,
         nested,
-        callback,
-        callback_args=None,
-        callback_kwargs=None,
-        cache=True,
-        data_key=None,
-        many=None,
-        allow_none=None,
-        always_dump=False,
+        callback: Union[Callable, str],
+        callback_args: Tuple = None,
+        callback_kwargs: Dict[str, Any] = None,
+        cache: bool = True,
+        data_key: str = None,
+        many: bool = None,
+        allow_none: bool = None,
+        always_dump: bool = False,
     ):
-        &quot;&quot;&quot;
-        Relationship initializer
+        &quot;&quot;&quot;Relationship initializer.
 
-        :param nested: the nested name of nested field. Should exist in the ModelRegistery.
+        :param nested: the nested name of nested field. Should exist in the
+        ModelRegistery.
         :type nested: SchemaModel
-        :param callback: name of the callback function or a callable. If a name, the name should exist
-        as a function in the owner instance. Invalid callback signatures are captures on class creation.
+        :param callback: name of the callback function or a callable. If a name, the
+        name should exist as a function in the owner instance. Invalid callback
+        signatures are captures on class creation.
         :type callback: callable|basestring
-        :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
-                                values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
-                                replace any arguments that are `Callback.SElF`
+        :param callback_args: a tuple of arguments to use in the callback. If any of
+            the callback arguments  or
+            values of the callback kwargs are callable, the owner
+            will be passed to the callable. The owner instance will
+            replace any arguments that are `Callback.SElF`
         :type callback_args: tuple
         :param callback_kwargs: a dictionary of kwargs to use in the callback
         :type callback_kwargs: dict
-        :param cache: whether to cache the result using `setattr` on the owner instance. This will initialize the
-        serialization and deserialization procedures detailed in the corresponding field/descriptor.
+        :param cache: whether to cache the result using `setattr` on the owner instance.
+        This will initialize the
+        serialization and deserialization procedures detailed in the corresponding
+        field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :param many: whether to treat serializaations and deserializations as a
+        per-item basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        :param data_key: the data_key, or attribute name, of this field. Calling this
+        as an attribute to the registered
         nested should return this field&#39;s descriptor.
+
         &quot;&quot;&quot;
 
         super().__init__(
@@ -735,12 +779,11 @@ from pydent.marshaller.utils import make_signature_str
 
 
 <div class="viewcode-block" id="Alias"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Alias.html#pydent.marshaller.fields.Alias">[docs]</a>class Alias(Callback):
-    &quot;&quot;&quot;A shallow alias to another field. &quot;&quot;&quot;
+    &quot;&quot;&quot;A shallow alias to another field.&quot;&quot;&quot;
 
-<div class="viewcode-block" id="Alias.__init__"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Alias.html#pydent.marshaller.fields.Alias.__init__">[docs]</a>    def __init__(self, field_name):
-        &quot;&quot;&quot;
-        Alias field initialize. Exposes a shallow alias to another field that can be accessed by
-        a different attribute key.
+<div class="viewcode-block" id="Alias.__init__"><a class="viewcode-back" href="../../../generated/pydent.marshaller.fields.Alias.html#pydent.marshaller.fields.Alias.__init__">[docs]</a>    def __init__(self, field_name: str):
+        &quot;&quot;&quot;Alias field initialize. Exposes a shallow alias to another field
+        that can be accessed by a different attribute key.
 
         :param field_name: the key of the other field
         :type field_name: basestring
@@ -755,7 +798,7 @@ from pydent.marshaller.utils import make_signature_str
         )</div>
 
     @staticmethod
-    def alias_callback(m, field_name):
+    def alias_callback(m, field_name: str) -&gt; Any:
         return getattr(m, field_name)</div>
 </pre></div>
 

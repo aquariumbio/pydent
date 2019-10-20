@@ -27,8 +27,8 @@ pydent.models.Membership
       ~Membership.get_relationships
       ~Membership.get_server_model_name
       ~Membership.get_tableized_name
-      ~Membership.has_deserialize
       ~Membership.interface
+      ~Membership.is_deserialized
       ~Membership.load
       ~Membership.load_from
       ~Membership.no_getter
@@ -37,6 +37,7 @@ pydent.models.Membership
       ~Membership.print
       ~Membership.refresh
       ~Membership.reload
+      ~Membership.reset_field
       ~Membership.where
       ~Membership.where_callback
    

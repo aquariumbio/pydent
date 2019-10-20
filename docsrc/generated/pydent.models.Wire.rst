@@ -31,8 +31,8 @@ pydent.models.Wire
       ~Wire.get_relationships
       ~Wire.get_server_model_name
       ~Wire.get_tableized_name
-      ~Wire.has_deserialize
       ~Wire.interface
+      ~Wire.is_deserialized
       ~Wire.load
       ~Wire.load_from
       ~Wire.no_getter
@@ -41,6 +41,7 @@ pydent.models.Wire
       ~Wire.print
       ~Wire.refresh
       ~Wire.reload
+      ~Wire.reset_field
       ~Wire.show
       ~Wire.to_save_json
       ~Wire.validate

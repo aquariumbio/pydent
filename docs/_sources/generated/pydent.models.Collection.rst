@@ -34,8 +34,8 @@ pydent.models.Collection
       ~Collection.get_relationships
       ~Collection.get_server_model_name
       ~Collection.get_tableized_name
-      ~Collection.has_deserialize
       ~Collection.interface
+      ~Collection.is_deserialized
       ~Collection.load
       ~Collection.load_from
       ~Collection.no_getter
@@ -45,6 +45,7 @@ pydent.models.Collection
       ~Collection.print
       ~Collection.refresh
       ~Collection.reload
+      ~Collection.reset_field
       ~Collection.save
       ~Collection.update
       ~Collection.where

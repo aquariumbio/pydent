@@ -98,7 +98,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMixin.html">pydent.relationships.HasMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
@@ -315,31 +314,27 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.operation</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to operations and operation types.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to operations and operation types.&quot;&quot;&quot;
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
-from pydent.models.data_associations import DataAssociatorMixin
-from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
-from pydent.relationships import (
-    Raw,
-    Function,
-    HasOne,
-    HasMany,
-    HasManyThrough,
-    HasManyGeneric,
-    HasOneFromMany,
-)
-from pydent.utils import filter_list
 from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.models.field_value_mixins import FieldTypeInterface
+from pydent.models.field_value_mixins import FieldValueInterface
+from pydent.relationships import Function
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import HasOneFromMany
+from pydent.relationships import Raw
+from pydent.utils import filter_list
 
 
 <div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation">[docs]</a>@add_schema
 class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
-    &quot;&quot;&quot;A Operation model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Operation model.&quot;&quot;&quot;
 
     fields = dict(
         field_values=HasMany(
@@ -406,10 +401,8 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return predecessors
 
 <div class="viewcode-block" id="Operation.init_field_values"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.init_field_values">[docs]</a>    def init_field_values(self):
-        &quot;&quot;&quot;
-        Initialize the :class:`FieldValue` from the :class:`FieldType` of the
-        parent :class:`Operation` type.
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;Initialize the :class:`FieldValue` from the :class:`FieldType` of
+        the parent :class:`Operation` type.&quot;&quot;&quot;
         self.field_values = []
         for field_type in self.get_metatype().field_types:
             if not field_type.array:
@@ -421,8 +414,8 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return filter_list(self.get_field_value_array(name, role))</div>
 
 <div class="viewcode-block" id="Operation.field_value"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.field_value">[docs]</a>    def field_value(self, name, role):
-        &quot;&quot;&quot;
-        Returns :class:`FieldValue` with name and role.
+        &quot;&quot;&quot;Returns :class:`FieldValue` with name and role.
+
         Return None if not found.
         &quot;&quot;&quot;
         if self.field_values:
@@ -451,20 +444,19 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return self.get_field_value_array(name, &quot;output&quot;)
 
 <div class="viewcode-block" id="Operation.input"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.input">[docs]</a>    def input(self, name):
-        &quot;&quot;&quot;Returns the input :class:`FieldValue` by name&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns the input :class:`FieldValue` by name.&quot;&quot;&quot;
         return self.field_value(name, &quot;input&quot;)</div>
 
 <div class="viewcode-block" id="Operation.output"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.output">[docs]</a>    def output(self, name):
-        &quot;&quot;&quot;Returns the output :class:`FieldValue` by name&quot;&quot;&quot;
+        &quot;&quot;&quot;Returns the output :class:`FieldValue` by name.&quot;&quot;&quot;
         return self.field_value(name, &quot;output&quot;)</div>
 
 <div class="viewcode-block" id="Operation.add_to_input_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.add_to_input_array">[docs]</a>    def add_to_input_array(
         self, name, sample=None, item=None, value=None, container=None
     ):
-        &quot;&quot;&quot;
-        Creates and adds a new input :class:`FieldValue`.
-        When setting values to items/samples/containers, the
-        item/sample/container must be saved.
+        &quot;&quot;&quot;Creates and adds a new input :class:`FieldValue`. When setting
+        values to items/samples/containers, the item/sample/container must be
+        saved.
 
         :param name: name of the FieldType/FieldValue
         :type name: string
@@ -488,10 +480,9 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
 <div class="viewcode-block" id="Operation.add_to_output_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.add_to_output_array">[docs]</a>    def add_to_output_array(
         self, name, sample=None, item=None, value=None, container=None
     ):
-        &quot;&quot;&quot;
-        Creates and adds a new output :class:`FieldValue`.
-        When setting values to items/samples/containers, the
-        item/sample/container must be saved.
+        &quot;&quot;&quot;Creates and adds a new output :class:`FieldValue`. When setting
+        values to items/samples/containers, the item/sample/container must be
+        saved.
 
         :param name: name of the FieldType/FieldValue
         :type name: string
@@ -525,8 +516,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
 <div class="viewcode-block" id="Operation.set_input"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.set_input">[docs]</a>    def set_input(
         self, name, sample=None, item=None, value=None, container=None, object_type=None
     ):
-        &quot;&quot;&quot;
-        Sets a input :class:`FieldValue` to a value. When setting values to
+        &quot;&quot;&quot;Sets a input :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
 
         :param name: name of the FieldValue/FieldType
@@ -553,8 +543,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
 <div class="viewcode-block" id="Operation.set_output"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.set_output">[docs]</a>    def set_output(
         self, name, sample=None, item=None, value=None, container=None, object_type=None
     ):
-        &quot;&quot;&quot;
-        Sets a output :class:`FieldValue` to a value. When setting values to
+        &quot;&quot;&quot;Sets a output :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
 
         :param name: name of the FieldValue/FieldType
@@ -579,11 +568,9 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         )</div>
 
 <div class="viewcode-block" id="Operation.set_input_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.set_input_array">[docs]</a>    def set_input_array(self, name, values):
-        &quot;&quot;&quot;
-        Sets input :class:`FieldValue` array using values.
-        Values should be a list of dictionaries containing sample, item,
-        container, or values keys.
-        When setting values to items/samples/containers, the
+        &quot;&quot;&quot;Sets input :class:`FieldValue` array using values. Values should be
+        a list of dictionaries containing sample, item, container, or values
+        keys. When setting values to items/samples/containers, the
         item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValues being modified
@@ -597,11 +584,9 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return self.set_field_value_array(name, &quot;input&quot;, values)</div>
 
 <div class="viewcode-block" id="Operation.set_output_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.set_output_array">[docs]</a>    def set_output_array(self, name, values):
-        &quot;&quot;&quot;
-        Sets output :class:`FieldValue` array using values.
-        Values should be a list of dictionaries containing sample, item,
-        container, or values keys.
-        When setting values to items/samples/containers, the
+        &quot;&quot;&quot;Sets output :class:`FieldValue` array using values. Values should be
+        a list of dictionaries containing sample, item, container, or values
+        keys. When setting values to items/samples/containers, the
         item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValues being modified
@@ -615,9 +600,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return self.set_field_value_array(name, &quot;output&quot;, values)</div>
 
 <div class="viewcode-block" id="Operation.show"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.show">[docs]</a>    def show(self, pre=&quot;&quot;):
-        &quot;&quot;&quot;
-        Print the operation nicely
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;Print the operation nicely.&quot;&quot;&quot;
         print(pre + self.operation_type.name + &quot; &quot; + str(self.cost))
         for field_value in self.field_values:
             field_value.show(pre=pre + &quot;  &quot;)</div>
@@ -628,10 +611,8 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
 
 <div class="viewcode-block" id="OperationType"><a class="viewcode-back" href="../../../models.html#pydent.models.OperationType">[docs]</a>@add_schema
 class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
-    &quot;&quot;&quot;
-    Represents an OperationType, which is the definition of a protocol in
-    Aquarium.
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;Represents an OperationType, which is the definition of a protocol in
+    Aquarium.&quot;&quot;&quot;
 
     fields = dict(
         operations=HasMany(&quot;Operation&quot;, &quot;OperationType&quot;),
@@ -691,8 +672,10 @@ class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
         return self.field_type(name, &quot;input&quot;)
 
 <div class="viewcode-block" id="OperationType.save"><a class="viewcode-back" href="../../../models.html#pydent.models.OperationType.save">[docs]</a>    def save(self):
-        &quot;&quot;&quot;Saves the Operation Type to the Aquarium server. Requires
-        this Operation Type to be connected to a session.&quot;&quot;&quot;
+        &quot;&quot;&quot;Saves the Operation Type to the Aquarium server.
+
+        Requires this Operation Type to be connected to a session.
+        &quot;&quot;&quot;
         return self.reload(self.session.utils.create_operation_type(self))</div>
 
     def to_save_json(self):
