@@ -20,7 +20,7 @@ def to_undirected(graph):
     undirected = nx.Graph()
     copied = deepcopy(graph)
     for n in copied.nodes:
-        ndata = copied.node[n]
+        ndata = copied.nodes[n]
         undirected.add_node(n, **ndata)
     for n1, n2 in copied.edges:
         edata = copied.edges[n1, n2]

@@ -1,3 +1,9 @@
+"""Tests for the new session cache. The cache is initalizes
+in sessions using a browser or sessions with
+
+.. versionadded:: 0.1
+"""
+
 from abc import ABC
 from copy import deepcopy
 

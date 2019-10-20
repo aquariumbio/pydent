@@ -820,7 +820,7 @@ class Planner(AFTMatcher):
         routing_id = self._routing_id(field_value)
         subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
         for node in subgraph:
-            n = routing_graph.node[node]
+            n = routing_graph.nodes[node]
             fv = n["fv"]
             self.set_field_value(fv, sample=sample)
         return field_value
@@ -1293,7 +1293,7 @@ class Planner(AFTMatcher):
 
         visited_groups = []
         for node in sorted_nodes:
-            node_data = op_graph.node[node]
+            node_data = op_graph.nodes[node]
             op = node_data["operation"]
             op_hash = self._op_to_hash(op)
             if op_hash in visited_groups or op_hash not in groups:
@@ -1339,7 +1339,7 @@ class Planner(AFTMatcher):
         roots = []
         for subgraph in get_subgraphs(self._routing_graph()):
             for n in subgraph:
-                node = subgraph.node[n]
+                node = subgraph.nodes[n]
                 if len(list(subgraph.predecessors(n))) == 0:
                     root = node["fv"]
                     roots.append(root)
@@ -1366,7 +1366,7 @@ class Planner(AFTMatcher):
             reasons = []
             root = None
             for n in subgraph:
-                node = subgraph.node[n]
+                node = subgraph.nodes[n]
                 fv = node["fv"]
                 value = fv.sample
                 if value is None and fv.field_type.ftype == "sample":

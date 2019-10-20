@@ -406,7 +406,12 @@ class ModelBase(SchemaModel):
                 elif keep and relation.nested in keep:
                     continue
                 else:
-                    setattr(self, relation.ref, None)
+                    try:
+                        setattr(self, relation.ref, None)
+                    except TypeError as e:
+                        msg = "An error occured while trying to anonymize relation:\n{}"\
+                            .format(relation)
+                        raise e.__class__(msg + "\nerr msg: " + str(e))
 
     def copy(self, keep: bool = None) -> "ModelBase":
         """Provides a deepcopy of the model, but annonymizes the primary and
