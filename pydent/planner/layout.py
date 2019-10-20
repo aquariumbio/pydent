@@ -109,13 +109,13 @@ class PlannerLayout:
     @property
     def operations(self):
         for node in self.G.nodes:
-            if "operation" in self.G.node[node]:
-                yield self.G.node[node]["operation"]
+            if "operation" in self.G.nodes[node]:
+                yield self.G.nodes[node]["operation"]
 
     def iter_operations(self):
         for node in self.G.nodes:
-            if "operation" in self.G.node[node]:
-                yield (node, self.G.node[node]["operation"])
+            if "operation" in self.G.nodes[node]:
+                yield (node, self.G.nodes[node]["operation"])
 
     def _add_operation(self, operation: Operation):
         """Adds an Operation to the Layout.
@@ -133,7 +133,7 @@ class PlannerLayout:
 
     def nodes_to_ops(self, nodes):
         """Returns operations from a list of node_ids."""
-        return [self.G.node[n]["operation"] for n in nodes]
+        return [self.G.nodes[n]["operation"] for n in nodes]
 
     def ops_to_nodes(self, ops):
         """Returns node_ids for each operation."""
