@@ -104,6 +104,12 @@ class BaseRelationship(fields.Relationship):
         many=None,
         allow_none=True,
     ):
+        if (ref is None and not attr is None) or (attr is None and not ref is None):
+            raise ModelValidationError("ref={} is None while attr={}."
+                                       "Either both must be provided or both absent"
+                                       .format(ref, attr))
+        elif attr is None and ref is None:
+            ref, att = self._get_ref_attr(nested=nested, ref=ref, attr=attr)
         self.attr = attr
         self.ref = ref
         super().__init__(
