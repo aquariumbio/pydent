@@ -1,8 +1,11 @@
 """Model and schema registry meta-classes."""
 from collections import defaultdict
+from pprint import pformat
 
 from pydent.marshaller.exceptions import ModelRegistryError
 from pydent.marshaller.exceptions import SchemaRegistryError
+from pydent.utils.loggable import condense_long_lists
+from pydent.utils.logging_helpers import did_you_mean
 
 
 class SchemaRegistry(type):
@@ -93,13 +96,22 @@ class ModelRegistry(type):
         """Returns the class's schema."""
         return cls._model_schema
 
-    @staticmethod
-    def get_model(name):
+    @classmethod
+    def did_you_mean_model(cls, model_name):
+        model_names = list(cls.models.keys())
+        available_models = ", ".join(model_names)
+        msg = did_you_mean(model_name, model_names)
+        if not msg:
+            return "Available models: {}".format(pformat(available_models))
+        return msg
+
+    @classmethod
+    def get_model(cls, name):
         """Gets a model class by name."""
         if name not in ModelRegistry.models:
             raise ModelRegistryError(
-                "Model '{}' not found in registry. Available models:\n{}".format(
-                    name, ", ".join(ModelRegistry.models.keys())
+                "Model '{}' not found in registry.\n{}".format(
+                    name, cls.did_you_mean_model(name)
                 )
             )
-        return ModelRegistry.models[name]
+        return cls.models[name]
