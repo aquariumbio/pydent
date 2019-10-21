@@ -1,9 +1,8 @@
-"""Tests for the new session cache. The cache is initalizes
-in sessions using a browser or sessions with
+"""Tests for the new session cache. The cache is initalizes in sessions using a
+browser or sessions with.
 
 .. versionadded:: 0.1
 """
-
 from abc import ABC
 from copy import deepcopy
 
@@ -20,6 +19,30 @@ def test_regular_session(session):
     st2 = session.SampleType.find(s1.sample_type_id)
     assert id(s1) != id(s2)
     assert id(st1) != id(st2)
+
+
+def test_with_statement_moves_samples(session):
+
+    with session.with_cache() as sess:
+        m = sess.Sample.one()
+        assert m.session is sess
+        assert m.session is not session
+    assert m.session is session
+
+
+def test_swap_sessions(session):
+
+    with session.with_cache() as s1:
+        samples = s1.Sample.last(10)
+        with s1(using_models=True, using_requests=False) as s2:
+            for s in samples:
+                assert s is s2.browser.model_cache["Sample"][s.id]
+            for s in samples:
+                assert s.session is s1
+            s2._swap_sessions(s1, s2)
+            for s in samples:
+                assert s.session is s2
+            samples[0].sample_type
 
 
 def test_raise_value_error_for_interface(session):

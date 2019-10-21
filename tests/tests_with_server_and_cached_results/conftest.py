@@ -113,6 +113,12 @@ def config():
 
 
 @pytest.fixture(scope="session")
-def session(config):
+def base_live_session(config):
     """Returns a live aquarium connection."""
     return AqSession(**config)
+
+
+@pytest.fixture(scope="function")
+def session(base_live_session):
+    """Returns a live aquarium connection."""
+    return base_live_session()

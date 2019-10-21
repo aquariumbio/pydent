@@ -1,8 +1,10 @@
 import re
+from collections import Iterable
 
 import pytest
 
 from pydent import models as pydent_models
+from pydent.base import ModelBase
 from pydent.browser import Browser
 from pydent.marshaller import exceptions as marshaller_exceptions
 
@@ -119,7 +121,7 @@ def test_cache_where(session):
     ), "should be equivalent as these are equivalent queries"
     assert (
         "foo" in cached_primers[0].__dict__
-    ), 'should containg the "foo" attribute that was initially cached'
+    ), 'should containing the "foo" attribute that was initially cached'
     assert (
         cached_primers[0].__dict__["foo"] == "bar"
     ), "should return the very same models that was initially cached"
@@ -127,6 +129,8 @@ def test_cache_where(session):
 
 
 def test_cache_find(session):
+    """This test ensures that 'find' preferentially retrieves the models from
+    the cache."""
     browser = Browser(session)
     primers = browser.cached_where({"sample_type_id": 1}, "Sample")
 
@@ -273,25 +277,6 @@ def test_retrieve_with_many_through_for_jobs_and_operations(session):
                 assert isinstance(other_model, pydent_models.Operation)
 
 
-def test_retrieve_with_many_through_for_collections_and_parts(session):
-    browser = Browser(session)
-    collections = session.Collection.last(50)
-
-    for c in collections:
-        assert not "parts" in c._get_deserialized_data()
-
-    parts = browser._retrieve_has_many_through(collections, "parts")
-    assert len(parts) > 0
-    assert not all([m._get_deserialized_data()["parts"] is None for m in collections])
-
-    for model in collections:
-        assert "parts" in model._get_deserialized_data()
-        other_models = model._get_deserialized_data()["parts"]
-        if other_models is not None:
-            for other_model in other_models:
-                assert isinstance(other_model, pydent_models.Item)
-
-
 def test_collect_callbacks_for_retrieve_for_QUERYTYPE_BYID(session):
     models = session.Sample.last(10)
     sample_type_ids = {m.sample_type_id for m in models}
@@ -309,14 +294,26 @@ def test_collect_callbacks_for_retrieve_for_QUERYTYPE_QUERY(session):
     assert set(args["sample_type_id"]) == {st.id for st in models}
 
 
-def test_retrieve(session):
-    """Should be able to parse HasOne, HasMany, and HasManyThrough without
-    specifying the type of relationship."""
+def test_retrieve_with_many_through_for_collections_and_parts(session):
     browser = Browser(session)
 
-    collections = session.Collection.first(100) + session.Collection.last(100)
-    parts = browser.retrieve(collections, "parts")
+    # retrieve expected collections and parts
+    part_associations = browser.last(100, "PartAssociation")
+    parts = browser.retrieve(part_associations, "part")
+    collections = browser.retrieve(part_associations, "collection")
+    assert parts
+    assert collections
+
+    # we clear the model cache
+    browser.clear()
+    assert not browser.model_cache
+
+    # we should be able to gather tha parts form the collections
+    parts_from_collections = browser.retrieve(collections, "parts")
+    assert len(parts_from_collections) >= len(parts)
     assert len(parts) > 0
+
+    # we check to make sure the 'parts' are instances of Items
     for model in collections:
         assert "parts" in model._get_deserialized_data()
         other_models = model._get_deserialized_data()["parts"]
@@ -324,6 +321,11 @@ def test_retrieve(session):
             for other_model in other_models:
                 assert isinstance(other_model, pydent_models.Item)
 
+
+def test_retrieve_has_many_through(session):
+    browser = Browser(session)
+
+    # we check to make sure that 'operations' are instances of Operations
     jobs = session.Job.last(50)
     operations = browser._retrieve_has_many_through(jobs, "operations")
     assert len(operations) > 0
@@ -333,6 +335,10 @@ def test_retrieve(session):
         if other_models is not None:
             for other_model in other_models:
                 assert isinstance(other_model, pydent_models.Operation)
+
+
+def test_retrieve_has_many_or_has_one(session):
+    browser = Browser(session)
 
     samples = browser.search(".*mcherry.*", sample_type="Fragment")[:30]
     assert (
@@ -463,6 +469,28 @@ def test_update_model_cache_without_id(session):
 
     assert None not in browser.model_cache["Sample"]
     assert s._primary_key in browser.model_cache["Sample"]
+
+
+class TestGetForceRefresh:
+    def test_get_no_force_refresh(self, session):
+        """This tests verifies the get 'force_refresh' will force a new
+        request."""
+
+        browser = Browser(session)
+
+        samples = browser.last(50)
+
+        sample_types1 = browser.retrieve(samples, "sample_type")
+
+        n_requests = session._aqhttp.num_requests
+
+        sample_types2 = browser.get(samples, "sample_type")
+        assert len(sample_types1) == len(sample_types2)
+        assert sample_types1
+        for st1, st2 in zip(sample_types1, sample_types2):
+            assert st1 is st2
+
+        assert session._aqhttp.num_requests == n_requests
 
 
 # def test_operation_type_retrieve(session):

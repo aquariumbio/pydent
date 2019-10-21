@@ -23,3 +23,17 @@ def test_did_you_mean():
     with pytest.raises(ModelRegistryError) as e:
         ModelRegistry.get_model("asdfasdrfasd")
     print(str(e.value))
+
+
+def test_did_you_mean_for_session(fake_session):
+
+    with pytest.raises(AttributeError) as e:
+        fake_session.find
+    assert "Did you mean" in str(e.value)
+
+
+def test_did_you_mean_for_model_session(fake_session):
+
+    with pytest.raises(AttributeError) as e:
+        fake_session.Samples
+    assert "Did you mean" in str(e.value)
