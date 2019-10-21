@@ -176,7 +176,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -255,7 +256,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -410,10 +412,10 @@ authentication for the Aquarium API</p></li>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_verbose</span></code>(verbose[, tb_limit])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_cache</span></code>([using_requests, using_models, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.with_cache" title="pydent.aqsession.AqSession.with_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_cache</span></code></a>([using_requests, using_models, …])</p></td>
 <td><p><dl class="field-list simple">
-<dt class="field-odd">rtype</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a></p>
+<dt class="field-odd">type using_requests</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</p>
 </dd>
 </dl>
 </p></td>
@@ -564,6 +566,12 @@ authentication for the Aquarium API</p></li>
 <dd><p>requests interface</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydent.aqsession.AqSession._browser">
+<code class="sig-name descname">_browser</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqSession._browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>the sessions browser</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.aqsession.AqSession._initialize_interfaces">
 <code class="sig-name descname">_initialize_interfaces</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession._initialize_interfaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession._initialize_interfaces" title="Permalink to this definition">¶</a></dt>
@@ -579,7 +587,7 @@ authentication for the Aquarium API</p></li>
 <dl class="method">
 <dt id="pydent.aqsession.AqSession._swap_sessions">
 <em class="property">static </em><code class="sig-name descname">_swap_sessions</code><span class="sig-paren">(</span><em class="sig-param">from_session</em>, <em class="sig-param">to_session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession._swap_sessions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession._swap_sessions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Moves models from one sesssion to another.</p>
+<dd><p>Moves models from one session to another.</p>
 </dd></dl>
 
 <dl class="method">
@@ -668,6 +676,12 @@ requests to Aquarium.</p>
 <dd><p>Open Aquarium in a web browser window.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pydent.aqsession.AqSession.parent_session">
+<code class="sig-name descname">parent_session</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqSession.parent_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>the parent session, if derived from another session</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pydent.aqsession.AqSession.ping">
 <code class="sig-name descname">ping</code><span class="sig-paren">(</span><em class="sig-param">num=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.ping" title="Permalink to this definition">¶</a></dt>
@@ -708,6 +722,25 @@ of the server.</p>
 <dt id="pydent.aqsession.AqSession.utils">
 <em class="property">property </em><code class="sig-name descname">utils</code><a class="headerlink" href="#pydent.aqsession.AqSession.utils" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiates a utility interface.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.with_cache">
+<code class="sig-name descname">with_cache</code><span class="sig-paren">(</span><em class="sig-param">using_requests=None</em>, <em class="sig-param">using_models=False</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">verbose=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.with_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.with_cache" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>using_requests</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – if False, ForbiddenRequest will be raised if requests are</p>
+</dd>
+</dl>
+<p>made using the session.
+:type using_models: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>
+:param using_models: if True (default), derived session will inherit
+the current sessions model_cache
+:type timeout: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]
+:param timeout: the requests timeout in seconds
+:param verbose: if True, verbose mode will be activated for the derived session
+:rtype: <a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a>
+:return:</p>
 </dd></dl>
 
 </dd></dl>

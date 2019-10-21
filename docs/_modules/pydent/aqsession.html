@@ -174,7 +174,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -253,7 +254,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -486,9 +488,12 @@ from pydent.sessionabc import SessionABC
         self._current_user = None
         self._interface_class = QueryInterface
         self._initialize_interfaces()
-        self._browser = None
+        self._browser = None  #: the sessions browser
         self._using_cache = False
-        self.init_cache()</div>
+        self.init_cache()
+        self.parent_session = (
+            None
+        )  #: the parent session, if derived from another session</div>
 
     @property
     def interface_class(self) -&gt; Type:
@@ -669,20 +674,30 @@ from pydent.sessionabc import SessionABC
         instance.using_cache = self.using_cache
         return instance
 
-    def with_cache(
+<div class="viewcode-block" id="AqSession.with_cache"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.with_cache">[docs]</a>    def with_cache(
         self,
         using_requests: bool = None,
         using_models: bool = False,
         timeout: int = None,
         verbose=None,
     ) -&gt; &quot;AqSession&quot;:
+        &quot;&quot;&quot;
+
+        :param using_requests: if False, ForbiddenRequest will be raised if requests are
+        made using the session.
+        :param using_models: if True (default), derived session will inherit
+        the current sessions model_cache
+        :param timeout: the requests timeout in seconds
+        :param verbose: if True, verbose mode will be activated for the derived session
+        :return:
+        &quot;&quot;&quot;
         return self(
             using_cache=True,
             using_models=using_models,
             using_requests=using_requests,
             timeout=timeout,
             using_verbose=verbose,
-        )
+        )</div>
 
     def with_requests_off(
         self,
@@ -701,12 +716,32 @@ from pydent.sessionabc import SessionABC
 
 <div class="viewcode-block" id="AqSession._swap_sessions"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession._swap_sessions">[docs]</a>    @staticmethod
     def _swap_sessions(from_session, to_session):
-        &quot;&quot;&quot;Moves models from one sesssion to another.&quot;&quot;&quot;
-        models = from_session.browser.models
-        if to_session.browser:
-            to_session.browser.update_cache(models)
-        for m in models:
-            m._session = to_session</div>
+        &quot;&quot;&quot;Moves models from one session to another.&quot;&quot;&quot;
+        if to_session:
+            models = from_session.browser.models
+            if to_session.browser:
+                to_session.browser.update_cache(models)
+            for m in models:
+                m._session = to_session</div>
+
+    def __getattr__(self, item):
+        if item not in self.__dict__:
+            non_private = [k for k in QueryInterface.__dict__ if not k.startswith(&quot;_&quot;)]
+            if item in non_private:
+                raise AttributeError(
+                    &quot;{s} has no attribute &#39;{item}&#39;.\nDid you mean &quot;
+                    &quot;&#39;session.[ModelName].{item}&#39;?&quot;.format(s=self.__class__, item=item)
+                )
+            else:
+                msg = ModelRegistry.did_you_mean_model(item, fallback=False)
+                if msg:
+                    raise AttributeError(
+                        &quot;{s} has no attribute &#39;{item}&#39;.\n{msg}&quot;.format(
+                            s=self.__class__, item=item, msg=msg
+                        )
+                    )
+
+        return super().__getattr__(item)
 
     def __call__(
         self,
@@ -715,7 +750,18 @@ from pydent.sessionabc import SessionABC
         timeout: int = None,
         using_models: bool = None,
         using_verbose: bool = None,
+        session_swap: bool = False,
     ) -&gt; &quot;AqSession&quot;:
+        &quot;&quot;&quot;.. versionchanges:: 0.1.5a7 &#39;session_swap` parameter added.
+
+        :param using_cache:
+        :param using_requests:
+        :param timeout:
+        :param using_models:
+        :param using_verbose:
+        :param session_swap:
+        :return:
+        &quot;&quot;&quot;
         new_session = self.copy()
         new_session.parent_session = self
         if using_cache is not None:
@@ -724,7 +770,9 @@ from pydent.sessionabc import SessionABC
             new_session.using_requests = using_requests
         if timeout is not None:
             new_session.set_timeout(timeout)
-        if using_models and self.browser:
+        if session_swap:
+            self._swap_sessions(self, new_session)
+        elif using_models and self.browser:
             new_session.browser.update_cache(self.browser.models)
         if using_verbose is not None:
             new_session.set_verbose(using_verbose)
@@ -738,8 +786,8 @@ from pydent.sessionabc import SessionABC
             self._swap_sessions(self, self.parent_session)
 
     def __repr__(self) -&gt; str:
-        return &quot;&lt;{}(name={}, AqHTTP={}))&gt;&quot;.format(
-            self.__class__.__name__, self.name, self._aqhttp
+        return &quot;&lt;{}(name={}, AqHTTP={}), parent={})&gt;&quot;.format(
+            self.__class__.__name__, self.name, self._aqhttp, id(self.parent_session)
         )</div>
 </pre></div>
 

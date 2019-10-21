@@ -176,7 +176,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -255,7 +256,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -444,7 +446,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.Planner.optimize_plan" title="pydent.planner.Planner.optimize_plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimize_plan</span></code></a>([operations, ignore])</p></td>
-<td><p>Optimizes a plan by removing redundent operations.</p></td>
+<td><p>Remove redundant operations.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prettify</span></code>()</p></td>
 <td><p></p></td>
@@ -544,7 +546,7 @@
 <dt id="pydent.planner.Planner.ITEM_ORDER_PREFERENCE">
 <em class="property">class </em><code class="sig-name descname">ITEM_ORDER_PREFERENCE</code><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.ITEM_ORDER_PREFERENCE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.ITEM_ORDER_PREFERENCE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Item order options</p>
+<p>Item order options.</p>
 <dl class="attribute">
 <dt id="pydent.planner.Planner.ITEM_ORDER_PREFERENCE.FIRST">
 <code class="sig-name descname">FIRST</code><em class="property"> = 'FIRST'</em><a class="headerlink" href="#pydent.planner.Planner.ITEM_ORDER_PREFERENCE.FIRST" title="Permalink to this definition">¶</a></dt>
@@ -581,11 +583,17 @@
 <dt id="pydent.planner.Planner.ITEM_SELECTION_PREFERENCE">
 <em class="property">class </em><code class="sig-name descname">ITEM_SELECTION_PREFERENCE</code><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.ITEM_SELECTION_PREFERENCE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.ITEM_SELECTION_PREFERENCE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Item selection options</p>
+<p>Item selection options.</p>
 <dl class="attribute">
 <dt id="pydent.planner.Planner.ITEM_SELECTION_PREFERENCE.ANY">
 <code class="sig-name descname">ANY</code><em class="property"> = 'ANY'</em><a class="headerlink" href="#pydent.planner.Planner.ITEM_SELECTION_PREFERENCE.ANY" title="Permalink to this definition">¶</a></dt>
 <dd><p>pick the first item that matches the set field_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.planner.Planner.ITEM_SELECTION_PREFERENCE.PREFERRED">
+<code class="sig-name descname">PREFERRED</code><em class="property"> = 'PREFERRED'</em><a class="headerlink" href="#pydent.planner.Planner.ITEM_SELECTION_PREFERENCE.PREFERRED" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) pick the item that matches the currently set aft, else</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -631,7 +639,8 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>tuple of matching allowable_field_type (aft) pairs, matching field_value inputs and matching field_value outputs</p>
+<dd class="field-even"><p>tuple of matching allowable_field_type (aft) pairs, matching
+field_value inputs and matching field_value outputs</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>tuple</p>
@@ -773,7 +782,7 @@ planner.chain(&quot;Pour Gel&quot;, run_gel)
 and wires.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>plans</strong> – list of Aquarium Plans instances</p>
+<dd class="field-odd"><p><strong>plans</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Plan</span></code>]) – list of Aquarium Plans instances</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>new Plan</p>
@@ -831,10 +840,13 @@ instance.</p>
 <dl class="method">
 <dt id="pydent.planner.Planner.optimize_plan">
 <code class="sig-name descname">optimize_plan</code><span class="sig-paren">(</span><em class="sig-param">operations=None</em>, <em class="sig-param">ignore=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.optimize_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.optimize_plan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Optimizes a plan by removing redundent operations.</p>
+<dd><p>Remove redundant operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>planner</strong> – </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operations</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>]]) – list of operations</p></li>
+<li><p><strong>ignore</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – list of operation type names to ignore in optimization</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
@@ -850,14 +862,15 @@ instance.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source</strong> (<em>FieldValue|Operation</em>) – field_value or operation source</p></li>
 <li><p><strong>destination</strong> (<em>FieldValue|Operation</em>) – field_value or operation destination</p></li>
-<li><p><strong>strict</strong> (<em>bool</em>) – will raise error if there is is ambiguous wiring between the source and destination</p></li>
+<li><p><strong>strict</strong> (<em>bool</em>) – will raise error if there is is ambiguous wiring between the
+source and destination</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>created wire</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../models.html#pydent.models.Wire" title="pydent.models.Wire">Wire</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.models.Wire.html#pydent.models.Wire" title="pydent.models.Wire">Wire</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -913,18 +926,18 @@ the array, create a new field value and set that one.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>op</strong> (<a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><em>Operation</em></a>) – operation</p></li>
+<li><p><strong>op</strong> (<a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><em>Operation</em></a>) – operation</p></li>
 <li><p><strong>field_value_name</strong> (<em>basestring</em>) – field value name</p></li>
-<li><p><strong>sample</strong> (<a class="reference internal" href="../models.html#pydent.models.Sample" title="pydent.models.Sample"><em>Sample</em></a>) – the sample to set</p></li>
-<li><p><strong>item</strong> (<a class="reference internal" href="../models.html#pydent.models.Item" title="pydent.models.Item"><em>Item</em></a>) – the item to set</p></li>
-<li><p><strong>container</strong> (<a class="reference internal" href="../models.html#pydent.models.ObjectType" title="pydent.models.ObjectType"><em>ObjectType</em></a>) – the container type to set</p></li>
+<li><p><strong>sample</strong> (<a class="reference internal" href="pydent.models.Sample.html#pydent.models.Sample" title="pydent.models.Sample"><em>Sample</em></a>) – the sample to set</p></li>
+<li><p><strong>item</strong> (<a class="reference internal" href="pydent.models.Item.html#pydent.models.Item" title="pydent.models.Item"><em>Item</em></a>) – the item to set</p></li>
+<li><p><strong>container</strong> (<a class="reference internal" href="pydent.models.ObjectType.html#pydent.models.ObjectType" title="pydent.models.ObjectType"><em>ObjectType</em></a>) – the container type to set</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the set field value</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -935,8 +948,8 @@ the array, create a new field value and set that one.</p>
 <dd><p>Map the sample field values to the operation inputs. Optionally, a
 routing dictionary may be passed to indicate the mapping between the
 sample field values and operation inputs.</p>
-<p>For example, the following would map the “Integrant” sample field value to the “Template”
-operation input, and so on…:</p>
+<p>For example, the following would map the “Integrant” sample field value to the
+“Template” operation input, and so on…:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">routing</span><span class="o">=</span><span class="p">{</span>
     <span class="s2">&quot;Integrant&quot;</span><span class="p">:</span> <span class="s2">&quot;Template&quot;</span><span class="p">,</span>
     <span class="s2">&quot;QC_Primer1&quot;</span><span class="p">:</span> <span class="s2">&quot;Forward Primer&quot;</span><span class="p">,</span>
@@ -979,25 +992,31 @@ recent=False will select the oldest item.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fv</strong> (<a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><em>FieldValue</em></a>) – The field value to set.</p></li>
+<li><p><strong>fv</strong> (<a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><em>FieldValue</em></a>) – The field value to set.</p></li>
 <li><p><strong>recent</strong> (<em>bool</em>) – whether to select the most recent item (recent=True is default)</p></li>
-<li><p><strong>filter_func</strong> (<em>list</em>) – array of lambda to filter items by. E.g. ‘lambda_arr=[lambda x: x.get(“concentration”) &gt; 10]’</p></li>
-<li><p><strong>order_preference</strong> (<em>basestring</em>) – The item order preference. Select from “LAST” (default), “FIRST”, or “RANDOM”. Selections
-also available in <a class="reference internal" href="#pydent.planner.Planner.ITEM_ORDER_PREFERENCE" title="pydent.planner.Planner.ITEM_ORDER_PREFERENCE"><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner.ITEM_ORDER_PREFERENCE</span></code></a>. Random will choose a random item
-from the available items found after all preferences and filters</p></li>
-<li><p><strong>item_preference</strong> (<em>basestring</em>) – The item selection preference. Select from items in <a class="reference internal" href="#pydent.planner.Planner.ITEM_SELECTION_PREFERENCE" title="pydent.planner.Planner.ITEM_SELECTION_PREFERENCE"><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner.ITEM_SELECTION_PREFERENCE</span></code></a>
-If “PREFERRED” (default), will select item that matches the allowable_field_value that is
-already set for the field_value, else select any item that matches the <code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code> set <code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>. If
-“RESTRICT”, will restrict selected item only to those that matches the current allowable_field_value
-that is set for the <code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>. If “ANY”, will select any items that matches the <code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code>.
-set for the field_value</p></li>
+<li><p><strong>filter_func</strong> (<em>list</em>) – array of lambda to filter items by. E.g.
+‘lambda_arr=[lambda x: x.get(“concentration”) &gt; 10]’</p></li>
+<li><p><strong>order_preference</strong> (<em>basestring</em>) – The item order preference. Select from “LAST”
+(default), “FIRST”, or “RANDOM”. Selections
+also available in <a class="reference internal" href="#pydent.planner.Planner.ITEM_ORDER_PREFERENCE" title="pydent.planner.Planner.ITEM_ORDER_PREFERENCE"><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner.ITEM_ORDER_PREFERENCE</span></code></a>.
+Random will choose a random item from the available items found after
+all preferences and filters</p></li>
+<li><p><strong>item_preference</strong> (<em>basestring</em>) – The item selection preference. Select from items in
+<a class="reference internal" href="#pydent.planner.Planner.ITEM_SELECTION_PREFERENCE" title="pydent.planner.Planner.ITEM_SELECTION_PREFERENCE"><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner.ITEM_SELECTION_PREFERENCE</span></code></a>
+If “PREFERRED” (default), will select item that matches the
+allowable_field_value that is already set for the field_value, else select
+any item that matches the <code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code> set <code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>. If
+“RESTRICT”, will restrict selected item only to those that matches the
+current allowable_field_value that is set for the <code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>. If
+“ANY”, will select any items that matches the <code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code>.set for
+the field_value</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The selected item (or None if no item set)</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../models.html#pydent.models.Item" title="pydent.models.Item">Item</a> or None</p>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.models.Item.html#pydent.models.Item" title="pydent.models.Item">Item</a> or None</p>
 </dd>
 </dl>
 </dd></dl>

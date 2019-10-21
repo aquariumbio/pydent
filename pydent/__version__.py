@@ -10,7 +10,4 @@ __authors__ = [
 ]
 __repo__ = None
 __homepage__ = "https://www.github.com/klavinslab/trident"
-__description__ = (
-    "Aquarium's Python API for planning, executing, and analyzing "
-    "scientific experiments."
-)
+__description__ = "Aquarium's Python API for planning, executing, and analyzing scientific experiments."

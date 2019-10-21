@@ -174,7 +174,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -253,7 +254,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -328,14 +330,18 @@ Browser class for searching and cacheing results.
 import re
 from collections import OrderedDict
 from difflib import get_close_matches
+from pprint import pformat
+from typing import Callable
 from typing import Dict
 from typing import List
 from typing import Union
 
+import networkx as nx
 import pandas as pd
 
 from pydent import models as pydent_models
 from pydent.base import ModelBase
+from pydent.exceptions import ForbiddenRequestError
 from pydent.interfaces import QueryInterface
 from pydent.interfaces import QueryInterfaceABC
 from pydent.marshaller import ModelRegistry
@@ -343,11 +349,11 @@ from pydent.models import Sample
 from pydent.relationships import BaseRelationship
 from pydent.utils import Loggable
 from pydent.utils.logging_helpers import did_you_mean
-from pprint import pformat
 
 # TODO: browser documentation
 # TODO: examples in sphinx
-# TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
+# TODO: methods to help pull relevant data from plans (user specifies types of data to
+#       pull, and trident should pull and cache in the most efficient way possible)
 
 
 <div class="viewcode-block" id="BrowserException"><a class="viewcode-back" href="../../browser.html#pydent.browser.BrowserException">[docs]</a>class BrowserException(Exception):
@@ -367,10 +373,16 @@ from pprint import pformat
         &quot;HasManyGeneric&quot;,
     ]
 
-<div class="viewcode-block" id="Browser.__init__"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.__init__">[docs]</a>    def __init__(self, session):
+<div class="viewcode-block" id="Browser.__init__"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.__init__">[docs]</a>    def __init__(self, session: &quot;AqSession&quot;, inherit_models: bool = False):
         &quot;&quot;&quot;Instantiates a new browser from a AqSession instance.
 
+        .. versionchanged:: 0.1.5a7
+            &#39;inherit_models&#39; argument will inherit the sessions model_cache
+            (default: False)
+
         :param session: a session instance
+        :param inherit_models: if True, the browser will inherit the cache in the
+            provided session&#39;s browser model_cache
         :type session: AqSession
         &quot;&quot;&quot;
         self.session = session
@@ -379,14 +391,18 @@ from pprint import pformat
         self.model = Sample
         self.model_list_cache = {}
         self.model_cache = {}
-        self.log = Loggable(self, name=&quot;Browser@{}&quot;.format(session.url))</div>
+        self.log = Loggable(self, name=&quot;Browser@{}&quot;.format(session.url))
+        if session.browser and inherit_models:
+            self.update_cache(session.browser.models)</div>
 
     @property
     def model_name(self):
         return self.model.__name__
 
-    # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
-    # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
+    # TODO: change session interface (find, where, etc.) to use cache IF use_
+    #       cache = True
+    # TODO: where and find queries can sort through models much more quickly than
+    #       Aquarium, but can fallback to Aq
 
     @property
     def models(self):
@@ -434,7 +450,8 @@ from pprint import pformat
         self.model_cache = {}</div>
 
     def list_models(self, *args, **kwargs):
-        get_models = lambda: self._list_models_fxn(*args, **kwargs)
+        def get_models():
+            return self._list_models_fxn(*args, **kwargs)
 
         if self.use_cache:
             models_cache = self.model_list_cache.get(&quot;models&quot;, {})
@@ -494,7 +511,8 @@ from pprint import pformat
         :type opts: dict
         :param params: additionaly keyword arguments to send to the function
         :type params: dict
-        :param as_single: if True, will return the first model of the array or None if array is empty
+        :param as_single: if True, will return the first model of the array or None if
+            array is empty
         :type as_single: bool
         :return: Aquarium model or list of Aquarium models
         :rtype: ModelBase | list
@@ -737,7 +755,8 @@ from pprint import pformat
             )
         )
 
-        # TODO: this code may be sketchy... here {&#39;id&#39;: []}, really means we found all of the models..
+        # TODO: this code may be sketchy... here {&#39;id&#39;: []}, really means we found
+        #       all of the models..
         if primary_key in remaining_query and not remaining_query[primary_key]:
             return list(found_dict.values())
         server_models = self.interface(model).where(remaining_query)
@@ -820,7 +839,8 @@ from pprint import pformat
 
         :param pattern: regex pattern
         :type pattern: basestring
-        :param samples: samples to search. If left blank, a search to find samples will be performed
+        :param samples: samples to search. If left blank, a search to find samples will
+            be performed
         :type samples: list
         :param sample_type: restrict to a particular sample type
         :type sample_type: name
@@ -960,13 +980,15 @@ from pprint import pformat
                         missing_models.append(model_ref)
             if missing_models:
                 self.log.error(
-                    &quot;INCONSISTENT AQUARIUM DATABASE - There where {l} missing {cls} models &quot;
+                    &quot;INCONSISTENT AQUARIUM DATABASE - There where {models} missing {cls} &quot;
+                    &quot;models &quot;
                     &quot;from the Aquarium database, which were ignored by trident. &quot;
                     &quot;This happens when models are deleted from Aquarium which &quot;
                     &quot;results in an inconsistent server database. Trident was unable &quot;
-                    &quot;resolve the following relationships which returned no models from the server: &quot;
+                    &quot;resolve the following relationships which returned no models &quot;
+                    &quot;from the server: &quot;
                     &quot;{cls}.where({attr}={missing})&quot;.format(
-                        l=len(missing_models),
+                        models=len(missing_models),
                         cls=model_class2,
                         missing=missing_models,
                         attr=attr,
@@ -1034,9 +1056,7 @@ from pprint import pformat
             if strict:
                 msg = did_you_mean(relationship_name, list(relationships))
                 if not msg:
-                    msg = &#39;Available relations: {}&#39;.format(
-                        pformat(list(relationships))
-                    )
+                    msg = &quot;Available relations: {}&quot;.format(pformat(list(relationships)))
                 raise BrowserException(
                     &quot;Relation &#39;{}&#39; not found in relationships for {}.\nHint: {}&quot;.format(
                         relationship_name, type(model), msg
@@ -1095,16 +1115,16 @@ from pprint import pformat
             model_classes
         )
         if relation is None:
-            relation = self._get_relation_from_model(models[0],
-                                                     relationship_name, strict)
+            relation = self._get_relation_from_model(
+                models[0], relationship_name, strict
+            )
             if relation is None:
                 return []
         else:
             if relationship_name in models[0].get_relationships():
                 raise BrowserException(
-                    &#39;Cannot add new relationship &quot;{}&quot; because it already exists in the model definition&#39;.format(
-                        relationship_name
-                    )
+                    &#39;Cannot add new relationship &quot;{}&quot; because it already exists in the &#39;
+                    &quot;model definition&quot;.format(relationship_name)
                 )
         # TODO: add relationship handler for Many and One
         if relation.__class__.__name__ not in self.ACCEPTED_GET_RELATION_TYPES:
@@ -1121,7 +1141,7 @@ from pprint import pformat
             ]
             no_refresh = [m for m in models if m.is_deserialized(relationship_name)]
         else:
-            needs_refresh = [m for m in models if m.is_deserialized(relationship_name)]
+            needs_refresh = models
             no_refresh = []
 
         if hasattr(relation, &quot;through_model_attr&quot;):
@@ -1144,7 +1164,7 @@ from pprint import pformat
                 found_models += val
             else:
                 found_models.append(val)
-        return found_models</div>
+        return list(set(found_models))</div>
 
 <div class="viewcode-block" id="Browser.recursive_retrieve"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.recursive_retrieve">[docs]</a>    def recursive_retrieve(
         self,
@@ -1178,12 +1198,14 @@ from pprint import pformat
 
         :param models: models to retrieve from
         :type models: list
-        :param relations: the relation to retrieve. This may either be a string (by attribute name), a list, or a dict.
+        :param relations: the relation to retrieve. This may either be a string (by
+            attribute name), a list, or a dict.
         :type relations: list|dict|basestring
         :param strict: wither to ignore database inconsistencies
         :param force_refresh:
         :type bool
-        :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
+        :return: dictionary of all models retrieved grouped by the attribute name that
+            retrieved them.
         :rtype: dictionary
         &quot;&quot;&quot;
         self.log.info(&quot;RETRIEVE recursively retrieving {}&quot;.format(relations))
@@ -1230,10 +1252,160 @@ from pprint import pformat
                 )
             )</div>
 
+<div class="viewcode-block" id="Browser.sample_network"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.sample_network">[docs]</a>    @classmethod
+    def sample_network(cls, samples, reverse=False, g=None):
+        &quot;&quot;&quot;Build a DAG of :class:`Samples &lt;pydent.models.Sample&gt;` from their.
+
+        :class:`FieldValues &lt;pydent.models.FieldValue&gt;`.
+
+        .. versionadded:: 0.1.5a7
+            method added
+
+        :param samples: list of samples
+        :param reverse: whether to reverse the edges of the final graph
+        :param g: the graph
+        :return:
+        &quot;&quot;&quot;
+
+        def get_models(model):
+            for fv in model.field_values:
+                if fv.sample and issubclass(type(fv.sample), ModelBase):
+                    yield fv.sample, {}
+
+        def cache_func(models):
+            sess = models[0].session
+            sess.browser.get(models, {&quot;field_values&quot;: &quot;sample&quot;})
+
+        return cls.relationship_network(
+            samples, get_models=get_models, cache_func=cache_func, reverse=reverse, g=g
+        )</div>
+
+<div class="viewcode-block" id="Browser.relationship_network"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.relationship_network">[docs]</a>    @classmethod
+    def relationship_network(
+        cls,
+        models: List[ModelBase],
+        get_models: Callable,
+        cache_func: Callable = None,
+        key_func: Callable = None,
+        reverse: bool = False,
+        g: nx.DiGraph = None,
+        strict_cache: bool = True,
+    ):
+        &quot;&quot;&quot;Build a DAG of related models based on some relationships. By
+        default are built from a model using (model.__class__.__name__,
+        model._primary_key)
+
+        .. versionadded:: 0.1.5a7
+            method added
+
+        .. seealso::
+            Usage example :meth:`sample_network &lt;pydent.browser.Browser.sample_network&gt;`
+
+        :param models: list of models
+        :param get_models: A function that takes in a single instance of a Model
+            and returns an iterable of Tuples of (model, data),
+            which is used to build edges.
+        :param key_func: An optional function that takes in a single instance of
+            a Model and returns a key and some node data
+        :param cache_func: A function that takes in a list of models and caches
+            some results.
+        :param g: optional nx.DiGraph
+        :param reverse: whether to reverse the edge list
+        :param strict_cache: if True, if a request occurs after the cache step,
+            a ForbiddenRequestException will be raised.
+        :return: the relationship graph
+        &quot;&quot;&quot;
+
+        if key_func is None:
+
+            def key_func(m):
+                return (m.__class__.__name__, m._primary_key), {}
+
+        if g is None:
+            g = nx.DiGraph()
+
+        models = list(models)
+
+        if not models:
+            return g
+
+        for m in models:
+            key, ndata = key_func(m)
+            g.add_node(key, attr_dict=ndata)
+
+        visited = list(g.nodes)
+
+        if cache_func:
+            cache_func(models)
+
+        new_models = []
+        new_edges = []
+
+        if strict_cache:
+            kwargs = {&quot;using_requests&quot;: False, &quot;session_swap&quot;: True}
+        else:
+            kwargs = {}
+
+        with models[0].session(**kwargs):
+            try:
+                for m1 in models:
+                    for m2, data in get_models(m1):
+                        if key_func(m2)[0] not in visited:
+                            new_models.append(m2)
+                        new_edges.append((key_func(m2)[0], key_func(m1)[0], data))
+            except ForbiddenRequestError as e:
+                msg = (
+                    &quot;An exception occurred during {f} while strict_cache == True.\n&quot;
+                    &quot;This is most likely due to the cache_func not being thorough.\n&quot;
+                    &quot;{}&quot;.format(str(e))
+                )
+                raise e.__class__(msg)
+
+        for n1, n2, edata in new_edges:
+            if reverse:
+                g.add_edge(n2, n1, attr_dict=edata)
+            else:
+                g.add_edge(n1, n2, attr_dict=edata)
+
+        return cls.relationship_network(
+            new_models,
+            get_models,
+            cache_func,
+            g=g,
+            reverse=reverse,
+            strict_cache=strict_cache,
+        )</div>
+
+    # def relationship_network(self, models, get_models, cache_func, g=None):
+    #     &quot;&quot;&quot;
+    #
+    #
+    #     .. versionadded:: 0.1.5a7
+    #
+    #
+    #     :param models:
+    #     :param get_models:
+    #     :param g:
+    #     :return:
+    #     &quot;&quot;&quot;
+    #
+    #     def model_to_key(m):
+    #         return (m.__class__.__name__, m.id)
+    #
+    #     if g is None:
+    #         g = nx.DiGraph()
+    #     for m in models:
+    #         g.add_node(model_to_key(m))
+    #
+    #     cache_func(models)
+    #
+    #     for m in models:
+    #         next_models = get_models(m)
+
 <div class="viewcode-block" id="Browser.get"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.get">[docs]</a>    def get(
         self,
         models: List[ModelBase],
-        relations: List[BaseRelationship],
+        relations: List[BaseRelationship] = None,
         query: dict = None,
         strict: bool = True,
         force_refresh: bool = False,
@@ -1317,7 +1489,8 @@ from pprint import pformat
 
         :param samples: samples, all of same sample type
         :type samples: list
-        :param sample_resolver: callable to resolve a sample object if the field value property contains a sample.
+        :param sample_resolver: callable to resolve a sample object if the field value
+            property contains a sample.
         Defaults to return the sample anme
         :type sample_resolver: callable
         :return: list of dictionaries containing sample info and properties

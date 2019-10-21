@@ -176,7 +176,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -255,7 +256,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -334,10 +336,13 @@
 <em class="property">class </em><code class="sig-prename descclassname">pydent.models.</code><code class="sig-name descname">FieldValue</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">role=None</em>, <em class="sig-param">parent_class=None</em>, <em class="sig-param">parent_id=None</em>, <em class="sig-param">field_type=None</em>, <em class="sig-param">sample=None</em>, <em class="sig-param">value=None</em>, <em class="sig-param">item=None</em>, <em class="sig-param">container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value.html#FieldValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.FieldValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.models.field_value_mixins.FieldMixin.html#pydent.models.field_value_mixins.FieldMixin" title="pydent.models.field_value_mixins.FieldMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.field_value_mixins.FieldMixin</span></code></a>, <a class="reference internal" href="pydent.models.crud_mixin.JSONSaveMixin.html#pydent.models.crud_mixin.JSONSaveMixin" title="pydent.models.crud_mixin.JSONSaveMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONSaveMixin</span></code></a>, <a class="reference internal" href="pydent.models.crud_mixin.JSONDeleteMixin.html#pydent.models.crud_mixin.JSONDeleteMixin" title="pydent.models.crud_mixin.JSONDeleteMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONDeleteMixin</span></code></a>, <a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A FieldValue model. One of the more complex models.</p>
-<p>Change Log:
-* 2019_06_03 FieldValues no longer have ‘wires_as_source’ or ‘wires_as_dest’ fields. Wires may only be accessed
-via plans only or via the FieldValue instance method ‘get_wires,’ which accesses the FieldValues operation
-and its Plan to obtain wires.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.2: </span>FieldValues no longer have</p>
+</div>
+<p>‘wires_as_source’ or ‘wires_as_dest’ fields. Wires may only be
+accessed     via plans only or via the FieldValue instance method
+‘get_wires,’ which accesses the FieldValues operation     and its
+Plan to obtain wires.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -377,25 +382,25 @@ and its Plan to obtain wires.</p>
 </dl>
 </p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.add_data" title="pydent.models.FieldValue.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.add_data" title="pydent.models.FieldValue.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(data)</p></td>
 <td><p>Initializes fake attributes that correspond to data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.anonymize" title="pydent.models.FieldValue.anonymize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anonymize</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.anonymize" title="pydent.models.FieldValue.anonymize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anonymize</span></code></a>()</p></td>
 <td><p>Resets the primary key of the model and assigns a new rid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.append_to_many" title="pydent.models.FieldValue.append_to_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_to_many</span></code></a>(name, model)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.append_to_many" title="pydent.models.FieldValue.append_to_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_to_many</span></code></a>(name, model)</p></td>
 <td><p>Appends a model to the many relationship.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.choose_item" title="pydent.models.FieldValue.choose_item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose_item</span></code></a>([first])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.choose_item" title="pydent.models.FieldValue.choose_item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose_item</span></code></a>([first])</p></td>
 <td><p>Set the item associated with the field value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.compatible_items" title="pydent.models.FieldValue.compatible_items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compatible_items</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.compatible_items" title="pydent.models.FieldValue.compatible_items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compatible_items</span></code></a>()</p></td>
 <td><p>Find items compatible with the field value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.connect_to_session" title="pydent.models.FieldValue.connect_to_session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect_to_session</span></code></a>(session)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.connect_to_session" title="pydent.models.FieldValue.connect_to_session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect_to_session</span></code></a>(session)</p></td>
 <td><p>Connect model instance to a session.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.copy" title="pydent.models.FieldValue.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([keep])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.copy" title="pydent.models.FieldValue.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([keep])</p></td>
 <td><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless class is a metatype (e.g.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_interface</span></code>()</p></td>
@@ -409,19 +414,19 @@ and its Plan to obtain wires.</p>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.dump" title="pydent.models.FieldValue.dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code></a>([only, include, ignore])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.dump" title="pydent.models.FieldValue.dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code></a>([only, include, ignore])</p></td>
 <td><p>Dump/serializes the model to a json-like dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.find" title="pydent.models.FieldValue.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(session, model_id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.find" title="pydent.models.FieldValue.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(session, model_id)</p></td>
 <td><p>Finds a model instance by its model_id.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.find_callback" title="pydent.models.FieldValue.find_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_callback</span></code></a>(model_name, model_id)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.find_callback" title="pydent.models.FieldValue.find_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_callback</span></code></a>(model_name, model_id)</p></td>
 <td><p>Finds a model using the model interface and model_id.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.find_field_parent" title="pydent.models.FieldValue.find_field_parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_field_parent</span></code></a>(model_name, model_id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.find_field_parent" title="pydent.models.FieldValue.find_field_parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_field_parent</span></code></a>(model_name, model_id)</p></td>
 <td><p>Callback for finding operation_type or sample_type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.get_deserialized" title="pydent.models.FieldValue.get_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_deserialized</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.get_deserialized" title="pydent.models.FieldValue.get_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_deserialized</span></code></a>(name)</p></td>
 <td><p>Get deserialized data by name.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parent</span></code>()</p></td>
@@ -436,7 +441,7 @@ and its Plan to obtain wires.</p>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_server_model_name</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.get_sid" title="pydent.models.FieldValue.get_sid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sid</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.get_sid" title="pydent.models.FieldValue.get_sid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sid</span></code></a>()</p></td>
 <td><p>The FieldValues sample identifier.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tableized_name</span></code>()</p></td>
@@ -445,22 +450,22 @@ and its Plan to obtain wires.</p>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wires</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">incoming_wires</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">incoming_wires</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.interface" title="pydent.models.FieldValue.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(session)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.interface" title="pydent.models.FieldValue.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(session)</p></td>
 <td><p>Creates a model interface from this class and a session.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.is_deserialized" title="pydent.models.FieldValue.is_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_deserialized</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.is_deserialized" title="pydent.models.FieldValue.is_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_deserialized</span></code></a>(name)</p></td>
 <td><p>Check if a given key has already been deserialized.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.load" title="pydent.models.FieldValue.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.load" title="pydent.models.FieldValue.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Deserialize the data to a model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.load_from" title="pydent.models.FieldValue.load_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from</span></code></a>(data[, owner])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.load_from" title="pydent.models.FieldValue.load_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from</span></code></a>(data[, owner])</p></td>
 <td><p>Create a new model instance from loaded attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.no_getter" title="pydent.models.FieldValue.no_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_getter</span></code></a>(*_)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.no_getter" title="pydent.models.FieldValue.no_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_getter</span></code></a>(*_)</p></td>
 <td><p>Callback that always returns None.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">one</span></code>(session, query, **kwargs)</p></td>
@@ -479,22 +484,22 @@ and its Plan to obtain wires.</p>
 </dl>
 </p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">outgoing_wires</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">outgoing_wires</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.refresh" title="pydent.models.FieldValue.refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.refresh" title="pydent.models.FieldValue.refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh</span></code></a>()</p></td>
 <td><p>Refresh this model from data from the server.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.reload" title="pydent.models.FieldValue.reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.reload" title="pydent.models.FieldValue.reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code></a>(data)</p></td>
 <td><p>Reload model attributes from new data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.reset" title="pydent.models.FieldValue.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.reset" title="pydent.models.FieldValue.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
 <td><p>Resets the inputs of the field_value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.reset_field" title="pydent.models.FieldValue.reset_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_field</span></code></a>(name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.reset_field" title="pydent.models.FieldValue.reset_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_field</span></code></a>(name)</p></td>
 <td><p>Reset the field descriptor to its placeholder value, returning the behavior.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>()</p></td>
@@ -506,7 +511,7 @@ and its Plan to obtain wires.</p>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_allowable_field_type</span></code>(allowable_field_type)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.set_field_type" title="pydent.models.FieldValue.set_field_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_field_type</span></code></a>(field_type)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.set_field_type" title="pydent.models.FieldValue.set_field_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_field_type</span></code></a>(field_type)</p></td>
 <td><p>Sets properties from a field_type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_operation</span></code>(operation)</p></td>
@@ -527,10 +532,10 @@ and its Plan to obtain wires.</p>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_afts</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.where" title="pydent.models.FieldValue.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(session, params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.FieldValue.where" title="pydent.models.FieldValue.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(session, params)</p></td>
 <td><p>Finds a list of models by some parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.where_callback" title="pydent.models.FieldValue.where_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where_callback</span></code></a>(model_name, *args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.where_callback" title="pydent.models.FieldValue.where_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where_callback</span></code></a>(model_name, *args, **kwargs)</p></td>
 <td><p>Finds models using a model interface and a set of parameters.</p></td>
 </tr>
 </tbody>
@@ -604,7 +609,7 @@ and its Plan to obtain wires.</p>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldValue.sample</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.FieldValue.session" title="pydent.models.FieldValue.session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.FieldValue.session" title="pydent.models.FieldValue.session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code></a></p></td>
 <td><p>The connected session instance.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldValue.sid</span></code></p></td>

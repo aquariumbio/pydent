@@ -174,7 +174,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -253,7 +254,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -428,7 +430,10 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
                 return fvs[0]
 
             msg = &quot;More than one FieldValue found for the field value&quot;
-            msg += &quot; of operation {}.(id={}).{}.{}. Are you sure you didn&#39;t mean to call &#39;field_value_array&#39;?&quot;
+            msg += (
+                &quot; of operation {}.(id={}).{}.{}. Are you sure you didn&#39;t mean to &quot;
+                &quot;call &#39;field_value_array&#39;?&quot;
+            )
             raise AquariumModelError(
                 msg.format(self.operation_type, self.id, role, name)
             )</div>
@@ -645,8 +650,6 @@ class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
     )
 
     def code(self, accessor):
-        # raise DeprecationWarning(&quot;This method is depreciated. Call code directly using &#39;protocol&#39;, &#39;cost_model&#39;,&quot;
-        #                          &quot; &#39;documentation&#39;, or &#39;precondition&#39;.&quot;)
         if accessor in [&quot;protocol&quot;, &quot;precondition&quot;, &quot;documentation&quot;, &quot;cost_model&quot;]:
             return getattr(self, accessor)
         return None

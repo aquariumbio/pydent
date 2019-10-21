@@ -1,1 +1,2 @@
 .. automodule:: pydent.models
+    :noindex:
