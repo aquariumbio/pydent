@@ -34,7 +34,8 @@ from pydent.utils.logging_helpers import did_you_mean
 
 # TODO: browser documentation
 # TODO: examples in sphinx
-# TODO: methods to help pull relevant data from plans (user specifies types of data to pull, and trident should pull and cache in the most efficient way possible)
+# TODO: methods to help pull relevant data from plans (user specifies types of data to
+#       pull, and trident should pull and cache in the most efficient way possible)
 
 
 class BrowserException(Exception):
@@ -80,8 +81,10 @@ class Browser(QueryInterfaceABC):
     def model_name(self):
         return self.model.__name__
 
-    # TODO: change session interface (find, where, etc.) to use cache IF use_cache = True
-    # TODO: where and find queries can sort through models much more quickly than Aquarium, but can fallback to Aq
+    # TODO: change session interface (find, where, etc.) to use cache IF use_
+    #       cache = True
+    # TODO: where and find queries can sort through models much more quickly than
+    #       Aquarium, but can fallback to Aq
 
     @property
     def models(self):
@@ -129,7 +132,8 @@ class Browser(QueryInterfaceABC):
         self.model_cache = {}
 
     def list_models(self, *args, **kwargs):
-        get_models = lambda: self._list_models_fxn(*args, **kwargs)
+        def get_models():
+            return self._list_models_fxn(*args, **kwargs)
 
         if self.use_cache:
             models_cache = self.model_list_cache.get("models", {})
@@ -189,7 +193,8 @@ class Browser(QueryInterfaceABC):
         :type opts: dict
         :param params: additionaly keyword arguments to send to the function
         :type params: dict
-        :param as_single: if True, will return the first model of the array or None if array is empty
+        :param as_single: if True, will return the first model of the array or None if
+            array is empty
         :type as_single: bool
         :return: Aquarium model or list of Aquarium models
         :rtype: ModelBase | list
@@ -432,7 +437,8 @@ class Browser(QueryInterfaceABC):
             )
         )
 
-        # TODO: this code may be sketchy... here {'id': []}, really means we found all of the models..
+        # TODO: this code may be sketchy... here {'id': []}, really means we found
+        #       all of the models..
         if primary_key in remaining_query and not remaining_query[primary_key]:
             return list(found_dict.values())
         server_models = self.interface(model).where(remaining_query)
@@ -515,7 +521,8 @@ class Browser(QueryInterfaceABC):
 
         :param pattern: regex pattern
         :type pattern: basestring
-        :param samples: samples to search. If left blank, a search to find samples will be performed
+        :param samples: samples to search. If left blank, a search to find samples will
+            be performed
         :type samples: list
         :param sample_type: restrict to a particular sample type
         :type sample_type: name
@@ -655,13 +662,15 @@ class Browser(QueryInterfaceABC):
                         missing_models.append(model_ref)
             if missing_models:
                 self.log.error(
-                    "INCONSISTENT AQUARIUM DATABASE - There where {l} missing {cls} models "
+                    "INCONSISTENT AQUARIUM DATABASE - There where {models} missing {cls} "
+                    "models "
                     "from the Aquarium database, which were ignored by trident. "
                     "This happens when models are deleted from Aquarium which "
                     "results in an inconsistent server database. Trident was unable "
-                    "resolve the following relationships which returned no models from the server: "
+                    "resolve the following relationships which returned no models "
+                    "from the server: "
                     "{cls}.where({attr}={missing})".format(
-                        l=len(missing_models),
+                        models=len(missing_models),
                         cls=model_class2,
                         missing=missing_models,
                         attr=attr,
@@ -796,9 +805,8 @@ class Browser(QueryInterfaceABC):
         else:
             if relationship_name in models[0].get_relationships():
                 raise BrowserException(
-                    'Cannot add new relationship "{}" because it already exists in the model definition'.format(
-                        relationship_name
-                    )
+                    'Cannot add new relationship "{}" because it already exists in the '
+                    "model definition".format(relationship_name)
                 )
         # TODO: add relationship handler for Many and One
         if relation.__class__.__name__ not in self.ACCEPTED_GET_RELATION_TYPES:
@@ -872,12 +880,14 @@ class Browser(QueryInterfaceABC):
 
         :param models: models to retrieve from
         :type models: list
-        :param relations: the relation to retrieve. This may either be a string (by attribute name), a list, or a dict.
+        :param relations: the relation to retrieve. This may either be a string (by
+            attribute name), a list, or a dict.
         :type relations: list|dict|basestring
         :param strict: wither to ignore database inconsistencies
         :param force_refresh:
         :type bool
-        :return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
+        :return: dictionary of all models retrieved grouped by the attribute name that
+            retrieved them.
         :rtype: dictionary
         """
         self.log.info("RETRIEVE recursively retrieving {}".format(relations))
@@ -1161,7 +1171,8 @@ class Browser(QueryInterfaceABC):
 
         :param samples: samples, all of same sample type
         :type samples: list
-        :param sample_resolver: callable to resolve a sample object if the field value property contains a sample.
+        :param sample_resolver: callable to resolve a sample object if the field value
+            property contains a sample.
         Defaults to return the sample anme
         :type sample_resolver: callable
         :return: list of dictionaries containing sample info and properties

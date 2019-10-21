@@ -104,10 +104,11 @@ class BaseRelationship(fields.Relationship):
         many=None,
         allow_none=True,
     ):
-        if (ref is None and not attr is None) or (attr is None and not ref is None):
-            raise ModelValidationError("ref={} is None while attr={}."
-                                       "Either both must be provided or both absent"
-                                       .format(ref, attr))
+        if (ref is None and attr is not None) or (attr is None and ref is not None):
+            raise ModelValidationError(
+                "ref={} is None while attr={}."
+                "Either both must be provided or both absent".format(ref, attr)
+            )
         elif attr is None and ref is None:
             ref, att = self._get_ref_attr(nested=nested, ref=ref, attr=attr)
         self.attr = attr
@@ -170,7 +171,7 @@ class BaseRelationship(fields.Relationship):
             return super().fullfill(
                 owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs
             )
-        except fields.RunTimeCallbackAttributeError as e:
+        except fields.RunTimeCallbackAttributeError:
             return BaseRelationshipAccessor.HOLDER
 
     def build_query(self, models):
@@ -216,7 +217,7 @@ class One(BaseRelationship):
         callback=None,
         callback_args=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         """One initializer. Uses "find" callback by default.
 
@@ -258,7 +259,7 @@ class Many(BaseRelationship):
         callback=None,
         callback_args=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         """Many initializer. Uses "where" callback by default.
 
@@ -281,7 +282,7 @@ class Many(BaseRelationship):
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
 
@@ -314,7 +315,7 @@ class HasOne(One):
             callback=callback,
             callback_args=(self.get_ref,),
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
     def get_ref(self, instance):
@@ -345,7 +346,7 @@ class HasMany(Many):
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         """HasMany relationship initializer.
 
@@ -389,7 +390,7 @@ class HasMany(Many):
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
 
@@ -408,7 +409,7 @@ class HasManyThrough(Many):
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         ref, attr = self._get_ref_attr(nested=nested, attr=attr, ref=ref)
         self.ref = ref
@@ -440,7 +441,7 @@ class HasManyThrough(Many):
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
 
@@ -458,7 +459,7 @@ class HasOneFromMany(One):
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         """HasOneFromMany relationship initializer, which is intended to return
         a single model from a Many query.
@@ -507,7 +508,7 @@ class HasOneFromMany(One):
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
 
@@ -521,7 +522,7 @@ class HasManyGeneric(HasMany):
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             nested,
@@ -530,5 +531,5 @@ class HasManyGeneric(HasMany):
             callback=callback,
             additional_args=additional_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )

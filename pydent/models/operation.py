@@ -112,7 +112,10 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
                 return fvs[0]
 
             msg = "More than one FieldValue found for the field value"
-            msg += " of operation {}.(id={}).{}.{}. Are you sure you didn't mean to call 'field_value_array'?"
+            msg += (
+                " of operation {}.(id={}).{}.{}. Are you sure you didn't mean to "
+                "call 'field_value_array'?"
+            )
             raise AquariumModelError(
                 msg.format(self.operation_type, self.id, role, name)
             )
@@ -329,8 +332,6 @@ class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
     )
 
     def code(self, accessor):
-        # raise DeprecationWarning("This method is depreciated. Call code directly using 'protocol', 'cost_model',"
-        #                          " 'documentation', or 'precondition'.")
         if accessor in ["protocol", "precondition", "documentation", "cost_model"]:
             return getattr(self, accessor)
         return None

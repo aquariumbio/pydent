@@ -61,7 +61,7 @@ class SchemaModel(metaclass=ModelRegistry):
             filepath = ""
             try:
                 filepath = inspect.getfile(self.__class__)
-            except:
+            except Exception:
                 pass
             raise SchemaModelException(
                 "Cannot initialize a {} without a {}. "

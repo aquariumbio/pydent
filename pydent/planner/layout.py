@@ -78,8 +78,6 @@ class PlannerLayout:
                         missing_operations.append(to_id)
                     if from_id in G and to_id in G:
                         G.add_edge(from_id, to_id, wire=wire)
-            # if missing_operations:
-            #     raise Exception("The following operations are missing from the graph: {}".format(missing_operations))
             return wires
 
         @make_async(10, progress_bar=False)

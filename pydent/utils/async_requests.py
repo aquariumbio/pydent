@@ -6,13 +6,12 @@ from functools import wraps
 from tqdm import tqdm
 
 
-def chunkify(list, n):
+def chunkify(arr, n):
     """Breaks a list into n chunks.
 
     Last chunk may not be equal in size to other chunks
     """
-    l = list
-    return [l[i : i + n] for i in range(0, len(l), n)]
+    return [arr[i : i + n] for i in range(0, len(arr), n)]
 
 
 def with_index(fxn):
@@ -70,7 +69,8 @@ def asyncfunc(fxn, arg_list, kwargs=None, chunk_size=1, progress_bar=True, desc=
 
     :param fxn: function to run asynchronously
     :type fxn: function or lambda
-    :param arg_chunks: arguments to apply to the function; suggested to divide list into chunks
+    :param arg_chunks: arguments to apply to the function; suggested to divide list
+        into chunks
     :type arg_chunks: list
     :return: result
     :rtype: list
@@ -102,7 +102,8 @@ def make_async(chunk_size, progress_bar=True, as_classmethod=False, data_pos=0):
     :type chunk_size: int
     :param progress_bar: whether to display a progress bar
     :type progress_bar: bool
-    :param as_classmethod: whether to pass in the first argument as a instance for instance or classmethods
+    :param as_classmethod: whether to pass in the first argument as a instance for
+        instance or classmethods
     :type as_classmethod: bool
     :param data_pos: position in arguments where list of data is
     :type data_pos: int
