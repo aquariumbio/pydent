@@ -79,7 +79,8 @@ class DataAssociatorMixin:
                 das.append(da)
         return das
 
-    # TODO: DataAssociation - do we really want to have this return either a list or single value? How are people using this?
+    # TODO: DataAssociation - do we really want to have this return either a list or
+    #       single value? How are people using this?
     def get(self, key):
         val = []
         for da in self.get_data_associations(key):
@@ -174,7 +175,8 @@ class Upload(ModelBase):
 
         :param uploads: list of Uploads
         :type uploads: list
-        :param outdir: path to output directory to save downloaded files (defaults to current directory)
+        :param outdir: path to output directory to save downloaded files (defaults to
+            current directory)
         :type outdir: str
         :param overwrite: if True, will overwrite existing files (default: True)
         :type overwrite: bool

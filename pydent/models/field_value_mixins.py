@@ -50,9 +50,11 @@ class FieldValueInterface:
     FieldValues and FieldTypes."""
 
     def new_field_value_from_field_type(self, field_type, values_dict=None):
-        """
-        Instantiates a new :class:`pydent.models.FieldValue` from a :class:`pydent.models.FieldType`
-        instance. Optionally, a values dictionary may be provided with the following format:
+        """Instantiates a new :class:`pydent.models.FieldValue` from a.
+
+        :class:`pydent.models.FieldType`
+        instance. Optionally, a values dictionary may be provided with the following
+        format:
 
         ::
 
@@ -125,9 +127,11 @@ class FieldValueInterface:
         field type.
         """
 
+        def h(f):
+            return "{}_%&^_{}".format(f.name, f.role)
+
         if fv.field_type_id is None:
             fts = self.get_field_types()
-            h = lambda f: "{}_%&^_{}".format(f.name, f.role)
             name_role_to_ft = {h(ft): ft for ft in fts}
             ft = name_role_to_ft.get(h(fv), None)
             if ft is not None:
@@ -225,9 +229,14 @@ class FieldValueInterface:
     def _field_value_dictionary(self, ft_func=None, fv_func=None):
 
         if ft_func is None:
-            ft_func = lambda ft: ft.name
+
+            def ft_func(ft):
+                return ft.name
+
         if fv_func is None:
-            fv_func = lambda fv: fv
+
+            def fv_func(fv):
+                return fv
 
         data = {}
         ft_dict = {ft.id: ft for ft in self.get_field_types()}
@@ -239,8 +248,9 @@ class FieldValueInterface:
                 val = None
             data[ft_func(ft)] = val
 
-        # safely get field_types; field_type_id is sometimes None in Sample field_values;
-        # unsure if this used to be a bug in Aquarium that has been since resolved
+        # safely get field_types; field_type_id is sometimes None in Sample field_
+        # values; unsure if this used to be a bug in Aquarium that has been since
+        # resolved
 
         for fv in self.field_values:
             val = fv_func(fv)

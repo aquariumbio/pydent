@@ -12,7 +12,7 @@ def did_you_mean(word, words):
             msg = 'Did you mean "{}"?'.format(matches[0])
         elif len(matches) > 1:
             msg = "Did you mean any of these? {}".format(pformat(matches))
-    except TypeError as e:
+    except TypeError:
         pass
     finally:
         return msg

@@ -159,7 +159,7 @@ class FieldType(FieldMixin, ModelBase):
 class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
     """A FieldValue model. One of the more complex models.
 
-    .. versionchanged:: 0.1.2     2019_06_03 FieldValues no longer have
+    .. versionchanged:: 0.1.2     FieldValues no longer have
     'wires_as_source' or 'wires_as_dest' fields. Wires may only be
     accessed     via plans only or via the FieldValue instance method
     'get_wires,' which accesses the FieldValues operation     and its
@@ -263,15 +263,13 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
     @property
     def incoming_wires(self):
         if self.role == "input":
-            return self.wires_as_dest
-            # return self.get_wires()
+            self.get_wires()
         return []
 
     @property
     def outgoing_wires(self):
         if self.role == "output":
-            return self.wires_as_source
-            # return self.get_wires()
+            self.get_wires()
         return []
 
     @property
@@ -475,9 +473,6 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         column=None,
         container=None,
     ):
-        # to maintain old API
-        # if container:
-        #     raise DeprecationWarning("Typed parameter 'container' is now depreciated. Please use 'object_type'")
         if object_type is None and container:
             object_type = container
         self._validate(value, sample, item, container, row, column)

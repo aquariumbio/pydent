@@ -42,7 +42,9 @@ def test_swap_sessions(session):
             s2._swap_sessions(s1, s2)
             for s in samples:
                 assert s.session is s2
-            samples[0].sample_type
+
+            with pytest.raises(ForbiddenRequestError):
+                samples[0].sample_type
 
 
 def test_raise_value_error_for_interface(session):

@@ -73,9 +73,8 @@ class AFTMatcher:
             return [ft for ft in model.get_field_types() if ft.role == role]
         else:
             raise PlannerException(
-                'Cannot resolve inputs, type must be a FieldValue or Operation, not a "{}"'.format(
-                    type(model)
-                )
+                "Cannot resolve inputs, type must be a FieldValue or Operation, not a "
+                '"{}"'.format(type(model))
             )
 
     @classmethod
@@ -86,7 +85,8 @@ class AFTMatcher:
         :type source: FieldValue|Operation
         :param destination: a field value or operation destination
         :type destination: FieldValue|Operation
-        :return: tuple of matching allowable_field_type (aft) pairs, matching field_value inputs and matching field_value outputs
+        :return: tuple of matching allowable_field_type (aft) pairs, matching
+            field_value inputs and matching field_value outputs
         :rtype: tuple
         """
         """Find matching AllowableFieldTypes"""
@@ -144,8 +144,8 @@ class Planner(AFTMatcher):
         RESTRICT = "RESTRICT"  #: restrict to the currently set allowable_field_type
         PREFERRED = (
             "PREFERRED"
-        )  # (default) pick the item that matches the currently set allowable_field_type, else
-        # pick ANY item that matches the set field_value
+        )  #: (default) pick the item that matches the currently set aft, else
+        #: pick ANY item that matches the set field_value
         RESTRICT_TO_ONE = (
             "RESTRICT TO ONE"
         )  #: will not select item if its being used in another active operation
@@ -310,7 +310,10 @@ class Planner(AFTMatcher):
             query["category"] = category
         ots = self.session.OperationType.where(query)
         if len(ots) > 1:
-            msg = 'Found more than one OperationType for query "{}". Have you tried specifying the category?'
+            msg = (
+                'Found more than one OperationType for query "{}". Have you tried '
+                "specifying the category?"
+            )
             raise PlannerException(msg.format(query))
         if ots is None or len(ots) == 0:
             msg = 'Could not find deployed OperationType "{}".'
@@ -364,15 +367,15 @@ class Planner(AFTMatcher):
         wire = self.get_wire(fv1, fv2)
         wires = list(self.plan.wires)
         if wire:
-            self.log.info("removing wire from {} to {}".format(fv1.name, fv2.name))
-            wires_as_source = fv1.wires_as_source
-            wires_as_dest = fv2.wires_as_dest
+            self.log.debug("removing wire from {} to {}".format(fv1.name, fv2.name))
+            # wires_as_source = fv1.wires_as_source
+            # wires_as_dest = fv2.wires_as_dest
+            #
+            # wires_as_source.remove(wire)
+            # wires_as_dest.remove(wire)
 
-            wires_as_source.remove(wire)
-            wires_as_dest.remove(wire)
-
-            fv1.wires_as_source = wires_as_source
-            fv2.wires_as_dest = wires_as_dest
+            # fv1.wires_as_source = wires_as_source
+            # fv2.wires_as_dest = wires_as_dest
 
             wires.remove(wire)
             self.plan.wires = wires
@@ -521,7 +524,8 @@ class Planner(AFTMatcher):
         :type source: FieldValue|Operation
         :param destination: field_value or operation destination
         :type destination: FieldValue|Operation
-        :param strict: will raise error if there is is ambiguous wiring between the source and destination
+        :param strict: will raise error if there is is ambiguous wiring between the
+            source and destination
         :type strict: bool
         :return: created wire
         :rtype: Wire
@@ -534,8 +538,9 @@ class Planner(AFTMatcher):
         # TODO: automatically wire to empty FV if they are equivalent
         if (len(model_inputs) > 1 or len(model_outputs) > 1) and strict:
             raise PlannerException(
-                "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}\n"
-                "Instead, try to use `add_wire` method to wire together two FieldValues.".format(
+                "Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and "
+                "outputs [{}] for {}\nInstead, try to use `add_wire` method to wire "
+                "together two FieldValues.".format(
                     ", ".join([ft.name for ft in model_inputs]),
                     model_inputs[0].operation_type.name,
                     ", ".join([ft.name for ft in model_outputs]),
@@ -819,8 +824,6 @@ class Planner(AFTMatcher):
         )
 
     def set_field_value_and_propogate(self, field_value, sample=None):
-        # ots = self.browser.where('OperationType', {"id": [op.operation_type_id for op in self.plan.operations]})
-        # self.browser.retrieve(ots, 'field_types')
         routing_graph = self._routing_graph()
         routing_id = self._routing_id(field_value)
         subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
@@ -864,8 +867,6 @@ class Planner(AFTMatcher):
             self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE,
         ]:
             afts = [field_value.allowable_field_type]
-        # elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
-        #     afts = [aft for aft in field_value.field_type.allowable_field_types if aft.sample]
         if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
             afts = sorted(
                 afts,
@@ -1004,18 +1005,24 @@ class Planner(AFTMatcher):
         :type fv: FieldValue
         :param recent: whether to select the most recent item (recent=True is default)
         :type recent: bool
-        :param filter_func: array of lambda to filter items by. E.g. 'lambda_arr=[lambda x: x.get("concentration") > 10]'
+        :param filter_func: array of lambda to filter items by. E.g.
+            'lambda_arr=[lambda x: x.get("concentration") > 10]'
         :type filter_func: list
-        :param order_preference: The item order preference. Select from "LAST" (default), "FIRST", or "RANDOM". Selections
-                                also available in :class:`Planner.ITEM_ORDER_PREFERENCE`. Random will choose a random item
-                                from the available items found after all preferences and filters
+        :param order_preference: The item order preference. Select from "LAST"
+            (default), "FIRST", or "RANDOM". Selections
+            also available in :class:`Planner.ITEM_ORDER_PREFERENCE`.
+            Random will choose a random item from the available items found after
+            all preferences and filters
         :type order_preference: basestring
-        :param item_preference: The item selection preference. Select from items in :class:`Planner.ITEM_SELECTION_PREFERENCE`
-                                If "PREFERRED" (default), will select item that matches the allowable_field_value that is
-                                already set for the field_value, else select any item that matches the :class:`Sample` set :class:`FieldValue`. If
-                                "RESTRICT", will restrict selected item only to those that matches the current allowable_field_value
-                                that is set for the :class:`FieldValue`. If "ANY", will select any items that matches the :class:`Sample`.
-                                set for the field_value
+        :param item_preference: The item selection preference. Select from items in
+            :class:`Planner.ITEM_SELECTION_PREFERENCE`
+            If "PREFERRED" (default), will select item that matches the
+            allowable_field_value that is already set for the field_value, else select
+            any item that matches the :class:`Sample` set :class:`FieldValue`. If
+            "RESTRICT", will restrict selected item only to those that matches the
+            current allowable_field_value that is set for the :class:`FieldValue`. If
+            "ANY", will select any items that matches the :class:`Sample`.set for
+            the field_value
         :type item_preference: basestring
         :return: The selected item (or None if no item set)
         :rtype: Item or None
@@ -1054,8 +1061,8 @@ class Planner(AFTMatcher):
         routing dictionary may be passed to indicate the mapping between the
         sample field values and operation inputs.
 
-        For example, the following would map the "Integrant" sample field value to the "Template"
-        operation input, and so on...:
+        For example, the following would map the "Integrant" sample field value to the
+        "Template" operation input, and so on...:
 
         .. code:: python
 
@@ -1268,20 +1275,28 @@ class Planner(AFTMatcher):
     # TODO: find redundant segments
     # TODO: search functions for plans
 
-    # TODO: procedure should run on topologically sorted operations, if there is the case that
-    # two operations have different parents, then these operations are NOT mergable
-    def optimize_plan(self, operations=None, ignore=None):
-        """Optimizes a plan by removing redundent operations.
+    # TODO: procedure should run on topologically sorted operations,
+    #       if there is the case that two operations have different parents, then
+    #       these operations are NOT mergable
+    def optimize_plan(
+        self, operations: List[Operation] = None, ignore: List[str] = None
+    ):
+        """Remove redundant operations.
 
-        :param planner:
+        :param operations: list of operations
+        :param ignore: list of operation type names to ignore in optimization
         :return:
         """
         self.log.info("Optimizing plan...")
         if operations is not None:
             self.log.info("   only_operations={}".format([op.id for op in operations]))
         self.log.info("   ignore_types={}".format(ignore))
+
+        # only consider operations in the 'planning state'
         if operations is None:
             operations = [op for op in self.plan.operations if op.status == "planning"]
+
+        # ignore operation types
         if ignore:
             operations = [
                 op for op in operations if op.operation_type.name not in ignore
@@ -1384,7 +1399,8 @@ class Planner(AFTMatcher):
                             item = collection.part(fv.row, fv.column)
                         if item.sample_id != fv.sample.id:
                             reasons.append(
-                                "{} has sample_id={} but generated item has sample_id={}".format(
+                                "{} has sample_id={} but generated item has sample_"
+                                "id={}".format(
                                     fv_info(fv), fv.sample.id, item.sample_id
                                 )
                             )
@@ -1408,11 +1424,12 @@ class Planner(AFTMatcher):
                 "errors": reasons,
                 "valid": len(reasons) == 0,
             }
-        errors = {k: v for k, v in routes.items() if v["valid"] != True}
+        errors = {k: v for k, v in routes.items() if v["valid"] is not True}
         return errors
         # return routes
 
-    # TODO: implement planner.copy and anonymize the operations and field_values by removing their ids
+    # TODO: implement planner.copy and anonymize the operations and field_values by
+    #       removing their ids
     def copy(self):
         """Return a copy of this planner, with a new anonymous copy of the
         plan.

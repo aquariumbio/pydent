@@ -111,7 +111,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         :type dest: FieldValue
         :param error_if_exists: Raise an error if the Wire already exists in the plan.
         :type error_if_exists: boolean
-        :return: Newly created wire or existing wire (if exists and error_if_exists == False)
+        :return: Newly created wire or existing wire (if exists and
+            error_if_exists == False)
         :rtype: Wire
         """
 
@@ -124,8 +125,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             )
         if not self.has_operation(dest.operation):
             raise AquariumModelError(
-                "Cannot wire because the wire's destination FieldValue {} does not exist "
-                "in the Plan because its Operation '{}' is not in the plan.".formst(
+                "Cannot wire because the wire's destination FieldValue {} does not "
+                "exist in the Plan because its Operation '{}' is not in the plan.".format(
                     dest, dest.operation
                 )
             )
@@ -209,7 +210,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     def validate(self, raise_error=True):
         """Validates the plan.
 
-        :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.
+        :param raise_error: If True, raises an AquariumModelException. If false,
+            returns the error messages.
         :type raise_error: boolean
         :return: list of error messages
         :rtype: array
@@ -226,9 +228,9 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                 field_value = getattr(wire, _fvtype)
                 if field_value._primary_key not in fv_keys:
                     msg = (
-                        "The FieldValue of a wire Wire(rid={}).{} is missing from the list"
-                        " of FieldValues in the plan. Did you forget to add an operation to "
-                        " the plan?".format(wire._primary_key, _fvtype)
+                        "The FieldValue of a wire Wire(rid={}).{} is missing from the "
+                        "list of FieldValues in the plan. Did you forget to add an "
+                        "operation to the plan?".format(wire._primary_key, _fvtype)
                     )
                     errors.append(msg)
         if raise_error and errors:
@@ -468,7 +470,8 @@ class Wire(DeleteMixin, ModelBase):
 
         if src and dest and src.rid == dest.rid:
             raise AquariumModelError(
-                "Cannot create wire because source and destination are the same instance."
+                "Cannot create wire because source and destination are the same "
+                "instance."
             )
 
     @classmethod
@@ -482,8 +485,8 @@ class Wire(DeleteMixin, ModelBase):
 
         if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
             raise AquariumModelError(
-                "Cannot create wire because the {} FieldValue is has '{}' parent class. "
-                "Only {} parent classes are wirable".format(
+                "Cannot create wire because the {} FieldValue is has '{}' "
+                "parent class. Only {} parent classes are wirable".format(
                     name, fv.parent_class, cls.WIRABLE_PARENT_CLASSES
                 )
             )
