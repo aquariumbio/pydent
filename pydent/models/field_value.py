@@ -159,10 +159,11 @@ class FieldType(FieldMixin, ModelBase):
 class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
     """A FieldValue model. One of the more complex models.
 
-    Change Log:
-    * 2019_06_03 FieldValues no longer have 'wires_as_source' or 'wires_as_dest' fields. Wires may only be accessed
-    via plans only or via the FieldValue instance method 'get_wires,' which accesses the FieldValues operation
-    and its Plan to obtain wires.
+    .. versionchanged:: 0.1.2     2019_06_03 FieldValues no longer have
+    'wires_as_source' or 'wires_as_dest' fields. Wires may only be
+    accessed     via plans only or via the FieldValue instance method
+    'get_wires,' which accesses the FieldValues operation     and its
+    Plan to obtain wires.
     """
 
     fields = dict(
@@ -259,14 +260,18 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
                 return [w for w in wires if w.does_wire_from(self)]
         return []
 
+    @property
     def incoming_wires(self):
         if self.role == "input":
-            return self.get_wires()
+            return self.wires_as_dest
+            # return self.get_wires()
         return []
 
+    @property
     def outgoing_wires(self):
         if self.role == "output":
-            return self.get_wires()
+            return self.wires_as_source
+            # return self.get_wires()
         return []
 
     @property
@@ -450,14 +455,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         finally:
             otname = None
         raise AquariumModelError(
-            msg.format(
-                otname,
-                self.role,
-                self.name,
-                sid,
-                oid,
-                ", ".join(aft_list),
-            )
+            msg.format(otname, self.role, self.name, sid, oid, ", ".join(aft_list))
         )
 
     def set_aft(self):

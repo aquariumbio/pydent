@@ -12,20 +12,25 @@ Browser class for searching and cacheing results.
 import re
 from collections import OrderedDict
 from difflib import get_close_matches
+from pprint import pformat
+from typing import Callable
 from typing import Dict
 from typing import List
 from typing import Union
 
+import networkx as nx
 import pandas as pd
 
 from pydent import models as pydent_models
 from pydent.base import ModelBase
+from pydent.exceptions import ForbiddenRequestError
 from pydent.interfaces import QueryInterface
 from pydent.interfaces import QueryInterfaceABC
 from pydent.marshaller import ModelRegistry
 from pydent.models import Sample
 from pydent.relationships import BaseRelationship
 from pydent.utils import Loggable
+from pydent.utils.logging_helpers import did_you_mean
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -49,10 +54,16 @@ class Browser(QueryInterfaceABC):
         "HasManyGeneric",
     ]
 
-    def __init__(self, session):
+    def __init__(self, session: "AqSession", inherit_models: bool = False):
         """Instantiates a new browser from a AqSession instance.
 
+        .. versionchanged:: 0.1.5a7
+            'inherit_models' argument will inherit the sessions model_cache
+            (default: False)
+
         :param session: a session instance
+        :param inherit_models: if True, the browser will inherit the cache in the
+            provided session's browser model_cache
         :type session: AqSession
         """
         self.session = session
@@ -62,6 +73,8 @@ class Browser(QueryInterfaceABC):
         self.model_list_cache = {}
         self.model_cache = {}
         self.log = Loggable(self, name="Browser@{}".format(session.url))
+        if session.browser and inherit_models:
+            self.update_cache(session.browser.models)
 
     @property
     def model_name(self):
@@ -708,6 +721,22 @@ class Browser(QueryInterfaceABC):
                 setattr(m, relationship_name, None)
         return list(set(all_models))
 
+    @staticmethod
+    def _get_relation_from_model(model, relationship_name, strict):
+        relationships = model.get_relationships()
+        relation = relationships.get(relationship_name, None)
+        if relation is None:
+            if strict:
+                msg = did_you_mean(relationship_name, list(relationships))
+                if not msg:
+                    msg = "Available relations: {}".format(pformat(list(relationships)))
+                raise BrowserException(
+                    "Relation '{}' not found in relationships for {}.\nHint: {}".format(
+                        relationship_name, type(model), msg
+                    )
+                )
+        return relation
+
     def retrieve(
         self,
         models: List[ModelBase],
@@ -759,16 +788,11 @@ class Browser(QueryInterfaceABC):
             model_classes
         )
         if relation is None:
-            relation = models[0].get_relationships().get(relationship_name, None)
+            relation = self._get_relation_from_model(
+                models[0], relationship_name, strict
+            )
             if relation is None:
-                if strict:
-                    raise BrowserException(
-                        "Relation '{}' not found in relationships for {}".format(
-                            relationship_name, type(models[0])
-                        )
-                    )
-                else:
-                    return []
+                return []
         else:
             if relationship_name in models[0].get_relationships():
                 raise BrowserException(
@@ -791,7 +815,7 @@ class Browser(QueryInterfaceABC):
             ]
             no_refresh = [m for m in models if m.is_deserialized(relationship_name)]
         else:
-            needs_refresh = [m for m in models if m.is_deserialized(relationship_name)]
+            needs_refresh = models
             no_refresh = []
 
         if hasattr(relation, "through_model_attr"):
@@ -814,7 +838,7 @@ class Browser(QueryInterfaceABC):
                 found_models += val
             else:
                 found_models.append(val)
-        return found_models
+        return list(set(found_models))
 
     def recursive_retrieve(
         self,
@@ -900,13 +924,163 @@ class Browser(QueryInterfaceABC):
                 )
             )
 
+    @classmethod
+    def sample_network(cls, samples, reverse=False, g=None):
+        """Build a DAG of :class:`Samples <pydent.models.Sample>` from their.
+
+        :class:`FieldValues <pydent.models.FieldValue>`.
+
+        .. versionadded:: 0.1.5a7
+            method added
+
+        :param samples: list of samples
+        :param reverse: whether to reverse the edges of the final graph
+        :param g: the graph
+        :return:
+        """
+
+        def get_models(model):
+            for fv in model.field_values:
+                if fv.sample and issubclass(type(fv.sample), ModelBase):
+                    yield fv.sample, {}
+
+        def cache_func(models):
+            sess = models[0].session
+            sess.browser.get(models, {"field_values": "sample"})
+
+        return cls.relationship_network(
+            samples, get_models=get_models, cache_func=cache_func, reverse=reverse, g=g
+        )
+
+    @classmethod
+    def relationship_network(
+        cls,
+        models: List[ModelBase],
+        get_models: Callable,
+        cache_func: Callable = None,
+        key_func: Callable = None,
+        reverse: bool = False,
+        g: nx.DiGraph = None,
+        strict_cache: bool = True,
+    ):
+        """Build a DAG of related models based on some relationships. By
+        default are built from a model using (model.__class__.__name__,
+        model._primary_key)
+
+        .. versionadded:: 0.1.5a7
+            method added
+
+        .. seealso::
+            Usage example :meth:`sample_network <pydent.browser.Browser.sample_network>`
+
+        :param models: list of models
+        :param get_models: A function that takes in a single instance of a Model
+            and returns an iterable of Tuples of (model, data),
+            which is used to build edges.
+        :param key_func: An optional function that takes in a single instance of
+            a Model and returns a key and some node data
+        :param cache_func: A function that takes in a list of models and caches
+            some results.
+        :param g: optional nx.DiGraph
+        :param reverse: whether to reverse the edge list
+        :param strict_cache: if True, if a request occurs after the cache step,
+            a ForbiddenRequestException will be raised.
+        :return: the relationship graph
+        """
+
+        if key_func is None:
+
+            def key_func(m):
+                return (m.__class__.__name__, m._primary_key), {}
+
+        if g is None:
+            g = nx.DiGraph()
+
+        models = list(models)
+
+        if not models:
+            return g
+
+        for m in models:
+            key, ndata = key_func(m)
+            g.add_node(key, attr_dict=ndata)
+
+        visited = list(g.nodes)
+
+        if cache_func:
+            cache_func(models)
+
+        new_models = []
+        new_edges = []
+
+        if strict_cache:
+            kwargs = {"using_requests": False, "session_swap": True}
+        else:
+            kwargs = {}
+
+        with models[0].session(**kwargs):
+            try:
+                for m1 in models:
+                    for m2, data in get_models(m1):
+                        if key_func(m2)[0] not in visited:
+                            new_models.append(m2)
+                        new_edges.append((key_func(m2)[0], key_func(m1)[0], data))
+            except ForbiddenRequestError as e:
+                msg = (
+                    "An exception occurred during {f} while strict_cache == True.\n"
+                    "This is most likely due to the cache_func not being thorough.\n"
+                    "{}".format(str(e))
+                )
+                raise e.__class__(msg)
+
+        for n1, n2, edata in new_edges:
+            if reverse:
+                g.add_edge(n2, n1, attr_dict=edata)
+            else:
+                g.add_edge(n1, n2, attr_dict=edata)
+
+        return cls.relationship_network(
+            new_models,
+            get_models,
+            cache_func,
+            g=g,
+            reverse=reverse,
+            strict_cache=strict_cache,
+        )
+
+    # def relationship_network(self, models, get_models, cache_func, g=None):
+    #     """
+    #
+    #
+    #     .. versionadded:: 0.1.5a7
+    #
+    #
+    #     :param models:
+    #     :param get_models:
+    #     :param g:
+    #     :return:
+    #     """
+    #
+    #     def model_to_key(m):
+    #         return (m.__class__.__name__, m.id)
+    #
+    #     if g is None:
+    #         g = nx.DiGraph()
+    #     for m in models:
+    #         g.add_node(model_to_key(m))
+    #
+    #     cache_func(models)
+    #
+    #     for m in models:
+    #         next_models = get_models(m)
+
     def get(
         self,
         models: List[ModelBase],
-        relations: List[BaseRelationship],
+        relations: List[BaseRelationship] = None,
         query: dict = None,
         strict: bool = True,
-        force_refresh: bool = True,
+        force_refresh: bool = False,
     ) -> Union[Dict[str, List[ModelBase]], List[ModelBase]]:
         """
 

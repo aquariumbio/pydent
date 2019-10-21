@@ -442,7 +442,7 @@ class Wire(DeleteMixin, ModelBase):
                 "destination": destination,
                 "to_id": to_id,
             },
-            active=True
+            active=True,
         )
 
     @property
@@ -562,10 +562,10 @@ class Wire(DeleteMixin, ModelBase):
             )
         return False
 
-    def __eq__(self, other):
-        """Checks whether this Wire is wired to the same FieldValue instances
-        of another Wire.
-
-        see `does_wire` method.
-        """
-        return self.does_wire(other.source, other.destination)
+    # def __eq__(self, other):
+    #     """Checks whether this Wire is wired to the same FieldValue instances
+    #     of another Wire.
+    #
+    #     see `does_wire` method.
+    #     """
+    #     return self.does_wire(other.source, other.destination)

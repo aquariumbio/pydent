@@ -29,7 +29,9 @@ After initializing a session, models are accessible from the Session:
     Models :ref:`Models <models>`
         documentation for more information on how to
         manipulate and query models.
-
+    Temporary Sessions :ref:`Cache <cache>`
+        documentation on how to use the session cache to
+        speed up queries.
 
 
 User Objects
@@ -168,9 +170,12 @@ class AqSession(SessionABC):
         self._current_user = None
         self._interface_class = QueryInterface
         self._initialize_interfaces()
-        self._browser = None
+        self._browser = None  #: the sessions browser
         self._using_cache = False
         self.init_cache()
+        self.parent_session = (
+            None
+        )  #: the parent session, if derived from another session
 
     @property
     def interface_class(self) -> Type:
@@ -358,6 +363,16 @@ class AqSession(SessionABC):
         timeout: int = None,
         verbose=None,
     ) -> "AqSession":
+        """
+
+        :param using_requests: if False, ForbiddenRequest will be raised if requests are
+        made using the session.
+        :param using_models: if True (default), derived session will inherit
+        the current sessions model_cache
+        :param timeout: the requests timeout in seconds
+        :param verbose: if True, verbose mode will be activated for the derived session
+        :return:
+        """
         return self(
             using_cache=True,
             using_models=using_models,
@@ -383,12 +398,32 @@ class AqSession(SessionABC):
 
     @staticmethod
     def _swap_sessions(from_session, to_session):
-        """Moves models from one sesssion to another."""
-        models = from_session.browser.models
-        if to_session.browser:
-            to_session.browser.update_cache(models)
-        for m in models:
-            m._session = to_session
+        """Moves models from one session to another."""
+        if to_session:
+            models = from_session.browser.models
+            if to_session.browser:
+                to_session.browser.update_cache(models)
+            for m in models:
+                m._session = to_session
+
+    def __getattr__(self, item):
+        if item not in self.__dict__:
+            non_private = [k for k in QueryInterface.__dict__ if not k.startswith("_")]
+            if item in non_private:
+                raise AttributeError(
+                    "{s} has no attribute '{item}'.\nDid you mean "
+                    "'session.[ModelName].{item}'?".format(s=self.__class__, item=item)
+                )
+            else:
+                msg = ModelRegistry.did_you_mean_model(item, fallback=False)
+                if msg:
+                    raise AttributeError(
+                        "{s} has no attribute '{item}'.\n{msg}".format(
+                            s=self.__class__, item=item, msg=msg
+                        )
+                    )
+
+        return super().__getattr__(item)
 
     def __call__(
         self,
@@ -397,7 +432,18 @@ class AqSession(SessionABC):
         timeout: int = None,
         using_models: bool = None,
         using_verbose: bool = None,
+        session_swap: bool = False,
     ) -> "AqSession":
+        """.. versionchanges:: 0.1.5a7 'session_swap` parameter added.
+
+        :param using_cache:
+        :param using_requests:
+        :param timeout:
+        :param using_models:
+        :param using_verbose:
+        :param session_swap:
+        :return:
+        """
         new_session = self.copy()
         new_session.parent_session = self
         if using_cache is not None:
@@ -406,7 +452,9 @@ class AqSession(SessionABC):
             new_session.using_requests = using_requests
         if timeout is not None:
             new_session.set_timeout(timeout)
-        if using_models and self.browser:
+        if session_swap:
+            self._swap_sessions(self, new_session)
+        elif using_models and self.browser:
             new_session.browser.update_cache(self.browser.models)
         if using_verbose is not None:
             new_session.set_verbose(using_verbose)
@@ -420,6 +468,6 @@ class AqSession(SessionABC):
             self._swap_sessions(self, self.parent_session)
 
     def __repr__(self) -> str:
-        return "<{}(name={}, AqHTTP={}))>".format(
-            self.__class__.__name__, self.name, self._aqhttp
+        return "<{}(name={}, AqHTTP={}), parent={})>".format(
+            self.__class__.__name__, self.name, self._aqhttp, id(self.parent_session)
         )

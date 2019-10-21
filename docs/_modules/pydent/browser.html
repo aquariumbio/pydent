@@ -342,6 +342,8 @@ from pydent.marshaller import ModelRegistry
 from pydent.models import Sample
 from pydent.relationships import BaseRelationship
 from pydent.utils import Loggable
+from pydent.utils.logging_helpers import did_you_mean
+from pprint import pformat
 
 # TODO: browser documentation
 # TODO: examples in sphinx
@@ -1024,6 +1026,24 @@ from pydent.utils import Loggable
                 setattr(m, relationship_name, None)
         return list(set(all_models))</div>
 
+    @staticmethod
+    def _get_relation_from_model(model, relationship_name, strict):
+        relationships = model.get_relationships()
+        relation = relationships.get(relationship_name, None)
+        if relation is None:
+            if strict:
+                msg = did_you_mean(relationship_name, list(relationships))
+                if not msg:
+                    msg = &#39;Available relations: {}&#39;.format(
+                        pformat(list(relationships))
+                    )
+                raise BrowserException(
+                    &quot;Relation &#39;{}&#39; not found in relationships for {}.\nHint: {}&quot;.format(
+                        relationship_name, type(model), msg
+                    )
+                )
+        return relation
+
 <div class="viewcode-block" id="Browser.retrieve"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.retrieve">[docs]</a>    def retrieve(
         self,
         models: List[ModelBase],
@@ -1075,16 +1095,10 @@ from pydent.utils import Loggable
             model_classes
         )
         if relation is None:
-            relation = models[0].get_relationships().get(relationship_name, None)
+            relation = self._get_relation_from_model(models[0],
+                                                     relationship_name, strict)
             if relation is None:
-                if strict:
-                    raise BrowserException(
-                        &quot;Relation &#39;{}&#39; not found in relationships for {}&quot;.format(
-                            relationship_name, type(models[0])
-                        )
-                    )
-                else:
-                    return []
+                return []
         else:
             if relationship_name in models[0].get_relationships():
                 raise BrowserException(
@@ -1222,7 +1236,7 @@ from pydent.utils import Loggable
         relations: List[BaseRelationship],
         query: dict = None,
         strict: bool = True,
-        force_refresh: bool = True,
+        force_refresh: bool = False,
     ) -&gt; Union[Dict[str, List[ModelBase]], List[ModelBase]]:
         &quot;&quot;&quot;
 

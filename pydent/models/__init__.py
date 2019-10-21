@@ -43,7 +43,28 @@ about that sample's `sample_type`:
 
 If we call `sample_type` again, a new request *will not be made*, rather
 the model will return the previously returned data. If a new request
-is desired, the attribute must be set to `None`, as in `sample.sample_type = None`
+is desired, we can reset the field using the
+:meth:`reset_field <pydent.base.ModelBase.reset_field>` method:
+
+.. code-block:: python
+
+    assert sample.is_deserialized('sample_type')
+    sample.reset_field('sample_type')
+    assert not sample.is_deserialized('sample_type')
+
+
+    # now calling 'sample_type' again will initialize a new request
+    # which will be cached. This can be checked using `is_deserialized`
+    sample.sample_type
+    assert sample.is_deserialized('sample_type')
+
+.. versionadded:: 0.1.5a7
+    :meth:`reset_field <pydent.base.ModelBase.reset_field>` method added to reset
+    fields.
+
+.. versionadded:: 0.1.5a7
+    :meth:`is_deserialized <pydent.base.ModelBase.is_deserialized>` can be called
+    to check if a relation has already been deserialized
 
 Models can be dumped to their JSON data or loaded from data
 
