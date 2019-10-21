@@ -1,9 +1,7 @@
-"""
-The create, read, update, destroy (CRUD) mixins used for some models.
-"""
+"""The create, read, update, destroy (CRUD) mixins used for some models."""
 
 
-class CreateMixin(object):
+class CreateMixin:
     def create(self):
         data = self._get_create_json()
         params = self._get_create_params()
@@ -19,7 +17,7 @@ class CreateMixin(object):
         return None
 
 
-class UpdateMixin(object):
+class UpdateMixin:
     def update(self):
         data = self._get_create_json()
         params = self._get_update_params()
@@ -43,7 +41,7 @@ class SaveMixin(UpdateMixin, CreateMixin):
             self.create()
 
 
-class DeleteMixin(object):
+class DeleteMixin:
     def delete(self):
         name = self.get_tableized_name()
         params = self._get_delete_params()
@@ -54,7 +52,7 @@ class DeleteMixin(object):
         return None
 
 
-class JSONSaveMixin(object):
+class JSONSaveMixin:
     def save(self):
         name = self.get_server_model_name()
         data = self._get_save_json()
@@ -69,7 +67,7 @@ class JSONSaveMixin(object):
         return self.dump()
 
 
-class JSONDeleteMixin(object):
+class JSONDeleteMixin:
     def delete(self):
         name = self.get_server_model_name()
         data = self._get_delete_json()

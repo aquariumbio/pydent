@@ -2,10 +2,12 @@ from pydent.browser import Browser
 
 
 def test_browser_loads_wires(session):
-    """
-    The Plan class has a special query hook that automatically grabs wires as well.
-    By default, the update cache will recursively update models that have been deserialized from
-    a model list. We expect that the 'Wire' model is in the model cache when we load a plan.
+    """The Plan class has a special query hook that automatically grabs wires
+    as well.
+
+    By default, the update cache will recursively update models that
+    have been deserialized from a model list. We expect that the 'Wire'
+    model is in the model cache when we load a plan.
     """
 
     browser = Browser(session)

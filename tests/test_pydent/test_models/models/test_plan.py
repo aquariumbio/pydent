@@ -1,5 +1,6 @@
-from pydent.models import Plan
 import pytest
+
+from pydent.models import Plan
 
 
 def test_plan_constructor(fake_session):
@@ -79,7 +80,7 @@ def test_wire(fake_plan):
 
 
 def test_plan_copy(example_plan):
-    """Copying plans should anonymize operations and wires"""
+    """Copying plans should anonymize operations and wires."""
 
     copied_plan = example_plan.copy()
     assert copied_plan.operations

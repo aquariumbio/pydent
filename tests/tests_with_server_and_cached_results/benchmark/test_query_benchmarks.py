@@ -9,7 +9,7 @@ pytestmark = pytest.mark.skip(
 
 
 @pytest.mark.benchmark
-class TestBenchmarkQuery(object):
+class TestBenchmarkQuery:
     def method1_single_query(self, session):
         return session.Plan.last(20)
 

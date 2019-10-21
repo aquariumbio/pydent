@@ -1,4 +1,9 @@
 """
+AqHTTP (:mod:`pydent.aqhttp`)
+=============================
+
+.. currentmodule:: pydent.aqhttp
+
 Request class for making raw http requests to Aquarium
 
 This module contains the AqHTTP class, which can make arbitrary post/put/get
@@ -9,60 +14,77 @@ class.
 Users should only access these methods indirectly through a ``Session`` or
 ``SessionInterface`` instance.
 """
-
 import json
+from typing import Dict
 
 import requests
 
-from pydent.exceptions import (
-    TridentRequestError,
-    TridentLoginError,
-    TridentTimeoutError,
-    TridentJSONDataIncomplete,
-    ForbiddenRequestError,
-)
-from pydent.utils import url_build, Loggable
+from pydent.exceptions import ForbiddenRequestError
+from pydent.exceptions import TridentJSONDataIncomplete
+from pydent.exceptions import TridentLoginError
+from pydent.exceptions import TridentRequestError
+from pydent.exceptions import TridentTimeoutError
+from pydent.utils import Loggable
+from pydent.utils import pprint_data
+from pydent.utils import url_build
 
 
-class AqHTTP(object):
-    """
-    Defines a session/connection to Aquarium.
-    Makes HTTP requests to Aquarium and returns JSON.
+class AqHTTP:
+    """Defines a Python to Aquarium server connection. Makes HTTP requests to
+    Aquarium and returns JSON.
 
-    This class should be obscured from Trident user so that users cannot make
-    arbitrary requests to an Aquarium server and get sensitive information
-    (e.g. User json that is returned contains api_key, password_digest, etc.)
-    or make damaging posts.
-    Instead, a SessionInterface should be the object that makes these requests.
+    This class should be obscured from Trident user so that users cannot
+    make arbitrary requests to an Aquarium server and get sensitive
+    information (e.g. User json that is returned contains api_key,
+    password_digest, etc.) or make damaging posts. Instead, a
+    SessionInterface should be the object that makes these requests.
     """
 
     TIMEOUT = 10
 
-    def __init__(self, login, password, aquarium_url):
-        """
-        Initializes an aquarium session with login, password, and server.
+    def __init__(self, login: str, password: str, aquarium_url: str):
+        """Initializes an aquarium session with login, password, and server.
 
         :param login: Aquarium login
         :type login: str
         :param aquarium_url: aquarium url to the server
         :type aquarium_url: str
         """
-        self.login = login
-        self.aquarium_url = aquarium_url
-        self._requests_session = None
-        self.timeout = self.__class__.TIMEOUT
+        self.login = login  #: the user login name
+        self.aquarium_url = aquarium_url  #: the aquarium url
+        self._requests_session = None  #: the requests session
+        self.timeout = self.__class__.TIMEOUT  #: the timeout (s) for requests
         self._login(login, password)
-        self.log = Loggable(self, name="AqHTTP@{}".format(aquarium_url))
-        self._using_requests = True
-        self.num_requests = 0
+        self.log = Loggable(self, name="AqHTTP@{}".format(aquarium_url))  #: the logger
+        self._using_requests = True  #: if False, any HTTP requests will throw and error
+        self.num_requests = 0  #: number of requests counter
 
     def on(self):
+        """Turn on requests. When requests are off, this causes.
+
+        :class:`ForbiddenRequestError <pydent.exceptions.ForbiddenRequestError>`
+        to be raised if a request is made.
+
+        :return: None
+        """
         self._using_requests = True
 
     def off(self):
+        """Turn off requests. Will cause.
+
+        :class:`ForbiddenRequestError <pydent.exceptions.ForbiddenRequestError>`
+        to be raised if a request is made.
+
+        :return: None
+        """
         self._using_requests = False
 
-    def _format_response_info(self, response, include_text=False, include_body=True):
+    def _format_response_info(
+        self,
+        response: requests.Response,
+        include_text: bool = False,
+        include_body: bool = True,
+    ) -> str:
         if response is not None:
             if response.status_code >= 400:
                 include_text = True
@@ -74,7 +96,7 @@ class AqHTTP(object):
                 try:
                     my_json = body.decode("utf8").replace("'", '"')
                     body = json.loads(my_json)
-                    body = self._pprint_data(body, max_list_len=10)
+                    body = pprint_data(body, max_list_len=10)
                 except:
                     pass
                 msg = msg + "\n" + "BODY: {body}".format(body=body)
@@ -88,23 +110,30 @@ class AqHTTP(object):
             return msg
         return "RESPONSE: NO RESPONSE"
 
-    def _format_request_status(self, response):
+    def _format_request_status(self, response: requests.Response) -> str:
         if response is not None:
             return "STATUS:  {} {}".format(response.status_code, response.reason)
         return "STATUS: NO RESPONSE"
 
     @property
-    def url(self):
-        """An alias of aquarium_url"""
+    def url(self) -> str:
+        """An alias of aquarium_url."""
         return self.aquarium_url
 
     @staticmethod
-    def create_session_json(login, password):
+    def create_session_json(login: str, password: str) -> Dict:
         return {"session": {"login": login, "password": password}}
 
-    def _login(self, login, password):
-        """
-        Login to aquarium and saves header as a requests.Session()
+    def _login(self, login: str, password: str):
+        """Login to aquarium and saves header as a requests.Session()
+
+        :param login: Aquarium login
+        :param password: Aquarium password
+        :return: None
+        :raises:
+            TridentLoginError: If Aquarium authentication fails or server could not
+            be contacted
+            TridentTimeoutError: If response time exceeds specified timeout
         """
         session_data = self.create_session_json(login, password)
         try:
@@ -132,7 +161,7 @@ class AqHTTP(object):
             self.cookies = dict(cookies)
         except requests.exceptions.MissingSchema as error:
             raise TridentLoginError(
-                "Aquarium URL {0} incorrectly formatted. {1}".format(
+                "Aquarium URL {} incorrectly formatted. {}".format(
                     self.aquarium_url, error.args[0]
                 )
             )
@@ -151,12 +180,18 @@ class AqHTTP(object):
             )
 
     @staticmethod
-    def _serialize_request(url, method, body):
+    def _serialize_request(url: str, method: str, body: dict) -> str:
         return json.dumps({"url": url, "method": method, "body": body}, sort_keys=True)
 
-    def request(self, method, path, timeout=None, allow_none=True, **kwargs):
-        """
-        Performs a http request.
+    def request(
+        self,
+        method: str,
+        path: str,
+        timeout: int = None,
+        allow_none: bool = True,
+        **kwargs
+    ) -> dict:
+        """Performs a http request.
 
         :param method: request method (e.g. 'put', 'post', 'get', etc.)
         :type method: str
@@ -177,9 +212,8 @@ class AqHTTP(object):
         url = url_build(self.aquarium_url, path)
         if not self._using_requests:
             raise ForbiddenRequestError(
-                "Attempted a request ({} {}) when requests have been turned OFF.\nDATA: {}".format(
-                    method.upper(), url, kwargs["json"]
-                )
+                "Attempted a request ({} {}) when requests have been turned OFF."
+                "\nDATA: {}".format(method.upper(), url, kwargs["json"])
             )
 
         if timeout is None:
@@ -207,9 +241,9 @@ class AqHTTP(object):
 
         return self._response_to_json(response)
 
-    def _response_to_json(self, response):
-        """
-        Turns :class:`requests.Request` instance into a json.
+    def _response_to_json(self, response: requests.Response) -> dict:
+        """Turns :class:`requests.Request` instance into a json.
+
         Raises TridentRequestError if an error occurs.
         """
 
@@ -237,19 +271,27 @@ class AqHTTP(object):
         return response_json
 
     @staticmethod
-    def _disallow_null_in_json(json_data):
-        """
-        Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception if
-        json data being sent contains a null value
+    def _disallow_null_in_json(json_data: dict):
+        """Raises :class:pydent.exceptions.TridentJSONDataIncomplete exception
+        if json data being sent contains a null value.
+
+        :raises:
+            TridentJSONDataIncomplete: if json data containers a null or None value.
         """
         if None in json_data.values():
             raise TridentJSONDataIncomplete(
                 "JSON data {} contains a null value.".format(json_data)
             )
 
-    def post(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
-        """
-        Make a post request to the session
+    def post(
+        self,
+        path: str,
+        json_data: dict = None,
+        timeout: int = None,
+        allow_none: bool = True,
+        **kwargs
+    ) -> dict:
+        """Make a post request to the session.
 
         :param path: url
         :type path: str
@@ -275,9 +317,15 @@ class AqHTTP(object):
             **kwargs
         )
 
-    def put(self, path, json_data=None, timeout=None, allow_none=True, **kwargs):
-        """
-        Make a put request to the session
+    def put(
+        self,
+        path: str,
+        json_data: dict = None,
+        timeout: int = None,
+        allow_none: bool = True,
+        **kwargs
+    ) -> dict:
+        """Make a put request to the session.
 
         :param path: url
         :type path: str
@@ -303,9 +351,10 @@ class AqHTTP(object):
             **kwargs
         )
 
-    def get(self, path, timeout=None, allow_none=True, **kwargs):
-        """
-        Make a get request to the session
+    def get(
+        self, path: str, timeout: int = None, allow_none: bool = True, **kwargs
+    ) -> dict:
+        """Make a get request to the session.
 
         :param path: url
         :type path: str
@@ -324,7 +373,7 @@ class AqHTTP(object):
             "get", path, timeout=timeout, allow_none=allow_none, **kwargs
         )
 
-    def delete(self, path, timeout=None, **kwargs):
+    def delete(self, path: str, timeout: int = None, **kwargs) -> dict:
         return self.request("delete", path, timeout=timeout, **kwargs)
 
     def __repr__(self):

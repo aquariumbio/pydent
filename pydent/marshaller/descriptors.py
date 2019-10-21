@@ -1,18 +1,29 @@
-"""
-Descriptors
-"""
+"""Data descriptors that provide special behaviors when attributes are
+accessed."""
+from enum import auto
+from enum import Enum
 
-from enum import Enum, auto
+
+class MarshallingAttributeAccessError(Exception):
+    """Generic error that arises from while accessing an attribute."""
 
 
 class Placeholders(Enum):
-    DATA = auto()
-    MARSHALL = auto()
-    CALLBACK = auto()
-    DEFAULT = auto()
+    """Accessor placeholders.
+
+    Special behaviors can occur when the descriptor returns a value in
+    the Placeholder class. For example, when the `Placeholders.CALLBACK`
+    value is returned and cache=True, this indicates that the callback
+    function needs to be called and the result cached.
+    """
+
+    DATA = auto()  #: DATA accessor holder.
+    MARSHALL = auto()  #: MARSHALL accessor holder.
+    CALLBACK = auto()  #: CALLBACK accessor holder.
+    DEFAULT = auto()  #: DEFAULT accessor holder.
 
 
-class DataAccessor(object):
+class DataAccessor:
     """A descriptor that will dynamically access an instance's dictionary named
     by the `accessor` key. If the key is not in the dictionary or the value
     received from the dictionary is a :class:`Placeholders.DATA` enumerator, an
@@ -73,7 +84,7 @@ class DataAccessor(object):
             default = self.HOLDER
         self.default = default
         if self.name == self.accessor:
-            raise Exception(
+            raise MarshallingAttributeAccessError(
                 "Descriptor name '{}' cannot be accessor name '{}'".format(
                     self.name, self.accessor
                 )
@@ -102,9 +113,7 @@ class DataAccessor(object):
 
 
 class MarshallingAccessor(DataAccessor):
-    """
-    A generic Marshalling descriptor.
-    """
+    """A generic Marshalling descriptor."""
 
     __slots__ = ["name", "accessor", "field", "deserialized_accessor", "default"]
     HOLDER = Placeholders.MARSHALL
@@ -113,7 +122,7 @@ class MarshallingAccessor(DataAccessor):
         super().__init__(name, accessor, default=default)
         self.deserialized_accessor = deserialized_accessor
         if self.accessor == self.deserialized_accessor:
-            raise Exception(
+            raise MarshallingAttributeAccessError(
                 "Descriptor accessor '{}' cannot be deserialized accessor '{}'".format(
                     self.accessor, self.deserialized_accessor
                 )
@@ -126,7 +135,7 @@ class MarshallingAccessor(DataAccessor):
         except AttributeError as e:
             raise e
         except Exception as e:
-            raise Exception(
+            raise MarshallingAttributeAccessError(
                 "Error retrieving attribute '{}' from '{}' because:\n".format(
                     self.name, obj.__class__
                 )
@@ -159,9 +168,9 @@ class MarshallingAccessor(DataAccessor):
 
             print("__set__ traceback:")
             print("\n".join(format_tb(e.__traceback__)))
-            raise Exception(
-                "can't set attribute '{}' for '{}' to '{}' due to:\n{}. See the traceback"
-                " printed above".format(self.name, obj, val, str(e))
+            raise MarshallingAttributeAccessError(
+                "can't set attribute '{}' for '{}' to '{}' due to:\n{}. "
+                "See the traceback printed above".format(self.name, obj, val, str(e))
             ) from e
 
     def __delete__(self, obj):
@@ -198,9 +207,8 @@ class CallbackAccessor(MarshallingAccessor):
 
 
 class RelationshipAccessor(CallbackAccessor):
-    """
-    The descriptor for a :class:`pydent.marshaller.fields.Relationship` field
-    """
+    """The descriptor for a :class:`pydent.marshaller.fields.Relationship`
+    field."""
 
     def __set__(self, obj, val):
         deserialized = self.field.deserialize(obj, val)

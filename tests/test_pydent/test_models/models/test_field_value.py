@@ -2,7 +2,8 @@ import pytest
 
 from pydent.aqhttp import AqHTTP
 from pydent.exceptions import AquariumModelError
-from pydent.models import FieldValue, FieldType
+from pydent.models import FieldType
+from pydent.models import FieldValue
 
 
 def test_fv_simple_constructor(fake_session):
@@ -70,7 +71,7 @@ def test_constructor_with_container(fake_session):
 
 
 def test_set_item(fake_session):
-    """Set value should find the second AllowableFieldType"""
+    """Set value should find the second AllowableFieldType."""
     fake_fv = fake_session.FieldValue.load(
         {
             "id": 200,
@@ -101,7 +102,7 @@ def test_set_item(fake_session):
 
 
 def test_set_sample(fake_session):
-    """Set value should find the second AllowableFieldType"""
+    """Set value should find the second AllowableFieldType."""
     fake_fv = fake_session.FieldValue.load(
         {
             "id": 200,
@@ -132,7 +133,7 @@ def test_set_sample(fake_session):
 
 
 def test_set_container(fake_session):
-    """Set value should find the second AllowableFieldType"""
+    """Set value should find the second AllowableFieldType."""
     fake_fv = fake_session.FieldValue.load(
         {
             "id": 200,
@@ -159,7 +160,7 @@ def test_set_container(fake_session):
 
 
 def test_set_sample_and_item(fake_session):
-    """Set value should find the second AllowableFieldType"""
+    """Set value should find the second AllowableFieldType."""
     fake_fv = fake_session.FieldValue.load(
         {
             "id": 200,
@@ -192,7 +193,7 @@ def test_set_sample_and_item(fake_session):
 
 
 def test_set_sample_and_item_no_aft(fake_session):
-    """Set value should find the second AllowableFieldType"""
+    """Set value should find the second AllowableFieldType."""
     fake_fv = fake_session.FieldValue.load(
         {
             "id": 200,
@@ -227,8 +228,8 @@ def test_set_sample_and_item_no_aft(fake_session):
 
 
 def test_compatible_items(monkeypatch, fake_session):
-    """
-    We expect compatible items to send a request to 'json/items' with data
+    """We expect compatible items to send a request to 'json/items' with data.
+
     {'sid': 5, and 'oid': 33}
     after we set_value to the sample that has an id=5 and is associated with
     an aft with an object_type_id of 33.

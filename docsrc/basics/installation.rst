@@ -5,13 +5,13 @@ Installing Trident is easy. You'll need ``Python3.7`` and ``pip3``.
 
 You can install or upgrade Trident from the PyPI repository using:
 
-.. code:: cmd
+.. code-block::
 
     pip3 install pydent -U
 
 If you need to install a specific version, you can run:
 
-.. code:: cmd
+.. code-block:: cmd
 
     pip3 install pydent==0.1.0-apha -U
 
@@ -27,14 +27,14 @@ To install the trident dependencies in a virual environment, you first
 need `poetry <https://poetry.eustace.io/>`__, which can generally be
 installed with the following:
 
-.. code:: cmd
+.. code-block::
 
     curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
     source $HOME/.poetry/env
 
 Finally, once you ``cd`` into the trident directory, simply run
 
-.. code:: cmd
+.. code-block::
 
     poetry install
 
@@ -44,18 +44,18 @@ create a new one if you are not in a virtual environment).
 From there, you can run the normal command from within the environment
 using:
 
-.. code:: cmd
+.. code-block::
 
     poetry run [command]
 
 Such as running pytest:
 
-.. code:: cmd
+.. code-block::
 
     poetry run pytest tests
 
 Or you can opening a virtual env shell:
 
-.. code:: cmd
+.. code-block::
 
     poetry shell

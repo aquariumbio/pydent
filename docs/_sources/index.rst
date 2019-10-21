@@ -3,20 +3,62 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Overview
-========
+Trident: Pythonic Scripting of Scientific Expeirments
+=====================================================
 
 Trident is the Python scripting API for
 `Aquarium <https://www.aquarium.bio/>`_
 , the software that runs the
 `UW BIOFAB <http://www.uwbiofab.org>`_.
 The `code respository <https://github.com/klavinslab/trident>`_ is freely available to all.
-Trident was built by members of the `Klavins lab <http://klavinslab.org/>`_ Github
+Trident was built by members of the `Klavins lab <http://klavinslab.org/>`_.
 
-With Trident, you may pull down data, submit plans, create samples, and more.
+API Reference
+-------------
 
-Links:
-~~~~~~
+.. toctree::
+   :maxdepth: 1
+
+   aqsession
+   models
+   planner
+   exceptions
+   marshaller
+
+User Documentation
+------------------
+
+The user documentation contains high-level information for users.
+
+.. toctree::
+   :maxdepth: 1
+
+   basics/getting_started
+   basics/installation
+   basics/planning
+   basics/querying
+
+Advanced Topics
+---------------
+
+.. toctree::
+   :maxdepth: 2
+
+   advanced/topics
+
+Developer Documentation
+-----------------------
+
+The developer documentation conatins information on how to contribute..
+
+.. toctree::
+   :maxdepth: 1
+
+   developer/contributing
+   developer/versions
+
+References
+----------
 
 * |tridentgithub|
 * |tridentpypi|

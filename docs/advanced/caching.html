@@ -3,10 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Speeding up queries &#8212; pydent 0.1.5a2 documentation</title>
+    <title>Structured queries &#8212; pydent 0.1.5a7 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
@@ -40,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -55,7 +56,168 @@
      href="../index.html">Trident <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="topics.html">Advanced topics</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
 </ul>
@@ -71,33 +233,53 @@
 <li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../developer/api_reference.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../developer/api_reference.html#submodules">Submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="topics.html">Advanced topics</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Speeding up queries</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.4a</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.2a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -147,48 +329,93 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="speeding-up-queries">
-<h1>Speeding up queries<a class="headerlink" href="#speeding-up-queries" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="structured-queries">
+<span id="id1"></span><h1>Structured queries<a class="headerlink" href="#structured-queries" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1: </span>the Browser class provides structured queries.</p>
+</div>
+<p>Trident provides a way to make structured and efficient model queries using the
+new <a class="reference internal" href="../browser.html#pydent.browser.Browser" title="pydent.browser.Browser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Browser</span></code></a> class. The best way to utilize
+this new class, is to spawn a new session using a cache. A brief overview of
+the available API is below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">with_cache</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="c1"># sess is a new AqSession</span>
+    <span class="c1"># perform code inside of here</span>
+
+    <span class="c1"># use the session to find the last 50 samples</span>
+    <span class="c1"># attach those samples automatically to a cache</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;Sample&#39;</span><span class="p">)</span>
+
+    <span class="c1"># inside the &#39;with&#39; statement, this is equivalent to...</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># returns all Samples in the cache</span>
+    <span class="n">samples_from_cache</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Sample&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">samples</span> <span class="o">==</span> <span class="n">samples_from_cache</span>
+
+    <span class="c1"># efficiency collects all of the samples&#39; &#39;sample_type&#39; attr</span>
+    <span class="n">sample_types</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Sample&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
+
+    <span class="c1"># optionally, we can provide specific models</span>
+    <span class="n">sample_types2</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">samples</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
+
+    <span class="c1"># efficiently collect do a nested query finding the</span>
+    <span class="c1"># all of the models related to items, samples, sample_types, field_types, and</span>
+    <span class="c1"># field_values, and object types</span>
+
+    <span class="n">sess</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="s1">&#39;Item&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Item&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;sample_type&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;field_values&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;field_type&#39;</span><span class="p">}</span>  <span class="c1"># can be a list, set, tuple, etc.</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;object_type&#39;</span><span class="p">:</span> <span class="s1">&#39;field_type&#39;</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="speeding-up-queries">
+<span id="cache"></span><h1>Speeding up queries<a class="headerlink" href="#speeding-up-queries" title="Permalink to this headline">¶</a></h1>
 <p>Session objects can automatically cache model results to greatly
 speed up data mining. It does this using the <cite>Browser</cite> class, which
 is stored in the <cite>.browser</cite> attribute of the session.</p>
 <p>To begin, lets grab a normal AqSession instance.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>from pydent import AqSession
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="kn">import</span> <span class="n">AqSession</span>
 
-session = AqSession(&#39;mylogin&#39;, &#39;mypass&#39;, &#39;myurl.org&#39;)
+<span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s1">&#39;mylogin&#39;</span><span class="p">,</span> <span class="s1">&#39;mypass&#39;</span><span class="p">,</span> <span class="s1">&#39;myurl.org&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default, the cache is turned off. We can see this by printing off
 the browser</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if session.browser:
-    print(session.browser.model_cache)
-else:
-    print(&quot;No browser&quot;)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;No browser&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Lets turn on the cache, which initializes the browser</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>session.using_cache = True
-s = session.Sample.one()
-print(session.browser.model_cache.keys())
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">using_cache</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&quot;Sample&quot;: {12355: &lt;Sample&gt;}}
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;Sample&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">12355</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">Sample</span><span class="o">&gt;</span><span class="p">}}</span>
 </pre></div>
 </div>
 <p>We should now see that the queries model has been cached in the browsers dictionary. Now, next time
 we attempt to retrieve the sample, we should preferentially retrieve from the model_cache.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>s2 = session.Sample.find(s.id)
-assert id(s) == id(s2)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s2</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">id</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Due to how models inherit their sessions from other models, queries made
 via attribute relationships are also attached to the model_cache</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>s.sample_type
-s.sample_type.field_types
-assert &#39;SampleType&#39; in session.browser.model_cache
-assert session.browser.model_cache[&#39;SampleType&#39;]
-assert &#39;FieldType&#39; in session.browser.model_cache
-assert session.browser.model_cache[&#39;FieldType&#39;]
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">sample_type</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sample_type</span><span class="o">.</span><span class="n">field_types</span>
+<span class="k">assert</span> <span class="s1">&#39;SampleType&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span>
+<span class="k">assert</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="p">[</span><span class="s1">&#39;SampleType&#39;</span><span class="p">]</span>
+<span class="k">assert</span> <span class="s1">&#39;FieldType&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span>
+<span class="k">assert</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="p">[</span><span class="s1">&#39;FieldType&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="section" id="temporary-sessions">
@@ -201,43 +428,43 @@ queries, and then return the models. To do this, we can use the new
 temporary session API.</p>
 <p>Conviniently, sessions themselves are session factories. We can
 spin off new sessions with new properties using existing sessions.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mynewsession = session()
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mynewsession</span> <span class="o">=</span> <span class="n">session</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>We can instantiate a session with new properties. For example, spinning
 off a session with <cite>using_cache=True</cite></p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>nocache = session(using_cache=False)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nocache</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We can also instantiate sessions with requests turned off or
 with new timeouts or sessions that inherith the model cache.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>increasetimeout = session(timeout=60)
-norequests = session(using_requests=False)
-inheritcache = session(using_models=True)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">increasetimeout</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">norequests</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_requests</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">inheritcache</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_models</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>However, this can become troublesome if we have many different sessions
 attached to many different models. To keep everything tidy, we can use the
 <cite>with</cite> api of the session.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>with session(using_cache=True) as sess:
-    samples = sess.Sample.last(100)
-    sess.browser.get(samples, &#39;sample_type&#39;)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="p">(</span><span class="n">using_cache</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
 
-    # in the &#39;with&#39; statement, models inherit the temporary session
-    assert samples[0].session is not session
-    assert samples[0].session is sess
+    <span class="c1"># in the &#39;with&#39; statement, models inherit the temporary session</span>
+    <span class="k">assert</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">session</span>
+    <span class="k">assert</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="n">sess</span>
 
-# upon exiting the with statement, models return
-# to the original session.
-assert samples[0].session is session
+<span class="c1"># upon exiting the with statement, models return</span>
+<span class="c1"># to the original session.</span>
+<span class="k">assert</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="n">session</span>
 </pre></div>
 </div>
 <p>Two convinience methods have been implemented to use cache and
 turn off requests. You can use these <cite>with</cite> nested with statements as well:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>with session.with_cache() as sess1:
-    samples = sess1.Sample.last(10)
-    with sess1.with_request_off() as sess2:
-        sess2.find(samples[0].id)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">with_cache</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess1</span><span class="p">:</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">sess1</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">sess1</span><span class="o">.</span><span class="n">with_request_off</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess2</span><span class="p">:</span>
+        <span class="n">sess2</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -251,24 +478,24 @@ sent to the server and preferentially using a local model cache.</p>
 Here the optimized method (#4) is compared with nested requests (#1 and #2) and
 server side deserialization (#3).</p>
 <img alt="advanced/_static/benchmark/histogram-test_query_benchmark.svg" src="advanced/_static/benchmark/histogram-test_query_benchmark.svg" width="100%" /><p>Below is an example of retrieve nested model information for many plans:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>with session.with_cache() as sess:
-    plans = sess.Plan.last(50)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">with_cache</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">plans</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">Plan</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
-    sess.browser.get(plans, {
-        &quot;operations&quot;: {
-            &quot;field_values&quot;: {
-                &quot;sample&quot;: &quot;sample_type&quot;,
-                &quot;item&quot;: &#39;object_type&#39;,
-                &#39;field_type&#39;: []
-            }
-        }
-    }
+    <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plans</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s2">&quot;operations&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;field_values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="s2">&quot;sample_type&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s1">&#39;object_type&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;field_type&#39;</span><span class="p">:</span> <span class="p">[]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-# now data is cached in the plans!
-for p in plans:
-    for op in p.operations:
-        for fv in op.field_values:
-            print(fv.sample.name)
+<span class="c1"># now data is cached in the plans!</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">fv</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -287,7 +514,7 @@ for p in plans:
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
     </p>
   </div>
 </footer>

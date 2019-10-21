@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.marshaller.exceptions &#8212; pydent 0.1.5a7 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pydent.marshaller.utils" href="pydent.marshaller.utils.html" />
+    <link rel="prev" title="pydent.marshaller.descriptors" href="pydent.marshaller.descriptors.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a7</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pydent.marshaller.descriptors.html" title="Previous Chapter: pydent.marshaller.descriptors"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pydent.marsha...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pydent.marshaller.utils.html" title="Next Chapter: pydent.marshaller.utils"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pydent.marsha... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/generated/pydent.marshaller.exceptions.rst"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="module-pydent.marshaller.exceptions">
+<span id="pydent-marshaller-exceptions"></span><h1>pydent.marshaller.exceptions<a class="headerlink" href="#module-pydent.marshaller.exceptions" title="Permalink to this headline">¶</a></h1>
+<p>Marshalling exceptions.</p>
+<p class="rubric">Exceptions</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.AllowNoneFieldValidationError" title="pydent.marshaller.exceptions.AllowNoneFieldValidationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AllowNoneFieldValidationError</span></code></a></p></td>
+<td><p>A field validation error for getting or setting None values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.CallbackValidationError" title="pydent.marshaller.exceptions.CallbackValidationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CallbackValidationError</span></code></a></p></td>
+<td><p>A generic callback validation error.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.ExceptionCollection" title="pydent.marshaller.exceptions.ExceptionCollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExceptionCollection</span></code></a>(*args[, header])</p></td>
+<td><p>Context dependent exception for capturing multiple exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.FieldValidationError" title="pydent.marshaller.exceptions.FieldValidationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldValidationError</span></code></a></p></td>
+<td><p>A generic field validation error.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.ModelRegistryError" title="pydent.marshaller.exceptions.ModelRegistryError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelRegistryError</span></code></a></p></td>
+<td><p>Model not found in registry exception.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.ModelValidationError" title="pydent.marshaller.exceptions.ModelValidationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelValidationError</span></code></a></p></td>
+<td><p>A model validation error.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.MultipleValidationError" title="pydent.marshaller.exceptions.MultipleValidationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultipleValidationError</span></code></a>(*args[, header])</p></td>
+<td><p>Model validation exception.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.RunTimeCallbackAttributeError" title="pydent.marshaller.exceptions.RunTimeCallbackAttributeError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RunTimeCallbackAttributeError</span></code></a></p></td>
+<td><p>Error that occurs during executing a field callback.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.SchemaException" title="pydent.marshaller.exceptions.SchemaException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemaException</span></code></a></p></td>
+<td><p>A generic schema exception.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.SchemaModelException" title="pydent.marshaller.exceptions.SchemaModelException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemaModelException</span></code></a></p></td>
+<td><p>A generic model exception.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.marshaller.exceptions.SchemaRegistryError" title="pydent.marshaller.exceptions.SchemaRegistryError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemaRegistryError</span></code></a></p></td>
+<td><p>Generic schema registry exception.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.AllowNoneFieldValidationError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">AllowNoneFieldValidationError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#AllowNoneFieldValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.AllowNoneFieldValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.FieldValidationError" title="pydent.marshaller.exceptions.FieldValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.FieldValidationError</span></code></a></p>
+<p>A field validation error for getting or setting None values.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.AllowNoneFieldValidationError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.AllowNoneFieldValidationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.CallbackValidationError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">CallbackValidationError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#CallbackValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.CallbackValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>A generic callback validation error.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.CallbackValidationError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.CallbackValidationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.ExceptionCollection">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">ExceptionCollection</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">header=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#ExceptionCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.ExceptionCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Context dependent exception for capturing multiple exceptions.</p>
+<p>Call <cite>r</cite> to gather exceptions, upon exiting, a single
+ExceptionCollection will be raised with a summary of all the
+internal exceptions.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.ExceptionCollection.raise_exception_class">
+<code class="sig-name descname">raise_exception_class</code><span class="sig-paren">(</span><em class="sig-param">exception_class</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#ExceptionCollection.raise_exception_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.ExceptionCollection.raise_exception_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raise an exception class, if it was collected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.ExceptionCollection.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.ExceptionCollection.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.FieldValidationError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">FieldValidationError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#FieldValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.FieldValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>A generic field validation error.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.FieldValidationError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.FieldValidationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.ModelRegistryError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">ModelRegistryError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#ModelRegistryError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.ModelRegistryError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Model not found in registry exception.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.ModelRegistryError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.ModelRegistryError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.ModelValidationError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">ModelValidationError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#ModelValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.ModelValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>A model validation error.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.ModelValidationError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.ModelValidationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.MultipleValidationError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">MultipleValidationError</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">header=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#MultipleValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.MultipleValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.ModelValidationError" title="pydent.marshaller.exceptions.ModelValidationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.ModelValidationError</span></code></a>, <a class="reference internal" href="#pydent.marshaller.exceptions.ExceptionCollection" title="pydent.marshaller.exceptions.ExceptionCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.ExceptionCollection</span></code></a></p>
+<p>Model validation exception.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.MultipleValidationError.raise_exception_class">
+<code class="sig-name descname">raise_exception_class</code><span class="sig-paren">(</span><em class="sig-param">exception_class</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.MultipleValidationError.raise_exception_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raise an exception class, if it was collected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.MultipleValidationError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.MultipleValidationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.RunTimeCallbackAttributeError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">RunTimeCallbackAttributeError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#RunTimeCallbackAttributeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.RunTimeCallbackAttributeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AttributeError</span></code></p>
+<p>Error that occurs during executing a field callback.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.RunTimeCallbackAttributeError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.RunTimeCallbackAttributeError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.SchemaException">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">SchemaException</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#SchemaException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>A generic schema exception.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.SchemaException.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaException.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.SchemaModelException">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">SchemaModelException</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#SchemaModelException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaModelException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>A generic model exception.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.SchemaModelException.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaModelException.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pydent.marshaller.exceptions.SchemaRegistryError">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">SchemaRegistryError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#SchemaRegistryError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaRegistryError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Generic schema registry exception.</p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.SchemaRegistryError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaRegistryError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

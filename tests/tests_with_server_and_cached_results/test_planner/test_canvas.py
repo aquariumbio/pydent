@@ -1,5 +1,7 @@
 import pytest
-from pydent.planner import Planner, PlannerException
+
+from pydent.planner import Planner
+from pydent.planner import PlannerException
 from pydent.planner.utils import get_subgraphs
 
 
@@ -400,7 +402,10 @@ def test_set_input_array(session):
 
 
 def test_plan_validate_with_no_errors(session):
-    """An easy to pass test. A plan that is complete should always pass the validation method."""
+    """An easy to pass test.
+
+    A plan that is complete should always pass the validation method.
+    """
     session.set_verbose(True)
     plan = session.Plan.one(query='status != "planning"')
     assert plan

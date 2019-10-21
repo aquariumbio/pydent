@@ -3,7 +3,8 @@ import functools
 import pytest
 
 from pydent.marshaller import SchemaModel
-from pydent.marshaller.registry import SchemaRegistry, ModelRegistry
+from pydent.marshaller.registry import ModelRegistry
+from pydent.marshaller.registry import SchemaRegistry
 
 
 def pytest_configure(config):
@@ -38,7 +39,8 @@ def pytest_collection_modifyitems(config, items):
 
 @pytest.fixture(autouse=True)
 def rollback_registries():
-    """Rollback registries so that any newly created classes will not persist while testing."""
+    """Rollback registries so that any newly created classes will not persist
+    while testing."""
     old_schemas = dict(SchemaRegistry.schemas)
     old_models = dict(ModelRegistry.models)
     yield

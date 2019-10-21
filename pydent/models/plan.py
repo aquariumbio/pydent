@@ -1,33 +1,28 @@
-"""
-Models related to plans, plan associations, and wires.
-"""
-
+"""Models related to plans, plan associations, and wires."""
 import json
+from warnings import warn
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import DeleteMixin
+from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.models.data_associations import Upload
 from pydent.models.field_value import FieldValue
-from pydent.models.data_associations import Upload, DataAssociatorMixin
-from pydent.relationships import (
-    Raw,
-    JSON,
-    Many,
-    HasOne,
-    HasMany,
-    HasManyThrough,
-    HasManyGeneric,
-    fields,
-)
-from pydent.models.crud_mixin import SaveMixin, DeleteMixin
-from warnings import warn
+from pydent.relationships import fields
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import JSON
+from pydent.relationships import Many
+from pydent.relationships import Raw
 
 
 @add_schema
 class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
-    """
-    A Plan model
-    """
+    """A Plan model."""
 
     fields = dict(
         data_associations=HasManyGeneric(
@@ -62,8 +57,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         )
 
     def add_operation(self, operation):
-        """
-        Adds an operation to the Plan
+        """Adds an operation to the Plan.
 
         :param operation: Operation to add
         :type operation: Operation
@@ -73,8 +67,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         self.append_to_many("operations", operation)
 
     def add_operations(self, operations):
-        """
-        Adds multiple operations to the Plan
+        """Adds multiple operations to the Plan.
 
         :param operations: list of Operations
         :type operations: list
@@ -90,8 +83,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return self.operations and op.rid in [_op.rid for _op in self.operations]
 
     def find_wires(self, src, dest):
-        """
-        Retrieves the wire between a source and destination FieldValues
+        """Retrieves the wire between a source and destination FieldValues.
 
         :param src: source FieldValue
         :type src: FieldValue
@@ -108,10 +100,10 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return found
 
     def wire(self, src, dest):
-        """
-        Creates a new wire between src and dest FieldValues. Returns the new wire
-        if it does not exist in the plan. If the wire already exists and
-        error_if_exists is True, then the existing wire is returned. Else an exception is raised.
+        """Creates a new wire between src and dest FieldValues. Returns the new
+        wire if it does not exist in the plan. If the wire already exists and
+        error_if_exists is True, then the existing wire is returned. Else an
+        exception is raised.
 
         :param src: source field value (the input of the wire)
         :type src: FieldValue
@@ -119,7 +111,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         :type dest: FieldValue
         :param error_if_exists: Raise an error if the Wire already exists in the plan.
         :type error_if_exists: boolean
-        :return: Newly created wire or existing wire (if exists and error_if_exists == False)
+        :return: Newly created wire or existing wire (if exists and
+            error_if_exists == False)
         :rtype: Wire
         """
 
@@ -132,8 +125,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             )
         if not self.has_operation(dest.operation):
             raise AquariumModelError(
-                "Cannot wire because the wire's destination FieldValue {} does not exist "
-                "in the Plan because its Operation '{}' is not in the plan.".formst(
+                "Cannot wire because the wire's destination FieldValue {} does not "
+                "exist in the Plan because its Operation '{}' is not in the plan.".format(
                     dest, dest.operation
                 )
             )
@@ -156,7 +149,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return incoming_wires, outgoing_wires
 
     def _get_wire_dict(self, wires):
-        """Return all wires in the plan grouped by the wire identifier"""
+        """Return all wires in the plan grouped by the wire identifier."""
         wire_dict = {}
         for w in wires:
             wire_dict.setdefault(w.identifier, list())
@@ -179,8 +172,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return wires_from_server
 
     def submit(self, user, budget):
-        """
-        Submits the Plan to the Aquarium server.
+        """Submits the Plan to the Aquarium server.
 
         :param user: User to submit the Plan
         :type user: User
@@ -204,7 +196,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     @classmethod
     def interface(cls, session):
         # get model interface from Base class
-        model_interface = super(Plan, cls).interface(session)
+        model_interface = super().interface(session)
 
         # make a special find method for plans, as generic method is too minimal.
         def new_find(model_id):
@@ -216,10 +208,10 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return model_interface
 
     def validate(self, raise_error=True):
-        """
-        Validates the plan.
+        """Validates the plan.
 
-        :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.
+        :param raise_error: If True, raises an AquariumModelException. If false,
+            returns the error messages.
         :type raise_error: boolean
         :return: list of error messages
         :rtype: array
@@ -236,9 +228,9 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                 field_value = getattr(wire, _fvtype)
                 if field_value._primary_key not in fv_keys:
                     msg = (
-                        "The FieldValue of a wire Wire(rid={}).{} is missing from the list"
-                        " of FieldValues in the plan. Did you forget to add an operation to "
-                        " the plan?".format(wire._primary_key, _fvtype)
+                        "The FieldValue of a wire Wire(rid={}).{} is missing from the "
+                        "list of FieldValues in the plan. Did you forget to add an "
+                        "operation to the plan?".format(wire._primary_key, _fvtype)
                     )
                     errors.append(msg)
         if raise_error and errors:
@@ -251,8 +243,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return errors
 
     def to_save_json(self):
-        """
-        Returns the json representation of the plan for saving and creating
+        """Returns the json representation of the plan for saving and creating
         Plans on the Aquarium server.
 
         :return: JSON
@@ -333,9 +324,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return {"user_id": self.session.current_user.id}
 
     def estimate_cost(self):
-        """
-        Estimates the cost of the plan on the Aquarium server.
-        This is necessary before plan submission.
+        """Estimates the cost of the plan on the Aquarium server. This is
+        necessary before plan submission.
 
         :return: cost
         :rtype: dict
@@ -346,11 +336,11 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         raise NotImplementedError()
 
     def step(self):
-        """Steps a plan"""
+        """Steps a plan."""
         return self.session.utils.step_plan(self.id)
 
     def show(self):
-        """Print the plan nicely"""
+        """Print the plan nicely."""
         print(self.name + " id: " + str(self.id))
         for operation in self.operations:
             operation.show(pre="  ")
@@ -358,12 +348,14 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             wire.show(pre="  ")
 
     def replan(self):
-        """Copies or replans the plan. Returns a plan copy"""
+        """Copies or replans the plan.
+
+        Returns a plan copy
+        """
         return self.session.utils.replan(self.id)
 
     def download_files(self, outdir=None, overwrite=True):
-        """
-        Downloads all uploads associated with the plan. Downloads happen
+        """Downloads all uploads associated with the plan. Downloads happen
         ansynchrounously.
 
         :param outdir: output directory for downloaded files
@@ -379,7 +371,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
 
 @add_schema
 class PlanAssociation(ModelBase):
-    """A PlanAssociation model"""
+    """A PlanAssociation model."""
 
     fields = dict(plan=HasOne("Plan"), operation=HasOne("Operation"))
 
@@ -389,7 +381,7 @@ class PlanAssociation(ModelBase):
 
 @add_schema
 class Wire(DeleteMixin, ModelBase):
-    """A Wire model"""
+    """A Wire model."""
 
     fields = {
         "source": HasOne("FieldValue", ref="from_id"),
@@ -452,7 +444,7 @@ class Wire(DeleteMixin, ModelBase):
                 "destination": destination,
                 "to_id": to_id,
             },
-            active=True
+            active=True,
         )
 
     @property
@@ -478,7 +470,8 @@ class Wire(DeleteMixin, ModelBase):
 
         if src and dest and src.rid == dest.rid:
             raise AquariumModelError(
-                "Cannot create wire because source and destination are the same instance."
+                "Cannot create wire because source and destination are the same "
+                "instance."
             )
 
     @classmethod
@@ -492,8 +485,8 @@ class Wire(DeleteMixin, ModelBase):
 
         if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
             raise AquariumModelError(
-                "Cannot create wire because the {} FieldValue is has '{}' parent class. "
-                "Only {} parent classes are wirable".format(
+                "Cannot create wire because the {} FieldValue is has '{}' "
+                "parent class. Only {} parent classes are wirable".format(
                     name, fv.parent_class, cls.WIRABLE_PARENT_CLASSES
                 )
             )
@@ -513,15 +506,15 @@ class Wire(DeleteMixin, ModelBase):
         return save_json
 
     def delete(self):
-        """
-        Permanently deletes the wire instance on the Aquarium server.
+        """Permanently deletes the wire instance on the Aquarium server.
+
         :return:
         :rtype:
         """
         return self.session.utils.delete_wire(self)
 
     def show(self, pre=""):
-        """Show the wire nicely"""
+        """Show the wire nicely."""
         source = self.source
         dest = self.destination
 
@@ -559,9 +552,12 @@ class Wire(DeleteMixin, ModelBase):
         return False
 
     def does_wire(self, source, destination):
-        """Checks whether this Wire is a wire between the source and destination FieldValues.
+        """Checks whether this Wire is a wire between the source and
+        destination FieldValues.
 
-        If any of the source or destination FieldValues are None, returns False."""
+        If any of the source or destination FieldValues are None,
+        returns False.
+        """
         if source and destination and self.source and self.destination:
             return (
                 source.rid == self.source.rid
@@ -569,8 +565,10 @@ class Wire(DeleteMixin, ModelBase):
             )
         return False
 
-    def __eq__(self, other):
-        """Checks whether this Wire is wired to the same FieldValue instances of another Wire.
-
-        see `does_wire` method."""
-        return self.does_wire(other.source, other.destination)
+    # def __eq__(self, other):
+    #     """Checks whether this Wire is wired to the same FieldValue instances
+    #     of another Wire.
+    #
+    #     see `does_wire` method.
+    #     """
+    #     return self.does_wire(other.source, other.destination)

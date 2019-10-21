@@ -1,3 +1,1 @@
-"""
-py.tests
-"""
+"""py.tests."""

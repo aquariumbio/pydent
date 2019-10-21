@@ -9,9 +9,7 @@ from pydent.aqsession import AqSession
 
 @pytest.fixture(scope="session")
 def mock_login_post():
-    """
-    A fake cookie to fake a logged in account
-    """
+    """A fake cookie to fake a logged in account."""
 
     def fake_post(path, **kwargs):
         routes = {
@@ -38,9 +36,7 @@ def mock_login_post():
 
 @pytest.fixture(scope="function")
 def fake_session(monkeypatch, mock_login_post):
-    """
-    Returns a fake session using a fake cookie
-    """
+    """Returns a fake session using a fake cookie."""
     monkeypatch.setattr(requests, "post", mock_login_post)
     aquarium_url = "http://52.52.53455325.52"
     session = AqSession("username", "password", aquarium_url)
@@ -49,7 +45,7 @@ def fake_session(monkeypatch, mock_login_post):
 
 @pytest.fixture(scope="function")
 def fake_response():
-    class FakeRequest(object):
+    class FakeRequest:
         def __init__(self, status_code=200, url="myfakeurl.com", method="post"):
             self.status_code = status_code
             self.url = url

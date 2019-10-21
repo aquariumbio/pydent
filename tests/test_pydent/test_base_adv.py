@@ -1,7 +1,10 @@
-from pydent.marshaller import add_schema
-from pydent.relationships import HasMany
 from pydent import ModelBase
-from pydent.models import AllowableFieldType, ObjectType, OperationType, SampleType
+from pydent.marshaller import add_schema
+from pydent.models import AllowableFieldType
+from pydent.models import ObjectType
+from pydent.models import OperationType
+from pydent.models import SampleType
+from pydent.relationships import HasMany
 
 
 def test_attribute_missing(fake_session):

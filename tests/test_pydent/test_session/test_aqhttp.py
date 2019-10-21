@@ -3,21 +3,18 @@ import os
 
 import pytest
 
-from pydent.exceptions import (
-    TridentJSONDataIncomplete,
-    TridentLoginError,
-    TridentTimeoutError,
-    TridentRequestError,
-)
-from pydent.aqhttp import AqHTTP, url_build
+from pydent.aqhttp import AqHTTP
 from pydent.aqhttp import requests
+from pydent.aqhttp import url_build
+from pydent.exceptions import TridentJSONDataIncomplete
+from pydent.exceptions import TridentLoginError
+from pydent.exceptions import TridentRequestError
+from pydent.exceptions import TridentTimeoutError
 
 
 @pytest.fixture(scope="function")
 def aqhttp(monkeypatch, mock_login_post):
-    """
-    Creates a faked aqhttp
-    """
+    """Creates a faked aqhttp."""
 
     monkeypatch.setattr(requests, "post", mock_login_post)
     login = "somelogin"
@@ -28,9 +25,7 @@ def aqhttp(monkeypatch, mock_login_post):
 
 
 def test_aqhttp_init(aqhttp):
-    """
-    Tests basic attributes of a faked aqhttp
-    """
+    """Tests basic attributes of a faked aqhttp."""
 
     assert aqhttp.login == "somelogin"
     assert aqhttp.aquarium_url == "http://some.aquarium.url.com"
@@ -39,9 +34,7 @@ def test_aqhttp_init(aqhttp):
 
 
 def test_disallow_null(aqhttp):
-    """
-    Should raise exception if json contains a null value
-    """
+    """Should raise exception if json contains a null value."""
 
     aqhttp._disallow_null_in_json({"id": 5, "name": "Joe"})
     with pytest.raises(TridentJSONDataIncomplete):
@@ -49,8 +42,9 @@ def test_disallow_null(aqhttp):
 
 
 def test_login_bad_url():
-    """
-    Simulates an Aquarium login using a bad url. Should raise a login error.
+    """Simulates an Aquarium login using a bad url.
+
+    Should raise a login error.
     """
 
     aquarium_url = "This is a bad url"
@@ -59,9 +53,10 @@ def test_login_bad_url():
 
 
 def test_login_wrong_url(monkeypatch):
+    """Simulates an Aquarium login using a bad url.
+
+    Should raise a timeout error.
     """
-Simulates an Aquarium login using a bad url. Should raise a timeout error.
-"""
 
     aquarium_url = "http://52.52.52.52:81/"
     monkeypatch.setattr(AqHTTP, "TIMEOUT", 0.01)
@@ -70,9 +65,7 @@ Simulates an Aquarium login using a bad url. Should raise a timeout error.
 
 
 def test_login_no_cookie(monkeypatch):
-    """
-    Should raise LoginError if cookie is not found.
-    """
+    """Should raise LoginError if cookie is not found."""
 
     def mock_post(path, **kwargs):
         routes = {"sessions.json": {}}
@@ -89,11 +82,9 @@ def test_login_no_cookie(monkeypatch):
 
 
 def test_custom_timeout(monkeypatch, fake_response, aqhttp):
-    """
-    Timeout should override from the aqhttp.post method
-"""
+    """Timeout should override from the aqhttp.post method."""
 
-    class FakeRequest(object):
+    class FakeRequest:
         def __init__(self, status_code=200, url="myfakeurl.com", method="post"):
             self.status_code = status_code
             self.url = url
@@ -101,7 +92,7 @@ def test_custom_timeout(monkeypatch, fake_response, aqhttp):
             self.body = {}
 
     # A fake requests sessions object
-    class mock_request(object):
+    class mock_request:
         @staticmethod
         def request(method, path, timeout=None, **kwargs):
             assert timeout == 0.1
@@ -112,13 +103,11 @@ def test_custom_timeout(monkeypatch, fake_response, aqhttp):
 
 
 def test_default_timeout(monkeypatch, fake_response, aqhttp):
-    """
-    Timeout should default to aqhttp.TIMEOUT is timeout is absent from
-    aqhttp.post
-    """
+    """Timeout should default to aqhttp.TIMEOUT is timeout is absent from
+    aqhttp.post."""
 
     # A fake requests sessions object
-    class mock_request(object):
+    class mock_request:
         @staticmethod
         def request(method, path, timeout=None, **kwargs):
             assert timeout == aqhttp.TIMEOUT
@@ -142,7 +131,7 @@ def test_aqhttp_post(monkeypatch, fake_response, aqhttp):
     extra_kwargs = {"extra": "stuff"}
 
     # A fake requests sessions object
-    class mock_request(object):
+    class mock_request:
         @staticmethod
         def request(method, path, timeout=None, cookies=None, **kwargs):
             # assert basic attributes are passed in
@@ -179,7 +168,7 @@ def test_aqhttp_post_2(monkeypatch, aqhttp, fake_response):
     extra_kwargs = {"extra": "stuff"}
 
     # A fake requests sessions object
-    class mock_request(object):
+    class mock_request:
         @staticmethod
         def request(method, path, timeout=None, cookies=None, **kwargs):
             # assert basic attributes are passed in
@@ -214,7 +203,7 @@ def test_aqhttp_get(monkeypatch, fake_response, aqhttp):
     extra_kwargs = {"extra": "stuff"}
 
     # A fake requests sessions object
-    class mock_request(object):
+    class mock_request:
         @staticmethod
         def request(method, path, timeout=None, cookies=None, **kwargs):
             # assert basic attributes are passed in
@@ -241,7 +230,7 @@ def test_aqhttp_get(monkeypatch, fake_response, aqhttp):
 
 
 def test_authentication_error_via_reroute(monkeypatch, fake_response, aqhttp):
-    class mock_request(object):
+    class mock_request:
         @staticmethod
         def request(method, path, timeout=None, **kwargs):
             fake_requests_response = fake_response(method, path, {}, 200)
@@ -259,13 +248,11 @@ def test_authentication_error_via_reroute(monkeypatch, fake_response, aqhttp):
 def test_improperly_formatted_json_raise_TridentRequestError(
     monkeypatch, fake_response, aqhttp
 ):
-    """
-    If response request returns an object that is not able to formatted to a
-    JSON, a TridentRequestError should be raised.
-    """
+    """If response request returns an object that is not able to formatted to a
+    JSON, a TridentRequestError should be raised."""
 
     # A fake requests sessions object
-    class mock_request(object):
+    class mock_request:
         @staticmethod
         def request(method, path, timeout=None, **kwargs):
             # return faked response

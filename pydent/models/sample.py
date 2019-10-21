@@ -1,7 +1,4 @@
-"""
-Models related to samples, like Samples and SampleTypes
-"""
-
+"""Models related to samples, like Samples and SampleTypes."""
 import json
 from collections.abc import Sequence
 from warnings import warn
@@ -9,14 +6,15 @@ from warnings import warn
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import JSONSaveMixin
-from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
-from pydent.relationships import HasOne, HasMany
+from pydent.models.field_value_mixins import FieldTypeInterface
+from pydent.models.field_value_mixins import FieldValueInterface
+from pydent.relationships import HasMany
+from pydent.relationships import HasOne
 
 
 @add_schema
 class Sample(FieldValueInterface, ModelBase):
-    """A Sample model
-    """
+    """A Sample model."""
 
     fields = dict(
         # sample relationships
@@ -67,14 +65,15 @@ class Sample(FieldValueInterface, ModelBase):
 
     @property
     def identifier(self):
-        """Return the identifier used by Aquarium in autocompletes"""
+        """Return the identifier used by Aquarium in autocompletes."""
         return "{}: {}".format(self.id, self.name)
 
     def field_value(self, name):
-        """
-        Returns the :class:`FieldValue` associated with the sample by its name. If the there is more than one FieldValue
-        with the same name (as in field_value arrays), it will return the first FieldValue.
-        See the :method:`Sample.field_value_array` method.
+        """Returns the :class:`FieldValue` associated with the sample by its
+        name. If the there is more than one FieldValue with the same name (as
+        in field_value arrays), it will return the first FieldValue. See the.
+
+        :meth:`Sample.field_value_array` method.
 
         :param name: name of the field value
         :type name: str
@@ -102,8 +101,7 @@ class Sample(FieldValueInterface, ModelBase):
         return self._field_value_dictionary(lambda ft: ft.name, self._property_accessor)
 
     def update_properties(self, prop_dict):
-        """
-        Update the FieldValues properties for this sample.
+        """Update the FieldValues properties for this sample.
 
         :param prop_dict: values to update
         :type pro fp_dict: dict
@@ -176,7 +174,7 @@ class Sample(FieldValueInterface, ModelBase):
 
 @add_schema
 class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
-    """A SampleType model"""
+    """A SampleType model."""
 
     fields = dict(
         samples=HasMany("Sample", "SampleType"),

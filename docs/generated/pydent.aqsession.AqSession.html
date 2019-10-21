@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.aqsession.AqSession &#8212; pydent 0.1.5a7 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pydent.aqsession.Browser" href="pydent.aqsession.Browser.html" />
+    <link rel="prev" title="Session (pydent.aqsession)" href="../aqsession.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a7</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../aqsession.html#user-objects">User Objects</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../aqsession.html" title="Previous Chapter: Session (pydent.aqsession)"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Session (pyde...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pydent.aqsession.Browser.html" title="Next Chapter: pydent.aqsession.Browser"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pydent.aqsess... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/generated/pydent.aqsession.AqSession.rst"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="pydent-aqsession-aqsession">
+<h1>pydent.aqsession.AqSession<a class="headerlink" href="#pydent-aqsession-aqsession" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pydent.aqsession.AqSession">
+<em class="property">class </em><code class="sig-prename descclassname">pydent.aqsession.</code><code class="sig-name descname">AqSession</code><span class="sig-paren">(</span><em class="sig-param">login</em>, <em class="sig-param">password</em>, <em class="sig-param">aquarium_url</em>, <em class="sig-param">name=None</em>, <em class="sig-param">aqhttp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.sessionabc.SessionABC</span></code></p>
+<p>Holds an AqHTTP with login information. Creates SessionInterfaces for
+models.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session1</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">aquairum_url</span><span class="p">)</span>
+<span class="n">session1</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># &lt;User(id=1,...)&gt;</span>
+</pre></div>
+</div>
+<p>Initializes a new tridennt Session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>login</strong> (<em>str</em>) – the Aquarium login for the user</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – the password for the Aquarium login. This will not be
+stored anywhere. However, login headers for Aquarium will be stored
+in .__aqhttp. This may change in the future with changes
+authentication for the Aquarium API</p></li>
+<li><p><strong>aquarium_url</strong> (<em>str</em>) – the http formatted Aquarium url</p></li>
+<li><p><strong>name</strong> (<em>str</em><em> or </em><em>None</em>) – (optional) name for this session</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">login</em>, <em class="sig-param">password</em>, <em class="sig-param">aquarium_url</em>, <em class="sig-param">name=None</em>, <em class="sig-param">aqhttp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a new tridennt Session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>login</strong> (<em>str</em>) – the Aquarium login for the user</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – the password for the Aquarium login. This will not be
+stored anywhere. However, login headers for Aquarium will be stored
+in .__aqhttp. This may change in the future with changes
+authentication for the Aquarium API</p></li>
+<li><p><strong>aquarium_url</strong> (<em>str</em>) – the http formatted Aquarium url</p></li>
+<li><p><strong>name</strong> (<em>str</em><em> or </em><em>None</em>) – (optional) name for this session</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.__init__" title="pydent.aqsession.AqSession.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(login, password, aquarium_url[, …])</p></td>
+<td><p>Initializes a new tridennt Session.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_cache</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_cache</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.logged_in" title="pydent.aqsession.AqSession.logged_in"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logged_in</span></code></a>()</p></td>
+<td><p>Returns whether the user is logged in.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.model_interface" title="pydent.aqsession.AqSession.model_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_interface</span></code></a>(model_name[, interface_class])</p></td>
+<td><p>Returns model interface by name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.open" title="pydent.aqsession.AqSession.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a>()</p></td>
+<td><p>Open Aquarium in a web browser window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.ping" title="pydent.aqsession.AqSession.ping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ping</span></code></a>([num])</p></td>
+<td><p>Performs a number of simple requests (pings) to estimate the speed of the server.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.set_timeout" title="pydent.aqsession.AqSession.set_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_timeout</span></code></a>(timeout_in_seconds)</p></td>
+<td><p>Sets the request timeout.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_verbose</span></code>(verbose[, tb_limit])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.with_cache" title="pydent.aqsession.AqSession.with_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_cache</span></code></a>([using_requests, using_models, …])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">type using_requests</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_requests_off</span></code>([using_cache, …])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Account</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">AllowableFieldType</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Budget</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Code</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Collection</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataAssociation</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldType</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldValue</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Invoice</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Item</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Job</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JobAssociation</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Library</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Membership</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectType</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Operation</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">OperationType</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PartAssociation</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plan</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlanAssociation</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sample</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampleType</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upload</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">UserBudgetAssociation</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wire</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">browser</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.current_user" title="pydent.aqsession.AqSession.current_user"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_user</span></code></a></p></td>
+<td><p>Returns the current User associated with this session.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.interface_class" title="pydent.aqsession.AqSession.interface_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface_class</span></code></a></p></td>
+<td><p>Returns the session’s interface class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.login" title="pydent.aqsession.AqSession.login"><code class="xref py py-obj docutils literal notranslate"><span class="pre">login</span></code></a></p></td>
+<td><p>Logs into aquarium, generating the necessary headers to perform requests to Aquarium.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.models" title="pydent.aqsession.AqSession.models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">models</span></code></a></p></td>
+<td><p>Returns list of all models available.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.session" title="pydent.aqsession.AqSession.session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code></a></p></td>
+<td><p>Return self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.url" title="pydent.aqsession.AqSession.url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">url</span></code></a></p></td>
+<td><p>Returns the aquarium_url for this session.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">using_cache</span></code></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">using_requests</span></code></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.AqSession.utils" title="pydent.aqsession.AqSession.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils</span></code></a></p></td>
+<td><p>Instantiates a utility interface.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pydent.aqsession.AqSession._aqhttp">
+<code class="sig-name descname">_aqhttp</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqSession._aqhttp" title="Permalink to this definition">¶</a></dt>
+<dd><p>requests interface</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqSession._browser">
+<code class="sig-name descname">_browser</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqSession._browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>the sessions browser</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession._initialize_interfaces">
+<code class="sig-name descname">_initialize_interfaces</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession._initialize_interfaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession._initialize_interfaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the session’s interfaces.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession._log_to_aqhttp">
+<code class="sig-name descname">_log_to_aqhttp</code><span class="sig-paren">(</span><em class="sig-param">msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession._log_to_aqhttp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession._log_to_aqhttp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a log message to the aqhttp’s logger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession._swap_sessions">
+<em class="property">static </em><code class="sig-name descname">_swap_sessions</code><span class="sig-paren">(</span><em class="sig-param">from_session</em>, <em class="sig-param">to_session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession._swap_sessions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession._swap_sessions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves models from one session to another.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.current_user">
+<em class="property">property </em><code class="sig-name descname">current_user</code><a class="headerlink" href="#pydent.aqsession.AqSession.current_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current User associated with this session.</p>
+<p>Returns None if no user is found (as in cases where the Aquarium
+connection is down).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.interface_class">
+<em class="property">property </em><code class="sig-name descname">interface_class</code><a class="headerlink" href="#pydent.aqsession.AqSession.interface_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the session’s interface class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[+CT_co]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.logged_in">
+<code class="sig-name descname">logged_in</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.logged_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.logged_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the user is logged in. If the session is able to
+return the User model instance using the session’s login credentials,
+the user is considered to be logged in.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether user is currently logged in</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.login">
+<em class="property">property </em><code class="sig-name descname">login</code><a class="headerlink" href="#pydent.aqsession.AqSession.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs into aquarium, generating the necessary headers to perform
+requests to Aquarium.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.model_interface">
+<code class="sig-name descname">model_interface</code><span class="sig-paren">(</span><em class="sig-param">model_name</em>, <em class="sig-param">interface_class=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.model_interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.model_interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns model interface by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.interfaces.SessionInterface.html#pydent.interfaces.SessionInterface" title="pydent.interfaces.SessionInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionInterface</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.models">
+<em class="property">property </em><code class="sig-name descname">models</code><a class="headerlink" href="#pydent.aqsession.AqSession.models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all models available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqSession.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqSession.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>optional name of the session</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.open">
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open Aquarium in a web browser window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydent.aqsession.AqSession.parent_session">
+<code class="sig-name descname">parent_session</code><em class="property"> = None</em><a class="headerlink" href="#pydent.aqsession.AqSession.parent_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>the parent session, if derived from another session</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.ping">
+<code class="sig-name descname">ping</code><span class="sig-paren">(</span><em class="sig-param">num=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a number of simple requests (pings) to estimate the speed
+of the server.</p>
+<p>Displays a message about the average time each ping took.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.session">
+<em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.aqsession.AqSession.session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.set_timeout">
+<code class="sig-name descname">set_timeout</code><span class="sig-paren">(</span><em class="sig-param">timeout_in_seconds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.set_timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.set_timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the request timeout.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#pydent.aqsession.AqSession.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the aquarium_url for this session.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.utils">
+<em class="property">property </em><code class="sig-name descname">utils</code><a class="headerlink" href="#pydent.aqsession.AqSession.utils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a utility interface.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.AqSession.with_cache">
+<code class="sig-name descname">with_cache</code><span class="sig-paren">(</span><em class="sig-param">using_requests=None</em>, <em class="sig-param">using_models=False</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">verbose=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/aqsession.html#AqSession.with_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.with_cache" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>using_requests</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – if False, ForbiddenRequest will be raised if requests are</p>
+</dd>
+</dl>
+<p>made using the session.
+:type using_models: <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>
+:param using_models: if True (default), derived session will inherit
+the current sessions model_cache
+:type timeout: <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]
+:param timeout: the requests timeout in seconds
+:param verbose: if True, verbose mode will be activated for the derived session
+:rtype: <a class="reference internal" href="#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a>
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
