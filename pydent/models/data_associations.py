@@ -1,7 +1,5 @@
-"""
-Models related to data associations
-"""
-
+"""Models related to data associations."""
+import json
 import os
 import shutil
 
@@ -9,21 +7,19 @@ import requests
 
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.relationships import HasOne, JSON
+from pydent.models.crud_mixin import JSONDeleteMixin
+from pydent.models.crud_mixin import JSONSaveMixin
+from pydent.relationships import HasOne
+from pydent.relationships import JSON
 from pydent.utils import make_async
-from pydent.models.crud_mixin import JSONDeleteMixin, JSONSaveMixin
-import json
 
 
 # TODO: changing the value of a association (and saving it) shouldn't be difficult
 class DataAssociatorMixin:
-    """
-    Mixin for handling data associations
-    """
+    """Mixin for handling data associations."""
 
     def associate(self, key, value, upload=None):
-        """
-        Adds a data association with the key and value to this object.
+        """Adds a data association with the key and value to this object.
 
         :param key: Key of the association
         :type key: str
@@ -42,8 +38,7 @@ class DataAssociatorMixin:
         )
 
     def associate_file(self, key, value, file, job_id=None):
-        """
-        Associate a file
+        """Associate a file.
 
         :param key: association key
         :type key: str or json
@@ -61,8 +56,7 @@ class DataAssociatorMixin:
         return self.associate(key, value, upload=u)
 
     def associate_file_from_path(self, key, value, filepath, job_id=None):
-        """
-        Associate a file from a filepath
+        """Associate a file from a filepath.
 
         :param key: association key
         :type key: str or json
@@ -85,7 +79,8 @@ class DataAssociatorMixin:
                 das.append(da)
         return das
 
-    # TODO: DataAssociation - do we really want to have this return either a list or single value? How are people using this?
+    # TODO: DataAssociation - do we really want to have this return either a list or
+    #       single value? How are people using this?
     def get(self, key):
         val = []
         for da in self.get_data_associations(key):
@@ -99,7 +94,7 @@ class DataAssociatorMixin:
 
 @add_schema
 class DataAssociation(JSONDeleteMixin, ModelBase):
-    """A DataAssociation model"""
+    """A DataAssociation model."""
 
     fields = dict(object=JSON(), upload=HasOne("Upload"))
 
@@ -113,15 +108,12 @@ class DataAssociation(JSONDeleteMixin, ModelBase):
 
 @add_schema
 class Upload(ModelBase):
-    """
-    An Upload model
-    """
+    """An Upload model."""
 
     fields = dict(job=HasOne("Job"))
 
     def __init__(self, job_id=None, file=None):
-        """
-        Create a new upload
+        """Create a new upload.
 
         :param job_id: job id to associate the upload to
         :type job_id: int
@@ -147,8 +139,7 @@ class Upload(ModelBase):
 
     @staticmethod
     def _download_file_from_url(url, outpath):
-        """
-        Downloads a file from a url
+        """Downloads a file from a url.
 
         :param url: url of file
         :type url: str
@@ -165,8 +156,7 @@ class Upload(ModelBase):
     @staticmethod
     @make_async(1)
     def async_download(uploads, outdir=None, overwrite=True):
-        """
-        Asynchronously downloads from list of :class:`Upload` models.
+        """Asynchronously downloads from list of :class:`Upload` models.
 
         :param uploads: list of Uploads
         :type uploads: list
@@ -181,12 +171,12 @@ class Upload(ModelBase):
 
     @staticmethod
     def _download_files(uploads, outdir, overwrite):
-        """
-        Downloads uploaded file from list of :class:`Upload` models.
+        """Downloads uploaded file from list of :class:`Upload` models.
 
         :param uploads: list of Uploads
         :type uploads: list
-        :param outdir: path to output directory to save downloaded files (defaults to current directory)
+        :param outdir: path to output directory to save downloaded files (defaults to
+            current directory)
         :type outdir: str
         :param overwrite: if True, will overwrite existing files (default: True)
         :type overwrite: bool
@@ -200,9 +190,8 @@ class Upload(ModelBase):
         return filepaths
 
     def download(self, outdir=None, filename=None, overwrite=True):
-        """
-        Downloads the uploaded file to the specified output directory. If
-        no output directory is specified, the file will be downloaded to the
+        """Downloads the uploaded file to the specified output directory. If no
+        output directory is specified, the file will be downloaded to the
         current directory.
 
         :param outdir: path of directory of output file (default is current directory)

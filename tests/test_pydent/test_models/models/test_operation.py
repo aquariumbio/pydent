@@ -19,9 +19,7 @@ def generate_fake_op_data(session):
 
 @pytest.fixture(scope="function")
 def fake_op(fake_session):
-    """
-    (huge) fixture for making a fake operation.
-    """
+    """(huge) fixture for making a fake operation."""
     fake_op_data = {
         "created_at": "2017-11-30T16:25:49-08:00",
         "field_values": [
@@ -255,7 +253,7 @@ def test_field_value(fake_op):
 
 
 def test_operation_init_fieldvalues(fake_op):
-    """Test initializing of field_values for operation"""
+    """Test initializing of field_values for operation."""
 
     # remove field_values
     fake_op.field_values = None

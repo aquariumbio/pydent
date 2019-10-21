@@ -1,11 +1,13 @@
-from os.path import join, isfile
-import pytest
+from os.path import isfile
+from os.path import join
 from uuid import uuid4
+
+import pytest
 
 
 @pytest.mark.recode("no")
 def test_download(session, tmpdir):
-    """Expect a new file to be created from the 'download' method"""
+    """Expect a new file to be created from the 'download' method."""
     upload = session.Upload.one()
 
     path = tmpdir.mkdir("trident_test_downloads")

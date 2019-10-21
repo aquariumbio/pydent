@@ -1,28 +1,24 @@
-"""
-Models related to operations and operation types.
-"""
-
+"""Models related to operations and operation types."""
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
-from pydent.models.data_associations import DataAssociatorMixin
-from pydent.models.field_value_mixins import FieldValueInterface, FieldTypeInterface
-from pydent.relationships import (
-    Raw,
-    Function,
-    HasOne,
-    HasMany,
-    HasManyThrough,
-    HasManyGeneric,
-    HasOneFromMany,
-)
-from pydent.utils import filter_list
 from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.models.field_value_mixins import FieldTypeInterface
+from pydent.models.field_value_mixins import FieldValueInterface
+from pydent.relationships import Function
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import HasOneFromMany
+from pydent.relationships import Raw
+from pydent.utils import filter_list
 
 
 @add_schema
 class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
-    """A Operation model"""
+    """A Operation model."""
 
     fields = dict(
         field_values=HasMany(
@@ -89,10 +85,8 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return predecessors
 
     def init_field_values(self):
-        """
-        Initialize the :class:`FieldValue` from the :class:`FieldType` of the
-        parent :class:`Operation` type.
-        """
+        """Initialize the :class:`FieldValue` from the :class:`FieldType` of
+        the parent :class:`Operation` type."""
         self.field_values = []
         for field_type in self.get_metatype().field_types:
             if not field_type.array:
@@ -104,8 +98,8 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return filter_list(self.get_field_value_array(name, role))
 
     def field_value(self, name, role):
-        """
-        Returns :class:`FieldValue` with name and role.
+        """Returns :class:`FieldValue` with name and role.
+
         Return None if not found.
         """
         if self.field_values:
@@ -118,7 +112,10 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
                 return fvs[0]
 
             msg = "More than one FieldValue found for the field value"
-            msg += " of operation {}.(id={}).{}.{}. Are you sure you didn't mean to call 'field_value_array'?"
+            msg += (
+                " of operation {}.(id={}).{}.{}. Are you sure you didn't mean to "
+                "call 'field_value_array'?"
+            )
             raise AquariumModelError(
                 msg.format(self.operation_type, self.id, role, name)
             )
@@ -134,20 +131,19 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return self.get_field_value_array(name, "output")
 
     def input(self, name):
-        """Returns the input :class:`FieldValue` by name"""
+        """Returns the input :class:`FieldValue` by name."""
         return self.field_value(name, "input")
 
     def output(self, name):
-        """Returns the output :class:`FieldValue` by name"""
+        """Returns the output :class:`FieldValue` by name."""
         return self.field_value(name, "output")
 
     def add_to_input_array(
         self, name, sample=None, item=None, value=None, container=None
     ):
-        """
-        Creates and adds a new input :class:`FieldValue`.
-        When setting values to items/samples/containers, the
-        item/sample/container must be saved.
+        """Creates and adds a new input :class:`FieldValue`. When setting
+        values to items/samples/containers, the item/sample/container must be
+        saved.
 
         :param name: name of the FieldType/FieldValue
         :type name: string
@@ -171,10 +167,9 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
     def add_to_output_array(
         self, name, sample=None, item=None, value=None, container=None
     ):
-        """
-        Creates and adds a new output :class:`FieldValue`.
-        When setting values to items/samples/containers, the
-        item/sample/container must be saved.
+        """Creates and adds a new output :class:`FieldValue`. When setting
+        values to items/samples/containers, the item/sample/container must be
+        saved.
 
         :param name: name of the FieldType/FieldValue
         :type name: string
@@ -208,8 +203,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
     def set_input(
         self, name, sample=None, item=None, value=None, container=None, object_type=None
     ):
-        """
-        Sets a input :class:`FieldValue` to a value. When setting values to
+        """Sets a input :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
 
         :param name: name of the FieldValue/FieldType
@@ -236,8 +230,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
     def set_output(
         self, name, sample=None, item=None, value=None, container=None, object_type=None
     ):
-        """
-        Sets a output :class:`FieldValue` to a value. When setting values to
+        """Sets a output :class:`FieldValue` to a value. When setting values to
         items/samples/containers, the item/sample/container must be saved.
 
         :param name: name of the FieldValue/FieldType
@@ -262,11 +255,9 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         )
 
     def set_input_array(self, name, values):
-        """
-        Sets input :class:`FieldValue` array using values.
-        Values should be a list of dictionaries containing sample, item,
-        container, or values keys.
-        When setting values to items/samples/containers, the
+        """Sets input :class:`FieldValue` array using values. Values should be
+        a list of dictionaries containing sample, item, container, or values
+        keys. When setting values to items/samples/containers, the
         item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValues being modified
@@ -280,11 +271,9 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return self.set_field_value_array(name, "input", values)
 
     def set_output_array(self, name, values):
-        """
-        Sets output :class:`FieldValue` array using values.
-        Values should be a list of dictionaries containing sample, item,
-        container, or values keys.
-        When setting values to items/samples/containers, the
+        """Sets output :class:`FieldValue` array using values. Values should be
+        a list of dictionaries containing sample, item, container, or values
+        keys. When setting values to items/samples/containers, the
         item/sample/container must be saved.
 
         :param name: name of the FieldType/FieldValues being modified
@@ -298,9 +287,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         return self.set_field_value_array(name, "output", values)
 
     def show(self, pre=""):
-        """
-        Print the operation nicely
-        """
+        """Print the operation nicely."""
         print(pre + self.operation_type.name + " " + str(self.cost))
         for field_value in self.field_values:
             field_value.show(pre=pre + "  ")
@@ -311,10 +298,8 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
 
 @add_schema
 class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
-    """
-    Represents an OperationType, which is the definition of a protocol in
-    Aquarium.
-    """
+    """Represents an OperationType, which is the definition of a protocol in
+    Aquarium."""
 
     fields = dict(
         operations=HasMany("Operation", "OperationType"),
@@ -347,8 +332,6 @@ class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
     )
 
     def code(self, accessor):
-        # raise DeprecationWarning("This method is depreciated. Call code directly using 'protocol', 'cost_model',"
-        #                          " 'documentation', or 'precondition'.")
         if accessor in ["protocol", "precondition", "documentation", "cost_model"]:
             return getattr(self, accessor)
         return None
@@ -374,8 +357,10 @@ class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
         return self.field_type(name, "input")
 
     def save(self):
-        """Saves the Operation Type to the Aquarium server. Requires
-        this Operation Type to be connected to a session."""
+        """Saves the Operation Type to the Aquarium server.
+
+        Requires this Operation Type to be connected to a session.
+        """
         return self.reload(self.session.utils.create_operation_type(self))
 
     def to_save_json(self):

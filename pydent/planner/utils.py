@@ -1,5 +1,6 @@
-import networkx as nx
 from copy import deepcopy
+
+import networkx as nx
 
 
 def arr_to_pairs(arr):
@@ -15,11 +16,11 @@ def _id_getter(model):
 def to_undirected(graph):
     """.to_undirected is implemented in networkx out of the box, however, it
     suffers from occational infinite recursion errors during the deepcopy phase
-    of the method (unknown as to why). """
+    of the method (unknown as to why)."""
     undirected = nx.Graph()
     copied = deepcopy(graph)
     for n in copied.nodes:
-        ndata = copied.node[n]
+        ndata = copied.nodes[n]
         undirected.add_node(n, **ndata)
     for n1, n2 in copied.edges:
         edata = copied.edges[n1, n2]
@@ -28,7 +29,7 @@ def to_undirected(graph):
 
 
 def get_subgraphs(graph):
-    """Get independent subgraphs"""
+    """Get independent subgraphs."""
     node_list = list(graph.nodes)
     subgraphs = []
     while len(node_list) > 0:

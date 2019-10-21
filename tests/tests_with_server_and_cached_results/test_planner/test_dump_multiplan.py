@@ -1,6 +1,10 @@
-from pydent.planner import Planner
-from os.path import dirname, abspath, join
+from os.path import abspath
+from os.path import dirname
+from os.path import join
+
 import dill
+
+from pydent.planner import Planner
 
 
 def test_pickle_multiplan(session):

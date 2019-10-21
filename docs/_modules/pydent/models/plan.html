@@ -3,10 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.plan &#8212; pydent 0.1.5a2 documentation</title>
+    <title>pydent.models.plan &#8212; pydent 0.1.5a7 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/style.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
@@ -38,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -54,6 +55,167 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
 </ul>
@@ -69,33 +231,53 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.4a</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -134,36 +316,31 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.plan</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to plans, plan associations, and wires.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to plans, plan associations, and wires.&quot;&quot;&quot;
 import json
+from warnings import warn
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import DeleteMixin
+from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.models.data_associations import Upload
 from pydent.models.field_value import FieldValue
-from pydent.models.data_associations import Upload, DataAssociatorMixin
-from pydent.relationships import (
-    Raw,
-    JSON,
-    Many,
-    HasOne,
-    HasMany,
-    HasManyThrough,
-    HasManyGeneric,
-    fields,
-)
-from pydent.models.crud_mixin import SaveMixin, DeleteMixin
-from warnings import warn
+from pydent.relationships import fields
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import JSON
+from pydent.relationships import Many
+from pydent.relationships import Raw
 
 
-<div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan">[docs]</a>@add_schema
+<div class="viewcode-block" id="Plan"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan">[docs]</a>@add_schema
 class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
-    &quot;&quot;&quot;
-    A Plan model
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;A Plan model.&quot;&quot;&quot;
 
     fields = dict(
         data_associations=HasManyGeneric(
@@ -177,7 +354,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     )
     query_hook = {&quot;include&quot;: &quot;wires&quot;}
 
-    def __init__(self, name=&quot;MyPlan&quot;, status=&quot;planning&quot;):
+<div class="viewcode-block" id="Plan.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.Plan.html#pydent.models.Plan.__init__">[docs]</a>    def __init__(self, name=&quot;MyPlan&quot;, status=&quot;planning&quot;):
         super().__init__(
             name=name,
             status=status,
@@ -195,11 +372,10 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                 &quot;width&quot;: 160,
                 &quot;wires&quot;: [],
             },
-        )
+        )</div>
 
-<div class="viewcode-block" id="Plan.add_operation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.add_operation">[docs]</a>    def add_operation(self, operation):
-        &quot;&quot;&quot;
-        Adds an operation to the Plan
+<div class="viewcode-block" id="Plan.add_operation"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.add_operation">[docs]</a>    def add_operation(self, operation):
+        &quot;&quot;&quot;Adds an operation to the Plan.
 
         :param operation: Operation to add
         :type operation: Operation
@@ -208,9 +384,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         &quot;&quot;&quot;
         self.append_to_many(&quot;operations&quot;, operation)</div>
 
-<div class="viewcode-block" id="Plan.add_operations"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.add_operations">[docs]</a>    def add_operations(self, operations):
-        &quot;&quot;&quot;
-        Adds multiple operations to the Plan
+<div class="viewcode-block" id="Plan.add_operations"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.add_operations">[docs]</a>    def add_operations(self, operations):
+        &quot;&quot;&quot;Adds multiple operations to the Plan.
 
         :param operations: list of Operations
         :type operations: list
@@ -225,9 +400,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             return False
         return self.operations and op.rid in [_op.rid for _op in self.operations]
 
-<div class="viewcode-block" id="Plan.find_wires"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.find_wires">[docs]</a>    def find_wires(self, src, dest):
-        &quot;&quot;&quot;
-        Retrieves the wire between a source and destination FieldValues
+<div class="viewcode-block" id="Plan.find_wires"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.find_wires">[docs]</a>    def find_wires(self, src, dest):
+        &quot;&quot;&quot;Retrieves the wire between a source and destination FieldValues.
 
         :param src: source FieldValue
         :type src: FieldValue
@@ -243,11 +417,11 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                 found.append(wire)
         return found</div>
 
-<div class="viewcode-block" id="Plan.wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.wire">[docs]</a>    def wire(self, src, dest):
-        &quot;&quot;&quot;
-        Creates a new wire between src and dest FieldValues. Returns the new wire
-        if it does not exist in the plan. If the wire already exists and
-        error_if_exists is True, then the existing wire is returned. Else an exception is raised.
+<div class="viewcode-block" id="Plan.wire"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.wire">[docs]</a>    def wire(self, src, dest):
+        &quot;&quot;&quot;Creates a new wire between src and dest FieldValues. Returns the new
+        wire if it does not exist in the plan. If the wire already exists and
+        error_if_exists is True, then the existing wire is returned. Else an
+        exception is raised.
 
         :param src: source field value (the input of the wire)
         :type src: FieldValue
@@ -255,7 +429,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         :type dest: FieldValue
         :param error_if_exists: Raise an error if the Wire already exists in the plan.
         :type error_if_exists: boolean
-        :return: Newly created wire or existing wire (if exists and error_if_exists == False)
+        :return: Newly created wire or existing wire (if exists and
+            error_if_exists == False)
         :rtype: Wire
         &quot;&quot;&quot;
 
@@ -268,8 +443,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             )
         if not self.has_operation(dest.operation):
             raise AquariumModelError(
-                &quot;Cannot wire because the wire&#39;s destination FieldValue {} does not exist &quot;
-                &quot;in the Plan because its Operation &#39;{}&#39; is not in the plan.&quot;.formst(
+                &quot;Cannot wire because the wire&#39;s destination FieldValue {} does not &quot;
+                &quot;exist in the Plan because its Operation &#39;{}&#39; is not in the plan.&quot;.format(
                     dest, dest.operation
                 )
             )
@@ -291,8 +466,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                             incoming_wires += field_value.incoming_wires
         return incoming_wires, outgoing_wires
 
-<div class="viewcode-block" id="Plan._get_wire_dict"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan._get_wire_dict">[docs]</a>    def _get_wire_dict(self, wires):
-        &quot;&quot;&quot;Return all wires in the plan grouped by the wire identifier&quot;&quot;&quot;
+<div class="viewcode-block" id="Plan._get_wire_dict"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan._get_wire_dict">[docs]</a>    def _get_wire_dict(self, wires):
+        &quot;&quot;&quot;Return all wires in the plan grouped by the wire identifier.&quot;&quot;&quot;
         wire_dict = {}
         for w in wires:
             wire_dict.setdefault(w.identifier, list())
@@ -314,9 +489,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             )
         return wires_from_server
 
-<div class="viewcode-block" id="Plan.submit"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.submit">[docs]</a>    def submit(self, user, budget):
-        &quot;&quot;&quot;
-        Submits the Plan to the Aquarium server.
+<div class="viewcode-block" id="Plan.submit"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.submit">[docs]</a>    def submit(self, user, budget):
+        &quot;&quot;&quot;Submits the Plan to the Aquarium server.
 
         :param user: User to submit the Plan
         :type user: User
@@ -337,10 +511,10 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                     das += field_value.item.data_associations
         return das
 
-<div class="viewcode-block" id="Plan.interface"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.interface">[docs]</a>    @classmethod
+<div class="viewcode-block" id="Plan.interface"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.interface">[docs]</a>    @classmethod
     def interface(cls, session):
         # get model interface from Base class
-        model_interface = super(Plan, cls).interface(session)
+        model_interface = super().interface(session)
 
         # make a special find method for plans, as generic method is too minimal.
         def new_find(model_id):
@@ -351,11 +525,11 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
 
         return model_interface</div>
 
-<div class="viewcode-block" id="Plan.validate"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.validate">[docs]</a>    def validate(self, raise_error=True):
-        &quot;&quot;&quot;
-        Validates the plan.
+<div class="viewcode-block" id="Plan.validate"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.validate">[docs]</a>    def validate(self, raise_error=True):
+        &quot;&quot;&quot;Validates the plan.
 
-        :param raise_error: If True, raises an AquariumModelException. If false, returns the error messages.
+        :param raise_error: If True, raises an AquariumModelException. If false,
+            returns the error messages.
         :type raise_error: boolean
         :return: list of error messages
         :rtype: array
@@ -372,9 +546,9 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
                 field_value = getattr(wire, _fvtype)
                 if field_value._primary_key not in fv_keys:
                     msg = (
-                        &quot;The FieldValue of a wire Wire(rid={}).{} is missing from the list&quot;
-                        &quot; of FieldValues in the plan. Did you forget to add an operation to &quot;
-                        &quot; the plan?&quot;.format(wire._primary_key, _fvtype)
+                        &quot;The FieldValue of a wire Wire(rid={}).{} is missing from the &quot;
+                        &quot;list of FieldValues in the plan. Did you forget to add an &quot;
+                        &quot;operation to the plan?&quot;.format(wire._primary_key, _fvtype)
                     )
                     errors.append(msg)
         if raise_error and errors:
@@ -386,9 +560,8 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
             )
         return errors</div>
 
-<div class="viewcode-block" id="Plan.to_save_json"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.to_save_json">[docs]</a>    def to_save_json(self):
-        &quot;&quot;&quot;
-        Returns the json representation of the plan for saving and creating
+<div class="viewcode-block" id="Plan.to_save_json"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.to_save_json">[docs]</a>    def to_save_json(self):
+        &quot;&quot;&quot;Returns the json representation of the plan for saving and creating
         Plans on the Aquarium server.
 
         :return: JSON
@@ -468,10 +641,9 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     def _get_update_params(self):
         return {&quot;user_id&quot;: self.session.current_user.id}
 
-<div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.estimate_cost">[docs]</a>    def estimate_cost(self):
-        &quot;&quot;&quot;
-        Estimates the cost of the plan on the Aquarium server.
-        This is necessary before plan submission.
+<div class="viewcode-block" id="Plan.estimate_cost"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.estimate_cost">[docs]</a>    def estimate_cost(self):
+        &quot;&quot;&quot;Estimates the cost of the plan on the Aquarium server. This is
+        necessary before plan submission.
 
         :return: cost
         :rtype: dict
@@ -481,25 +653,27 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
     def field_values(self):
         raise NotImplementedError()
 
-<div class="viewcode-block" id="Plan.step"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.step">[docs]</a>    def step(self):
-        &quot;&quot;&quot;Steps a plan&quot;&quot;&quot;
+<div class="viewcode-block" id="Plan.step"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.step">[docs]</a>    def step(self):
+        &quot;&quot;&quot;Steps a plan.&quot;&quot;&quot;
         return self.session.utils.step_plan(self.id)</div>
 
-<div class="viewcode-block" id="Plan.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.show">[docs]</a>    def show(self):
-        &quot;&quot;&quot;Print the plan nicely&quot;&quot;&quot;
+<div class="viewcode-block" id="Plan.show"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.show">[docs]</a>    def show(self):
+        &quot;&quot;&quot;Print the plan nicely.&quot;&quot;&quot;
         print(self.name + &quot; id: &quot; + str(self.id))
         for operation in self.operations:
             operation.show(pre=&quot;  &quot;)
         for wire in self.wires:
             wire.show(pre=&quot;  &quot;)</div>
 
-<div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.replan">[docs]</a>    def replan(self):
-        &quot;&quot;&quot;Copies or replans the plan. Returns a plan copy&quot;&quot;&quot;
+<div class="viewcode-block" id="Plan.replan"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.replan">[docs]</a>    def replan(self):
+        &quot;&quot;&quot;Copies or replans the plan.
+
+        Returns a plan copy
+        &quot;&quot;&quot;
         return self.session.utils.replan(self.id)</div>
 
-<div class="viewcode-block" id="Plan.download_files"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Plan.download_files">[docs]</a>    def download_files(self, outdir=None, overwrite=True):
-        &quot;&quot;&quot;
-        Downloads all uploads associated with the plan. Downloads happen
+<div class="viewcode-block" id="Plan.download_files"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.download_files">[docs]</a>    def download_files(self, outdir=None, overwrite=True):
+        &quot;&quot;&quot;Downloads all uploads associated with the plan. Downloads happen
         ansynchrounously.
 
         :param outdir: output directory for downloaded files
@@ -513,19 +687,19 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         return Upload.async_download(uploads, outdir, overwrite)</div></div>
 
 
-<div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.PlanAssociation">[docs]</a>@add_schema
+<div class="viewcode-block" id="PlanAssociation"><a class="viewcode-back" href="../../../models.html#pydent.models.PlanAssociation">[docs]</a>@add_schema
 class PlanAssociation(ModelBase):
-    &quot;&quot;&quot;A PlanAssociation model&quot;&quot;&quot;
+    &quot;&quot;&quot;A PlanAssociation model.&quot;&quot;&quot;
 
     fields = dict(plan=HasOne(&quot;Plan&quot;), operation=HasOne(&quot;Operation&quot;))
 
-    def __init__(self, plan_id=None, operation_id=None):
-        super().__init__(plan_id=plan_id, operation_id=operation_id)</div>
+<div class="viewcode-block" id="PlanAssociation.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.PlanAssociation.html#pydent.models.PlanAssociation.__init__">[docs]</a>    def __init__(self, plan_id=None, operation_id=None):
+        super().__init__(plan_id=plan_id, operation_id=operation_id)</div></div>
 
 
-<div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire">[docs]</a>@add_schema
+<div class="viewcode-block" id="Wire"><a class="viewcode-back" href="../../../models.html#pydent.models.Wire">[docs]</a>@add_schema
 class Wire(DeleteMixin, ModelBase):
-    &quot;&quot;&quot;A Wire model&quot;&quot;&quot;
+    &quot;&quot;&quot;A Wire model.&quot;&quot;&quot;
 
     fields = {
         &quot;source&quot;: HasOne(&quot;FieldValue&quot;, ref=&quot;from_id&quot;),
@@ -534,7 +708,7 @@ class Wire(DeleteMixin, ModelBase):
 
     WIRABLE_PARENT_CLASSES = [&quot;Operation&quot;]
 
-    def __init__(self, source=None, destination=None):
+<div class="viewcode-block" id="Wire.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.Wire.html#pydent.models.Wire.__init__">[docs]</a>    def __init__(self, source=None, destination=None):
 
         self._validate_field_values(source, destination)
 
@@ -588,8 +762,8 @@ class Wire(DeleteMixin, ModelBase):
                 &quot;destination&quot;: destination,
                 &quot;to_id&quot;: to_id,
             },
-            active=True
-        )
+            active=True,
+        )</div>
 
     @property
     def identifier(self):
@@ -614,7 +788,8 @@ class Wire(DeleteMixin, ModelBase):
 
         if src and dest and src.rid == dest.rid:
             raise AquariumModelError(
-                &quot;Cannot create wire because source and destination are the same instance.&quot;
+                &quot;Cannot create wire because source and destination are the same &quot;
+                &quot;instance.&quot;
             )
 
     @classmethod
@@ -628,8 +803,8 @@ class Wire(DeleteMixin, ModelBase):
 
         if fv.parent_class not in cls.WIRABLE_PARENT_CLASSES:
             raise AquariumModelError(
-                &quot;Cannot create wire because the {} FieldValue is has &#39;{}&#39; parent class. &quot;
-                &quot;Only {} parent classes are wirable&quot;.format(
+                &quot;Cannot create wire because the {} FieldValue is has &#39;{}&#39; &quot;
+                &quot;parent class. Only {} parent classes are wirable&quot;.format(
                     name, fv.parent_class, cls.WIRABLE_PARENT_CLASSES
                 )
             )
@@ -648,16 +823,16 @@ class Wire(DeleteMixin, ModelBase):
         }
         return save_json
 
-<div class="viewcode-block" id="Wire.delete"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.delete">[docs]</a>    def delete(self):
-        &quot;&quot;&quot;
-        Permanently deletes the wire instance on the Aquarium server.
+<div class="viewcode-block" id="Wire.delete"><a class="viewcode-back" href="../../../models.html#pydent.models.Wire.delete">[docs]</a>    def delete(self):
+        &quot;&quot;&quot;Permanently deletes the wire instance on the Aquarium server.
+
         :return:
         :rtype:
         &quot;&quot;&quot;
         return self.session.utils.delete_wire(self)</div>
 
-<div class="viewcode-block" id="Wire.show"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.show">[docs]</a>    def show(self, pre=&quot;&quot;):
-        &quot;&quot;&quot;Show the wire nicely&quot;&quot;&quot;
+<div class="viewcode-block" id="Wire.show"><a class="viewcode-back" href="../../../models.html#pydent.models.Wire.show">[docs]</a>    def show(self, pre=&quot;&quot;):
+        &quot;&quot;&quot;Show the wire nicely.&quot;&quot;&quot;
         source = self.source
         dest = self.destination
 
@@ -694,22 +869,27 @@ class Wire(DeleteMixin, ModelBase):
             return source.rid == self.source.rid
         return False
 
-<div class="viewcode-block" id="Wire.does_wire"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.plan.Wire.does_wire">[docs]</a>    def does_wire(self, source, destination):
-        &quot;&quot;&quot;Checks whether this Wire is a wire between the source and destination FieldValues.
+<div class="viewcode-block" id="Wire.does_wire"><a class="viewcode-back" href="../../../models.html#pydent.models.Wire.does_wire">[docs]</a>    def does_wire(self, source, destination):
+        &quot;&quot;&quot;Checks whether this Wire is a wire between the source and
+        destination FieldValues.
 
-        If any of the source or destination FieldValues are None, returns False.&quot;&quot;&quot;
+        If any of the source or destination FieldValues are None,
+        returns False.
+        &quot;&quot;&quot;
         if source and destination and self.source and self.destination:
             return (
                 source.rid == self.source.rid
                 and destination.rid == self.destination.rid
             )
-        return False</div>
+        return False</div></div>
 
-    def __eq__(self, other):
-        &quot;&quot;&quot;Checks whether this Wire is wired to the same FieldValue instances of another Wire.
-
-        see `does_wire` method.&quot;&quot;&quot;
-        return self.does_wire(other.source, other.destination)</div>
+    # def __eq__(self, other):
+    #     &quot;&quot;&quot;Checks whether this Wire is wired to the same FieldValue instances
+    #     of another Wire.
+    #
+    #     see `does_wire` method.
+    #     &quot;&quot;&quot;
+    #     return self.does_wire(other.source, other.destination)
 </pre></div>
 
     </div>
@@ -724,7 +904,7 @@ class Wire(DeleteMixin, ModelBase):
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
     </p>
   </div>
 </footer>

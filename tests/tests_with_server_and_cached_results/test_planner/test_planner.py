@@ -1,4 +1,5 @@
 import pytest
+
 from pydent.planner import Planner
 
 
@@ -114,3 +115,90 @@ class TestSetItem:
                 assert len(items) == 2
             else:
                 assert len(items) == 1
+
+
+class TestOptimizePlan:
+    class Not:
+        def __init__(self, v):
+            self.v = v
+
+    def sql(self, data):
+        rows = []
+        for k, v in data.items():
+            if not isinstance(v, self.Not):
+                rows.append('{} = "{}"'.format(k, v))
+            else:
+                rows.append('{} != "{}"'.format(k, v.v))
+        return " AND ".join(rows)
+
+    def test_optimize_plan(self, session):
+
+        with session.with_cache() as sess:
+            canvas = Planner(sess)
+
+            q = self.sql(
+                {
+                    "object_type_id": sess.ObjectType.find_by_name("Plasmid Stock").id,
+                    "location": self.Not("deleted"),
+                }
+            )
+            item = sess.Item.one(query=q)
+            assert item
+
+            ops = canvas.chain(
+                "Make Miniprep", "Yeast Transformation", "Yeast Overnight Suspension"
+            )
+
+            canvas.set_field_value_and_propogate(ops[0].inputs[0], sample=item.sample)
+            canvas.set_to_available_item(ops[0].inputs[0])
+
+            ops = canvas.chain(
+                "Make Miniprep", "Yeast Transformation", "Yeast Overnight Suspension"
+            )
+
+            canvas.set_field_value_and_propogate(ops[0].inputs[0], sample=item.sample)
+            canvas.set_to_available_item(ops[0].inputs[0])
+
+            assert len(canvas.plan.operations) == 6
+
+            canvas.optimize_plan()
+
+            assert len(canvas.plan.operations) == 5
+
+    def test_optimize_plan2(self, session):
+
+        with session.with_cache() as sess:
+            canvas = Planner(sess)
+
+            q = self.sql(
+                {
+                    "object_type_id": sess.ObjectType.find_by_name(
+                        "E coli Plate of Plasmid"
+                    ).id,
+                    "location": self.Not("deleted"),
+                }
+            )
+            item = sess.Item.one(query=q)
+            assert item
+
+            chain = [
+                "Check Plate",
+                "Make Overnight Suspension",
+                "Make Miniprep",
+                "Yeast Transformation",
+                "Yeast Overnight Suspension",
+            ]
+
+            ops = canvas.chain(*chain)
+            canvas.set_field_value_and_propogate(ops[0].inputs[0], sample=item.sample)
+            canvas.set_to_available_item(ops[0].inputs[0])
+
+            ops = canvas.chain(*chain)
+            canvas.set_field_value_and_propogate(ops[0].inputs[0], sample=item.sample)
+            canvas.set_to_available_item(ops[0].inputs[0])
+
+            assert len(canvas.plan.operations) == 10
+
+            canvas.optimize_plan()
+
+            assert len(canvas.plan.operations) == 7

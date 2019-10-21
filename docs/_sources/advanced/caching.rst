@@ -1,3 +1,54 @@
+.. _structured_queries:
+
+Structured queries
+==================
+
+.. versionadded:: 0.1
+    the Browser class provides structured queries.
+
+Trident provides a way to make structured and efficient model queries using the
+new :class:`Browser <pydent.browser.Browser>` class. The best way to utilize
+this new class, is to spawn a new session using a cache. A brief overview of
+the available API is below:
+
+.. code-block:: python
+
+    with session.with_cache(timeout=60) as sess:
+        # sess is a new AqSession
+        # perform code inside of here
+
+        # use the session to find the last 50 samples
+        # attach those samples automatically to a cache
+        samples = sess.browser.last(50, 'Sample')
+
+        # inside the 'with' statement, this is equivalent to...
+        samples = sess.Sample.last(50)
+
+        # returns all Samples in the cache
+        samples_from_cache = sess.browser.get('Sample')
+        assert samples == samples_from_cache
+
+        # efficiency collects all of the samples' 'sample_type' attr
+        sample_types = sess.browser.get('Sample', 'sample_type')
+
+        # optionally, we can provide specific models
+        sample_types2 = sess.browser.get(samples[:10], 'sample_type')
+
+        # efficiently collect do a nested query finding the
+        # all of the models related to items, samples, sample_types, field_types, and
+        # field_values, and object types
+
+        sess.last('Item', 50)
+        sess.browser.get('Item', {
+            'sample': {
+                'sample_type': [],
+                'field_values': {'sample', 'field_type'}  # can be a list, set, tuple, etc.
+            },
+            'object_type': 'field_type'
+        })
+
+.. _cache:
+
 Speeding up queries
 ===================
 
@@ -7,7 +58,7 @@ is stored in the `.browser` attribute of the session.
 
 To begin, lets grab a normal AqSession instance.
 
-.. code-block::
+.. code-block:: python
 
     from pydent import AqSession
 
@@ -16,7 +67,7 @@ To begin, lets grab a normal AqSession instance.
 By default, the cache is turned off. We can see this by printing off
 the browser
 
-.. code-block::
+.. code-block:: python
 
     if session.browser:
         print(session.browser.model_cache)
@@ -25,13 +76,13 @@ the browser
 
 Lets turn on the cache, which initializes the browser
 
-.. code-block::
+.. code-block:: python
 
     session.using_cache = True
     s = session.Sample.one()
     print(session.browser.model_cache.keys())
 
-.. code-block::
+.. code-block:: python
 
     {"Sample": {12355: <Sample>}}
 
@@ -39,7 +90,7 @@ We should now see that the queries model has been cached in the browsers diction
 we attempt to retrieve the sample, we should preferentially retrieve from the model_cache.
 
 
-.. code-block::
+.. code-block:: python
 
     s2 = session.Sample.find(s.id)
     assert id(s) == id(s2)
@@ -48,7 +99,7 @@ Due to how models inherit their sessions from other models, queries made
 via attribute relationships are also attached to the model_cache
 
 
-.. code-block::
+.. code-block:: python
 
     s.sample_type
     s.sample_type.field_types
@@ -70,21 +121,21 @@ temporary session API.
 Conviniently, sessions themselves are session factories. We can
 spin off new sessions with new properties using existing sessions.
 
-.. code-block::
+.. code-block:: python
 
     mynewsession = session()
 
 We can instantiate a session with new properties. For example, spinning
 off a session with `using_cache=True`
 
-.. code-block::
+.. code-block:: python
 
     nocache = session(using_cache=False)
 
 We can also instantiate sessions with requests turned off or
 with new timeouts or sessions that inherith the model cache.
 
-.. code-block::
+.. code-block:: python
 
     increasetimeout = session(timeout=60)
     norequests = session(using_requests=False)
@@ -95,7 +146,7 @@ attached to many different models. To keep everything tidy, we can use the
 `with` api of the session.
 
 
-.. code-block::
+.. code-block:: python
 
     with session(using_cache=True) as sess:
         samples = sess.Sample.last(100)
@@ -112,7 +163,7 @@ attached to many different models. To keep everything tidy, we can use the
 Two convinience methods have been implemented to use cache and
 turn off requests. You can use these `with` nested with statements as well:
 
-.. code-block::
+.. code-block:: python
 
     with session.with_cache() as sess1:
         samples = sess1.Sample.last(10)
@@ -137,7 +188,7 @@ server side deserialization (#3).
 
 Below is an example of retrieve nested model information for many plans:
 
-.. code-block::
+.. code-block:: python
 
     with session.with_cache() as sess:
         plans = sess.Plan.last(50)

@@ -1,4 +1,5 @@
 import pytest
+
 from pydent.models import OperationType
 
 # def test_operation_type_codes(session):

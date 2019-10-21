@@ -13,14 +13,16 @@ from pydent import AqSession
 
 
 def hash_response(r):
-    """Hash function for request matcher. Defines what vcr will consider
-    to be the same request."""
+    """Hash function for request matcher.
+
+    Defines what vcr will consider to be the same request.
+    """
     return "{}:{}:{}".format(r.method, r.uri, r.body)
 
 
 def hash_test_function(func):
-    """Hashes a pytest test function to a unique file name based on
-    its class, module, and name"""
+    """Hashes a pytest test function to a unique file name based on its class,
+    module, and name."""
     if func.cls:
         cls = func.cls.__name__
     else:
@@ -31,7 +33,10 @@ def hash_test_function(func):
 
 
 def matcher(r1, r2):
-    """Request matcher. Defines what vcr considers the same request"""
+    """Request matcher.
+
+    Defines what vcr considers the same request
+    """
     return hash_response(r1) == hash_response(r2)
 
 
@@ -52,8 +57,8 @@ USE_VCR = False
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_pyfunc_call(pyfuncitem):
-    """Sorts through each test, uses a vcr cassette to run the test, storing the
-    request results into a single file location"""
+    """Sorts through each test, uses a vcr cassette to run the test, storing
+    the request results into a single file location."""
     cassette_name = hash_test_function(pyfuncitem)
 
     markers = pyfuncitem.own_markers
@@ -71,7 +76,10 @@ def pytest_pyfunc_call(pyfuncitem):
 
 
 def pytest_collection_modifyitems(items):
-    """Adds the 'webtest' marker to tests. Necessary to access a live server."""
+    """Adds the 'webtest' marker to tests.
+
+    Necessary to access a live server.
+    """
     for item in items:
         item.add_marker("webtest")
 
@@ -89,9 +97,7 @@ DEFAULTCONFIG = {
 
 @pytest.fixture(scope="session")
 def config():
-    """
-    Returns the config dictionary for live tests.
-    """
+    """Returns the config dictionary for live tests."""
     dir = os.path.dirname(os.path.abspath(__file__))
 
     config_path = os.path.join(dir, "secrets", "config.json.secret")
@@ -107,8 +113,12 @@ def config():
 
 
 @pytest.fixture(scope="session")
-def session(config):
-    """
-    Returns a live aquarium connection.
-    """
+def base_live_session(config):
+    """Returns a live aquarium connection."""
     return AqSession(**config)
+
+
+@pytest.fixture(scope="function")
+def session(base_live_session):
+    """Returns a live aquarium connection."""
+    return base_live_session()

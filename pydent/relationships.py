@@ -1,7 +1,16 @@
 """
-Nested model relationships for Aquarium models.
-"""
+Relationships (:mod:`pydent.relationships`)
+===========================================
 
+.. currentmodule:: pydent.relationships
+
+.. autosummary::
+    :toctree: generated/
+
+    BaseRelationship
+    BaseRelationshipAccessor
+    Function
+"""
 import json
 
 import inflection
@@ -16,9 +25,7 @@ class FieldValidationError(ModelValidationError):
 
 
 class Raw(fields.Field):
-    """
-    Field that performs no serialization/deserialization.
-    """
+    """Field that performs no serialization/deserialization."""
 
     def __init__(self, many=False, data_key=None, allow_none=True, default=None):
         super().__init__(
@@ -27,9 +34,7 @@ class Raw(fields.Field):
 
 
 class JSON(Raw):
-    """
-    Automatically serializes/deserializes JSON objects.
-    """
+    """Automatically serializes/deserializes JSON objects."""
 
     def _deserialize(self, owner, data):
         if isinstance(data, dict):
@@ -41,10 +46,10 @@ class JSON(Raw):
 
 
 class Function(fields.Callback):
-    """
-    Calls a specified function upon attribute access. Similar to the @property
-    decorator in python, but will search and find an instance method using
-    the method name.
+    """Calls a specified function upon attribute access.
+
+    Similar to the @property decorator in python, but will search and
+    find an instance method using the method name.
     """
 
     def __init__(
@@ -71,17 +76,18 @@ class Function(fields.Callback):
 
 
 class BaseRelationshipAccessor(fields.RelationshipAccessor):
-    """
-    Python descriptor that is returned by a field during attribute access.
-    """
+    """Python descriptor that is returned by a field during attribute
+    access."""
 
     HOLDER = None
 
 
 class BaseRelationship(fields.Relationship):
-    """
-    Base class for relationships. By default, if the value is None, attempt a callback. If that fails,
-    fallback to None. If successful, deserialize data to the nested model.
+    """Base class for relationships.
+
+    By default, if the value is None, attempt a callback. If that fails,
+    fallback to None. If successful, deserialize data to the nested
+    model.
     """
 
     QUERY_TYPE = None
@@ -91,11 +97,22 @@ class BaseRelationship(fields.Relationship):
         self,
         nested,
         callback,
+        ref,
+        attr,
         callback_args=None,
         callback_kwargs=None,
         many=None,
         allow_none=True,
     ):
+        if (ref is None and attr is not None) or (attr is None and ref is not None):
+            raise ModelValidationError(
+                "ref={} is None while attr={}."
+                "Either both must be provided or both absent".format(ref, attr)
+            )
+        elif attr is None and ref is None:
+            ref, att = self._get_ref_attr(nested=nested, ref=ref, attr=attr)
+        self.attr = attr
+        self.ref = ref
         super().__init__(
             nested,
             callback,
@@ -107,16 +124,59 @@ class BaseRelationship(fields.Relationship):
             allow_none=allow_none,
         )
 
+    def _get_ref_attr(self, nested=None, ref=None, attr=None):
+        """Sets the 'ref' and 'attr' attributes. These attributes are used to
+        defined parameters for.
+
+        :class:`pydent.marshaller.Relation` classes.
+
+        For example:
+
+        .. code-block:: python
+
+            relation # HasOne, HasMany, or HasManyGeneric, etc.
+            relation.set_ref(ref="parent_id")
+            relation.ref    # "parent_id"
+            relation.attr   # "id"
+
+            relation.set_ref(model="SampleType")
+            relation.ref   # "sample_type_id"
+            relation.attr  # "id"
+
+            relation.set_ref(attr="name", model="OperationType")
+            relation.ref   # "operation_type_name
+            relation.attr  # "name"
+        """
+
+        if not attr:
+            attr = "id"
+        if ref:
+            ref = ref
+        else:
+            if not attr:
+                raise FieldValidationError(
+                    "'attr' is None. Relationship '{}' needs an 'attr' and 'model' "
+                    "parameters".format(self.__class__)
+                )
+            if not nested:
+                raise FieldValidationError(
+                    "'model' is None. Relationship '{}' needs an 'attr' and 'model' "
+                    "parameters".format(self.__class__)
+                )
+            ref = "{}_{}".format(inflection.underscore(nested), attr)
+        return ref, attr
+
     def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
         try:
             return super().fullfill(
                 owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs
             )
-        except fields.RunTimeCallbackAttributeError as e:
+        except fields.RunTimeCallbackAttributeError:
             return BaseRelationshipAccessor.HOLDER
 
     def build_query(self, models):
-        """Bundles all of the callback args for the models into a single query"""
+        """Bundles all of the callback args for the models into a single
+        query."""
         args = {}
         for s in models:
             callback_args = self.get_callback_args(s)[1:]
@@ -142,8 +202,8 @@ class BaseRelationship(fields.Relationship):
 
 
 class One(BaseRelationship):
-    """
-    Defines a single relationship with another model.
+    """Defines a single relationship with another model.
+
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
@@ -152,14 +212,14 @@ class One(BaseRelationship):
     def __init__(
         self,
         nested,
-        *args,
+        ref=None,
+        attr=None,
         callback=None,
         callback_args=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
-        """
-        One initializer. Uses "find" callback by default.
+        """One initializer. Uses "find" callback by default.
 
         :param nested: target model
         :type nested: basestring
@@ -175,6 +235,8 @@ class One(BaseRelationship):
         super().__init__(
             nested,
             callback,
+            ref=ref,
+            attr=attr,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
             many=False,
@@ -182,8 +244,8 @@ class One(BaseRelationship):
 
 
 class Many(BaseRelationship):
-    """
-    Defines a many relationship with another model.
+    """Defines a many relationship with another model.
+
     Subclass of :class:`pydent.marshaller.Relation`.
     """
 
@@ -192,14 +254,14 @@ class Many(BaseRelationship):
     def __init__(
         self,
         nested,
-        *args,
+        ref=None,
+        attr=None,
         callback=None,
         callback_args=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
-        """
-        Many initializer. Uses "where" callback by default.
+        """Many initializer. Uses "where" callback by default.
 
         :param nested: target model
         :type nested: basestring
@@ -214,93 +276,46 @@ class Many(BaseRelationship):
             callback = ModelBase.where_callback.__name__
         super().__init__(
             nested,
-            *args,
+            ref=ref,
+            attr=attr,
             many=True,
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
 
-class HasMixin:
-    """
-    Mixin for adding the 'set_ref' method. 'set_ref' builds a 'ref' and 'attr'
-    attributes
-    """
-
-    def set_ref(self, nested=None, ref=None, attr=None):
-        """
-        Sets the 'ref' and 'attr' attributes. These attributes are used to
-        defined parameters for
-        :class:`pydent.marshaller.Relation` classes.
-
-        For example:
-
-        .. code-block:: python
-
-            relation # HasOne, HasMany, or HasManyGeneric, etc.
-            relation.set_ref(ref="parent_id")
-            relation.ref    # "parent_id"
-            relation.attr   # "id"
-
-            relation.set_ref(model="SampleType")
-            relation.ref   # "sample_type_id"
-            relation.attr  # "id"
-
-            relation.set_ref(attr="name", model="OperationType")
-            relation.ref   # "operation_type_name
-            relation.attr  # "name"
-        """
-        self.ref = ref
-        self.attr = attr
-
-        if not self.attr:
-            self.attr = "id"
-        if ref:
-            self.ref = ref
-        else:
-            if not self.attr:
-                raise FieldValidationError(
-                    "'attr' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(
-                        self.__class__
-                    )
-                )
-            if not nested:
-                raise FieldValidationError(
-                    "'model' is None. Relationship '{}' needs an 'attr' and 'model' parameters".format(
-                        self.__class__
-                    )
-                )
-            self.ref = "{}_{}".format(inflection.underscore(nested), self.attr)
-
-
-class HasOne(HasMixin, One):
+class HasOne(One):
     def __init__(
         self, nested, attr=None, ref=None, callback=None, callback_kwargs=None, **kwargs
     ):
-        """
-        HasOne initializer. Uses the "get_one_generic" callback and
+        """HasOne initializer. Uses the "get_one_generic" callback and
         automatically assigns attribute as in the following:
 
         .. code-block:: python
 
-            model="SampleType", attr="id" # equiv. to 'lambda self: self.sample_type_id.'
+            # equiv. to 'lambda self: self.sample_type_id.'
+            model="SampleType", attr="id"
 
         :param nested: model name of the target model
         :type nested: basestring
         :param attr: attribute to append underscored model name
         :type attr: basestring
         """
-        self.set_ref(nested=nested, attr=attr, ref=ref)
+        ref, attr = self._get_ref_attr(nested=nested, attr=attr, ref=ref)
+        self.ref = ref
+        self.attr = attr
 
         super().__init__(
             nested,
+            self.ref,
+            self.attr,
             many=False,
             callback=callback,
             callback_args=(self.get_ref,),
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
     def get_ref(self, instance):
@@ -318,10 +333,9 @@ class HasOne(HasMixin, One):
         return val
 
 
-class HasMany(HasMixin, Many):
-    """
-    A relationship that establishes a One-to-Many relationship with another model.
-    """
+class HasMany(Many):
+    """A relationship that establishes a One-to-Many relationship with another
+    model."""
 
     def __init__(
         self,
@@ -332,10 +346,9 @@ class HasMany(HasMixin, Many):
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
-        """
-        HasMany relationship initializer
+        """HasMany relationship initializer.
 
         :param nested: Model class name for this relationship
         :type nested: str
@@ -358,7 +371,9 @@ class HasMany(HasMixin, Many):
         if ref_model is None and ref is None:
             msg = "'{}' needs a 'ref_model' or 'ref' parameters to initialize"
             raise FieldValidationError(msg.format(self.__class__.__name__))
-        self.set_ref(nested=ref_model, attr=attr, ref=ref)
+        ref, attr = self._get_ref_attr(nested=ref_model, attr=attr, ref=ref)
+        self.ref = ref
+        self.attr = attr
 
         if additional_args is None:
             additional_args = {}
@@ -370,16 +385,18 @@ class HasMany(HasMixin, Many):
 
         super().__init__(
             nested,
+            ref=self.ref,
+            attr=self.attr,
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
 
-class HasManyThrough(HasMixin, Many):
-    """
-    A relationship using an intermediate association model.
+class HasManyThrough(Many):
+    """A relationship using an intermediate association model.
+
     Establishes a Many-to-Many relationship with another model
     """
 
@@ -392,9 +409,11 @@ class HasManyThrough(HasMixin, Many):
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
-        self.set_ref(nested=nested, attr=attr, ref=ref)
+        ref, attr = self._get_ref_attr(nested=nested, attr=attr, ref=ref)
+        self.ref = ref
+        self.attr = attr
 
         # e.g. PlanAssociation >> plan_associations
         through_model_attr = inflection.pluralize(inflection.underscore(through))
@@ -417,17 +436,17 @@ class HasManyThrough(HasMixin, Many):
 
         super().__init__(
             nested,
+            ref=self.ref,
+            attr=self.attr,
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
 
-class HasOneFromMany(HasMixin, One):
-    """
-    Returns a single model from a Many relationship
-    """
+class HasOneFromMany(One):
+    """Returns a single model from a Many relationship."""
 
     QUERY_TYPE = "query"
 
@@ -440,11 +459,10 @@ class HasOneFromMany(HasMixin, One):
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
-        """
-        HasOneFromMany relationship initializer, which is intended to return a single model from
-        a Many query
+        """HasOneFromMany relationship initializer, which is intended to return
+        a single model from a Many query.
 
         :param nested: Model class name for this relationship
         :type nested: str
@@ -454,7 +472,8 @@ class HasOneFromMany(HasMixin, One):
 
             @add_schema
             class Author(ModelBase):
-                fields=dict(books=HasMany("Book", "Author"))  # search for books using 'author_id'
+                # search for books using 'author_id'
+                fields=dict(books=HasMany("Book", "Author"))
 
         :type ref_model: str
         :param attr: Attribute name to use with reference model (default='id').
@@ -467,7 +486,9 @@ class HasOneFromMany(HasMixin, One):
         if ref_model is None and ref is None:
             msg = "'{}' needs a 'ref_model' or 'ref' parameters to initialize"
             raise FieldValidationError(msg.format(self.__class__.__name__))
-        self.set_ref(nested=ref_model, attr=attr, ref=ref)
+        ref, attr = self._get_ref_attr(nested=ref_model, attr=attr, ref=ref)
+        self.ref = ref
+        self.attr = attr
 
         if additional_args is None:
             additional_args = {}
@@ -482,18 +503,18 @@ class HasOneFromMany(HasMixin, One):
 
         super().__init__(
             nested,
+            ref=self.ref,
+            attr=self.attr,
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )
 
 
 class HasManyGeneric(HasMany):
-    """
-    Establishes a One-to-Many relationship using 'parent_id' as the attribute
-    to find other models.
-    """
+    """Establishes a One-to-Many relationship using 'parent_id' as the
+    attribute to find other models."""
 
     def __init__(
         self,
@@ -501,7 +522,7 @@ class HasManyGeneric(HasMany):
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             nested,
@@ -510,5 +531,5 @@ class HasManyGeneric(HasMany):
             callback=callback,
             additional_args=additional_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )

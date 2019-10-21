@@ -1,7 +1,9 @@
 import pytest
+
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
-from pydent.marshaller import ModelRegistry, SchemaRegistry
+from pydent.marshaller import ModelRegistry
+from pydent.marshaller import SchemaRegistry
 
 
 @pytest.fixture(scope="function")
@@ -15,11 +17,10 @@ def base():
 
 @pytest.fixture(scope="function")
 def test_model(base, fake_session):
-    """
-    Tests heirarchical loading of a JSON file into Trident Models.
+    """Tests heirarchical loading of a JSON file into Trident Models.
 
-    Should return a User with name and login attributes.
-    Groups attribute should contain a list of Group models.
+    Should return a User with name and login attributes. Groups
+    attribute should contain a list of Group models.
     """
 
     # Make a dummy model

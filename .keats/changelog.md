@@ -1,4 +1,18 @@
 # pydent change log
+## 0.1.5a6
+**2019-08-08T14:52:14.631040**
+
+
+
+
+
+## 0.1.5a5
+**2019-08-08T14:43:40.229011**
+bug fix
+
+ - fixes bug with field values that have no operations when using planner.set_to_available_item
+
+
 ## 0.1.5a4
 **2019-08-08T14:37:26.698386**
 bug fix with setting available items

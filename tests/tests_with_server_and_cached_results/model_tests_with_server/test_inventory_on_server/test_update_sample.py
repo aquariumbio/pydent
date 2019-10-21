@@ -1,12 +1,13 @@
-from uuid import uuid4
-import pytest
 import random
+from uuid import uuid4
+
+import pytest
 
 
 @pytest.mark.record_mode("no")
 @pytest.mark.parametrize("method", ["update", "save"])
 def test_update_sample_description(session, method):
-    """We expect the description to be updated on the server with 'update'"""
+    """We expect the description to be updated on the server with 'update'."""
     s1 = session.Sample.one()
     x = str(uuid4())
     s1.description = x
@@ -24,7 +25,7 @@ def test_update_sample_description(session, method):
 @pytest.mark.record_mode("no")
 @pytest.mark.parametrize("method", ["update", "save"])
 def test_refresh_sample_description(session, method):
-    """We expect the description to be updated on the server with 'update'"""
+    """We expect the description to be updated on the server with 'update'."""
     s1 = session.Sample.one()
     s2 = session.Sample.find(s1.id)
     x = str(uuid4())

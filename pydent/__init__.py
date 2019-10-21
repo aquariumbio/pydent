@@ -1,43 +1,25 @@
-"""
-
-.. module:: pydent
-
-Submodules
-==========
-
-.. autosummary::
-    :toctree: _autosummary
-
-    aqhttp
-    aqsession
-    base
-    exceptions
-    interfaces
-    models
-    relationships
-    browser
-    planner
-    marshaller
-    utils
-
-"""
-
+"""pydent."""
 # without nest_asyncio, Jupyter notebooks will crash if an async method is used
+import getpass
+
 import nest_asyncio
+
+from .__version__ import __authors__
+from .__version__ import __homepage__
+from .__version__ import __repo__
+from .__version__ import __title__
+from .__version__ import __version__
+from .aqsession import AqSession
+from .base import ModelBase
+from .base import ModelRegistry
+from .browser import Browser
+from .utils import pprint
 
 nest_asyncio.apply()
 
-from .aqsession import AqSession
-from .base import ModelBase, ModelRegistry
-from .utils import pprint
-from .browser import Browser
-from .__version__ import __version__, __title__, __authors__, __homepage__, __repo__
-import getpass
-
 
 def login(user, url, password=None):
-    """
-    Create a new AqSession instance from login information.
+    """Create a new AqSession instance from login information.
 
     :param user: user login
     :type user: basestring

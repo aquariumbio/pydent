@@ -1,5 +1,5 @@
-from pydent.models import FieldType
 from pydent.aqhttp import AqHTTP
+from pydent.models import FieldType
 
 
 def test_field_type_constructor_with_sample_type(fake_session, monkeypatch):

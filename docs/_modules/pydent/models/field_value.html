@@ -3,10 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.field_value &#8212; pydent 0.1.5a2 documentation</title>
+    <title>pydent.models.field_value &#8212; pydent 0.1.5a7 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/style.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
@@ -38,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -54,6 +55,167 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
 </ul>
@@ -69,33 +231,53 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developer/api_reference.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/api_reference.html#submodules">Submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.4a</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -134,26 +316,30 @@
     <div class="body col-md-12 content" role="main">
       
   <h1>Source code for pydent.models.field_value</h1><div class="highlight"><pre>
-<span></span>&quot;&quot;&quot;
-Models related to field values and sample properties.
-&quot;&quot;&quot;
-
+<span></span>&quot;&quot;&quot;Models related to field values and sample properties.&quot;&quot;&quot;
 import json
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
-from pydent.models.crud_mixin import JSONSaveMixin, JSONDeleteMixin
+from pydent.models.crud_mixin import JSONDeleteMixin
+from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldMixin
-from pydent.models.inventory import Item, Collection, ObjectType
+from pydent.models.inventory import Collection
+from pydent.models.inventory import Item
+from pydent.models.inventory import ObjectType
 from pydent.models.sample import Sample
-from pydent.relationships import HasOne, Function, Raw, fields, HasMany
+from pydent.relationships import fields
+from pydent.relationships import Function
+from pydent.relationships import HasMany
+from pydent.relationships import HasOne
+from pydent.relationships import Raw
 from pydent.utils import filter_list
 
 
-<div class="viewcode-block" id="AllowableFieldType"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.AllowableFieldType">[docs]</a>@add_schema
+<div class="viewcode-block" id="AllowableFieldType"><a class="viewcode-back" href="../../../models.html#pydent.models.AllowableFieldType">[docs]</a>@add_schema
 class AllowableFieldType(ModelBase):
-    &quot;&quot;&quot;A AllowableFieldType model&quot;&quot;&quot;
+    &quot;&quot;&quot;A AllowableFieldType model.&quot;&quot;&quot;
 
     fields = dict(
         field_type=HasOne(&quot;FieldType&quot;),
@@ -161,7 +347,7 @@ class AllowableFieldType(ModelBase):
         sample_type=HasOne(&quot;SampleType&quot;),
     )
 
-    def __init__(self, field_type=None, object_type=None, sample_type=None):
+<div class="viewcode-block" id="AllowableFieldType.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.AllowableFieldType.html#pydent.models.AllowableFieldType.__init__">[docs]</a>    def __init__(self, field_type=None, object_type=None, sample_type=None):
         super().__init__(
             field_type_id=None,
             sample_type_id=None,
@@ -169,15 +355,15 @@ class AllowableFieldType(ModelBase):
             field_type=field_type,
             object_type=object_type,
             sample_type=sample_type,
-        )
+        )</div>
 
     def __str__(self):
         return self._to_str(&quot;sample_type&quot;, &quot;object_type&quot;)</div>
 
 
-<div class="viewcode-block" id="FieldType"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.FieldType">[docs]</a>@add_schema
+<div class="viewcode-block" id="FieldType"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldType">[docs]</a>@add_schema
 class FieldType(FieldMixin, ModelBase):
-    &quot;&quot;&quot;A FieldType model&quot;&quot;&quot;
+    &quot;&quot;&quot;A FieldType model.&quot;&quot;&quot;
 
     fields = dict(
         allowable_field_types=HasMany(&quot;AllowableFieldType&quot;, &quot;FieldType&quot;),
@@ -188,7 +374,7 @@ class FieldType(FieldMixin, ModelBase):
         field_values=HasMany(&quot;FieldValue&quot;, &quot;FieldType&quot;),
     )
 
-    def __init__(
+<div class="viewcode-block" id="FieldType.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.FieldType.html#pydent.models.FieldType.__init__">[docs]</a>    def __init__(
         self,
         name=None,
         ftype=None,
@@ -234,7 +420,7 @@ class FieldType(FieldMixin, ModelBase):
         if allowable_field_types is None:
             if aft_stype_and_objtype is not None:
                 for smple_type, obj_type in aft_stype_and_objtype:
-                    self.create_allowable_field_type(smple_type, obj_type)
+                    self.create_allowable_field_type(smple_type, obj_type)</div>
 
     def get_choices(self):
         if self.choices == &quot;&quot;:
@@ -265,9 +451,9 @@ class FieldType(FieldMixin, ModelBase):
         self.allowable_field_types = afts
         return field_type
 
-<div class="viewcode-block" id="FieldType.initialize_field_value"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.FieldType.initialize_field_value">[docs]</a>    def initialize_field_value(self, field_value=None, parent=None):
-        &quot;&quot;&quot;
-        Updates or initializes a new :class:`FieldValue` from this FieldType
+<div class="viewcode-block" id="FieldType.initialize_field_value"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldType.initialize_field_value">[docs]</a>    def initialize_field_value(self, field_value=None, parent=None):
+        &quot;&quot;&quot;Updates or initializes a new :class:`FieldValue` from this
+        FieldType.
 
         :param field_value: optional FieldValue to update with this FieldType
         :type field_value: FieldValue
@@ -287,15 +473,15 @@ class FieldType(FieldMixin, ModelBase):
         return field_value</div></div>
 
 
-<div class="viewcode-block" id="FieldValue"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.FieldValue">[docs]</a>@add_schema
+<div class="viewcode-block" id="FieldValue"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue">[docs]</a>@add_schema
 class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
-    &quot;&quot;&quot;
-    A FieldValue model. One of the more complex models.
+    &quot;&quot;&quot;A FieldValue model. One of the more complex models.
 
-    Change Log:
-    * 2019_06_03 FieldValues no longer have &#39;wires_as_source&#39; or &#39;wires_as_dest&#39; fields. Wires may only be accessed
-    via plans only or via the FieldValue instance method &#39;get_wires,&#39; which accesses the FieldValues operation
-    and its Plan to obtain wires.
+    .. versionchanged:: 0.1.2     FieldValues no longer have
+    &#39;wires_as_source&#39; or &#39;wires_as_dest&#39; fields. Wires may only be
+    accessed     via plans only or via the FieldValue instance method
+    &#39;get_wires,&#39; which accesses the FieldValues operation     and its
+    Plan to obtain wires.
     &quot;&quot;&quot;
 
     fields = dict(
@@ -319,7 +505,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         # allowable_child_types=Function(&#39;get_allowable_child_types&#39;),
     )
 
-    def __init__(
+<div class="viewcode-block" id="FieldValue.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.FieldValue.html#pydent.models.FieldValue.__init__">[docs]</a>    def __init__(
         self,
         name=None,
         role=None,
@@ -374,9 +560,9 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
                 &quot;FieldValue {} needs a role to be a field value for an operation&quot;.format(
                     self
                 )
-            )
+            )</div>
 
-<div class="viewcode-block" id="FieldValue.get_sid"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.FieldValue.get_sid">[docs]</a>    def get_sid(self):
+<div class="viewcode-block" id="FieldValue.get_sid"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.get_sid">[docs]</a>    def get_sid(self):
         &quot;&quot;&quot;The FieldValues sample identifier.&quot;&quot;&quot;
         if self.sample is not None:
             return self.sample.identifier</div>
@@ -392,14 +578,16 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
                 return [w for w in wires if w.does_wire_from(self)]
         return []
 
+    @property
     def incoming_wires(self):
         if self.role == &quot;input&quot;:
-            return self.get_wires()
+            self.get_wires()
         return []
 
+    @property
     def outgoing_wires(self):
         if self.role == &quot;output&quot;:
-            return self.get_wires()
+            self.get_wires()
         return []
 
     @property
@@ -428,8 +616,8 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         elif self.value:
             print(&quot;{}{}.{}:{}&quot;.format(pre, self.role, self.name, self.value))
 
-<div class="viewcode-block" id="FieldValue.reset"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.FieldValue.reset">[docs]</a>    def reset(self):
-        &quot;&quot;&quot;Resets the inputs of the field_value&quot;&quot;&quot;
+<div class="viewcode-block" id="FieldValue.reset"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.reset">[docs]</a>    def reset(self):
+        &quot;&quot;&quot;Resets the inputs of the field_value.&quot;&quot;&quot;
         self.value = None
         self.allowable_field_type_id = None
         self.allowable_field_type = None
@@ -574,10 +762,16 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         oid = &quot;none&quot;
         if self.object_type is not None:
             oid = self.object_type.name
-        msg = &quot;No allowable field types found for {} {} using {} {}.&quot;
+        msg = &quot;No allowable field types found for {}:{}:{} using {}:{}.&quot;
         msg += &quot; Available afts: {}&quot;
+        try:
+            otname = self.operation.operation_type.name
+        except AttributeError:
+            pass
+        finally:
+            otname = None
         raise AquariumModelError(
-            msg.format(self.role, self.name, sid, oid, &quot;, &quot;.join(aft_list))
+            msg.format(otname, self.role, self.name, sid, oid, &quot;, &quot;.join(aft_list))
         )
 
     def set_aft(self):
@@ -597,9 +791,6 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         column=None,
         container=None,
     ):
-        # to maintain old API
-        # if container:
-        #     raise DeprecationWarning(&quot;Typed parameter &#39;container&#39; is now depreciated. Please use &#39;object_type&#39;&quot;)
         if object_type is None and container:
             object_type = container
         self._validate(value, sample, item, container, row, column)
@@ -651,10 +842,8 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
             self.parent_id = sample.id
         self.sample = sample
 
-<div class="viewcode-block" id="FieldValue.set_field_type"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.FieldValue.set_field_type">[docs]</a>    def set_field_type(self, field_type):
-        &quot;&quot;&quot;
-        Sets properties from a field_type
-        &quot;&quot;&quot;
+<div class="viewcode-block" id="FieldValue.set_field_type"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.set_field_type">[docs]</a>    def set_field_type(self, field_type):
+        &quot;&quot;&quot;Sets properties from a field_type.&quot;&quot;&quot;
 
         self.field_type = field_type
         self.field_type_id = field_type.id
@@ -679,8 +868,8 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         self.allowable_field_type = allowable_field_type
         self.allowable_field_type_id = allowable_field_type.id
 
-<div class="viewcode-block" id="FieldValue.choose_item"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.FieldValue.choose_item">[docs]</a>    def choose_item(self, first=True):
-        &quot;&quot;&quot;Set the item associated with the field value&quot;&quot;&quot;
+<div class="viewcode-block" id="FieldValue.choose_item"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.choose_item">[docs]</a>    def choose_item(self, first=True):
+        &quot;&quot;&quot;Set the item associated with the field value.&quot;&quot;&quot;
         index = 0
         if not first:
             index = -1
@@ -691,8 +880,8 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
             return item
         return None</div>
 
-<div class="viewcode-block" id="FieldValue.compatible_items"><a class="viewcode-back" href="../../../developer/_autosummary/pydent.models.html#pydent.models.field_value.FieldValue.compatible_items">[docs]</a>    def compatible_items(self):
-        &quot;&quot;&quot;Find items compatible with the field value&quot;&quot;&quot;
+<div class="viewcode-block" id="FieldValue.compatible_items"><a class="viewcode-back" href="../../../models.html#pydent.models.FieldValue.compatible_items">[docs]</a>    def compatible_items(self):
+        &quot;&quot;&quot;Find items compatible with the field value.&quot;&quot;&quot;
         return self.session.utils.compatible_items(
             self.sample.id, self.allowable_field_type.object_type_id
         )</div>
@@ -713,7 +902,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
     </p>
   </div>
 </footer>

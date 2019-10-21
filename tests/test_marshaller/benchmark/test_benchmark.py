@@ -2,15 +2,19 @@ import time
 from uuid import uuid4
 
 import pytest
-from marshmallow import Schema, fields
+from marshmallow import fields
+from marshmallow import Schema
 
-from pydent.marshaller.base import add_schema, SchemaModel
-from pydent.marshaller.fields import Field, Callback, Relationship
+from pydent.marshaller.base import add_schema
+from pydent.marshaller.base import SchemaModel
+from pydent.marshaller.fields import Callback
+from pydent.marshaller.fields import Field
+from pydent.marshaller.fields import Relationship
 from pydent.marshaller.registry import ModelRegistry
 
 
 @pytest.mark.benchmark
-class TestSpeed(object):
+class TestSpeed:
     def EmptyModel(self, base):
         @add_schema
         class EmptyModel(SchemaModel):
@@ -48,7 +52,7 @@ class TestSpeed(object):
         return NoCacheCallback
 
     def ControlModel(self, base):
-        class ControlModel(object):
+        class ControlModel:
             @classmethod
             def _set_data(cls, data):
                 instance = cls.__new__(cls)
@@ -64,7 +68,7 @@ class TestSpeed(object):
         class MySchema(Schema):
             field = fields.Raw()
 
-        class MarshmallowModelWithSchemaCreation(object):
+        class MarshmallowModelWithSchemaCreation:
             @classmethod
             def _set_data(cls, data):
                 instance = cls.__new__(cls)
@@ -83,7 +87,7 @@ class TestSpeed(object):
 
         schema = MySchema()
 
-        class MarshmallowModel(object):
+        class MarshmallowModel:
             @classmethod
             def _set_data(cls, data):
                 instance = cls.__new__(cls)
@@ -196,7 +200,7 @@ class TestSpeed(object):
 
 
 @pytest.mark.benchmark
-class TestBenchmarkRelationships(object):
+class TestBenchmarkRelationships:
     @pytest.fixture(scope="function")
     def Company(self, base):
         @add_schema

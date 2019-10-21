@@ -1,43 +1,42 @@
-"""
-Fields
-"""
+"""Fields."""
+from abc import ABC
+from abc import abstractmethod
+from enum import auto
+from enum import Enum
+from typing import Any
+from typing import List
+from typing import Type
+from typing import Union, Dict, Callable, Tuple
 
-from abc import ABC, abstractmethod
-from enum import Enum, auto
-
-from pydent.marshaller.descriptors import (
-    CallbackAccessor,
-    MarshallingAccessor,
-    RelationshipAccessor,
-    Placeholders,
-)
-from pydent.marshaller.exceptions import (
-    AllowNoneFieldValidationError,
-    RunTimeCallbackAttributeError,
-)
+from pydent.marshaller.descriptors import CallbackAccessor
+from pydent.marshaller.descriptors import MarshallingAccessor
+from pydent.marshaller.descriptors import Placeholders
+from pydent.marshaller.descriptors import RelationshipAccessor
+from pydent.marshaller.exceptions import AllowNoneFieldValidationError
+from pydent.marshaller.exceptions import RunTimeCallbackAttributeError
 from pydent.marshaller.registry import ModelRegistry
 from pydent.marshaller.utils import make_signature_str
 
 
 class FieldABC(ABC):
-    """
-    Field abstract base class
-    """
+    """Field abstract base class."""
+
+    _FIELD_ALLOW_NONE_DEFAULT = True
 
     @abstractmethod
-    def serialize(self):
+    def serialize(self, owner, data: dict):
         pass
 
     @abstractmethod
-    def deserialize(self):
+    def deserialize(self, owner, data: dict):
         pass
 
     @abstractmethod
-    def _serialize(self):
+    def _serialize(self, owner, data: dict):
         pass
 
     @abstractmethod
-    def _deserialize(self):
+    def _deserialize(self, owner, data: dict):
         pass
 
 
@@ -47,24 +46,32 @@ class Field(FieldABC):
     ACCESSOR = MarshallingAccessor
 
     def __init__(
-        self, many=None, data_key=None, allow_none=None, default=Placeholders.DEFAULT
+        self,
+        many: bool = None,
+        data_key: str = None,
+        allow_none: bool = None,
+        default: Any = Placeholders.DEFAULT,
     ):
         """A standard field. Performs no functions on serialized and
         deserialized data.
 
-        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :param many: whether to treat serializations and deserializations as a per-item
+        basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        :param data_key: the data_key, or attribute name, of this field. Calling this as
+        an attribute to the registered
         nested should return this field's descriptor.
         :type data_key: basestring
-        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :param allow_none: whether to return None if None is received in deserialization
+         or serializaiton methods
         :type allow_none: bool
-        :raises AllowNoneFieldValidationError if None is received in serialize and deserialized methods
+        :raises AllowNoneFieldValidationError if None is received in serialize and
+        deserialized methods
         and self.allow_none == False
         """
 
         if allow_none is None:
-            allow_none = True
+            allow_none = self._FIELD_ALLOW_NONE_DEFAULT
         if many is None:
             many = False
         self.many = many
@@ -73,16 +80,16 @@ class Field(FieldABC):
         self.allow_none = allow_none
         self.default = default
 
-    def set_data_key(self, key):
+    def set_data_key(self, key: str):
         self.data_key = key
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner, data: dict) -> dict:
         return data
 
-    def _serialize(self, owner, data):
+    def _serialize(self, owner, data: dict) -> dict:
         return data
 
-    def deserialize(self, owner, data):
+    def deserialize(self, owner, data: dict) -> Union[dict, None]:
         if data is None:
             if not self.allow_none:
                 raise AllowNoneFieldValidationError(
@@ -95,7 +102,7 @@ class Field(FieldABC):
             return data
         return self._deserialize(owner, data)
 
-    def serialize(self, owner, data):
+    def serialize(self, owner, data: dict) -> Union[dict, None, List]:
         if data is None:
             if not self.allow_none:
                 raise AllowNoneFieldValidationError(
@@ -106,14 +113,12 @@ class Field(FieldABC):
             return [self._serialize(owner, d) for d in data]
         return self._serialize(owner, data)
 
-    def register(self, name, objtype):
-        """Registers the field to a nested class. Instantiates the corresponding
-        descriptor (i.e. accessor)
+    def register(self, name: str, objtype: Type):
+        """Registers the field to a nested class. Instantiates the
+        corresponding descriptor (i.e. accessor)
 
         :param name: name of the field
-        :type name: basestring
         :param objtype: the nested class to register the field to
-        :type objtype: SchemaModel
         :return: None
         :rtype: None
         """
@@ -135,32 +140,45 @@ class Field(FieldABC):
                 ),
             )
 
-    def __str__(self):
-        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>".format(
-            cls=self.__class__.__name__,
-            key=self.data_key,
-            many=self.many,
-            allow_none=self.allow_none,
-            objtype=self.objtype,
-        )
+    def __str__(self) -> str:
+        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>"\
+            .format(
+                cls=self.__class__.__name__,
+                key=self.data_key,
+                many=self.many,
+                allow_none=self.allow_none,
+                objtype=self.objtype,
+            )
 
 
 class Nested(Field):
     """Represents a field that returns another nested instance."""
 
-    def __init__(self, nested, many=None, data_key=None, allow_none=None, lazy=None):
+    def __init__(
+        self,
+        nested,
+        many: bool = None,
+        data_key: str = None,
+        allow_none: bool = None,
+        lazy: bool = None,
+    ):
         """Nested relationship initializer.
 
-        :param nested: the nested name of nested field. Should exist in the ModelRegistery.
+        :param nested: the nested name of nested field. Should exist in the
+        ModelRegistery.
         :type nested: SchemaModel
-        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :param many: whether to treat serializations and deserializations as a per-item
+        basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        :param data_key: the data_key, or attribute name, of this field. Calling this as
+         an attribute to the registered
         nested should return this field's descriptor.
         :type data_key: basestring
-        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :param allow_none: whether to return None if None is received in deserialization
+         or serializaiton methods
         :type allow_none: bool
-        :param lazy: if set to True (default), perform lazy serialization and deserialization. If the data received
+        :param lazy: if set to True (default), perform lazy serialization and
+        deserialization. If the data received
         by `deserialize` is the expected nested, return that data. If the object
         recieved by `serialize` is not the expected nested, return that data.
         :type lazy:
@@ -170,13 +188,13 @@ class Nested(Field):
         if lazy is None:
             self.lazy = True
         if allow_none is None:
-            allow_none = True
+            allow_none = self._FIELD_ALLOW_NONE_DEFAULT
         super().__init__(many, data_key, allow_none)
 
     def get_model(self):
         return ModelRegistry.get_model(self.nested)
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner, data: dict):
         if data is None and self.allow_none:
             return None
         elif self.lazy and isinstance(data, self.get_model()):
@@ -202,34 +220,43 @@ class Callback(Field):
 
     def __init__(
         self,
-        callback,
-        callback_args=None,
-        callback_kwargs=None,
-        cache=False,
-        data_key=None,
-        many=None,
-        allow_none=None,
-        always_dump=False,
+        callback: Union[Callable, str],
+        callback_args: Tuple = None,
+        callback_kwargs: Dict[str, Any] = None,
+        cache: bool = False,
+        data_key: str = None,
+        many: bool = None,
+        allow_none: bool = None,
+        always_dump: bool = False,
     ):
         """A Callback field initializer.
 
-        :param callback: name of the callback function or a callable. If a name, the name should exist
-        as a function in the owner instance. Invalid callback signatures are captures on class creation.
+        :param callback: name of the callback function or a callable. If a name, the
+        name should exist
+        as a function in the owner instance. Invalid callback signatures are captures
+        on class creation.
         :type callback: callable|basestring
-        :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
-        values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
+        :param callback_args: a tuple of arguments to use in the callback. If any of
+        the callback arguments  or
+        values of the callback kwargs are callable, the owner will be passed to the
+        callable. The owner instance will
         replace any arguments that are `Callback.SElF`
         :type callback_args: tuple
         :param callback_kwargs: a dictionary of kwargs to use in the callback
         :type callback_kwargs: dict
-        :param cache: whether to cache the result using `setattr` on the owner instance. This will initialize the
-        serialization and deserialization procedures detailed in the corresponding field/descriptor.
+        :param cache: whether to cache the result using `setattr` on the owner instance.
+         This will initialize the
+        serialization and deserialization procedures detailed in the corresponding
+        field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :param many: whether to treat serializations and deserializations as a per-item
+         basis in a list
         :type many: bool
-        :param allow_none: whether to return None if None is received in deserialization or serializaiton methods
+        :param allow_none: whether to return None if None is received in deserialization
+         or serializaiton methods
         :type allow_none: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        :param data_key: the data_key, or attribute name, of this field. Calling this
+        as an attribute to the registered
         nested should return this field's descriptor.
         :param always_dump: if True, this field will be serialized by default
         :type always_dump: bool
@@ -257,8 +284,10 @@ class Callback(Field):
             func=self.callback, args=make_signature_str(args, kwargs)
         )
 
-    def get_callback_args(self, owner, extra_args=None):
-        """Processes the callback args"""
+    def get_callback_args(
+        self, owner, extra_args: dict = None
+    ) -> List[Any]:
+        """Processes the callback args."""
         args = []
         callback_args = list(self.callback_args)
         if extra_args:
@@ -273,15 +302,16 @@ class Callback(Field):
                     args.append(a)
         except AttributeError as e:
             raise RunTimeCallbackAttributeError(
-                "There was an error retrieving callback arguments for '{sig}' due to:\n{e}".format(
+                "There was an error retrieving callback arguments for '{sig}' due to:\n"
+                "{e}".format(
                     sig=self._callback_signature(),
                     e="{}: {}".format(e.__class__.__name__, e),
                 )
             ) from e
         return args
 
-    def get_callback_kwargs(self, owner, extra_kwargs):
-        """Processes the callback kwargs"""
+    def get_callback_kwargs(self, owner, extra_kwargs: dict) -> dict:
+        """Processes the callback kwargs."""
         kwargs = {}
         callback_kwargs = dict(self.callback_kwargs)
         if extra_kwargs:
@@ -296,7 +326,8 @@ class Callback(Field):
                     kwargs[k] = v
         except AttributeError as e:
             raise RunTimeCallbackAttributeError(
-                "There was an error retrieving callback keyword arguments for '{func}(args)' due to:\n{e}".format(
+                "There was an error retrieving callback keyword arguments for "
+                "'{func}(args)' due to:\n{e}".format(
                     func=self.callback,
                     args=self._callback_signature(),
                     e="{}: {}".format(e.__class__.__name__, e),
@@ -304,13 +335,22 @@ class Callback(Field):
             ) from e
         return kwargs
 
-    def fullfill(self, owner, cache=None, extra_args=None, extra_kwargs=None):
-        """Calls the callback function using the owner object. A
-        Callback.SELF arg value will be replaced to be equivalent to the
-        owner instance model.
+    def fullfill(
+        self,
+        owner,
+        cache: bool = None,
+        extra_args: tuple = None,
+        extra_kwargs: dict = None,
+    ) -> Any:
+        """Calls the callback function using the owner object. A Callback.SELF
+        arg value will be replaced to be equivalent to the owner instance
+        model.
 
         :param owner: the owning object
-        :type owner: SchemaModel
+        :param cache: if True, will cache the return in the deserialized data.
+        On next call, the cached result will be returned.
+        :param extra_args: extra args to pass to the callback function
+        :param extra_kwargs: extra kwargs to pass to the callback function
         :return: function result
         :rtype: any
         """
@@ -341,7 +381,7 @@ class Callback(Field):
     def cache_result(self, owner, val):
         setattr(owner, self.data_key, val)
 
-    def _deserialize(self, owner, data):
+    def _deserialize(self, owner, data: dict):
         raise NotImplementedError(
             "_deserialize is not implemented for field {}".format(self)
         )
@@ -353,45 +393,52 @@ class Callback(Field):
 
 
 class Relationship(Callback):
-    """
-    A composition (Callback/Nested) field that uses a callback to retrieve a model.
-    """
+    """A composition (Callback/Nested) field that uses a callback to retrieve a
+    model."""
 
     ACCESSOR = RelationshipAccessor
 
     def __init__(
         self,
         nested,
-        callback,
-        callback_args=None,
-        callback_kwargs=None,
-        cache=True,
-        data_key=None,
-        many=None,
-        allow_none=None,
-        always_dump=False,
+        callback: Union[Callable, str],
+        callback_args: Tuple = None,
+        callback_kwargs: Dict[str, Any] = None,
+        cache: bool = True,
+        data_key: str = None,
+        many: bool = None,
+        allow_none: bool = None,
+        always_dump: bool = False,
     ):
-        """
-        Relationship initializer
+        """Relationship initializer.
 
-        :param nested: the nested name of nested field. Should exist in the ModelRegistery.
+        :param nested: the nested name of nested field. Should exist in the
+        ModelRegistery.
         :type nested: SchemaModel
-        :param callback: name of the callback function or a callable. If a name, the name should exist
-        as a function in the owner instance. Invalid callback signatures are captures on class creation.
+        :param callback: name of the callback function or a callable. If a name, the
+        name should exist as a function in the owner instance. Invalid callback
+        signatures are captures on class creation.
         :type callback: callable|basestring
-        :param callback_args: a tuple of arguments to use in the callback. If any of the callback arguments  or
-                                values of the callback kwargs are callable, the owner will be passed to the callable. The owner instance will
-                                replace any arguments that are `Callback.SElF`
+        :param callback_args: a tuple of arguments to use in the callback. If any of
+            the callback arguments  or
+            values of the callback kwargs are callable, the owner
+            will be passed to the callable. The owner instance will
+            replace any arguments that are `Callback.SElF`
         :type callback_args: tuple
         :param callback_kwargs: a dictionary of kwargs to use in the callback
         :type callback_kwargs: dict
-        :param cache: whether to cache the result using `setattr` on the owner instance. This will initialize the
-        serialization and deserialization procedures detailed in the corresponding field/descriptor.
+        :param cache: whether to cache the result using `setattr` on the owner instance.
+        This will initialize the
+        serialization and deserialization procedures detailed in the corresponding
+        field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializations and deserializations as a per-item basis in a list
+        :param many: whether to treat serializaations and deserializations as a
+        per-item basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as an attribute to the registered
+        :param data_key: the data_key, or attribute name, of this field. Calling this
+        as an attribute to the registered
         nested should return this field's descriptor.
+
         """
 
         super().__init__(
@@ -416,12 +463,11 @@ class Relationship(Callback):
 
 
 class Alias(Callback):
-    """A shallow alias to another field. """
+    """A shallow alias to another field."""
 
-    def __init__(self, field_name):
-        """
-        Alias field initialize. Exposes a shallow alias to another field that can be accessed by
-        a different attribute key.
+    def __init__(self, field_name: str):
+        """Alias field initialize. Exposes a shallow alias to another field
+        that can be accessed by a different attribute key.
 
         :param field_name: the key of the other field
         :type field_name: basestring
@@ -436,5 +482,5 @@ class Alias(Callback):
         )
 
     @staticmethod
-    def alias_callback(m, field_name):
+    def alias_callback(m, field_name: str) -> Any:
         return getattr(m, field_name)
