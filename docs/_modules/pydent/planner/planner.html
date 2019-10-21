@@ -174,7 +174,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -253,7 +254,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -321,6 +323,7 @@ import webbrowser
 from collections import defaultdict
 from copy import deepcopy
 from functools import wraps
+from typing import List
 from uuid import uuid4
 
 import networkx as nx
@@ -388,9 +391,8 @@ class AFTMatcher:
             return [ft for ft in model.get_field_types() if ft.role == role]
         else:
             raise PlannerException(
-                &#39;Cannot resolve inputs, type must be a FieldValue or Operation, not a &quot;{}&quot;&#39;.format(
-                    type(model)
-                )
+                &quot;Cannot resolve inputs, type must be a FieldValue or Operation, not a &quot;
+                &#39;&quot;{}&quot;&#39;.format(type(model))
             )
 
     @classmethod
@@ -401,7 +403,8 @@ class AFTMatcher:
         :type source: FieldValue|Operation
         :param destination: a field value or operation destination
         :type destination: FieldValue|Operation
-        :return: tuple of matching allowable_field_type (aft) pairs, matching field_value inputs and matching field_value outputs
+        :return: tuple of matching allowable_field_type (aft) pairs, matching
+            field_value inputs and matching field_value outputs
         :rtype: tuple
         &quot;&quot;&quot;
         &quot;&quot;&quot;Find matching AllowableFieldTypes&quot;&quot;&quot;
@@ -453,14 +456,14 @@ class AFTMatcher:
     &quot;&quot;&quot;A user-interface for making experimental plans and layouts.&quot;&quot;&quot;
 
 <div class="viewcode-block" id="Planner.ITEM_SELECTION_PREFERENCE"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.ITEM_SELECTION_PREFERENCE">[docs]</a>    class ITEM_SELECTION_PREFERENCE:
-        &quot;&quot;&quot;Item selection options&quot;&quot;&quot;
+        &quot;&quot;&quot;Item selection options.&quot;&quot;&quot;
 
         ANY = &quot;ANY&quot;  #: pick the first item that matches the set field_value
         RESTRICT = &quot;RESTRICT&quot;  #: restrict to the currently set allowable_field_type
         PREFERRED = (
             &quot;PREFERRED&quot;
-        )  # (default) pick the item that matches the currently set allowable_field_type, else
-        # pick ANY item that matches the set field_value
+        )  #: (default) pick the item that matches the currently set aft, else
+        #: pick ANY item that matches the set field_value
         RESTRICT_TO_ONE = (
             &quot;RESTRICT TO ONE&quot;
         )  #: will not select item if its being used in another active operation
@@ -471,7 +474,7 @@ class AFTMatcher:
         _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]  #: all choices</div>
 
 <div class="viewcode-block" id="Planner.ITEM_ORDER_PREFERENCE"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.ITEM_ORDER_PREFERENCE">[docs]</a>    class ITEM_ORDER_PREFERENCE:
-        &quot;&quot;&quot;Item order options&quot;&quot;&quot;
+        &quot;&quot;&quot;Item order options.&quot;&quot;&quot;
 
         FIRST = &quot;FIRST&quot;  #: select first item
         LAST = &quot;LAST&quot;  #: select last item
@@ -625,7 +628,10 @@ class AFTMatcher:
             query[&quot;category&quot;] = category
         ots = self.session.OperationType.where(query)
         if len(ots) &gt; 1:
-            msg = &#39;Found more than one OperationType for query &quot;{}&quot;. Have you tried specifying the category?&#39;
+            msg = (
+                &#39;Found more than one OperationType for query &quot;{}&quot;. Have you tried &#39;
+                &quot;specifying the category?&quot;
+            )
             raise PlannerException(msg.format(query))
         if ots is None or len(ots) == 0:
             msg = &#39;Could not find deployed OperationType &quot;{}&quot;.&#39;
@@ -679,15 +685,15 @@ class AFTMatcher:
         wire = self.get_wire(fv1, fv2)
         wires = list(self.plan.wires)
         if wire:
-            self.log.info(&quot;removing wire from {} to {}&quot;.format(fv1.name, fv2.name))
-            wires_as_source = fv1.wires_as_source
-            wires_as_dest = fv2.wires_as_dest
+            self.log.debug(&quot;removing wire from {} to {}&quot;.format(fv1.name, fv2.name))
+            # wires_as_source = fv1.wires_as_source
+            # wires_as_dest = fv2.wires_as_dest
+            #
+            # wires_as_source.remove(wire)
+            # wires_as_dest.remove(wire)
 
-            wires_as_source.remove(wire)
-            wires_as_dest.remove(wire)
-
-            fv1.wires_as_source = wires_as_source
-            fv2.wires_as_dest = wires_as_dest
+            # fv1.wires_as_source = wires_as_source
+            # fv2.wires_as_dest = wires_as_dest
 
             wires.remove(wire)
             self.plan.wires = wires
@@ -836,7 +842,8 @@ class AFTMatcher:
         :type source: FieldValue|Operation
         :param destination: field_value or operation destination
         :type destination: FieldValue|Operation
-        :param strict: will raise error if there is is ambiguous wiring between the source and destination
+        :param strict: will raise error if there is is ambiguous wiring between the
+            source and destination
         :type strict: bool
         :return: created wire
         :rtype: Wire
@@ -849,8 +856,9 @@ class AFTMatcher:
         # TODO: automatically wire to empty FV if they are equivalent
         if (len(model_inputs) &gt; 1 or len(model_outputs) &gt; 1) and strict:
             raise PlannerException(
-                &quot;Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and outputs [{}] for {}\n&quot;
-                &quot;Instead, try to use `add_wire` method to wire together two FieldValues.&quot;.format(
+                &quot;Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and &quot;
+                &quot;outputs [{}] for {}\nInstead, try to use `add_wire` method to wire &quot;
+                &quot;together two FieldValues.&quot;.format(
                     &quot;, &quot;.join([ft.name for ft in model_inputs]),
                     model_inputs[0].operation_type.name,
                     &quot;, &quot;.join([ft.name for ft in model_outputs]),
@@ -1134,8 +1142,6 @@ class AFTMatcher:
         )</div>
 
     def set_field_value_and_propogate(self, field_value, sample=None):
-        # ots = self.browser.where(&#39;OperationType&#39;, {&quot;id&quot;: [op.operation_type_id for op in self.plan.operations]})
-        # self.browser.retrieve(ots, &#39;field_types&#39;)
         routing_graph = self._routing_graph()
         routing_id = self._routing_id(field_value)
         subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
@@ -1179,8 +1185,6 @@ class AFTMatcher:
             self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE,
         ]:
             afts = [field_value.allowable_field_type]
-        # elif item_preference in [self.ITEM_SELECTION_PREFERENCE.ANY, self.ITEM_SELECTION_PREFERENCE.PREFERRED]:
-        #     afts = [aft for aft in field_value.field_type.allowable_field_types if aft.sample]
         if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
             afts = sorted(
                 afts,
@@ -1307,7 +1311,7 @@ class AFTMatcher:
 <div class="viewcode-block" id="Planner.set_to_available_item"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.set_to_available_item">[docs]</a>    @plan_verification_wrapper
     def set_to_available_item(
         self,
-        fv,
+        fv: FieldValue,
         order_preference=ITEM_ORDER_PREFERENCE._DEFAULT,
         filter_func=None,
         item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT,
@@ -1319,18 +1323,24 @@ class AFTMatcher:
         :type fv: FieldValue
         :param recent: whether to select the most recent item (recent=True is default)
         :type recent: bool
-        :param filter_func: array of lambda to filter items by. E.g. &#39;lambda_arr=[lambda x: x.get(&quot;concentration&quot;) &gt; 10]&#39;
+        :param filter_func: array of lambda to filter items by. E.g.
+            &#39;lambda_arr=[lambda x: x.get(&quot;concentration&quot;) &gt; 10]&#39;
         :type filter_func: list
-        :param order_preference: The item order preference. Select from &quot;LAST&quot; (default), &quot;FIRST&quot;, or &quot;RANDOM&quot;. Selections
-                                also available in :class:`Planner.ITEM_ORDER_PREFERENCE`. Random will choose a random item
-                                from the available items found after all preferences and filters
+        :param order_preference: The item order preference. Select from &quot;LAST&quot;
+            (default), &quot;FIRST&quot;, or &quot;RANDOM&quot;. Selections
+            also available in :class:`Planner.ITEM_ORDER_PREFERENCE`.
+            Random will choose a random item from the available items found after
+            all preferences and filters
         :type order_preference: basestring
-        :param item_preference: The item selection preference. Select from items in :class:`Planner.ITEM_SELECTION_PREFERENCE`
-                                If &quot;PREFERRED&quot; (default), will select item that matches the allowable_field_value that is
-                                already set for the field_value, else select any item that matches the :class:`Sample` set :class:`FieldValue`. If
-                                &quot;RESTRICT&quot;, will restrict selected item only to those that matches the current allowable_field_value
-                                that is set for the :class:`FieldValue`. If &quot;ANY&quot;, will select any items that matches the :class:`Sample`.
-                                set for the field_value
+        :param item_preference: The item selection preference. Select from items in
+            :class:`Planner.ITEM_SELECTION_PREFERENCE`
+            If &quot;PREFERRED&quot; (default), will select item that matches the
+            allowable_field_value that is already set for the field_value, else select
+            any item that matches the :class:`Sample` set :class:`FieldValue`. If
+            &quot;RESTRICT&quot;, will restrict selected item only to those that matches the
+            current allowable_field_value that is set for the :class:`FieldValue`. If
+            &quot;ANY&quot;, will select any items that matches the :class:`Sample`.set for
+            the field_value
         :type item_preference: basestring
         :return: The selected item (or None if no item set)
         :rtype: Item or None
@@ -1369,8 +1379,8 @@ class AFTMatcher:
         routing dictionary may be passed to indicate the mapping between the
         sample field values and operation inputs.
 
-        For example, the following would map the &quot;Integrant&quot; sample field value to the &quot;Template&quot;
-        operation input, and so on...:
+        For example, the following would map the &quot;Integrant&quot; sample field value to the
+        &quot;Template&quot; operation input, and so on...:
 
         .. code:: python
 
@@ -1583,20 +1593,28 @@ class AFTMatcher:
     # TODO: find redundant segments
     # TODO: search functions for plans
 
-    # TODO: procedure should run on topologically sorted operations, if there is the case that
-    # two operations have different parents, then these operations are NOT mergable
-<div class="viewcode-block" id="Planner.optimize_plan"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.optimize_plan">[docs]</a>    def optimize_plan(self, operations=None, ignore=None):
-        &quot;&quot;&quot;Optimizes a plan by removing redundent operations.
+    # TODO: procedure should run on topologically sorted operations,
+    #       if there is the case that two operations have different parents, then
+    #       these operations are NOT mergable
+<div class="viewcode-block" id="Planner.optimize_plan"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.optimize_plan">[docs]</a>    def optimize_plan(
+        self, operations: List[Operation] = None, ignore: List[str] = None
+    ):
+        &quot;&quot;&quot;Remove redundant operations.
 
-        :param planner:
+        :param operations: list of operations
+        :param ignore: list of operation type names to ignore in optimization
         :return:
         &quot;&quot;&quot;
         self.log.info(&quot;Optimizing plan...&quot;)
         if operations is not None:
             self.log.info(&quot;   only_operations={}&quot;.format([op.id for op in operations]))
         self.log.info(&quot;   ignore_types={}&quot;.format(ignore))
+
+        # only consider operations in the &#39;planning state&#39;
         if operations is None:
             operations = [op for op in self.plan.operations if op.status == &quot;planning&quot;]
+
+        # ignore operation types
         if ignore:
             operations = [
                 op for op in operations if op.operation_type.name not in ignore
@@ -1699,7 +1717,8 @@ class AFTMatcher:
                             item = collection.part(fv.row, fv.column)
                         if item.sample_id != fv.sample.id:
                             reasons.append(
-                                &quot;{} has sample_id={} but generated item has sample_id={}&quot;.format(
+                                &quot;{} has sample_id={} but generated item has sample_&quot;
+                                &quot;id={}&quot;.format(
                                     fv_info(fv), fv.sample.id, item.sample_id
                                 )
                             )
@@ -1723,11 +1742,12 @@ class AFTMatcher:
                 &quot;errors&quot;: reasons,
                 &quot;valid&quot;: len(reasons) == 0,
             }
-        errors = {k: v for k, v in routes.items() if v[&quot;valid&quot;] != True}
+        errors = {k: v for k, v in routes.items() if v[&quot;valid&quot;] is not True}
         return errors</div>
         # return routes
 
-    # TODO: implement planner.copy and anonymize the operations and field_values by removing their ids
+    # TODO: implement planner.copy and anonymize the operations and field_values by
+    #       removing their ids
 <div class="viewcode-block" id="Planner.copy"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.copy">[docs]</a>    def copy(self):
         &quot;&quot;&quot;Return a copy of this planner, with a new anonymous copy of the
         plan.
@@ -1749,7 +1769,7 @@ class AFTMatcher:
         return self.copy()
 
 <div class="viewcode-block" id="Planner.combine"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.combine">[docs]</a>    @staticmethod
-    def combine(plans):
+    def combine(plans: List[Plan]):
         &quot;&quot;&quot;Merges a list of plans into a single plan by combining operations
         and wires.
 

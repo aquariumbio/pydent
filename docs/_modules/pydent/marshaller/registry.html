@@ -174,7 +174,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -253,7 +254,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -413,11 +415,11 @@ from pydent.utils.logging_helpers import did_you_mean
         return cls._model_schema
 
     @classmethod
-    def did_you_mean_model(cls, model_name):
+    def did_you_mean_model(cls, model_name, fallback=True):
         model_names = list(cls.models.keys())
         available_models = &quot;, &quot;.join(model_names)
         msg = did_you_mean(model_name, model_names)
-        if not msg:
+        if not msg and fallback:
             return &quot;Available models: {}&quot;.format(pformat(available_models))
         return msg
 

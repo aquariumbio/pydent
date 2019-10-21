@@ -176,7 +176,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -255,7 +256,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -352,16 +354,16 @@ FieldValues and FieldTypes.</p>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.get_field_type" title="pydent.models.field_value_mixins.FieldValueInterface.get_field_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_field_type</span></code></a>(name, role)</p></td>
-<td><p>Returns a <a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by its name and role from the instance’s metaclass.</p></td>
+<td><p>Returns a <a class="reference internal" href="pydent.models.FieldType.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by its name and role from the instance’s metaclass.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.get_field_types" title="pydent.models.field_value_mixins.FieldValueInterface.get_field_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_field_types</span></code></a>([name, role])</p></td>
-<td><p>Returns a list of <a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by their name and role from the instance’s metaclass.</p></td>
+<td><p>Returns a list of <a class="reference internal" href="pydent.models.FieldType.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by their name and role from the instance’s metaclass.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.get_field_value" title="pydent.models.field_value_mixins.FieldValueInterface.get_field_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_field_value</span></code></a>(name[, role])</p></td>
-<td><p>Returns a <a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by its name and role.</p></td>
+<td><p>Returns a <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by its name and role.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.get_field_value_array" title="pydent.models.field_value_mixins.FieldValueInterface.get_field_value_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_field_value_array</span></code></a>(name[, role])</p></td>
-<td><p>Returns a list of <a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by their name and role.</p></td>
+<td><p>Returns a list of <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by their name and role.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.get_metatype" title="pydent.models.field_value_mixins.FieldValueInterface.get_metatype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metatype</span></code></a>()</p></td>
 <td><p>Returns the instance’s metatype (e.g.</p></td>
@@ -370,13 +372,13 @@ FieldValues and FieldTypes.</p>
 <td><p>Returns the routing dictionary for this instance.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.new_field_value" title="pydent.models.field_value_mixins.FieldValueInterface.new_field_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_field_value</span></code></a>(name[, role, values_dict])</p></td>
-<td><p>Instantiates a new <a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a name and role.</p></td>
+<td><p>Instantiates a new <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a name and role.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.new_field_value_from_field_type" title="pydent.models.field_value_mixins.FieldValueInterface.new_field_value_from_field_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_field_value_from_field_type</span></code></a>(field_type)</p></td>
-<td><p>Instantiates a new <a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a <a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> instance.</p></td>
+<td><p>Instantiates a new <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.safe_get_field_type" title="pydent.models.field_value_mixins.FieldValueInterface.safe_get_field_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">safe_get_field_type</span></code></a>(fv)</p></td>
-<td><p>Safely returns the field value’s <a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> from the model.</p></td>
+<td><p>Safely returns the field value’s <a class="reference internal" href="pydent.models.FieldType.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> from the model.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.field_value_mixins.FieldValueInterface.set_field_value" title="pydent.models.field_value_mixins.FieldValueInterface.set_field_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_field_value</span></code></a>(name, role, values)</p></td>
 <td><p>Sets a field value name and role using a dictionary, as in the following:</p></td>
@@ -392,7 +394,7 @@ FieldValues and FieldTypes.</p>
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldValueInterface.get_field_type">
 <code class="sig-name descname">get_field_type</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">role</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldValueInterface.get_field_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldValueInterface.get_field_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a <a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by its name and role from
+<dd><p>Returns a <a class="reference internal" href="pydent.models.FieldType.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by its name and role from
 the instance’s metaclass.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -413,7 +415,7 @@ the instance’s metaclass.</p>
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldValueInterface.get_field_types">
 <code class="sig-name descname">get_field_types</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">role=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldValueInterface.get_field_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldValueInterface.get_field_types" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of <a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by their name and
+<dd><p>Returns a list of <a class="reference internal" href="pydent.models.FieldType.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a> by their name and
 role from the instance’s metaclass.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -434,7 +436,7 @@ role from the instance’s metaclass.</p>
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldValueInterface.get_field_value">
 <code class="sig-name descname">get_field_value</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">role=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldValueInterface.get_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldValueInterface.get_field_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a <a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by its name and role.</p>
+<dd><p>Returns a <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by its name and role.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -454,7 +456,7 @@ role from the instance’s metaclass.</p>
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldValueInterface.get_field_value_array">
 <code class="sig-name descname">get_field_value_array</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">role=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldValueInterface.get_field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldValueInterface.get_field_value_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of <a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by their name
+<dd><p>Returns a list of <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by their name
 and role.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -476,15 +478,15 @@ and role.</p>
 <dt id="pydent.models.field_value_mixins.FieldValueInterface.get_metatype">
 <code class="sig-name descname">get_metatype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldValueInterface.get_metatype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldValueInterface.get_metatype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the instance’s metatype (e.g.</p>
-<p><a class="reference internal" href="../models.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or
-<a class="reference internal" href="../models.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>). The metatype class name is
+<p><a class="reference internal" href="pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or
+<a class="reference internal" href="pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>). The metatype class name is
 stored as <cite>METATYPE</cite> in the class definition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the instances metatype (e.g. <a class="reference internal" href="../models.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a></p>
+<dd class="field-odd"><p>the instances metatype (e.g. <a class="reference internal" href="pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a></p>
 </dd>
 </dl>
-<p>or <a class="reference internal" href="../models.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>)
+<p>or <a class="reference internal" href="pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>)
 :rtype: ModelBase</p>
 </dd></dl>
 
@@ -505,7 +507,7 @@ stored as <cite>METATYPE</cite> in the class definition.</p>
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldValueInterface.new_field_value">
 <code class="sig-name descname">new_field_value</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">role=None</em>, <em class="sig-param">values_dict=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldValueInterface.new_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldValueInterface.new_field_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Instantiates a new <a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a name and role.
+<dd><p>Instantiates a new <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a name and role.
 The should be a field type with the name and role
 in the metatype.
 Optionally, a values dictionary may be provided with the following format:</p>
@@ -529,7 +531,7 @@ Optionally, a values dictionary may be provided with the following format:</p>
 <dd class="field-even"><p>the new field value</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -537,8 +539,10 @@ Optionally, a values dictionary may be provided with the following format:</p>
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldValueInterface.new_field_value_from_field_type">
 <code class="sig-name descname">new_field_value_from_field_type</code><span class="sig-paren">(</span><em class="sig-param">field_type</em>, <em class="sig-param">values_dict=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldValueInterface.new_field_value_from_field_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldValueInterface.new_field_value_from_field_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Instantiates a new <a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a <a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a>
-instance. Optionally, a values dictionary may be provided with the following format:</p>
+<dd><p>Instantiates a new <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> from a.</p>
+<p><a class="reference internal" href="pydent.models.FieldType.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a>
+instance. Optionally, a values dictionary may be provided with the following
+format:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>values_dict = {
     &quot;value&quot;: None,
     &quot;sample&quot;: mysample,
@@ -550,7 +554,7 @@ instance. Optionally, a values dictionary may be provided with the following for
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>field_type</strong> (<a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><em>FieldType</em></a>) – field type to instantiate the field value</p></li>
+<li><p><strong>field_type</strong> (<a class="reference internal" href="pydent.models.FieldType.html#pydent.models.FieldType" title="pydent.models.FieldType"><em>FieldType</em></a>) – field type to instantiate the field value</p></li>
 <li><p><strong>values_dict</strong> (<em>dict</em>) – values to set the new field value</p></li>
 </ul>
 </dd>
@@ -558,7 +562,7 @@ instance. Optionally, a values dictionary may be provided with the following for
 <dd class="field-even"><p>the new field value</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../models.html#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue">FieldValue</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -566,11 +570,11 @@ instance. Optionally, a values dictionary may be provided with the following for
 <dl class="method">
 <dt id="pydent.models.field_value_mixins.FieldValueInterface.safe_get_field_type">
 <code class="sig-name descname">safe_get_field_type</code><span class="sig-paren">(</span><em class="sig-param">fv</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/field_value_mixins.html#FieldValueInterface.safe_get_field_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.field_value_mixins.FieldValueInterface.safe_get_field_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Safely returns the field value’s <a class="reference internal" href="../models.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a>
+<dd><p>Safely returns the field value’s <a class="reference internal" href="pydent.models.FieldType.html#pydent.models.FieldType" title="pydent.models.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldType</span></code></a>
 from the model.</p>
 <p>If the field value has no reference to the field type, its
-metatype (e.g. <a class="reference internal" href="../models.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or
-<a class="reference internal" href="../models.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>) is used to recover the
+metatype (e.g. <a class="reference internal" href="pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or
+<a class="reference internal" href="pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>) is used to recover the
 field type.</p>
 </dd></dl>
 

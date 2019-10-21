@@ -176,7 +176,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -255,7 +256,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -350,19 +352,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.__init__" title="pydent.models.Wire.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([source, destination])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.add_data" title="pydent.models.Wire.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.add_data" title="pydent.models.Wire.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(data)</p></td>
 <td><p>Initializes fake attributes that correspond to data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.anonymize" title="pydent.models.Wire.anonymize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anonymize</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.anonymize" title="pydent.models.Wire.anonymize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anonymize</span></code></a>()</p></td>
 <td><p>Resets the primary key of the model and assigns a new rid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.append_to_many" title="pydent.models.Wire.append_to_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_to_many</span></code></a>(name, model)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.append_to_many" title="pydent.models.Wire.append_to_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_to_many</span></code></a>(name, model)</p></td>
 <td><p>Appends a model to the many relationship.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.connect_to_session" title="pydent.models.Wire.connect_to_session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect_to_session</span></code></a>(session)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.connect_to_session" title="pydent.models.Wire.connect_to_session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect_to_session</span></code></a>(session)</p></td>
 <td><p>Connect model instance to a session.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.copy" title="pydent.models.Wire.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([keep])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.copy" title="pydent.models.Wire.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([keep])</p></td>
 <td><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless class is a metatype (e.g.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_interface</span></code>()</p></td>
@@ -373,10 +375,10 @@
 </dl>
 </p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.delete" title="pydent.models.Wire.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.delete" title="pydent.models.Wire.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>()</p></td>
 <td><p>Permanently deletes the wire instance on the Aquarium server.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.does_wire" title="pydent.models.Wire.does_wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">does_wire</span></code></a>(source, destination)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.does_wire" title="pydent.models.Wire.does_wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">does_wire</span></code></a>(source, destination)</p></td>
 <td><p>Checks whether this Wire is a wire between the source and destination FieldValues.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">does_wire_from</span></code>(source)</p></td>
@@ -385,16 +387,16 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">does_wire_to</span></code>(destination)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.dump" title="pydent.models.Wire.dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code></a>([only, include, ignore])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.dump" title="pydent.models.Wire.dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code></a>([only, include, ignore])</p></td>
 <td><p>Dump/serializes the model to a json-like dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.find" title="pydent.models.Wire.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(session, model_id)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.find" title="pydent.models.Wire.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(session, model_id)</p></td>
 <td><p>Finds a model instance by its model_id.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.find_callback" title="pydent.models.Wire.find_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_callback</span></code></a>(model_name, model_id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.find_callback" title="pydent.models.Wire.find_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_callback</span></code></a>(model_name, model_id)</p></td>
 <td><p>Finds a model using the model interface and model_id.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.get_deserialized" title="pydent.models.Wire.get_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_deserialized</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.get_deserialized" title="pydent.models.Wire.get_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_deserialized</span></code></a>(name)</p></td>
 <td><p>Get deserialized data by name.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_relationships</span></code>()</p></td>
@@ -406,19 +408,19 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tableized_name</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.interface" title="pydent.models.Wire.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(session)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.interface" title="pydent.models.Wire.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(session)</p></td>
 <td><p>Creates a model interface from this class and a session.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.is_deserialized" title="pydent.models.Wire.is_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_deserialized</span></code></a>(name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.is_deserialized" title="pydent.models.Wire.is_deserialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_deserialized</span></code></a>(name)</p></td>
 <td><p>Check if a given key has already been deserialized.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.load" title="pydent.models.Wire.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.load" title="pydent.models.Wire.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Deserialize the data to a model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.load_from" title="pydent.models.Wire.load_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from</span></code></a>(data[, owner])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.load_from" title="pydent.models.Wire.load_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from</span></code></a>(data[, owner])</p></td>
 <td><p>Create a new model instance from loaded attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.no_getter" title="pydent.models.Wire.no_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_getter</span></code></a>(*_)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.no_getter" title="pydent.models.Wire.no_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_getter</span></code></a>(*_)</p></td>
 <td><p>Callback that always returns None.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">one</span></code>(session, query, **kwargs)</p></td>
@@ -440,16 +442,16 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.refresh" title="pydent.models.Wire.refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.refresh" title="pydent.models.Wire.refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh</span></code></a>()</p></td>
 <td><p>Refresh this model from data from the server.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.reload" title="pydent.models.Wire.reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.reload" title="pydent.models.Wire.reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code></a>(data)</p></td>
 <td><p>Reload model attributes from new data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.reset_field" title="pydent.models.Wire.reset_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_field</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.reset_field" title="pydent.models.Wire.reset_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_field</span></code></a>(name)</p></td>
 <td><p>Reset the field descriptor to its placeholder value, returning the behavior.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.show" title="pydent.models.Wire.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>([pre])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.show" title="pydent.models.Wire.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>([pre])</p></td>
 <td><p>Show the wire nicely.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_save_json</span></code>()</p></td>
@@ -458,10 +460,10 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.where" title="pydent.models.Wire.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(session, params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Wire.where" title="pydent.models.Wire.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(session, params)</p></td>
 <td><p>Finds a list of models by some parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.where_callback" title="pydent.models.Wire.where_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where_callback</span></code></a>(model_name, *args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.where_callback" title="pydent.models.Wire.where_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where_callback</span></code></a>(model_name, *args, **kwargs)</p></td>
 <td><p>Finds models using a model interface and a set of parameters.</p></td>
 </tr>
 </tbody>
@@ -511,7 +513,7 @@
 </dl>
 </p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../models.html#pydent.models.Wire.session" title="pydent.models.Wire.session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Wire.session" title="pydent.models.Wire.session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code></a></p></td>
 <td><p>The connected session instance.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wire.source</span></code></p></td>

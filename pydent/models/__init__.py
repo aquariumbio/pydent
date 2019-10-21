@@ -188,7 +188,6 @@ information from the Aquarium server if necesssary.
     HasMany
     HasManyGeneric
     HasManyThrough
-    HasMixin
     HasOne
     HasOneFromMany
     JSON

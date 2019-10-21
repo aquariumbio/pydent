@@ -176,7 +176,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -255,7 +256,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -331,22 +333,38 @@
 <h1>pydent.aqsession.Browser<a class="headerlink" href="#pydent-aqsession-browser" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydent.aqsession.Browser">
-<em class="property">class </em><code class="sig-prename descclassname">pydent.aqsession.</code><code class="sig-name descname">Browser</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.aqsession.</code><code class="sig-name descname">Browser</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">inherit_models=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydent.interfaces.QueryInterfaceABC.html#pydent.interfaces.QueryInterfaceABC" title="pydent.interfaces.QueryInterfaceABC"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.interfaces.QueryInterfaceABC</span></code></a></p>
 <p>A class for browsing models and Aquarium inventory.</p>
 <p>Instantiates a new browser from a AqSession instance.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.5a7: </span>‘inherit_models’ argument will inherit the sessions model_cache
+(default: False)</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.AqSession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) – a session instance</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.AqSession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) – a session instance</p></li>
+<li><p><strong>inherit_models</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, the browser will inherit the cache in the
+provided session’s browser model_cache</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="method">
 <dt id="pydent.aqsession.Browser.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">inherit_models=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiates a new browser from a AqSession instance.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.5a7: </span>‘inherit_models’ argument will inherit the sessions model_cache
+(default: False)</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.AqSession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) – a session instance</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<a class="reference internal" href="pydent.aqsession.AqSession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><em>AqSession</em></a>) – a session instance</p></li>
+<li><p><strong>inherit_models</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, the browser will inherit the cache in the
+provided session’s browser model_cache</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -358,7 +376,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.Browser.__init__" title="pydent.aqsession.Browser.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(session)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.Browser.__init__" title="pydent.aqsession.Browser.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(session[, inherit_models])</p></td>
 <td><p>Instantiates a new browser from a AqSession instance.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.Browser.all" title="pydent.aqsession.Browser.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a>([model_class, opts])</p></td>
@@ -388,7 +406,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.aqsession.Browser.first" title="pydent.aqsession.Browser.first"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first</span></code></a>([num, model_class, sample_type, query])</p></td>
 <td><p>Finds first models.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.Browser.get" title="pydent.aqsession.Browser.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(models, relations[, query, strict, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.aqsession.Browser.get" title="pydent.aqsession.Browser.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(models[, relations, query, strict, …])</p></td>
 <td><p><dl class="field-list simple">
 <dt class="field-odd">type models</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]</p>
@@ -486,7 +504,8 @@
 <li><p><strong>sample_type</strong> (<em>basestring</em>) – optional sample_type name</p></li>
 <li><p><strong>opts</strong> (<em>dict</em>) – options to send to the function</p></li>
 <li><p><strong>params</strong> (<em>dict</em>) – additionaly keyword arguments to send to the function</p></li>
-<li><p><strong>as_single</strong> (<em>bool</em>) – if True, will return the first model of the array or None if array is empty</p></li>
+<li><p><strong>as_single</strong> (<em>bool</em>) – if True, will return the first model of the array or None if
+array is empty</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -674,12 +693,12 @@ model dict.</p>
 
 <dl class="method">
 <dt id="pydent.aqsession.Browser.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">models</em>, <em class="sig-param">relations</em>, <em class="sig-param">query=None</em>, <em class="sig-param">strict=True</em>, <em class="sig-param">force_refresh=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">models</em>, <em class="sig-param">relations=None</em>, <em class="sig-param">query=None</em>, <em class="sig-param">strict=True</em>, <em class="sig-param">force_refresh=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser.get" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>models</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]) – </p></li>
-<li><p><strong>relations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="pydent.relationships.BaseRelationship.html#pydent.relationships.BaseRelationship" title="pydent.relationships.BaseRelationship"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationship</span></code></a>]) – </p></li>
+<li><p><strong>relations</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="pydent.relationships.BaseRelationship.html#pydent.relationships.BaseRelationship" title="pydent.relationships.BaseRelationship"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelationship</span></code></a>]]) – </p></li>
 <li><p><strong>query</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – </p></li>
 <li><p><strong>strict</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – </p></li>
 <li><p><strong>force_refresh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – </p></li>
@@ -795,15 +814,59 @@ browser.retrieve(operations, relation_dict)
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>models</strong> (<em>list</em>) – models to retrieve from</p></li>
-<li><p><strong>relations</strong> (<em>list|dict|basestring</em>) – the relation to retrieve. This may either be a string (by attribute name), a list, or a dict.</p></li>
+<li><p><strong>relations</strong> (<em>list|dict|basestring</em>) – the relation to retrieve. This may either be a string (by
+attribute name), a list, or a dict.</p></li>
 <li><p><strong>strict</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – wither to ignore database inconsistencies</p></li>
 <li><p><strong>force_refresh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – </p></li>
 </ul>
 </dd>
 </dl>
 <p>:type bool
-:return: dictionary of all models retrieved grouped by the attribute name that retrieved them.
-:rtype: dictionary</p>
+:return: dictionary of all models retrieved grouped by the attribute name that</p>
+<blockquote>
+<div><p>retrieved them.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.aqsession.Browser.relationship_network">
+<em class="property">classmethod </em><code class="sig-name descname">relationship_network</code><span class="sig-paren">(</span><em class="sig-param">models</em>, <em class="sig-param">get_models</em>, <em class="sig-param">cache_func=None</em>, <em class="sig-param">key_func=None</em>, <em class="sig-param">reverse=False</em>, <em class="sig-param">g=None</em>, <em class="sig-param">strict_cache=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser.relationship_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser.relationship_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a DAG of related models based on some relationships. By
+default are built from a model using (model.__class__.__name__,
+model._primary_key)</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>method added</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Usage example <a class="reference internal" href="../browser.html#pydent.browser.Browser.sample_network" title="pydent.browser.Browser.sample_network"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sample_network</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>models</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]) – list of models</p></li>
+<li><p><strong>get_models</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – A function that takes in a single instance of a Model
+and returns an iterable of Tuples of (model, data),
+which is used to build edges.</p></li>
+<li><p><strong>key_func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>]) – An optional function that takes in a single instance of
+a Model and returns a key and some node data</p></li>
+<li><p><strong>cache_func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>]) – A function that takes in a list of models and caches
+some results.</p></li>
+<li><p><strong>g</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DiGraph</span></code>]) – optional nx.DiGraph</p></li>
+<li><p><strong>reverse</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to reverse the edge list</p></li>
+<li><p><strong>strict_cache</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – if True, if a request occurs after the cache step,
+a ForbiddenRequestException will be raised.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the relationship graph</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -848,6 +911,28 @@ browser.retrieve(operations, relation_dict)
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.aqsession.Browser.sample_network">
+<em class="property">classmethod </em><code class="sig-name descname">sample_network</code><span class="sig-paren">(</span><em class="sig-param">samples</em>, <em class="sig-param">reverse=False</em>, <em class="sig-param">g=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser.sample_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser.sample_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a DAG of <a class="reference internal" href="pydent.models.Sample.html#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">Samples</span></code></a> from their.</p>
+<p><a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValues</span></code></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>method added</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> – list of samples</p></li>
+<li><p><strong>reverse</strong> – whether to reverse the edges of the final graph</p></li>
+<li><p><strong>g</strong> – the graph</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.aqsession.Browser.samples_to_df">
 <code class="sig-name descname">samples_to_df</code><span class="sig-paren">(</span><em class="sig-param">samples</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/browser.html#Browser.samples_to_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.Browser.samples_to_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a pandas data frame representing the samples.</p>
@@ -878,7 +963,8 @@ properties. Can be imported into a pandas DataFrame:</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>samples</strong> (<em>list</em>) – samples, all of same sample type</p></li>
-<li><p><strong>sample_resolver</strong> – callable to resolve a sample object if the field value property contains a sample.</p></li>
+<li><p><strong>sample_resolver</strong> – callable to resolve a sample object if the field value
+property contains a sample.</p></li>
 </ul>
 </dd>
 </dl>
@@ -918,7 +1004,8 @@ properties. Can be imported into a pandas DataFrame:</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pattern</strong> (<em>basestring</em>) – regex pattern</p></li>
-<li><p><strong>samples</strong> (<em>list</em>) – samples to search. If left blank, a search to find samples will be performed</p></li>
+<li><p><strong>samples</strong> (<em>list</em>) – samples to search. If left blank, a search to find samples will
+be performed</p></li>
 <li><p><strong>sample_type</strong> (<em>name</em>) – restrict to a particular sample type</p></li>
 <li><p><strong>ignore_case</strong> (<em>bool</em>) – ignore case for regular pattern search (default True)</p></li>
 </ul>

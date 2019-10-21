@@ -176,7 +176,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -255,7 +256,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -334,7 +336,7 @@
 <em class="property">class </em><code class="sig-prename descclassname">pydent.planner.</code><code class="sig-name descname">PlannerLayout</code><span class="sig-paren">(</span><em class="sig-param">G=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Layout module for <a class="reference internal" href="pydent.planner.Planner.html#pydent.planner.Planner" title="pydent.planner.Planner"><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner</span></code></a>.</p>
-<p>Positions <a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> for the
+<p>Positions <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> for the
 Aquarium GUI</p>
 <p>Initializes a new planner layout.</p>
 <dl class="field-list simple">
@@ -397,7 +399,7 @@ Aquarium GUI</p>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.from_plan" title="pydent.planner.PlannerLayout.from_plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plan</span></code></a>(plan)</p></td>
-<td><p>Creates a layout from a <a class="reference internal" href="../models.html#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Plan</span></code></a> instance.</p></td>
+<td><p>Creates a layout from a <a class="reference internal" href="pydent.models.Plan.html#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Plan</span></code></a> instance.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.get_independent_layouts" title="pydent.planner.PlannerLayout.get_independent_layouts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_independent_layouts</span></code></a>()</p></td>
 <td><p>Finds all independent subgraphs.</p></td>
@@ -527,7 +529,7 @@ Aquarium GUI</p>
 <dd><p>Adds an Operation to the Layout.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>op</strong> (<a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><em>pydent.models.Operation</em></a>) – operation</p>
+<dd class="field-odd"><p><strong>op</strong> (<a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><em>pydent.models.Operation</em></a>) – operation</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>None</p>
@@ -551,7 +553,7 @@ Aquarium GUI</p>
 <p>Used in topological sorting of plans.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ops</strong> (<em>list</em>) – list of <a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
+<dd class="field-odd"><p><strong>ops</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>None</p>
@@ -569,7 +571,7 @@ Aquarium GUI</p>
 <p>Used in topological sorting of plans.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ops</strong> (<em>list</em>) – list of <a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
+<dd class="field-odd"><p><strong>ops</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>None</p>
@@ -605,8 +607,8 @@ this PlannerLayout.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ops1</strong> (<em>list</em>) – list of <a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p></li>
-<li><p><strong>ops2</strong> (<em>list</em>) – list of <a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p></li>
+<li><p><strong>ops1</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p></li>
+<li><p><strong>ops2</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -688,7 +690,7 @@ right coordinates.</p>
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.from_plan">
 <em class="property">classmethod </em><code class="sig-name descname">from_plan</code><span class="sig-paren">(</span><em class="sig-param">plan</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.from_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.from_plan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a layout from a <a class="reference internal" href="../models.html#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Plan</span></code></a> instance.</p>
+<dd><p>Creates a layout from a <a class="reference internal" href="pydent.models.Plan.html#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Plan</span></code></a> instance.</p>
 </dd></dl>
 
 <dl class="method">
@@ -749,7 +751,7 @@ right coordinates.</p>
 <dd><p>Return all predecessor operations from a list of operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em>) – list of <a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
+<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of node ids</p>
@@ -766,7 +768,7 @@ right coordinates.</p>
 <dd><p>Return all successor operations from a list of operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em>) – list of <a class="reference internal" href="../models.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
+<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of node ids</p>

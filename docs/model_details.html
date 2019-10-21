@@ -174,7 +174,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -253,7 +254,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -343,8 +345,8 @@ which are initialized in the class definition as follows:</p>
 <p>When called as an attribute, Trident will automatically use the session
 connection with Aquarium to retrieve the given model. This result is,
 by default, cached in the model instance. For example, the following
-code collects a single <a class="reference internal" href="models.html#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Sample</span></code></a> from the server, and then makes a new
-requests for its <a class="reference internal" href="models.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a>:</p>
+code collects a single <a class="reference internal" href="generated/pydent.models.Sample.html#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Sample</span></code></a> from the server, and then makes a new
+requests for its <a class="reference internal" href="generated/pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
 <span class="n">sample_type</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">sample_type</span>         <span class="c1"># new request made here for SampleType</span>
 <span class="k">assert</span> <span class="n">sample_type</span> <span class="ow">is</span> <span class="n">sample</span><span class="o">.</span><span class="n">sample_type</span> <span class="c1"># no new request made here, cached result is returned</span>

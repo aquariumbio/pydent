@@ -174,7 +174,8 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -253,7 +254,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Speeding up queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
 </ul>
@@ -420,10 +422,11 @@ from pydent.marshaller.exceptions import ModelValidationError
         many=None,
         allow_none=True,
     ):
-        if (ref is None and not attr is None) or (attr is None and not ref is None):
-            raise ModelValidationError(&quot;ref={} is None while attr={}.&quot;
-                                       &quot;Either both must be provided or both absent&quot;
-                                       .format(ref, attr))
+        if (ref is None and attr is not None) or (attr is None and ref is not None):
+            raise ModelValidationError(
+                &quot;ref={} is None while attr={}.&quot;
+                &quot;Either both must be provided or both absent&quot;.format(ref, attr)
+            )
         elif attr is None and ref is None:
             ref, att = self._get_ref_attr(nested=nested, ref=ref, attr=attr)
         self.attr = attr
@@ -486,7 +489,7 @@ from pydent.marshaller.exceptions import ModelValidationError
             return super().fullfill(
                 owner, cache, extra_args=extra_args, extra_kwargs=extra_kwargs
             )
-        except fields.RunTimeCallbackAttributeError as e:
+        except fields.RunTimeCallbackAttributeError:
             return BaseRelationshipAccessor.HOLDER</div>
 
 <div class="viewcode-block" id="BaseRelationship.build_query"><a class="viewcode-back" href="../../generated/pydent.relationships.BaseRelationship.html#pydent.relationships.BaseRelationship.build_query">[docs]</a>    def build_query(self, models):
@@ -532,7 +535,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         callback=None,
         callback_args=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         &quot;&quot;&quot;One initializer. Uses &quot;find&quot; callback by default.
 
@@ -574,7 +577,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         callback=None,
         callback_args=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         &quot;&quot;&quot;Many initializer. Uses &quot;where&quot; callback by default.
 
@@ -597,7 +600,7 @@ from pydent.marshaller.exceptions import ModelValidationError
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )</div></div>
 
 
@@ -630,7 +633,7 @@ from pydent.marshaller.exceptions import ModelValidationError
             callback=callback,
             callback_args=(self.get_ref,),
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )</div>
 
     def get_ref(self, instance):
@@ -661,7 +664,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         &quot;&quot;&quot;HasMany relationship initializer.
 
@@ -705,7 +708,7 @@ from pydent.marshaller.exceptions import ModelValidationError
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )</div></div>
 
 
@@ -724,7 +727,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         ref, attr = self._get_ref_attr(nested=nested, attr=attr, ref=ref)
         self.ref = ref
@@ -756,7 +759,7 @@ from pydent.marshaller.exceptions import ModelValidationError
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )</div></div>
 
 
@@ -774,7 +777,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         &quot;&quot;&quot;HasOneFromMany relationship initializer, which is intended to return
         a single model from a Many query.
@@ -823,7 +826,7 @@ from pydent.marshaller.exceptions import ModelValidationError
             callback=callback,
             callback_args=callback_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )</div></div>
 
 
@@ -837,7 +840,7 @@ from pydent.marshaller.exceptions import ModelValidationError
         additional_args=None,
         callback=None,
         callback_kwargs=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             nested,
@@ -846,7 +849,7 @@ from pydent.marshaller.exceptions import ModelValidationError
             callback=callback,
             additional_args=additional_args,
             callback_kwargs=callback_kwargs,
-            **kwargs
+            **kwargs,
         )</div></div>
 </pre></div>
 
