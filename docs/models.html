@@ -360,7 +360,27 @@ about that sample’s <cite>sample_type</cite>:</p>
 </div>
 <p>If we call <cite>sample_type</cite> again, a new request <em>will not be made</em>, rather
 the model will return the previously returned data. If a new request
-is desired, the attribute must be set to <cite>None</cite>, as in <cite>sample.sample_type = None</cite></p>
+is desired, we can reset the field using the
+<a class="reference internal" href="base.html#pydent.base.ModelBase.reset_field" title="pydent.base.ModelBase.reset_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset_field</span></code></a> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">sample</span><span class="o">.</span><span class="n">is_deserialized</span><span class="p">(</span><span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
+<span class="n">sample</span><span class="o">.</span><span class="n">reset_field</span><span class="p">(</span><span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">sample</span><span class="o">.</span><span class="n">is_deserialized</span><span class="p">(</span><span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># now calling &#39;sample_type&#39; again will initialize a new request</span>
+<span class="c1"># which will be cached. This can be checked using `is_deserialized`</span>
+<span class="n">sample</span><span class="o">.</span><span class="n">sample_type</span>
+<span class="k">assert</span> <span class="n">sample</span><span class="o">.</span><span class="n">is_deserialized</span><span class="p">(</span><span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span><a class="reference internal" href="base.html#pydent.base.ModelBase.reset_field" title="pydent.base.ModelBase.reset_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset_field</span></code></a> method added to reset
+fields.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a7: </span><a class="reference internal" href="base.html#pydent.base.ModelBase.is_deserialized" title="pydent.base.ModelBase.is_deserialized"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_deserialized</span></code></a> can be called
+to check if a relation has already been deserialized</p>
+</div>
 <p>Models can be dumped to their JSON data or loaded from data</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># dump the data</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
@@ -946,7 +966,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1299,7 +1319,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1652,7 +1672,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2005,7 +2025,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2444,7 +2464,7 @@ based).</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2797,7 +2817,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3170,7 +3190,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3563,7 +3583,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3922,7 +3942,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4275,7 +4295,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4717,7 +4737,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -5076,7 +5096,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -5429,7 +5449,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -5788,7 +5808,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -6140,7 +6160,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -6493,7 +6513,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -7173,7 +7193,7 @@ instance. Optionally, a values dictionary may be provided with the following for
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -7689,7 +7709,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -8051,7 +8071,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -8558,7 +8578,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -8999,7 +9019,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -9533,7 +9553,7 @@ instance. Optionally, a values dictionary may be provided with the following for
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -9963,7 +9983,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -10413,7 +10433,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -10766,7 +10786,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -11119,7 +11139,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -11489,7 +11509,7 @@ cases.</p>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
 behavior.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added</p>
+<p><span class="versionmodified added">New in version 0.1.5a7: </span>Method added to reset deserialized attributes</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

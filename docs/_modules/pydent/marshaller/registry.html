@@ -316,9 +316,12 @@
   <h1>Source code for pydent.marshaller.registry</h1><div class="highlight"><pre>
 <span></span>&quot;&quot;&quot;Model and schema registry meta-classes.&quot;&quot;&quot;
 from collections import defaultdict
+from pprint import pformat
 
 from pydent.marshaller.exceptions import ModelRegistryError
 from pydent.marshaller.exceptions import SchemaRegistryError
+from pydent.utils.loggable import condense_long_lists
+from pydent.utils.logging_helpers import did_you_mean
 
 
 <div class="viewcode-block" id="SchemaRegistry"><a class="viewcode-back" href="../../../generated/pydent.marshaller.SchemaRegistry.html#pydent.marshaller.SchemaRegistry">[docs]</a>class SchemaRegistry(type):
@@ -409,16 +412,25 @@ from pydent.marshaller.exceptions import SchemaRegistryError
         &quot;&quot;&quot;Returns the class&#39;s schema.&quot;&quot;&quot;
         return cls._model_schema
 
-<div class="viewcode-block" id="ModelRegistry.get_model"><a class="viewcode-back" href="../../../generated/pydent.marshaller.ModelRegistry.html#pydent.marshaller.ModelRegistry.get_model">[docs]</a>    @staticmethod
-    def get_model(name):
+    @classmethod
+    def did_you_mean_model(cls, model_name):
+        model_names = list(cls.models.keys())
+        available_models = &quot;, &quot;.join(model_names)
+        msg = did_you_mean(model_name, model_names)
+        if not msg:
+            return &quot;Available models: {}&quot;.format(pformat(available_models))
+        return msg
+
+<div class="viewcode-block" id="ModelRegistry.get_model"><a class="viewcode-back" href="../../../generated/pydent.marshaller.ModelRegistry.html#pydent.marshaller.ModelRegistry.get_model">[docs]</a>    @classmethod
+    def get_model(cls, name):
         &quot;&quot;&quot;Gets a model class by name.&quot;&quot;&quot;
         if name not in ModelRegistry.models:
             raise ModelRegistryError(
-                &quot;Model &#39;{}&#39; not found in registry. Available models:\n{}&quot;.format(
-                    name, &quot;, &quot;.join(ModelRegistry.models.keys())
+                &quot;Model &#39;{}&#39; not found in registry.\n{}&quot;.format(
+                    name, cls.did_you_mean_model(name)
                 )
             )
-        return ModelRegistry.models[name]</div></div>
+        return cls.models[name]</div></div>
 </pre></div>
 
     </div>

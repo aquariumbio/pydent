@@ -116,7 +116,7 @@ class SchemaModel(metaclass=ModelRegistry):
         behavior.
 
         .. versionadded:: 0.1.5a7
-            Method added
+            Method added to reset deserialized attributes
 
         :param name: name of the attribute
         :return: None

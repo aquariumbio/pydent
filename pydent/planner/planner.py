@@ -5,6 +5,7 @@ import webbrowser
 from collections import defaultdict
 from copy import deepcopy
 from functools import wraps
+from typing import List
 from uuid import uuid4
 
 import networkx as nx
@@ -137,7 +138,7 @@ class Planner(AFTMatcher):
     """A user-interface for making experimental plans and layouts."""
 
     class ITEM_SELECTION_PREFERENCE:
-        """Item selection options"""
+        """Item selection options."""
 
         ANY = "ANY"  #: pick the first item that matches the set field_value
         RESTRICT = "RESTRICT"  #: restrict to the currently set allowable_field_type
@@ -155,7 +156,7 @@ class Planner(AFTMatcher):
         _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]  #: all choices
 
     class ITEM_ORDER_PREFERENCE:
-        """Item order options"""
+        """Item order options."""
 
         FIRST = "FIRST"  #: select first item
         LAST = "LAST"  #: select last item
@@ -991,7 +992,7 @@ class Planner(AFTMatcher):
     @plan_verification_wrapper
     def set_to_available_item(
         self,
-        fv,
+        fv: FieldValue,
         order_preference=ITEM_ORDER_PREFERENCE._DEFAULT,
         filter_func=None,
         item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT,
@@ -1433,7 +1434,7 @@ class Planner(AFTMatcher):
         return self.copy()
 
     @staticmethod
-    def combine(plans):
+    def combine(plans: List[Plan]):
         """Merges a list of plans into a single plan by combining operations
         and wires.
 

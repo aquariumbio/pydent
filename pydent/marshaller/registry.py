@@ -97,11 +97,11 @@ class ModelRegistry(type):
         return cls._model_schema
 
     @classmethod
-    def did_you_mean_model(cls, model_name):
+    def did_you_mean_model(cls, model_name, fallback=True):
         model_names = list(cls.models.keys())
         available_models = ", ".join(model_names)
         msg = did_you_mean(model_name, model_names)
-        if not msg:
+        if not msg and fallback:
             return "Available models: {}".format(pformat(available_models))
         return msg
 
