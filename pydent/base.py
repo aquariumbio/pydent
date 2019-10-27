@@ -52,6 +52,7 @@ from inflection import tableize
 
 from pydent.exceptions import AquariumModelError
 from pydent.exceptions import NoSessionError
+from pydent.exceptions import SessionAlreadySet
 from pydent.interfaces import BrowserInterface
 from pydent.interfaces import QueryInterface
 from pydent.marshaller import fields
@@ -161,7 +162,7 @@ class ModelBase(SchemaModel):
 
     @classmethod
     def load(cls, *args, **kwargs):
-        raise Exception(
+        raise DeprecationWarning(
             "This method is now depreciated as of version 0.1.0. Trident now requires"
             " model instantiations to be explicitly attached to an AqSession object."
             "\nPlease use the following"
@@ -244,15 +245,17 @@ class ModelBase(SchemaModel):
                 "session is a type '{}', not a Session object".format(type(new_session))
             )
         if self.session is not None:
-            raise Exception(
+            raise SessionAlreadySet(
                 "Cannot set session. Model {} already has a session.".format(self)
             )
         self._session = new_session
 
     def connect_to_session(self, session: "AqSession"):
-        """Connect model instance to a session.
+        """Connect model to a session.
 
-        Does nothing if session already exists.
+        :param session: the :class:`AqSession <pydent.aqsession.AqSession>`
+        :return: None
+        :raises
         """
         self.session = session
 
@@ -409,8 +412,9 @@ class ModelBase(SchemaModel):
                     try:
                         setattr(self, relation.ref, None)
                     except TypeError as e:
-                        msg = "An error occured while trying to anonymize relation:\n{}"\
-                            .format(relation)
+                        msg = "An error occured while trying to anonymize relation:\n{}".format(
+                            relation
+                        )
                         raise e.__class__(msg + "\nerr msg: " + str(e))
 
     def copy(self, keep: bool = None) -> "ModelBase":

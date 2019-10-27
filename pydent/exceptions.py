@@ -54,3 +54,7 @@ class AquariumModelError(TridentBaseException):
 
 class NoSessionError(TridentBaseException):
     """There was no session attached to the model, but one is required."""
+
+
+class SessionAlreadySet(TridentBaseException):
+    """Cannot set session to models with a session already set."""

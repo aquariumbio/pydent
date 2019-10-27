@@ -91,7 +91,7 @@ class ExceptionCollection(Exception):
                         msg += "\n  ({}): {}".format(i, e)
                 self.args = (msg,)
             except Exception as e:
-                raise Exception(
+                raise e.__class__(
                     "There was an error raising exceptions {}\n".format(self.errors, e)
                 )
             raise self

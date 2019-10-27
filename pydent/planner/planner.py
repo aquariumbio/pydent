@@ -11,6 +11,7 @@ from uuid import uuid4
 import networkx as nx
 
 from pydent.aqsession import AqSession
+from pydent.exceptions import AquariumModelError
 from pydent.models import FieldValue
 from pydent.models import Operation
 from pydent.models import OperationType
@@ -485,7 +486,7 @@ class Planner(AFTMatcher):
         self.log.info("QUICK CREATE CHAIN {}".format(op_or_otnames))
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
         if any([op for op in ops if op is None]):
-            raise Exception("Could not find some operations: {}".format(ops))
+            raise PlannerException("Could not find some operations: {}".format(ops))
         pairs = arr_to_pairs(ops)
         for op1, op2 in pairs:
             self.quick_wire(op1, op2)
@@ -1102,7 +1103,7 @@ class Planner(AFTMatcher):
         :rtype:
         """
         if fv.role != "output":
-            raise Exception(
+            raise PlannerException(
                 "Cannot output. FieldValue {} is a/an {}.".format(fv.name, fv.role)
             )
         if setter is None:
