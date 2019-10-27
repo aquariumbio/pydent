@@ -105,6 +105,7 @@ import timeit
 import webbrowser
 from copy import copy
 from decimal import Decimal
+from typing import Iterable
 from typing import List
 from typing import Type
 from typing import Union
@@ -112,6 +113,7 @@ from typing import Union
 from requests.exceptions import ReadTimeout
 
 from pydent.aqhttp import AqHTTP
+from pydent.base import ModelBase
 from pydent.base import ModelRegistry
 from pydent.browser import Browser
 from pydent.interfaces import BrowserInterface
@@ -405,6 +407,21 @@ class AqSession(SessionABC):
                 to_session.browser.update_cache(models)
             for m in models:
                 m._session = to_session
+
+    def move_models_to_session(self, models: Iterable[ModelBase]):
+        """Move models to this session. If this session has a.
+
+        :class:`Browser <pydent.browser.Browser>`,
+        this will update (and possibly overwrite) models into the
+         Browser.model_cache.
+
+        :param models: list of models
+        :return: None
+        """
+        if self.browser:
+            self.browser.update_cache(models)
+        for m in models:
+            m._session = self
 
     def __getattr__(self, item):
         if item not in self.__dict__:

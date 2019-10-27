@@ -75,7 +75,7 @@ class FieldType(FieldMixin, ModelBase):
         allowable_field_types=None,
     ):
         if operation_type and sample_type:
-            raise Exception(
+            raise AquariumModelError(
                 "Cannot instantiate a FieldType for both a OperationType and SampleType."
             )
         if operation_type:

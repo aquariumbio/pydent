@@ -5,6 +5,7 @@ from typing import Type
 from pydent.marshaller.descriptors import DataAccessor
 from pydent.marshaller.exceptions import CallbackValidationError
 from pydent.marshaller.exceptions import MultipleValidationError
+from pydent.marshaller.exceptions import SchemaException
 from pydent.marshaller.fields import Callback
 from pydent.marshaller.fields import Field
 from pydent.marshaller.registry import ModelRegistry
@@ -48,7 +49,7 @@ class DynamicSchema(metaclass=SchemaRegistry):
         :rtype:
         """
         if cls.model_class is not instance.__class__:
-            raise Exception("Instance and model class are different")
+            raise SchemaException("Instance and model class are different")
         for k, v in dict(data).items():
             if k in cls.ignore:
                 data.pop(k, None)
