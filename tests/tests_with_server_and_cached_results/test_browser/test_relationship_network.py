@@ -39,7 +39,13 @@ def test_sample_network(session):
 
     with session.with_cache() as sess:
         samples = session.Sample.last(100)
-        sess.browser.sample_network(samples)
+        g1 = sess.browser.sample_network(samples)
+
+        g2 = session.browser.sample_network(samples, reverse=True)
+
+        assert g1.number_of_nodes() == g2.number_of_nodes()
+
+        assert g1.number_of_edges() == g2.number_of_edges()
 
 
 def test_plan_network(session):
