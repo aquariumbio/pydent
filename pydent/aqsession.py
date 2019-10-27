@@ -408,21 +408,6 @@ class AqSession(SessionABC):
             for m in models:
                 m._session = to_session
 
-    def move_models_to_session(self, models: Iterable[ModelBase]):
-        """Move models to this session. If this session has a.
-
-        :class:`Browser <pydent.browser.Browser>`,
-        this will update (and possibly overwrite) models into the
-         Browser.model_cache.
-
-        :param models: list of models
-        :return: None
-        """
-        if self.browser:
-            self.browser.update_cache(models)
-        for m in models:
-            m._session = self
-
     def __getattr__(self, item):
         if item not in self.__dict__:
             non_private = [k for k in QueryInterface.__dict__ if not k.startswith("_")]
@@ -451,7 +436,10 @@ class AqSession(SessionABC):
         using_verbose: bool = None,
         session_swap: bool = False,
     ) -> "AqSession":
-        """.. versionchanges:: 0.1.5a7 'session_swap` parameter added.
+        """Factory call for producing a new Session instance.
+
+        .. versionchanges:: 0.1.5a7
+            'session_swap` parameter added.
 
         :param using_cache:
         :param using_requests:

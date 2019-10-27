@@ -352,17 +352,36 @@ class Browser(QueryInterfaceABC):
                 found_queries.append(match)
         return found, found_queries
 
-    def update_cache(self, models, recursive=True):
-        """Updates the model cache with models.
+    def update_cache(
+        self,
+        models: List[ModelBase],
+        recursive: bool = True,
+        update_session: bool = False,
+    ) -> Dict[str, List[ModelBase]]:
+        """Update the browser's model cache from a list of models.
 
-        If recursive=True, recursively collect all models contained in
-        the relationships and use those to update the cache as well.
+        .. versionchanged:: 0.1.5a8
+            Added 'update_session' kwarg which will change the model's
+            session to the browser's session.
+
+        .. warning::
+            If `update_session=True`, the model's session
+            will change and this may have unintended consequences.
+
+        :param models: list of models
+        :param recursive: if True, recursively collect all models contained in
+            the relationships and use those to update the cache as well.
+        :param update_session: if True, attach the browser's session to the models
+        :return: the updated dictionary broken down by model class name
         """
         assert isinstance(models, list)
         if recursive:
             memo = {}
             ModelBase._flatten_deserialized_data(models, memo)
             models = list(memo.values())
+        if update_session:
+            for m in models:
+                m._session = self.session
         return self._group_models_and_update_cache(models)
 
     # TODO: do we really want to simply overwrite the dictionary or update the models?

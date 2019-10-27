@@ -239,6 +239,17 @@ class ModelBase(SchemaModel):
 
     @session.setter
     def session(self, new_session: "AqSession"):
+        """Sets the session of the model.
+
+        .. versionchanged:: 0.1.5a8
+            SessionAlreadySet exception will be raised (instead of Exception)
+            if session is already set.
+
+        :param new_session: the new session
+        :return: None
+        :raises SessionAlreadySet: if session is already set
+        :raises NoSessionError: if session is not a SessionABC type
+        """
         if new_session is not None and not issubclass(type(new_session), SessionABC):
             raise NoSessionError(
                 "Cannot instantiate new model because its data parent "
@@ -255,7 +266,8 @@ class ModelBase(SchemaModel):
 
         :param session: the :class:`AqSession <pydent.aqsession.AqSession>`
         :return: None
-        :raises
+        :raises SessionAlreadySet: if session is already set
+        :raises NoSessionError: if session is not a SessionABC type
         """
         self.session = session
 
