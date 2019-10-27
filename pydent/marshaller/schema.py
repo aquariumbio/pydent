@@ -8,7 +8,6 @@ from pydent.marshaller.exceptions import MultipleValidationError
 from pydent.marshaller.exceptions import SchemaException
 from pydent.marshaller.fields import Callback
 from pydent.marshaller.fields import Field
-from pydent.marshaller.registry import ModelRegistry
 from pydent.marshaller.registry import SchemaRegistry
 from pydent.marshaller.utils import make_signature_str
 
