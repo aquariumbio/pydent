@@ -28,6 +28,12 @@ def to_undirected(graph):
     return undirected
 
 
+def bfs_tree_subgraph(graph, source):
+    """Similar to nx.bfs_tree, but nx.bfs_tree does not maintain edge list."""
+    nodes = list(nx.dfs_predecessors(graph, source)) + [source]
+    return graph.subgraph(nodes)
+
+
 def get_subgraphs(graph):
     """Get independent subgraphs."""
     node_list = list(graph.nodes)
