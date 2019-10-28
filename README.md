@@ -79,22 +79,3 @@ print(p.sample_type)
 primer_type = mysession.SampleType.find(1)
 print(primer_type.relationships)
 ```
-
-
-## Contributors:
-
-via `git fame -wMC --excl '.(png|gif|enc)$'`
-
-Total commits: 965
-Total ctimes: 1348
-Total files: 477
-Total loc: 100924
-| Author           |   loc |   coms |   fils |  distribution   |
-|:-----------------|------:|-------:|-------:|:----------------|
-| Justin Vrana     | 88573 |    295 |    275 | 87.8/30.6/57.7  |
-| jvrana           | 12187 |    499 |    163 | 12.1/51.7/34.2  |
-| Ben Keller       |   141 |    118 |     34 | 0.1/12.2/ 7.1   |
-| Eric Klavins     |    20 |     47 |      3 | 0.0/ 4.9/ 0.6   |
-| Ubuntu           |     2 |      3 |      1 | 0.0/ 0.3/ 0.2   |
-| gasnew           |     1 |      1 |      1 | 0.0/ 0.1/ 0.2   |
-| Devin Strickland |     0 |      2 |      0 | 0.0/ 0.2/ 0.0   |
