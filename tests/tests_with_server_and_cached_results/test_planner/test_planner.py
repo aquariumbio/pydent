@@ -17,6 +17,16 @@ def planner_example(session):
     return p
 
 
+def test_load_plans(session):
+
+    with session.with_cache() as sess:
+        ops = sess.Operation.last(10, query={"status": "done"})
+        plans = sess.browser.get("Operation", "plans")
+
+    for plan in plans:
+        Planner(plan)
+
+
 def test_add_successive_operations(session):
 
     p = Planner(session)
@@ -115,6 +125,38 @@ class TestSetItem:
                 assert len(items) == 2
             else:
                 assert len(items) == 1
+
+
+def test_prettify(session):
+    with session.with_cache() as sess:
+        canvas = Planner(sess)
+        chain = [
+            "Check Plate",
+            "Make Overnight Suspension",
+            "Make Miniprep",
+            "Yeast Transformation",
+            "Yeast Overnight Suspension",
+        ]
+
+        ops = canvas.chain(*chain)
+        canvas.set_field_value_and_propogate(ops[0].inputs[0])
+        canvas.set_to_available_item(ops[0].inputs[0])
+
+        ops = canvas.chain(*chain)
+        canvas.set_field_value_and_propogate(ops[0].inputs[0])
+        canvas.set_to_available_item(ops[0].inputs[0])
+
+        canvas.prettify()
+
+
+def test_prettify(session):
+    with session.with_cache() as sess:
+        canvas = Planner(sess)
+
+        for i in range(10):
+            canvas.create_operation_by_name("Yeast Overnight Suspension")
+
+        canvas.prettify()
 
 
 class TestOptimizePlan:
