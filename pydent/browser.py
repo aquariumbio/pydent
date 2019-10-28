@@ -971,7 +971,7 @@ class Browser(QueryInterfaceABC):
         def get_models(model):
             for fv in model.field_values:
                 if fv.sample and issubclass(type(fv.sample), ModelBase):
-                    yield fv.sample, {}
+                    yield fv.sample, {"field_value_name": fv.name}
 
         def cache_func(models):
             sess = models[0].session
