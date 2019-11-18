@@ -1,7 +1,13 @@
 """Models related to inventory, like Items, Collections, ObjectTypes, and
 PartAssociations."""
+from typing import List
+from typing import Tuple
+from typing import Union
+
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
+from pydent.models.controller_mixin import ControllerMixin
+from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.crud_mixin import SaveMixin
 from pydent.models.data_associations import DataAssociatorMixin
 from pydent.relationships import HasMany
@@ -113,7 +119,7 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
 @add_schema
 class Collection(
-    DataAssociatorMixin, ModelBase
+    DataAssociatorMixin, ControllerMixin, ModelBase
 ):  # pylint: disable=too-few-public-methods
     """A Collection model, such as a 96-well plate, which contains many
     `parts`, each of which can be associated with a different sample."""
@@ -165,14 +171,50 @@ class Collection(
         """Returns the Item object with the ID of this Collection."""
         return self.session.Item.find(self.id)
 
+    # TODO: implement save and create
     def create(self):
-        self.as_item().create()
+        """Create a new empty collection on the server."""
+        self.session.utils.model_update("collections", self.object_type_id, {})
 
-    def update(self):
-        self.as_item().update()
+    def assign_sample(self, sample_id: int, pairs: List[Tuple[int, int]]):
+        """Assign sample id to the (row, column) pairs for the collection.
 
-    def save(self):
-        self.as_item().save()
+        :param sample_id: the sample id to assign
+        :param pairs: list of (row, column) tuples
+        :return: self
+        """
+        data = self.controller_method(
+            "assign_sample",
+            self.get_tableized_name(),
+            self.id,
+            data={"sample_id": sample_id, "pairs": pairs},
+        )
+        self.refresh()
+        return self
+
+    def remove_sample(self, pairs: List[Tuple[int, int]]):
+        """Clear the sample_id assigment in the (row, column) pairs for the
+        collection.
+
+        :param pairs: list of (row, column) tuples
+        :return: self
+        """
+        data = self.controller_method(
+            "delete_selection",
+            self.get_tableized_name(),
+            self.id,
+            data={"pairs": pairs},
+        )
+        self.refresh()
+        return self
+
+    # TODO: add data associations to matrix
+
+    # def update(self):
+    #     self.as_item().update()
+    #
+    # def save(self):
+    #     self.as_item().save()
 
 
 @add_schema
@@ -186,7 +228,7 @@ class ObjectType(SaveMixin, ModelBase):
 
 
 @add_schema
-class PartAssociation(ModelBase):
+class PartAssociation(JSONSaveMixin, ModelBase):
     """Represents a PartAssociation linking a part to a collection.
 
     Collections contain many `parts`, each of which can refer to a
