@@ -209,7 +209,7 @@ class Collection(
         return self
 
     # TODO: add data associations to matrix
-
+    # TODO: collections test
     # def update(self):
     #     self.as_item().update()
     #
