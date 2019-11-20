@@ -1,4 +1,14 @@
 # pydent change log
+## 0.1.5a8
+**2019-11-19T18:33:38.350971**
+bug fixes
+
+ - fixes loggable class and adds tests
+ - fixes issue with attribute access in session
+ - fixes issue whe3re Plan.one() return None for Aquarium 2.7
+ - Plan no longer includes wires on query
+
+
 ## 0.1.5a6
 **2019-08-08T14:52:14.631040**
 
