@@ -477,7 +477,7 @@ def test_speed_improvements(session):
     items = session.Item.last(n)
     samples = [item.sample for item in items]
     object_types = [item.object_type for item in items]
-    sample_types = [sample.sample_type for sample in samples]
+    sample_types = [sample.sample_type for sample in samples if sample]
     for st in sample_types:
         st.field_types
     t2 = time.time()

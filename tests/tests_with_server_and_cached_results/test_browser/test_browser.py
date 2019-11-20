@@ -319,7 +319,8 @@ def test_retrieve_with_many_through_for_collections_and_parts(session):
         other_models = model._get_deserialized_data()["parts"]
         if other_models is not None:
             for other_model in other_models:
-                assert isinstance(other_model, pydent_models.Item)
+                if other_model is not None:
+                    assert issubclass(type(other_model), pydent_models.Item)
 
 
 def test_retrieve_has_many_through(session):

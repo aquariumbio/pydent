@@ -425,7 +425,7 @@ class AqSession(SessionABC):
                         )
                     )
 
-        return super().__getattr__(item)
+        return self.__getattribute__(item)
 
     def __call__(
         self,

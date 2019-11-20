@@ -19,12 +19,13 @@ from typing import Dict
 
 import requests
 
+from pydent.exceptions import AquariumModelNotFound
 from pydent.exceptions import ForbiddenRequestError
 from pydent.exceptions import TridentJSONDataIncomplete
 from pydent.exceptions import TridentLoginError
 from pydent.exceptions import TridentRequestError
 from pydent.exceptions import TridentTimeoutError
-from pydent.utils import Loggable
+from pydent.utils import logger
 from pydent.utils import pprint_data
 from pydent.utils import url_build
 
@@ -55,7 +56,7 @@ class AqHTTP:
         self._requests_session = None  #: the requests session
         self.timeout = self.__class__.TIMEOUT  #: the timeout (s) for requests
         self._login(login, password)
-        self.log = Loggable(self, name="AqHTTP@{}".format(aquarium_url))  #: the logger
+        self.log = logger(name="AqHTTP@{}".format(aquarium_url))  #: the logger
         self._using_requests = True  #: if False, any HTTP requests will throw and error
         self.num_requests = 0  #: number of requests counter
 
@@ -79,8 +80,8 @@ class AqHTTP:
         """
         self._using_requests = False
 
+    @staticmethod
     def _format_response_info(
-        self,
         response: requests.Response,
         include_text: bool = False,
         include_body: bool = True,
@@ -97,20 +98,21 @@ class AqHTTP:
                     my_json = body.decode("utf8").replace("'", '"')
                     body = json.loads(my_json)
                     body = pprint_data(body, max_list_len=10)
-                except:
+                except Exception:
                     pass
                 msg = msg + "\n" + "BODY: {body}".format(body=body)
             if include_text:
                 text = getattr(response, "text", "")
                 try:
                     text = json.dumps(json.loads(text), indent=2)
-                except:
+                except Exception:
                     pass
                 msg = msg + "\n" + "TEXT: {text}".format(text=text)
             return msg
         return "RESPONSE: NO RESPONSE"
 
-    def _format_request_status(self, response: requests.Response) -> str:
+    @staticmethod
+    def _format_request_status(response: requests.Response) -> str:
         if response is not None:
             return "STATUS:  {} {}".format(response.status_code, response.reason)
         return "STATUS: NO RESPONSE"
@@ -183,13 +185,29 @@ class AqHTTP:
     def _serialize_request(url: str, method: str, body: dict) -> str:
         return json.dumps({"url": url, "method": method, "body": body}, sort_keys=True)
 
+    @classmethod
+    def _dispatch_response(cls, response):
+        if response.status_code == 422:
+            pass
+        elif response.status_code >= 400:
+            response_info = cls._format_response_info(response)
+            request_status = cls._format_request_status(response)
+            msg = "\n".join(
+                [
+                    "The Aquarium server returned an error.",
+                    request_status,
+                    response_info,
+                ]
+            )
+            raise TridentRequestError(msg, response)
+
     def request(
         self,
         method: str,
         path: str,
         timeout: int = None,
         allow_none: bool = True,
-        **kwargs
+        **kwargs,
     ) -> dict:
         """Performs a http request.
 
@@ -227,18 +245,7 @@ class AqHTTP:
         )
 
         self.log.info(self._format_response_info(response))
-        if response.status_code >= 400:
-            response_info = self._format_response_info(response)
-            request_status = self._format_request_status(response)
-            msg = "\n".join(
-                [
-                    "The Aquarium server returned an error.",
-                    request_status,
-                    response_info,
-                ]
-            )
-            raise TridentRequestError(msg, response)
-
+        self._dispatch_response(response)
         return self._response_to_json(response)
 
     def _response_to_json(self, response: requests.Response) -> dict:
@@ -289,7 +296,7 @@ class AqHTTP:
         json_data: dict = None,
         timeout: int = None,
         allow_none: bool = True,
-        **kwargs
+        **kwargs,
     ) -> dict:
         """Make a post request to the session.
 
@@ -314,7 +321,7 @@ class AqHTTP:
             json=json_data,
             timeout=timeout,
             allow_none=allow_none,
-            **kwargs
+            **kwargs,
         )
 
     def put(
@@ -323,7 +330,7 @@ class AqHTTP:
         json_data: dict = None,
         timeout: int = None,
         allow_none: bool = True,
-        **kwargs
+        **kwargs,
     ) -> dict:
         """Make a put request to the session.
 
@@ -348,7 +355,7 @@ class AqHTTP:
             json=json_data,
             timeout=timeout,
             allow_none=allow_none,
-            **kwargs
+            **kwargs,
         )
 
     def get(

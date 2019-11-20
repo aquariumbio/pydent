@@ -94,7 +94,7 @@ def test_plan_copy(example_plan):
             assert fv.field_type_id is not None
 
 
-# TODO: make this a deterministic test
+# TODO: make this adeterministic test
 """def test_new_plan(session):
 
     p = fake_session.Plan.new()

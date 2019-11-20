@@ -1,6 +1,5 @@
 [flake8]
-ignore = F401,E203,W503
-max-line-length = 100
-include =
-exclude = tests/*,docsrc/*
-max-complexity = 20
+max-line-length = 130
+# Provide a comma-separate list of glob patterns to include for checks.
+exclude = .svn,CVS,.bzr,.hg,.git,__pycache__,.tox,tests,docsrc
+extend-ignore = F401,E203

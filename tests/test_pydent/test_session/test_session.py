@@ -1,3 +1,5 @@
+import pytest
+
 from pydent.aqhttp import AqHTTP
 from pydent.base import ModelRegistry
 from pydent.interfaces import QueryInterface
@@ -63,3 +65,9 @@ def test_set_timeout(fake_session):
 
     fake_session.set_timeout(5)
     assert fake_session._aqhttp.timeout == 5
+
+
+def test_raises_attribute_error(fake_session):
+    with pytest.raises(AttributeError):
+        getattr(fake_session, "asdfasdf")
+    getattr(fake_session, "Sample")

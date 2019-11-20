@@ -39,9 +39,9 @@ from typing import Union
 from inflection import pluralize
 from inflection import underscore
 
-from pydent.marshaller.registry import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
+from pydent.marshaller.registry import ModelRegistry
 
 
 class SessionInterface:
@@ -490,12 +490,16 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         """Finds model by id."""
         if model_id is None:
             raise ValueError("model_id in 'find' cannot be None")
+        if model_id == 0:
+            return None
         return self._post_json({"id": model_id, "include": include, "options": opts})
 
     def find_by_name(self, name, include=None, opts: dict = None):
         """Finds model by name."""
         if name is None:
             raise ValueError("name in 'find_by_name' cannot be None")
+        if name.strip() == "":
+            return None
         return self._post_json(
             {
                 "method": "find_by_name",

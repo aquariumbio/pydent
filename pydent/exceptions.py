@@ -24,6 +24,10 @@ class AquariumError(TridentBaseException):
     """Aquarium raised an error."""
 
 
+class AquariumModelNotFound(TridentBaseException):
+    """Returned when Aquarium could not find a given model."""
+
+
 class ForbiddenRequestError(TridentBaseException):
     """Raised when Trident attempts to make a request after requests have been
     explicitly turned off."""

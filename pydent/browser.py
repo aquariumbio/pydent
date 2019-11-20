@@ -29,7 +29,8 @@ from pydent.interfaces import QueryInterfaceABC
 from pydent.marshaller import ModelRegistry
 from pydent.models import Sample
 from pydent.relationships import BaseRelationship
-from pydent.utils import Loggable
+from pydent.sessionabc import SessionABC
+from pydent.utils import logger
 from pydent.utils.logging_helpers import did_you_mean
 
 # TODO: browser documentation
@@ -55,7 +56,7 @@ class Browser(QueryInterfaceABC):
         "HasManyGeneric",
     ]
 
-    def __init__(self, session: "AqSession", inherit_models: bool = False):
+    def __init__(self, session: SessionABC, inherit_models: bool = False):
         """Instantiates a new browser from a AqSession instance.
 
         .. versionchanged:: 0.1.5a7
@@ -65,7 +66,7 @@ class Browser(QueryInterfaceABC):
         :param session: a session instance
         :param inherit_models: if True, the browser will inherit the cache in the
             provided session's browser model_cache
-        :type session: AqSession
+        :type session: SessionABC
         """
         self.session = session
         self._list_models_fxn = self.sample_list
@@ -73,7 +74,7 @@ class Browser(QueryInterfaceABC):
         self.model = Sample
         self.model_list_cache = {}
         self.model_cache = {}
-        self.log = Loggable(self, name="Browser@{}".format(session.url))
+        self.log = logger(name="Browser@{}".format(session.url))
         if session.browser and inherit_models:
             self.update_cache(session.browser.models)
 
@@ -845,14 +846,17 @@ class Browser(QueryInterfaceABC):
             needs_refresh = models
             no_refresh = []
 
-        if hasattr(relation, "through_model_attr"):
-            found_models = self._retrieve_has_many_through(
-                needs_refresh, relationship_name, strict=strict
-            )
+        if needs_refresh:
+            if hasattr(relation, "through_model_attr"):
+                found_models = self._retrieve_has_many_through(
+                    needs_refresh, relationship_name, strict=strict
+                )
+            else:
+                found_models = self._retrieve_has_many_or_has_one(
+                    needs_refresh, relationship_name, relation, strict=strict
+                )
         else:
-            found_models = self._retrieve_has_many_or_has_one(
-                needs_refresh, relationship_name, relation, strict=strict
-            )
+            found_models = []
 
         self.log.info(
             'RETRIEVE retrieved {} for "{}"'.format(
