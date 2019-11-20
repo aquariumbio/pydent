@@ -19,7 +19,6 @@ from typing import List
 from typing import Union
 
 import networkx as nx
-import pandas as pd
 
 from pydent import models as pydent_models
 from pydent.base import ModelBase
@@ -1150,13 +1149,16 @@ class Browser(QueryInterfaceABC):
         :return: the samples dataframe
         :rtype: pandas.DataFrame
         """
+        try:
+            import pandas as pd
+        except ImportError:
+            raise ImportError("`pandas` is not installed. Cannot make df.")
         df = pd.DataFrame(self.samples_to_rows(samples))
         st = samples[0].sample_type
         columns = [st.name, "Description", "Project"] + [
             ft.name for ft in st.field_types
         ]
         df = df[columns]
-        # pd.DataFrame(df['Fragments'].values.tolist())
         for ft in st.field_types:
             if ft.array:
                 df2 = pd.DataFrame(df[ft.name].values.tolist())
