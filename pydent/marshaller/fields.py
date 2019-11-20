@@ -4,9 +4,12 @@ from abc import abstractmethod
 from enum import auto
 from enum import Enum
 from typing import Any
+from typing import Callable
+from typing import Dict
 from typing import List
+from typing import Tuple
 from typing import Type
-from typing import Union, Dict, Callable, Tuple
+from typing import Union
 
 from pydent.marshaller.descriptors import CallbackAccessor
 from pydent.marshaller.descriptors import MarshallingAccessor
@@ -141,14 +144,13 @@ class Field(FieldABC):
             )
 
     def __str__(self) -> str:
-        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>"\
-            .format(
-                cls=self.__class__.__name__,
-                key=self.data_key,
-                many=self.many,
-                allow_none=self.allow_none,
-                objtype=self.objtype,
-            )
+        return "<{cls} key='{objtype}.{key}' many={many} allow_none={allow_none}>".format(
+            cls=self.__class__.__name__,
+            key=self.data_key,
+            many=self.many,
+            allow_none=self.allow_none,
+            objtype=self.objtype,
+        )
 
 
 class Nested(Field):
@@ -284,9 +286,7 @@ class Callback(Field):
             func=self.callback, args=make_signature_str(args, kwargs)
         )
 
-    def get_callback_args(
-        self, owner, extra_args: dict = None
-    ) -> List[Any]:
+    def get_callback_args(self, owner, extra_args: dict = None) -> List[Any]:
         """Processes the callback args."""
         args = []
         callback_args = list(self.callback_args)
@@ -438,7 +438,6 @@ class Relationship(Callback):
         :param data_key: the data_key, or attribute name, of this field. Calling this
         as an attribute to the registered
         nested should return this field's descriptor.
-
         """
 
         super().__init__(
