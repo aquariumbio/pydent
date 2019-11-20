@@ -1152,7 +1152,7 @@ class Browser(QueryInterfaceABC):
         try:
             import pandas as pd
         except ImportError:
-            raise ImportError("`pandas` is not installed. Cannot make df.")
+            raise ImportError("`pandas` is not installed. Cannot make dataframe.")
         df = pd.DataFrame(self.samples_to_rows(samples))
         st = samples[0].sample_type
         columns = [st.name, "Description", "Project"] + [
