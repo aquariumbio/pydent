@@ -1,10 +1,12 @@
 import logging
 import math
 import pprint
+import time
 import traceback
 import weakref
 from abc import ABC
 from abc import abstractmethod
+from datetime import datetime
 from itertools import count
 from logging import CRITICAL
 from logging import DEBUG
@@ -14,9 +16,12 @@ from logging import WARN
 from logging import WARNING
 from warnings import warn
 
-import arrow
 from colorlog import ColoredFormatter
 from tqdm import tqdm
+
+
+def utcnow():
+    return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def pprint_data(data, width=80, depth=10, max_list_len=20, compact=True, indent=1):
@@ -430,7 +435,7 @@ class TimedLoggable(Enterable, LockedLoggable):
         super().__init__(
             object_or_name, level, format=format, log_colors=log_colors, tqdm=tqdm
         )
-        now = arrow.utcnow()
+        now = time.time()
         self.t1 = now
         self.t2 = None
         self.time = None
@@ -442,13 +447,13 @@ class TimedLoggable(Enterable, LockedLoggable):
         super().log(msg, level)
 
     def enter(self):
-        now = arrow.utcnow()
+        now = time.time()
         self.t1 = now
         self.log("Started at {}".format(self.t1))
         return self
 
     def exit(self):
-        t2 = arrow.utcnow()
+        t2 = time.time()
         self.t2 = t2
         self.time = self.t2 - self.t1
         self.log("Finished in {}.".format(self.time))
