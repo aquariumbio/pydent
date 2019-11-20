@@ -10,7 +10,6 @@ from pydent.models.crud_mixin import SaveMixin
 from pydent.models.data_associations import DataAssociatorMixin
 from pydent.models.data_associations import Upload
 from pydent.models.field_value import FieldValue
-from pydent.relationships import fields
 from pydent.relationships import HasMany
 from pydent.relationships import HasManyGeneric
 from pydent.relationships import HasManyThrough
@@ -34,7 +33,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         layout=JSON(),
         status=Raw(default="planning"),
     )
-    query_hook = {"include": "wires"}
+    query_hook = {"include": ["plan_associations", "operations"]}
 
     def __init__(self, name="MyPlan", status="planning"):
         super().__init__(

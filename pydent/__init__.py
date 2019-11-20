@@ -13,6 +13,7 @@ from .aqsession import AqSession
 from .base import ModelBase
 from .base import ModelRegistry
 from .browser import Browser
+from .utils import logger
 from .utils import pprint
 
 nest_asyncio.apply()

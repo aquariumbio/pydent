@@ -5,6 +5,7 @@ import pytest
 from pydent.marshaller import SchemaModel
 from pydent.marshaller.registry import ModelRegistry
 from pydent.marshaller.registry import SchemaRegistry
+from pydent.utils import logger
 
 
 def pytest_configure(config):

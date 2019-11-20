@@ -1,6 +1,9 @@
+import pytest
+
 from pydent.browser import Browser
 
 
+@pytest.mark.skip("This is no possible in Aquarium 2.7")
 def test_browser_loads_wires(session):
     """The Plan class has a special query hook that automatically grabs wires
     as well.

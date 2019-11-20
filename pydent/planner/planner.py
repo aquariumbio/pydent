@@ -21,7 +21,7 @@ from pydent.planner.utils import _id_getter
 from pydent.planner.utils import arr_to_pairs
 from pydent.planner.utils import get_subgraphs
 from pydent.utils import empty_copy
-from pydent.utils import Loggable
+from pydent.utils import logger
 from pydent.utils import make_async
 
 
@@ -166,6 +166,7 @@ class Planner(AFTMatcher):
         _CHOICES = [FIRST, LAST, RANDOM]  #: all choices
 
     def __init__(self, session_or_plan=None, plan_id=None):
+        self._plan = None
         if issubclass(type(session_or_plan), AqSession):
             # initialize with session
             self.session = session_or_plan
@@ -186,7 +187,7 @@ class Planner(AFTMatcher):
             plan = session_or_plan
             self.session = plan.session
             self.plan = plan
-        self.log = Loggable(self, "Planner@plan_rid={}".format(self.plan.rid))
+        self.log = logger(self)
 
     @property
     def browser(self):

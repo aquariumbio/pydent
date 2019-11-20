@@ -61,6 +61,7 @@ def empty_copy(obj):
     return newcopy
 
 
+logger = Loggable("pydent")
 # def filter_dictionary(dictionary, filter_function):
 #     new_dict = {}
 #     if isinstance(dictionary, dict):
