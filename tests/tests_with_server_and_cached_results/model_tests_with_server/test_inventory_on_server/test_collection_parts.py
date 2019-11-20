@@ -8,14 +8,17 @@ from pydent.models import PartAssociation
 
 @pytest.fixture
 def example_part_association(session):
-    """An example part association"""
+    """An example part association."""
     part_association = session.PartAssociation.one()
     return part_association
 
 
 @pytest.fixture
 def example_collection(session, example_part_association):
-    """An example collection. Supposed to have a part"""
+    """An example collection.
+
+    Supposed to have a part
+    """
     return example_part_association.collection
 
 
@@ -47,8 +50,8 @@ class TestCollection:
 
         # now we will remove the cached data and re-retrieve it
         # from the server by calling the .part method.
-        collection.reset_field('part_associations')
-        assert not collection.is_deserialized('part_associations')
+        collection.reset_field("part_associations")
+        assert not collection.is_deserialized("part_associations")
         retrieved_part = collection.part(row, col)
         assert retrieved_part.id == expected_part.id
         assert retrieved_part is not expected_part
