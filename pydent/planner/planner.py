@@ -16,6 +16,7 @@ from pydent.models import FieldValue
 from pydent.models import Operation
 from pydent.models import OperationType
 from pydent.models import Plan
+from pydent.models import Wire
 from pydent.planner.layout import PlannerLayout
 from pydent.planner.utils import _id_getter
 from pydent.planner.utils import arr_to_pairs
@@ -235,7 +236,7 @@ class Planner(AFTMatcher):
 
     @classmethod
     def cache_plans(cls, browser, plans):
-        browser.recursive_retrieve(plans, cls._cache_query())
+        browser.get(plans, cls._cache_query())
         for plan in plans:
             wire_dict = {}
             if plan.operations:
@@ -392,38 +393,38 @@ class Planner(AFTMatcher):
         return wires
 
     @plan_verification_wrapper
-    def get_incoming_wires(self, fv):
+    def get_incoming_wires(self, fv: FieldValue) -> List[Wire]:
         wires = []
         for wire in self.plan.wires:
             if self._model_are_equal(wire.destination, fv):
                 wires.append(wire)
         return wires
 
-    def get_fv_successors(self, fv):
+    def get_fv_successors(self, fv: FieldValue) -> List[FieldValue]:
         fvs = []
         for wire in self.get_outgoing_wires(fv):
             fvs.append(wire.destination)
         return fvs
 
-    def get_fv_predecessors(self, fv):
+    def get_fv_predecessors(self, fv: FieldValue) -> List[FieldValue]:
         fvs = []
         for wire in self.get_incoming_wires(fv):
             fvs.append(wire.source)
         return fvs
 
-    def get_op_successors(self, op):
+    def get_op_successors(self, op: Operation) -> List[Operation]:
         ops = []
         for output in op.outputs:
             ops += [fv.operation for fv in self.get_fv_successors(output)]
         return ops
 
-    def get_op_predecessors(self, op):
+    def get_op_predecessors(self, op: Operation) -> List[Operation]:
         ops = []
         for input in op.inputs:
             ops += [fv.operation for fv in self.get_fv_predecessors(input)]
         return ops
 
-    def quick_create_operation_by_name(self, otname):
+    def quick_create_operation_by_name(self, otname: str) -> Operation:
         try:
             return self.create_operation_by_name(*otname)
         except TypeError:
@@ -626,7 +627,7 @@ class Planner(AFTMatcher):
             raise PlannerException(
                 'Cannot wire because "{}" already has an incoming wire and inputs'
                 " can only have one incoming wire. Please remove wire"
-                " using 'canvas.remove_wire(src_fv, dest_fv)' before setting.".format(
+                " using 'planner.remove_wire(src_fv, dest_fv)' before setting.".format(
                     dest_fv.name
                 )
             )

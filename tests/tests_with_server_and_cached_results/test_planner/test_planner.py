@@ -244,3 +244,44 @@ class TestOptimizePlan:
             canvas.optimize_plan()
 
             assert len(canvas.plan.operations) == 7
+
+    def test_optimize_plan_with_existing_plan(self, session):
+
+        with session.with_cache() as sess:
+            canvas = Planner(sess)
+
+            q = self.sql(
+                {
+                    "object_type_id": sess.ObjectType.find_by_name(
+                        "E coli Plate of Plasmid"
+                    ).id,
+                    "location": self.Not("deleted"),
+                }
+            )
+            item = sess.Item.one(query=q)
+            assert item
+
+            chain = [
+                "Check Plate",
+                "Make Overnight Suspension",
+                "Make Miniprep",
+                "Yeast Transformation",
+                "Yeast Overnight Suspension",
+            ]
+
+            ops = canvas.chain(*chain)
+            canvas.set_field_value_and_propogate(ops[0].inputs[0], sample=item.sample)
+            canvas.set_to_available_item(ops[0].inputs[0])
+
+            ops = canvas.chain(*chain)
+            canvas.set_field_value_and_propogate(ops[0].inputs[0], sample=item.sample)
+            canvas.set_to_available_item(ops[0].inputs[0])
+
+            assert len(canvas.plan.operations) == 10
+            canvas.save()
+
+        plan_id = canvas.plan.id
+        with session.with_cache(timeout=60) as sess:
+            canvas = Planner(sess.Plan.find(plan_id))
+            canvas.optimize_plan()
+            assert len(canvas.plan.operations) == 7
