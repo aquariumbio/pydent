@@ -76,10 +76,11 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         for operation in operations:
             self.add_operation(operation)
 
-    def has_operation(self, op):
-        if op is None:
-            return False
-        return self.operations and op.rid in [_op.rid for _op in self.operations]
+    # TODO: this is not functional or not needed
+    # def has_operation(self, op):
+    #     if op is None:
+    #         return False
+    #     return self.operations and op.rid in [_op.rid for _op in self.operations]
 
     def find_wires(self, src, dest):
         """Retrieves the wire between a source and destination FieldValues.
@@ -115,20 +116,21 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         :rtype: Wire
         """
 
-        if not self.has_operation(src.operation):
-            raise AquariumModelError(
-                "Cannot wire because the wire's source FieldValue {} does "
-                "not exist in the Plan because its Operation '{}' is not in the plan".format(
-                    src, src.operation
-                )
-            )
-        if not self.has_operation(dest.operation):
-            raise AquariumModelError(
-                "Cannot wire because the wire's destination FieldValue {} does not "
-                "exist in the Plan because its Operation '{}' is not in the plan.".format(
-                    dest, dest.operation
-                )
-            )
+        # TODO: these checks are unnecessary?
+        # if not self.has_operation(src.operation):
+        #     raise AquariumModelError(
+        #         "Cannot wire because the wire's source FieldValue {} does "
+        #         "not exist in the Plan because its Operation '{}' is not in the plan".format(
+        #             src, src.operation
+        #         )
+        #     )
+        # if not self.has_operation(dest.operation):
+        #     raise AquariumModelError(
+        #         "Cannot wire because the wire's destination FieldValue {} does not "
+        #         "exist in the Plan because its Operation '{}' is not in the plan.".format(
+        #             dest, dest.operation
+        #         )
+        #     )
 
         wire = Wire(source=src, destination=dest)
         self.append_to_many("wires", wire)
