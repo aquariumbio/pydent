@@ -134,6 +134,9 @@ class Collection(
     )
     query_hook = {"methods": ["dimensions"]}
 
+    # TODO: validate dimensions is returning the same dimensions as that in the object_type
+    # TODO: init should establish dimensions
+
     @property
     def matrix(self):
         """Returns the matrix of Samples for this Collection.
@@ -183,7 +186,7 @@ class Collection(
         :param pairs: list of (row, column) tuples
         :return: self
         """
-        data = self.controller_method(
+        self.controller_method(
             "assign_sample",
             self.get_tableized_name(),
             self.id,
@@ -199,7 +202,7 @@ class Collection(
         :param pairs: list of (row, column) tuples
         :return: self
         """
-        data = self.controller_method(
+        self.controller_method(
             "delete_selection",
             self.get_tableized_name(),
             self.id,
