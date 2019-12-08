@@ -5,29 +5,31 @@ import webbrowser
 from collections import defaultdict
 from copy import deepcopy
 from functools import wraps
+from typing import Dict
 from typing import List
+from typing import Tuple
+from typing import Union
 from uuid import uuid4
 
 import networkx as nx
 
+from .plan_optimizer import PlanOptimizer
 from pydent.aqsession import AqSession
-from pydent.exceptions import AquariumModelError
+from pydent.exceptions import PlannerException
+from pydent.exceptions import PlannerVerificationException
 from pydent.models import FieldValue
 from pydent.models import Operation
 from pydent.models import OperationType
 from pydent.models import Plan
 from pydent.models import Wire
-from pydent.planner.layout import PlannerLayout
+from pydent.planner.graph import PlannerLayout
 from pydent.planner.utils import _id_getter
 from pydent.planner.utils import arr_to_pairs
 from pydent.planner.utils import get_subgraphs
 from pydent.utils import empty_copy
 from pydent.utils import logger
 from pydent.utils import make_async
-
-
-class PlannerException(Exception):
-    """Generic planner Exception."""
+from pydent.utils import QueryBuilder
 
 
 def plan_verification_wrapper(fxn):
@@ -37,7 +39,7 @@ def plan_verification_wrapper(fxn):
     @wraps(fxn)
     def wrapper(self, *args, **kwargs):
         if not issubclass(self.__class__, Planner):
-            raise PlannerException(
+            raise ValueError(
                 "Cannot apply 'verify_plan_models' to a non-planner instance."
             )
         for arg in args:
@@ -46,13 +48,13 @@ def plan_verification_wrapper(fxn):
                 if not self._contains_op(fv.operation):
                     fv_ref = "{} {}".format(fv.role, fv.name)
                     msg = 'FieldValue "{}" not found in planner.'
-                    raise PlannerException(msg.format(fv_ref))
+                    raise PlannerVerificationException(msg.format(fv_ref))
             elif issubclass(arg.__class__, Operation):
                 op = arg
                 if not self._contains_op(op):
                     op_ref = "{}".format(op.operation_type.name)
                     msg = 'Operation "{}" not found in planner.'
-                    raise PlannerException(msg.format(op_ref))
+                    raise PlannerVerificationException(msg.format(op_ref))
         return fxn(self, *args, **kwargs)
 
     return wrapper
@@ -188,7 +190,7 @@ class Planner(AFTMatcher):
             plan = session_or_plan
             self.session = plan.session
             self.plan = plan
-        self.log = logger(self)
+        self.logger = logger(self)
 
     @property
     def browser(self):
@@ -284,21 +286,34 @@ class Planner(AFTMatcher):
 
     # TODO: fix this 'set_timeout' to not be global
     def save(self):
+        """Saves the Plan to the Aquarium server.
+
+        :return: None
+        """
         if not self.plan.id:
             self.create()
         else:
             self.update()
 
     def update(self):
-        """Save the plan on Aquarium."""
+        """Update the plan on Aquarium."""
         self.plan.save()
         return self.plan
+
+    def delete(self):
+        """Delete the plan on the Aquarium server. Make an annonymized copy of
+        the plan stored in Trident.
+
+        .. versionadded:: 0.1.5a10     Added delete method
+        """
+        self.plan.delete()
+        self._plan = self.plan.copy()
 
     def create_operation_by_type(self, ot, status="planning"):
         op = ot.instance()
         op.status = status
         self.plan.add_operation(op)
-        self.log.info("{} created".format(ot.name))
+        self.logger.debug("{} created".format(ot.name))
         return op
 
     def create_operation_by_type_id(self, ot_id):
@@ -338,29 +353,34 @@ class Planner(AFTMatcher):
 
     @staticmethod
     def _model_are_equal(model1, model2):
-        if model1.id is None and model2.id is None:
-            if model1._primary_key == model2._primary_key:
-                return True
-        elif model1.id == model2.id:
-            return True
-        return False
+        mid1 = model1.id or model1._primary_key
+        mid2 = model2.id or model2._primary_key
+        return mid1 == mid2
+        # if model1.id is None and model2.id is None:
+        #     if model1._primary_key == model2._primary_key:
+        #         return True
+        # elif model1.id == model2.id:
+        #     return True
+        # return False
 
     def get_op(self, id):
         for op in self.plan.operations:
             if op.id == id:
                 return op
+            elif op._primary_key == id:
+                return op
 
     @plan_verification_wrapper
-    def get_wire(self, fv1, fv2):
+    def get_wire(self, fv1: FieldValue, fv2: FieldValue) -> Union[None, Wire]:
         for wire in self.plan.wires:
             if self._model_are_equal(wire.source, fv1) and self._model_are_equal(
                 wire.destination, fv2
             ):
-                self.log.info("found wire from {} to {}".format(fv1.name, fv2.name))
+                self.logger.debug("found wire from {} to {}".format(fv1.name, fv2.name))
                 return wire
 
     @plan_verification_wrapper
-    def remove_wire(self, fv1, fv2):
+    def remove_wire(self, fv1: FieldValue, fv2: FieldValue) -> Wire:
         """Removes a wire between two field values from a plan.
 
         :param fv1:
@@ -370,7 +390,7 @@ class Planner(AFTMatcher):
         wire = self.get_wire(fv1, fv2)
         wires = list(self.plan.wires)
         if wire:
-            self.log.debug("removing wire from {} to {}".format(fv1.name, fv2.name))
+            self.logger.debug("removing wire from {} to {}".format(fv1.name, fv2.name))
             # wires_as_source = fv1.wires_as_source
             # wires_as_dest = fv2.wires_as_dest
             #
@@ -385,7 +405,7 @@ class Planner(AFTMatcher):
         return wire
 
     @plan_verification_wrapper
-    def get_outgoing_wires(self, fv):
+    def get_outgoing_wires(self, fv: FieldValue) -> List[Wire]:
         wires = []
         for wire in self.plan.wires:
             if self._model_are_equal(wire.source, fv):
@@ -443,12 +463,30 @@ class Planner(AFTMatcher):
             return op.id is not None and op.id in plan_operation_ids
 
     @plan_verification_wrapper
-    def _resolve_op(self, op, category=None):
+    def _resolve_op(
+        self, op: Union[Operation, Tuple[Operation, str], str], category: str = None
+    ) -> Operation:
         if isinstance(op, tuple):
             op = self.create_operation_by_name(op[0], category=op[1])
         if isinstance(op, str):
             op = self.create_operation_by_name(op, category=category)
         return op
+
+    @property
+    def operations(self) -> List[Operation]:
+        """Return list of :class:`operations <pydent.models.Operation>` in the
+        plan.
+
+        .. versionadded: 0.1.5a10
+            Added operations property to planner
+
+        :return: list of :class:`operations <pydent.models.Operation>`
+        """
+        return self.plan.operations
+
+    @operations.setter
+    def operations(self, ops: List[Operation]):
+        self.plan.operations = ops
 
     def chain(self, *op_or_otnames, category=None, return_as_dict=False):
         """Creates a chain of operations by *guessing* wires between operations
@@ -485,7 +523,7 @@ class Planner(AFTMatcher):
             run_gel = new_ops[1]
             planner.chain("Pour Gel", run_gel)
         """
-        self.log.info("QUICK CREATE CHAIN {}".format(op_or_otnames))
+        self.logger.debug("QUICK CREATE CHAIN {}".format(op_or_otnames))
         ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
         if any([op for op in ops if op is None]):
             raise PlannerException("Could not find some operations: {}".format(ops))
@@ -625,7 +663,8 @@ class Planner(AFTMatcher):
 
         if len(self.get_incoming_wires(dest_fv)) > 0:
             raise PlannerException(
-                'Cannot wire because "{}" already has an incoming wire and inputs'
+                'Cannot wire to destination FieldValue "{}" already has an incoming'
+                " wire and inputs"
                 " can only have one incoming wire. Please remove wire"
                 " using 'planner.remove_wire(src_fv, dest_fv)' before setting.".format(
                     dest_fv.name
@@ -714,18 +753,23 @@ class Planner(AFTMatcher):
         setter(dest_fv, container=selected_aft_pair[0].object_type)
 
     @plan_verification_wrapper
-    def add_wire(self, fv1, fv2):
-        """Note that fv2.operation will not inherit parent_id of fv1."""
+    def add_wire(self, fv1: FieldValue, fv2: FieldValue) -> Wire:
+        """Add wire from one FieldValue to another FieldValue.
+
+        :param fv1: source FieldValue
+        :param fv2: destination FieldValue
+        :return: the new Wire
+        """
         wire = self.get_wire(fv1, fv2)
         if wire is None:
             # wire does not exist, so create it
             self._set_wire(fv1, fv2)
             wire = self.plan.wire(fv1, fv2)
-            self.log.info("wired {} to {}".format(fv1.name, fv2.name))
+            self.logger.debug("wired {} to {}".format(fv1.name, fv2.name))
         return wire
 
     @classmethod
-    def _routing_id(cls, fv):
+    def _routing_id(cls, fv: FieldValue) -> str:
         routing_id = "{}_{}".format(_id_getter(fv.operation), fv.field_type.routing)
         if fv.field_type.array and fv.role == "input":
             other_fvs = fv.operation.input_array(fv.name)
@@ -736,7 +780,7 @@ class Planner(AFTMatcher):
         return routing_id
 
     @staticmethod
-    def get_sample_routing_of_operation(op):
+    def get_sample_routing_of_operation(op: Operation) -> Dict[str, List[FieldValue]]:
         routing_dict = {}
         for fv in op.field_values:
             routing = fv.field_type.routing
@@ -780,7 +824,7 @@ class Planner(AFTMatcher):
         row=None,
         column=None,
     ):
-        self.log.info(
+        self.logger.debug(
             "setting field_value {} to {} - {} - {} - {}".format(
                 field_value.name, sample, item, container, value
             )
@@ -826,10 +870,22 @@ class Planner(AFTMatcher):
             input_fv, sample=sample, item=item, container=container
         )
 
-    def set_field_value_and_propogate(self, field_value, sample=None):
+    def set_field_value_and_propogate(self, field_value, sample=None, item=None):
+        if item:
+            if sample:
+                sid1 = sample.id or sample._primary_key
+                sid2 = item.sample_id or item.sample.id or item.sample._primary_key
+                if not sid1 == sid2:
+                    raise PlannerException(
+                        "Provided sample '{}' and item '{}' cannot"
+                        " be different".format(sample, item)
+                    )
+            else:
+                sample = item.sample
+            self.set_field_value(field_value, item=item)
         routing_graph = self._routing_graph()
         routing_id = self._routing_id(field_value)
-        subgraph = nx.bfs_tree(routing_graph.to_undirected(), routing_id)
+        subgraph = nx.bfs_tree(routing_graph.to_undirected(as_view=True), routing_id)
         for node in subgraph:
             n = routing_graph.nodes[node]
             fv = n["fv"]
@@ -925,11 +981,11 @@ class Planner(AFTMatcher):
         if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE_ON_SERVER:
             reserved = self.reserved_items(available_items, search_server=True)
             available_items = [i for i in available_items if len(reserved[i.id]) == 0]
-            self.log.info("{} items are reserved".format(x - len(available_items)))
+            self.logger.debug("{} items are reserved".format(x - len(available_items)))
         elif item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE:
             reserved = self.reserved_items(available_items, search_server=False)
             available_items = [i for i in available_items if len(reserved[i.id]) == 0]
-            self.log.info("{} items are reserved".format(x - len(available_items)))
+            self.logger.debug("{} items are reserved".format(x - len(available_items)))
         return available_items
 
     def distribute_items_of_object_type(self, object_type):
@@ -1190,7 +1246,7 @@ class Planner(AFTMatcher):
         Estimates the x-midpoint and y and makes a text annotation at
         that location.
         """
-        layout = self.layout.ops_to_layout(ops)
+        layout = self.layout.ops_to_subgraph(ops)
         return self.annotate_above_layout(markdown, width, height, layout=layout)
 
     def annotate_above_layout(self, markdown, width, height, layout=None):
@@ -1220,53 +1276,6 @@ class Planner(AFTMatcher):
     def graph(self):
         return PlannerLayout.from_plan(self.plan)
 
-    @staticmethod
-    def _fv_to_hash(fv, ft):
-        # none valued Samples are never equivalent
-        sid = str(uuid4())
-        if fv.sample is not None:
-            sid = "{}{}".format(fv.role, fv.sample.id)
-
-        item_id = "none"
-        if fv.item is not None:
-            item_id = "{}{}".format(fv.role, fv.item.id)
-        fvhash = "{}:{}:{}:{}".format(ft.name, ft.role, sid, item_id)
-        if ft.part:
-            fvhash += "r{row}:c{column}".format(row=fv.row, column=fv.column)
-        return fvhash
-
-    @classmethod
-    def _fv_array_to_hash(cls, fv_array, ft):
-        return "*".join([cls._fv_to_hash(fv, ft) for fv in fv_array])
-
-    @classmethod
-    def _op_to_hash(cls, op):
-        """Turns a operation into a hash using the operation_type_id, item_id,
-        and sample_id."""
-        ot_id = op.operation_type.id
-
-        field_type_ids = []
-        for ft in op.operation_type.field_types:
-            if ft.ftype == "sample":
-                if not ft.array:
-                    fv = op.field_value(ft.name, ft.role)
-                    field_type_ids.append(cls._fv_to_hash(fv, ft))
-                else:
-                    fv_array = op.field_value_array(ft.name, ft.role)
-                    field_type_ids.append(cls._fv_array_to_hash(fv_array, ft))
-
-        field_type_ids = sorted(field_type_ids)
-        return "{}_{}".format(ot_id, "#".join(field_type_ids))
-
-    @classmethod
-    def _group_ops_by_hashes(cls, ops):
-        hashgroup = {}
-        for op in ops:
-            h = cls._op_to_hash(op)
-            hashgroup.setdefault(h, [])
-            hashgroup[h].append(op)
-        return hashgroup
-
     def ipython_link(self):
         try:
             from IPython.display import display, HTML
@@ -1275,89 +1284,7 @@ class Planner(AFTMatcher):
         except ImportError:
             print("Could not import IPython. This is likely not installed.")
 
-    # TODO: find redundant segments
-    # TODO: search functions for plans
-
-    # TODO: procedure should run on topologically sorted operations,
-    #       if there is the case that two operations have different parents, then
-    #       these operations are NOT mergable
-    def optimize_plan(
-        self, operations: List[Operation] = None, ignore: List[str] = None
-    ):
-        """Remove redundant operations.
-
-        :param operations: list of operations
-        :param ignore: list of operation type names to ignore in optimization
-        :return:
-        """
-        self.log.info("Optimizing plan...")
-        if operations is not None:
-            self.log.info("   only_operations={}".format([op.id for op in operations]))
-        self.log.info("   ignore_types={}".format(ignore))
-
-        # only consider operations in the 'planning state'
-        if operations is None:
-            operations = [op for op in self.plan.operations if op.status == "planning"]
-
-        # ignore operation types
-        if ignore:
-            operations = [
-                op for op in operations if op.operation_type.name not in ignore
-            ]
-        groups = {
-            k: v for k, v in self._group_ops_by_hashes(operations).items() if len(v) > 1
-        }
-        num_inputs_rewired = 0
-        num_outputs_rewired = 0
-        ops_to_remove = []
-
-        op_graph = PlannerLayout.from_plan(self.plan).G
-        sorted_nodes = nx.topological_sort(op_graph)
-
-        visited_groups = []
-        for node in sorted_nodes:
-            node_data = op_graph.nodes[node]
-            op = node_data["operation"]
-            op_hash = self._op_to_hash(op)
-            if op_hash in visited_groups or op_hash not in groups:
-                continue
-            visited_groups.append(op_hash)
-            grouped_ops = groups[op_hash]
-            op = grouped_ops[0]
-            other_ops = grouped_ops[1:]
-
-            # merge wires from other ops into op wires
-            for other_op in other_ops:
-                connected_ops = self.get_op_successors(other_op)
-                connected_ops += self.get_op_predecessors(other_op)
-
-                if all([_op.status == "planning" for _op in connected_ops]):
-                    # only optimize if ALL connected operations are in planning status
-                    for i in other_op.inputs:
-                        in_wires = self.get_incoming_wires(i)
-                        for w in in_wires:
-                            if w.source.operation.status == "planning":
-                                self.remove_wire(w.source, w.destination)
-                                self.add_wire(w.source, op.input(i.name))
-                                num_inputs_rewired += 1
-                    for o in other_op.outputs:
-                        out_wires = self.get_outgoing_wires(o)
-                        for w in out_wires:
-                            if w.destination.operation.status == "planning":
-                                self.remove_wire(w.source, w.destination)
-                                self.add_wire(op.output(o.name), w.destination)
-                                num_outputs_rewired += 1
-                    ops_to_remove.append(other_op)
-
-        operations_list = self.plan.operations
-        for op in ops_to_remove:
-            operations_list.remove(op)
-        self.plan.operations = operations_list
-        self.log.info("\t{} operations removed".format(len(ops_to_remove)))
-        self.log.info("\t{} input wires re-wired".format(num_inputs_rewired))
-        self.log.info("\t{} output wires re-wired".format(num_outputs_rewired))
-
-    def roots(self):
+    def roots(self) -> List[FieldValue]:
         """Get field values that have no predecessors (i.e. are 'roots')"""
         roots = []
         for subgraph in get_subgraphs(self._routing_graph()):
@@ -1367,6 +1294,10 @@ class Planner(AFTMatcher):
                     root = node["fv"]
                     roots.append(root)
         return roots
+
+    def optimize(self):
+        optimizer = PlanOptimizer(self, inherit_logger=self.logger)
+        return optimizer.optimize()
 
     def validate(self):
         """Validates sample routes in the plan.
@@ -1433,7 +1364,7 @@ class Planner(AFTMatcher):
 
     # TODO: implement planner.copy and anonymize the operations and field_values by
     #       removing their ids
-    def copy(self):
+    def copy(self) -> "Planner":
         """Return a copy of this planner, with a new anonymous copy of the
         plan.
 
@@ -1454,7 +1385,7 @@ class Planner(AFTMatcher):
         return self.copy()
 
     @staticmethod
-    def combine(plans: List[Plan]):
+    def combine(plans: List[Plan]) -> "Planner":
         """Merges a list of plans into a single plan by combining operations
         and wires.
 
@@ -1477,7 +1408,7 @@ class Planner(AFTMatcher):
             new_plan.plan.wires += p.plan.wires
         return new_plan
 
-    def split(self):
+    def split(self) -> List["Planner"]:
         """Split the plan into several distinct plans, if possible.
 
         This first convert the plan  to an operation graph, find
@@ -1492,7 +1423,7 @@ class Planner(AFTMatcher):
         copied_plan = self.copy()
 
         # get independent operation graphs
-        layouts = copied_plan.layout.get_independent_layouts()
+        layouts = copied_plan.layout.get_independent_graphs()
 
         # for each independent graph, make a new plan
         new_plans = []
@@ -1516,13 +1447,13 @@ class Planner(AFTMatcher):
             new_plan.plan.wires = wires
         return new_plans
 
-    def __add__(self, other):
+    def __add__(self, other: Plan) -> "Planner":
         return self.combine([self, other])
 
-    def __mul__(self, num):
+    def __mul__(self, num: int) -> "Planner":
         return self.combine([self] * num)
 
-    def prettify(self):
+    def prettify(self) -> None:
         if self.plan.operations:
             self.layout.topo_sort()
 
@@ -1541,3 +1472,58 @@ class Planner(AFTMatcher):
                 color = "red"
             edge_colors.append(color)
         nx.draw(self.layout.G, edge_colors=edge_colors, pos=self.layout.pos())
+
+    # TODO: autofill implementation
+    # def autofill(self):
+    # """Fill the unfilled field_values with random items and samples.
+    #
+    # .. versionadded: 0.1.5a10
+    #     Added autofill method.
+    #
+    # :return:
+    # """
+    # wired_fv_keys = set()
+    # for w in self.plan.wires:
+    #     key = w.destination.id or w.destination._primary_key
+    #     wired_fv_keys.add(key)
+    #
+    # needs_sample = []
+    # for op in self.operations:
+    #     for fv in op.inputs:
+    #         key = fv.id or fv._primary_key
+    #         if key not in wired_fv_keys:
+    #             needs_sample.append(fv)
+    #
+    # with self.session.with_cache(using_models=True) as sess:
+    #     while needs_sample:
+    #         for fv in needs_sample:
+    #             self.set_field_value(fv, sample=fv.field_type)
+    #     skip = []
+    #     for fv in needs_items:
+    #         afts = fv.field_type.allowable_field_types
+    #         aft_tuples = [(aft.sample_type_id, aft.object_type_id) for aft in afts]
+    #         samples = sess.Sample.where({'sample_type_id': [aft.sample_type_id for aft in afts]})
+    #         items = sess.browser.cached_where({
+    #             'sample_id': [s.id for s in samples],
+    #             'object_type_id': [aft.object_type_id for aft in afts],
+    #         }, 'Item')
+    #         items = [item for item in items if
+    #                  (item.sample_type_id, item.object_type_id) in aft_tuples]
+    #
+    #         if not items:
+    #             item_query = QueryBuilder.sql({
+    #                 'sample_id': [s.id for s in samples],
+    #                 'object_type_id': [aft.object_type_id for aft in afts],
+    #                 'location': QueryBuilder.Not('deleted')
+    #             })
+    #             items = self.session.Item.where(item_query)
+    #             items = [item for item in items if
+    #                      (item.sample_type_id,
+    #                       item.object_type_id) in aft_tuples]
+    #         if not items:
+    #             skip.append(fv)
+    #         else:
+    #             self.set_field_value_and_propogate(fv, item=items[0])
+    #     needs_items = [fv for fv in needs_items if fv.child_item_id is None and fv not in skip]
+    #
+    # # get unfilled leaf field_values

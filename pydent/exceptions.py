@@ -62,3 +62,11 @@ class NoSessionError(TridentBaseException):
 
 class SessionAlreadySet(TridentBaseException):
     """Cannot set session to models with a session already set."""
+
+
+class PlannerException(Exception):
+    """Generic planner Exception."""
+
+
+class PlannerVerificationException(Exception):
+    """Raised when object is not in plan but is required."""

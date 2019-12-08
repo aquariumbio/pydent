@@ -17,6 +17,25 @@ def planner_example(session):
     return p
 
 
+# def test_planner_autofill(session):
+#
+#     canvas = Planner(session)
+#
+#     chain = [
+#         "Check Plate",
+#         "Make Overnight Suspension",
+#         "Make Miniprep",
+#         "Yeast Transformation",
+#         "Yeast Overnight Suspension",
+#     ]
+#
+#     ops = canvas.chain(*chain)
+#
+#     assert canvas.validate()
+#     canvas.autofill()
+#     assert not canvas.validate()
+
+
 def test_load_plans(session):
 
     with session.with_cache() as sess:
@@ -159,6 +178,7 @@ def test_prettify(session):
         canvas.prettify()
 
 
+# TODO: test ignore operations and other settings
 class TestOptimizePlan:
     class Not:
         def __init__(self, v):
@@ -173,7 +193,7 @@ class TestOptimizePlan:
                 rows.append('{} != "{}"'.format(k, v.v))
         return " AND ".join(rows)
 
-    def test_optimize_plan(self, session):
+    def test_optimize(self, session):
 
         with session.with_cache() as sess:
             canvas = Planner(sess)
@@ -203,12 +223,138 @@ class TestOptimizePlan:
 
             assert len(canvas.plan.operations) == 6
 
-            canvas.optimize_plan()
+            canvas.optimize()
 
             assert len(canvas.plan.operations) == 5
 
-    def test_optimize_plan2(self, session):
+    def test_optimize_case1(self, session):
+        """Here, we are trying to optimize two chains of 5 operations.
 
+        Since Yeast Transformation is missing an input sample and Yeast
+        Overnight Suspension is missing a output sample, these will NOT
+        be merged, and so we expect 7 operations after the merge
+        procedure.
+        """
+        with session.with_cache() as sess:
+            canvas = Planner(sess)
+
+            q = self.sql(
+                {
+                    "object_type_id": sess.ObjectType.find_by_name(
+                        "E coli Plate of Plasmid"
+                    ).id,
+                    "location": self.Not("deleted"),
+                }
+            )
+            item = sess.Item.one(query=q)
+            assert item
+
+            chain = [
+                "Check Plate",
+                "Make Overnight Suspension",
+                "Make Miniprep",
+                "Yeast Transformation",
+                "Yeast Overnight Suspension",
+            ]
+
+            for i in range(2):
+                ops = canvas.chain(*chain)
+                canvas.set_field_value_and_propogate(
+                    ops[0].inputs[0], sample=item.sample
+                )
+                canvas.set_to_available_item(ops[0].inputs[0])
+
+            assert len(canvas.plan.operations) == 10
+
+            canvas.optimize()
+
+            # we expect to merge everything except 'Yeast Transformation' and
+            # 'Yeast Overnight' since these have absent sample definition for either
+            # their input or outputs and FieldValues with no samples are never mergable.
+            expected_op_types = [
+                "Check Plate",
+                "Make Miniprep",
+                "Make Overnight Suspension",
+                "Yeast Overnight Suspension",
+                "Yeast Overnight Suspension",
+                "Yeast Transformation",
+                "Yeast Transformation",
+            ]
+            op_types = sorted([op.operation_type.name for op in canvas.operations])
+            assert len(canvas.plan.operations) == 7
+            assert expected_op_types == op_types
+
+    def test_optimize_case2(self, session):
+        """Here, we are trying to optimize two chains of 5 operations.
+
+        We expect to merge 10 operation to 5 operations.
+        """
+        with session.with_cache() as sess:
+            canvas = Planner(sess)
+
+            q = self.sql(
+                {
+                    "object_type_id": sess.ObjectType.find_by_name(
+                        "E coli Plate of Plasmid"
+                    ).id,
+                    "location": self.Not("deleted"),
+                }
+            )
+            item = sess.Item.one(query=q)
+            assert item
+
+            chain = [
+                "Check Plate",
+                "Make Overnight Suspension",
+                "Make Miniprep",
+                "Yeast Transformation",
+                "Yeast Overnight Suspension",
+            ]
+
+            yeasts = session.Sample.last(
+                2,
+                query={
+                    "sample_type_id": session.SampleType.find_by_name("Yeast Strain").id
+                },
+            )
+
+            for i in range(2):
+                ops = canvas.chain(*chain)
+                canvas.set_field_value_and_propogate(
+                    ops[0].inputs[0], sample=item.sample
+                )
+                canvas.set_to_available_item(ops[0].inputs[0])
+                canvas.set_field_value_and_propogate(
+                    ops[-1].outputs[0], sample=yeasts[0]
+                )
+                canvas.set_field_value(ops[-2].inputs[1], sample=yeasts[1])
+            assert len(canvas.plan.operations) == 10
+
+            canvas.optimize()
+
+            # we expect to merge everything except 'Yeast Transformation' and
+            # 'Yeast Overnight' since these have absent sample definition for either
+            # their input or outputs and FieldValues with no samples are never mergable.
+            expected_op_types = [
+                "Check Plate",
+                "Make Miniprep",
+                "Make Overnight Suspension",
+                "Yeast Overnight Suspension",
+                "Yeast Transformation",
+            ]
+            op_types = sorted([op.operation_type.name for op in canvas.operations])
+            assert len(canvas.plan.operations) == 5
+            assert expected_op_types == op_types
+
+    def test_optimize3(self, session):
+        """Here we setup two operations chains of 5.
+
+        6 of these operations will be mergable (10 to 7). We also add
+        additional operations to one of the Miniprep operations. We
+        should end up with 9 operations after the optimization.
+        Additionally, the merged Miniprep should have a single output
+        with 3 wires.
+        """
         with session.with_cache() as sess:
             canvas = Planner(sess)
 
@@ -239,13 +385,178 @@ class TestOptimizePlan:
             canvas.set_field_value_and_propogate(ops[0].inputs[0], sample=item.sample)
             canvas.set_to_available_item(ops[0].inputs[0])
 
-            assert len(canvas.plan.operations) == 10
+            canvas.chain(ops[2], "Yeast Transformation")
+            canvas.chain(ops[2], "Make PCR Fragment")
 
-            canvas.optimize_plan()
+            assert len(canvas.plan.operations) == 12
 
-            assert len(canvas.plan.operations) == 7
+            canvas.optimize()
 
-    def test_optimize_plan_with_existing_plan(self, session):
+            assert len(canvas.plan.operations) == 9
+            assert len(canvas.get_outgoing_wires(ops[2].outputs[0])) == 3
+
+    def test_optimize_case3_array_inputs(self, session):
+        """Here we test whether operation types with field_value array inputs
+        are mergable despite being in a different order."""
+        with session.with_cache() as sess:
+            canvas = Planner(sess)
+
+            q = self.sql(
+                {
+                    "object_type_id": sess.ObjectType.find_by_name("Fragment Stock").id,
+                    "location": self.Not("deleted"),
+                }
+            )
+            items = sess.Item.last(4, query=q)
+            assert items
+
+            assemble_op1 = canvas.create_operation_by_name("Assemble Plasmid")
+            assemble_op2 = canvas.create_operation_by_name("Assemble Plasmid")
+            assemble_op3 = canvas.create_operation_by_name("Assemble Plasmid")
+            assemble_op4 = canvas.create_operation_by_name("Assemble Plasmid")
+
+            assemble_op1.add_to_input_array("Fragment", item=items[0])
+            assemble_op1.add_to_input_array("Fragment", item=items[1])
+
+            assemble_op2.add_to_input_array("Fragment", item=items[0])
+            assemble_op2.add_to_input_array("Fragment", item=items[1])
+
+            assemble_op3.add_to_input_array("Fragment", item=items[1])
+            assemble_op3.add_to_input_array("Fragment", item=items[0])
+
+            assemble_op4.add_to_input_array("Fragment", item=items[1])
+            assemble_op4.add_to_input_array("Fragment", item=items[2])
+
+            sample = sess.Sample.one(
+                query={"sample_type_id": sess.SampleType.find_by_name("Plasmid").id}
+            )
+            canvas.set_field_value(assemble_op1.outputs[0], sample=sample)
+            canvas.set_field_value(assemble_op2.outputs[0], sample=sample)
+            canvas.set_field_value(assemble_op3.outputs[0], sample=sample)
+            canvas.set_field_value(assemble_op4.outputs[0], sample=sample)
+
+            assert len(canvas.plan.operations) == 4
+
+            canvas.optimize()
+
+            assert len(canvas.plan.operations) == 2
+
+    def test_optimization_case4(self, session):
+        """This tests that, even if an operation has the same field_value
+        settings, if one of its input wires is wired from a different
+        operation_type, it will not be merged."""
+        with session.with_cache() as sess:
+            canvas = Planner(sess)
+
+            q = self.sql(
+                {
+                    "object_type_id": sess.ObjectType.find_by_name(
+                        "Plasmid Glycerol Stock"
+                    ).id,
+                    "location": self.Not("deleted"),
+                }
+            )
+            item = sess.Item.one(query=q)
+
+            chain1 = [
+                "Check Plate",
+                "Make Overnight Suspension",
+                "Make Miniprep",
+                "Plasmid Digest",
+            ]
+
+            chain2 = ["Make Overnight Suspension", "Make Miniprep", "Plasmid Digest"]
+
+            ops = canvas.chain(*chain1)
+            canvas.set_field_value_and_propogate(ops[-1].outputs[0], sample=item.sample)
+
+            ops = canvas.chain(*chain2)
+            canvas.set_field_value_and_propogate(ops[0].inputs[0], item=item)
+
+            assert len(canvas.operations) == 7
+
+            canvas.optimize()
+
+            assert len(canvas.operations) == 7
+
+    def test_optimize_case4_array_inputs(self, session):
+        with session.with_cache() as sess:
+
+            canvas = Planner(sess)
+            canvas.logger.set_level("DEBUG")
+            q = self.sql(
+                {
+                    "object_type_id": sess.ObjectType.find_by_name("Fragment Stock").id,
+                    "location": self.Not("deleted"),
+                }
+            )
+            items = sess.Item.last(4, query=q)
+            assert items
+
+            primers = sess.Sample.last(
+                4, query={"sample_type_id": sess.SampleType.find_by_name("Primer").id}
+            )
+
+            plasmids = sess.Sample.last(
+                3, query={"sample_type_id": sess.SampleType.find_by_name("Plasmid").id}
+            )
+
+            subchain = [
+                "Make PCR Fragment",
+                "Run Gel",
+                "Extract Gel Slice",
+                "Purify Gel Slice",
+            ]
+
+            ops1 = canvas.chain(*(subchain + ["Assemble Plasmid"]))
+            ops2 = canvas.chain(*(subchain + ops1[-1:]))
+
+            ops3 = canvas.chain(*(subchain + ["Assemble Plasmid"]))
+            ops4 = canvas.chain(*(subchain + ops1[-1:]))
+
+            for ops in [ops1, ops2, ops3, ops4]:
+                pour_gel = canvas.chain("Pour Gel", ops[1])[0]
+
+            # pour_gels = [op for op in canvas.operations if
+            #              op.operation_type.name == 'Pour Gel']
+            # print([op.outputs[0].sample for op in pour_gels])
+
+            canvas.set_field_value_and_propogate(
+                ops1[0].outputs[0], sample=items[0].sample
+            )
+            canvas.set_field_value_and_propogate(
+                ops2[0].outputs[0], sample=items[1].sample
+            )
+
+            canvas.set_field_value_and_propogate(
+                ops3[0].outputs[0], sample=items[0].sample
+            )
+            canvas.set_field_value_and_propogate(
+                ops4[0].outputs[0], sample=items[1].sample
+            )
+
+            def pcr(op, p1, p2, t):
+                canvas.set_field_value(op.input("Forward Primer"), sample=p1)
+                canvas.set_field_value(op.input("Reverse Primer"), sample=p2)
+                canvas.set_field_value(op.input("Template"), sample=t)
+
+            pcr(ops1[0], primers[0], primers[1], plasmids[0])
+            pcr(ops2[0], primers[2], primers[3], plasmids[1])
+            pcr(ops3[0], primers[0], primers[1], plasmids[0])
+            pcr(ops4[0], primers[2], primers[3], plasmids[1])
+
+            canvas.set_field_value(ops1[-1].outputs[0], sample=plasmids[2])
+            canvas.set_field_value(ops3[-1].outputs[0], sample=plasmids[2])
+
+            op_types = sorted([op.operation_type.name for op in canvas.operations])
+            print(op_types)
+
+            canvas.optimize()
+
+            op_types = sorted([op.operation_type.name for op in canvas.operations])
+            print(op_types)
+
+    def test_optimize_with_existing_plan(self, session):
 
         with session.with_cache() as sess:
             canvas = Planner(sess)
@@ -283,5 +594,17 @@ class TestOptimizePlan:
         plan_id = canvas.plan.id
         with session.with_cache(timeout=60) as sess:
             canvas = Planner(sess.Plan.find(plan_id))
-            canvas.optimize_plan()
+            canvas.optimize()
             assert len(canvas.plan.operations) == 7
+
+    def test(self):
+        from pydent import AqSession
+        from pydent.planner import Planner
+
+        session = AqSession("vrana", "Mountain5", "http://52.27.43.242/")
+
+        plan = session.Plan.find(37098)
+
+        planner = Planner(plan)
+
+        planner.optimize()
