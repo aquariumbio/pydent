@@ -1,9 +1,12 @@
 """Models related to inventory, like Items, Collections, ObjectTypes, and
 PartAssociations."""
+from typing import Any
 from typing import List
 from typing import Tuple
 from typing import Union
 
+from .data_associations import DataAssociation
+from .sample import Sample
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
 from pydent.models.controller_mixin import ControllerMixin
@@ -15,6 +18,19 @@ from pydent.relationships import HasManyGeneric
 from pydent.relationships import HasManyThrough
 from pydent.relationships import HasOne
 from pydent.relationships import Raw
+from pydent.utils.matrix_mapper import IndexType
+from pydent.utils.matrix_mapper import MatrixMapping
+from pydent.utils.matrix_mapper import MatrixMappingFactory
+
+
+@add_schema
+class ObjectType(SaveMixin, ModelBase):
+    """A ObjectType model that represents the type of container an item is."""
+
+    fields = dict(items=HasMany("Item", "ObjectType"), sample_type=HasOne("SampleType"))
+
+    def __str__(self):
+        return self._to_str("id", "name")
 
 
 @add_schema
@@ -118,8 +134,24 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
 
 @add_schema
+class PartAssociation(JSONSaveMixin, ModelBase):
+    """Represents a PartAssociation linking a part to a collection.
+
+    Collections contain many `parts`, each of which can refer to a
+    different sample.
+    """
+
+    fields = dict(part=HasOne("Item", ref="part_id"), collection=HasOne("Collection"))
+
+    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
+        super().__init__(
+            part_id=part_id, collection_id=collection_id, row=row, column=column
+        )
+
+
+@add_schema
 class Collection(
-    DataAssociatorMixin, ControllerMixin, ModelBase
+    DataAssociatorMixin, SaveMixin, ControllerMixin, ModelBase
 ):  # pylint: disable=too-few-public-methods
     """A Collection model, such as a 96-well plate, which contains many
     `parts`, each of which can be associated with a different sample."""
@@ -137,38 +169,171 @@ class Collection(
     # TODO: validate dimensions is returning the same dimensions as that in the object_type
     # TODO: init should establish dimensions
 
+    def __init__(
+        self,
+        object_type: ObjectType = None,
+        location: str = None,
+        data_associations: List = None,
+        parts: List = None,
+        part_associations: List = None,
+        **kwargs,
+    ):
+        if isinstance(object_type, ObjectType):
+            object_type = object_type
+            object_type_id = object_type.id
+            dims = object_type.rows, object_type.columns
+        else:
+            object_type_id = None
+            dims = None
+
+        super().__init__(
+            object_type=object_type,
+            object_type_id=object_type_id,
+            location=location,
+            dimensions=dims,
+            data_associations=data_associations,
+            part_associations=part_associations,
+            parts=parts,
+            **kwargs,
+        )
+
+        print(self)
+
+        if self.part_associations is None:
+            self.part_associations = []
+        if self.data_associations is None:
+            self.data_associations = []
+
+    def _empty(self):
+        nrows, ncols = self.dimensions
+        data = []
+        for r in range(nrows):
+            data.append([None] * ncols)
+        return data
+
+    def __part_association_matrix(self):
+        data = self._empty()
+        if self.part_associations:
+            for assoc in self.part_associations:
+                data[assoc.row][assoc.column] = assoc
+        return data
+
+    @staticmethod
+    def _get_part(assoc):
+        if assoc is not None:
+            return assoc.part
+
+    @staticmethod
+    def _get_sample_id(assoc):
+        if assoc is not None:
+            if assoc.part:
+                return assoc.part.sample_id or assoc.part.sample.id
+
+    @staticmethod
+    def _get_sample(assoc):
+        if assoc is not None:
+            if assoc.part:
+                return assoc.part.sample
+
+    @staticmethod
+    def _get_data_association(assoc):
+        if assoc is not None:
+            if assoc.part:
+                if assoc.data_associations:
+                    return {a.key: a for a in assoc.part.data_associations}
+                else:
+                    return {}
+
+    @staticmethod
+    def _get_data_value(assoc):
+        if assoc is not None:
+            if assoc.part:
+                if assoc.data_associations:
+                    return {a.key: a.value for a in assoc.part.data_associations}
+                else:
+                    return {}
+
+    @staticmethod
+    def _no_setter(x):
+        raise ValueError("Setter is not implemented.")
+
+    def _set_sample_id(
+        self,
+        data: List[List[PartAssociation]],
+        r: int,
+        c: int,
+        sample: Union[int, Sample],
+    ):
+        if data[r][c]:
+            part = data[r][c].part
+        else:
+            part = self.session.Item.new(
+                object_type_id=self.session.ObjectType.find_by_name("__Part").id
+            )
+            association = self.session.PartAssociation.new(
+                part_id=part.id, collection_id=self.id, row=r, column=c
+            )
+            association.part = part
+            self.append_to_many("part_associations", association)
+        if isinstance(sample, int):
+            part.sample_id = sample
+            part.reset_field("sample")
+        elif isinstance(sample, Sample):
+            part.sample = sample
+            part.sample_id = sample.id
+        else:
+            raise ValueError("{} must be a Sample instance".format(sample))
+
+    @property
+    def _mapping(self):
+        factory = MatrixMappingFactory(self.__part_association_matrix())
+        default_setter = self._no_setter
+        factory.new("part_association", setter=default_setter, getter=None)
+        factory.new("part", setter=default_setter, getter=self._get_part)
+        factory.new("sample_id", setter=self._set_sample_id, getter=self._get_sample_id)
+        factory.new("sample", setter=default_setter, getter=self._get_sample)
+        factory.new("data", setter=default_setter, getter=self._get_data_value)
+        factory.new(
+            "data_association", setter=default_setter, getter=self._get_data_association
+        )
+        return factory
+
     @property
     def matrix(self):
         """Returns the matrix of Samples for this Collection.
 
         (Consider using samples of parts directly.)
         """
-        num_row, num_col = self.dimensions
-        sample_matrix = list()
-        for row in range(num_row):
-            row_list = list()
-            for col in range(num_col):
-                sample_id = None
-                part = self.part(row, col)
-                if part:
-                    sample_id = part.sample.id
-                row_list.append(sample_id)
-            sample_matrix.append(row_list)
-        return sample_matrix
+        return self.sample_id_matrix
 
-    def part(self, row, col):
+    @property
+    def parts_matrix(self) -> MatrixMapping[Item]:
+        return self._mapping["part"]
+
+    @property
+    def part_association_matrix(self) -> MatrixMapping[PartAssociation]:
+        return self._mapping["part_association"]
+
+    @property
+    def sample_id_matrix(self) -> MatrixMapping[int]:
+        return self._mapping["sample_id"]
+
+    @property
+    def sample_matrix(self) -> MatrixMapping[Sample]:
+        return self._mapping["sample"]
+
+    @property
+    def data_matrix(self) -> MatrixMapping[Any]:
+        return self._mapping["data"]
+
+    @property
+    def data_association_matrix(self) -> MatrixMapping[DataAssociation]:
+        return self._mapping["data_association"]
+
+    def part(self, row, col) -> Item:
         """Returns the part Item at (row, col) of this Collection (zero-
         based)."""
-        parts = [
-            assoc.part
-            for assoc in self.part_associations
-            if assoc.row == row and assoc.column == col
-        ]
-
-        if not parts:
-            return None
-
-        return next(iter(parts))
+        return self.parts_matrix[row, col]
 
     def as_item(self):
         """Returns the Item object with the ID of this Collection."""
@@ -177,7 +342,31 @@ class Collection(
     # TODO: implement save and create
     def create(self):
         """Create a new empty collection on the server."""
-        self.session.utils.model_update("collections", self.object_type_id, {})
+        result = self.session.utils.model_update(
+            "collections", self.object_type_id, self.dump()
+        )
+        self.reload(result)
+        self.id = result["id"]
+        for association in self.part_associations:
+            if not association.collection_id:
+                association.collection_id = self.id
+            association.part.save()
+            association.part_id = association.part.id
+            association.save()
+        self.refresh()
+
+    def update(self):
+        result = self.session.utils.model_update(
+            "collections", self.object_type_id, self.dump()
+        )
+        self.id = result["id"]
+        for association in self.part_associations:
+            if not association.collection_id:
+                association.collection_id = self.id
+            association.part.save()
+            association.part_id = association.part.id
+            association.save()
+        self.refresh()
 
     def assign_sample(self, sample_id: int, pairs: List[Tuple[int, int]]):
         """Assign sample id to the (row, column) pairs for the collection.
@@ -211,6 +400,12 @@ class Collection(
         self.refresh()
         return self
 
+    def __getitem__(self, index: IndexType) -> Union[int, List[int], List[List[int]]]:
+        return self.matrix[index]
+
+    def __setitem__(self, index: IndexType, sample: Union[int, Sample]):
+        self.sample_id_matrix[index] = sample
+
     # TODO: add data associations to matrix
     # TODO: collections test
     # def update(self):
@@ -218,29 +413,3 @@ class Collection(
     #
     # def save(self):
     #     self.as_item().save()
-
-
-@add_schema
-class ObjectType(SaveMixin, ModelBase):
-    """A ObjectType model that represents the type of container an item is."""
-
-    fields = dict(items=HasMany("Item", "ObjectType"), sample_type=HasOne("SampleType"))
-
-    def __str__(self):
-        return self._to_str("id", "name")
-
-
-@add_schema
-class PartAssociation(JSONSaveMixin, ModelBase):
-    """Represents a PartAssociation linking a part to a collection.
-
-    Collections contain many `parts`, each of which can refer to a
-    different sample.
-    """
-
-    fields = dict(part=HasOne("Item", ref="part_id"), collection=HasOne("Collection"))
-
-    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
-        super().__init__(
-            part_id=part_id, collection_id=collection_id, row=row, column=column
-        )
