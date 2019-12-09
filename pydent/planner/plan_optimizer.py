@@ -1,3 +1,4 @@
+import json
 from collections import OrderedDict
 from hashlib import sha1
 from typing import List
@@ -31,32 +32,46 @@ class PlanOptimizer:
     @staticmethod
     def _fv_to_hash(fv, ft):
         # none valued Samples are never equivalent
+        fvhash = OrderedDict(
+            {
+                "ftype": fv.field_type.ftype,
+                "role": fv.role,
+                "name": fv.name,
+                "array": ft.array,
+                "sample": OrderedDict(),
+                "item": OrderedDict(),
+                "value": None,
+            }
+        )
         if fv.sample is not None:
-            sid = "{}{}".format(fv.role, fv.sample.id)
+            sample_id = fv.child_sample_id or fv.sample.id
+            fvhash["sample"]["id"] = sample_id
+        elif fv.field_type.ftype != "sample":
+            fvhash["value"] = fv.value
         elif fv.allowable_field_type.sample_type_id is None:
-            sid = "{}{}".format(fv.role, "NoSampleRequired")
+            pass
         else:
-            # a deterministic hash
+            # a deterministic hash for field values missing samples
             fvid = fv.id or fv._primary_key
             ftid = ft.id
             hashed = sha1("{}{}".format(fvid, ftid).encode("utf-8"))
             sid = hashed.hexdigest()
+            fvhash["sample"] = sid
 
-        item_id = "none"
         if fv.item is not None:
-            item_id = "{}{}".format(fv.role, fv.item.id)
-        fvhash = "{}:{}:{}:{}".format(ft.name, ft.role, sid, item_id)
+            fvhash["item"]["id"] = fv.item.id
+            if ft.part:
+                fvhash["item"]["row"] = fv.row
+                fvhash["item"]["column"] = fv.column
 
-        if ft.part:
-            fvhash += "r{row}:c{column}".format(row=fv.row, column=fv.column)
-        return fvhash
+        return json.dumps(fvhash, indent=2)
 
     @classmethod
-    def _fv_array_to_hash(cls, fv_array, ft, sort=True):
+    def _fv_array_to_hash(cls, fv_array, ft, sort=True, sep="*"):
         arr = [cls._fv_to_hash(fv, ft) for fv in fv_array]
         if sort:
             arr.sort()
-        return "*".join(arr)
+        return sep.join(arr)
 
     @classmethod
     def _op_to_hash(cls, op):
@@ -64,18 +79,20 @@ class PlanOptimizer:
         and sample_id."""
         ot_id = op.operation_type.id
 
-        field_type_ids = []
+        field_value_hashes = []
         for ft in op.operation_type.field_types:
             if ft.ftype == "sample":
                 if not ft.array:
                     fv = op.field_value(ft.name, ft.role)
-                    field_type_ids.append(cls._fv_to_hash(fv, ft))
+                    field_value_hashes.append(cls._fv_to_hash(fv, ft))
                 else:
                     fv_array = op.field_value_array(ft.name, ft.role)
-                    field_type_ids.append(cls._fv_array_to_hash(fv_array, ft))
+                    field_value_hashes.append(cls._fv_array_to_hash(fv_array, ft))
 
-        field_type_ids = sorted(field_type_ids)
-        return "{}_{}".format(ot_id, "#".join(field_type_ids))
+        field_value_hashes = sorted(field_value_hashes)
+        return "{}_{}\n{}".format(
+            ot_id, op.operation_type.name, "\n".join(field_value_hashes)
+        )
 
     @classmethod
     def _group_ops_by_hashes(cls, ops):
@@ -147,29 +164,52 @@ class PlanOptimizer:
                 group_graph.add_edge(final_hash, n2)
 
         wires_to_remove = []
-        wires_to_add = []
+        wires_to_add = set()
         ops_to_remove = []
 
-        for n1 in group_graph.nodes:
-            ops1 = group_graph.nodes[n1]["operations"]
+        wires_to_add_to_array = {}
 
-            if len(ops1) > 1:
-                for ft in ops1[0].operation_type.field_types:
+        groups = {}
+        for n1 in group_graph.nodes:
+            groups[n1] = group_graph.nodes[n1]["operations"]
+
+        for n1 in group_graph.nodes:
+            source_ops = group_graph.nodes[n1]["operations"]
+
+            if len(source_ops) > 1:
+                for ft in source_ops[0].operation_type.field_types:
                     if ft.role == "output":
-                        out_wires = self.planner.get_outgoing_wires(
-                            ops1[0].output(ft.name)
-                        )
-                        for w in out_wires:
+                        source_wires = []
+                        for src_op in source_ops:
+                            source_wires += self.planner.get_outgoing_wires(
+                                src_op.output(ft.name)
+                            )
+                        source_wires = set(source_wires)
+                        for w in source_wires:
                             key = opkey(w.destination.operation)
-                            group_id = op_to_group_id[key]
-                            group_ops = group_id_to_ops[group_id]
-                            wires_to_add.append(
-                                (w.source, group_ops[0].input(w.destination.name))
+                            src_fv = source_ops[0].output(w.source.name)
+                            dest_group_id = op_to_group_id[key]
+                            dest_op = group_id_to_ops[dest_group_id][0]
+                            dest_ft = dest_op.operation_type.field_type(
+                                name=w.destination.name, role="input"
                             )
 
-        for group_ops in group_id_to_ops.values():
-            ops_to_remove += group_ops[1:]
-            for op in group_ops[1:]:
+                            if dest_ft.array:
+                                array_key = (
+                                    dest_group_id,
+                                    self._fv_to_hash(w.destination, dest_ft),
+                                )
+                                wires_to_add_to_array.setdefault(
+                                    array_key, (src_fv, dest_op, list())
+                                )
+                                wires_to_add_to_array[array_key][-1].append(dest_ft)
+                            else:
+                                dest_fv = dest_op.input(w.destination.name)
+                                wires_to_add.add((src_fv, dest_fv))
+
+        for dest_ops in group_id_to_ops.values():
+            ops_to_remove += dest_ops[1:]
+            for op in dest_ops[1:]:
                 for fv in op.field_values:
                     if fv.role == "input":
                         wires_to_remove += self.planner.get_incoming_wires(fv)
@@ -186,6 +226,18 @@ class PlanOptimizer:
 
         for w in wires_to_add:
             self.planner.add_wire(*w)
+
+        for (
+            (gid, key),
+            (fv_src, target_op, target_fts),
+        ) in wires_to_add_to_array.items():
+            key_to_inputs = {
+                self._fv_to_hash(_fv, _fv.field_type): _fv for _fv in target_op.inputs
+            }
+            if key_to_inputs.get(key, None):
+                self.planner.quick_wire(fv_src, key_to_inputs[key])
+            else:
+                self.planner.quick_wire(fv_src, (target_op, target_fts[0].name))
 
         self.planner.operations = operations_list
         self.logger.info("\t{} operations removed".format(len(ops_to_remove)))

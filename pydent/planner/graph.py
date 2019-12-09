@@ -271,7 +271,7 @@ class PlannerLayout(PlannerGraph):
         :rtype: list
         """
         subgraphs = get_subgraphs(self.nxgraph)
-        sublayouts = [self.__class__(G=g) for g in subgraphs]
+        sublayouts = [self.__class__(nxgraph=g) for g in subgraphs]
         return sublayouts
 
     def _topological_sort(self):
