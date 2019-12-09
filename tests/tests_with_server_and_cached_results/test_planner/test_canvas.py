@@ -169,7 +169,7 @@ def test_layout_edges_and_nodes(session):
     canvas.chain(
         "Yeast Transformation", "Check Yeast Plate", "Yeast Overnight Suspension"
     )
-    G = canvas.layout.G
+    G = canvas.layout.nxgraph
     edges = list(G.edges)
     assert len(edges) == 2, "There should only be 2 edges/wires in the graph/plan"
     assert (

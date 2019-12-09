@@ -5,23 +5,33 @@ import webbrowser
 from collections import defaultdict
 from copy import deepcopy
 from functools import wraps
+from typing import Any
+from typing import Callable
 from typing import Dict
+from typing import Iterable
 from typing import List
 from typing import Tuple
+from typing import Type
 from typing import Union
-from uuid import uuid4
 
 import networkx as nx
 
 from .plan_optimizer import PlanOptimizer
 from pydent.aqsession import AqSession
+from pydent.base import ModelBase
 from pydent.exceptions import PlannerException
 from pydent.exceptions import PlannerVerificationException
+from pydent.models import AllowableFieldType
+from pydent.models import FieldType
 from pydent.models import FieldValue
+from pydent.models import Item
+from pydent.models import ObjectType
 from pydent.models import Operation
 from pydent.models import OperationType
 from pydent.models import Plan
+from pydent.models import Sample
 from pydent.models import Wire
+from pydent.planner.graph import PlannerGraph
 from pydent.planner.graph import PlannerLayout
 from pydent.planner.utils import _id_getter
 from pydent.planner.utils import arr_to_pairs
@@ -32,7 +42,13 @@ from pydent.utils import make_async
 from pydent.utils import QueryBuilder
 
 
-def plan_verification_wrapper(fxn):
+QuickWireTargetType = Union[FieldValue, Operation, Tuple[Operation, str]]
+UnresolvedWireTarget = Union[
+    Operation, Tuple[Operation, str], str, FieldType, OperationType, FieldValue
+]
+
+
+def plan_verification_wrapper(fxn: Callable):
     """A wrapper that verifies that all FieldValues or Operations passed as
     arguments exist in the plan."""
 
@@ -62,7 +78,10 @@ def plan_verification_wrapper(fxn):
 
 class AFTMatcher:
     @staticmethod
-    def _resolve_to_field_types(model, role=None):
+    def _resolve_to_field_types(
+        model: Union[FieldValue, Operation, Tuple[Operation, str], FieldType],
+        role: str = None,
+    ):
         if isinstance(model, FieldValue):
             if model.role == role:
                 return [model.field_type]
@@ -75,14 +94,29 @@ class AFTMatcher:
                 raise PlannerException(msg)
         elif isinstance(model, Operation):
             return [ft for ft in model.get_field_types() if ft.role == role]
+        elif isinstance(model, Tuple):
+            op, ftname = model
+            return [
+                ft
+                for ft in op.get_field_types()
+                if ft.role == role and ft.name == ftname
+            ]
+        elif isinstance(model, FieldType):
+            return [model]
         else:
             raise PlannerException(
-                "Cannot resolve inputs, type must be a FieldValue or Operation, not a "
+                "Cannot resolve inputs, type must be a FieldValue, Operation, (Operation, category) or FieldType, not a "
                 '"{}"'.format(type(model))
             )
 
     @classmethod
-    def _collect_matching_afts(cls, source, destination):
+    def _collect_matching_afts(
+        cls, source: QuickWireTargetType, destination: QuickWireTargetType
+    ) -> Tuple[
+        List[Tuple[AllowableFieldType, AllowableFieldType]],
+        List[AllowableFieldType],
+        List[AllowableFieldType],
+    ]:
         """
 
         :param source: a field value or operation source
@@ -112,7 +146,9 @@ class AFTMatcher:
         return matching_afts, matching_inputs, matching_outputs
 
     @staticmethod
-    def _find_matching_afts(src_ft, dest_ft):
+    def _find_matching_afts(
+        src_ft: FieldType, dest_ft: FieldType
+    ) -> List[Tuple[AllowableFieldType, AllowableFieldType]]:
         """Finds matching afts between two FieldTypes."""
         afts = []
         src_afts = src_ft.allowable_field_types
@@ -232,12 +268,12 @@ class Planner(AFTMatcher):
         return self._plan
 
     @plan.setter
-    def plan(self, new_plan):
+    def plan(self, new_plan: Plan):
         self._plan = new_plan
         self.cache()
 
     @classmethod
-    def cache_plans(cls, browser, plans):
+    def cache_plans(cls, browser, plans: Iterable[Plan]) -> Iterable[Plan]:
         browser.get(plans, cls._cache_query())
         for plan in plans:
             wire_dict = {}
@@ -264,7 +300,9 @@ class Planner(AFTMatcher):
 
     @property
     def url(self):
-        return self.session.url + "plans?plan_id={}".format(self.plan.id)
+        url = self.session.url + r"/plans?plan_id={}".format(self.plan.id)
+        url = url.replace(r"//", r"/")
+        return url
 
     def open(self):
         webbrowser.open(self.url)
@@ -309,19 +347,23 @@ class Planner(AFTMatcher):
         self.plan.delete()
         self._plan = self.plan.copy()
 
-    def create_operation_by_type(self, ot, status="planning"):
+    def create_operation_by_type(
+        self, ot: OperationType, status: str = "planning"
+    ) -> Operation:
         op = ot.instance()
         op.status = status
         self.plan.add_operation(op)
         self.logger.debug("{} created".format(ot.name))
         return op
 
-    def create_operation_by_type_id(self, ot_id):
+    def create_operation_by_type_id(self, ot_id: Union[int, str]) -> Operation:
         # ot = self.browser.find('OperationType', ot_id)
         ot = self.session.OperationType.find(ot_id)
         return self.create_operation_by_type(ot)
 
-    def create_operation_by_name(self, operation_type_name, category=None):
+    def create_operation_by_name(
+        self, operation_type_name: str, category: str = None
+    ) -> Operation:
         """Adds a new operation to the plan."""
         query = {"deployed": True, "name": operation_type_name}
         if category is not None:
@@ -338,7 +380,7 @@ class Planner(AFTMatcher):
             raise PlannerException(msg.format(operation_type_name))
         return self.create_operation_by_type(ots[0])
 
-    def new_op(self, name_id_or_ot):
+    def new_op(self, name_id_or_ot: Union[str, int, OperationType]) -> Operation:
         if isinstance(name_id_or_ot, str):
             return self.create_operation_by_name(name_id_or_ot)
         elif isinstance(name_id_or_ot, int):
@@ -352,7 +394,7 @@ class Planner(AFTMatcher):
             )
 
     @staticmethod
-    def _model_are_equal(model1, model2):
+    def _model_are_equal(model1: ModelBase, model2: ModelBase) -> bool:
         mid1 = model1.id or model1._primary_key
         mid2 = model2.id or model2._primary_key
         return mid1 == mid2
@@ -363,7 +405,7 @@ class Planner(AFTMatcher):
         #     return True
         # return False
 
-    def get_op(self, id):
+    def get_op(self, id: Union[str, int]) -> Union[Operation, None]:
         for op in self.plan.operations:
             if op.id == id:
                 return op
@@ -463,14 +505,45 @@ class Planner(AFTMatcher):
             return op.id is not None and op.id in plan_operation_ids
 
     @plan_verification_wrapper
-    def _resolve_op(
-        self, op: Union[Operation, Tuple[Operation, str], str], category: str = None
-    ) -> Operation:
-        if isinstance(op, tuple):
-            op = self.create_operation_by_name(op[0], category=op[1])
-        if isinstance(op, str):
-            op = self.create_operation_by_name(op, category=category)
-        return op
+    def _resolve_to_wire_target(
+        self,
+        unresolved: UnresolvedWireTarget,
+        category: str = None,
+        return_type: Union[Type[Operation], None] = None,
+    ) -> Union[Operation, FieldValue]:
+        if isinstance(unresolved, tuple):
+            resolved = self.create_operation_by_name(
+                unresolved[0], category=unresolved[1]
+            )
+        elif isinstance(unresolved, str):
+            resolved = self.create_operation_by_name(unresolved, category=category)
+        elif isinstance(unresolved, OperationType):
+            resolved = self.create_operation_by_type(unresolved, category=category)
+        elif isinstance(unresolved, FieldType):
+            op = self.create_operation_by_type_id(unresolved.parent_id)
+            ft = unresolved
+            if unresolved.role == "input":
+                if unresolved.array:
+                    resolved = self._select_empty_input_array(op, ft.name)
+                else:
+                    resolved = op.input(ft.name)
+            elif unresolved.role == "output":
+                if unresolved.array:
+                    resolved = self._select_empty_input_array(op, ft.name)
+                else:
+                    resolved = op.output(ft.name)
+        elif isinstance(unresolved, FieldValue) or isinstance(unresolved, Operation):
+            resolved = unresolved
+        else:
+            raise TypeError(unresolved)
+
+        if return_type is None:
+            return resolved
+        elif Operation:
+            if isinstance(resolved, Operation):
+                return resolved
+            else:
+                return resolved.operation
 
     @property
     def operations(self) -> List[Operation]:
@@ -488,7 +561,12 @@ class Planner(AFTMatcher):
     def operations(self, ops: List[Operation]):
         self.plan.operations = ops
 
-    def chain(self, *op_or_otnames, category=None, return_as_dict=False):
+    def chain(
+        self,
+        *op_or_otnames: Tuple[UnresolvedWireTarget, ...],
+        category: str = None,
+        return_as_dict: bool = False,
+    ) -> List[Operation]:
         """Creates a chain of operations by *guessing* wires between operations
         based on the AllowableFieldTypes between the inputs and outputs of each
         operation type. Sample inputs and outputs will be set along the wire if
@@ -524,20 +602,26 @@ class Planner(AFTMatcher):
             planner.chain("Pour Gel", run_gel)
         """
         self.logger.debug("QUICK CREATE CHAIN {}".format(op_or_otnames))
-        ops = [self._resolve_op(n, category=category) for n in op_or_otnames]
-        if any([op for op in ops if op is None]):
-            raise PlannerException("Could not find some operations: {}".format(ops))
-        pairs = arr_to_pairs(ops)
-        for op1, op2 in pairs:
-            self.quick_wire(op1, op2)
+        targets = [
+            self._resolve_to_wire_target(n, category=category) for n in op_or_otnames
+        ]
+        if any([op for op in targets if op is None]):
+            raise PlannerException("Could not find some operations: {}".format(targets))
+        pairs = arr_to_pairs(targets)
+        for src, dest in pairs:
+            self.quick_wire(src, dest)
         if return_as_dict:
             return_dict = {}
-            for op in ops:
-                return_dict.setdefault(op.operation_type.name, []).append(op)
+            for op_or_fv in targets:
+                return_dict.setdefault(op_or_fv.operation_type.name, []).append(
+                    op_or_fv
+                )
             return return_dict
-        return ops
+        return targets
 
-    def _select_empty_input_array(self, op, fvname):
+    def _select_empty_input_array(
+        self, op: Operation, fvname: str
+    ) -> Union[None, FieldValue]:
         """Selects the first 'empty' (i.e. field_values with no Sample set)
         field value in the :class:`FieldValue` array. Returns None if the
         FieldType is not an array. If there are no current 'empty' field
@@ -558,7 +642,12 @@ class Planner(AFTMatcher):
 
     # TODO: way to select preference for afts in quick_wire?
     @plan_verification_wrapper
-    def quick_wire(self, source, destination, strict=False):
+    def quick_wire(
+        self,
+        source: Union[Operation, FieldValue, Tuple[Operation, str]],
+        destination: Union[Operation, FieldValue, Tuple[Operation, str]],
+        strict: bool = False,
+    ) -> Wire:
         """
 
         :param source: field_value or operation source
@@ -571,8 +660,20 @@ class Planner(AFTMatcher):
         :return: created wire
         :rtype: Wire
         """
+        if isinstance(source, tuple):
+            source, src_fvname = source
+            src_target = source.operation_type.field_type(src_fvname, role="output")
+        else:
+            src_target = source
+        if isinstance(destination, tuple):
+            destination, dest_fvname = destination
+            dest_target = destination.operation_type.field_type(
+                dest_fvname, role="input"
+            )
+        else:
+            dest_target = destination
         afts, model_inputs, model_outputs = self._collect_matching_afts(
-            source, destination
+            src_target, dest_target
         )
 
         # TODO: only if matching FVs are ambiguous raise Exception
@@ -595,13 +696,21 @@ class Planner(AFTMatcher):
                 output_ft = aft1.field_type
 
                 # input_fv = None
-                if input_ft.array:
-                    input_fv = self._select_empty_input_array(
-                        destination, input_ft.name
-                    )
+
+                if isinstance(source, FieldValue):
+                    output_fv = source
                 else:
-                    input_fv = destination.input(input_ft.name)
-                output_fv = source.output(output_ft.name)
+                    output_fv = source.output(output_ft.name)
+
+                if isinstance(destination, FieldValue):
+                    input_fv = destination
+                else:
+                    if input_ft.array:
+                        input_fv = self._select_empty_input_array(
+                            destination, input_ft.name
+                        )
+                    else:
+                        input_fv = destination.input(input_ft.name)
 
                 return self.add_wire(output_fv, input_fv)
 
@@ -612,7 +721,7 @@ class Planner(AFTMatcher):
                 )
             )
 
-    def quick_wire_by_name(self, otname1, otname2):
+    def quick_wire_by_name(self, otname1: str, otname2: str) -> Wire:
         """Wires together the last added operations."""
         op1 = self.get_op_by_name(otname1)[-1]
         op2 = self.get_op_by_name(otname2)[-1]
@@ -640,7 +749,7 @@ class Planner(AFTMatcher):
                 fv.wires_as_dest = list(set(wires_as_dest))
         self.plan.wires = list(wires_by_id.values())
 
-    def remove_operations(self, ops):
+    def remove_operations(self, ops: Iterable[Operation]):
         self.clean_wires()
         operations = self.plan.operations
         wires = set(self.plan.wires)
@@ -659,7 +768,13 @@ class Planner(AFTMatcher):
 
     # TODO: resolve afts if already set...
     # TODO: clean up _set_wire
-    def _set_wire(self, src_fv, dest_fv, preference="source", setter=None):
+    def _set_wire(
+        self,
+        src_fv: FieldValue,
+        dest_fv: FieldValue,
+        preference: str = "source",
+        setter: Union[None, Callable] = None,
+    ):
 
         if len(self.get_incoming_wires(dest_fv)) > 0:
             raise PlannerException(
@@ -816,13 +931,13 @@ class Planner(AFTMatcher):
     @plan_verification_wrapper
     def set_field_value(
         self,
-        field_value,
-        sample=None,
-        item=None,
-        container=None,
-        value=None,
-        row=None,
-        column=None,
+        field_value: FieldValue,
+        sample: Union[None, Sample] = None,
+        item: Union[None, Item] = None,
+        container: Union[None, ObjectType] = None,
+        value: Any = None,
+        row: Union[None, int] = None,
+        column: Union[None, int] = None,
     ):
         self.logger.debug(
             "setting field_value {} to {} - {} - {} - {}".format(
@@ -842,11 +957,19 @@ class Planner(AFTMatcher):
             fvs = self.get_sample_routing_of_operation(field_value.operation)[routing]
             if field_value.field_type.ftype == "sample":
                 for fv in fvs:
-                    fv.set_value(sample=sample)
+                    fv.set_value(sample=sample, row=row, column=column)
         return field_value
 
     def set_input_field_value_array(
-        self, op, field_value_name, sample=None, item=None, container=None
+        self,
+        op: Operation,
+        field_value_name: str,
+        sample: Union[None, Sample] = None,
+        item: Union[None, Item] = None,
+        container: Union[None, ObjectType] = None,
+        value: Any = None,
+        row: Union[None, int] = None,
+        column: Union[None, int] = None,
     ):
         """Finds the first 'empty' (no incoming wires and no sample set) field
         value and set the field value. If there are no empty field values in
@@ -867,10 +990,25 @@ class Planner(AFTMatcher):
         """
         input_fv = self._select_empty_input_array(op, field_value_name)
         return self.set_field_value(
-            input_fv, sample=sample, item=item, container=container
+            input_fv,
+            sample=sample,
+            item=item,
+            container=container,
+            row=row,
+            column=column,
+            value=value,
         )
 
-    def set_field_value_and_propogate(self, field_value, sample=None, item=None):
+    def set_field_value_and_propogate(
+        self,
+        field_value: FieldValue,
+        sample: Union[None, Sample] = None,
+        item: Union[None, Item] = None,
+        container: Union[None, ObjectType] = None,
+        value: Any = None,
+        row: Union[None, int] = None,
+        column: Union[None, int] = None,
+    ):
         if item:
             if sample:
                 sid1 = sample.id or sample._primary_key
@@ -882,19 +1020,21 @@ class Planner(AFTMatcher):
                     )
             else:
                 sample = item.sample
-            self.set_field_value(field_value, item=item)
+            self.set_field_value(field_value, item=item, row=row, column=column)
         routing_graph = self._routing_graph()
         routing_id = self._routing_id(field_value)
         subgraph = nx.bfs_tree(routing_graph.to_undirected(as_view=True), routing_id)
         for node in subgraph:
             n = routing_graph.nodes[node]
             fv = n["fv"]
-            self.set_field_value(fv, sample=sample)
+            self.set_field_value(fv, sample=sample, container=container, value=value)
         return field_value
 
     @staticmethod
     @make_async
-    def _filter_by_lambdas(models, lambda_arr):
+    def _filter_by_lambdas(
+        models: List[Any], lambda_arr: Iterable[Callable]
+    ) -> List[Any]:
         """Filters models by a array of lambdas."""
         arr = models[:]
         _arr = []
@@ -908,7 +1048,9 @@ class Planner(AFTMatcher):
                     continue
         return _arr
 
-    def _item_preference_query(self, sample, field_value, item_preference):
+    def _item_preference_query(
+        self, sample: Sample, field_value: FieldValue, item_preference: str
+    ) -> dict:
         if item_preference not in self.ITEM_SELECTION_PREFERENCE._CHOICES:
             raise PlannerException(
                 'Item selection preference "{}" not recognized'
@@ -936,7 +1078,9 @@ class Planner(AFTMatcher):
         query.update({"object_type_id": [aft.object_type_id for aft in afts]})
         return query
 
-    def reserved_items(self, items, search_server=False):
+    def reserved_items(
+        self, items: List[Item], search_server: bool = False
+    ) -> Dict[int, List[FieldValue]]:
         """Returns a dictionary of item_ids and the array of field_values that
         use them."""
         browser = self.browser
@@ -968,7 +1112,9 @@ class Planner(AFTMatcher):
         return item_id_to_fv
 
     @plan_verification_wrapper
-    def get_available_items(self, field_value, item_preference):
+    def get_available_items(
+        self, field_value: FieldValue, item_preference: str
+    ) -> List[Item]:
         sample = field_value.sample
         if not sample:
             return []
@@ -988,7 +1134,7 @@ class Planner(AFTMatcher):
             self.logger.debug("{} items are reserved".format(x - len(available_items)))
         return available_items
 
-    def distribute_items_of_object_type(self, object_type):
+    def distribute_items_of_object_type(self, object_type: ObjectType):
         """Distribute items of a particular object_type across non-planning
         operations across existing plans and these operations in this Planner
         instance.
@@ -1053,10 +1199,10 @@ class Planner(AFTMatcher):
     def set_to_available_item(
         self,
         fv: FieldValue,
-        order_preference=ITEM_ORDER_PREFERENCE._DEFAULT,
-        filter_func=None,
-        item_preference=ITEM_SELECTION_PREFERENCE._DEFAULT,
-    ):
+        order_preference: str = ITEM_ORDER_PREFERENCE._DEFAULT,
+        filter_func: Union[None, Callable] = None,
+        item_preference: str = ITEM_SELECTION_PREFERENCE._DEFAULT,
+    ) -> Item:
         """Sets the item of the field value to the next available item. Setting
         recent=False will select the oldest item.
 
@@ -1114,7 +1260,11 @@ class Planner(AFTMatcher):
 
     @plan_verification_wrapper
     def set_inputs_using_sample_properties(
-        self, operation, sample, routing=None, setter=None
+        self,
+        operation: Operation,
+        sample: Sample,
+        routing: dict = None,
+        setter: Union[None, Callable] = None,
     ):
         """Map the sample field values to the operation inputs. Optionally, a
         routing dictionary may be passed to indicate the mapping between the
@@ -1144,7 +1294,13 @@ class Planner(AFTMatcher):
                 setter(operation_input, sample=sample_property)
 
     @plan_verification_wrapper
-    def set_output_sample(self, fv, sample=None, routing=None, setter=None):
+    def set_output_sample(
+        self,
+        fv: FieldValue,
+        sample: Sample = None,
+        routing: dict = None,
+        setter: Union[None, Callable] = None,
+    ):
         """Sets the output of the field value to the sample. If the field_value
         names between the Sample and the field_value's operation inputs, these
         will be set as well. Optionally, a routing dictionary may be passed to
@@ -1173,7 +1329,7 @@ class Planner(AFTMatcher):
         )
 
     @staticmethod
-    def _json_update(model, **params):
+    def _json_update(model: ModelBase, **params: dict) -> ModelBase:
         """Temporary method to update."""
         aqhttp = model.session._AqSession__aqhttp
         data = {"model": {"model": model.__class__.__name__}}
@@ -1183,14 +1339,14 @@ class Planner(AFTMatcher):
         return model
 
     @classmethod
-    def move_op(cls, op, plan_id):
+    def move_op(cls, op: Operation, plan_id: Union[str, id]):
         pa = op.plan_associations[0]
         pa.plan_id = plan_id
         op.parent_id = 0
         cls._json_update(op)
         cls._json_update(pa)
 
-    def get_op_by_name(self, operation_type_name):
+    def get_op_by_name(self, operation_type_name: str) -> Operation:
         """Find operations by their operation_type_name.
 
         :param operation_type_name: The operation type name
@@ -1204,13 +1360,15 @@ class Planner(AFTMatcher):
             if op.operation_type.name == operation_type_name
         ]
 
-    def replan(self):
+    def replan(self) -> "Planner":
         """Replan the plan, by 'copying' the plan using the Aquarium server."""
         planner = self.__class__(self.session)
         planner.plan = self.plan.replan()
         return planner
 
-    def annotate(self, markdown, x, y, width, height):
+    def annotate(
+        self, markdown: str, x: float, y: float, width: float, height: float
+    ) -> dict:
         """Annotates the plan with Markdown text.
 
         :param markdown: text to annotate (in markdown format)
@@ -1240,7 +1398,9 @@ class Planner(AFTMatcher):
             self.plan.layout["text_boxes"].append(annotation)
         return annotation
 
-    def annotate_operations(self, ops, markdown, width, height):
+    def annotate_operations(
+        self, ops: List[Operation], markdown: str, width: float, height: float
+    ) -> dict:
         """Annotates above the operations.
 
         Estimates the x-midpoint and y and makes a text annotation at
@@ -1249,7 +1409,9 @@ class Planner(AFTMatcher):
         layout = self.layout.ops_to_subgraph(ops)
         return self.annotate_above_layout(markdown, width, height, layout=layout)
 
-    def annotate_above_layout(self, markdown, width, height, layout=None):
+    def annotate_above_layout(
+        self, markdown: str, width: float, height: float, layout: PlannerLayout = None
+    ):
         """Annotates text directly above a layout."""
         if layout is None:
             layout = self.layout
@@ -1269,12 +1431,12 @@ class Planner(AFTMatcher):
         return self.annotate(markdown, x, y, width, height)
 
     @property
-    def layout(self):
+    def layout(self) -> PlannerLayout:
         return PlannerLayout.from_plan(self.plan)
 
     @property
     def graph(self):
-        return PlannerLayout.from_plan(self.plan)
+        return PlannerGraph.from_plan(self.plan)
 
     def ipython_link(self):
         try:
@@ -1299,7 +1461,7 @@ class Planner(AFTMatcher):
         optimizer = PlanOptimizer(self, inherit_logger=self.logger)
         return optimizer.optimize()
 
-    def validate(self):
+    def validate(self) -> Dict:
         """Validates sample routes in the plan.
 
         :return: dictionary of each sample route and validation errors
@@ -1432,8 +1594,8 @@ class Planner(AFTMatcher):
             new_plans.append(new_plan)
 
             # copy over the operations
-            opids = list(layout.G.nodes)
-            ops = [layout.G.nodes[opid]["operation"] for opid in opids]
+            opids = list(layout.nxgraph.nodes)
+            ops = [layout.nxgraph.nodes[opid]["operation"] for opid in opids]
             wires = []
 
             # copy over relevant wires
@@ -1461,7 +1623,7 @@ class Planner(AFTMatcher):
     def draw(self):
         layout = self.layout
         edge_colors = []
-        for s, e, d in layout.G.edges(data=True):
+        for s, e, d in layout.nxgraph.edges(data=True):
             color = "black"
             wire = d["wire"]
             if wire.source.sample is None:
@@ -1471,7 +1633,7 @@ class Planner(AFTMatcher):
             elif wire.destination.sample != wire.source.sample:
                 color = "red"
             edge_colors.append(color)
-        nx.draw(self.layout.G, edge_colors=edge_colors, pos=self.layout.pos())
+        nx.draw(self.layout.nxgraph, edge_colors=edge_colors, pos=self.layout.pos())
 
     # TODO: autofill implementation
     # def autofill(self):
