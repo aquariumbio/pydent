@@ -1,21 +1,22 @@
 import json
 
+import numpy as np
 import pytest
-
-from pydent.models import Collection
-from pydent.models import PartAssociation
 
 
 @pytest.fixture
 def example_part_association(session):
-    """An example part association"""
+    """An example part association."""
     part_association = session.PartAssociation.one()
     return part_association
 
 
 @pytest.fixture
 def example_collection(session, example_part_association):
-    """An example collection. Supposed to have a part"""
+    """An example collection.
+
+    Supposed to have a part
+    """
     return example_part_association.collection
 
 
@@ -47,8 +48,8 @@ class TestCollection:
 
         # now we will remove the cached data and re-retrieve it
         # from the server by calling the .part method.
-        collection.reset_field('part_associations')
-        assert not collection.is_deserialized('part_associations')
+        collection.reset_field("part_associations")
+        assert not collection.is_deserialized("part_associations")
         retrieved_part = collection.part(row, col)
         assert retrieved_part.id == expected_part.id
         assert retrieved_part is not expected_part
@@ -79,3 +80,70 @@ class TestCollection:
             expected_matrix.append(row_list)
 
         assert collection.matrix == expected_matrix
+
+
+class Slicer:
+    def __getitem__(self, item):
+        return item
+
+
+slicer = Slicer()
+
+
+class TestCollectionSetter:
+    @pytest.mark.parametrize(
+        "index",
+        [
+            slicer[0],
+            slicer[1],
+            slicer[:3],
+            slicer[:, :3],
+            slicer[1, :3],
+            slicer[:, -3:],
+            slicer[1, -3:],
+            slicer[:3, :],
+            slicer[:3, 1],
+            slicer[-3:, :],
+            slicer[-3:, 1],
+            slicer[:3, :2],
+            slicer[-3:, -2:],
+            slicer[:, :],
+        ],
+    )
+    def test_set_rc(self, session, example_collection, index):
+        expected = np.zeros(example_collection.dimensions)
+        expected.__setitem__(index, 1)
+
+        example_collection.__setitem__(index, 1)
+        for r, c in zip(*np.where(expected == 1)):
+            assert example_collection[r, c] == 1
+        for r, c in zip(*np.where(expected != 1)):
+            assert example_collection[r, c] != 1
+
+
+class TestCollectionSubmit:
+    def test_submit(self, session):
+        ot = session.ObjectType.where("rows > 1")[0]
+        collection = session.Collection.new(object_type=ot)
+
+        collection[0] = 1
+
+        print(collection.matrix)
+        print(collection.save())
+        print(collection.id)
+        print(collection.matrix)
+
+        # sample_type = session.SampleType.find(1)
+        # object_type = session.ObjectType.where({'sample_type_id': sample_type.id})[0]
+        #
+        # collection[1, 0] = 2
+        # collection.location = 'test'
+        # collection.save()
+        #
+        # print(collection.matrix)
+        # item = session.Item.new(
+        #     object_type=object_type,
+        #     sample=sample_type.samples[0]
+        # )
+        # item.save()
+        # print(item.id)
