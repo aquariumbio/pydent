@@ -437,30 +437,36 @@ class Browser(QueryInterfaceABC):
         )[0]
 
     def cached_where(self, query, model, primary_key="id"):
-        if [] in query.values():
+        if isinstance(query, str):
+            server_models = self.interface(model).where(query)
+            found_dict = {}
+        elif [] in query.values():
             return []
-        cached_models = self.model_cache.get(model, {})
-        found, found_queries = self._find_matches(query, list(cached_models.values()))
-        found_dict = {f.id: f for f in found}
-        remaining_query = dict(query)
-        if primary_key in query:
-            found_ids = [q[primary_key] for q in found_queries]
-            query_id_list = query[primary_key]
-            if isinstance(query_id_list, str) or isinstance(query_id_list, int):
-                query_id_list = [query_id_list]
-            remaining_ids = list(set(query_id_list).difference(set(found_ids)))
-            remaining_query[primary_key] = remaining_ids
-        self.log.info(
-            "CACHE found {num} {model} models in cache using query {query}".format(
-                num=len(found_dict), model=model, query=self.log.pprint_data(query)
+        else:
+            cached_models = self.model_cache.get(model, {})
+            found, found_queries = self._find_matches(
+                query, list(cached_models.values())
             )
-        )
+            found_dict = {f.id: f for f in found}
+            remaining_query = dict(query)
+            if primary_key in query:
+                found_ids = [q[primary_key] for q in found_queries]
+                query_id_list = query[primary_key]
+                if isinstance(query_id_list, str) or isinstance(query_id_list, int):
+                    query_id_list = [query_id_list]
+                remaining_ids = list(set(query_id_list).difference(set(found_ids)))
+                remaining_query[primary_key] = remaining_ids
+            self.log.info(
+                "CACHE found {num} {model} models in cache using query {query}".format(
+                    num=len(found_dict), model=model, query=self.log.pprint_data(query)
+                )
+            )
 
-        # TODO: this code may be sketchy... here {'id': []}, really means we found
-        #       all of the models..
-        if primary_key in remaining_query and not remaining_query[primary_key]:
-            return list(found_dict.values())
-        server_models = self.interface(model).where(remaining_query)
+            # TODO: this code may be sketchy... here {'id': []}, really means we found
+            #       all of the models..
+            if primary_key in remaining_query and not remaining_query[primary_key]:
+                return list(found_dict.values())
+            server_models = self.interface(model).where(remaining_query)
 
         models_dict = OrderedDict({s.id: s for s in server_models})
         models_dict.update(found_dict)
