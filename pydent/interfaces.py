@@ -39,9 +39,9 @@ from typing import Union
 from inflection import pluralize
 from inflection import underscore
 
-from pydent.marshaller.registry import ModelRegistry
 from .exceptions import TridentRequestError
 from .utils import url_build
+from pydent.marshaller.registry import ModelRegistry
 
 
 class SessionInterface:
@@ -243,6 +243,11 @@ class UtilityInterface(CRUDInterface):
 
     def create_data_association(self, model_inst, key, value, upload=None):
         upload_id = None
+        if not model_inst.id:
+            raise ValueError(
+                "Cannot create DataAssociation because model has no id ("
+                "it probably is not saved on the server)"
+            )
         if upload is not None:
             upload_id = upload.id
         data = {

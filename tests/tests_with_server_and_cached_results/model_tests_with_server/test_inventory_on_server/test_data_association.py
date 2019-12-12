@@ -40,10 +40,48 @@ class TestDataAssociation:
         val = str(uuid4())
         new_da = item.associate("test", val)
 
+        # check data association got id
+        print(new_da.id)
         assert new_da.id
         assert new_da.parent_id == item.id
         assert new_da.parent_class == "Item"
         assert new_da in item.data_associations
+        assert new_da.value == val
+
+        # check server was updated
+        loaded = session.DataAssociation.find(new_da.id)
+        assert loaded.value == val
+
+    @pytest.mark.record("no")
+    def test_update_data_association(self, session):
+
+        item = self.get_example_item(session)
+
+        key = str(uuid4())
+        val1 = str(uuid4())
+        val2 = str(uuid4())
+
+        assert not item.get_data_association(key)
+
+        new_da = item.associate(key, val1)
+
+        assert new_da.id
+        assert new_da.parent_id == item.id
+        assert new_da.parent_class == "Item"
+        assert new_da in item.data_associations
+
+        # check server was updated
+        loaded = session.DataAssociation.find(new_da.id)
+        assert loaded.value == val1
+
+        # update data association
+        new_da2 = item.associate(key, val2)
+        assert new_da2.id == new_da.id
+        assert new_da2.value == val2
+
+        # check server was updated
+        loaded = session.DataAssociation.find(new_da2.id)
+        assert loaded.value == val2
 
     @pytest.mark.record("no")
     def test_delete_data_association(self, session):
@@ -59,6 +97,22 @@ class TestDataAssociation:
         for da in das:
             da.delete()
 
-        item.data_associations = None
+        item.reset_field("data_associations")
+        das = item.get_data_associations(key)
+        assert not das
+
+    @pytest.mark.record("no")
+    def test_delete_data_associations(self, session):
+
+        item = self.get_example_item(session)
+
+        val = str(uuid4())
+        key = "test"
+        item.associate(key, val)
+        das = item.get_data_associations(key)
+        assert das
+
+        item.delete_data_associations(key)
+
         das = item.get_data_associations(key)
         assert not das
