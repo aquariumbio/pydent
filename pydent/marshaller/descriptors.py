@@ -3,8 +3,10 @@ accessed."""
 from enum import auto
 from enum import Enum
 
+from .exceptions import MarshallerBaseException
 
-class MarshallingAttributeAccessError(Exception):
+
+class MarshallingAttributeAccessError(MarshallerBaseException):
     """Generic error that arises from while accessing an attribute."""
 
 
