@@ -199,8 +199,8 @@ class TestCanvasLayout:
         new_ops[1].x = 100
         new_ops[2].x = 150
 
-        ops_layout = canvas.layout.ops_to_layout(ops)
-        new_op_layout = canvas.layout.ops_to_layout(new_ops)
+        ops_layout = canvas.layout.ops_to_subgraph(ops)
+        new_op_layout = canvas.layout.ops_to_subgraph(new_ops)
 
         midpoint = new_op_layout.midpoint()
         assert midpoint[0] == 75, "should be midpoint between 0 and 150"
@@ -228,8 +228,8 @@ class TestCanvasLayout:
                 ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR"
             )[1:]
         assert len(new_ops) == 6
-        successor_layout = canvas.layout.successor_layout(
-            canvas.layout.ops_to_layout(ops)
+        successor_layout = canvas.layout.successor_subgraph(
+            canvas.layout.ops_to_subgraph(ops)
         )
         assert len(successor_layout) == 3
 
@@ -249,8 +249,8 @@ class TestCanvasLayout:
                 ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR"
             )[1:]
         assert len(new_ops) == 6
-        predecessor_layout = canvas.layout.predecessor_layout(
-            canvas.layout.ops_to_layout(new_ops)
+        predecessor_layout = canvas.layout.predecessor_subgraph(
+            canvas.layout.ops_to_subgraph(new_ops)
         )
         assert len(predecessor_layout) == 1
 
@@ -270,8 +270,8 @@ class TestCanvasLayout:
                 ops[-1], ("E Coli Lysate", "Cloning"), "E Coli Colony PCR"
             )[1:]
 
-        layout = canvas.layout.ops_to_layout(ops)
-        successors = canvas.layout.successor_layout(layout)
+        layout = canvas.layout.ops_to_subgraph(ops)
+        successors = canvas.layout.successor_subgraph(layout)
         ops[-1].x = 400
         successors.align_x_midpoints_to(layout)
 
@@ -311,17 +311,17 @@ class TestCanvasLayout:
 
         lysate = canvas.get_op_by_name("E Coli Lysate")
         pcr = canvas.get_op_by_name("E Coli Colony PCR")
-        canvas.layout.ops_to_layout(pcr).translate(100, 100)
-        assert not canvas.layout.ops_to_layout(lysate).midpoint()[0] == ops[-1].x
+        canvas.layout.ops_to_subgraph(pcr).translate(100, 100)
+        assert not canvas.layout.ops_to_subgraph(lysate).midpoint()[0] == ops[-1].x
         assert (
-            not canvas.layout.ops_to_layout(lysate).midpoint()[0]
-            == canvas.layout.ops_to_layout(pcr).midpoint()[0]
+            not canvas.layout.ops_to_subgraph(lysate).midpoint()[0]
+            == canvas.layout.ops_to_subgraph(pcr).midpoint()[0]
         )
         canvas.layout.topo_sort()
-        assert canvas.layout.ops_to_layout(lysate).midpoint()[0] == ops[-1].x
+        assert canvas.layout.ops_to_subgraph(lysate).midpoint()[0] == ops[-1].x
         assert (
-            canvas.layout.ops_to_layout(lysate).midpoint()[0]
-            == canvas.layout.ops_to_layout(pcr).midpoint()[0]
+            canvas.layout.ops_to_subgraph(lysate).midpoint()[0]
+            == canvas.layout.ops_to_subgraph(pcr).midpoint()[0]
         )
 
     def test_topo_sort_with_independent_subgraphs(self, session):
@@ -362,7 +362,7 @@ class TestCanvasLayout:
             category="Cloning",
         )
 
-        graph = canvas.layout.ops_to_layout(ops[-2:])
+        graph = canvas.layout.ops_to_subgraph(ops[-2:])
         assert len(graph) == 2
         canvas.layout.topo_sort()
 

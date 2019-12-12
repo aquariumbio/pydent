@@ -19,6 +19,7 @@ import pprint as pprint_module
 from .loggable import condense_long_lists
 from .loggable import Loggable
 from .loggable import pprint_data
+from .query_builder import QueryBuilder
 from pydent.utils.async_requests import make_async
 
 printer = pprint_module.PrettyPrinter(indent=1)

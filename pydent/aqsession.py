@@ -369,7 +369,7 @@ class AqSession(SessionABC):
 
         :param using_requests: if False, ForbiddenRequest will be raised if requests are
         made using the session.
-        :param using_models: if True (default), derived session will inherit
+        :param using_models: if True (default: False), derived session will inherit
         the current sessions model_cache
         :param timeout: the requests timeout in seconds
         :param verbose: if True, verbose mode will be activated for the derived session
