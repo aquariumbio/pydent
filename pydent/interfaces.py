@@ -243,6 +243,11 @@ class UtilityInterface(CRUDInterface):
 
     def create_data_association(self, model_inst, key, value, upload=None):
         upload_id = None
+        if not model_inst.id:
+            raise ValueError(
+                "Cannot create DataAssociation because model has no id ("
+                "it probably is not saved on the server)"
+            )
         if upload is not None:
             upload_id = upload.id
         data = {

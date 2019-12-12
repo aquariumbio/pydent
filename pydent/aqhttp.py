@@ -18,6 +18,7 @@ import json
 from typing import Dict
 
 import requests
+from retry import retry
 
 from pydent.exceptions import AquariumModelNotFound
 from pydent.exceptions import ForbiddenRequestError
@@ -28,6 +29,11 @@ from pydent.exceptions import TridentTimeoutError
 from pydent.utils import logger
 from pydent.utils import pprint_data
 from pydent.utils import url_build
+
+
+LOGIN_RETRY_DELAY = 1
+LOGIN_RETRY_BACKOFF = 1
+LOGIN_RETRY_MAX_DELAY = 2
 
 
 class AqHTTP:
@@ -126,6 +132,13 @@ class AqHTTP:
     def create_session_json(login: str, password: str) -> Dict:
         return {"session": {"login": login, "password": password}}
 
+    @retry(
+        TridentLoginError,
+        delay=LOGIN_RETRY_DELAY,
+        backoff=LOGIN_RETRY_BACKOFF,
+        max_delay=LOGIN_RETRY_MAX_DELAY,
+        tries=3,
+    )
     def _login(self, login: str, password: str):
         """Login to aquarium and saves header as a requests.Session()
 
