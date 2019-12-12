@@ -53,10 +53,12 @@ class DeleteMixin:
 
 
 class JSONSaveMixin:
-    def save(self):
+    def save(self, do_reload=True):
         name = self.get_server_model_name()
         data = self._get_save_json()
         result = self.session.utils.json_save(name, data)
+        if do_reload:
+            self.reload(result)
         return result
 
     # TODO: add update to JSONMixin?
