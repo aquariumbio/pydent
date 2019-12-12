@@ -23,6 +23,7 @@ import networkx as nx
 from pydent import models as pydent_models
 from pydent.base import ModelBase
 from pydent.exceptions import ForbiddenRequestError
+from pydent.exceptions import TridentBaseException
 from pydent.interfaces import QueryInterface
 from pydent.interfaces import QueryInterfaceABC
 from pydent.marshaller import ModelRegistry
@@ -38,7 +39,7 @@ from pydent.utils.logging_helpers import did_you_mean
 #       pull, and trident should pull and cache in the most efficient way possible)
 
 
-class BrowserException(Exception):
+class BrowserException(TridentBaseException):
     """Generic browser exception."""
 
 
@@ -1146,34 +1147,6 @@ class Browser(QueryInterfaceABC):
                 )
         else:
             return models
-
-    def samples_to_df(self, samples):
-        """Returns a pandas data frame representing the samples.
-
-        :param samples: list of samples
-        :type samples: list
-        :return: the samples dataframe
-        :rtype: pandas.DataFrame
-        """
-        try:
-            import pandas as pd
-        except ImportError:
-            raise ImportError("`pandas` is not installed. Cannot make dataframe.")
-        df = pd.DataFrame(self.samples_to_rows(samples))
-        st = samples[0].sample_type
-        columns = [st.name, "Description", "Project"] + [
-            ft.name for ft in st.field_types
-        ]
-        df = df[columns]
-        for ft in st.field_types:
-            if ft.array:
-                df2 = pd.DataFrame(df[ft.name].values.tolist())
-                df2.columns = [ft.name] * len(df2.columns)
-                del df[ft.name]
-                df = df.join(df2)
-        df.drop_duplicates(inplace=True)
-        df = df.set_index(st.name)
-        return df
 
     def export_samples_to_csv(self, samples, out):
         """Exports the samples to a csv (for Aquarium import)

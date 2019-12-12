@@ -1,14 +1,38 @@
 """Models related to inventory, like Items, Collections, ObjectTypes, and
 PartAssociations."""
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Tuple
+from typing import Union
+
+from .data_associations import DataAssociation
+from .sample import Sample
 from pydent.base import ModelBase
 from pydent.marshaller import add_schema
+from pydent.models.controller_mixin import ControllerMixin
+from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociationSaveContext
 from pydent.models.data_associations import DataAssociatorMixin
 from pydent.relationships import HasMany
 from pydent.relationships import HasManyGeneric
 from pydent.relationships import HasManyThrough
 from pydent.relationships import HasOne
 from pydent.relationships import Raw
+from pydent.utils.matrix_mapper import IndexType
+from pydent.utils.matrix_mapper import MatrixMapping
+from pydent.utils.matrix_mapper import MatrixMappingFactory
+
+
+@add_schema
+class ObjectType(SaveMixin, ModelBase):
+    """A ObjectType model that represents the type of container an item is."""
+
+    fields = dict(items=HasMany("Item", "ObjectType"), sample_type=HasOne("SampleType"))
+
+    def __str__(self):
+        return self._to_str("id", "name")
 
 
 @add_schema
@@ -52,7 +76,9 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
     def save(self):
         """A synonym for `make`"""
-        return self.make()
+        with DataAssociationSaveContext(self):
+            self.make()
+        return self
 
     def is_deleted(self):
         return self.location == "deleted"
@@ -112,8 +138,40 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
 
 @add_schema
+class PartAssociation(JSONSaveMixin, ModelBase):
+    """Represents a PartAssociation linking a part to a collection.
+
+    Collections contain many `parts`, each of which can refer to a
+    different sample.
+    """
+
+    fields = dict(part=HasOne("Item", ref="part_id"), collection=HasOne("Collection"))
+
+    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
+        super().__init__(
+            part_id=part_id, collection_id=collection_id, row=row, column=column
+        )
+
+    def get_sample_id(self) -> Union[None, int]:
+        if self.sample_id:
+            return self.sample_id
+        return self.sample.id
+
+    def has_unsaved_sample(self) -> bool:
+        if self.is_deserialized("part") and self.part.is_deserialized("sample"):
+            if self.part.sample.id is None:
+                return True
+        return False
+
+    def is_empty(self) -> bool:
+        if self.get_sample_id():
+            return True
+        return False
+
+
+@add_schema
 class Collection(
-    DataAssociatorMixin, ModelBase
+    DataAssociatorMixin, SaveMixin, ControllerMixin, ModelBase
 ):  # pylint: disable=too-few-public-methods
     """A Collection model, such as a 96-well plate, which contains many
     `parts`, each of which can be associated with a different sample."""
@@ -128,74 +186,337 @@ class Collection(
     )
     query_hook = {"methods": ["dimensions"]}
 
+    # TODO: validate dimensions is returning the same dimensions as that in the object_type
+    # TODO: init should establish dimensions
+
+    def __init__(
+        self,
+        object_type: ObjectType = None,
+        location: str = None,
+        data_associations: List = None,
+        parts: List = None,
+        part_associations: List = None,
+        **kwargs,
+    ):
+        if isinstance(object_type, ObjectType):
+            object_type = object_type
+            object_type_id = object_type.id
+            dims = object_type.rows, object_type.columns
+        else:
+            object_type_id = None
+            dims = None
+
+        super().__init__(
+            object_type=object_type,
+            object_type_id=object_type_id,
+            location=location,
+            dimensions=dims,
+            data_associations=data_associations,
+            part_associations=part_associations,
+            parts=parts,
+            **kwargs,
+        )
+
+    def _empty(self):
+        nrows, ncols = self.dimensions
+        data = []
+        for r in range(nrows):
+            data.append([None] * ncols)
+        return data
+
+    def __part_association_matrix(self):
+        data = self._empty()
+        if self.part_associations:
+            for assoc in self.part_associations:
+                data[assoc.row][assoc.column] = assoc
+        return data
+
+    @staticmethod
+    def _get_part(assoc):
+        if assoc is not None:
+            return assoc.part
+
+    @staticmethod
+    def _get_sample_id(assoc):
+        if assoc is not None:
+            if assoc.part:
+                if assoc.part.sample_id:
+                    return assoc.part.sample_id
+                elif assoc.part.sample:
+                    return assoc.part.sample.id
+                return None
+
+    @staticmethod
+    def _get_sample(assoc):
+        if assoc is not None:
+            if assoc.part:
+                return assoc.part.sample
+
+    @staticmethod
+    def _get_data_association(assoc):
+        if assoc is not None:
+            if assoc.part:
+                if assoc.data_associations:
+                    return {a.key: a for a in assoc.part.data_associations}
+                else:
+                    return {}
+
+    @staticmethod
+    def _get_data_value(assoc):
+        if assoc is not None:
+            if assoc.part:
+                if assoc.part.data_associations:
+                    return {a.key: a.value for a in assoc.part.data_associations}
+                else:
+                    return {}
+
+    @staticmethod
+    def _no_setter(x):
+        raise ValueError("Setter is not implemented.")
+
+    def _set_sample(
+        self,
+        data: List[List[PartAssociation]],
+        r: int,
+        c: int,
+        sample: Union[int, Sample],
+    ):
+        if data[r][c]:
+            part = data[r][c].part
+        else:
+            part = self.session.Item.new(
+                object_type_id=self.session.ObjectType.find_by_name("__Part").id
+            )
+            association = self.session.PartAssociation.new(
+                part_id=part.id, collection_id=self.id, row=r, column=c
+            )
+            association.part = part
+            self.append_to_many("part_associations", association)
+        if isinstance(sample, int):
+            part.sample_id = sample
+            part.reset_field("sample")
+        elif isinstance(sample, Sample):
+            part.sample = sample
+            part.sample_id = sample.id
+        elif sample is None:
+            part.sample = None
+            part.sample_id = None
+        else:
+            raise ValueError("{} must be a Sample instance or an int".format(sample))
+
+    def _set_key_values(
+        self,
+        data: List[List[PartAssociation]],
+        r: int,
+        c: int,
+        data_dict: Dict[str, Any],
+    ):
+        part = None
+        if data[r][c]:
+            part = data[r][c].part
+
+        if not part:
+            raise ValueError(
+                "Cannot set data to ({r},{c}) because "
+                "there is no Sample assigned to that location".format(r=r, c=c)
+            )
+        for k, v in data_dict.items():
+            part.associate(k, v)
+
+    @property
+    def _mapping(self):
+        factory = MatrixMappingFactory(self.__part_association_matrix())
+        default_setter = self._no_setter
+        factory.new("part_association", setter=default_setter, getter=None)
+        factory.new("part", setter=default_setter, getter=self._get_part)
+        factory.new("sample_id", setter=self._set_sample, getter=self._get_sample_id)
+        factory.new("sample", setter=default_setter, getter=self._get_sample)
+        factory.new("data", setter=self._set_key_values, getter=self._get_data_value)
+        factory.new(
+            "data_association", setter=default_setter, getter=self._get_data_association
+        )
+        return factory
+
     @property
     def matrix(self):
         """Returns the matrix of Samples for this Collection.
 
         (Consider using samples of parts directly.)
-        """
-        num_row, num_col = self.dimensions
-        sample_matrix = list()
-        for row in range(num_row):
-            row_list = list()
-            for col in range(num_col):
-                sample_id = None
-                part = self.part(row, col)
-                if part:
-                    sample_id = part.sample.id
-                row_list.append(sample_id)
-            sample_matrix.append(row_list)
-        return sample_matrix
 
-    def part(self, row, col):
+        .. versionchanged:: 0.1.5a9
+            Refactored using MatrixMapping
+        """
+        return self.sample_id_matrix
+
+    @property
+    def parts_matrix(self) -> MatrixMapping[Item]:
+        """Return a view of :class:`ITem <pydent.models.Item>`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of Items (Parts)
+        """
+        return self._mapping["part"]
+
+    @property
+    def part_association_matrix(self) -> MatrixMapping[PartAssociation]:
+        """Return a view of :class:`PartAssociation.
+
+        <pydent.models.PartAssociation>`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of PartAssociations
+        """
+        return self._mapping["part_association"]
+
+    @property
+    def sample_id_matrix(self) -> MatrixMapping[int]:
+        """Return a view of sample_ids :class:`Sample <pydent.models.Sample>`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of Sample.ids
+        """
+        return self._mapping["sample_id"]
+
+    @property
+    def sample_matrix(self) -> MatrixMapping[Sample]:
+        """Return a view of :class:`Sample <pydent.models.Sample>`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of Samples
+        """
+        return self._mapping["sample"]
+
+    @property
+    def data_matrix(self) -> MatrixMapping[Any]:
+        """Return a view of values from the :class:`DataAssociation.
+
+        <pydent.models.DataAssociation>`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of DataAssociation values
+        """
+        return self._mapping["data"]
+
+    @property
+    def data_association_matrix(self) -> MatrixMapping[DataAssociation]:
+        """Return a view of :class:`DataAssociation.
+
+        <pydent.models.DataAssociation>`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of DataAssociations
+        """
+        return self._mapping["data_association"]
+
+    def part(self, row, col) -> Item:
         """Returns the part Item at (row, col) of this Collection (zero-
         based)."""
-        parts = [
-            assoc.part
-            for assoc in self.part_associations
-            if assoc.row == row and assoc.column == col
-        ]
-
-        if not parts:
-            return None
-
-        return next(iter(parts))
+        return self.parts_matrix[row, col]
 
     def as_item(self):
         """Returns the Item object with the ID of this Collection."""
         return self.session.Item.find(self.id)
 
+    # TODO: implement save and create
     def create(self):
-        self.as_item().create()
+        """Create a new empty collection on the server."""
+        result = self.session.utils.model_update(
+            "collections", self.object_type_id, self.dump()
+        )
+        self.id = result["id"]
+        self.created_at = result["created_at"]
+        self.updated_at = result["updated_at"]
+        self.update()
+        return self
+
+    def _validate_for_update(self):
+        if not self.id:
+            raise ValueError(
+                "Cannot update part associations since the Collection " "is not saved."
+            )
+        for association in self.part_associations:
+            if association.has_unsaved_sample():
+                raise ValueError(
+                    "Cannot update. Collection contains Samples ({r},{c})"
+                    " that have not yet been saved.".format(
+                        r=association.row, c=association.column
+                    )
+                )
 
     def update(self):
-        self.as_item().update()
+        self._validate_for_update()
+        for association in self.part_associations:
+            if not association.collection_id:
+                association.collection_id = self.id
+            association.part.save()
+            association.part_id = association.part.id
+            association.save()
 
-    def save(self):
-        self.as_item().save()
+        # self.reset_field('part_associations')
+        self.refresh()
 
+    def assign_sample(self, sample_id: int, pairs: List[Tuple[int, int]]):
+        """Assign sample id to the (row, column) pairs for the collection.
 
-@add_schema
-class ObjectType(SaveMixin, ModelBase):
-    """A ObjectType model that represents the type of container an item is."""
-
-    fields = dict(items=HasMany("Item", "ObjectType"), sample_type=HasOne("SampleType"))
-
-    def __str__(self):
-        return self._to_str("id", "name")
-
-
-@add_schema
-class PartAssociation(ModelBase):
-    """Represents a PartAssociation linking a part to a collection.
-
-    Collections contain many `parts`, each of which can refer to a
-    different sample.
-    """
-
-    fields = dict(part=HasOne("Item", ref="part_id"), collection=HasOne("Collection"))
-
-    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
-        super().__init__(
-            part_id=part_id, collection_id=collection_id, row=row, column=column
+        :param sample_id: the sample id to assign
+        :param pairs: list of (row, column) tuples
+        :return: self
+        """
+        self.controller_method(
+            "assign_sample",
+            self.get_tableized_name(),
+            self.id,
+            data={"sample_id": sample_id, "pairs": pairs},
         )
+        self.refresh()
+        return self
+
+    def remove_sample(self, pairs: List[Tuple[int, int]]):
+        """Clear the sample_id assigment in the (row, column) pairs for the
+        collection.
+
+        :param pairs: list of (row, column) tuples
+        :return: self
+        """
+        self.controller_method(
+            "delete_selection",
+            self.get_tableized_name(),
+            self.id,
+            data={"pairs": pairs},
+        )
+        self.refresh()
+        return self
+
+    def __getitem__(self, index: IndexType) -> Union[int, List[int], List[List[int]]]:
+        """Returns the sample_id of the part at the provided index.
+
+        :param index: either an int (for rows), tuple of ints/slice objs, (row, column),
+            or a slice object.
+        :return: sample_ids
+        """
+        return self.matrix[index]
+
+    def __setitem__(self, index: IndexType, sample: Union[int, Sample]):
+        """Sets the sample_ids of the collection, creating the PartAssociations
+        and parts if needed.
+
+        :param index: either an int (for rows), tuple of ints/slice objs, (row, column),
+            or a slice object.
+        :param sample: either a Sample with a valid id or sample_id
+        :return:
+        """
+        self.sample_id_matrix[index] = sample
+
+    # TODO: add data associations to matrix
+    # TODO: collections test
+    # def update(self):
+    #     self.as_item().update()
+    #
+    # def save(self):
+    #     self.as_item().save()

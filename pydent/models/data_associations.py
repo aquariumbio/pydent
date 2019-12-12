@@ -2,6 +2,8 @@
 import json
 import os
 import shutil
+import time
+from typing import Union
 
 import requests
 
@@ -13,12 +15,22 @@ from pydent.relationships import HasOne
 from pydent.relationships import JSON
 from pydent.utils import make_async
 
-
 # TODO: changing the value of a association (and saving it) shouldn't be difficult
 class DataAssociatorMixin:
     """Mixin for handling data associations."""
 
-    def associate(self, key, value, upload=None):
+    def _make_association(self, key, value, parent, upload=None):
+        association = self.session.DataAssociation.new(
+            object=json.dumps({key: value}),
+            upload=upload,
+            key=key,
+            parent_id=parent.id,
+            parent_class=parent.__class__.__name__,
+        )
+        association.parent = parent
+        return association
+
+    def associate(self, key, value, upload=None, create_new=False, save=None):
         """Adds a data association with the key and value to this object.
 
         :param key: Key of the association
@@ -27,15 +39,76 @@ class DataAssociatorMixin:
         :type value: dict | str | int | float
         :param upload: optional file to upload
         :type upload: File
-        :return: newly created data association
+        :param create_new: if True (default) will create a new association instead
+            of updating the existing association.
+        :tuype create_new: bool
+        :return: newly created or updated data association
         :rtype: DataAssociation
         """
-        """
-        Adds a data association with the key and value to this object.
-        """
-        return self.session.utils.create_data_association(
-            self, key, value, upload=upload
-        )
+        if save is None:
+            if self.id is None:
+                save = False
+            else:
+                save = True
+        if create_new:
+            association = None
+        else:
+            association = self.get_data_association(key)
+
+        if not association:
+            if save:
+                return self.session.utils.create_data_association(
+                    self, key, value, upload=upload
+                )
+            else:
+                association = self._make_association(key, value, self, upload)
+                self.append_to_many("data_associations", association)
+                return association
+        else:
+            association.value = value
+            association.upload = upload
+            association.parent_class = self.__class__.__name__
+            association.parent_id = self.id
+            association.parent = self
+            if save:
+                self._try_update_data_association(association)
+            return association
+
+    def delete_data_associations(self, key):
+        associations = self.get_data_associations(key)
+        for a in associations:
+            a.delete()
+            self.data_associations.remove(a)
+
+    def _try_update_data_association(self, association):
+        upload = association.upload
+        if upload and upload.id:
+            association.upload_id = upload.id
+        if self.id:
+            if association.upload and not association.upload.id:
+                association.upload.save()
+                association.upload_id = association.upload.id
+            association.save()
+        return association
+
+        # return self.session.utils.create_data_association(
+        #     self, key, value, upload=upload
+        # )
+        # if unique_key:
+        #     existing_associations = self.get_data_associations(key)
+        #     for association in existing_associations:
+        #         association.value = value
+        #         association.upload = upload
+        #         association.upload_id = upload.id
+        #         association.save()
+        # else:
+        #     self.session.utils.create_data_association(
+        #         self, key, value, upload=upload
+        #     )
+
+    # def save_data_associations(self):
+    #     if self.is_deserialized('data_associations'):
+    #
 
     def associate_file(self, key, value, file, job_id=None):
         """Associate a file.
@@ -52,7 +125,6 @@ class DataAssociatorMixin:
         :rtype: :class:`DataAssociation`
         """
         u = self.session.Upload.new(job_id=job_id, file=file)
-        u.save()
         return self.associate(key, value, upload=u)
 
     def associate_file_from_path(self, key, value, filepath, job_id=None):
@@ -72,11 +144,17 @@ class DataAssociatorMixin:
         with open(filepath, "rb") as f:
             return self.associate_file(key, value, f, job_id=job_id)
 
-    def get_data_associations(self, key):
+    def get_data_association(self, key: Union[None, str]):
+        das = self.get_data_associations(key)
+        if das:
+            return das[0]
+
+    def get_data_associations(self, key: Union[None, str]):
         das = []
-        for da in self.data_associations:
-            if da.key == key:
-                das.append(da)
+        if self.data_associations:
+            for da in self.data_associations:
+                if da.key == key:
+                    das.append(da)
         return das
 
     # TODO: DataAssociation - do we really want to have this return either a list or
@@ -92,8 +170,27 @@ class DataAssociatorMixin:
         return val
 
 
+class DataAssociationSaveContext:
+    def __init__(self, model: DataAssociatorMixin):
+        self.model = model
+        self.data_associations = []
+
+    def __enter__(self):
+        if self.model.is_deserialized("data_associations"):
+            self.data_associations = self.model.data_associations
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            return
+        for da in self.data_associations:
+            da.parent_id = self.model.id
+            self.model._try_update_data_association(da)
+            assert da.id
+        self.model.data_associations = self.data_associations
+
+
 @add_schema
-class DataAssociation(JSONDeleteMixin, ModelBase):
+class DataAssociation(JSONDeleteMixin, JSONSaveMixin, ModelBase):
     """A DataAssociation model."""
 
     fields = dict(object=JSON(), upload=HasOne("Upload"))
@@ -101,6 +198,34 @@ class DataAssociation(JSONDeleteMixin, ModelBase):
     @property
     def value(self):
         return self.object.get(self.key, None)
+
+    @value.setter
+    def value(self, new_value):
+        self.object = {self.key: new_value}
+
+    # def save(self):
+    #     if self.upload and not self.upload_id:
+    #         self.upload.save()
+    #         self.upload_id = self.upload_id
+    #     super().save()
+    #
+    #     data_association = self.parent.session.DataAssociation.find(self.id)
+    #     if data_association.id not in [da.id for da in self.parent.data_associations]:
+    #         self.parent.data_associations.append(data_association)
+    #         return data_association
+    #     else:
+    #         for da in self.parent.data_associations:
+    #             if da.id == data_association.id:
+    #                 return da
+
+    def save(self):
+        if self.parent_id is None:
+            raise ValueError("Cannot save DataAssociation. `parent_id` cannot be None")
+        if self.parent_class is None:
+            raise ValueError(
+                "Cannot save DataAssociation. `parent_class` cannot be None"
+            )
+        super().save(do_reload=True)
 
     def __str__(self):
         return self._to_str("id", "object")
@@ -189,7 +314,19 @@ class Upload(ModelBase):
             filepaths.append(filepath)
         return filepaths
 
-    def download(self, outdir=None, filename=None, overwrite=True):
+    def fetch(self, outdir: str = None, filename: str = None, overwrite: bool = True):
+        """Alias for `download`
+
+        :param outdir: path of directory of output file (default is current directory)
+        :param outfile: filename of output file (defaults to upload_filename)
+        :param overwrite: whether to overwrite file if it already exists
+        :return: filepath of the downloaded file
+        """
+        return self.download(outdir=outdir, filename=filename, overwrite=overwrite)
+
+    def download(
+        self, outdir: str = None, filename: str = None, overwrite: bool = True
+    ):
         """Downloads the uploaded file to the specified output directory. If no
         output directory is specified, the file will be downloaded to the
         current directory.
@@ -197,7 +334,7 @@ class Upload(ModelBase):
         :param outdir: path of directory of output file (default is current directory)
         :param outfile: filename of output file (defaults to upload_filename)
         :param overwrite: whether to overwrite file if it already exists
-        :return: None
+        :return: filepath of the downloaded file
         """
         if outdir is None:
             outdir = "."

@@ -1,4 +1,5 @@
 """The create, read, update, destroy (CRUD) mixins used for some models."""
+from retry import retry
 
 
 class CreateMixin:
@@ -17,13 +18,20 @@ class CreateMixin:
         return None
 
 
+class UpdateFailed(Exception):
+    pass
+
+
 class UpdateMixin:
+    @retry([UpdateFailed], tries=3, delay=0.1, backoff=0.25, max_delay=1.0)
     def update(self):
         data = self._get_create_json()
         params = self._get_update_params()
         name = self.get_tableized_name()
         result = self.session.utils.model_update(name, self.id, data, params=params)
         self.reload(result)
+        if not self.id:
+            raise UpdateFailed
         return self
 
     def _get_update_json(self):
@@ -53,10 +61,12 @@ class DeleteMixin:
 
 
 class JSONSaveMixin:
-    def save(self):
+    def save(self, do_reload=True):
         name = self.get_server_model_name()
         data = self._get_save_json()
         result = self.session.utils.json_save(name, data)
+        if do_reload:
+            self.reload(result)
         return result
 
     # TODO: add update to JSONMixin?

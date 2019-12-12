@@ -40,13 +40,15 @@ from pydent.utils import empty_copy
 from pydent.utils import logger
 from pydent.utils import make_async
 from pydent.utils import QueryBuilder
-
+from pydent.exceptions import TridentBaseException
 
 QuickWireTargetType = Union[FieldValue, Operation, Tuple[Operation, str]]
 UnresolvedWireTarget = Union[
     Operation, Tuple[Operation, str], str, FieldType, OperationType, FieldValue
 ]
 
+class PlannerException(TridentBaseException):
+    """Generic planner Exception."""
 
 def plan_verification_wrapper(fxn: Callable):
     """A wrapper that verifies that all FieldValues or Operations passed as
