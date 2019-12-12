@@ -23,7 +23,7 @@ class UpdateFailed(Exception):
 
 
 class UpdateMixin:
-    @retry([UpdateFailed], delay=0.1, backoff=0.25, max_delay=1.0)
+    @retry([UpdateFailed], tries=3, delay=0.1, backoff=0.25, max_delay=1.0)
     def update(self):
         data = self._get_create_json()
         params = self._get_update_params()

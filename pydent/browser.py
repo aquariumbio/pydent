@@ -23,6 +23,7 @@ import networkx as nx
 from pydent import models as pydent_models
 from pydent.base import ModelBase
 from pydent.exceptions import ForbiddenRequestError
+from pydent.exceptions import TridentBaseException
 from pydent.interfaces import QueryInterface
 from pydent.interfaces import QueryInterfaceABC
 from pydent.marshaller import ModelRegistry
@@ -37,7 +38,7 @@ from pydent.utils.logging_helpers import did_you_mean
 #       pull, and trident should pull and cache in the most efficient way possible)
 
 
-class BrowserException(Exception):
+class BrowserException(TridentBaseException):
     """Generic browser exception."""
 
 

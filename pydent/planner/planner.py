@@ -12,6 +12,7 @@ import networkx as nx
 
 from pydent.aqsession import AqSession
 from pydent.exceptions import AquariumModelError
+from pydent.exceptions import TridentBaseException
 from pydent.models import FieldValue
 from pydent.models import Operation
 from pydent.models import OperationType
@@ -25,7 +26,7 @@ from pydent.utils import Loggable
 from pydent.utils import make_async
 
 
-class PlannerException(Exception):
+class PlannerException(TridentBaseException):
     """Generic planner Exception."""
 
 

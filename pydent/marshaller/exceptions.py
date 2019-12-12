@@ -1,15 +1,19 @@
 """Marshalling exceptions."""
 
 
-class SchemaRegistryError(Exception):
+class MarshallerBaseException(Exception):
+    pass
+
+
+class SchemaRegistryError(MarshallerBaseException):
     """Generic schema registry exception."""
 
 
-class SchemaException(Exception):
+class SchemaException(MarshallerBaseException):
     """A generic schema exception."""
 
 
-class SchemaModelException(Exception):
+class SchemaModelException(MarshallerBaseException):
     """A generic model exception."""
 
 
@@ -18,7 +22,7 @@ Field validation exceptions
 """
 
 
-class FieldValidationError(Exception):
+class FieldValidationError(MarshallerBaseException):
     """A generic field validation error."""
 
 
@@ -26,7 +30,7 @@ class AllowNoneFieldValidationError(FieldValidationError):
     """A field validation error for getting or setting None values."""
 
 
-class CallbackValidationError(Exception):
+class CallbackValidationError(MarshallerBaseException):
     """A generic callback validation error."""
 
 
@@ -39,15 +43,15 @@ Model validation exceptions
 """
 
 
-class ModelRegistryError(Exception):
+class ModelRegistryError(MarshallerBaseException):
     """Model not found in registry exception."""
 
 
-class ModelValidationError(Exception):
+class ModelValidationError(MarshallerBaseException):
     """A model validation error."""
 
 
-class ExceptionCollection(Exception):
+class ExceptionCollection(MarshallerBaseException):
     """Context dependent exception for capturing multiple exceptions.
 
     Call `r` to gather exceptions, upon exiting, a single
