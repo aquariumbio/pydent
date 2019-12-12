@@ -18,6 +18,7 @@ import json
 from typing import Dict
 
 import requests
+from retry import retry
 
 from pydent.exceptions import ForbiddenRequestError
 from pydent.exceptions import TridentJSONDataIncomplete
@@ -27,6 +28,11 @@ from pydent.exceptions import TridentTimeoutError
 from pydent.utils import Loggable
 from pydent.utils import pprint_data
 from pydent.utils import url_build
+
+
+LOGIN_RETRY_DELAY = 1
+LOGIN_RETRY_BACKOFF = 2
+LOGIN_RETRY_MAX_DELAY = 5
 
 
 class AqHTTP:
@@ -124,6 +130,12 @@ class AqHTTP:
     def create_session_json(login: str, password: str) -> Dict:
         return {"session": {"login": login, "password": password}}
 
+    @retry(
+        [TridentLoginError],
+        delay=LOGIN_RETRY_DELAY,
+        backoff=LOGIN_RETRY_BACKOFF,
+        max_delay=LOGIN_RETRY_MAX_DELAY,
+    )
     def _login(self, login: str, password: str):
         """Login to aquarium and saves header as a requests.Session()
 
@@ -189,7 +201,7 @@ class AqHTTP:
         path: str,
         timeout: int = None,
         allow_none: bool = True,
-        **kwargs
+        **kwargs,
     ) -> dict:
         """Performs a http request.
 
@@ -289,7 +301,7 @@ class AqHTTP:
         json_data: dict = None,
         timeout: int = None,
         allow_none: bool = True,
-        **kwargs
+        **kwargs,
     ) -> dict:
         """Make a post request to the session.
 
@@ -314,7 +326,7 @@ class AqHTTP:
             json=json_data,
             timeout=timeout,
             allow_none=allow_none,
-            **kwargs
+            **kwargs,
         )
 
     def put(
@@ -323,7 +335,7 @@ class AqHTTP:
         json_data: dict = None,
         timeout: int = None,
         allow_none: bool = True,
-        **kwargs
+        **kwargs,
     ) -> dict:
         """Make a put request to the session.
 
@@ -348,7 +360,7 @@ class AqHTTP:
             json=json_data,
             timeout=timeout,
             allow_none=allow_none,
-            **kwargs
+            **kwargs,
         )
 
     def get(
