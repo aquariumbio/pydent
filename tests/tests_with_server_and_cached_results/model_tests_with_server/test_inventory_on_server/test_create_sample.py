@@ -95,8 +95,8 @@ def test_create_sample2(session):
     )
 
     # test save and reload
-    integrate_plasmid(yeast, plasmids[0])
-    loaded = session.Sample.find(yeast.id)
+    new_yeast = integrate_plasmid(yeast, plasmids[0])
+    loaded = session.Sample.find(new_yeast.id)
     assert loaded.properties["Integrant"].id == plasmids[0].id
 
     # test update
