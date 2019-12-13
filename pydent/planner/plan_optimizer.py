@@ -324,3 +324,5 @@ class PlanOptimizer:
         self.logger.info("\t{} operations removed".format(len(ops_to_remove)))
         self.logger.info("\t{} wires re-wired".format(len(wires_to_remove)))
         self.logger.info("\t{} new wires".format(len(wires_to_add)))
+
+        return self.planner

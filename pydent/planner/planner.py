@@ -1457,7 +1457,20 @@ class Planner(AFTMatcher):
                     roots.append(root)
         return roots
 
-    def optimize(self, merge_missing_samples=False):
+    def optimize(self, merge_missing_samples=False) -> "Planner":
+        """Optimize the plan, merging wires and operations that have identical
+        inputs and outputs.
+
+        .. versionchanged:: 0.1.5a11
+            Numerous bug fixes.
+
+        :param merge_missing_samples: if True, the method
+            will consider FieldValues with missing inputs
+            as identical. By default, this is False, and so
+            the method will not merge *any* operation with
+            a missing input or output.
+        :return: the planner (self)
+        """
         optimizer = PlanOptimizer(
             self,
             inherit_logger=self.logger,
