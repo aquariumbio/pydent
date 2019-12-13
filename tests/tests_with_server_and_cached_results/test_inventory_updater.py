@@ -48,3 +48,5 @@ def test_inventory_updater(session):
     assert item.id
     assert planner.plan.id
     assert collection.id
+
+    save_inventory(session, [planner.plan, collection], merge_samples=True)
