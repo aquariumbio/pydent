@@ -105,34 +105,3 @@ def test_create_sample2(session):
     assert loaded.properties["Integrant"].id == plasmids[1].id
     reloaded = session.Sample.find(loaded.id)
     assert reloaded.properties["Integrant"].id == plasmids[1].id
-
-
-#
-# def test_update_sample(session):
-#     def yeast_integrant_name(yname, pname):
-#         return "|".join([yname.strip(), pname.strip()])
-#
-#     def integrate_plasmid(yeast, plasmid):
-#         yeast_name = yeast_integrant_name(yeast.name, plasmid.name) + str(uuid4())
-#
-#         new_yeast = yeast.session.Sample.new(
-#             name=yeast_name,
-#             project="trident",
-#             sample_type_id=yeast.sample_type_id,
-#             properties={
-#                 "Mating Type": yeast.properties["Mating Type"],
-#                 "Integrant": plasmid,
-#                 "Has this strain passed QC?": "No",
-#                 "Parent": yeast,
-#                 "Integrated Marker(s)": "HIS",  # plasmid.properties["Yeast Marker"]
-#             },
-#         )
-#         new_yeast.save()
-#         return new_yeast
-#
-#     yeast = session.Sample.one(query={'sample_type_id': session})
-#     yeast.properties
-#     plasmid = session.Sample.find(9246)
-#     plasmid.properties
-#
-#     integrate_plasmid(yeast, plasmid)
