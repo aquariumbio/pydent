@@ -34,10 +34,33 @@ class ObjectType(SaveMixin, ModelBase):
     def __str__(self):
         return self._to_str("id", "name")
 
+    def new_item(self, sample: Union[int, Sample]):
+        """Create a new item.
+
+        .. versionadded:: 0.1.5a13
+
+        :param sample: the sample id
+        :return: the new item
+        """
+        if isinstance(sample, int):
+            sample_id = sample
+            sample = self.session.Sample.find(sample_id)
+        elif isinstance(sample, Sample):
+            sample_id = sample.id
+        else:
+            raise TypeError(
+                "Sample must be either a sample_id (int) or a" " Sample instance."
+            )
+        return self.session.Item.new(
+            sample=sample, sample_id=sample_id, object_type=self, object_type_id=self.id
+        )
+
 
 @add_schema
 class Item(DataAssociatorMixin, SaveMixin, ModelBase):
     """A physical object in the lab, which a location and unique id."""
+
+    DID_ITEM_WARNING = False
 
     fields = dict(
         sample=HasOne("Sample"),
@@ -57,13 +80,19 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
     query_hook = {"methods": ["is_part"]}
 
     def __init__(
-        self=None, sample_id=None, sample=None, object_type=None, object_type_id=None
+        self=None,
+        sample_id=None,
+        sample=None,
+        object_type=None,
+        object_type_id=None,
+        location=None,
     ):
         super().__init__(
             object_type_id=object_type_id,
             object_type=object_type,
             sample_id=sample_id,
             sample=sample,
+            location=location,
         )
 
     def make(self):
@@ -71,14 +100,29 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
 
         Requires this Item to be connected to a session.
         """
-        result = self.session.utils.create_items([self])
-        return self.reload(result[0]["item"])
+        if not self.DID_ITEM_WARNING:
+            raise DeprecationWarning("This method is depreciated. Use `save()`")
+        self.DID_ITEM_WARNING = True
+        self.create()
 
-    def save(self):
-        """A synonym for `make`"""
+    def create(self):
         with DataAssociationSaveContext(self):
-            self.make()
+            result = self.session.utils.create_items([self])
+            self.reload(result[0]["item"])
         return self
+
+    def update(self):
+        """Updates the item.
+
+        Will update the data associations and its location.
+        """
+        with DataAssociationSaveContext(self):
+            self.move(self.location)
+            self.session.utils.move_item(self, self.location)
+        return self
+
+    def move(self, new_location):
+        self.session.utils.move_item(self, new_location)
 
     def is_deleted(self):
         return self.location == "deleted"
