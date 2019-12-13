@@ -261,7 +261,9 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         for op in self.operations:
             op.field_values
 
-        json_data = self.dump(include={"operations": {"field_values": {}}})
+        json_data = self.dump(
+            include={"operations": {"field_values": ["sample", "item"]}}
+        )
 
         # remove redundant wires
         wire_dict = {}
