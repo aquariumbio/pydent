@@ -145,6 +145,9 @@ class Sample(FieldValueInterface, ModelBase):
             warn(
                 "Trident tried to save a Sample, but it required FieldValues to be deleted."
             )
+            for fv in to_remove:
+                fv.parent_id = None
+                fv.save()
         self.reload(self.session.utils.json_save("Sample", self.dump()))
         return self
 
