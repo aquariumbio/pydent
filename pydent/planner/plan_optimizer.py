@@ -55,7 +55,7 @@ class PlanOptimizer:
             fvhash["value"] = fv.value
         elif fv.allowable_field_type.sample_type_id is None:
             pass
-        elif not self.merge_missing_samples or fv.role == "output":
+        elif not self.merge_missing_samples:
             # a deterministic hash for field values missing samples
             fvid = fv.id or fv._primary_key
             ftid = ft.id
@@ -105,7 +105,8 @@ class PlanOptimizer:
             hashgroup[h].append(op)
         return hashgroup
 
-    def _get_sample_creation_signatures(self, operations):
+    @staticmethod
+    def _get_sample_creation_signatures(operations):
         """Return a unique signature representing how samples are being created
         by a set of operations."""
         signatures = []
@@ -140,6 +141,7 @@ class PlanOptimizer:
         for op in operations:
             signatures.append(
                 "&".join(sorted([value_hash(fv) for fv in op.field_values]))
+                + str(len(op.field_values))
             )
         signatures.sort()
         return tuple(set(signatures))
@@ -305,6 +307,8 @@ class PlanOptimizer:
                 self.planner.quick_wire(fv_src, key_to_inputs[key])
             else:
                 self.planner.quick_wire(fv_src, (target_op, target_fts[0].name))
+
+        # remove empty
 
         self.planner.operations = operations_list
 

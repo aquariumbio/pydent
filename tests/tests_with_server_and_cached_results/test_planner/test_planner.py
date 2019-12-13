@@ -561,10 +561,6 @@ class TestOptimizePlan:
 
             canvas.optimize()
 
-            canvas.prettify()
-            canvas.save()
-            canvas.open()
-
             op_types = sorted([op.operation_type.name for op in canvas.operations])
             print(op_types)
             assert len(canvas.get_op_by_name("Assemble Plasmid")) == 1
@@ -577,7 +573,7 @@ class TestOptimizePlan:
 
             assert len(canvas.get_op_by_name("Pour Gel")) == 2
 
-    def test_optimize_case5_array_inputs(self, session):
+    def test_optimize_case5_array_inputs_merge_missing_samples(self, session):
         with session.with_cache() as sess:
 
             canvas = Planner(sess)
@@ -670,23 +666,18 @@ class TestOptimizePlan:
 
             canvas.optimize(merge_missing_samples=True)
 
-            canvas.prettify()
-            canvas.save()
-            canvas.open()
-
             op_types = sorted([op.operation_type.name for op in canvas.operations])
             print(op_types)
             assert len(canvas.get_op_by_name("Assemble Plasmid")) == 2
-            assert len(canvas.get_op_by_name("Pour Gel")) == 6
+            assert len(canvas.get_op_by_name("Pour Gel")) == 4
 
             for op in canvas.get_op_by_name("Assemble Plasmid"):
-                # assert len({fv.child_sample_id for fv in op.inputs}) == 2
-                assert len(op.inputs) in [4, 2]
+                assert len({fv.child_sample_id for fv in op.inputs}) == 2
+                assert len(op.inputs) in [5, 2]
 
-                for input_fv in op.inputs:
-                    assert len(canvas.get_incoming_wires(input_fv)) == 1
-
-            assert len(canvas.get_op_by_name("Pour Gel")) == 2
+                # TODO: handling input arrays is ambiguous
+                # for input_fv in op.inputs:
+                #     assert len(canvas.get_incoming_wires(input_fv)) == 1
 
     def test_optimize_with_existing_plan(self, session):
 
