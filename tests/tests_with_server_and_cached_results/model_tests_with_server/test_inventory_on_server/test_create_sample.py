@@ -67,7 +67,7 @@ def test_init_sample_with_properties(session):
 
 def test_create_sample2(session):
     def yeast_integrant_name(yname, pname):
-        return "|".join([yname.strip(), pname.strip()])
+        return "|".join([yname.strip(), pname.strip()])[:100]
 
     def integrate_plasmid(yeast, plasmid):
         yeast_name = yeast_integrant_name(yeast.name, plasmid.name) + str(uuid4())
@@ -87,9 +87,52 @@ def test_create_sample2(session):
         new_yeast.save()
         return new_yeast
 
-    yeast = session.Sample.find(14584)
-    yeast.properties
-    plasmid = session.Sample.find(9246)
-    plasmid.properties
+    yeast = session.Sample.one(
+        query={"sample_type_id": session.SampleType.find_by_name("Yeast Strain").id}
+    )
+    plasmids = session.Sample.last(
+        2, query={"sample_type_id": session.SampleType.find_by_name("Plasmid").id}
+    )
 
-    integrate_plasmid(yeast, plasmid)
+    # test save and reload
+    integrate_plasmid(yeast, plasmids[0])
+    loaded = session.Sample.find(yeast.id)
+    assert loaded.properties["Integrant"].id == plasmids[0].id
+
+    # test update
+    loaded.update_properties({"Integrant": plasmids[1]})
+    loaded.save()
+    assert loaded.properties["Integrant"].id == plasmids[1].id
+    reloaded = session.Sample.find(loaded.id)
+    assert reloaded.properties["Integrant"].id == plasmids[1].id
+
+
+#
+# def test_update_sample(session):
+#     def yeast_integrant_name(yname, pname):
+#         return "|".join([yname.strip(), pname.strip()])
+#
+#     def integrate_plasmid(yeast, plasmid):
+#         yeast_name = yeast_integrant_name(yeast.name, plasmid.name) + str(uuid4())
+#
+#         new_yeast = yeast.session.Sample.new(
+#             name=yeast_name,
+#             project="trident",
+#             sample_type_id=yeast.sample_type_id,
+#             properties={
+#                 "Mating Type": yeast.properties["Mating Type"],
+#                 "Integrant": plasmid,
+#                 "Has this strain passed QC?": "No",
+#                 "Parent": yeast,
+#                 "Integrated Marker(s)": "HIS",  # plasmid.properties["Yeast Marker"]
+#             },
+#         )
+#         new_yeast.save()
+#         return new_yeast
+#
+#     yeast = session.Sample.one(query={'sample_type_id': session})
+#     yeast.properties
+#     plasmid = session.Sample.find(9246)
+#     plasmid.properties
+#
+#     integrate_plasmid(yeast, plasmid)
