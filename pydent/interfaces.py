@@ -291,6 +291,15 @@ class UtilityInterface(CRUDInterface):
     # Misc
     ##############################
 
+    def move_item(self, item, location):
+        self.aqhttp.get(
+            "items/move/{item_id}?location={location}".format(
+                item_id=item.id, location=location
+            )
+        )
+        item.location = location
+        return item
+
     def estimate_plan_cost(self, plan):
         """Estimates the plan cost."""
         result = self.aqhttp.post("launcher/estimate", {"id": plan.id})
