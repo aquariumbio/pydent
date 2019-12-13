@@ -131,34 +131,6 @@ def models_to_graph(session: SessionABC, models: Iterable[InventoryType]) -> nx.
     return graph
 
 
-def merge_sample(sample: Sample):
-    """Merge sample by name. If a sample with the same name and sample_type_id
-    is found on the server, update that model and save the updated data to the
-    server. Else, create a new sample on the server.
-
-    :param sample: sample to merge.
-    :return: True if merged, False otherwise
-    """
-    try:
-        sample.save()
-        print(sample.id)
-    except Exception as e:
-        existing = sample.session.Sample.find_by_name(sample.name)
-        if existing:
-            if sample.sample_type_id == existing.sample_type_id:
-                existing.update_properties(sample.properties)
-                existing.description = sample.description
-                existing.project = sample.project
-                existing.save()
-                sample.reload(existing.dump())
-                return True
-            else:
-                raise e
-        else:
-            raise e
-    return False
-
-
 def save_inventory(
     session: SessionABC, inventory: List[InventoryType], merge_samples: bool = False
 ) -> List[InventoryType]:
@@ -176,8 +148,8 @@ def save_inventory(
         model = graph.nodes[n]["model"]
         if not model.id:
             new_inventory.append(model)
-            if merge_samples and model.__class__.__name__ == "Sample":
-                merge_sample(model)
+            if merge_samples and isinstance(model, Sample):
+                model.merge()
             else:
                 model.save()
     return new_inventory

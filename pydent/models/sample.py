@@ -151,6 +151,32 @@ class Sample(FieldValueInterface, ModelBase):
         self.reload(self.session.utils.json_save("Sample", self.dump()))
         return self
 
+    def merge(self):
+        """Merge sample by name. If a sample with the same name and
+        sample_type_id is found on the server, update that model and save the
+        updated data to the server. Else, create a new sample on the server.
+
+        :param sample: sample to merge.
+        :return: True if merged, False otherwise
+        """
+        try:
+            self.save()
+        except Exception as e:
+            existing = self.session.Sample.find_by_name(self.name)
+            if existing:
+                if self.sample_type_id == existing.sample_type_id:
+                    existing.update_properties(self.properties)
+                    existing.description = self.description
+                    existing.project = self.project
+                    existing.save()
+                    self.reload(existing.dump())
+                    return True
+                else:
+                    raise e
+            else:
+                raise e
+        return False
+
     def available_items(self, object_type_name=None, object_type_id=None):
         query = {"name": object_type_name, "id": object_type_id}
         query = {k: v for k, v in query.items() if v is not None}
