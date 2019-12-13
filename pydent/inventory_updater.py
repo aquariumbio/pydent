@@ -146,10 +146,7 @@ def merge_sample(sample: Sample):
         existing = sample.session.Sample.find_by_name(sample.name)
         if existing:
             if sample.sample_type_id == existing.sample_type_id:
-
-                data = sample.dump()
-                del data["id"]
-                existing.field_values = sample.field_values
+                existing.update_properties(sample.properties)
                 existing.description = sample.description
                 existing.project = sample.project
                 existing.save()
