@@ -9,7 +9,6 @@ from pydent.models import Collection
 from pydent.models import Item
 from pydent.models import Plan
 from pydent.models import Sample
-from pydent.planner import Planner
 from pydent.sessionabc import SessionABC
 
 

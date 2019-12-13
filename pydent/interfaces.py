@@ -228,9 +228,18 @@ class UtilityInterface(CRUDInterface):
         return samples
 
     def create_items(self, items):
+        def sid(i):
+            if i.sample_id:
+                return i.sample_id
+            return i.sample.id
+
+        def otid(i):
+            if i.object_type_id:
+                return i.object_type_id
+            return i.object_type.id
+
         return [
-            self.aqhttp.get("items/make/{}/{}".format(i.sample.id, i.object_type.id))
-            for i in items
+            self.aqhttp.get("items/make/{}/{}".format(sid(i), otid(i))) for i in items
         ]
 
     def create_upload(self, upload):
