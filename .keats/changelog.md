@@ -1,6 +1,6 @@
 # pydent change log
 ## 0.1.5a10
-**2019-12-11T20:06:52.988337**
+**2019-12-12T16:05:57.054929**
 New major features
 
  - `Collection` model completely reworked.
