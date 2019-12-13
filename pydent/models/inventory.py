@@ -134,6 +134,13 @@ class Item(DataAssociatorMixin, ItemLocationMixin, ModelBase):
         object_type_id=None,
         location=None,
     ):
+        if sample_id is None:
+            if sample and sample.id:
+                sample_id = sample.id
+
+        if object_type_id is None:
+            if object_type and object_type.id:
+                object_type_id = object_type.id
         super().__init__(
             object_type_id=object_type_id,
             object_type=object_type,

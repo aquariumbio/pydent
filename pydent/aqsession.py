@@ -121,6 +121,7 @@ from pydent.interfaces import QueryInterface
 from pydent.interfaces import QueryInterfaceABC
 from pydent.interfaces import SessionInterface
 from pydent.interfaces import UtilityInterface
+from pydent.inventory_updater import save_inventory
 from pydent.models import __all__ as allmodels
 from pydent.sessionabc import SessionABC
 
