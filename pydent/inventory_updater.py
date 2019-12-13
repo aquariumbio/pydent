@@ -141,12 +141,19 @@ def merge_sample(sample: Sample):
     """
     try:
         sample.save()
+        print(sample.id)
     except Exception as e:
         existing = sample.session.Sample.find_by_name(sample.name)
         if existing:
             if sample.sample_type_id == existing.sample_type_id:
-                sample.id = existing.id
-                sample.save()
+
+                data = sample.dump()
+                del data["id"]
+                existing.field_values = sample.field_values
+                existing.description = sample.description
+                existing.project = sample.project
+                existing.save()
+                sample.reload(existing.dump())
                 return True
             else:
                 raise e
