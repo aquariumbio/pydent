@@ -2,7 +2,6 @@
 import json
 import os
 import shutil
-import time
 from typing import Union
 
 import requests
@@ -14,6 +13,7 @@ from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.relationships import HasOne
 from pydent.relationships import JSON
 from pydent.utils import make_async
+
 
 # TODO: changing the value of a association (and saving it) shouldn't be difficult
 class DataAssociatorMixin:
@@ -77,7 +77,8 @@ class DataAssociatorMixin:
     def delete_data_associations(self, key):
         associations = self.get_data_associations(key)
         for a in associations:
-            a.delete()
+            if a.id:
+                a.delete()
             self.data_associations.remove(a)
 
     def _try_update_data_association(self, association):
