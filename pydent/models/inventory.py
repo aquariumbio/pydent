@@ -118,7 +118,6 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
         """
         with DataAssociationSaveContext(self):
             self.move(self.location)
-            self.session.utils.move_item(self, self.location)
         return self
 
     def move(self, new_location):
@@ -586,9 +585,11 @@ class Collection(
             association.part.save()
             association.part_id = association.part.id
             association.save()
-
-        # self.reset_field('part_associations')
+        self.move(self.location)
         self.refresh()
+
+    def move(self, new_location):
+        self.session.utils.move_item(self, new_location)
 
     def assign_sample(self, sample_id: int, pairs: List[Tuple[int, int]]):
         """Assign sample id to the (row, column) pairs for the collection.
