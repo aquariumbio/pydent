@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Structured queries &#8212; pydent 0.1.5a8 documentation</title>
+    <title>Structured queries &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -200,6 +200,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -267,6 +269,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -390,15 +394,15 @@ is stored in the <cite>.browser</cite> attribute of the session.</p>
 <p>By default, the cache is turned off. We can see this by printing off
 the browser</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;No browser&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No browser&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Lets turn on the cache, which initializes the browser</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">using_cache</span> <span class="o">=</span> <span class="bp">True</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">using_cache</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">model_cache</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;Sample&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">12355</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">Sample</span><span class="o">&gt;</span><span class="p">}}</span>
@@ -435,20 +439,20 @@ spin off new sessions with new properties using existing sessions.</p>
 </div>
 <p>We can instantiate a session with new properties. For example, spinning
 off a session with <cite>using_cache=True</cite></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nocache</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nocache</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We can also instantiate sessions with requests turned off or
 with new timeouts or sessions that inherith the model cache.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">increasetimeout</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-<span class="n">norequests</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_requests</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-<span class="n">inheritcache</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_models</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">norequests</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_requests</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">inheritcache</span> <span class="o">=</span> <span class="n">session</span><span class="p">(</span><span class="n">using_models</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>However, this can become troublesome if we have many different sessions
 attached to many different models. To keep everything tidy, we can use the
 <cite>with</cite> api of the session.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="p">(</span><span class="n">using_cache</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="p">(</span><span class="n">using_cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
     <span class="n">sess</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="s1">&#39;sample_type&#39;</span><span class="p">)</span>
 
@@ -497,7 +501,7 @@ server side deserialization (#3).</p>
 <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">plans</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">fv</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">field_values</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">fv</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">fv</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -516,7 +520,7 @@ server side deserialization (#3).</p>
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>

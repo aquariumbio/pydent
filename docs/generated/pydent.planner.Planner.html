@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.planner.Planner &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.planner.Planner &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -200,6 +200,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -267,6 +269,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -355,7 +359,7 @@
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.Planner.add_wire" title="pydent.planner.Planner.add_wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_wire</span></code></a>(fv1, fv2)</p></td>
-<td><p>Note that fv2.operation will not inherit parent_id of fv1.</p></td>
+<td><p>Add wire from one FieldValue to another FieldValue.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.Planner.annotate" title="pydent.planner.Planner.annotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotate</span></code></a>(markdown, x, y, width, height)</p></td>
 <td><p>Annotates the plan with Markdown text.</p></td>
@@ -370,7 +374,12 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache_plans</span></code>(browser, plans)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Plan</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.Planner.chain" title="pydent.planner.Planner.chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chain</span></code></a>(*op_or_otnames[, category, return_as_dict])</p></td>
 <td><p>Creates a chain of operations by <em>guessing</em> wires between operations based on the AllowableFieldTypes between the inputs and outputs of each operation type.</p></td>
@@ -391,10 +400,20 @@
 <td><p>Adds a new operation to the plan.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_operation_by_type</span></code>(ot[, status])</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_operation_by_type_id</span></code>(ot_id)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.Planner.distribute_items_of_object_type" title="pydent.planner.Planner.distribute_items_of_object_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_items_of_object_type</span></code></a>(object_type)</p></td>
 <td><p>Distribute items of a particular object_type across non-planning operations across existing plans and these operations in this Planner instance.</p></td>
@@ -403,37 +422,87 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_available_items</span></code>(field_value, item_preference)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Item</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fv_predecessors</span></code>(fv)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fv_successors</span></code>(fv)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_incoming_wires</span></code>(fv)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Wire</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_op</span></code>(id)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.Planner.get_op_by_name" title="pydent.planner.Planner.get_op_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_op_by_name</span></code></a>(operation_type_name)</p></td>
 <td><p>Find operations by their operation_type_name.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_op_predecessors</span></code>(op)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_op_successors</span></code>(op)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_outgoing_wires</span></code>(fv)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Wire</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sample_routing_of_operation</span></code>(op)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>]]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wire</span></code>(fv1, fv2)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Wire</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipython_link</span></code>()</p></td>
 <td><p></p></td>
@@ -442,27 +511,42 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_op</span></code>(name_id_or_ot)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.Planner.optimize_plan" title="pydent.planner.Planner.optimize_plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimize_plan</span></code></a>([operations, ignore])</p></td>
-<td><p>Remove redundant operations.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Planner.optimize_plan</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prettify</span></code>()</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">quick_create_and_wire</span></code>(otname1, otname2[, …])</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">quick_create_operation_by_name</span></code>(otname)</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.Planner.quick_wire" title="pydent.planner.Planner.quick_wire"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quick_wire</span></code></a>(source, destination[, strict])</p></td>
 <td><p><dl class="field-list simple">
-<dt class="field-odd">param source</dt>
-<dd class="field-odd"><p>field_value or operation source</p>
+<dt class="field-odd">type source</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</p>
 </dd>
 </dl>
 </p></td>
@@ -485,8 +569,8 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.Planner.roots" title="pydent.planner.Planner.roots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roots</span></code></a>()</p></td>
 <td><p>Get field values that have no predecessors (i.e.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.Planner.save" title="pydent.planner.Planner.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>()</p></td>
+<td><p>Saves the Plan to the Aquarium server.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_field_value</span></code>(field_value[, sample, item, …])</p></td>
 <td><p></p></td>
@@ -510,7 +594,7 @@
 <td><p>Split the plan into several distinct plans, if possible.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.Planner.update" title="pydent.planner.Planner.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>()</p></td>
-<td><p>Save the plan on Aquarium.</p></td>
+<td><p>Update the plan on Aquarium.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.Planner.validate" title="pydent.planner.Planner.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a>()</p></td>
 <td><p>Validates sample routes in the plan.</p></td>
@@ -531,7 +615,12 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">PlannerLayout</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
 <td><p></p></td>
@@ -654,19 +743,22 @@ field_value inputs and matching field_value outputs</p>
 <dt id="pydent.planner.Planner._find_matching_afts">
 <em class="property">static </em><code class="sig-name descname">_find_matching_afts</code><span class="sig-paren">(</span><em class="sig-param">src_ft</em>, <em class="sig-param">dest_ft</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.Planner._find_matching_afts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds matching afts between two FieldTypes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">AllowableFieldType</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AllowableFieldType</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.Planner._json_update">
 <em class="property">static </em><code class="sig-name descname">_json_update</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner._json_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner._json_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Temporary method to update.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pydent.planner.Planner._op_to_hash">
-<em class="property">classmethod </em><code class="sig-name descname">_op_to_hash</code><span class="sig-paren">(</span><em class="sig-param">op</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner._op_to_hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner._op_to_hash" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turns a operation into a hash using the operation_type_id, item_id,
-and sample_id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -688,12 +780,15 @@ values, a new one is instantiated and returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>op</strong> – Operation</p></li>
-<li><p><strong>fvname</strong> – FieldType/FieldValue name of the array</p></li>
+<li><p><strong>op</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>) – Operation</p></li>
+<li><p><strong>fvname</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – FieldType/FieldValue name of the array</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
 </dd>
 </dl>
 </dd></dl>
@@ -701,7 +796,21 @@ values, a new one is instantiated and returned.</p>
 <dl class="method">
 <dt id="pydent.planner.Planner.add_wire">
 <code class="sig-name descname">add_wire</code><span class="sig-paren">(</span><em class="sig-param">fv1</em>, <em class="sig-param">fv2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.add_wire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.add_wire" title="Permalink to this definition">¶</a></dt>
-<dd><p>Note that fv2.operation will not inherit parent_id of fv1.</p>
+<dd><p>Add wire from one FieldValue to another FieldValue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fv1</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>) – source FieldValue</p></li>
+<li><p><strong>fv2</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>) – destination FieldValue</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Wire</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the new Wire</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -739,6 +848,11 @@ values, a new one is instantiated and returned.</p>
 <dd><p>Annotates above the operations.</p>
 <p>Estimates the x-midpoint and y and makes a text annotation at
 that location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -775,6 +889,11 @@ run_gel = new_ops[1]
 planner.chain(&quot;Pour Gel&quot;, run_gel)
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -786,8 +905,11 @@ and wires.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>plans</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Plan</span></code>]) – list of Aquarium Plans instances</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>new Plan</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new Plan</p>
 </dd>
 </dl>
 </dd></dl>
@@ -799,6 +921,11 @@ and wires.</p>
 plan.</p>
 <p>Browser cache is copied as well, but model_cache in browser are
 not anonymous</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -811,6 +938,21 @@ not anonymous</p>
 <dt id="pydent.planner.Planner.create_operation_by_name">
 <code class="sig-name descname">create_operation_by_name</code><span class="sig-paren">(</span><em class="sig-param">operation_type_name</em>, <em class="sig-param">category=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.create_operation_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.create_operation_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a new operation to the plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.planner.Planner.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the plan on the Aquarium server. Make an annonymized copy of
+the plan stored in Trident.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a10: </span>Added delete method</p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -840,18 +982,16 @@ instance.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.planner.Planner.optimize_plan">
-<code class="sig-name descname">optimize_plan</code><span class="sig-paren">(</span><em class="sig-param">operations=None</em>, <em class="sig-param">ignore=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.optimize_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.optimize_plan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove redundant operations.</p>
+<dt id="pydent.planner.Planner.operations">
+<em class="property">property </em><code class="sig-name descname">operations</code><a class="headerlink" href="#pydent.planner.Planner.operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">operations</span></code></a> in the
+plan.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>operations</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>]]) – list of operations</p></li>
-<li><p><strong>ignore</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – list of operation type names to ignore in optimization</p></li>
-</ul>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>]</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">operations</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -881,6 +1021,11 @@ source and destination</p></li>
 <dt id="pydent.planner.Planner.quick_wire_by_name">
 <code class="sig-name descname">quick_wire_by_name</code><span class="sig-paren">(</span><em class="sig-param">otname1</em>, <em class="sig-param">otname2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.quick_wire_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.quick_wire_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wires together the last added operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Wire</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -890,12 +1035,15 @@ source and destination</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fv1</strong> – </p></li>
-<li><p><strong>fv2</strong> – </p></li>
+<li><p><strong>fv1</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>) – </p></li>
+<li><p><strong>fv2</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>) – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Wire</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
 </dd>
 </dl>
 </dd></dl>
@@ -904,6 +1052,11 @@ source and destination</p></li>
 <dt id="pydent.planner.Planner.replan">
 <code class="sig-name descname">replan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.replan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.replan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replan the plan, by ‘copying’ the plan using the Aquarium server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -911,17 +1064,38 @@ source and destination</p></li>
 <code class="sig-name descname">reserved_items</code><span class="sig-paren">(</span><em class="sig-param">items</em>, <em class="sig-param">search_server=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.reserved_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.reserved_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary of item_ids and the array of field_values that
 use them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.Planner.roots">
 <code class="sig-name descname">roots</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.roots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.roots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get field values that have no predecessors (i.e. are ‘roots’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.planner.Planner.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the Plan to the Aquarium server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.Planner.set_input_field_value_array">
-<code class="sig-name descname">set_input_field_value_array</code><span class="sig-paren">(</span><em class="sig-param">op</em>, <em class="sig-param">field_value_name</em>, <em class="sig-param">sample=None</em>, <em class="sig-param">item=None</em>, <em class="sig-param">container=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.set_input_field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.set_input_field_value_array" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_input_field_value_array</code><span class="sig-paren">(</span><em class="sig-param">op</em>, <em class="sig-param">field_value_name</em>, <em class="sig-param">sample=None</em>, <em class="sig-param">item=None</em>, <em class="sig-param">container=None</em>, <em class="sig-param">value=None</em>, <em class="sig-param">row=None</em>, <em class="sig-param">column=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.set_input_field_value_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.set_input_field_value_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the first ‘empty’ (no incoming wires and no sample set) field
 value and set the field value. If there are no empty field values in
 the array, create a new field value and set that one.</p>
@@ -972,9 +1146,9 @@ field values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fv</strong> – the output field value</p></li>
-<li><p><strong>sample</strong> – </p></li>
-<li><p><strong>routing</strong> – </p></li>
+<li><p><strong>fv</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>) – the output field value</p></li>
+<li><p><strong>sample</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code>]) – </p></li>
+<li><p><strong>routing</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1033,12 +1207,17 @@ plans based on these subgraphs. This will return anonymous
 copies of all the plans, meaning operations and field_values
 will be anonymized. Sample and items attached to field values
 will remain to avoid re-creating samples and items.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Planner</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.Planner.update">
 <code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the plan on Aquarium.</p>
+<dd><p>Update the plan on Aquarium.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1072,7 +1251,7 @@ will remain to avoid re-creating samples and items.</p>
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>

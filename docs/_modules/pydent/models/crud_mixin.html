@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.crud_mixin &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.models.crud_mixin &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -198,6 +198,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
@@ -265,6 +267,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
@@ -319,6 +323,7 @@
       
   <h1>Source code for pydent.models.crud_mixin</h1><div class="highlight"><pre>
 <span></span>&quot;&quot;&quot;The create, read, update, destroy (CRUD) mixins used for some models.&quot;&quot;&quot;
+from retry import retry
 
 
 <div class="viewcode-block" id="CreateMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html#pydent.models.crud_mixin.CreateMixin">[docs]</a>class CreateMixin:
@@ -337,13 +342,20 @@
         return None</div>
 
 
+class UpdateFailed(Exception):
+    pass
+
+
 <div class="viewcode-block" id="UpdateMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html#pydent.models.crud_mixin.UpdateMixin">[docs]</a>class UpdateMixin:
+    @retry([UpdateFailed], tries=3, delay=0.1, backoff=0.25, max_delay=1.0)
     def update(self):
         data = self._get_create_json()
         params = self._get_update_params()
         name = self.get_tableized_name()
         result = self.session.utils.model_update(name, self.id, data, params=params)
         self.reload(result)
+        if not self.id:
+            raise UpdateFailed
         return self
 
     def _get_update_json(self):
@@ -373,10 +385,12 @@
 
 
 <div class="viewcode-block" id="JSONSaveMixin"><a class="viewcode-back" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html#pydent.models.crud_mixin.JSONSaveMixin">[docs]</a>class JSONSaveMixin:
-    def save(self):
+    def save(self, do_reload=True):
         name = self.get_server_model_name()
         data = self._get_save_json()
         result = self.session.utils.json_save(name, data)
+        if do_reload:
+            self.reload(result)
         return result
 
     # TODO: add update to JSONMixin?
@@ -409,7 +423,7 @@
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>

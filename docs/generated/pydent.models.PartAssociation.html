@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.PartAssociation &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.models.PartAssociation &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -200,6 +200,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -267,6 +269,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -336,25 +340,14 @@
 <dl class="class">
 <dt id="pydent.models.PartAssociation">
 <em class="property">class </em><code class="sig-prename descclassname">pydent.models.</code><code class="sig-name descname">PartAssociation</code><span class="sig-paren">(</span><em class="sig-param">part_id=None</em>, <em class="sig-param">collection_id=None</em>, <em class="sig-param">row=None</em>, <em class="sig-param">column=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#PartAssociation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.PartAssociation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="pydent.models.crud_mixin.JSONSaveMixin.html#pydent.models.crud_mixin.JSONSaveMixin" title="pydent.models.crud_mixin.JSONSaveMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONSaveMixin</span></code></a>, <a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>Represents a PartAssociation linking a part to a collection.</p>
 <p>Collections contain many <cite>parts</cite>, each of which can refer to a
 different sample.</p>
-<p>The model initializer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to add to the model</p>
-</dd>
-</dl>
 <dl class="method">
 <dt id="pydent.models.PartAssociation.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">part_id=None</em>, <em class="sig-param">collection_id=None</em>, <em class="sig-param">row=None</em>, <em class="sig-param">column=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#PartAssociation.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.PartAssociation.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>The model initializer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to add to the model</p>
-</dd>
-</dl>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -365,7 +358,7 @@ different sample.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.PartAssociation.__init__" title="pydent.models.PartAssociation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([part_id, collection_id, row, column])</p></td>
-<td><p>The model initializer.</p></td>
+<td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.PartAssociation.add_data" title="pydent.models.PartAssociation.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(data)</p></td>
 <td><p>Initializes fake attributes that correspond to data.</p></td>
@@ -845,7 +838,7 @@ behavior.</p>
 <dd><p>Finds a list of models by some parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef('ModelBase')</span></code>]]</p>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef</span></code>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -857,7 +850,7 @@ behavior.</p>
 <p>Used to find models in model relationships.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]]</p>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -879,7 +872,7 @@ behavior.</p>
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>

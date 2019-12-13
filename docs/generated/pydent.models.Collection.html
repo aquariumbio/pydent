@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.Collection &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.models.Collection &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -200,6 +200,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -267,6 +269,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -335,25 +339,14 @@
 <h1>pydent.models.Collection<a class="headerlink" href="#pydent-models-collection" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydent.models.Collection">
-<em class="property">class </em><code class="sig-prename descclassname">pydent.models.</code><code class="sig-name descname">Collection</code><span class="sig-paren">(</span><em class="sig-param">**data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#Collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.data_associations.DataAssociatorMixin" title="pydent.models.data_associations.DataAssociatorMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.data_associations.DataAssociatorMixin</span></code></a>, <a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.models.</code><code class="sig-name descname">Collection</code><span class="sig-paren">(</span><em class="sig-param">object_type=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">data_associations=None</em>, <em class="sig-param">parts=None</em>, <em class="sig-param">part_associations=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#Collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.data_associations.DataAssociatorMixin" title="pydent.models.data_associations.DataAssociatorMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.data_associations.DataAssociatorMixin</span></code></a>, <a class="reference internal" href="pydent.models.crud_mixin.SaveMixin.html#pydent.models.crud_mixin.SaveMixin" title="pydent.models.crud_mixin.SaveMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.SaveMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.controller_mixin.ControllerMixin</span></code>, <a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A Collection model, such as a 96-well plate, which contains many
 <cite>parts</cite>, each of which can be associated with a different sample.</p>
-<p>The model initializer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to add to the model</p>
-</dd>
-</dl>
 <dl class="method">
 <dt id="pydent.models.Collection.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">**data</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>The model initializer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data to add to the model</p>
-</dd>
-</dl>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">object_type=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">data_associations=None</em>, <em class="sig-param">parts=None</em>, <em class="sig-param">part_associations=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#Collection.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -363,8 +356,8 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Collection.__init__" title="pydent.models.Collection.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(**data)</p></td>
-<td><p>The model initializer.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Collection.__init__" title="pydent.models.Collection.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([object_type, location, …])</p></td>
+<td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Collection.add_data" title="pydent.models.Collection.add_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data</span></code></a>(data)</p></td>
 <td><p>Initializes fake attributes that correspond to data.</p></td>
@@ -378,7 +371,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Collection.as_item" title="pydent.models.Collection.as_item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_item</span></code></a>()</p></td>
 <td><p>Returns the Item object with the ID of this Collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Collection.associate" title="pydent.models.Collection.associate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">associate</span></code></a>(key, value[, upload])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Collection.associate" title="pydent.models.Collection.associate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">associate</span></code></a>(key, value[, upload, create_new, save])</p></td>
 <td><p>Adds a data association with the key and value to this object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Collection.associate_file" title="pydent.models.Collection.associate_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">associate_file</span></code></a>(key, value, file[, job_id])</p></td>
@@ -393,8 +386,8 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.models.Collection.copy" title="pydent.models.Collection.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([keep])</p></td>
 <td><p>Provides a deepcopy of the model, but annonymizes the primary and global keys unless class is a metatype (e.g.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Collection.create" title="pydent.models.Collection.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>()</p></td>
+<td><p>Create a new empty collection on the server.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_interface</span></code>()</p></td>
 <td><p><dl class="field-list simple">
@@ -646,8 +639,25 @@ rid.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Collection.assign_sample">
+<code class="sig-name descname">assign_sample</code><span class="sig-paren">(</span><em class="sig-param">sample_id</em>, <em class="sig-param">pairs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#Collection.assign_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection.assign_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign sample id to the (row, column) pairs for the collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sample_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – the sample id to assign</p></li>
+<li><p><strong>pairs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]) – list of (row, column) tuples</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Collection.associate">
-<code class="sig-name descname">associate</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">value</em>, <em class="sig-param">upload=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.associate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">associate</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">value</em>, <em class="sig-param">upload=None</em>, <em class="sig-param">create_new=False</em>, <em class="sig-param">save=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.associate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a data association with the key and value to this object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -655,13 +665,18 @@ rid.</p>
 <li><p><strong>key</strong> (<em>str</em>) – Key of the association</p></li>
 <li><p><strong>value</strong> (<em>dict | str | int | float</em>) – a json serializable object</p></li>
 <li><p><strong>upload</strong> (<em>File</em>) – optional file to upload</p></li>
+<li><p><strong>create_new</strong> – if True (default) will create a new association instead
+of updating the existing association.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>newly created data association</p>
+<dt class="field-even">Tuype create_new</dt>
+<dd class="field-even"><p>bool</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="pydent.models.DataAssociation.html#pydent.models.DataAssociation" title="pydent.models.DataAssociation">DataAssociation</a></p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>newly created or updated data association</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="pydent.models.DataAssociation.html#pydent.models.DataAssociation" title="pydent.models.DataAssociation">DataAssociation</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -731,6 +746,25 @@ rid.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Collection.controller_method">
+<code class="sig-name descname">controller_method</code><span class="sig-paren">(</span><em class="sig-param">controller_method</em>, <em class="sig-param">table</em>, <em class="sig-param">model_id</em>, <em class="sig-param">data</em>, <em class="sig-param">params=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.controller_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for create, updating, and deleting models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>controller_method</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the controller method</p></li>
+<li><p><strong>table</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Table name of model (e.g. ‘samples’ or ‘data_associations’)</p></li>
+<li><p><strong>model_id</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>]) – Optional model_id (not required for ‘post’)</p></li>
+<li><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – data</p></li>
+</ul>
+</dd>
+</dl>
+<p>:param params
+:return: json formatted server response
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Collection.copy">
 <code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">keep=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides a deepcopy of the model, but annonymizes the primary and
@@ -756,6 +790,48 @@ its rid.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>copied model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#Collection.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new empty collection on the server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.data_association_matrix">
+<em class="property">property </em><code class="sig-name descname">data_association_matrix</code><a class="headerlink" href="#pydent.models.Collection.data_association_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a view of :class:<a href="#id1"><span class="problematic" id="id2">`</span></a>DataAssociation.</p>
+<p>&lt;pydent.models.DataAssociation&gt;`</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">MatrixMapping</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>collection as a view of DataAssociations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.data_matrix">
+<em class="property">property </em><code class="sig-name descname">data_matrix</code><a class="headerlink" href="#pydent.models.Collection.data_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a view of values from the :class:<a href="#id3"><span class="problematic" id="id4">`</span></a>DataAssociation.</p>
+<p>&lt;pydent.models.DataAssociation&gt;`</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">MatrixMapping</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>collection as a view of DataAssociation values</p>
 </dd>
 </dl>
 </dd></dl>
@@ -889,6 +965,9 @@ cases.</p>
 <em class="property">property </em><code class="sig-name descname">matrix</code><a class="headerlink" href="#pydent.models.Collection.matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the matrix of Samples for this Collection.</p>
 <p>(Consider using samples of parts directly.)</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.5a9: </span>Refactored using MatrixMapping</p>
+</div>
 </dd></dl>
 
 <dl class="attribute">
@@ -908,6 +987,46 @@ cases.</p>
 <code class="sig-name descname">part</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">col</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#Collection.part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection.part" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the part Item at (row, col) of this Collection (zero-
 based).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Item</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.part_association_matrix">
+<em class="property">property </em><code class="sig-name descname">part_association_matrix</code><a class="headerlink" href="#pydent.models.Collection.part_association_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a view of :class:<a href="#id5"><span class="problematic" id="id6">`</span></a>PartAssociation.</p>
+<p>&lt;pydent.models.PartAssociation&gt;`</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">MatrixMapping</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">PartAssociation</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>collection as a view of PartAssociations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.parts_matrix">
+<em class="property">property </em><code class="sig-name descname">parts_matrix</code><a class="headerlink" href="#pydent.models.Collection.parts_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a view of <a class="reference internal" href="pydent.models.Item.html#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-class docutils literal notranslate"><span class="pre">ITem</span></code></a></p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">MatrixMapping</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Item</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>collection as a view of Items (Parts)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -942,6 +1061,21 @@ based).</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Collection.remove_sample">
+<code class="sig-name descname">remove_sample</code><span class="sig-paren">(</span><em class="sig-param">pairs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/models/inventory.html#Collection.remove_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.models.Collection.remove_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the sample_id assigment in the (row, column) pairs for the
+collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pairs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]) – list of (row, column) tuples</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Collection.reset_field">
 <code class="sig-name descname">reset_field</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Collection.reset_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the field descriptor to its placeholder value, returning the
@@ -960,6 +1094,40 @@ behavior.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.models.Collection.sample_id_matrix">
+<em class="property">property </em><code class="sig-name descname">sample_id_matrix</code><a class="headerlink" href="#pydent.models.Collection.sample_id_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a view of sample_ids <a class="reference internal" href="pydent.models.Sample.html#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code></a></p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">MatrixMapping</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>collection as a view of Sample.ids</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.models.Collection.sample_matrix">
+<em class="property">property </em><code class="sig-name descname">sample_matrix</code><a class="headerlink" href="#pydent.models.Collection.sample_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a view of <a class="reference internal" href="pydent.models.Sample.html#pydent.models.Sample" title="pydent.models.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code></a></p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">MatrixMapping</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>collection as a view of Samples</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.models.Collection.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.models.Collection.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connected session instance.</p>
@@ -971,7 +1139,7 @@ behavior.</p>
 <dd><p>Finds a list of models by some parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef('ModelBase')</span></code>]]</p>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ForwardRef</span></code>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -983,7 +1151,7 @@ behavior.</p>
 <p>Used to find models in model relationships.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]]</p>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="../base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1005,7 +1173,7 @@ behavior.</p>
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>
