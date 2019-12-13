@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Trident: Pythonic Scripting of Scientific Expeirments
+Trident: Pythonic Scripting of Scientific Experiments
 =====================================================
 
 Trident is the Python scripting API for
