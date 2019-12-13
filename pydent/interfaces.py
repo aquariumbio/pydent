@@ -292,13 +292,20 @@ class UtilityInterface(CRUDInterface):
     ##############################
 
     def move_item(self, item, location):
-        self.aqhttp.get(
-            "items/move/{item_id}?location={location}".format(
-                item_id=item.id, location=location
-            )
+        assert item.id
+        url = "items/move/{item_id}?location={location}".format(
+            item_id=item.id, location=location
         )
+        result = self.aqhttp.get(url)
+        if "error" in result or "errors" in result:
+            raise TridentRequestError(str(result))
         item.location = location
         return item
+
+    def store_item(self, item):
+        assert item.id
+        self.aqhttp.get("items/store/{item_id}")
+        item.refresh()
 
     def estimate_plan_cost(self, plan):
         """Estimates the plan cost."""
