@@ -2,14 +2,11 @@ import json
 from collections import OrderedDict
 from hashlib import sha1
 from typing import List
-from uuid import uuid4
 
 import networkx as nx
 
-from .graph import PlannerGraph
-from pydent.exceptions import PlannerVerificationException
+from pydent.exceptions import PlannerException
 from pydent.models import Operation
-from pydent.models import Plan
 from pydent.utils import Loggable
 from pydent.utils import logger
 
@@ -17,10 +14,16 @@ from pydent.utils import logger
 # TODO: move get_op and related methods to Plan model
 
 
+class PlanOptimizationException(PlannerException):
+    """Error during optimization of a plan."""
+
+
 class PlanOptimizer:
     """Class that optimizes a plan."""
 
-    def __init__(self, planner, inherit_logger: Loggable = None):
+    def __init__(
+        self, planner, inherit_logger: Loggable = None, merge_missing_samples=False
+    ):
         self.planner = planner
         self.graph = self.planner.graph
         if inherit_logger:
@@ -28,9 +31,11 @@ class PlanOptimizer:
         else:
             self.logger = logger(self)
 
+        self.merge_missing_samples = merge_missing_samples
+
     # TODO: there could be a setting here to merge things with .sample=None
-    @staticmethod
-    def _fv_to_hash(fv, ft):
+
+    def _fv_to_hash(self, fv, ft):
         # none valued Samples are never equivalent
         fvhash = OrderedDict(
             {
@@ -50,7 +55,7 @@ class PlanOptimizer:
             fvhash["value"] = fv.value
         elif fv.allowable_field_type.sample_type_id is None:
             pass
-        else:
+        elif not self.merge_missing_samples or fv.role == "output":
             # a deterministic hash for field values missing samples
             fvid = fv.id or fv._primary_key
             ftid = ft.id
@@ -66,15 +71,13 @@ class PlanOptimizer:
 
         return json.dumps(fvhash, indent=2)
 
-    @classmethod
-    def _fv_array_to_hash(cls, fv_array, ft, sort=True, sep="*"):
-        arr = [cls._fv_to_hash(fv, ft) for fv in fv_array]
+    def _fv_array_to_hash(self, fv_array, ft, sort=True, sep="*"):
+        arr = [self._fv_to_hash(fv, ft) for fv in fv_array]
         if sort:
             arr.sort()
         return sep.join(arr)
 
-    @classmethod
-    def _op_to_hash(cls, op):
+    def _op_to_hash(self, op):
         """Turns a operation into a hash using the operation_type_id, item_id,
         and sample_id."""
         ot_id = op.operation_type.id
@@ -84,32 +87,80 @@ class PlanOptimizer:
             if ft.ftype == "sample":
                 if not ft.array:
                     fv = op.field_value(ft.name, ft.role)
-                    field_value_hashes.append(cls._fv_to_hash(fv, ft))
+                    field_value_hashes.append(self._fv_to_hash(fv, ft))
                 else:
                     fv_array = op.field_value_array(ft.name, ft.role)
-                    field_value_hashes.append(cls._fv_array_to_hash(fv_array, ft))
+                    field_value_hashes.append(self._fv_array_to_hash(fv_array, ft))
 
         field_value_hashes = sorted(field_value_hashes)
         return "{}_{}\n{}".format(
             ot_id, op.operation_type.name, "\n".join(field_value_hashes)
         )
 
-    @classmethod
-    def _group_ops_by_hashes(cls, ops):
+    def _group_ops_by_hashes(self, ops):
         hashgroup = {}
         for op in ops:
-            h = cls._op_to_hash(op)
+            h = self._op_to_hash(op)
             hashgroup.setdefault(h, [])
             hashgroup[h].append(op)
         return hashgroup
 
-    def optimize(self, operations: List[Operation] = None, ignore: List[str] = None):
+    def _get_sample_creation_signatures(self, operations):
+        """Return a unique signature representing how samples are being created
+        by a set of operations."""
+        signatures = []
+
+        def value_hash(fv):
+            item_id = None
+            if not fv.child_item_id:
+                if fv.item:
+                    item_id = fv.item.id
+
+            sample_id = None
+            if not fv.child_sample_id:
+                if fv.sample:
+                    sample_id = fv.sample.id
+
+            value = fv.value
+            return "*".join(
+                [
+                    str(x)
+                    for x in [
+                        fv.name,
+                        fv.role,
+                        item_id,
+                        sample_id,
+                        value,
+                        fv.row,
+                        fv.column,
+                    ]
+                ]
+            )
+
+        for op in operations:
+            signatures.append(
+                "&".join(sorted([value_hash(fv) for fv in op.field_values]))
+            )
+        signatures.sort()
+        return tuple(set(signatures))
+
+    def optimize(
+        self,
+        operations: List[Operation] = None,
+        ignore: List[str] = None,
+        ignore_on_the_fly: bool = True,
+    ):
         """Remove redundant operations.
 
         :param operations: list of operations
         :param ignore: list of operation type names to ignore in optimization
         :return:
         """
+
+        starting_signature = self._get_sample_creation_signatures(
+            self.planner.operations
+        )
+
         self.logger.info("Optimizing plan...")
         if operations is not None:
             self.logger.info(
@@ -123,20 +174,27 @@ class PlanOptimizer:
                 op for op in self.planner.operations if op.status == "planning"
             ]
 
-        # ignore operation types
-        if ignore:
-            operations = [
-                op for op in operations if op.operation_type.name not in ignore
-            ]
+        # TODO: fix optimization issues
+        # ignore operation type
+        ignore_ops = []
+        for op in operations:
+            if ignore and op.operation_type in ignore:
+                ignore_ops.append(op)
+            elif ignore_on_the_fly and op.operation_type.on_the_fly:
+                ignore_ops.append(op)
 
         operations = [op for op in operations if op.status == "planning"]
         nxgraph = self.graph.ops_to_subgraph(operations).nxgraph
+        assert nxgraph.number_of_nodes() == len(operations)
         op_to_group_id = OrderedDict()
         group_id_to_ops = OrderedDict()
 
         def opkey(op):
             return op.id or op._primary_key
 
+        # create 'group_graph'
+        # group graph are all of the operations grouped into hashes
+        # each group has an edge to another group
         group_graph = nx.DiGraph()
 
         for n in nx.topological_sort(nxgraph):
@@ -162,20 +220,20 @@ class PlanOptimizer:
             group_graph.nodes[final_hash]["operations"].append(op)
             for n2 in predecessor_groups:
                 group_graph.add_edge(final_hash, n2)
+        # finish 'group graph'
 
+        # do optimization
         wires_to_remove = []
         wires_to_add = set()
         ops_to_remove = []
-
         wires_to_add_to_array = {}
 
-        groups = {}
         for n1 in group_graph.nodes:
-            groups[n1] = group_graph.nodes[n1]["operations"]
-
-        for n1 in group_graph.nodes:
+            # we look at one of the groups
             source_ops = group_graph.nodes[n1]["operations"]
-
+            source_ops = [op for op in source_ops if op not in ignore_ops]
+            # if the there is more than one operation in the group
+            # perform the optimization procedure
             if len(source_ops) > 1:
                 for ft in source_ops[0].operation_type.field_types:
                     if ft.role == "output":
@@ -207,8 +265,11 @@ class PlanOptimizer:
                                 dest_fv = dest_op.input(w.destination.name)
                                 wires_to_add.add((src_fv, dest_fv))
 
+        ops_to_keep = []
         for dest_ops in group_id_to_ops.values():
+            dest_ops = [op for op in dest_ops if op not in ignore_ops]
             ops_to_remove += dest_ops[1:]
+            ops_to_keep += dest_ops[:1]
             for op in dest_ops[1:]:
                 for fv in op.field_values:
                     if fv.role == "input":
@@ -218,6 +279,12 @@ class PlanOptimizer:
 
         for w in wires_to_remove:
             self.planner.remove_wire(w.source, w.destination)
+
+            # TODO: this optimization step may be dangerous (???)
+            if w.source.operation not in ops_to_keep:
+                ops_to_remove.append(w.source.operation)
+            if w.destination.operation not in ops_to_keep:
+                ops_to_remove.append(w.destination.operation)
 
         operations_list = self.planner.operations
         for op in ops_to_remove:
@@ -240,6 +307,16 @@ class PlanOptimizer:
                 self.planner.quick_wire(fv_src, (target_op, target_fts[0].name))
 
         self.planner.operations = operations_list
+
+        ending_signatures = self._get_sample_creation_signatures(
+            self.planner.operations
+        )
+        if not starting_signature == ending_signatures:
+            raise PlanOptimizationException(
+                "An error occurred during optimization that would alter the "
+                "intention of the Plan."
+            )
+
         self.logger.info("\t{} operations removed".format(len(ops_to_remove)))
         self.logger.info("\t{} wires re-wired".format(len(wires_to_remove)))
         self.logger.info("\t{} new wires".format(len(wires_to_add)))

@@ -1457,8 +1457,12 @@ class Planner(AFTMatcher):
                     roots.append(root)
         return roots
 
-    def optimize(self):
-        optimizer = PlanOptimizer(self, inherit_logger=self.logger)
+    def optimize(self, merge_missing_samples=False):
+        optimizer = PlanOptimizer(
+            self,
+            inherit_logger=self.logger,
+            merge_missing_samples=merge_missing_samples,
+        )
         return optimizer.optimize()
 
     def validate(self) -> Dict:
