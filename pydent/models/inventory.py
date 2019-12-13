@@ -1,5 +1,6 @@
 """Models related to inventory, like Items, Collections, ObjectTypes, and
 PartAssociations."""
+from abc import abstractmethod
 from typing import Any
 from typing import Dict
 from typing import List
@@ -56,8 +57,54 @@ class ObjectType(SaveMixin, ModelBase):
         )
 
 
+class ItemLocationMixin(SaveMixin, JSONSaveMixin):
+    def move(self, new_location):
+        self.session.utils.move_item(self, new_location)
+
+    def store(self):
+        self.session.utils.store_item(self)
+
+    def _get_save_json(self):
+        data = self.dump()
+        if "location" in data:
+            del data["location"]
+        return data
+
+    def update(self):
+        """Updates the item.
+
+        Will update the data associations and its location.
+        """
+        JSONSaveMixin.save(self, do_reload=True)
+        self.move(self.location)
+        return self
+
+    def delete(self):
+        self.move("deleted")
+
+    def mark_as_deleted(self):
+        self.location = "deleted"
+
+    def is_deleted(self):
+        return self.location == "deleted"
+
+    @abstractmethod
+    def create(self):
+        pass
+
+    def make(self):
+        """Makes the Item on the Aquarium server.
+
+        Requires this Item to be connected to a session.
+        """
+        if not self.DID_ITEM_WARNING:
+            raise DeprecationWarning("This method is depreciated. Use `save()`")
+        self.DID_ITEM_WARNING = True
+        self.create()
+
+
 @add_schema
-class Item(DataAssociatorMixin, SaveMixin, ModelBase):
+class Item(DataAssociatorMixin, ItemLocationMixin, ModelBase):
     """A physical object in the lab, which a location and unique id."""
 
     DID_ITEM_WARNING = False
@@ -95,36 +142,11 @@ class Item(DataAssociatorMixin, SaveMixin, ModelBase):
             location=location,
         )
 
-    def make(self):
-        """Makes the Item on the Aquarium server.
-
-        Requires this Item to be connected to a session.
-        """
-        if not self.DID_ITEM_WARNING:
-            raise DeprecationWarning("This method is depreciated. Use `save()`")
-        self.DID_ITEM_WARNING = True
-        self.create()
-
     def create(self):
         with DataAssociationSaveContext(self):
             result = self.session.utils.create_items([self])
             self.reload(result[0]["item"])
         return self
-
-    def update(self):
-        """Updates the item.
-
-        Will update the data associations and its location.
-        """
-        with DataAssociationSaveContext(self):
-            self.move(self.location)
-        return self
-
-    def move(self, new_location):
-        self.session.utils.move_item(self, new_location)
-
-    def is_deleted(self):
-        return self.location == "deleted"
 
     @property
     def containing_collection(self):
@@ -214,8 +236,8 @@ class PartAssociation(JSONSaveMixin, ModelBase):
 
 @add_schema
 class Collection(
-    DataAssociatorMixin, SaveMixin, ControllerMixin, ModelBase
-):  # pylint: disable=too-few-public-methods
+    ItemLocationMixin, DataAssociatorMixin, SaveMixin, ControllerMixin, ModelBase
+):
     """A Collection model, such as a 96-well plate, which contains many
     `parts`, each of which can be associated with a different sample."""
 
@@ -579,17 +601,14 @@ class Collection(
 
     def update(self):
         self._validate_for_update()
+        self.move(self.location)
         for association in self.part_associations:
             if not association.collection_id:
                 association.collection_id = self.id
             association.part.save()
             association.part_id = association.part.id
             association.save()
-        self.move(self.location)
         self.refresh()
-
-    def move(self, new_location):
-        self.session.utils.move_item(self, new_location)
 
     def assign_sample(self, sample_id: int, pairs: List[Tuple[int, int]]):
         """Assign sample id to the (row, column) pairs for the collection.
