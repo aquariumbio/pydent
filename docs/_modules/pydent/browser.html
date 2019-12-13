@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.browser &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.browser &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -198,6 +198,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a5">0.1.5a5</a></li>
@@ -265,6 +267,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a5">0.1.5a5</a></li>
@@ -339,11 +343,11 @@ from typing import List
 from typing import Union
 
 import networkx as nx
-import pandas as pd
 
 from pydent import models as pydent_models
 from pydent.base import ModelBase
 from pydent.exceptions import ForbiddenRequestError
+from pydent.exceptions import TridentBaseException
 from pydent.interfaces import QueryInterface
 from pydent.interfaces import QueryInterfaceABC
 from pydent.marshaller import ModelRegistry
@@ -359,7 +363,7 @@ from pydent.utils.logging_helpers import did_you_mean
 #       pull, and trident should pull and cache in the most efficient way possible)
 
 
-<div class="viewcode-block" id="BrowserException"><a class="viewcode-back" href="../../browser.html#pydent.browser.BrowserException">[docs]</a>class BrowserException(Exception):
+<div class="viewcode-block" id="BrowserException"><a class="viewcode-back" href="../../browser.html#pydent.browser.BrowserException">[docs]</a>class BrowserException(TridentBaseException):
     &quot;&quot;&quot;Generic browser exception.&quot;&quot;&quot;</div>
 
 
@@ -758,30 +762,36 @@ from pydent.utils.logging_helpers import did_you_mean
         )[0]
 
     def cached_where(self, query, model, primary_key=&quot;id&quot;):
-        if [] in query.values():
+        if isinstance(query, str):
+            server_models = self.interface(model).where(query)
+            found_dict = {}
+        elif [] in query.values():
             return []
-        cached_models = self.model_cache.get(model, {})
-        found, found_queries = self._find_matches(query, list(cached_models.values()))
-        found_dict = {f.id: f for f in found}
-        remaining_query = dict(query)
-        if primary_key in query:
-            found_ids = [q[primary_key] for q in found_queries]
-            query_id_list = query[primary_key]
-            if isinstance(query_id_list, str) or isinstance(query_id_list, int):
-                query_id_list = [query_id_list]
-            remaining_ids = list(set(query_id_list).difference(set(found_ids)))
-            remaining_query[primary_key] = remaining_ids
-        self.log.info(
-            &quot;CACHE found {num} {model} models in cache using query {query}&quot;.format(
-                num=len(found_dict), model=model, query=self.log.pprint_data(query)
+        else:
+            cached_models = self.model_cache.get(model, {})
+            found, found_queries = self._find_matches(
+                query, list(cached_models.values())
             )
-        )
+            found_dict = {f.id: f for f in found}
+            remaining_query = dict(query)
+            if primary_key in query:
+                found_ids = [q[primary_key] for q in found_queries]
+                query_id_list = query[primary_key]
+                if isinstance(query_id_list, str) or isinstance(query_id_list, int):
+                    query_id_list = [query_id_list]
+                remaining_ids = list(set(query_id_list).difference(set(found_ids)))
+                remaining_query[primary_key] = remaining_ids
+            self.log.info(
+                &quot;CACHE found {num} {model} models in cache using query {query}&quot;.format(
+                    num=len(found_dict), model=model, query=self.log.pprint_data(query)
+                )
+            )
 
-        # TODO: this code may be sketchy... here {&#39;id&#39;: []}, really means we found
-        #       all of the models..
-        if primary_key in remaining_query and not remaining_query[primary_key]:
-            return list(found_dict.values())
-        server_models = self.interface(model).where(remaining_query)
+            # TODO: this code may be sketchy... here {&#39;id&#39;: []}, really means we found
+            #       all of the models..
+            if primary_key in remaining_query and not remaining_query[primary_key]:
+                return list(found_dict.values())
+            server_models = self.interface(model).where(remaining_query)
 
         models_dict = OrderedDict({s.id: s for s in server_models})
         models_dict.update(found_dict)
@@ -1462,31 +1472,6 @@ from pydent.utils.logging_helpers import did_you_mean
         else:
             return models</div>
 
-<div class="viewcode-block" id="Browser.samples_to_df"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.samples_to_df">[docs]</a>    def samples_to_df(self, samples):
-        &quot;&quot;&quot;Returns a pandas data frame representing the samples.
-
-        :param samples: list of samples
-        :type samples: list
-        :return: the samples dataframe
-        :rtype: pandas.DataFrame
-        &quot;&quot;&quot;
-        df = pd.DataFrame(self.samples_to_rows(samples))
-        st = samples[0].sample_type
-        columns = [st.name, &quot;Description&quot;, &quot;Project&quot;] + [
-            ft.name for ft in st.field_types
-        ]
-        df = df[columns]
-        # pd.DataFrame(df[&#39;Fragments&#39;].values.tolist())
-        for ft in st.field_types:
-            if ft.array:
-                df2 = pd.DataFrame(df[ft.name].values.tolist())
-                df2.columns = [ft.name] * len(df2.columns)
-                del df[ft.name]
-                df = df.join(df2)
-        df.drop_duplicates(inplace=True)
-        df = df.set_index(st.name)
-        return df</div>
-
 <div class="viewcode-block" id="Browser.export_samples_to_csv"><a class="viewcode-back" href="../../generated/pydent.aqsession.Browser.html#pydent.browser.Browser.export_samples_to_csv">[docs]</a>    def export_samples_to_csv(self, samples, out):
         &quot;&quot;&quot;Exports the samples to a csv (for Aquarium import)
 
@@ -1606,7 +1591,7 @@ from pydent.utils.logging_helpers import did_you_mean
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>

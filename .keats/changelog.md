@@ -1,4 +1,25 @@
 # pydent change log
+## 0.1.5a10
+**2019-12-11T20:06:52.988337**
+New major features
+
+ - `Collection` model completely reworked.
+ - `Collection` now has multiple 'views' to view dat, including sample_id, sample, data_value, data_associations, part_associations, and parts.
+ - `Collection` sample_ids and data_associations c can be updated using advanced indexing
+ - `Collection` update now will automatically update DataAssociations along with the Collection itself
+ - DataAssociator refactored and fixed
+ - Items now automatically upddate their data associations upon save
+
+
+## 0.1.5a9
+**2019-11-19T18:48:57.740353**
+slimmed dependencies
+
+ - removed `arrow`
+ - removed `pandas`
+ - changed browser.samples_to_df to check if pandas is installed
+
+
 ## 0.1.5a8
 **2019-11-19T18:33:38.350971**
 bug fixes

@@ -765,18 +765,3 @@ class TestOptimizePlan:
             canvas = Planner(sess.Plan.find(plan_id))
             canvas.optimize()
             assert len(canvas.plan.operations) == 7
-
-    def test(self):
-        from pydent import AqSession
-        from pydent.planner import Planner
-
-        session = AqSession("vrana", "Mountain5", "http://52.27.43.242/")
-
-        with session.with_cache(timeout=60) as sess:
-            plan = sess.Plan.find(37145)
-            planner = Planner(plan)
-            planner.optimize()
-            planner.prettify()
-            planner.save()
-            print(planner.url)
-        planner.open()

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.planner.PlannerLayout &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.planner.PlannerLayout &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -200,6 +200,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -267,6 +269,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -335,24 +339,24 @@
 <h1>pydent.planner.PlannerLayout<a class="headerlink" href="#pydent-planner-plannerlayout" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pydent.planner.PlannerLayout">
-<em class="property">class </em><code class="sig-prename descclassname">pydent.planner.</code><code class="sig-name descname">PlannerLayout</code><span class="sig-paren">(</span><em class="sig-param">G=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">pydent.planner.</code><code class="sig-name descname">PlannerLayout</code><span class="sig-paren">(</span><em class="sig-param">nxgraph=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.planner.graph.PlannerGraph</span></code></p>
 <p>Layout module for <a class="reference internal" href="pydent.planner.Planner.html#pydent.planner.Planner" title="pydent.planner.Planner"><code class="xref py py-class docutils literal notranslate"><span class="pre">Planner</span></code></a>.</p>
 <p>Positions <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> for the
 Aquarium GUI</p>
-<p>Initializes a new planner layout.</p>
+<p>Initializes a Plan graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>G</strong> – </p>
+<dd class="field-odd"><p><strong>nxgraph</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DiGraph</span></code>]) – </p>
 </dd>
 </dl>
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">G=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializes a new planner layout.</p>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">nxgraph=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Plan graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>G</strong> – </p>
+<dd class="field-odd"><p><strong>nxgraph</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DiGraph</span></code>]) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -364,8 +368,8 @@ Aquarium GUI</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.__init__" title="pydent.planner.PlannerLayout.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([G])</p></td>
-<td><p>Initializes a new planner layout.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.__init__" title="pydent.planner.PlannerLayout.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([nxgraph])</p></td>
+<td><p>Initializes a Plan graph.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.align_ops_with_predecessors" title="pydent.planner.PlannerLayout.align_ops_with_predecessors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_ops_with_predecessors</span></code></a>(ops)</p></td>
 <td><p>Aligns the Operations to their predecessors by midpoints.</p></td>
@@ -401,16 +405,21 @@ Aquarium GUI</p>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.from_plan" title="pydent.planner.PlannerLayout.from_plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plan</span></code></a>(plan)</p></td>
-<td><p>Creates a layout from a <a class="reference internal" href="pydent.models.Plan.html#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Plan</span></code></a> instance.</p></td>
+<td><p>Creates a graph from a <a class="reference internal" href="pydent.models.Plan.html#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Plan</span></code></a> instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.get_independent_layouts" title="pydent.planner.PlannerLayout.get_independent_layouts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_independent_layouts</span></code></a>()</p></td>
-<td><p>Finds all independent subgraphs.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_operations</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlannerLayout.get_independent_layouts</span></code></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_operations</span></code>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>], <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>]</p>
+</dd>
+</dl>
+</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.leaves" title="pydent.planner.PlannerLayout.leaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">leaves</span></code></a>()</p></td>
-<td><p>Returns the leaves of this layout.</p></td>
+<td><p>Returns the leaves of this graph.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.midpoint" title="pydent.planner.PlannerLayout.midpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">midpoint</span></code></a>()</p></td>
 <td><p>Returns the midpoint x,y coordinates of the layout.</p></td>
@@ -421,8 +430,8 @@ Aquarium GUI</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.nodes_to_ops" title="pydent.planner.PlannerLayout.nodes_to_ops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes_to_ops</span></code></a>(nodes)</p></td>
 <td><p>Returns operations from a list of node_ids.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.ops_to_layout" title="pydent.planner.PlannerLayout.ops_to_layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ops_to_layout</span></code></a>(ops)</p></td>
-<td><p>Returns a sub-layout containing only the operations.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlannerLayout.ops_to_layout</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ops_to_leaves</span></code>()</p></td>
 <td><p></p></td>
@@ -440,9 +449,14 @@ Aquarium GUI</p>
 <td><p>Return all successor operations from a list of operations.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pos</span></code>()</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>], <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predecessor_layout</span></code>(layout)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlannerLayout.predecessor_layout</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.predecessors" title="pydent.planner.PlannerLayout.predecessors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predecessors</span></code></a>(node)</p></td>
@@ -452,12 +466,12 @@ Aquarium GUI</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.roots" title="pydent.planner.PlannerLayout.roots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roots</span></code></a>()</p></td>
-<td><p>Returns the roots of this layout.</p></td>
+<td><p>Returns the roots of this graph.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.subgraph" title="pydent.planner.PlannerLayout.subgraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subgraph</span></code></a>(nodes)</p></td>
 <td><p>Returns a subgraph layout from a list of node_ids.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">successor_layout</span></code>(layout)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlannerLayout.successor_layout</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.PlannerLayout.successors" title="pydent.planner.PlannerLayout.successors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">successors</span></code></a>(node)</p></td>
@@ -503,31 +517,56 @@ Aquarium GUI</p>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">operations</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xy</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout._add_operation">
-<code class="sig-name descname">_add_operation</code><span class="sig-paren">(</span><em class="sig-param">operation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout._add_operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout._add_operation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_add_operation</code><span class="sig-paren">(</span><em class="sig-param">op</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout._add_operation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds an Operation to the Layout.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -544,13 +583,13 @@ Aquarium GUI</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout._topological_sort_helper">
-<code class="sig-name descname">_topological_sort_helper</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout._topological_sort_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout._topological_sort_helper" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_topological_sort_helper</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout._topological_sort_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout._topological_sort_helper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempt a rudimentary topological sort on the plan.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.align_ops_with_predecessors">
-<code class="sig-name descname">align_ops_with_predecessors</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.align_ops_with_predecessors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_ops_with_predecessors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">align_ops_with_predecessors</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.align_ops_with_predecessors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_ops_with_predecessors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Aligns the Operations to their predecessors by midpoints.</p>
 <p>Used in topological sorting of plans.</p>
 <dl class="field-list simple">
@@ -568,7 +607,7 @@ Aquarium GUI</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.align_ops_with_successors">
-<code class="sig-name descname">align_ops_with_successors</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.align_ops_with_successors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_ops_with_successors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">align_ops_with_successors</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.align_ops_with_successors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_ops_with_successors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Aligns the Operations to their successors by midpoints.</p>
 <p>Used in topological sorting of plans.</p>
 <dl class="field-list simple">
@@ -586,7 +625,7 @@ Aquarium GUI</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.align_x_midpoints_to">
-<code class="sig-name descname">align_x_midpoints_to</code><span class="sig-paren">(</span><em class="sig-param">other_layout</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.align_x_midpoints_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_x_midpoints_to" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">align_x_midpoints_to</code><span class="sig-paren">(</span><em class="sig-param">other_layout</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.align_x_midpoints_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_x_midpoints_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Align the midpoint x-coordinate of this layout with that of another.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -603,7 +642,7 @@ Aquarium GUI</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.align_x_of_ops">
-<code class="sig-name descname">align_x_of_ops</code><span class="sig-paren">(</span><em class="sig-param">ops1</em>, <em class="sig-param">ops2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.align_x_of_ops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_x_of_ops" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">align_x_of_ops</code><span class="sig-paren">(</span><em class="sig-param">ops1</em>, <em class="sig-param">ops2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.align_x_of_ops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_x_of_ops" title="Permalink to this definition">¶</a></dt>
 <dd><p>Aligns a set of Operations with another set of Operations within
 this PlannerLayout.</p>
 <dl class="field-list simple">
@@ -624,7 +663,7 @@ this PlannerLayout.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.align_y_midpoints_to">
-<code class="sig-name descname">align_y_midpoints_to</code><span class="sig-paren">(</span><em class="sig-param">other_layout</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.align_y_midpoints_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_y_midpoints_to" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">align_y_midpoints_to</code><span class="sig-paren">(</span><em class="sig-param">other_layout</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.align_y_midpoints_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.align_y_midpoints_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Align this midpoint y-coordinates of this layout with another
 layout.</p>
 <dl class="field-list simple">
@@ -642,7 +681,7 @@ layout.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.bounds">
-<code class="sig-name descname">bounds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.bounds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">bounds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the bounding box of the layout as the upper-left and lower-
 right coordinates.</p>
 <dl class="field-list simple">
@@ -657,7 +696,7 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.collect_predecessors">
-<code class="sig-name descname">collect_predecessors</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.collect_predecessors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.collect_predecessors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">collect_predecessors</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.collect_predecessors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all predecessors from a list of nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -674,7 +713,7 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.collect_successors">
-<code class="sig-name descname">collect_successors</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.collect_successors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.collect_successors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">collect_successors</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.collect_successors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all successors from a list of nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -691,13 +730,18 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.from_plan">
-<em class="property">classmethod </em><code class="sig-name descname">from_plan</code><span class="sig-paren">(</span><em class="sig-param">plan</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.from_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.from_plan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a layout from a <a class="reference internal" href="pydent.models.Plan.html#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Plan</span></code></a> instance.</p>
+<em class="property">classmethod </em><code class="sig-name descname">from_plan</code><span class="sig-paren">(</span><em class="sig-param">plan</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.from_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a graph from a <a class="reference internal" href="pydent.models.Plan.html#pydent.models.Plan" title="pydent.models.Plan"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Plan</span></code></a> instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">PlannerGraph</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.planner.PlannerLayout.get_independent_layouts">
-<code class="sig-name descname">get_independent_layouts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.get_independent_layouts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.get_independent_layouts" title="Permalink to this definition">¶</a></dt>
+<dt id="pydent.planner.PlannerLayout.get_independent_graphs">
+<code class="sig-name descname">get_independent_graphs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.get_independent_graphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.get_independent_graphs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds all independent subgraphs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -711,13 +755,13 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.leaves">
-<code class="sig-name descname">leaves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.leaves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.leaves" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the leaves of this layout.</p>
+<code class="sig-name descname">leaves</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.leaves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the leaves of this graph.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.midpoint">
-<code class="sig-name descname">midpoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.midpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.midpoint" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">midpoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.midpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.midpoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the midpoint x,y coordinates of the layout.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -731,29 +775,23 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.nodes_to_ops">
-<code class="sig-name descname">nodes_to_ops</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.nodes_to_ops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.nodes_to_ops" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">nodes_to_ops</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.nodes_to_ops" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns operations from a list of node_ids.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pydent.planner.PlannerLayout.ops_to_layout">
-<code class="sig-name descname">ops_to_layout</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.ops_to_layout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.ops_to_layout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a sub-layout containing only the operations.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pydent.planner.PlannerLayout.ops_to_nodes">
-<code class="sig-name descname">ops_to_nodes</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.ops_to_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.ops_to_nodes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ops_to_nodes</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.ops_to_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns node_ids for each operation.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.ops_to_predecessors">
-<code class="sig-name descname">ops_to_predecessors</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.ops_to_predecessors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.ops_to_predecessors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ops_to_predecessors</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.ops_to_predecessors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all predecessor operations from a list of operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
+<dd class="field-odd"><p><strong>ops</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of node ids</p>
@@ -765,12 +803,23 @@ right coordinates.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.planner.PlannerLayout.ops_to_subgraph">
+<code class="sig-name descname">ops_to_subgraph</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.ops_to_subgraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sub-layout containing only the operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">PlannerGraph</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.planner.PlannerLayout.ops_to_successors">
-<code class="sig-name descname">ops_to_successors</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.ops_to_successors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.ops_to_successors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ops_to_successors</code><span class="sig-paren">(</span><em class="sig-param">ops</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.ops_to_successors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all successor operations from a list of operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
+<dd class="field-odd"><p><strong>ops</strong> (<em>list</em>) – list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.Operation</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of node ids</p>
@@ -783,7 +832,7 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.predecessors">
-<code class="sig-name descname">predecessors</code><span class="sig-paren">(</span><em class="sig-param">node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.predecessors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.predecessors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predecessors</code><span class="sig-paren">(</span><em class="sig-param">node</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.predecessors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return predecessor nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -800,19 +849,24 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.roots">
-<code class="sig-name descname">roots</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.roots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.roots" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the roots of this layout.</p>
+<code class="sig-name descname">roots</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.roots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the roots of this graph.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.subgraph">
-<code class="sig-name descname">subgraph</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.subgraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.subgraph" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">subgraph</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.subgraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a subgraph layout from a list of node_ids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">PlannerGraph</span></code>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.successors">
-<code class="sig-name descname">successors</code><span class="sig-paren">(</span><em class="sig-param">node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.successors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.successors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">successors</code><span class="sig-paren">(</span><em class="sig-param">node</em><span class="sig-paren">)</span><a class="headerlink" href="#pydent.planner.PlannerLayout.successors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return successors nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -829,7 +883,7 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.to_grid">
-<code class="sig-name descname">to_grid</code><span class="sig-paren">(</span><em class="sig-param">columns</em>, <em class="sig-param">axis=1</em>, <em class="sig-param">border_x=None</em>, <em class="sig-param">border_y=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.to_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.to_grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">to_grid</code><span class="sig-paren">(</span><em class="sig-param">columns</em>, <em class="sig-param">axis=1</em>, <em class="sig-param">border_x=None</em>, <em class="sig-param">border_y=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.to_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.to_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Arrange layouts in a grid format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -851,7 +905,7 @@ right coordinates.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.topo_sort">
-<code class="sig-name descname">topo_sort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.topo_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.topo_sort" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">topo_sort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.topo_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.topo_sort" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does a topological sort of the operations in this layout.</p>
 <p>Discovers individual subgraphs and topologically sorts each subgraph,
 and then aligns subgraphs horizontally.</p>
@@ -867,7 +921,7 @@ and then aligns subgraphs horizontally.</p>
 
 <dl class="method">
 <dt id="pydent.planner.PlannerLayout.translate">
-<code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param">delta_x</em>, <em class="sig-param">delta_y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/layout.html#PlannerLayout.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.translate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param">delta_x</em>, <em class="sig-param">delta_y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/graph.html#PlannerLayout.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.PlannerLayout.translate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Translates the layout by the x,y coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -902,7 +956,7 @@ and then aligns subgraphs horizontally.</p>
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>

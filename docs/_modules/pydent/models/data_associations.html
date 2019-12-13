@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.data_associations &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.models.data_associations &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -198,6 +198,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
@@ -265,6 +267,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
@@ -322,6 +326,8 @@
 import json
 import os
 import shutil
+import time
+from typing import Union
 
 import requests
 
@@ -333,12 +339,22 @@ from pydent.relationships import HasOne
 from pydent.relationships import JSON
 from pydent.utils import make_async
 
-
 # TODO: changing the value of a association (and saving it) shouldn&#39;t be difficult
 <div class="viewcode-block" id="DataAssociatorMixin"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin">[docs]</a>class DataAssociatorMixin:
     &quot;&quot;&quot;Mixin for handling data associations.&quot;&quot;&quot;
 
-<div class="viewcode-block" id="DataAssociatorMixin.associate"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin.associate">[docs]</a>    def associate(self, key, value, upload=None):
+    def _make_association(self, key, value, parent, upload=None):
+        association = self.session.DataAssociation.new(
+            object=json.dumps({key: value}),
+            upload=upload,
+            key=key,
+            parent_id=parent.id,
+            parent_class=parent.__class__.__name__,
+        )
+        association.parent = parent
+        return association
+
+<div class="viewcode-block" id="DataAssociatorMixin.associate"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin.associate">[docs]</a>    def associate(self, key, value, upload=None, create_new=False, save=None):
         &quot;&quot;&quot;Adds a data association with the key and value to this object.
 
         :param key: Key of the association
@@ -347,15 +363,76 @@ from pydent.utils import make_async
         :type value: dict | str | int | float
         :param upload: optional file to upload
         :type upload: File
-        :return: newly created data association
+        :param create_new: if True (default) will create a new association instead
+            of updating the existing association.
+        :tuype create_new: bool
+        :return: newly created or updated data association
         :rtype: DataAssociation
         &quot;&quot;&quot;
-        &quot;&quot;&quot;
-        Adds a data association with the key and value to this object.
-        &quot;&quot;&quot;
-        return self.session.utils.create_data_association(
-            self, key, value, upload=upload
-        )</div>
+        if save is None:
+            if self.id is None:
+                save = False
+            else:
+                save = True
+        if create_new:
+            association = None
+        else:
+            association = self.get_data_association(key)
+
+        if not association:
+            if save:
+                return self.session.utils.create_data_association(
+                    self, key, value, upload=upload
+                )
+            else:
+                association = self._make_association(key, value, self, upload)
+                self.append_to_many(&quot;data_associations&quot;, association)
+                return association
+        else:
+            association.value = value
+            association.upload = upload
+            association.parent_class = self.__class__.__name__
+            association.parent_id = self.id
+            association.parent = self
+            if save:
+                self._try_update_data_association(association)
+            return association</div>
+
+    def delete_data_associations(self, key):
+        associations = self.get_data_associations(key)
+        for a in associations:
+            a.delete()
+            self.data_associations.remove(a)
+
+    def _try_update_data_association(self, association):
+        upload = association.upload
+        if upload and upload.id:
+            association.upload_id = upload.id
+        if self.id:
+            if association.upload and not association.upload.id:
+                association.upload.save()
+                association.upload_id = association.upload.id
+            association.save()
+        return association
+
+        # return self.session.utils.create_data_association(
+        #     self, key, value, upload=upload
+        # )
+        # if unique_key:
+        #     existing_associations = self.get_data_associations(key)
+        #     for association in existing_associations:
+        #         association.value = value
+        #         association.upload = upload
+        #         association.upload_id = upload.id
+        #         association.save()
+        # else:
+        #     self.session.utils.create_data_association(
+        #         self, key, value, upload=upload
+        #     )
+
+    # def save_data_associations(self):
+    #     if self.is_deserialized(&#39;data_associations&#39;):
+    #
 
 <div class="viewcode-block" id="DataAssociatorMixin.associate_file"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin.associate_file">[docs]</a>    def associate_file(self, key, value, file, job_id=None):
         &quot;&quot;&quot;Associate a file.
@@ -372,7 +449,6 @@ from pydent.utils import make_async
         :rtype: :class:`DataAssociation`
         &quot;&quot;&quot;
         u = self.session.Upload.new(job_id=job_id, file=file)
-        u.save()
         return self.associate(key, value, upload=u)</div>
 
 <div class="viewcode-block" id="DataAssociatorMixin.associate_file_from_path"><a class="viewcode-back" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html#pydent.models.DataAssociatorMixin.associate_file_from_path">[docs]</a>    def associate_file_from_path(self, key, value, filepath, job_id=None):
@@ -392,11 +468,17 @@ from pydent.utils import make_async
         with open(filepath, &quot;rb&quot;) as f:
             return self.associate_file(key, value, f, job_id=job_id)</div>
 
-    def get_data_associations(self, key):
+    def get_data_association(self, key: Union[None, str]):
+        das = self.get_data_associations(key)
+        if das:
+            return das[0]
+
+    def get_data_associations(self, key: Union[None, str]):
         das = []
-        for da in self.data_associations:
-            if da.key == key:
-                das.append(da)
+        if self.data_associations:
+            for da in self.data_associations:
+                if da.key == key:
+                    das.append(da)
         return das
 
     # TODO: DataAssociation - do we really want to have this return either a list or
@@ -412,8 +494,27 @@ from pydent.utils import make_async
         return val</div>
 
 
+class DataAssociationSaveContext:
+    def __init__(self, model: DataAssociatorMixin):
+        self.model = model
+        self.data_associations = []
+
+    def __enter__(self):
+        if self.model.is_deserialized(&quot;data_associations&quot;):
+            self.data_associations = self.model.data_associations
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            return
+        for da in self.data_associations:
+            da.parent_id = self.model.id
+            self.model._try_update_data_association(da)
+            assert da.id
+        self.model.data_associations = self.data_associations
+
+
 <div class="viewcode-block" id="DataAssociation"><a class="viewcode-back" href="../../../models.html#pydent.models.DataAssociation">[docs]</a>@add_schema
-class DataAssociation(JSONDeleteMixin, ModelBase):
+class DataAssociation(JSONDeleteMixin, JSONSaveMixin, ModelBase):
     &quot;&quot;&quot;A DataAssociation model.&quot;&quot;&quot;
 
     fields = dict(object=JSON(), upload=HasOne(&quot;Upload&quot;))
@@ -421,6 +522,34 @@ class DataAssociation(JSONDeleteMixin, ModelBase):
     @property
     def value(self):
         return self.object.get(self.key, None)
+
+    @value.setter
+    def value(self, new_value):
+        self.object = {self.key: new_value}
+
+    # def save(self):
+    #     if self.upload and not self.upload_id:
+    #         self.upload.save()
+    #         self.upload_id = self.upload_id
+    #     super().save()
+    #
+    #     data_association = self.parent.session.DataAssociation.find(self.id)
+    #     if data_association.id not in [da.id for da in self.parent.data_associations]:
+    #         self.parent.data_associations.append(data_association)
+    #         return data_association
+    #     else:
+    #         for da in self.parent.data_associations:
+    #             if da.id == data_association.id:
+    #                 return da
+
+    def save(self):
+        if self.parent_id is None:
+            raise ValueError(&quot;Cannot save DataAssociation. `parent_id` cannot be None&quot;)
+        if self.parent_class is None:
+            raise ValueError(
+                &quot;Cannot save DataAssociation. `parent_class` cannot be None&quot;
+            )
+        super().save(do_reload=True)
 
     def __str__(self):
         return self._to_str(&quot;id&quot;, &quot;object&quot;)</div>
@@ -509,7 +638,19 @@ class Upload(ModelBase):
             filepaths.append(filepath)
         return filepaths</div>
 
-<div class="viewcode-block" id="Upload.download"><a class="viewcode-back" href="../../../models.html#pydent.models.Upload.download">[docs]</a>    def download(self, outdir=None, filename=None, overwrite=True):
+<div class="viewcode-block" id="Upload.fetch"><a class="viewcode-back" href="../../../models.html#pydent.models.Upload.fetch">[docs]</a>    def fetch(self, outdir: str = None, filename: str = None, overwrite: bool = True):
+        &quot;&quot;&quot;Alias for `download`
+
+        :param outdir: path of directory of output file (default is current directory)
+        :param outfile: filename of output file (defaults to upload_filename)
+        :param overwrite: whether to overwrite file if it already exists
+        :return: filepath of the downloaded file
+        &quot;&quot;&quot;
+        return self.download(outdir=outdir, filename=filename, overwrite=overwrite)</div>
+
+<div class="viewcode-block" id="Upload.download"><a class="viewcode-back" href="../../../models.html#pydent.models.Upload.download">[docs]</a>    def download(
+        self, outdir: str = None, filename: str = None, overwrite: bool = True
+    ):
         &quot;&quot;&quot;Downloads the uploaded file to the specified output directory. If no
         output directory is specified, the file will be downloaded to the
         current directory.
@@ -517,7 +658,7 @@ class Upload(ModelBase):
         :param outdir: path of directory of output file (default is current directory)
         :param outfile: filename of output file (defaults to upload_filename)
         :param overwrite: whether to overwrite file if it already exists
-        :return: None
+        :return: filepath of the downloaded file
         &quot;&quot;&quot;
         if outdir is None:
             outdir = &quot;.&quot;
@@ -554,7 +695,7 @@ class Upload(ModelBase):
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>

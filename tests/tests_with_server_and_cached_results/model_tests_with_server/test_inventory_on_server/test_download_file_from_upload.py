@@ -1,3 +1,4 @@
+import time
 from os.path import isfile
 from os.path import join
 from uuid import uuid4
@@ -33,6 +34,8 @@ def test_upload(session, tmpdir, example_item):
     # download the recently uploaded file
     da = example_item.associate_file_from_path("test_upload", val, filepath)
     download_path = tmpdir.mkdir("test_download_from_server")
+    time.sleep(0.2)
+    assert da.upload
     fp = da.upload.download(download_path)
 
     # verify file contents

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.plan &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.models.plan &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -198,6 +198,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
@@ -265,6 +267,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
@@ -396,10 +400,11 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         for operation in operations:
             self.add_operation(operation)</div>
 
-    def has_operation(self, op):
-        if op is None:
-            return False
-        return self.operations and op.rid in [_op.rid for _op in self.operations]
+    # TODO: this is not functional or not needed
+    # def has_operation(self, op):
+    #     if op is None:
+    #         return False
+    #     return self.operations and op.rid in [_op.rid for _op in self.operations]
 
 <div class="viewcode-block" id="Plan.find_wires"><a class="viewcode-back" href="../../../models.html#pydent.models.Plan.find_wires">[docs]</a>    def find_wires(self, src, dest):
         &quot;&quot;&quot;Retrieves the wire between a source and destination FieldValues.
@@ -435,20 +440,21 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         :rtype: Wire
         &quot;&quot;&quot;
 
-        if not self.has_operation(src.operation):
-            raise AquariumModelError(
-                &quot;Cannot wire because the wire&#39;s source FieldValue {} does &quot;
-                &quot;not exist in the Plan because its Operation &#39;{}&#39; is not in the plan&quot;.format(
-                    src, src.operation
-                )
-            )
-        if not self.has_operation(dest.operation):
-            raise AquariumModelError(
-                &quot;Cannot wire because the wire&#39;s destination FieldValue {} does not &quot;
-                &quot;exist in the Plan because its Operation &#39;{}&#39; is not in the plan.&quot;.format(
-                    dest, dest.operation
-                )
-            )
+        # TODO: these checks are unnecessary?
+        # if not self.has_operation(src.operation):
+        #     raise AquariumModelError(
+        #         &quot;Cannot wire because the wire&#39;s source FieldValue {} does &quot;
+        #         &quot;not exist in the Plan because its Operation &#39;{}&#39; is not in the plan&quot;.format(
+        #             src, src.operation
+        #         )
+        #     )
+        # if not self.has_operation(dest.operation):
+        #     raise AquariumModelError(
+        #         &quot;Cannot wire because the wire&#39;s destination FieldValue {} does not &quot;
+        #         &quot;exist in the Plan because its Operation &#39;{}&#39; is not in the plan.&quot;.format(
+        #             dest, dest.operation
+        #         )
+        #     )
 
         wire = Wire(source=src, destination=dest)
         self.append_to_many(&quot;wires&quot;, wire)
@@ -905,7 +911,7 @@ class Wire(DeleteMixin, ModelBase):
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>

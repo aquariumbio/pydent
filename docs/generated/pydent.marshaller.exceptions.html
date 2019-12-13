@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.marshaller.exceptions &#8212; pydent 0.1.5a8 documentation</title>
+    <title>pydent.marshaller.exceptions &#8212; pydent 0.1.5a10 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -200,6 +200,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -267,6 +269,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
@@ -393,7 +397,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.marshaller.exceptions.CallbackValidationError">
 <em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">CallbackValidationError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#CallbackValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.CallbackValidationError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="pydent.marshaller.exceptions.MarshallerBaseException"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.MarshallerBaseException</span></code></a></p>
 <p>A generic callback validation error.</p>
 <dl class="method">
 <dt id="pydent.marshaller.exceptions.CallbackValidationError.with_traceback">
@@ -407,7 +411,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.marshaller.exceptions.ExceptionCollection">
 <em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">ExceptionCollection</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">header=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#ExceptionCollection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.ExceptionCollection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="pydent.marshaller.exceptions.MarshallerBaseException"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.MarshallerBaseException</span></code></a></p>
 <p>Context dependent exception for capturing multiple exceptions.</p>
 <p>Call <cite>r</cite> to gather exceptions, upon exiting, a single
 ExceptionCollection will be raised with a summary of all the
@@ -430,7 +434,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.marshaller.exceptions.FieldValidationError">
 <em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">FieldValidationError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#FieldValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.FieldValidationError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="pydent.marshaller.exceptions.MarshallerBaseException"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.MarshallerBaseException</span></code></a></p>
 <p>A generic field validation error.</p>
 <dl class="method">
 <dt id="pydent.marshaller.exceptions.FieldValidationError.with_traceback">
@@ -442,9 +446,22 @@ set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 <dl class="exception">
+<dt id="pydent.marshaller.exceptions.MarshallerBaseException">
+<em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">MarshallerBaseException</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#MarshallerBaseException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dl class="method">
+<dt id="pydent.marshaller.exceptions.MarshallerBaseException.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.marshaller.exceptions.MarshallerBaseException.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
 <dt id="pydent.marshaller.exceptions.ModelRegistryError">
 <em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">ModelRegistryError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#ModelRegistryError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.ModelRegistryError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="pydent.marshaller.exceptions.MarshallerBaseException"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.MarshallerBaseException</span></code></a></p>
 <p>Model not found in registry exception.</p>
 <dl class="method">
 <dt id="pydent.marshaller.exceptions.ModelRegistryError.with_traceback">
@@ -458,7 +475,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.marshaller.exceptions.ModelValidationError">
 <em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">ModelValidationError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#ModelValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.ModelValidationError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="pydent.marshaller.exceptions.MarshallerBaseException"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.MarshallerBaseException</span></code></a></p>
 <p>A model validation error.</p>
 <dl class="method">
 <dt id="pydent.marshaller.exceptions.ModelValidationError.with_traceback">
@@ -506,7 +523,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.marshaller.exceptions.SchemaException">
 <em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">SchemaException</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#SchemaException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaException" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="pydent.marshaller.exceptions.MarshallerBaseException"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.MarshallerBaseException</span></code></a></p>
 <p>A generic schema exception.</p>
 <dl class="method">
 <dt id="pydent.marshaller.exceptions.SchemaException.with_traceback">
@@ -520,7 +537,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.marshaller.exceptions.SchemaModelException">
 <em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">SchemaModelException</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#SchemaModelException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaModelException" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="pydent.marshaller.exceptions.MarshallerBaseException"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.MarshallerBaseException</span></code></a></p>
 <p>A generic model exception.</p>
 <dl class="method">
 <dt id="pydent.marshaller.exceptions.SchemaModelException.with_traceback">
@@ -534,7 +551,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="pydent.marshaller.exceptions.SchemaRegistryError">
 <em class="property">exception </em><code class="sig-prename descclassname">pydent.marshaller.exceptions.</code><code class="sig-name descname">SchemaRegistryError</code><a class="reference internal" href="../_modules/pydent/marshaller/exceptions.html#SchemaRegistryError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.marshaller.exceptions.SchemaRegistryError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pydent.marshaller.exceptions.MarshallerBaseException" title="pydent.marshaller.exceptions.MarshallerBaseException"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.marshaller.exceptions.MarshallerBaseException</span></code></a></p>
 <p>Generic schema registry exception.</p>
 <dl class="method">
 <dt id="pydent.marshaller.exceptions.SchemaRegistryError.with_traceback">
@@ -560,7 +577,7 @@ set self.__traceback__ to tb and return self.</p>
     </p>
     <p>
         &copy; Copyright 2017-2019, University of Washington.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.<br/>
     </p>
   </div>
 </footer>
