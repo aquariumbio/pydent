@@ -492,11 +492,13 @@ class TestOptimizePlan:
                     "location": self.Not("deleted"),
                 }
             )
-            items = sess.Item.last(4, query=q)
-            assert items
 
             primers = sess.Sample.last(
                 4, query={"sample_type_id": sess.SampleType.find_by_name("Primer").id}
+            )
+
+            fragments = sess.Sample.last(
+                4, query={"sample_type_id": sess.SampleType.find_by_name("Fragment").id}
             )
 
             plasmids = sess.Sample.last(
@@ -523,18 +525,22 @@ class TestOptimizePlan:
             #              op.operation_type.name == 'Pour Gel']
             # print([op.outputs[0].sample for op in pour_gels])
 
+            # chain1 using primer1
             canvas.set_field_value_and_propogate(
-                ops1[0].outputs[0], sample=items[0].sample
+                ops1[0].outputs[0], sample=fragments[0]
             )
+            # chain2 using primer2
             canvas.set_field_value_and_propogate(
-                ops2[0].outputs[0], sample=items[1].sample
+                ops2[0].outputs[0], sample=fragments[1]
             )
 
+            # chain3 using primer2
             canvas.set_field_value_and_propogate(
-                ops3[0].outputs[0], sample=items[0].sample
+                ops3[0].outputs[0], sample=fragments[1]
             )
+            # chain4 using primer1
             canvas.set_field_value_and_propogate(
-                ops4[0].outputs[0], sample=items[1].sample
+                ops4[0].outputs[0], sample=fragments[0]
             )
 
             def pcr(op, p1, p2, t):
@@ -544,8 +550,8 @@ class TestOptimizePlan:
 
             pcr(ops1[0], primers[0], primers[1], plasmids[0])
             pcr(ops2[0], primers[2], primers[3], plasmids[1])
-            pcr(ops3[0], primers[0], primers[1], plasmids[0])
-            pcr(ops4[0], primers[2], primers[3], plasmids[1])
+            pcr(ops4[0], primers[0], primers[1], plasmids[0])
+            pcr(ops3[0], primers[2], primers[3], plasmids[1])
 
             canvas.set_field_value(ops1[-1].outputs[0], sample=plasmids[2])
             canvas.set_field_value(ops3[-1].outputs[0], sample=plasmids[2])
@@ -554,6 +560,10 @@ class TestOptimizePlan:
             print(op_types)
 
             canvas.optimize()
+
+            canvas.prettify()
+            canvas.save()
+            canvas.open()
 
             op_types = sorted([op.operation_type.name for op in canvas.operations])
             print(op_types)
@@ -564,6 +574,8 @@ class TestOptimizePlan:
 
                 for input_fv in op.inputs:
                     assert len(canvas.get_incoming_wires(input_fv)) == 1
+
+            assert len(canvas.get_op_by_name("Pour Gel")) == 2
 
     def test_optimize_case5_array_inputs(self, session):
         with session.with_cache() as sess:
@@ -576,11 +588,13 @@ class TestOptimizePlan:
                     "location": self.Not("deleted"),
                 }
             )
-            items = sess.Item.last(4, query=q)
-            assert items
 
             primers = sess.Sample.last(
                 4, query={"sample_type_id": sess.SampleType.find_by_name("Primer").id}
+            )
+
+            fragments = sess.Sample.last(
+                4, query={"sample_type_id": sess.SampleType.find_by_name("Fragment").id}
             )
 
             plasmids = sess.Sample.last(
@@ -603,6 +617,8 @@ class TestOptimizePlan:
             ops5 = canvas.chain(*(subchain + ["Assemble Plasmid"]))
             ops6 = canvas.chain(*(subchain + ops5[-1:]))
             ops7 = canvas.chain(*(subchain + ops5[-1:]))
+            ops8 = canvas.chain(*(subchain + ops5[-1:]))
+            ops9 = canvas.chain(*(subchain + ops5[-1:]))
 
             for op in canvas.get_op_by_name("Run Gel"):
                 pour_gel = canvas.chain("Pour Gel", op)[0]
@@ -611,28 +627,29 @@ class TestOptimizePlan:
             #              op.operation_type.name == 'Pour Gel']
             # print([op.outputs[0].sample for op in pour_gels])
 
+            # chain1 using primer1
             canvas.set_field_value_and_propogate(
-                ops1[0].outputs[0], sample=items[0].sample
+                ops1[0].outputs[0], sample=fragments[0]
             )
+            # chain2 using primer2
             canvas.set_field_value_and_propogate(
-                ops2[0].outputs[0], sample=items[1].sample
+                ops2[0].outputs[0], sample=fragments[1]
+            )
+
+            # chain3 using primer2
+            canvas.set_field_value_and_propogate(
+                ops3[0].outputs[0], sample=fragments[1]
+            )
+            # chain4 using primer1
+            canvas.set_field_value_and_propogate(
+                ops4[0].outputs[0], sample=fragments[0]
             )
 
             canvas.set_field_value_and_propogate(
-                ops3[0].outputs[0], sample=items[0].sample
+                ops6[0].outputs[0], sample=fragments[1]
             )
             canvas.set_field_value_and_propogate(
-                ops4[0].outputs[0], sample=items[1].sample
-            )
-
-            canvas.set_field_value_and_propogate(
-                ops5[0].outputs[0], sample=items[0].sample
-            )
-            canvas.set_field_value_and_propogate(
-                ops6[0].outputs[0], sample=items[1].sample
-            )
-            canvas.set_field_value_and_propogate(
-                ops7[0].outputs[0], sample=items[1].sample
+                ops7[0].outputs[0], sample=fragments[1]
             )
 
             def pcr(op, p1, p2, t):
@@ -642,8 +659,8 @@ class TestOptimizePlan:
 
             pcr(ops1[0], primers[0], primers[1], plasmids[0])
             pcr(ops2[0], primers[2], primers[3], plasmids[1])
-            pcr(ops3[0], primers[0], primers[1], plasmids[0])
-            pcr(ops4[0], primers[2], primers[3], plasmids[1])
+            pcr(ops4[0], primers[0], primers[1], plasmids[0])
+            pcr(ops3[0], primers[2], primers[3], plasmids[1])
 
             canvas.set_field_value(ops1[-1].outputs[0], sample=plasmids[2])
             canvas.set_field_value(ops3[-1].outputs[0], sample=plasmids[2])
@@ -651,79 +668,25 @@ class TestOptimizePlan:
             op_types = sorted([op.operation_type.name for op in canvas.operations])
             print(op_types)
 
-            canvas.optimize()
+            canvas.optimize(merge_missing_samples=True)
+
+            canvas.prettify()
+            canvas.save()
+            canvas.open()
 
             op_types = sorted([op.operation_type.name for op in canvas.operations])
             print(op_types)
             assert len(canvas.get_op_by_name("Assemble Plasmid")) == 2
+            assert len(canvas.get_op_by_name("Pour Gel")) == 6
 
             for op in canvas.get_op_by_name("Assemble Plasmid"):
-                assert len({fv.child_sample_id for fv in op.inputs}) == 2
-                assert len(op.inputs) in [2, 3]
+                # assert len({fv.child_sample_id for fv in op.inputs}) == 2
+                assert len(op.inputs) in [4, 2]
+
                 for input_fv in op.inputs:
                     assert len(canvas.get_incoming_wires(input_fv)) == 1
 
-    def test_optimize_case6_array_inputs(self, session):
-        with session.with_cache(timeout=60) as sess:
-            primers = sess.Item.last(
-                4,
-                query=self.sql(
-                    {
-                        "object_type_id": sess.ObjectType.find_by_name(
-                            "Primer Aliquot"
-                        ).id,
-                        "location": self.Not("deleted"),
-                    }
-                ),
-            )
-            plasmid_stocks = sess.Item.last(
-                1,
-                query=self.sql(
-                    {
-                        "object_type_id": sess.ObjectType.find_by_name(
-                            "Plasmid Stock"
-                        ).id,
-                        "location": self.Not("deleted"),
-                    }
-                ),
-            )
-            plasmids = sess.Sample.last(
-                1, query={"sample_type_id": sess.SampleType.find_by_name("Plasmid").id}
-            )
-            fragments = sess.Sample.last(
-                2, query={"sample_type_id": sess.SampleType.find_by_name("Fragment").id}
-            )
-
-            pcr_chain = [
-                "Make PCR Fragment",
-                "Run Gel",
-                "Extract Gel Slice",
-                "Purify Gel Slice",
-            ]
-
-            canvas = Planner(sess)
-            ops1 = canvas.chain(*(pcr_chain + ["Assemble Plasmid"]))
-            ops2 = canvas.chain(*(pcr_chain + ["Assemble Plasmid"]))
-
-            canvas.set_field_value(ops1[0].input("Forward Primer"), item=primers[0])
-            canvas.set_field_value(ops1[0].input("Reverse Primer"), item=primers[1])
-            canvas.set_field_value(ops1[0].input("Template"), item=plasmid_stocks[0])
-            canvas.set_field_value_and_propogate(
-                ops1[0].outputs[0], sample=fragments[0]
-            )
-            canvas.set_field_value(ops1[-1].outputs[0], sample=plasmids[0])
-
-            canvas.set_field_value(ops2[0].input("Forward Primer"), item=primers[0])
-            canvas.set_field_value(ops2[0].input("Reverse Primer"), item=primers[1])
-            canvas.set_field_value(ops2[0].input("Template"), item=plasmid_stocks[0])
-            canvas.set_field_value_and_propogate(
-                ops2[0].outputs[0], sample=fragments[0]
-            )
-            canvas.set_field_value(ops2[-1].outputs[0], sample=plasmids[0])
-
-            canvas.chain(ops1[-2], "Assemble Plasmid")
-
-            canvas.optimize()
+            assert len(canvas.get_op_by_name("Pour Gel")) == 2
 
     def test_optimize_with_existing_plan(self, session):
 
