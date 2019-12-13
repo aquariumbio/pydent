@@ -125,7 +125,7 @@ class TestCollectionSetter:
             assert example_collection[r, c] != 1
 
         for pa in example_collection.part_associations:
-            assert pa.part is example_collection.parts_matrix[pa.row, pa.column]
+            assert pa.part is example_collection.part_matrix[pa.row, pa.column]
 
 
 class TestCollectionSubmit:
@@ -197,39 +197,42 @@ class TestCollectionAssociate:
         val2 = str(uuid4())
         collection.data_matrix[0] = {"key": val1}
 
-        print(collection.parts_matrix)
+        print(collection.part_matrix)
 
         for pa in collection.part_associations:
             # print(pa.part)
-            # print(collection.parts_matrix[pa.row, pa.column])
-            assert pa.part is collection.parts_matrix[pa.row, pa.column]
+            # print(collection.part_matrix[pa.row, pa.column])
+            assert pa.part is collection.part_matrix[pa.row, pa.column]
 
         collection.part_association_matrix
 
         # save on server
-        assert collection.parts_matrix[0, 0].data_associations
-        print(collection.parts_matrix[0, 0].data_associations[0])
+        assert collection.part_matrix[0, 0].data_associations
+        print(collection.part_matrix[0, 0].data_associations[0])
         collection.save()
         collection = session.Collection.find(collection.id)
-        assert collection.parts_matrix[0, 0].data_associations
-        print(collection.parts_matrix[0, 0].data_associations[0])
+        assert collection.part_matrix[0, 0].data_associations
+        print(collection.part_matrix[0, 0].data_associations[0])
         assert collection.data_matrix[0, 0] == {"key": val1}
 
         # 1st load
         loaded_collection = session.Collection.find(collection.id)
-        assert loaded_collection.parts_matrix[0, 0].data_associations
+        assert loaded_collection.part_matrix[0, 0].data_associations
         assert loaded_collection.data_matrix[0, 0] == {"key": val1}
 
         # update
         loaded_collection = session.Collection.find(collection.id)
         loaded_collection.data_matrix[0, 0] = {"key": val2}
-        assert loaded_collection.parts_matrix[0, 0].data_associations
+        assert loaded_collection.part_matrix[0, 0].data_associations
         assert loaded_collection.data_matrix[0, 0] == {"key": val2}
 
         # 2nd load
         loaded_collection2 = session.Collection.find(collection.id)
-        assert loaded_collection2.parts_matrix[0, 0].data_associations
+        assert loaded_collection2.part_matrix[0, 0].data_associations
         assert loaded_collection2.data_matrix[0, 0] == {"key": val2}
+
+        # delete
+        loaded_collection2.delete_association_at("key", 0, 0)
 
     # object_type = session.ObjectType.where({'sample_type_id': sample_type.id})[0]
     #

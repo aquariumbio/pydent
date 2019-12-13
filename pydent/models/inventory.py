@@ -198,6 +198,91 @@ class Collection(
         part_associations: List = None,
         **kwargs,
     ):
+        """Initialize a new Collection.
+
+        .. versionchanged:: 0.1.5a10
+            Advanced indexing added for setting and getting samples and data associations
+
+        **Setting samples using new advanced indexing**
+
+        .. code-block:: python
+
+            object_type = session.ObjectType.one(query='rows > 2 AND columns > 2')
+            collection = session.Collection.new(object_type=object_type)
+
+            # assign sample '1' to (0, 0) row=0, column=0
+            collection[0, 0] = 1
+
+            # assign sample '2' to (1, 2) row=1, column=2
+            collection[1, 2] = 2
+
+            # assign sample '3234' to row 3
+            collection[3] = 3234
+
+            # assign sample '444' to column 1
+            collection[:, 1] = 444
+
+            # assign sample '6' to the whole collection
+            collection[:, :] = 6
+
+            # assign sample using Sample instance
+            collection[2, 2] = session.Sample.one()
+
+        **Getting samples using new advanced indexing
+
+        .. code-block:: python
+
+            # get 2d matrix of sample ids
+            print(collection.matrix)  # or collection.sample_id_matrix
+
+            # get 2d matrix of Samples assigned at each location
+            print(collection.sample_matrix)
+
+            # get 2d matrix of Parts assigned at each location
+            print(collection.part_matrix)
+
+            # get 2d matrix of PartAssociations assigned at each location
+            collection.part_associations_matrix
+
+            # get 2d matrix of values of DataAssociations at each location
+            collection.data_matrix
+
+            # get 2d matrix of DataAssociations at each location
+            collection.data_association_matrix
+
+        **Assigning data to locations**
+
+        To assign data, you can use the advanced indexing on the `data_matrix`
+
+        .. code-block:: python
+
+            collection.data_matrix[0, 0] = {'key': 'value'}
+
+            collection.data_matrix[1] = {'key': 'value2'}
+
+            collection.associate_to('key', 'value3', 3, 3)
+
+        You can delete associations using the following:
+
+        .. code-block:: pythong
+
+            # delete 3, 3
+            collection.delete_association_at('key', 3, 3)
+
+            # delete first three rows at column 3
+            collection.delete_association_at('key', slice(None, 3, None), 3)
+
+            # delete all of the 'key' associations
+            collection.delete_association_at('key', slice(None, None, None), slice(None, None, None))
+
+
+        :param object_type:
+        :param location:
+        :param data_associations:
+        :param parts:
+        :param part_associations:
+        :param kwargs:
+        """
         if isinstance(object_type, ObjectType):
             object_type = object_type
             object_type_id = object_type.id
@@ -349,7 +434,7 @@ class Collection(
         return self.sample_id_matrix
 
     @property
-    def parts_matrix(self) -> MatrixMapping[Item]:
+    def part_matrix(self) -> MatrixMapping[Item]:
         """Return a view of :class:`ITem <pydent.models.Item>`
 
         .. versionadded:: 0.1.5a9
@@ -417,7 +502,7 @@ class Collection(
     def part(self, row, col) -> Item:
         """Returns the part Item at (row, col) of this Collection (zero-
         based)."""
-        return self.parts_matrix[row, col]
+        return self.part_matrix[row, col]
 
     def as_item(self):
         """Returns the Item object with the ID of this Collection."""
@@ -492,6 +577,15 @@ class Collection(
         )
         self.refresh()
         return self
+
+    def associate_to(self, key, value, r: int, c: int):
+        self.data_matrix[r, c] = {key: value}
+
+    def delete_association_at(self, key, r: int, c: int):
+        part_matrix = self.part_matrix
+        for r, c in part_matrix._iter_indices((r, c)):
+            part = part_matrix[r, c]
+            part.delete_data_associations(key)
 
     def __getitem__(self, index: IndexType) -> Union[int, List[int], List[List[int]]]:
         """Returns the sample_id of the part at the provided index.
