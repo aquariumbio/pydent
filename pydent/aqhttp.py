@@ -164,8 +164,8 @@ class AqHTTP:
             # Check for remember token
             if not any(["remember_token" in k for k in dict(res.cookies)]):
                 raise TridentLoginError(
-                    "Authentication error. Remember token not found in login request."
-                    " Contact developers."
+                    "Authentication error - Cannot connect to Aquarium at {}. "
+                    "Please check that your login, password, and url are correct."
                 )
 
             # fix remember token (for some outdated versions of Aquarium)
