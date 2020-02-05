@@ -101,6 +101,16 @@ def test_nested_cache(session):
     # assert st_from_cache.samples[0] is sample, "The browser should have preferentially found the previously cached sample."
 
 
+def test_cache_where_name(session):
+    browser = Browser(session)
+    primers = browser.cached_where({"sample_type_id": 1}, "Sample")
+    primer1 = primers[0]
+    id1 = id(primer1)
+    primer2 = browser.find_by_name(primer1.name, "Sample", primary_key="id")
+    id2 = id(primer2)
+    assert id1 == id2
+
+
 def test_cache_where(session):
     browser = Browser(session)
     primers = browser.cached_where({"sample_type_id": 1}, "Sample")

@@ -1,4 +1,42 @@
 # pydent change log
+## 0.1.5a14
+**2019-12-13T08:25:32.953330**
+
+
+
+
+
+## 0.1.5
+**2019-12-13T00:15:30.557477**
+0.1.5a14
+
+ - bug fixes
+ - `merge` added to sample, which merge samples by name
+ - `save_inventory` optionally merged samples
+
+
+## 0.1.5a13
+features
+
+ - save_inventory method to save Samples, Collections, Plans, and Items
+
+
+## 0.1.5a12
+**2019-12-12T21:04:58.993258**
+bug fixes
+
+ - Planner.optimize bug fixes
+
+
+## 0.1.5a11
+**2019-12-12T20:57:28.457117**
+bug fixes
+
+ - fixed bug in which data associations without an id would attempt to save to server
+ - added method to delete data associations from Collection.parts
+ - added explicit method to add associations to parts
+
+
 ## 0.1.5a10
 **2019-12-12T16:05:57.054929**
 New major features

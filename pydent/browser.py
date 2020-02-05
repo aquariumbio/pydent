@@ -149,7 +149,13 @@ class Browser(QueryInterfaceABC):
         return model_list
 
     def where(
-        self, query, model_class=None, primary_key="id", sample_type=None, **kwargs
+        self,
+        query,
+        model_class=None,
+        primary_key="id",
+        sample_type=None,
+        methods=None,
+        **kwargs,
     ):
         """Perform a 'where' query. If models are found in the browser cache,
         those are returned, else new http queries are made to find the models.
@@ -166,7 +172,7 @@ class Browser(QueryInterfaceABC):
         if sample_type is not None:
             sample_type_id = self.find_by_name(sample_type, "SampleType").id
             query.update({"sample_type_id": sample_type_id})
-        if self.use_cache:
+        if self.use_cache and not methods:
             return self.cached_where(query, model_class, primary_key=primary_key)
         return self.interface(model_class).where(query, **kwargs)
 
@@ -449,6 +455,8 @@ class Browser(QueryInterfaceABC):
                 query, list(cached_models.values())
             )
             found_dict = {f.id: f for f in found}
+
+            # TODO: this code is broken, remaining query
             remaining_query = dict(query)
             if primary_key in query:
                 found_ids = [q[primary_key] for q in found_queries]

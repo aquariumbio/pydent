@@ -307,7 +307,7 @@ class UtilityInterface(CRUDInterface):
         )
         result = self.aqhttp.get(url)
         if "error" in result or "errors" in result:
-            raise TridentRequestError(str(result))
+            raise TridentRequestError(str(result), result)
         item.location = location
         return item
 
@@ -737,7 +737,9 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
         return self.browser.find(model_id, model_class=self.model_name)
 
     def find_by_name(self, name):
-        return self.browser.find_by_name(name, model_class=self.model_name)
+        return self.browser.find_by_name(
+            name, model_class=self.model_name, primary_key="name"
+        )
 
     def where(self, criteria, methods: List[str] = None, opts: bool = None):
         return self.browser.where(
