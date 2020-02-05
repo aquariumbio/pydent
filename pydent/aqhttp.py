@@ -20,7 +20,6 @@ from typing import Dict
 import requests
 from retry import retry
 
-from pydent.exceptions import AquariumModelNotFound
 from pydent.exceptions import ForbiddenRequestError
 from pydent.exceptions import TridentJSONDataIncomplete
 from pydent.exceptions import TridentLoginError
