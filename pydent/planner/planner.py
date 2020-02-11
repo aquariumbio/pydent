@@ -1591,6 +1591,54 @@ class Planner(AFTMatcher):
             new_plan.plan.wires += p.plan.wires
         return new_plan
 
+    def move_operations(self, ops, to_plan_id, confirm: bool = True):
+        """Move a list of operations from this planner to a different plan.
+
+        :param ops: list of operations
+        :param to_plan_id: destination plan_id
+        :param confirm: whether this required confirmation from the user.
+        :return: None
+        """
+        for op in ops:
+            for pa in op.plan_associations:
+                pa.plan_id = to_plan_id
+                self.session.utils.json_save("PlanAssociation", pa.dump())
+        result = confirm(
+            "Move {} operations to plan_id = {}? (y|n): ".format(len(ops, to_plan_id))
+        )
+
+        if result == "y":
+            for op in ops:
+                if not self._contains_op(op):
+                    raise PlannerException(
+                        "Operation {} not contained in this planner".format(op)
+                    )
+            for op in ops:
+                for pa in op.plan_associations:
+                    pa.plan_id = to_plan_id
+                    self.session.utils.json_save("PlanAssociation", pa.dump())
+                    self.plan.operations.remove(op)
+            print("moved operations")
+        else:
+            print("{}: user canceled".format(result))
+
+    def add_from_template(self, plan: Union[int, Plan, "Planner"]) -> List[Operation]:
+        """Add Operation and Wires from the provided template plan to this
+        planner.
+
+        :param plan: Plan id (int), Plan instance, or Planner instance
+        :return: list of operations that were added from template.
+        """
+        if isinstance(plan, int):
+            plan = self.session.Plan.find(plan)
+            planner = self.__class__(plan)
+        elif isinstance(plan, Plan):
+            planner = self.__class__(plan)
+        template = planner.copy()
+        self.plan.operations += template.operations
+        self.plan.wires += template.wires
+        return template.operations
+
     def split(self) -> List["Planner"]:
         """Split the plan into several distinct plans, if possible.
 
