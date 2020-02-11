@@ -1558,6 +1558,10 @@ class Planner(AFTMatcher):
 
         # copy over anonymous copy
         copied._plan = self.plan.copy()
+
+        for op in copied.operations:
+            for fv in op.field_values:
+                fv.operation = op
         return copied
 
     def __copy__(self):
