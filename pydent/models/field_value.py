@@ -19,6 +19,10 @@ from pydent.relationships import Raw
 from pydent.utils import filter_list
 
 
+class Null:
+    object
+
+
 @add_schema
 class AllowableFieldType(ModelBase):
     """A AllowableFieldType model."""
@@ -194,10 +198,10 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         parent_class=None,
         parent_id=None,
         field_type=None,
-        sample=None,
-        value=None,
-        item=None,
-        container=None,
+        sample=Null,
+        value=Null,
+        item=Null,
+        container=Null,
     ):
         """
 
@@ -389,33 +393,33 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
 
     def _set_helper(
         self,
-        value=None,
-        sample=None,
-        item=None,
-        object_type=None,
-        row=None,
-        column=None,
+        value=Null,
+        sample=Null,
+        item=Null,
+        object_type=Null,
+        row=Null,
+        column=Null,
     ):
         self._validate(value, sample, item, object_type, row, column)
-        if row is not None:
+        if row is not Null:
             self.row = row
-        if column is not None:
+        if column is not Null:
             self.column = column
 
-        if value is not None:
+        if value is not Null:
             self.value = value
 
-        if item is not None:
+        if item is not Null:
             self.item = item
             if hasattr(item, "id"):
                 self.child_item_id = item.id
             if not sample:
                 sample = item.sample
-        if sample is not None:
+        if sample is not Null:
             self.sample = sample
             if hasattr(sample, "id"):
                 self.child_sample_id = sample.id
-        if object_type is not None:
+        if object_type is not Null:
             self.object_type = object_type
 
     def valid_afts(self):
@@ -465,13 +469,13 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
 
     def set_value(
         self,
-        value=None,
-        sample=None,
-        item=None,
-        object_type=None,
-        row=None,
-        column=None,
-        container=None,
+        value=Null,
+        sample=Null,
+        item=Null,
+        object_type=Null,
+        row=Null,
+        column=Null,
+        container=Null,
     ):
         if object_type is None and container:
             object_type = container
