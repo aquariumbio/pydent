@@ -106,7 +106,7 @@ def models_to_graph(session: SessionABC, models: Iterable[InventoryType]) -> nx.
         for m in models:
             add_node(graph, m)
 
-        to_visit = models
+        to_visit = models[:]
         visited = []
         while to_visit:
             print(to_visit)
