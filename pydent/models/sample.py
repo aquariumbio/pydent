@@ -100,6 +100,9 @@ class Sample(FieldValueInterface, ModelBase):
     def properties(self):
         return self._field_value_dictionary(lambda ft: ft.name, self._property_accessor)
 
+    def field_value_dictionary(self):
+        return self._field_value_dictionary(lambda ft: ft.name, lambda x: x)
+
     def update_properties(self, prop_dict):
         """Update the FieldValues properties for this sample.
 

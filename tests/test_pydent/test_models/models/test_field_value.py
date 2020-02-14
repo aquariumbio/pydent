@@ -183,7 +183,7 @@ def test_set_sample_and_item(fake_session):
         }
     )
     fake_item = fake_session.Item.load(
-        {"id": 55, "object_type_id": 44, "object_type": {"id": 44}}
+        {"id": 55, "object_type_id": 44, "sample_id": 3, "object_type": {"id": 44}}
     )
     fake_sample = fake_session.Sample.load(
         {"id": 3, "sample_type_id": 2, "sample_type": {"id": 2}}

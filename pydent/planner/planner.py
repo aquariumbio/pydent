@@ -820,7 +820,7 @@ class Planner(AFTMatcher):
             setter = self.set_field_value
 
         if len(samples) > 0:
-            selected_sample = samples[pref_index]
+            selected_sample = samples[0]
 
             # filter afts by sample_type_id
             aft_pairs = [
@@ -836,8 +836,16 @@ class Planner(AFTMatcher):
                     " Sample {}".format(src_fv.name, dest_fv.name, selected_sample.name)
                 )
 
-            setter(src_fv, sample=selected_sample)
-            setter(dest_fv, sample=selected_sample)
+            setter(
+                src_fv,
+                sample=selected_sample,
+                object_type=selected_aft_pair[0].object_type,
+            )
+            setter(
+                dest_fv,
+                sample=selected_sample,
+                object_type=selected_aft_pair[0].object_type,
+            )
 
             assert (
                 selected_aft_pair[0].sample_type_id
@@ -845,27 +853,27 @@ class Planner(AFTMatcher):
             )
             assert selected_aft_pair[0].sample_type_id == src_fv.sample.sample_type_id
             assert selected_aft_pair[0].sample_type_id == dest_fv.sample.sample_type_id
+        else:
+            setter(src_fv, object_type=selected_aft_pair[0].object_type)
+            setter(dest_fv, object_type=selected_aft_pair[0].object_type)
 
-            # set the sample (and allowable_field_type)
-            if src_fv.sample is not None and (
-                dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
-            ):
-                setter(
-                    dest_fv,
-                    sample=src_fv.sample,
-                    container=selected_aft_pair[0].object_type,
-                )
-            elif dest_fv.sample is not None and (
-                src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
-            ):
-                setter(
-                    src_fv,
-                    sample=dest_fv.sample,
-                    container=selected_aft_pair[0].object_type,
-                )
-
-        setter(src_fv, container=selected_aft_pair[0].object_type)
-        setter(dest_fv, container=selected_aft_pair[0].object_type)
+            # # set the sample (and allowable_field_type)
+            # if src_fv.sample is not None and (
+            #     dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
+            # ):
+            #     setter(
+            #         dest_fv,
+            #         sample=src_fv.sample,
+            #         object_type=selected_aft_pair[0].object_type,
+            #     )
+            # elif dest_fv.sample is not None and (
+            #     src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
+            # ):
+            #     setter(
+            #         src_fv,
+            #         sample=dest_fv.sample,
+            #         object_type=selected_aft_pair[0].object_type,
+            #     )
 
     @plan_verification_wrapper
     def add_wire(self, fv1: FieldValue, fv2: FieldValue) -> Wire:
@@ -934,20 +942,32 @@ class Planner(AFTMatcher):
         field_value: FieldValue,
         sample: Union[None, Sample] = None,
         item: Union[None, Item] = None,
-        container: Union[None, ObjectType] = None,
+        object_type: Union[None, ObjectType] = None,
         value: Any = None,
         row: Union[None, int] = None,
         column: Union[None, int] = None,
     ):
+        """.. versionchanged:: 0.1.5a15 Argument `container` changed to
+        `object_type` to keep consistency with other code.
+
+        :param field_value:
+        :param sample:
+        :param item:
+        :param object_type:
+        :param value:
+        :param row:
+        :param column:
+        :return:
+        """
         self.logger.debug(
             "setting field_value {} to {} - {} - {} - {}".format(
-                field_value.name, sample, item, container, value
+                field_value.name, sample, item, object_type, value
             )
         )
         field_value.set_value(
             sample=sample,
             item=item,
-            container=container,
+            container=object_type,
             value=value,
             row=None,
             column=None,
@@ -993,7 +1013,7 @@ class Planner(AFTMatcher):
             input_fv,
             sample=sample,
             item=item,
-            container=container,
+            object_type=container,
             row=row,
             column=column,
             value=value,
@@ -1027,7 +1047,7 @@ class Planner(AFTMatcher):
         for node in subgraph:
             n = routing_graph.nodes[node]
             fv = n["fv"]
-            self.set_field_value(fv, sample=sample, container=container, value=value)
+            self.set_field_value(fv, sample=sample, object_type=container, value=value)
         return field_value
 
     @staticmethod
