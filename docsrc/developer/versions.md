@@ -1,7 +1,16 @@
 # pydent change log
-## 0.1.5a14
-**2019-12-13T08:25:32.953330**
+## 0.1.5a15
+**2020-02-14T13:19:48.314066**
+bug fixes
 
+ - several bug fixes related to setting FieldValue properties
+ - `Planner.add_from_template` will add operations from a template to this Planner
+ - `Planner.copy` has been fixed
+
+
+## 0.1.5a14
+**2020-02-14T13:15:38.789723**
+Ω
 
 
 

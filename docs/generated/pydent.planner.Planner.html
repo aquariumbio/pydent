@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.planner.Planner &#8212; pydent 0.1.5a14 documentation</title>
+    <title>pydent.planner.Planner &#8212; pydent 0.1.5a15 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a14</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a15</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -160,6 +160,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/inventory.html">Inventory Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#creating-new-samples">Creating new samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#updating-sample-properties">Updating sample properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#creating-new-items">Creating new items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#creating-new-collections">Creating new collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#saving-inventory">Saving inventory</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
@@ -200,80 +208,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a14">0.1.5a14</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.5</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a13">0.1.5a13</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a12">0.1.5a12</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a11">0.1.5a11</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id4">0.1.2a</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#major-changes">Major changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a15">0.1.5a15</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a14">0.1.5a14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a13">0.1.5a13</a></li>
@@ -582,8 +517,11 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#pydent.planner.Planner.save" title="pydent.planner.Planner.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>()</p></td>
 <td><p>Saves the Plan to the Aquarium server.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_field_value</span></code>(field_value[, sample, item, …])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydent.planner.Planner.set_field_value" title="pydent.planner.Planner.set_field_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_field_value</span></code></a>(field_value[, sample, item, …])</p></td>
+<td><p><div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.5a15: </span>Argument <cite>container</cite> changed to</p>
+</div>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_field_value_and_propogate</span></code>(field_value[, …])</p></td>
 <td><p></p></td>
@@ -804,6 +742,24 @@ values, a new one is instantiated and returned.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.planner.Planner.add_from_template">
+<code class="sig-name descname">add_from_template</code><span class="sig-paren">(</span><em class="sig-param">plan</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.add_from_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.add_from_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Operation and Wires from the provided template plan to this
+planner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>plan</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Plan</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Planner</span></code>]) – Plan id (int), Plan instance, or Planner instance</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of operations that were added from template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.planner.Planner.add_wire">
 <code class="sig-name descname">add_wire</code><span class="sig-paren">(</span><em class="sig-param">fv1</em>, <em class="sig-param">fv2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.add_wire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.add_wire" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add wire from one FieldValue to another FieldValue.</p>
@@ -992,6 +948,24 @@ instance.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.planner.Planner.move_operations">
+<code class="sig-name descname">move_operations</code><span class="sig-paren">(</span><em class="sig-param">ops</em>, <em class="sig-param">to_plan_id</em>, <em class="sig-param">confirm=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.move_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.move_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a list of operations from this planner to a different plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ops</strong> – list of operations</p></li>
+<li><p><strong>to_plan_id</strong> – destination plan_id</p></li>
+<li><p><strong>confirm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether this required confirmation from the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.planner.Planner.operations">
 <em class="property">property </em><code class="sig-name descname">operations</code><a class="headerlink" href="#pydent.planner.Planner.operations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of <a class="reference internal" href="pydent.models.Operation.html#pydent.models.Operation" title="pydent.models.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">operations</span></code></a> in the
@@ -1124,6 +1098,31 @@ use them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydent.planner.Planner.set_field_value">
+<code class="sig-name descname">set_field_value</code><span class="sig-paren">(</span><em class="sig-param">field_value</em>, <em class="sig-param">sample=None</em>, <em class="sig-param">item=None</em>, <em class="sig-param">object_type=None</em>, <em class="sig-param">value=None</em>, <em class="sig-param">row=None</em>, <em class="sig-param">column=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydent/planner/planner.html#Planner.set_field_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.planner.Planner.set_field_value" title="Permalink to this definition">¶</a></dt>
+<dd><div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.5a15: </span>Argument <cite>container</cite> changed to</p>
+</div>
+<p><cite>object_type</cite> to keep consistency with other code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FieldValue</span></code>) – </p></li>
+<li><p><strong>sample</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code>]) – </p></li>
+<li><p><strong>item</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Item</span></code>]) – </p></li>
+<li><p><strong>object_type</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectType</span></code>]) – </p></li>
+<li><p><strong>value</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]) – </p></li>
+<li><p><strong>row</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – </p></li>
+<li><p><strong>column</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
 </dd>
 </dl>
 </dd></dl>
