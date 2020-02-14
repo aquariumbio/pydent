@@ -25,6 +25,7 @@ API Reference
    exceptions
    marshaller
 
+
 User Documentation
 ------------------
 
@@ -35,8 +36,10 @@ The user documentation contains high-level information for users.
 
    basics/getting_started
    basics/installation
+   basics/inventory
    basics/planning
    basics/querying
+   developer/api_reference
 
 Advanced Topics
 ---------------
@@ -88,16 +91,3 @@ References
 
    <a href="http://www.uwbiofab.org" target="_blank">UW BIOFAB</a>
 
-
-.. toctree::
-   :maxdepth: 3
-   :hidden:
-
-   basics/installation
-   basics/getting_started
-   basics/querying
-   basics/planning
-   developer/api_reference
-   developer/contributing
-   advanced/topics
-   developer/versions
