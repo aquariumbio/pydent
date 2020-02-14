@@ -75,8 +75,10 @@ class ItemLocationMixin(SaveMixin, JSONSaveMixin):
 
         Will update the data associations and its location.
         """
+        to_location = self.location
         JSONSaveMixin.save(self, do_reload=True)
-        self.move(self.location)
+        if to_location and to_location != self.location:
+            self.move(self.location)
         return self
 
     def delete(self):

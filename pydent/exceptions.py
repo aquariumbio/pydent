@@ -6,6 +6,8 @@ Exceptions (:mod:`pydent.exceptions`)
 
 Trident exceptions
 """
+from typing import Type
+from warnings import warn
 
 
 class TridentBaseException(Exception):
@@ -70,3 +72,28 @@ class PlannerException(Exception):
 
 class PlannerVerificationException(Exception):
     """Raised when object is not in plan but is required."""
+
+
+class TridentDepreciationWarning(DeprecationWarning):
+    """Raised when a feature or api is depreciated."""
+
+
+# class WarningLimit(object):
+#
+#     _limits = {}
+#
+#     def __init__(self, msg: str, limit: int = 1, warning_class: Type = TridentDepreciationWarning):
+#         self.msg = msg
+#         self.warning_class = warning_class
+#         self._limits[msg] = (0, limit)
+#
+#     def warn(self):
+#         a, b = self._limits[self.msg]
+#         if a < b:
+#             warn(self.warning_class(self.msg))
+#             self._limits[self.msg] = (a + 1, b)
+#         else:
+#             return
+#
+# def warn_with_limits(msg: str, limit: int):
+#     WarningLimit(msg, limit).warn()

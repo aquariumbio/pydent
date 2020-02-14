@@ -35,6 +35,7 @@ def test_upload(session, tmpdir, example_item):
     da = example_item.associate_file_from_path("test_upload", val, filepath)
     download_path = tmpdir.mkdir("test_download_from_server")
     time.sleep(1.0)
+    da = session.DataAssociation.find(da.id)
     assert da.upload
     fp = da.upload.download(download_path)
 

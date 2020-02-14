@@ -1,13 +1,18 @@
 import pytest
 
 
-# def test_update_properties_to_none(example_sample):
-#
-#     assert example_sample.properties['Length']
-#
-#     example_sample.update_properties({"Length": None})
-#
-#     assert not example_sample.properties['Length']
+def test_update_properties(example_sample):
+    """Tests if sample properties can be updated and reset."""
+    print(example_sample.properties)
+
+    example_sample.update_properties({"Length": 1000, "Yeast Marker": "KanMX"})
+    assert example_sample.properties["Length"] == 1000
+    assert example_sample.properties["Yeast Marker"] == "KanMX"
+
+    example_sample.update_properties({"Length": None})
+
+    assert example_sample.properties["Length"] is None
+    assert example_sample.properties["Yeast Marker"] == "KanMX"
 
 
 @pytest.mark.parametrize(

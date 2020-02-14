@@ -1,8 +1,10 @@
 """Models related to field values and sample properties."""
 import json
+from warnings import warn
 
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumModelError
+from pydent.exceptions import TridentDepreciationWarning
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import JSONDeleteMixin
 from pydent.models.crud_mixin import JSONSaveMixin
@@ -19,8 +21,23 @@ from pydent.relationships import Raw
 from pydent.utils import filter_list
 
 
-class Null:
-    object
+class NullType:
+    class __NullType:
+        def __bool__(self):
+            return False
+
+    instance = None
+
+    def __new__(cls):
+        if NullType.instance is None:
+            NullType.instance = NullType.__NullType()
+        return NullType.instance
+
+    def __bool__(self):
+        return False
+
+
+Null = NullType()
 
 
 @add_schema
@@ -198,10 +215,10 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         parent_class=None,
         parent_id=None,
         field_type=None,
-        sample=Null,
-        value=Null,
-        item=Null,
-        container=Null,
+        sample=None,
+        value=None,
+        item=None,
+        container=None,
     ):
         """
 
@@ -229,8 +246,8 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
             object_type=container,
             allowable_field_type_id=None,
             allowable_field_type=None,
-            column=None,
-            row=None,
+            column=0,
+            row=0,
         )
 
         if field_type is not None:
@@ -363,33 +380,38 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
                     )
                 )
 
-    def _validate_row_and_column(self, row: int, col: int):
-        if row and col and (not isinstance(row, int) or not isinstance(col, int)):
-            raise AquariumModelError("Row and column must be integers.")
-        if row is not None:
+    def _validate_row_or_column(self, dim: int):
+        if dim and not isinstance(dim, int):
+            raise AquariumModelError("Row and columns must be integers not.")
+        if dim is not None:
             if not self.field_type.is_part():
                 raise AquariumModelError(
-                    "Cannot set row of a non-part for {} {}".format(
+                    "Cannot set dimensions of a non-part for {} {}".format(
                         self.role, self.name
                     )
                 )
-            self.row = row
-        if col is not None:
-            if not self.field_type.is_part():
-                raise AquariumModelError(
-                    "Cannot set column of a non-part for {} {}".format(
-                        self.role, self.name
-                    )
-                )
-            self.column = col
 
     def _validate(self, value, sample, item, object_type, row, column):
-        self._validate_row_and_column(row, column)
-        self._validate_value(value)
-        self._validate_sample(sample)
-        self._validate_item_and_container(item, object_type)
-        # if not self.field_type.part:
-        #     self._validate_sample_and_item(sample, item)
+        if row is not Null:
+            self._validate_row_or_column(row)
+        if column is not Null:
+            self._validate_row_or_column(column)
+        if value is not Null:
+            self._validate_value(value)
+        if sample is not Null:
+            self._validate_sample(sample)
+
+        if sample is Null and item is not Null:
+            self._validate_sample_and_item(self.sample, item)
+        if sample is not Null and item is not Null:
+            self._validate_sample_and_item(sample, item)
+
+        if item is Null and object_type is not Null:
+            self._validate_item_and_container(self.item, object_type)
+        if item is not Null and object_type is Null:
+            self._validate_item_and_container(item, self.object_type)
+        if item is not Null and object_type is not Null:
+            self._validate_item_and_container(item, object_type)
 
     def _set_helper(
         self,
@@ -413,7 +435,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
             self.item = item
             if hasattr(item, "id"):
                 self.child_item_id = item.id
-            if not sample:
+            if item and not sample:
                 sample = item.sample
         if sample is not Null:
             self.sample = sample
@@ -453,8 +475,6 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         try:
             otname = self.operation.operation_type.name
         except AttributeError:
-            pass
-        finally:
             otname = None
         raise AquariumModelError(
             msg.format(otname, self.role, self.name, sid, oid, ", ".join(aft_list))
@@ -477,8 +497,21 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         column=Null,
         container=Null,
     ):
-        if object_type is None and container:
+        if object_type and container:
+            raise ValueError(
+                "object_type and container (depreciated) cannot be "
+                "both defined. Please define 'object_type'."
+            )
+        if container:
+            warn(
+                TridentDepreciationWarning(
+                    "Use of 'container' is depreciated."
+                    " Please use 'object_type' instead"
+                )
+            )
+        if not object_type and container:
             object_type = container
+
         self._validate(value, sample, item, container, row, column)
         self._set_helper(
             value=value,

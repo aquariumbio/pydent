@@ -40,6 +40,9 @@ def test_add_wire(session):
 
 
 def test_add_wire_sets_sample_from_destination(session):
+    """When adding a wire, the sample should be set from the destination to the
+    source."""
+
     session.set_verbose(True)
     canvas = Planner(session)
     assert len(canvas.plan.wires) == 0
@@ -51,8 +54,9 @@ def test_add_wire_sets_sample_from_destination(session):
     )
     source = canvas.create_operation_by_name("Rehydrate Primer", category="Cloning")
     canvas.set_field_value(destination.input("Forward Primer"), sample=p)
+    assert destination.input("Forward Primer").sample is p
     canvas.add_wire(source.outputs[0], destination.input("Forward Primer"))
-    assert source.outputs[0].sample == p
+    assert source.outputs[0].sample.id == p.id
 
 
 def test_add_wire_sets_sample_from_source(session):
@@ -68,7 +72,7 @@ def test_add_wire_sets_sample_from_source(session):
     source = canvas.create_operation_by_name("Rehydrate Primer", category="Cloning")
     canvas.set_field_value(source.outputs[0], sample=p)
     canvas.add_wire(source.outputs[0], destination.input("Forward Primer"))
-    assert destination.input("Forward Primer").sample == p
+    assert destination.input("Forward Primer").sample.id == p.id
 
 
 def test_collect_matching_afts(session):
