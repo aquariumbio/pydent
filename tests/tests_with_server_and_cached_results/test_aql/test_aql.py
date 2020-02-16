@@ -31,6 +31,11 @@ def test_validate(data):
 
 
 @example_fixture
-def test_query(session, data):
+def test_aquarium_query_language_method(session, data):
     with session.with_cache() as sess:
         aql(sess, data)
+
+
+@example_fixture
+def test_query_from_session(session, data):
+    session().query(data)

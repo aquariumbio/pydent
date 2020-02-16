@@ -384,7 +384,7 @@ from typing import Iterable
 from typing import List
 from typing import Type
 from typing import Union
-
+from pydent.aql import aql
 from requests.exceptions import ReadTimeout
 
 from pydent.aqhttp import AqHTTP
@@ -399,7 +399,8 @@ from pydent.interfaces import UtilityInterface
 from pydent.inventory_updater import save_inventory
 from pydent.models import __all__ as allmodels
 from pydent.sessionabc import SessionABC
-
+from typing import Dict
+from pydent.aql import aql_schema
 
 <div class="viewcode-block" id="AqSession"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession">[docs]</a>class AqSession(SessionABC):
     &quot;&quot;&quot;Holds an AqHTTP with login information. Creates SessionInterfaces for
@@ -683,6 +684,58 @@ from pydent.sessionabc import SessionABC
                 to_session.browser.update_cache(models)
             for m in models:
                 m._session = to_session</div>
+
+    @classmethod
+    def query_schema(cls) -&gt; Dict:
+        return aql_schema
+
+<div class="viewcode-block" id="AqSession.query"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.query">[docs]</a>    def query(self, data: Dict, use_cache: bool = False) -&gt; List[ModelBase]:
+        &quot;&quot;&quot;Perform a complex query a complex JSON query object.
+
+        Check out the :ref:`JSON Schema page &lt;json_schema&gt;` for more information.
+
+        You may also checkout `AqSession.query_schema` to view the JSON schema
+        that validates the input.
+
+        ..code-block:: python
+
+            {
+              &quot;__model__&quot;: &quot;Item&quot;,
+              &quot;__description__&quot;: &quot;Get available primers in last 7 days&quot;,
+              &quot;query&quot;: {
+                &quot;object_type&quot;: {
+                  &quot;query&quot;: {
+                    &quot;sample_type&quot;: {
+                      &quot;query&quot;: {
+                        &quot;name&quot;: &quot;Primer&quot;
+                      }
+                    }
+                  }
+                },
+                &quot;created_at&quot;: {
+                  &quot;__time__&quot;: {
+                    &quot;__days__&quot;: -7
+                  }
+                },
+                &quot;location&quot;: {
+                    &quot;__not__&quot;: &quot;deleted&quot;
+                }
+                &quot;__options__&quot;: {
+                  &quot;limit&quot;: 1
+                }
+              }
+            }
+
+        ..versionadded:: 0.1.5a16
+            Added query method for complex queries
+
+        :param data: data query
+        :param use_cache: whether to inherit the cache from the provided session
+            (default: False)
+        :return: list of models fitting the query
+        :raises: AquariumQueryLanguageValidationError if input data is invalid.
+        &quot;&quot;&quot;
+        return aql(self, data, use_cache=use_cache)</div>
 
     def __getattr__(self, item):
         if item not in self.__dict__:

@@ -105,6 +105,7 @@ import timeit
 import webbrowser
 from copy import copy
 from decimal import Decimal
+from typing import Dict
 from typing import Iterable
 from typing import List
 from typing import Type
@@ -113,6 +114,8 @@ from typing import Union
 from requests.exceptions import ReadTimeout
 
 from pydent.aqhttp import AqHTTP
+from pydent.aql import aql
+from pydent.aql import aql_schema
 from pydent.base import ModelBase
 from pydent.base import ModelRegistry
 from pydent.browser import Browser
@@ -408,6 +411,58 @@ class AqSession(SessionABC):
                 to_session.browser.update_cache(models)
             for m in models:
                 m._session = to_session
+
+    @classmethod
+    def query_schema(cls) -> Dict:
+        return aql_schema
+
+    def query(self, data: Dict, use_cache: bool = False) -> List[ModelBase]:
+        """Perform a complex query a complex JSON query object.
+
+        Check out the :ref:`JSON Schema page <json_schema>` for more information.
+
+        You may also checkout `AqSession.query_schema` to view the JSON schema
+        that validates the input.
+
+        ..code-block:: python
+
+            {
+              "__model__": "Item",
+              "__description__": "Get available primers in last 7 days",
+              "query": {
+                "object_type": {
+                  "query": {
+                    "sample_type": {
+                      "query": {
+                        "name": "Primer"
+                      }
+                    }
+                  }
+                },
+                "created_at": {
+                  "__time__": {
+                    "__days__": -7
+                  }
+                },
+                "location": {
+                    "__not__": "deleted"
+                }
+                "__options__": {
+                  "limit": 1
+                }
+              }
+            }
+
+        ..versionadded:: 0.1.5a16
+            Added query method for complex queries
+
+        :param data: data query
+        :param use_cache: whether to inherit the cache from the provided session
+            (default: False)
+        :return: list of models fitting the query
+        :raises: AquariumQueryLanguageValidationError if input data is invalid.
+        """
+        return aql(self, data, use_cache=use_cache)
 
     def __getattr__(self, item):
         if item not in self.__dict__:
