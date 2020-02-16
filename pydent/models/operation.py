@@ -34,6 +34,7 @@ class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
         plans=HasManyThrough("Plan", "PlanAssociation"),
         status=Raw(default="planning"),
         routing=Function("get_routing"),
+        user=HasOne("User"),
     )
 
     METATYPE = "operation_type"

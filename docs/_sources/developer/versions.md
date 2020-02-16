@@ -1,6 +1,13 @@
 # pydent change log
+## 0.1.5a16
+**2020-02-14T13:34:34.241439**
+
+
+
+
+
 ## 0.1.5a15
-**2020-02-14T13:19:48.314066**
+**2020-02-14T13:30:48.952836**
 bug fixes
 
  - several bug fixes related to setting FieldValue properties

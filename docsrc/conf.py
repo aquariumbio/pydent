@@ -37,7 +37,11 @@ autosummary_generate = glob.glob("*.rst")  # Make _autosummary files and include
 napoleon_numpy_docstring = False  # Force consistency, leave only Google
 napoleon_use_rtype = False  # More legible
 
+from pydent.aql import aql_schema
+import json
 
+with open("aql/aql.schema.json", "w") as f:
+    json.dump(aql_schema, f, indent=2)
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = '1.0'
@@ -52,6 +56,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "nbsphinx",
+    "sphinx-jsonschema",
     "sphinx.ext.mathjax",
     "sphinx.ext.doctest",
     "sphinx.ext.coverage",

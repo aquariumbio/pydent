@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.exceptions &#8212; pydent 0.1.5a15 documentation</title>
+    <title>pydent.exceptions &#8212; pydent 0.1.5a16 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a15</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a16</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -189,6 +189,11 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aql/schemas.html">Aquarium Query Language Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../aql/schemas.html#aquarium-query-language-aql-schema">Aquarium Query Language (AQL) Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../aql/schemas.html#examples">Examples</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -206,6 +211,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a16">0.1.5a16</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a15">0.1.5a15</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a14">0.1.5a14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">0.1.5</a></li>
@@ -335,16 +341,20 @@ from warnings import warn
     &quot;&quot;&quot;Cannot set session to models with a session already set.&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="PlannerException"><a class="viewcode-back" href="../../generated/pydent.planner.PlannerException.html#pydent.exceptions.PlannerException">[docs]</a>class PlannerException(Exception):
+<div class="viewcode-block" id="PlannerException"><a class="viewcode-back" href="../../generated/pydent.planner.PlannerException.html#pydent.exceptions.PlannerException">[docs]</a>class PlannerException(TridentBaseException):
     &quot;&quot;&quot;Generic planner Exception.&quot;&quot;&quot;</div>
 
 
-<div class="viewcode-block" id="PlannerVerificationException"><a class="viewcode-back" href="../../exceptions.html#pydent.exceptions.PlannerVerificationException">[docs]</a>class PlannerVerificationException(Exception):
+<div class="viewcode-block" id="PlannerVerificationException"><a class="viewcode-back" href="../../exceptions.html#pydent.exceptions.PlannerVerificationException">[docs]</a>class PlannerVerificationException(TridentBaseException):
     &quot;&quot;&quot;Raised when object is not in plan but is required.&quot;&quot;&quot;</div>
 
 
 <div class="viewcode-block" id="TridentDepreciationWarning"><a class="viewcode-back" href="../../exceptions.html#pydent.exceptions.TridentDepreciationWarning">[docs]</a>class TridentDepreciationWarning(DeprecationWarning):
     &quot;&quot;&quot;Raised when a feature or api is depreciated.&quot;&quot;&quot;</div>
+
+
+<div class="viewcode-block" id="AquariumQueryLanguageValidationError"><a class="viewcode-back" href="../../exceptions.html#pydent.exceptions.AquariumQueryLanguageValidationError">[docs]</a>class AquariumQueryLanguageValidationError(TridentBaseException):
+    &quot;&quot;&quot;Raised when aql is provided with an invalide query.&quot;&quot;&quot;</div>
 
 
 # class WarningLimit(object):

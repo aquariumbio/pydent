@@ -32,6 +32,7 @@ class Plan(DataAssociatorMixin, SaveMixin, DeleteMixin, ModelBase):
         wires=Many("Wire", callback="_get_wires_from_server"),
         layout=JSON(),
         status=Raw(default="planning"),
+        user=HasOne("User"),
     )
     query_hook = {"include": ["plan_associations", "operations"]}
 

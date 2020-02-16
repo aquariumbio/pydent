@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Aquarium Query Language (AQL) Schema",
+  "description": "This schema validates query schema for AQL",
+  "type": "object",
+  "definitions": {
+    "time": {
+      "type": "object",
+      "description": "Delta time definition (from now)",
+      "properties": {
+        "__time__": {
+          "type": "object",
+          "properties": {
+            "__seconds__": {
+              "type": "integer"
+            },
+            "__hours__": {
+              "type": "integer"
+            },
+            "__days__": {
+              "type": "integer"
+            },
+            "__weeks__": {
+              "type": "integer"
+            }
+          },
+          "minProperties": 1
+        }
+      },
+      "minProperties": 1,
+      "maxProperties": 1,
+      "required": ["__time__"],
+      "additionalProperties": false
+    },
+    "value": {
+      "description": "Valid query value",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "$ref": "#/definitions/time"
+        }
+      ]
+    },
+    "valueArray": {
+      "description": "Valid query value array. Cannot be empty.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/value"
+      },
+      "minItems": 1
+    },
+    "sql": {
+      "type": "object",
+      "description": "Query for NOT, LESS THAN, GREATER THAN, e.g.",
+      "properties": {
+        "__not__": {
+          "$ref": "#/definitions/value",
+          "description": "Negation of the value"
+        },
+        "__lt__": {
+          "$ref": "#/definitions/value",
+          "description": "Less than the value"
+        },
+        "__le__": {
+          "$ref": "#/definitions/value",
+          "description": "Less than or equal to the value"
+        },
+        "__gt__": {
+          "$ref": "#/definitions/value",
+          "description": "Greater than the value"
+        },
+        "__ge__": {
+          "$ref": "#/definitions/value",
+          "description": "Greater than or equal to the value"
+        }
+      },
+      "minProperties": 1,
+      "maxProperties": 1
+    },
+    "queryObj": {
+      "type": "object",
+      "patternProperties": {
+        "^(?!__)\\w+(?<!__)$": {
+          "anyOf": [
+            {"$ref": "#/definitions/queryObj"},
+            {"$ref": "#/definitions/value"},
+            {"$ref": "#/definitions/valueArray"},
+            {"#ref": "#/definitions/sql"}
+          ]
+        }
+      },
+      "properties": {
+        "__options__": {
+          "type": "object"
+        },
+        "__return__": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "query": {
+      "description": "Query to find models.",
+      "$ref": "#/definitions/queryObj"
+    },
+    "__description__": {
+      "description": "Query description. Effectively ignored",
+      "type": "string"
+    },
+    "__model__": {
+      "description": "Name of the Aquarium model",
+      "type": "string"
+    },
+    "__as__": {
+      "description": "Return value",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "__model__": "Sample",
+      "query": {
+        "items": {
+          "query": {
+            "object_type": {
+              "query": {
+                "name": "Yeast Glycerol Stock"
+              }
+            },
+            "__options__": {
+              "limit": 1
+            }
+          }
+        },
+        "user_id": 1,
+        "__return__": {
+          "sample_type": "field_types"
+        }
+      }
+    }
+  ],
+  "required": [
+    "query",
+    "__model__"
+  ]
+}
