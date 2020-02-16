@@ -972,7 +972,15 @@ class Browser(QueryInterfaceABC):
             )
 
     @classmethod
-    def sample_network(cls, samples, reverse=False, g=None):
+    def sample_network(
+        cls,
+        samples: List[Sample],
+        reverse: bool = False,
+        g: nx.DiGraph = None,
+        get_models: Callable = None,
+        cache_func: Callable = None,
+        key_func: Callable = None,
+    ) -> nx.DiGraph:
         """Build a DAG of :class:`Samples <pydent.models.Sample>` from their.
 
         :class:`FieldValues <pydent.models.FieldValue>`.
@@ -980,23 +988,35 @@ class Browser(QueryInterfaceABC):
         .. versionadded:: 0.1.5a7
             method added
 
+        .. versionchanged:: 0.1.5a16
+            added optional get_models, cache_func, key_func arguments
+
         :param samples: list of samples
         :param reverse: whether to reverse the edges of the final graph
         :param g: the graph
         :return:
         """
 
-        def get_models(model):
-            for fv in model.field_values:
-                if fv.sample and issubclass(type(fv.sample), ModelBase):
-                    yield fv.sample, {"field_value_name": fv.name}
+        if not get_models:
 
-        def cache_func(models):
-            sess = models[0].session
-            sess.browser.get(models, {"field_values": "sample"})
+            def get_models(model):
+                for fv in model.field_values:
+                    if fv.sample and issubclass(type(fv.sample), ModelBase):
+                        yield fv.sample, {"field_value_name": fv.name}
+
+        if not cache_func:
+
+            def cache_func(models):
+                sess = models[0].session
+                sess.browser.get(models, {"field_values": "sample"})
 
         return cls.relationship_network(
-            samples, get_models=get_models, cache_func=cache_func, reverse=reverse, g=g
+            samples,
+            get_models=get_models,
+            cache_func=cache_func,
+            reverse=reverse,
+            g=g,
+            key_func=key_func,
         )
 
     @classmethod
