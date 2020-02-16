@@ -22,11 +22,11 @@ from typing import Union
 
 import jsonschema
 
-from pydent import AqSession
 from pydent.base import ModelBase
 from pydent.exceptions import AquariumQueryLanguageValidationError
 from pydent.relationships import HasMany
 from pydent.relationships import HasOne
+from pydent.sessionabc import SessionABC
 
 aql_schema_filepath = join(abspath(dirname(__file__)), "aql.schema.json")
 with open(aql_schema_filepath, "r") as f:
@@ -178,7 +178,7 @@ def validate_aql(data):
 
 
 def aql(
-    session: AqSession, data: Dict, use_cache: bool = False
+    session: SessionABC, data: Dict, use_cache: bool = False
 ) -> Union[List[ModelBase], Dict]:
     """Perform a complex query a complex JSON query object.
 

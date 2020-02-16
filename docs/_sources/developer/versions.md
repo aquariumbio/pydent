@@ -3,7 +3,7 @@
 **2020-02-14T13:34:34.241439**
 
 
-
+ - Added complex query method `session.query` and corresponding query schema.
 
 
 ## 0.1.5a15

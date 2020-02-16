@@ -565,6 +565,86 @@ of the server.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pydent.aqsession.AqSession.query">
+<code class="sig-name descname">query</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">use_cache=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/aqsession.html#AqSession.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pydent.aqsession.AqSession.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a complex query a complex JSON query object.</p>
+<p>Check out the <a class="reference internal" href="aql/schemas.html#json-schema"><span class="std std-ref">JSON Schema page</span></a> for more information.</p>
+<p>You may also checkout <cite>AqSession.query_schema</cite> to view the JSON schema
+that validates the input.</p>
+<p>..code-block:: python</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“__model__”: “Item”,
+“__description__”: “Get available primers in last 7 days”,
+“query”: {</p>
+<blockquote>
+<div><dl>
+<dt>“object_type”: {</dt><dd><dl>
+<dt>“query”: {</dt><dd><dl>
+<dt>“sample_type”: {</dt><dd><dl class="simple">
+<dt>“query”: {</dt><dd><p>“name”: “Primer”</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>},
+“created_at”: {</p>
+<blockquote>
+<div><dl class="simple">
+<dt>“__time__”: {</dt><dd><p>“__days__”: -7</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>},
+“location”: {</p>
+<blockquote>
+<div><p>“__not__”: “deleted”</p>
+</div></blockquote>
+<p>}
+“__options__”: {</p>
+<blockquote>
+<div><p>“limit”: 1</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<dl class="simple">
+<dt>..versionadded:: 0.1.5a16</dt><dd><p>Added query method for complex queries</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>) – data query</p></li>
+<li><p><strong>use_cache</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to inherit the cache from the provided session
+(default: False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of models fitting the query</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>AquariumQueryLanguageValidationError if input data is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="pydent.aqsession.AqSession.session">
 <em class="property">property </em><code class="sig-name descname">session</code><a class="headerlink" href="#pydent.aqsession.AqSession.session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return self.</p>
