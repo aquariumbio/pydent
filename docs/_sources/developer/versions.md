@@ -4,6 +4,7 @@
 
 
  - Added complex query method `session.query` and corresponding query schema.
+ - Fixes to session.browser.where
 
 
 ## 0.1.5a15
