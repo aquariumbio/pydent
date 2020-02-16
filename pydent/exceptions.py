@@ -66,16 +66,20 @@ class SessionAlreadySet(TridentBaseException):
     """Cannot set session to models with a session already set."""
 
 
-class PlannerException(Exception):
+class PlannerException(TridentBaseException):
     """Generic planner Exception."""
 
 
-class PlannerVerificationException(Exception):
+class PlannerVerificationException(TridentBaseException):
     """Raised when object is not in plan but is required."""
 
 
 class TridentDepreciationWarning(DeprecationWarning):
     """Raised when a feature or api is depreciated."""
+
+
+class AquariumQueryLanguageValidationError(TridentBaseException):
+    """Raised when aql is provided with an invalide query."""
 
 
 # class WarningLimit(object):

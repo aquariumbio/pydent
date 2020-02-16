@@ -155,7 +155,8 @@ class Browser(QueryInterfaceABC):
         primary_key="id",
         sample_type=None,
         methods=None,
-        **kwargs,
+        opts: Dict = None,
+        include: Dict = None,
     ):
         """Perform a 'where' query. If models are found in the browser cache,
         those are returned, else new http queries are made to find the models.
@@ -173,8 +174,18 @@ class Browser(QueryInterfaceABC):
             sample_type_id = self.find_by_name(sample_type, "SampleType").id
             query.update({"sample_type_id": sample_type_id})
         if self.use_cache and not methods:
-            return self.cached_where(query, model_class, primary_key=primary_key)
-        return self.interface(model_class).where(query, **kwargs)
+            return self.cached_where(
+                query,
+                model_class,
+                primary_key=primary_key,
+                include=include,
+                methods=methods,
+                opts=opts,
+            )
+        else:
+            return self.server_where(
+                query, model_class, opts=opts, include=include, methods=methods
+            )
 
     def __query_helper(
         self,
@@ -392,7 +403,9 @@ class Browser(QueryInterfaceABC):
         return self._group_models_and_update_cache(models)
 
     # TODO: do we really want to simply overwrite the dictionary or update the models?
-    def _update_model_cache_helper(self, modelname, modeldict):
+    def _update_model_cache_helper(
+        self, modelname: str, modeldict: Dict
+    ) -> List[ModelBase]:
         """Updates the browser's model cache with models from the provided
         model dict."""
         self.log.info(
@@ -443,9 +456,24 @@ class Browser(QueryInterfaceABC):
             model_class, {found_model.id: found_model}
         )[0]
 
-    def cached_where(self, query, model, primary_key="id"):
+    def server_where(self, query, model, opts, include, methods):
+        return self.interface(model).where(
+            query, opts=opts, methods=methods, include=include
+        )
+
+    def cached_where(
+        self,
+        query,
+        model,
+        primary_key="id",
+        methods: Dict = None,
+        include: Dict = None,
+        opts: Dict = None,
+    ):
         if isinstance(query, str):
-            server_models = self.interface(model).where(query)
+            server_models = self.server_where(
+                query, model, opts=opts, methods=methods, include=include
+            )
             found_dict = {}
         elif [] in query.values():
             return []
@@ -475,11 +503,18 @@ class Browser(QueryInterfaceABC):
             #       all of the models..
             if primary_key in remaining_query and not remaining_query[primary_key]:
                 return list(found_dict.values())
-            server_models = self.interface(model).where(remaining_query)
+            server_models = self.interface(model).where(remaining_query, opts=opts)
 
         models_dict = OrderedDict({s.id: s for s in server_models})
         models_dict.update(found_dict)
-        return self._update_model_cache_helper(model, models_dict)
+
+        returned = self._update_model_cache_helper(model, models_dict)
+        if opts:
+            if opts.get("reverse", True) is False:
+                returned = returned[::-1]
+            if opts.get("limit", None):
+                returned = returned[-opts["limit"] :]
+        return returned
 
     def _search_helper(self, pattern, filter_fxn, sample_type=None, **query):
         sample_type_id = None
@@ -1110,10 +1145,10 @@ class Browser(QueryInterfaceABC):
             new_models,
             get_models,
             cache_func,
+            key_func=key_func,
             g=g,
             reverse=reverse,
             strict_cache=strict_cache,
-            key_func=key_func,
         )
 
     # def relationship_network(self, models, get_models, cache_func, g=None):

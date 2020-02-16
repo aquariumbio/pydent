@@ -23,6 +23,7 @@ class Sample(FieldValueInterface, ModelBase):
         field_values=HasMany(
             "FieldValue", ref="parent_id", additional_args={"parent_class": "Sample"}
         ),
+        user=HasOne("User"),
     )
 
     METATYPE = "sample_type"

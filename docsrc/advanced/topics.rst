@@ -8,4 +8,5 @@ Advanced topics
    :maxdepth: 2
 
    /advanced/*
+   /aql/*
 

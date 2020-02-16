@@ -1,0 +1,23 @@
+{
+  "__model__": "Item",
+  "__description__": "Get available primers in last 7 days",
+  "query": {
+    "object_type": {
+      "query": {
+        "sample_type": {
+          "query": {
+            "name": "Primer"
+          }
+        }
+      }
+    },
+    "created_at": {
+      "__time__": {
+        "__days__": -7
+      }
+    },
+    "__options__": {
+      "limit": 1
+    }
+  }
+}
