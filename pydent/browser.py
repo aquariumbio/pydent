@@ -1113,6 +1113,7 @@ class Browser(QueryInterfaceABC):
             g=g,
             reverse=reverse,
             strict_cache=strict_cache,
+            key_func=key_func,
         )
 
     # def relationship_network(self, models, get_models, cache_func, g=None):
