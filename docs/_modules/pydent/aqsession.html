@@ -380,14 +380,17 @@ import timeit
 import webbrowser
 from copy import copy
 from decimal import Decimal
+from typing import Dict
 from typing import Iterable
 from typing import List
 from typing import Type
 from typing import Union
-from pydent.aql import aql
+
 from requests.exceptions import ReadTimeout
 
 from pydent.aqhttp import AqHTTP
+from pydent.aql import aql
+from pydent.aql import aql_schema
 from pydent.base import ModelBase
 from pydent.base import ModelRegistry
 from pydent.browser import Browser
@@ -399,8 +402,7 @@ from pydent.interfaces import UtilityInterface
 from pydent.inventory_updater import save_inventory
 from pydent.models import __all__ as allmodels
 from pydent.sessionabc import SessionABC
-from typing import Dict
-from pydent.aql import aql_schema
+
 
 <div class="viewcode-block" id="AqSession"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession">[docs]</a>class AqSession(SessionABC):
     &quot;&quot;&quot;Holds an AqHTTP with login information. Creates SessionInterfaces for
