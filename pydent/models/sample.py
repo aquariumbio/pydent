@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from warnings import warn
 
 from pydent.base import ModelBase
+from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldTypeInterface
@@ -125,7 +126,21 @@ class Sample(FieldValueInterface, ModelBase):
                 self.set_field_value(name, None, {key: val})
 
     def create(self):
+        self.is_savable(do_raise=True)
         return self.session.utils.create_samples([self])
+
+    def is_savable(self, do_raise: bool = True):
+        errors = []
+        for k, v in self.properties:
+            if v is None and self.sample_type.field_type(k).required:
+                errors.append("FieldValue '{}' is required.".format(k))
+        if do_raise and errors:
+            raise AquariumModelError(
+                "Cannot update/save sample due to the following:\n{}".format(
+                    "\n\t".join(errors)
+                )
+            )
+        return len(errors) == 0, errors
 
     def save(self):
         if self.id:
@@ -134,6 +149,7 @@ class Sample(FieldValueInterface, ModelBase):
             self.create()
 
     def update(self):
+        self.is_savable(do_raise=True)
         for fv in self.field_values:
             fv.reload(fv.save())
 
