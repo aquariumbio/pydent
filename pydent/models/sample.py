@@ -1,6 +1,8 @@
 """Models related to samples, like Samples and SampleTypes."""
 import json
 from collections.abc import Sequence
+from typing import List
+from typing import Tuple
 from warnings import warn
 
 from pydent.base import ModelBase
@@ -125,30 +127,59 @@ class Sample(FieldValueInterface, ModelBase):
             else:
                 self.set_field_value(name, None, {key: val})
 
-    def create(self):
+    def create(self) -> List["Sample"]:
+        """Create the sample.
+
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+
+        :return:
+        :raises AquariumModelError: if required FieldValues are missing.
+        """
         self.is_savable(do_raise=True)
         return self.session.utils.create_samples([self])
 
-    def is_savable(self, do_raise: bool = True):
+    def is_savable(self, do_raise: bool = True) -> Tuple[bool, List[str]]:
+        """Checks if the sample can be saved or updated.
+
+        .. versionadded:: 0.1.5a17
+
+        :param do_raise:
+        :return:
+        """
         errors = []
-        for k, v in self.properties:
+        for k, v in self.properties.items():
             if v is None and self.sample_type.field_type(k).required:
                 errors.append("FieldValue '{}' is required.".format(k))
         if do_raise and errors:
             raise AquariumModelError(
-                "Cannot update/save sample due to the following:\n{}".format(
-                    "\n\t".join(errors)
+                "Cannot update/save due to the following:\n"
+                "Sample: id={} name={} ({})\n\t{}".format(
+                    self.id, self.name, self.sample_type.name, "\n\t".join(errors)
                 )
             )
         return len(errors) == 0, errors
 
     def save(self):
+        """Saves the sample, either by creating a new sample (if id=None) or
+        updating the existing sample on the server.
+
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+        :return:
+        """
         if self.id:
             self.update()
         else:
             self.create()
 
-    def update(self):
+    def update(self) -> "Sample":
+        """Updates the sample on the server.
+
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+        :return:
+        """
         self.is_savable(do_raise=True)
         for fv in self.field_values:
             fv.reload(fv.save())

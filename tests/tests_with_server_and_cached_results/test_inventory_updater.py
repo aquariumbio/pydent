@@ -22,8 +22,10 @@ def test_inventory_updater(session):
                 str(uuid4()),
                 project="test",
                 description="",
-                properties={"Anneal Sequence": "AGGGATAT"},
-            )
+                properties={"Anneal Sequence": "AGGGATAT", "T Anneal": 50},
+            ),
+            "Length": 1000,
+            "Sequence": "",
         },
     )
 
