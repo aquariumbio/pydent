@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.sample &#8212; pydent 0.1.5a16 documentation</title>
+    <title>pydent.models.sample &#8212; pydent 0.1.5a17 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a16</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a17</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -211,6 +211,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a17">0.1.5a17</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a16">0.1.5a16</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a15">0.1.5a15</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a14">0.1.5a14</a></li>
@@ -276,9 +277,12 @@
 <span></span>&quot;&quot;&quot;Models related to samples, like Samples and SampleTypes.&quot;&quot;&quot;
 import json
 from collections.abc import Sequence
+from typing import List
+from typing import Tuple
 from warnings import warn
 
 from pydent.base import ModelBase
+from pydent.exceptions import AquariumModelError
 from pydent.marshaller import add_schema
 from pydent.models.crud_mixin import JSONSaveMixin
 from pydent.models.field_value_mixins import FieldTypeInterface
@@ -399,16 +403,60 @@ class Sample(FieldValueInterface, ModelBase):
             else:
                 self.set_field_value(name, None, {key: val})</div>
 
-    def create(self):
-        return self.session.utils.create_samples([self])
+<div class="viewcode-block" id="Sample.create"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.create">[docs]</a>    def create(self) -&gt; List[&quot;Sample&quot;]:
+        &quot;&quot;&quot;Create the sample.
 
-    def save(self):
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+
+        :return:
+        :raises AquariumModelError: if required FieldValues are missing.
+        &quot;&quot;&quot;
+        self.is_savable(do_raise=True)
+        return self.session.utils.create_samples([self])</div>
+
+<div class="viewcode-block" id="Sample.is_savable"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.is_savable">[docs]</a>    def is_savable(self, do_raise: bool = True) -&gt; Tuple[bool, List[str]]:
+        &quot;&quot;&quot;Checks if the sample can be saved or updated.
+
+        .. versionadded:: 0.1.5a17
+
+        :param do_raise:
+        :return:
+        &quot;&quot;&quot;
+        errors = []
+        for k, v in self.properties.items():
+            if v is None and self.sample_type.field_type(k).required:
+                errors.append(&quot;FieldValue &#39;{}&#39; is required.&quot;.format(k))
+        if do_raise and errors:
+            raise AquariumModelError(
+                &quot;Cannot update/save due to the following:\n&quot;
+                &quot;Sample: id={} name={} ({})\n\t{}&quot;.format(
+                    self.id, self.name, self.sample_type.name, &quot;\n\t&quot;.join(errors)
+                )
+            )
+        return len(errors) == 0, errors</div>
+
+<div class="viewcode-block" id="Sample.save"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.save">[docs]</a>    def save(self):
+        &quot;&quot;&quot;Saves the sample, either by creating a new sample (if id=None) or
+        updating the existing sample on the server.
+
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+        :return:
+        &quot;&quot;&quot;
         if self.id:
             self.update()
         else:
-            self.create()
+            self.create()</div>
 
-    def update(self):
+<div class="viewcode-block" id="Sample.update"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.update">[docs]</a>    def update(self) -&gt; &quot;Sample&quot;:
+        &quot;&quot;&quot;Updates the sample on the server.
+
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+        :return:
+        &quot;&quot;&quot;
+        self.is_savable(do_raise=True)
         for fv in self.field_values:
             fv.reload(fv.save())
 
@@ -428,7 +476,7 @@ class Sample(FieldValueInterface, ModelBase):
                 fv.parent_id = None
                 fv.save()
         self.reload(self.session.utils.json_save(&quot;Sample&quot;, self.dump()))
-        return self
+        return self</div>
 
 <div class="viewcode-block" id="Sample.merge"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.merge">[docs]</a>    def merge(self):
         &quot;&quot;&quot;Merge sample by name. If a sample with the same name and

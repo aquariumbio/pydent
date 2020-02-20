@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Models (pydent.models) &#8212; pydent 0.1.5a16 documentation</title>
+    <title>Models (pydent.models) &#8212; pydent 0.1.5a17 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a16</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a17</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -213,6 +213,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a17">0.1.5a17</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a16">0.1.5a16</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a15">0.1.5a15</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a14">0.1.5a14</a></li>
@@ -9720,6 +9721,26 @@ rid.</p>
 
 <dl class="method">
 <dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/sample.html#Sample.create"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Create the sample.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.5a17: </span>Raises <cite>AquariumModelError</cite> if sample is missing required properties</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="exceptions.html#pydent.exceptions.AquariumModelError" title="pydent.exceptions.AquariumModelError"><strong>AquariumModelError</strong></a> – if required FieldValues are missing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
 <code class="sig-name descname">dump</code><span class="sig-paren">(</span><em class="sig-param">only=None</em>, <em class="sig-param">include=None</em>, <em class="sig-param">ignore=None</em><span class="sig-paren">)</span></dt>
 <dd><p>Dump/serializes the model to a json-like dictionary.</p>
 <dl class="field-list simple">
@@ -9954,6 +9975,26 @@ cases.</p>
 
 <dl class="method">
 <dt>
+<code class="sig-name descname">is_savable</code><span class="sig-paren">(</span><em class="sig-param">do_raise=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/sample.html#Sample.is_savable"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Checks if the sample can be saved or updated.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.5a17.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>do_raise</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
 <em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
 <dd><p>Deserialize the data to a model.</p>
 <dl class="field-list simple">
@@ -10134,6 +10175,21 @@ field type.</p>
 
 <dl class="method">
 <dt>
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/sample.html#Sample.save"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Saves the sample, either by creating a new sample (if id=None) or
+updating the existing sample on the server.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.5a17: </span>Raises <cite>AquariumModelError</cite> if sample is missing required properties</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
 <em class="property">property </em><code class="sig-name descname">session</code></dt>
 <dd><p>The connected session instance.</p>
 </dd></dl>
@@ -10165,6 +10221,23 @@ as in the following:</p>
 }]
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/sample.html#Sample.update"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Updates the sample on the server.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.1.5a17: </span>Raises <cite>AquariumModelError</cite> if sample is missing required properties</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

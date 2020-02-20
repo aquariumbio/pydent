@@ -1,6 +1,13 @@
 # pydent change log
+## 0.1.5a17
+**2020-02-20T11:09:02.777062**
+bug fix
+
+ - sample.save checks for required properties
+
+
 ## 0.1.5a16
-**2020-02-14T13:34:34.241439**
+**2020-02-16T14:36:27.391598**
 
 
  - Added complex query method `session.query` and corresponding query schema.
