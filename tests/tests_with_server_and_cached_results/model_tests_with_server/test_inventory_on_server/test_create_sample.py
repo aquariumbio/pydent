@@ -40,6 +40,7 @@ def test_create_sample(session):
     plasmid = session.Sample.find(9246)
     prop["Comp_cell_limit"] = "No"
     prop["Integrant"] = plasmid
+    prop["Mating Type"] = "MATa"
     fvs = init_props(prop, st)
 
     new_yeast.field_values = fvs
@@ -59,6 +60,7 @@ def test_init_sample_with_properties(session):
         properties={
             "Integrant": session.Sample.find_by_name("DummyPlasmid"),
             "QC_length": 1313,
+            "Mating Type": "Diploid",
         },
     )
 
@@ -77,7 +79,7 @@ def test_create_sample2(session):
             project="trident",
             sample_type_id=yeast.sample_type_id,
             properties={
-                "Mating Type": yeast.properties["Mating Type"],
+                "Mating Type": yeast.properties["Mating Type"] or "MATa",
                 "Integrant": plasmid,
                 "Has this strain passed QC?": "No",
                 "Parent": yeast,
