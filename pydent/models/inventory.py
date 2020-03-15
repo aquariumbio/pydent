@@ -82,6 +82,7 @@ class ItemLocationMixin(SaveMixin, JSONSaveMixin):
         return self
 
     def delete(self):
+        raise ValueError
         self.move("deleted")
 
     def mark_as_deleted(self):
