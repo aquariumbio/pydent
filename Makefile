@@ -1,6 +1,6 @@
 PIP=pip3
 
-.PHONY: docs  # necessary so it doesn't look for 'docs/makefile html'
+.PHONY: docs export  # necessary so it doesn't look for 'docs/makefile html'
 
 
 init:
@@ -66,6 +66,11 @@ format:
 
 hooks: .git/hooks
 	cp scripts/* .git/hooks
+
+
+liccheck:
+	poetry export -f requirements.txt > requirements.txt
+	poetry run liccheck -l CAUTIOUS
 
 
 klocs:

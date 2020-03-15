@@ -45,6 +45,7 @@ sphinx_autodoc_typehints = "^1.8"
 autodocsumm = "^0.1.11"
 numpy = "^1.17"
 sphinx-jsonschema = "^1.12"
+liccheck = "^0.4.2"
 
 [tool.poetry.extras]
 docs = ["sphinx", "sphinx-bootstrap-theme", "docformatter", "nbsphinx", "pandoc", "recommonmark", "sphinx-jsonschema"]
@@ -67,6 +68,42 @@ exclude = '''
   | dist
 )/
 '''
+
+[tool.liccheck]
+authorized_licenses = [
+        "bsd",
+        "mpl-2.0",
+        "new bsd",
+        "bsd license",
+        "new bsd license",
+        "simplified bsd",
+        "apache",
+        "apache 2.0",
+        "apache license 2.0",
+        "apache softare",
+        "apache software license",
+        "gnu lgpl",
+        "lgpl with exceptions or zpl",
+        "LGPL",
+        "isc license",
+        "isc license (iscl)",
+        "mit",
+        "mit license",
+        "python software foundation license",
+        "zpl 2.1"
+]
+
+unauthorized_licenses = [
+        "gpl",
+        "gpl v2",
+        "gpl v3",
+        "gpl-2.0",
+        "gpl-3.0",
+]
+
+[tool.liccheck.authorized_packages]
+uuid = "1.30"
+
 
 [build-system]
 requires = ["poetry>=0.12"]
