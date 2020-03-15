@@ -1351,7 +1351,7 @@ class Planner(AFTMatcher):
     @staticmethod
     def _json_update(model: ModelBase, **params: dict) -> ModelBase:
         """Temporary method to update."""
-        aqhttp = model.session._AqSession__aqhttp
+        aqhttp = model.session._http
         data = {"model": {"model": model.__class__.__name__}}
         data.update(model.dump(**params))
         model_data = aqhttp.create("json/save", json_data=data)

@@ -384,7 +384,7 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         if dim and not isinstance(dim, int):
             raise AquariumModelError("Row and columns must be integers not.")
         if dim is not None:
-            if not self.field_type.is_part():
+            if not self.field_type.part:
                 raise AquariumModelError(
                     "Cannot set dimensions of a non-part for {} {}".format(
                         self.role, self.name

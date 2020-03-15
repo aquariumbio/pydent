@@ -23,7 +23,7 @@ class Job(ModelBase):
 
     @property
     def uploads(self):
-        http = self.session._AqSession__aqhttp
+        http = self.session._aqhttp
         return http.get("krill/uploads?job={}".format(self.id))["uploads"]
 
     @property
