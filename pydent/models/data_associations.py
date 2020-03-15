@@ -254,7 +254,7 @@ class Upload(ModelBase):
     # def _get_uploads_from_job_id(self, job_id):
 
     def _get_uploads_from_job(self):
-        http = self.session._AqSession__aqhttp
+        http = self.session._http
         return http.get("krill/uploads?job={}".format(self.job_id))["uploads"]
 
     def temp_url(self):
