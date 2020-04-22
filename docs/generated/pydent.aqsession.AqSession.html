@@ -662,55 +662,34 @@ of the server.</p>
 <p>Check out the <a class="reference internal" href="../aql/schemas.html#json-schema"><span class="std std-ref">JSON Schema page</span></a> for more information.</p>
 <p>You may also checkout <cite>AqSession.query_schema</cite> to view the JSON schema
 that validates the input.</p>
-<p>..code-block:: python</p>
-<blockquote>
-<div><dl>
-<dt>{</dt><dd><p>“__model__”: “Item”,
-“__description__”: “Get available primers in last 7 days”,
-“query”: {</p>
-<blockquote>
-<div><dl>
-<dt>“object_type”: {</dt><dd><dl>
-<dt>“query”: {</dt><dd><dl>
-<dt>“sample_type”: {</dt><dd><dl class="simple">
-<dt>“query”: {</dt><dd><p>“name”: “Primer”</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-<p>},
-“created_at”: {</p>
-<blockquote>
-<div><dl class="simple">
-<dt>“__time__”: {</dt><dd><p>“__days__”: -7</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
-<p>},
-“location”: {</p>
-<blockquote>
-<div><p>“__not__”: “deleted”</p>
-</div></blockquote>
-<p>}
-“__options__”: {</p>
-<blockquote>
-<div><p>“limit”: 1</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p>}</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Item&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;__description__&quot;</span><span class="p">:</span> <span class="s2">&quot;Get available primers in last 7 days&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;object_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;sample_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Primer&quot;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;created_at&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;__time__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;__days__&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">7</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;__not__&quot;</span><span class="p">:</span> <span class="s2">&quot;deleted&quot;</span>
+    <span class="p">}</span>
+    <span class="s2">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <dl class="simple">
 <dt>..versionadded:: 0.1.5a16</dt><dd><p>Added query method for complex queries</p>
 </dd>
