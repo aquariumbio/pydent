@@ -103,17 +103,42 @@ def where(arr: List[List[Any]], x) -> Tuple[List[int], ...]:
         for j, col in enumerate(row):
             if col == x:
               found.append((i, j))
-    return zip(*found)
+    indices = tuple(zip(*found))
+    return indices
 
+
+def fancy_indexing(arr, s):
+    if isinstance(s, tuple):
+        return [a[s[1]] for a in arr[s[0]]]
+    return arr[s]
+
+
+def fancy_setting(arr, s, x):
+    if isinstance(s, int):
+        fancy_setting(arr, slicer[s, :], x)
+    elif isinstance(s, tuple):
+        _a = fancy_indexing(arr, s[0])
+        if isinstance(s[0], int):
+            fancy_setting(_a, s[1], x)
+        elif isinstance(s[0], slice):
+            for __a in _a:
+                fancy_setting(__a, s[1], x)
+        else:
+            raise ValueError
+    elif isinstance(s, slice):
+        for i in list(range(len(arr)))[s]:
+            arr[i] = x
+    else:
+        raise ValueError
 
 
 class TestCollectionSetter:
     @pytest.mark.parametrize(
         "index",
         [
-            slicer[0],
-            slicer[1],
-            slicer[:3],
+            slicer[0, :],
+            slicer[1, :],
+            slicer[:3, :],
             slicer[:, :3],
             slicer[1, :3],
             slicer[:, -3:],
@@ -131,13 +156,12 @@ class TestCollectionSetter:
         print(index)
         example_collection[:, :] = None
         expected = zeros(example_collection.dimensions)
-        expected.__setitem__(index, 1)
-        print(expected)
-        example_collection.__setitem__(index, 1)
-        print(example_collection.matrix)
-        for r, c in zip(where(expected, 1)):
+        fancy_setting(expected, index, 1)
+        example_collection[index] = 1
+        i = where(expected, 1)
+        for r, c in zip(*where(expected, 1)):
             assert example_collection[r, c] == 1
-        for r, c in zip(where(expected, 1)):
+        for r, c in zip(*where(expected, None)):
             assert example_collection[r, c] != 1
 
         for pa in example_collection.part_associations:
