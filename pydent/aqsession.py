@@ -424,7 +424,7 @@ class AqSession(SessionABC):
         You may also checkout `AqSession.query_schema` to view the JSON schema
         that validates the input.
 
-        ..code-block:: python
+        .. code-block:: python
 
             {
               "__model__": "Item",
