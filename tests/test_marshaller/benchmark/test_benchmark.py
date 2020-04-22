@@ -2,8 +2,6 @@ import time
 from uuid import uuid4
 
 import pytest
-from marshmallow import fields
-from marshmallow import Schema
 
 from pydent.marshaller.base import add_schema
 from pydent.marshaller.base import SchemaModel
@@ -64,41 +62,6 @@ class TestSpeed:
 
         return ControlModel
 
-    def Marshmallow2(self, base):
-        class MySchema(Schema):
-            field = fields.Raw()
-
-        class MarshmallowModelWithSchemaCreation:
-            @classmethod
-            def _set_data(cls, data):
-                instance = cls.__new__(cls)
-                _data = MySchema().load(data)
-                instance.__dict__.update(data)
-                return instance
-
-            def dump(self):
-                MySchema().dump(self.__dict__)
-
-        return MarshmallowModelWithSchemaCreation
-
-    def Marshmallow(self, base):
-        class MySchema(Schema):
-            field = fields.Raw()
-
-        schema = MySchema()
-
-        class MarshmallowModel:
-            @classmethod
-            def _set_data(cls, data):
-                instance = cls.__new__(cls)
-                _data = schema.load(data)
-                instance.__dict__.update(data)
-                return instance
-
-            def dump(self):
-                schema.dump(self.__dict__)
-
-        return MarshmallowModel
 
     @staticmethod
     def random_data():
@@ -119,9 +82,7 @@ class TestSpeed:
         WithFields,
         CachedCallback,
         NoCacheCallback,
-        ControlModel,
-        Marshmallow,
-        Marshmallow2,
+        ControlModel
     ]
 
     @pytest.mark.parametrize("model", models)

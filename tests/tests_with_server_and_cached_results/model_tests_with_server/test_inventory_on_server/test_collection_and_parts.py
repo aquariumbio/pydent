@@ -1,8 +1,7 @@
 from uuid import uuid4
 
-import numpy as np
 import pytest
-
+from typing import List, Tuple, Any
 
 @pytest.fixture
 def example_part_association(session):
@@ -91,6 +90,23 @@ class Slicer:
 slicer = Slicer()
 
 
+def zeros(dims: Tuple[int, int]):
+    arr = []
+    for r in range(dims[0]):
+        arr.append([0] * dims[1])
+    return arr
+
+
+def where(arr: List[List[Any]], x) -> Tuple[List[int], ...]:
+    found = []
+    for i, row in enumerate(arr):
+        for j, col in enumerate(row):
+            if col == x:
+              found.append((i, j))
+    return zip(*found)
+
+
+
 class TestCollectionSetter:
     @pytest.mark.parametrize(
         "index",
@@ -114,14 +130,14 @@ class TestCollectionSetter:
     def test_set_rc(self, session, example_collection, index):
         print(index)
         example_collection[:, :] = None
-        expected = np.zeros(example_collection.dimensions)
+        expected = zeros(example_collection.dimensions)
         expected.__setitem__(index, 1)
         print(expected)
         example_collection.__setitem__(index, 1)
         print(example_collection.matrix)
-        for r, c in zip(*np.where(expected == 1)):
+        for r, c in zip(where(expected, 1)):
             assert example_collection[r, c] == 1
-        for r, c in zip(*np.where(expected != 1)):
+        for r, c in zip(where(expected, 1)):
             assert example_collection[r, c] != 1
 
         for pa in example_collection.part_associations:
