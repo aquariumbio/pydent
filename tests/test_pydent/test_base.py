@@ -275,3 +275,44 @@ def test_load_many(base, fake_session):
     assert len(parent.children) == 2
     assert isinstance(parent.children[0], Child)
     assert parent.children[0].name == "Child1"
+
+
+def test_uri(base):
+    """Expect with with the `include_uri` key includes the default URI"""
+    @add_schema
+    class MyModel(base):
+        pass
+
+    model = MyModel()
+    model.id = 10
+    assert model.uri == "http://aquarium.org/my_models/10"
+
+
+def test_dump_uri(base):
+    """Expect with with the `include_uri` key includes the default URI"""
+    @add_schema
+    class MyModel(base):
+        pass
+
+    model = MyModel()
+    model.id = 10
+    no_uri = model.dump()
+    with_uri = model.dump(include_uri=True)
+    assert '__uri__' not in no_uri
+    assert '__uri__' in with_uri
+    assert with_uri['__uri__'] == "http://aquarium.org/my_models/10"
+
+
+def test_dump_model(base):
+    """Expect with with the `include_uri` key includes the default URI"""
+    @add_schema
+    class MyModel(base):
+        pass
+
+    model = MyModel()
+    model.id = 10
+    no_mt = model.dump()
+    with_mt = model.dump(include_model_type=True)
+    assert '__model__' not in no_mt
+    assert '__model__' in with_mt
+    assert with_mt['__model__'] == 'MyModel'

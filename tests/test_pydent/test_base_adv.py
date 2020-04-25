@@ -60,3 +60,50 @@ def test_nested_dump_relations():
         "sample_type_id": 2,
         "field_type_id": None,
     }
+
+
+def test_nested_dump_uri(fake_session):
+    @add_schema
+    class Book(ModelBase):
+        pass
+
+
+    @add_schema
+    class Author(ModelBase):
+        fields = dict(books=HasMany("Book", ref="book_id", callback="foo"))
+
+        def __init__(self):
+            super().__init__(books=None)
+
+        def foo(self, *args):
+            return [Book.load_from({'id': 10}, fake_session)]
+
+    a = Author.load_from({'id': 3}, fake_session)
+
+    data = a.dump(include='books', include_uri=True)
+    assert data['__uri__'] == fake_session.url + "/" + "authors/3"
+    assert data['books'][0]['__uri__'] == fake_session.url + "/" + "books/10"
+
+
+def test_nested_model_type(fake_session):
+
+    @add_schema
+    class Book(ModelBase):
+        pass
+
+    @add_schema
+    class Author(ModelBase):
+        fields = dict(books=HasMany("Book", ref="book_id", callback="foo"))
+
+        def __init__(self):
+            super().__init__(books=None)
+
+        def foo(self, *args):
+            return [Book.load_from({'id': 10}, fake_session)]
+
+    a = Author.load_from({'id': 3}, fake_session)
+
+    data = a.dump(include='books', include_model_type=True)
+    assert data['__model__'] == "Author"
+    assert data['books'][0]['__model__'] == "Book"
+
