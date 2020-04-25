@@ -61,6 +61,7 @@ from pydent.marshaller import SchemaModel
 from pydent.sessionabc import SessionABC
 from pydent.utils import url_build
 
+
 class ModelBase(SchemaModel):
     """Base class for Aquarium models. Subclass of.
 
@@ -74,8 +75,12 @@ class ModelBase(SchemaModel):
     PRIMARY_KEY = "id"
     GLOBAL_KEY = "rid"
     SERVER_MODEL_NAME = None
-    DEFAULT_COPY_KEEP_UNANONYMOUS = ["Item", "Sample", "Collection"]
+    DEFAULT_COPY_KEEP_UNANONYMOUS = (
+        ["Item", "Sample", "Collection"]
+    )  # if copying the model instance, these models types will reset the id as to not modify existing server inventory
     DEFAULT_NAMESPACE = "http://aquarium.org"
+    URI_DUMP_KEY = '__uri__'
+    MODEL_TYPE_DUMP_KEY = '__model__'
     counter = itertools.count()
     id = None
     rid = None
@@ -513,9 +518,9 @@ class ModelBase(SchemaModel):
         )
         if issubclass(obj.__class__, ModelBase):
             if include_model_type:
-                data['__model__'] = obj.get_server_model_name()
+                data[cls.MODEL_TYPE_DUMP_KEY] = obj.get_server_model_name()
             if include_uri:
-                data['__uri__'] = obj.uri
+                data[cls.URI_DUMP_KEY] = obj.uri
         return data
 
     def dump(self, only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
