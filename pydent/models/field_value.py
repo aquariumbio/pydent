@@ -208,6 +208,8 @@ class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
         # allowable_child_types=Function('get_allowable_child_types'),
     )
 
+    METATYPE = 'field_type'
+
     def __init__(
         self,
         name=None,
