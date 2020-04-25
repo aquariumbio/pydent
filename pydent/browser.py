@@ -720,7 +720,6 @@ class Browser(QueryInterfaceABC):
                     else:
                         self.log.error(
                             "attr: {attr}={model_attr}, ref: {ref}={model_ref}".format(
-                                m1=model,
                                 ref=ref,
                                 attr=attr,
                                 model_attr=model_attr,
@@ -1129,7 +1128,7 @@ class Browser(QueryInterfaceABC):
                         new_edges.append((key_func(m2)[0], key_func(m1)[0], data))
             except ForbiddenRequestError as e:
                 msg = (
-                    "An exception occurred during {f} while strict_cache == True.\n"
+                    "An exception occurred while strict_cache == True.\n"
                     "This is most likely due to the cache_func not being thorough.\n"
                     "{}".format(str(e))
                 )

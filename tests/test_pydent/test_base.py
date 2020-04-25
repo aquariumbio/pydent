@@ -278,7 +278,8 @@ def test_load_many(base, fake_session):
 
 
 def test_uri(base):
-    """Expect with with the `include_uri` key includes the default URI"""
+    """Expect with with the `include_uri` key includes the default URI."""
+
     @add_schema
     class MyModel(base):
         pass
@@ -289,7 +290,8 @@ def test_uri(base):
 
 
 def test_dump_uri(base):
-    """Expect with with the `include_uri` key includes the default URI"""
+    """Expect with with the `include_uri` key includes the default URI."""
+
     @add_schema
     class MyModel(base):
         pass
@@ -298,13 +300,14 @@ def test_dump_uri(base):
     model.id = 10
     no_uri = model.dump()
     with_uri = model.dump(include_uri=True)
-    assert '__uri__' not in no_uri
-    assert '__uri__' in with_uri
-    assert with_uri['__uri__'] == "http://aquarium.org/my_models/10"
+    assert "__uri__" not in no_uri
+    assert "__uri__" in with_uri
+    assert with_uri["__uri__"] == "http://aquarium.org/my_models/10"
 
 
 def test_dump_model(base):
-    """Expect with with the `include_uri` key includes the default URI"""
+    """Expect with with the `include_uri` key includes the default URI."""
+
     @add_schema
     class MyModel(base):
         pass
@@ -313,6 +316,6 @@ def test_dump_model(base):
     model.id = 10
     no_mt = model.dump()
     with_mt = model.dump(include_model_type=True)
-    assert '__model__' not in no_mt
-    assert '__model__' in with_mt
-    assert with_mt['__model__'] == 'MyModel'
+    assert "__model__" not in no_mt
+    assert "__model__" in with_mt
+    assert with_mt["__model__"] == "MyModel"

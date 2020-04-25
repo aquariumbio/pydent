@@ -179,8 +179,8 @@ class AqSession(SessionABC):
         self._using_cache = False
         self.init_cache()
         self.parent_session = (
-            None
-        )  #: the parent session, if derived from another session
+            None  #: the parent session, if derived from another session
+        )
 
     @property
     def interface_class(self) -> Type:

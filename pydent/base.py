@@ -44,9 +44,11 @@ relationships - models relationships are stored
 """
 import itertools
 from copy import deepcopy
+from typing import Any
 from typing import Dict
 from typing import List
-from typing import Union, Tuple, Any
+from typing import Tuple
+from typing import Union
 
 from inflection import tableize
 
@@ -75,12 +77,14 @@ class ModelBase(SchemaModel):
     PRIMARY_KEY = "id"
     GLOBAL_KEY = "rid"
     SERVER_MODEL_NAME = None
-    DEFAULT_COPY_KEEP_UNANONYMOUS = (
-        ["Item", "Sample", "Collection"]
-    )  # if copying the model instance, these models types will reset the id as to not modify existing server inventory
+    DEFAULT_COPY_KEEP_UNANONYMOUS = [
+        "Item",
+        "Sample",
+        "Collection",
+    ]  # if copying the model instance, these models types will reset the id as to not modify existing server inventory
     DEFAULT_NAMESPACE = "http://aquarium.org"
-    URI_DUMP_KEY = '__uri__'
-    MODEL_TYPE_DUMP_KEY = '__model__'
+    URI_DUMP_KEY = "__uri__"
+    MODEL_TYPE_DUMP_KEY = "__model__"
     counter = itertools.count()
     id = None
     rid = None
@@ -183,7 +187,7 @@ class ModelBase(SchemaModel):
 
     @classmethod
     def load_from(
-            cls, data: dict, owner: "ModelBase" = None
+        cls, data: dict, owner: "ModelBase" = None
     ) -> Union[List["ModelBase"], "ModelBase"]:
         """Create a new model instance from loaded attributes.
 
@@ -244,7 +248,7 @@ class ModelBase(SchemaModel):
         return self._session
 
     @session.setter
-    def session(self, new_session: "AqSession"):
+    def session(self, new_session: "SessionABC"):
         """Sets the session of the model.
 
         .. versionchanged:: 0.1.5a8
@@ -267,7 +271,7 @@ class ModelBase(SchemaModel):
             )
         self._session = new_session
 
-    def connect_to_session(self, session: "AqSession"):
+    def connect_to_session(self, session: "SessionABC"):
         """Connect model to a session.
 
         :param session: the :class:`AqSession <pydent.aqsession.AqSession>`
@@ -305,7 +309,9 @@ class ModelBase(SchemaModel):
         return self.interface(self.session)
 
     @classmethod
-    def interface(cls, session: "AqSession") -> Union[QueryInterface, BrowserInterface]:
+    def interface(
+        cls, session: "SessionABC"
+    ) -> Union[QueryInterface, BrowserInterface]:
         """Creates a model interface from this class and a session.
 
         This method can be overridden in model definitions for special
@@ -314,14 +320,14 @@ class ModelBase(SchemaModel):
         return session.model_interface(cls.__name__)
 
     @classmethod
-    def find(cls, session: "AqSession", model_id: Union[int, str]) -> "ModelBase":
+    def find(cls, session: "SessionABC", model_id: Union[int, str]) -> "ModelBase":
         """Finds a model instance by its model_id."""
         interface = cls.interface(session)
         return interface.find(model_id)
 
     @classmethod
     def where(
-            cls, session: "AqSession", params: Dict
+        cls, session: "SessionABC", params: Dict
     ) -> Union[None, List["ModelBase"]]:
         """Finds a list of models by some parameters."""
         if params is None:
@@ -330,7 +336,7 @@ class ModelBase(SchemaModel):
         return interface.where(params)
 
     @classmethod
-    def one(cls, session: "AqSession", query: Dict, **kwargs) -> "ModelBase":
+    def one(cls, session: "SessionABC", query: Dict, **kwargs) -> "ModelBase":
         interface = cls.interface(session)
         query = dict(query)
         query.update(kwargs)
@@ -358,7 +364,7 @@ class ModelBase(SchemaModel):
         return model.find(self.session, model_id)
 
     def where_callback(
-            self, model_name: str, *args, **kwargs
+        self, model_name: str, *args, **kwargs
     ) -> Union[None, List["ModelBase"]]:
         """Finds models using a model interface and a set of parameters.
 
@@ -494,27 +500,36 @@ class ModelBase(SchemaModel):
 
     @property
     def uri(self) -> str:
-        """
-        Return a URI for this model using the attached session url and tableized model name. For
-        example, `http://aquarium.org/samples/`.
-        If no session is attached, use the `ModelBase.DEFAULT_NAMESPACE` key for the url.
+        """Return a URI for this model using the attached session url and
+        tableized model name. For example, `http://aquarium.org/samples/`. If
+        no session is attached, use the `ModelBase.DEFAULT_NAMESPACE` key for
+        the url.
 
         :return: the instance URI
         """
-        if hasattr(self, 'session') and self.session:
+        if hasattr(self, "session") and self.session:
             url = self.session.url
         else:
             url = self.DEFAULT_NAMESPACE
         return url_build(url, self.get_tableized_name(), str(self._primary_key))
 
     @classmethod
-    def _dump(cls, obj: 'ModelBase', only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
-              include: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
-              ignore: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
-              include_model_type: bool = False,
-              include_uri: bool = False) -> dict:
+    def _dump(
+        cls,
+        obj: "ModelBase",
+        only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        include: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        ignore: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        include_model_type: bool = False,
+        include_uri: bool = False,
+    ) -> dict:
         data = super()._dump(
-            obj, only=only, include=include, ignore=ignore, include_model_type=include_model_type, include_uri=include_uri
+            obj,
+            only=only,
+            include=include,
+            ignore=ignore,
+            include_model_type=include_model_type,
+            include_uri=include_uri,
         )
         if issubclass(obj.__class__, ModelBase):
             if include_model_type:
@@ -523,13 +538,15 @@ class ModelBase(SchemaModel):
                 data[cls.URI_DUMP_KEY] = obj.uri
         return data
 
-    def dump(self, only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
-             include: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
-             ignore: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
-             include_model_type: bool = False,
-             include_uri: bool = False) -> dict:
-        """
-        Dump (serialize) the Aquarium model instance to JSON
+    def dump(
+        self,
+        only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        include: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        ignore: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        include_model_type: bool = False,
+        include_uri: bool = False,
+    ) -> dict:
+        """Dump (serialize) the Aquarium model instance to JSON.
 
         :param only: dump only the provided keys
         :param include: include the provided nested dump keys
@@ -540,9 +557,14 @@ class ModelBase(SchemaModel):
             `ModelBase.DEFAULT_NAMESPACE` class attribute, as in `http://aquarium.org/samples/10`.
         :return: serialized model instance
         """
-        return self._dump(self, only=only, include=include, ignore=ignore,
-                          include_model_type=include_model_type,
-                          include_uri=include_uri)
+        return self._dump(
+            self,
+            only=only,
+            include=include,
+            ignore=ignore,
+            include_model_type=include_model_type,
+            include_uri=include_uri,
+        )
 
     def _rid_dict(self):
         """Dictionary of all models attached to this model keyed by their
