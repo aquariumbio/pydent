@@ -46,7 +46,7 @@ import itertools
 from copy import deepcopy
 from typing import Dict
 from typing import List
-from typing import Union
+from typing import Union, Tuple, Any
 
 from inflection import tableize
 
@@ -59,7 +59,7 @@ from pydent.marshaller import fields
 from pydent.marshaller import ModelRegistry
 from pydent.marshaller import SchemaModel
 from pydent.sessionabc import SessionABC
-
+from pydent.utils import url_build
 
 class ModelBase(SchemaModel):
     """Base class for Aquarium models. Subclass of.
@@ -75,6 +75,7 @@ class ModelBase(SchemaModel):
     GLOBAL_KEY = "rid"
     SERVER_MODEL_NAME = None
     DEFAULT_COPY_KEEP_UNANONYMOUS = ["Item", "Sample", "Collection"]
+    DEFAULT_NAMESPACE = "http://aquarium.org"
     counter = itertools.count()
     id = None
     rid = None
@@ -92,12 +93,12 @@ class ModelBase(SchemaModel):
 
     @classmethod
     def _set_data(cls, data: dict, owner: "ModelBase") -> "ModelBase":
+        instance = cls.__new__(cls, session=owner.session)
         if not hasattr(owner, "session"):
             raise NoSessionError(
                 "Cannot instantiate new model because its data parent"
                 " {} has no 'session' attribute".format(owner)
             )
-        instance = cls.__new__(cls, session=owner.session)
         instance.raw = data
         cls.__init__(instance)
         ModelBase.__init__(instance, **data)
@@ -177,7 +178,7 @@ class ModelBase(SchemaModel):
 
     @classmethod
     def load_from(
-        cls, data: dict, owner: "ModelBase" = None
+            cls, data: dict, owner: "ModelBase" = None
     ) -> Union[List["ModelBase"], "ModelBase"]:
         """Create a new model instance from loaded attributes.
 
@@ -315,7 +316,7 @@ class ModelBase(SchemaModel):
 
     @classmethod
     def where(
-        cls, session: "AqSession", params: Dict
+            cls, session: "AqSession", params: Dict
     ) -> Union[None, List["ModelBase"]]:
         """Finds a list of models by some parameters."""
         if params is None:
@@ -352,7 +353,7 @@ class ModelBase(SchemaModel):
         return model.find(self.session, model_id)
 
     def where_callback(
-        self, model_name: str, *args, **kwargs
+            self, model_name: str, *args, **kwargs
     ) -> Union[None, List["ModelBase"]]:
         """Finds models using a model interface and a set of parameters.
 
@@ -485,6 +486,58 @@ class ModelBase(SchemaModel):
                     else:
                         cls._flatten_deserialized_data([val], memo)
         return memo
+
+    @property
+    def uri(self) -> str:
+        """
+        Return a URI for this model using the attached session url and tableized model name. For
+        example, `http://aquarium.org/samples/`.
+        If no session is attached, use the `ModelBase.DEFAULT_NAMESPACE` key for the url.
+
+        :return: the instance URI
+        """
+        if hasattr(self, 'session') and self.session:
+            url = self.session.url
+        else:
+            url = self.DEFAULT_NAMESPACE
+        return url_build(url, self.get_tableized_name(), str(self._primary_key))
+
+    @classmethod
+    def _dump(cls, obj: 'ModelBase', only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+              include: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+              ignore: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+              include_model_type: bool = False,
+              include_uri: bool = False) -> dict:
+        data = super()._dump(
+            obj, only=only, include=include, ignore=ignore, include_model_type=include_model_type, include_uri=include_uri
+        )
+        if issubclass(obj.__class__, ModelBase):
+            if include_model_type:
+                data['__model__'] = obj.get_server_model_name()
+            if include_uri:
+                data['__uri__'] = obj.uri
+        return data
+
+    def dump(self, only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+             include: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+             ignore: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+             include_model_type: bool = False,
+             include_uri: bool = False) -> dict:
+        """
+        Dump (serialize) the Aquarium model instance to JSON
+
+        :param only: dump only the provided keys
+        :param include: include the provided nested dump keys
+        :param ignore: ignore the provided keys
+        :param include_model_type: if True, include the model class type for each entry using the `__model__` key
+        :param include_uri: if True, include a URI using the session URL and the tableized model class name using
+            the `__uri__` key. If a session is not attached, look for the url namespace in the
+            `ModelBase.DEFAULT_NAMESPACE` class attribute, as in `http://aquarium.org/samples/10`.
+        :return: serialized model instance
+        """
+        return self._dump(self, only=only, include=include, ignore=ignore,
+                          include_model_type=include_model_type,
+                          include_uri=include_uri)
 
     def _rid_dict(self):
         """Dictionary of all models attached to this model keyed by their
