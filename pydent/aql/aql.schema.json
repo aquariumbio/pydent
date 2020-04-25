@@ -29,7 +29,9 @@
       },
       "minProperties": 1,
       "maxProperties": 1,
-      "required": ["__time__"],
+      "required": [
+        "__time__"
+      ],
       "additionalProperties": false
     },
     "value": {
@@ -87,10 +89,18 @@
       "patternProperties": {
         "^(?!__)\\w+(?<!__)$": {
           "anyOf": [
-            {"$ref": "#/definitions/queryObj"},
-            {"$ref": "#/definitions/value"},
-            {"$ref": "#/definitions/valueArray"},
-            {"#ref": "#/definitions/sql"}
+            {
+              "$ref": "#/definitions/queryObj"
+            },
+            {
+              "$ref": "#/definitions/value"
+            },
+            {
+              "$ref": "#/definitions/valueArray"
+            },
+            {
+              "#ref": "#/definitions/sql"
+            }
           ]
         }
       },
@@ -118,9 +128,27 @@
       "description": "Name of the Aquarium model",
       "type": "string"
     },
-    "__as__": {
-      "description": "Return value",
-      "type": "string"
+    "__json__": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "include_uri": {
+              "type": "boolean",
+              "default": true
+            },
+            "include_model_type": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "boolean",
+          "default": false
+        }
+      ]
     }
   },
   "additionalProperties": false,
