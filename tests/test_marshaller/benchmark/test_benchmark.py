@@ -62,7 +62,6 @@ class TestSpeed:
 
         return ControlModel
 
-
     @staticmethod
     def random_data():
         return {
@@ -77,13 +76,7 @@ class TestSpeed:
         model._set_data(data)
         assert True
 
-    models = [
-        EmptyModel,
-        WithFields,
-        CachedCallback,
-        NoCacheCallback,
-        ControlModel
-    ]
+    models = [EmptyModel, WithFields, CachedCallback, NoCacheCallback, ControlModel]
 
     @pytest.mark.parametrize("model", models)
     def test_set_data(self, benchmark, base, model):

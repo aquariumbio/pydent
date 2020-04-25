@@ -41,6 +41,7 @@ from inflection import underscore
 
 from .exceptions import TridentRequestError
 from .utils import url_build
+from pydent.marshaller.base import SchemaModel
 from pydent.marshaller.registry import ModelRegistry
 
 
@@ -765,7 +766,7 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
         return self.browser.all(model_class=self.model_name, opts=opts)
 
     # TODO: load_from using new session
-    def load(self, post_response: dict) -> List["ModelBase"]:
+    def load(self, post_response: dict) -> List[SchemaModel]:
         """Loads model instance(s) from data.
 
         Model instances will be of class defined by self.model. If data

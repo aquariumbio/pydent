@@ -182,16 +182,10 @@ class Planner(AFTMatcher):
 
         ANY = "ANY"  #: pick the first item that matches the set field_value
         RESTRICT = "RESTRICT"  #: restrict to the currently set allowable_field_type
-        PREFERRED = (
-            "PREFERRED"
-        )  #: (default) pick the item that matches the currently set aft, else
+        PREFERRED = "PREFERRED"  #: (default) pick the item that matches the currently set aft, else
         #: pick ANY item that matches the set field_value
-        RESTRICT_TO_ONE = (
-            "RESTRICT TO ONE"
-        )  #: will not select item if its being used in another active operation
-        RESTRICT_TO_ONE_ON_SERVER = (
-            "RESTRICT TO ONE ON SERVER"
-        )  #: will restrict to a single item across the plans on the server.
+        RESTRICT_TO_ONE = "RESTRICT TO ONE"  #: will not select item if its being used in another active operation
+        RESTRICT_TO_ONE_ON_SERVER = "RESTRICT TO ONE ON SERVER"  #: will restrict to a single item across the plans on the server.
         _DEFAULT = PREFERRED  #: default item selection preference
         _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]  #: all choices
 
@@ -311,7 +305,7 @@ class Planner(AFTMatcher):
         """Create the plan on Aquarium."""
         if self.plan.id:
             raise PlannerException(
-                "Cannot create plan since it already exists on the server (plan_id={})"
+                "Cannot create plan since it already exists on the server (plan_id={plan_id})"
                 " Did you mean .{save}() push an update to the server plan? You"
                 " can also create a copy of the new plan by calling .{replan}().".format(
                     plan_id=self.plan.id,
@@ -1624,7 +1618,7 @@ class Planner(AFTMatcher):
                 pa.plan_id = to_plan_id
                 self.session.utils.json_save("PlanAssociation", pa.dump())
         result = confirm(
-            "Move {} operations to plan_id = {}? (y|n): ".format(len(ops, to_plan_id))
+            "Move {} operations to plan_id = {}? (y|n): ".format(len(ops), to_plan_id)
         )
 
         if result == "y":

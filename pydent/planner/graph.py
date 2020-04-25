@@ -108,7 +108,7 @@ class PlannerGraph:
                 yield self.nxgraph.nodes[node]["operation"]
 
     def iter_operations(
-        self
+        self,
     ) -> Generator[Tuple[Union[str, int], Operation], None, None]:
         for node in self.nxgraph.nodes:
             if "operation" in self.nxgraph.nodes[node]:
