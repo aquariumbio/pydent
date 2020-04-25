@@ -106,7 +106,6 @@ import webbrowser
 from copy import copy
 from decimal import Decimal
 from typing import Dict
-from typing import Iterable
 from typing import List
 from typing import Type
 from typing import Union
