@@ -23,23 +23,23 @@ for filepath in glob(join(examples_folder, "*.json")):
     examples.append(load(filepath))
 example_ids = [e["__description__"] for e in examples]
 
-example_fixture = pytest.mark.parametrize("data", examples, ids=example_ids)
+example_fixture = pytest.mark.parametrize("query", examples, ids=example_ids)
 
 
 @example_fixture
-def test_validate(data):
-    validate_aql(data)
+def test_validate(query):
+    validate_aql(query)
 
 
 @example_fixture
-def test_aquarium_query_language_method(session, data):
+def test_aquarium_query_language_method(session, query):
     with session.with_cache() as sess:
-        aql(sess, data)
+        aql(sess, query)
 
 
 @example_fixture
-def test_query_from_session(session, data):
-    session().query(data)
+def test_query_from_session(session, query):
+    session().query(query)
 
 
 @example_fixture
@@ -56,9 +56,9 @@ def test_query_from_session(session, data):
         {"include_uri": True, "include_model_type": True},
     ],
 )
-def test_query_from_session_as_json(session, data, json_param):
-    data["__json__"] = json_param
-    results = session().query(data)
+def test_query_from_session_as_json(session, query, json_param):
+    query["__json__"] = json_param
+    results = session().query(query)
     assert isinstance(results, list)
     print(results)
     if results:
@@ -68,3 +68,9 @@ def test_query_from_session_as_json(session, data, json_param):
                 assert json_param["include_uri"] == ("__uri__" in results[0])
             if "include_model_type" in json_param:
                 assert json_param["include_model_type"] == ("__model__" in results[0])
+
+
+@example_fixture
+def test_query_page_size(session, query):
+    query["query"]["__options__"]["page_size"] = 2
+    results = session().query(query)
