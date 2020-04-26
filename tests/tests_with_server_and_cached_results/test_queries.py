@@ -132,3 +132,32 @@ def test_first_and_last_returns_emtpy(session):
     first = session.Sample.first(5, dict(nonexistant=1))
     assert last == [], "should be empty"
     assert first == [], "should be empty"
+
+
+def test_pagination(session):
+
+    num_pages = 3
+    for i, page in enumerate(session.Sample.pagination({}, page_size=5)):
+        print(page)
+        assert len(page) == 5
+        if i >= num_pages:
+            break
+
+
+def test_where_pagesize(session):
+
+    num_pages = 3
+    for i, sample in enumerate(
+        session.Sample.where({}, page_size=5, opts={"limit": 10})
+    ):
+        print(sample)
+
+
+def test_where_pagesize_with_browser(session):
+
+    num_pages = 3
+    with session.with_cache() as sess:
+        for i, sample in enumerate(
+            sess.Sample.where({}, page_size=5, opts={"limit": 10})
+        ):
+            print(sample)

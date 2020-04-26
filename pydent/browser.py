@@ -156,6 +156,7 @@ class Browser(QueryInterfaceABC):
         sample_type=None,
         methods=None,
         opts: Dict = None,
+        page_size: int = None,
         include: Dict = None,
     ):
         """Perform a 'where' query. If models are found in the browser cache,
@@ -173,7 +174,7 @@ class Browser(QueryInterfaceABC):
         if sample_type is not None:
             sample_type_id = self.find_by_name(sample_type, "SampleType").id
             query.update({"sample_type_id": sample_type_id})
-        if self.use_cache and not methods:
+        if self.use_cache and not methods and page_size is None:
             return self.cached_where(
                 query,
                 model_class,
@@ -184,7 +185,12 @@ class Browser(QueryInterfaceABC):
             )
         else:
             return self.server_where(
-                query, model_class, opts=opts, include=include, methods=methods
+                query,
+                model_class,
+                opts=opts,
+                include=include,
+                methods=methods,
+                page_size=page_size,
             )
 
     def __query_helper(
@@ -456,9 +462,9 @@ class Browser(QueryInterfaceABC):
             model_class, {found_model.id: found_model}
         )[0]
 
-    def server_where(self, query, model, opts, include, methods):
+    def server_where(self, query, model, opts, include, methods, page_size):
         return self.interface(model).where(
-            query, opts=opts, methods=methods, include=include
+            query, opts=opts, methods=methods, include=include, page_size=page_size
         )
 
     def cached_where(
@@ -472,7 +478,12 @@ class Browser(QueryInterfaceABC):
     ):
         if isinstance(query, str):
             server_models = self.server_where(
-                query, model, opts=opts, methods=methods, include=include
+                query,
+                model,
+                opts=opts,
+                methods=methods,
+                include=include,
+                page_size=None,
             )
             found_dict = {}
         elif [] in query.values():
