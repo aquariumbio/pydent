@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.models.operation &#8212; pydent 0.1.5a19 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/style.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a19</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/inventory.html">Inventory Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-samples">Creating new samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#updating-sample-properties">Updating sample properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-items">Creating new items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-collections">Creating new collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#saving-inventory">Saving inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aql/schemas.html">Aquarium Query Language Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../aql/schemas.html#aquarium-query-language-aql-schema">Aquarium Query Language (AQL) Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aql/schemas.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a19">0.1.5a19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a18">0.1.5a18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a17">0.1.5a17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a16">0.1.5a16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a15">0.1.5a15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a14">0.1.5a14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a13">0.1.5a13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a12">0.1.5a12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a11">0.1.5a11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.models.operation</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;Models related to operations and operation types.&quot;&quot;&quot;
+from pydent.base import ModelBase
+from pydent.exceptions import AquariumModelError
+from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.models.field_value_mixins import FieldTypeInterface
+from pydent.models.field_value_mixins import FieldValueInterface
+from pydent.relationships import Function
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import HasOneFromMany
+from pydent.relationships import Raw
+from pydent.utils import filter_list
+
+
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation">[docs]</a>@add_schema
+class Operation(FieldValueInterface, DataAssociatorMixin, ModelBase):
+    &quot;&quot;&quot;A Operation model.&quot;&quot;&quot;
+
+    fields = dict(
+        field_values=HasMany(
+            &quot;FieldValue&quot;, ref=&quot;parent_id&quot;, additional_args={&quot;parent_class&quot;: &quot;Operation&quot;}
+        ),
+        data_associations=HasManyGeneric(
+            &quot;DataAssociation&quot;, additional_args={&quot;parent_class&quot;: &quot;Operation&quot;}
+        ),
+        operation_type=HasOne(&quot;OperationType&quot;),
+        job_associations=HasMany(&quot;JobAssociation&quot;, &quot;Operation&quot;),
+        jobs=HasManyThrough(&quot;Job&quot;, &quot;JobAssociation&quot;),
+        plan_associations=HasMany(&quot;PlanAssociation&quot;, &quot;Operation&quot;),
+        plans=HasManyThrough(&quot;Plan&quot;, &quot;PlanAssociation&quot;),
+        status=Raw(default=&quot;planning&quot;),
+        routing=Function(&quot;get_routing&quot;),
+        user=HasOne(&quot;User&quot;),
+    )
+
+    METATYPE = &quot;operation_type&quot;
+
+<div class="viewcode-block" id="Operation.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.Operation.html#pydent.models.Operation.__init__">[docs]</a>    def __init__(
+        self, operation_type_id=None, operation_type=None, status=None, x=0, y=0
+    ):
+        super().__init__(
+            operation_type_id=operation_type_id,
+            operation_type=operation_type,
+            status=status,
+            field_values=None,
+            x=x,
+            y=y,
+        )</div>
+
+<div class="viewcode-block" id="Operation.get_routing"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.get_routing">[docs]</a>    def get_routing(self):
+        routing_dict = {}
+        fvs = self.field_values
+        ot = self.operation_type
+        if ot is None:
+            return routing_dict
+        for ft in ot.field_types:
+            if ft.routing is not None:
+                routing_dict[ft.routing] = None
+        if fvs is not None:
+            for fv in self.field_values:
+                ft = self.safe_get_field_type(fv)
+                if ft.routing is not None:
+                    routing_dict[ft.routing] = fv.sid
+        return routing_dict</div>
+
+    @property
+    def successors(self):
+        successors = []
+        if self.outputs:
+            for output in self.outputs:
+                for s in output.successors:
+                    successors.append(s.operation)
+        return successors
+
+    @property
+    def predecessors(self):
+        predecessors = []
+        if self.inputs:
+            for inputs in self.inputs:
+                for s in inputs.predecessors:
+                    predecessors.append(s.operation)
+        return predecessors
+
+<div class="viewcode-block" id="Operation.init_field_values"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.init_field_values">[docs]</a>    def init_field_values(self):
+        &quot;&quot;&quot;Initialize the :class:`FieldValue` from the :class:`FieldType` of
+        the parent :class:`Operation` type.&quot;&quot;&quot;
+        self.field_values = []
+        for field_type in self.get_metatype().field_types:
+            if not field_type.array:
+                self.new_field_value_from_field_type(field_type)
+        return self</div>
+
+<div class="viewcode-block" id="Operation.field_value_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.field_value_array">[docs]</a>    def field_value_array(self, name, role):
+        &quot;&quot;&quot;Returns :class:`FieldValue` array with name and role.&quot;&quot;&quot;
+        return filter_list(self.get_field_value_array(name, role))</div>
+
+<div class="viewcode-block" id="Operation.field_value"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.field_value">[docs]</a>    def field_value(self, name, role):
+        &quot;&quot;&quot;Returns :class:`FieldValue` with name and role.
+
+        Return None if not found.
+        &quot;&quot;&quot;
+        if self.field_values:
+            fvs = self.field_value_array(name, role)
+
+            if len(fvs) == 0:
+                return None
+
+            if len(fvs) == 1:
+                return fvs[0]
+
+            msg = &quot;More than one FieldValue found for the field value&quot;
+            msg += (
+                &quot; of operation {}.(id={}).{}.{}. Are you sure you didn&#39;t mean to &quot;
+                &quot;call &#39;field_value_array&#39;?&quot;
+            )
+            raise AquariumModelError(
+                msg.format(self.operation_type, self.id, role, name)
+            )</div>
+
+    @property
+    def plan(self):
+        return self.plans[0]
+
+    def input_array(self, name):
+        return self.get_field_value_array(name, &quot;input&quot;)
+
+    def output_array(self, name):
+        return self.get_field_value_array(name, &quot;output&quot;)
+
+<div class="viewcode-block" id="Operation.input"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.input">[docs]</a>    def input(self, name):
+        &quot;&quot;&quot;Returns the input :class:`FieldValue` by name.&quot;&quot;&quot;
+        return self.field_value(name, &quot;input&quot;)</div>
+
+<div class="viewcode-block" id="Operation.output"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.output">[docs]</a>    def output(self, name):
+        &quot;&quot;&quot;Returns the output :class:`FieldValue` by name.&quot;&quot;&quot;
+        return self.field_value(name, &quot;output&quot;)</div>
+
+<div class="viewcode-block" id="Operation.add_to_input_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.add_to_input_array">[docs]</a>    def add_to_input_array(
+        self, name, sample=None, item=None, value=None, container=None
+    ):
+        &quot;&quot;&quot;Creates and adds a new input :class:`FieldValue`. When setting
+        values to items/samples/containers, the item/sample/container must be
+        saved.
+
+        :param name: name of the FieldType/FieldValue
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the newly created FieldValue
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        return self.new_field_value(
+            name,
+            &quot;input&quot;,
+            dict(sample=sample, item=item, value=value, container=container),
+        )</div>
+
+<div class="viewcode-block" id="Operation.add_to_output_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.add_to_output_array">[docs]</a>    def add_to_output_array(
+        self, name, sample=None, item=None, value=None, container=None
+    ):
+        &quot;&quot;&quot;Creates and adds a new output :class:`FieldValue`. When setting
+        values to items/samples/containers, the item/sample/container must be
+        saved.
+
+        :param name: name of the FieldType/FieldValue
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the newly created FieldValue
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        return self.new_field_value(
+            name,
+            &quot;output&quot;,
+            dict(sample=sample, item=item, value=value, container=container),
+        )</div>
+
+    @property
+    def inputs(self):
+        &quot;&quot;&quot;Return a list of all input :class:`FieldValues`&quot;&quot;&quot;
+        return [fv for fv in self.field_values if fv.role == &quot;input&quot;]
+
+    @property
+    def outputs(self):
+        &quot;&quot;&quot;Return a list of all output :class:`FieldValues`&quot;&quot;&quot;
+        return [fv for fv in self.field_values if fv.role == &quot;output&quot;]
+
+<div class="viewcode-block" id="Operation.set_input"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.set_input">[docs]</a>    def set_input(
+        self, name, sample=None, item=None, value=None, container=None, object_type=None
+    ):
+        &quot;&quot;&quot;Sets a input :class:`FieldValue` to a value. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldValue/FieldType
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the existing FieldValue modified
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        if object_type is None and container:
+            object_type = container
+        return self.set_field_value(
+            name,
+            &quot;input&quot;,
+            dict(sample=sample, item=item, value=value, object_type=container),
+        )</div>
+
+<div class="viewcode-block" id="Operation.set_output"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.set_output">[docs]</a>    def set_output(
+        self, name, sample=None, item=None, value=None, container=None, object_type=None
+    ):
+        &quot;&quot;&quot;Sets a output :class:`FieldValue` to a value. When setting values to
+        items/samples/containers, the item/sample/container must be saved.
+
+        :param name: name of the FieldValue/FieldType
+        :type name: string
+        :param sample: an existing Sample
+        :type sample: Sample
+        :param item: an existing Item
+        :type item: Item
+        :param value: a string or number value
+        :type value: string|integer
+        :param container: an existing ObjectType
+        :type container: ObjectType
+        :return: the existing FieldValue modified
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        if object_type is None and container:
+            object_type = container
+        return self.set_field_value(
+            name,
+            &quot;output&quot;,
+            dict(sample=sample, item=item, value=value, object_type=object_type),
+        )</div>
+
+<div class="viewcode-block" id="Operation.set_input_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.set_input_array">[docs]</a>    def set_input_array(self, name, values):
+        &quot;&quot;&quot;Sets input :class:`FieldValue` array using values. Values should be
+        a list of dictionaries containing sample, item, container, or values
+        keys. When setting values to items/samples/containers, the
+        item/sample/container must be saved.
+
+        :param name: name of the FieldType/FieldValues being modified
+        :type name: string
+        :param values: list of dictionary of values to set
+                (e.g. [{&quot;sample&quot;: mysample}, {&quot;item&quot;: myitem}])
+        :type values: list
+        :return: the list of modified FieldValues
+        :rtype: list
+        &quot;&quot;&quot;
+        return self.set_field_value_array(name, &quot;input&quot;, values)</div>
+
+<div class="viewcode-block" id="Operation.set_output_array"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.set_output_array">[docs]</a>    def set_output_array(self, name, values):
+        &quot;&quot;&quot;Sets output :class:`FieldValue` array using values. Values should be
+        a list of dictionaries containing sample, item, container, or values
+        keys. When setting values to items/samples/containers, the
+        item/sample/container must be saved.
+
+        :param name: name of the FieldType/FieldValues being modified
+        :type name: string
+        :param values: list of dictionary of values to set
+                (e.g. [{&quot;sample&quot;: mysample}, {&quot;item&quot;: myitem}])
+        :type values: list
+        :return: the list of modified FieldValues
+        :rtype: list
+        &quot;&quot;&quot;
+        return self.set_field_value_array(name, &quot;output&quot;, values)</div>
+
+<div class="viewcode-block" id="Operation.show"><a class="viewcode-back" href="../../../models.html#pydent.models.Operation.show">[docs]</a>    def show(self, pre=&quot;&quot;):
+        &quot;&quot;&quot;Print the operation nicely.&quot;&quot;&quot;
+        print(pre + self.operation_type.name + &quot; &quot; + str(self.cost))
+        for field_value in self.field_values:
+            field_value.show(pre=pre + &quot;  &quot;)</div>
+
+    def __str__(self):
+        return self._to_str(operation_type_name=self.operation_type.name)</div>
+
+
+<div class="viewcode-block" id="OperationType"><a class="viewcode-back" href="../../../models.html#pydent.models.OperationType">[docs]</a>@add_schema
+class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
+    &quot;&quot;&quot;Represents an OperationType, which is the definition of a protocol in
+    Aquarium.&quot;&quot;&quot;
+
+    fields = dict(
+        operations=HasMany(&quot;Operation&quot;, &quot;OperationType&quot;),
+        field_types=HasMany(
+            &quot;FieldType&quot;,
+            ref=&quot;parent_id&quot;,
+            additional_args={&quot;parent_class&quot;: &quot;OperationType&quot;},
+        ),
+        codes=HasManyGeneric(&quot;Code&quot;),
+        cost_model=HasOneFromMany(
+            &quot;Code&quot;,
+            ref=&quot;parent_id&quot;,
+            additional_args={&quot;parent_class&quot;: &quot;OperationType&quot;, &quot;name&quot;: &quot;cost_model&quot;},
+        ),
+        documentation=HasOneFromMany(
+            &quot;Code&quot;,
+            ref=&quot;parent_id&quot;,
+            additional_args={&quot;parent_class&quot;: &quot;OperationType&quot;, &quot;name&quot;: &quot;documentation&quot;},
+        ),
+        precondition=HasOneFromMany(
+            &quot;Code&quot;,
+            ref=&quot;parent_id&quot;,
+            additional_args={&quot;parent_class&quot;: &quot;OperationType&quot;, &quot;name&quot;: &quot;precondition&quot;},
+        ),
+        protocol=HasOneFromMany(
+            &quot;Code&quot;,
+            ref=&quot;parent_id&quot;,
+            additional_args={&quot;parent_class&quot;: &quot;OperationType&quot;, &quot;name&quot;: &quot;protocol&quot;},
+        ),
+    )
+
+    def code(self, accessor):
+        if accessor in [&quot;protocol&quot;, &quot;precondition&quot;, &quot;documentation&quot;, &quot;cost_model&quot;]:
+            return getattr(self, accessor)
+        return None
+
+    def instance(self, xpos=0, ypos=0):
+        operation = self.session.Operation.new(
+            operation_type_id=self.id, status=&quot;planning&quot;, x=xpos, y=ypos
+        )
+        operation.operation_type = self
+        operation.init_field_values()
+        return operation
+
+<div class="viewcode-block" id="OperationType.field_type"><a class="viewcode-back" href="../../../models.html#pydent.models.OperationType.field_type">[docs]</a>    def field_type(self, name, role):
+        if self.field_types:
+            fts = filter_list(self.field_types, role=role, name=name)
+            if len(fts) &gt; 0:
+                return fts[0]</div>
+
+    def output(self, name):
+        return self.field_type(name, &quot;output&quot;)
+
+    def input(self, name):
+        return self.field_type(name, &quot;input&quot;)
+
+<div class="viewcode-block" id="OperationType.save"><a class="viewcode-back" href="../../../models.html#pydent.models.OperationType.save">[docs]</a>    def save(self):
+        &quot;&quot;&quot;Saves the Operation Type to the Aquarium server.
+
+        Requires this Operation Type to be connected to a session.
+        &quot;&quot;&quot;
+        return self.reload(self.session.utils.create_operation_type(self))</div>
+
+    def to_save_json(self):
+        op_data = self.dump(
+            include={
+                &quot;field_types&quot;: {&quot;allowable_field_types&quot;: {}},
+                &quot;protocol&quot;: {},
+                &quot;cost_model&quot;: {},
+                &quot;documentation&quot;: {},
+                &quot;precondition&quot;: {},
+            }
+        )
+
+        # Format &#39;sample_type&#39; and &#39;object_type&#39; keys for afts
+        for ft_d, ft in zip(op_data[&quot;field_types&quot;], self.field_types):
+            for aft_d, aft in zip(
+                ft_d[&quot;allowable_field_types&quot;], ft.allowable_field_types
+            ):
+                aft_d[&quot;sample_type&quot;] = {&quot;name&quot;: aft.sample_type.name}
+                aft_d[&quot;object_type&quot;] = {&quot;name&quot;: aft.object_type.name}
+        return op_data
+
+    def _get_create_json(self):
+        return self.to_save_json()
+
+    def _get_update_json(self):
+        return self.to_save_json()
+
+    def __str__(self):
+        return self._to_str(&quot;id&quot;, &quot;name&quot;, &quot;category&quot;)</div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,2073 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.planner.planner &#8212; pydent 0.1.5a19 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/style.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a19</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/inventory.html">Inventory Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-samples">Creating new samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#updating-sample-properties">Updating sample properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-items">Creating new items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-collections">Creating new collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#saving-inventory">Saving inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aql/schemas.html">Aquarium Query Language Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../aql/schemas.html#aquarium-query-language-aql-schema">Aquarium Query Language (AQL) Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aql/schemas.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a19">0.1.5a19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a18">0.1.5a18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a17">0.1.5a17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a16">0.1.5a16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a15">0.1.5a15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a14">0.1.5a14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a13">0.1.5a13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a12">0.1.5a12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a11">0.1.5a11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.planner.planner</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;Planner.&quot;&quot;&quot;
+import itertools
+import random
+import webbrowser
+from collections import defaultdict
+from copy import deepcopy
+from functools import wraps
+from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import Iterable
+from typing import List
+from typing import Tuple
+from typing import Type
+from typing import Union
+
+import networkx as nx
+
+from .plan_optimizer import PlanOptimizer
+from pydent.aqsession import AqSession
+from pydent.base import ModelBase
+from pydent.exceptions import PlannerException
+from pydent.exceptions import PlannerVerificationException
+from pydent.exceptions import TridentBaseException
+from pydent.models import AllowableFieldType
+from pydent.models import FieldType
+from pydent.models import FieldValue
+from pydent.models import Item
+from pydent.models import ObjectType
+from pydent.models import Operation
+from pydent.models import OperationType
+from pydent.models import Plan
+from pydent.models import Sample
+from pydent.models import Wire
+from pydent.planner.graph import PlannerGraph
+from pydent.planner.graph import PlannerLayout
+from pydent.planner.utils import _id_getter
+from pydent.planner.utils import arr_to_pairs
+from pydent.planner.utils import get_subgraphs
+from pydent.utils import empty_copy
+from pydent.utils import logger
+from pydent.utils import make_async
+from pydent.utils import QueryBuilder
+
+QuickWireTargetType = Union[FieldValue, Operation, Tuple[Operation, str]]
+UnresolvedWireTarget = Union[
+    Operation, Tuple[Operation, str], str, FieldType, OperationType, FieldValue
+]
+
+
+def plan_verification_wrapper(fxn: Callable):
+    &quot;&quot;&quot;A wrapper that verifies that all FieldValues or Operations passed as
+    arguments exist in the plan.&quot;&quot;&quot;
+
+    @wraps(fxn)
+    def wrapper(self, *args, **kwargs):
+        if not issubclass(self.__class__, Planner):
+            raise ValueError(
+                &quot;Cannot apply &#39;verify_plan_models&#39; to a non-planner instance.&quot;
+            )
+        for arg in args:
+            if issubclass(arg.__class__, FieldValue):
+                fv = arg
+                if not self._contains_op(fv.operation):
+                    fv_ref = &quot;{} {}&quot;.format(fv.role, fv.name)
+                    msg = &#39;FieldValue &quot;{}&quot; not found in planner.&#39;
+                    raise PlannerVerificationException(msg.format(fv_ref))
+            elif issubclass(arg.__class__, Operation):
+                op = arg
+                if not self._contains_op(op):
+                    op_ref = &quot;{}&quot;.format(op.operation_type.name)
+                    msg = &#39;Operation &quot;{}&quot; not found in planner.&#39;
+                    raise PlannerVerificationException(msg.format(op_ref))
+        return fxn(self, *args, **kwargs)
+
+    return wrapper
+
+
+class AFTMatcher:
+    @staticmethod
+    def _resolve_to_field_types(
+        model: Union[FieldValue, Operation, Tuple[Operation, str], FieldType],
+        role: str = None,
+    ):
+        if isinstance(model, FieldValue):
+            if model.role == role:
+                return [model.field_type]
+            else:
+                msg = (
+                    &quot;Planner attempted to find matching&quot;
+                    &quot; allowable_field_types for&quot;
+                    &quot; an input FieldValue but found an output FieldValue&quot;
+                )
+                raise PlannerException(msg)
+        elif isinstance(model, Operation):
+            return [ft for ft in model.get_field_types() if ft.role == role]
+        elif isinstance(model, Tuple):
+            op, ftname = model
+            return [
+                ft
+                for ft in op.get_field_types()
+                if ft.role == role and ft.name == ftname
+            ]
+        elif isinstance(model, FieldType):
+            return [model]
+        else:
+            raise PlannerException(
+                &quot;Cannot resolve inputs, type must be a FieldValue, Operation, (Operation, category) or FieldType, not a &quot;
+                &#39;&quot;{}&quot;&#39;.format(type(model))
+            )
+
+    @classmethod
+    def _collect_matching_afts(
+        cls, source: QuickWireTargetType, destination: QuickWireTargetType
+    ) -&gt; Tuple[
+        List[Tuple[AllowableFieldType, AllowableFieldType]],
+        List[AllowableFieldType],
+        List[AllowableFieldType],
+    ]:
+        &quot;&quot;&quot;
+
+        :param source: a field value or operation source
+        :type source: FieldValue|Operation
+        :param destination: a field value or operation destination
+        :type destination: FieldValue|Operation
+        :return: tuple of matching allowable_field_type (aft) pairs, matching
+            field_value inputs and matching field_value outputs
+        :rtype: tuple
+        &quot;&quot;&quot;
+        &quot;&quot;&quot;Find matching AllowableFieldTypes&quot;&quot;&quot;
+        dest_fts = cls._resolve_to_field_types(destination, role=&quot;input&quot;)
+        src_fts = cls._resolve_to_field_types(source, role=&quot;output&quot;)
+
+        matching_afts = []
+        matching_inputs = []
+        matching_outputs = []
+        for src in src_fts:
+            for dest in dest_fts:
+                io_matching_afts = cls._find_matching_afts(src, dest)
+                if len(io_matching_afts) &gt; 0:
+                    if dest not in matching_inputs:
+                        matching_inputs.append(dest)
+                    if src not in matching_outputs:
+                        matching_outputs.append(src)
+                matching_afts += io_matching_afts
+        return matching_afts, matching_inputs, matching_outputs
+
+    @staticmethod
+    def _find_matching_afts(
+        src_ft: FieldType, dest_ft: FieldType
+    ) -&gt; List[Tuple[AllowableFieldType, AllowableFieldType]]:
+        &quot;&quot;&quot;Finds matching afts between two FieldTypes.&quot;&quot;&quot;
+        afts = []
+        src_afts = src_ft.allowable_field_types
+        dest_afts = dest_ft.allowable_field_types
+
+        # check whether the field_type handles collections
+        input_handles_collections = dest_ft.part is True
+        output_handles_collections = dest_ft.part is True
+        if input_handles_collections != output_handles_collections:
+            return []
+
+        for dest_aft in dest_afts:
+            for src_aft in src_afts:
+                out_object_type_id = src_aft.object_type_id
+                in_object_type_id = dest_aft.object_type_id
+                out_sample_type_id = src_aft.sample_type_id
+                in_sample_type_id = dest_aft.sample_type_id
+                if (
+                    out_object_type_id == in_object_type_id
+                    and out_sample_type_id == in_sample_type_id
+                ):
+                    afts.append((src_aft, dest_aft))
+        return afts
+
+
+<div class="viewcode-block" id="Planner"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner">[docs]</a>class Planner(AFTMatcher):
+    &quot;&quot;&quot;A user-interface for making experimental plans and layouts.&quot;&quot;&quot;
+
+<div class="viewcode-block" id="Planner.ITEM_SELECTION_PREFERENCE"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.ITEM_SELECTION_PREFERENCE">[docs]</a>    class ITEM_SELECTION_PREFERENCE:
+        &quot;&quot;&quot;Item selection options.&quot;&quot;&quot;
+
+        ANY = &quot;ANY&quot;  #: pick the first item that matches the set field_value
+        RESTRICT = &quot;RESTRICT&quot;  #: restrict to the currently set allowable_field_type
+        PREFERRED = &quot;PREFERRED&quot;  #: (default) pick the item that matches the currently set aft, else
+        #: pick ANY item that matches the set field_value
+        RESTRICT_TO_ONE = &quot;RESTRICT TO ONE&quot;  #: will not select item if its being used in another active operation
+        RESTRICT_TO_ONE_ON_SERVER = &quot;RESTRICT TO ONE ON SERVER&quot;  #: will restrict to a single item across the plans on the server.
+        _DEFAULT = PREFERRED  #: default item selection preference
+        _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]  #: all choices</div>
+
+<div class="viewcode-block" id="Planner.ITEM_ORDER_PREFERENCE"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.ITEM_ORDER_PREFERENCE">[docs]</a>    class ITEM_ORDER_PREFERENCE:
+        &quot;&quot;&quot;Item order options.&quot;&quot;&quot;
+
+        FIRST = &quot;FIRST&quot;  #: select first item
+        LAST = &quot;LAST&quot;  #: select last item
+        RANDOM = &quot;RANDOM&quot;  #: select random item
+        _DEFAULT = LAST  #: the default choice
+        _CHOICES = [FIRST, LAST, RANDOM]  #: all choices</div>
+
+<div class="viewcode-block" id="Planner.__init__"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.__init__">[docs]</a>    def __init__(self, session_or_plan=None, plan_id=None):
+        self._plan = None
+        if issubclass(type(session_or_plan), AqSession):
+            # initialize with session
+            self.session = session_or_plan
+
+            if plan_id is not None:
+                # load an existing plan
+                plan = self.browser.find(plan_id, &quot;Plan&quot;)
+                if plan is None:
+                    raise PlannerException(
+                        &quot;Could not find plan with id={}&quot;.format(plan_id)
+                    )
+                self.plan = plan
+            else:
+                # create a new plan
+                self.plan = self.session.Plan.new()
+        elif issubclass(type(session_or_plan), Plan):
+            # initialize with Plan
+            plan = session_or_plan
+            self.session = plan.session
+            self.plan = plan
+        self.logger = logger(self)</div>
+
+    @property
+    def browser(self):
+        return self.session.browser
+
+    @classmethod
+    def _check_plans_for_single_session(cls, models):
+        session_ids = {id(m.session) for m in models}
+        if len(session_ids) &gt; 1:
+            raise PlannerException(&quot;Plans have different session ids&quot;)
+        if models:
+            return models[0].session
+
+    @staticmethod
+    def _cache_query():
+        return {
+            &quot;operations&quot;: {
+                &quot;field_values&quot;: {
+                    &quot;wires_as_dest&quot;: {
+                        &quot;source&quot;: &quot;operation&quot;,
+                        &quot;destination&quot;: &quot;operation&quot;,
+                    },
+                    &quot;wires_as_source&quot;: {
+                        &quot;source&quot;: &quot;operation&quot;,
+                        &quot;destination&quot;: &quot;operation&quot;,
+                    },
+                    &quot;sample&quot;: [],
+                    &quot;item&quot;: [],
+                    &quot;operation&quot;: [],
+                    &quot;field_type&quot;: [],
+                },
+                &quot;plan_associations&quot;: [&quot;plan&quot;],
+                &quot;operation_type&quot;: {&quot;field_types&quot;: []},
+            }
+        }
+
+    @property
+    def plan(self):
+        return self._plan
+
+    @plan.setter
+    def plan(self, new_plan: Plan):
+        self._plan = new_plan
+        self.cache()
+
+    @classmethod
+    def cache_plans(cls, browser, plans: Iterable[Plan]) -&gt; Iterable[Plan]:
+        browser.get(plans, cls._cache_query())
+        for plan in plans:
+            wire_dict = {}
+            if plan.operations:
+                for op in plan.operations:
+                    for fv in op.field_values:
+                        for w in fv.wires_as_dest:
+                            wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
+                        for w in fv.wires_as_source:
+                            wire_dict[w._primary_key] = wire_dict.get(w._primary_key, w)
+            plan.wires = list(wire_dict.values())
+        return plans
+
+    def cache(self):
+        self.cache_plans(self.browser, [self.plan])
+
+    @property
+    def name(self):
+        return self.plan.name
+
+    @name.setter
+    def name(self, value):
+        self.plan.name = value
+
+    @property
+    def url(self):
+        url = self.session.url + r&quot;/plans?plan_id={}&quot;.format(self.plan.id)
+        url = url.replace(r&quot;//&quot;, r&quot;/&quot;)
+        return url
+
+    def open(self):
+        webbrowser.open(self.url)
+
+<div class="viewcode-block" id="Planner.create"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.create">[docs]</a>    def create(self):
+        &quot;&quot;&quot;Create the plan on Aquarium.&quot;&quot;&quot;
+        if self.plan.id:
+            raise PlannerException(
+                &quot;Cannot create plan since it already exists on the server (plan_id={plan_id})&quot;
+                &quot; Did you mean .{save}() push an update to the server plan? You&quot;
+                &quot; can also create a copy of the new plan by calling .{replan}().&quot;.format(
+                    plan_id=self.plan.id,
+                    save=self.save.__name__,
+                    replan=self.replan.__name__,
+                )
+            )
+
+        self.plan.create()</div>
+
+    # TODO: fix this &#39;set_timeout&#39; to not be global
+<div class="viewcode-block" id="Planner.save"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.save">[docs]</a>    def save(self):
+        &quot;&quot;&quot;Saves the Plan to the Aquarium server.
+
+        :return: None
+        &quot;&quot;&quot;
+        if not self.plan.id:
+            self.create()
+        else:
+            self.update()</div>
+
+<div class="viewcode-block" id="Planner.update"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.update">[docs]</a>    def update(self):
+        &quot;&quot;&quot;Update the plan on Aquarium.&quot;&quot;&quot;
+        self.plan.save()
+        return self.plan</div>
+
+<div class="viewcode-block" id="Planner.delete"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.delete">[docs]</a>    def delete(self):
+        &quot;&quot;&quot;Delete the plan on the Aquarium server. Make an annonymized copy of
+        the plan stored in Trident.
+
+        .. versionadded:: 0.1.5a10     Added delete method
+        &quot;&quot;&quot;
+        self.plan.delete()
+        self._plan = self.plan.copy()</div>
+
+    def create_operation_by_type(
+        self, ot: OperationType, status: str = &quot;planning&quot;
+    ) -&gt; Operation:
+        op = ot.instance()
+        op.status = status
+        self.plan.add_operation(op)
+        self.logger.debug(&quot;{} created&quot;.format(ot.name))
+        return op
+
+    def create_operation_by_type_id(self, ot_id: Union[int, str]) -&gt; Operation:
+        # ot = self.browser.find(&#39;OperationType&#39;, ot_id)
+        ot = self.session.OperationType.find(ot_id)
+        return self.create_operation_by_type(ot)
+
+<div class="viewcode-block" id="Planner.create_operation_by_name"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.create_operation_by_name">[docs]</a>    def create_operation_by_name(
+        self, operation_type_name: str, category: str = None
+    ) -&gt; Operation:
+        &quot;&quot;&quot;Adds a new operation to the plan.&quot;&quot;&quot;
+        query = {&quot;deployed&quot;: True, &quot;name&quot;: operation_type_name}
+        if category is not None:
+            query[&quot;category&quot;] = category
+        ots = self.session.OperationType.where(query)
+        if len(ots) &gt; 1:
+            msg = (
+                &#39;Found more than one OperationType for query &quot;{}&quot;. Have you tried &#39;
+                &quot;specifying the category?&quot;
+            )
+            raise PlannerException(msg.format(query))
+        if ots is None or len(ots) == 0:
+            msg = &#39;Could not find deployed OperationType &quot;{}&quot;.&#39;
+            raise PlannerException(msg.format(operation_type_name))
+        return self.create_operation_by_type(ots[0])</div>
+
+    def new_op(self, name_id_or_ot: Union[str, int, OperationType]) -&gt; Operation:
+        if isinstance(name_id_or_ot, str):
+            return self.create_operation_by_name(name_id_or_ot)
+        elif isinstance(name_id_or_ot, int):
+            return self.create_operation_by_type_id(name_id_or_ot)
+        elif issubclass(type(name_id_or_ot), OperationType):
+            return self.create_operation_by_type(name_id_or_ot)
+        else:
+            raise PlannerException(
+                &quot;Expected a string, integer, or OperationType, &quot;
+                &quot;not a {}&quot;.format(type(name_id_or_ot))
+            )
+
+    @staticmethod
+    def _model_are_equal(model1: ModelBase, model2: ModelBase) -&gt; bool:
+        mid1 = model1.id or model1._primary_key
+        mid2 = model2.id or model2._primary_key
+        return mid1 == mid2
+        # if model1.id is None and model2.id is None:
+        #     if model1._primary_key == model2._primary_key:
+        #         return True
+        # elif model1.id == model2.id:
+        #     return True
+        # return False
+
+    def get_op(self, id: Union[str, int]) -&gt; Union[Operation, None]:
+        for op in self.plan.operations:
+            if op.id == id:
+                return op
+            elif op._primary_key == id:
+                return op
+
+    @plan_verification_wrapper
+    def get_wire(self, fv1: FieldValue, fv2: FieldValue) -&gt; Union[None, Wire]:
+        for wire in self.plan.wires:
+            if self._model_are_equal(wire.source, fv1) and self._model_are_equal(
+                wire.destination, fv2
+            ):
+                self.logger.debug(&quot;found wire from {} to {}&quot;.format(fv1.name, fv2.name))
+                return wire
+
+<div class="viewcode-block" id="Planner.remove_wire"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.remove_wire">[docs]</a>    @plan_verification_wrapper
+    def remove_wire(self, fv1: FieldValue, fv2: FieldValue) -&gt; Wire:
+        &quot;&quot;&quot;Removes a wire between two field values from a plan.
+
+        :param fv1:
+        :param fv2:
+        :return:
+        &quot;&quot;&quot;
+        wire = self.get_wire(fv1, fv2)
+        wires = list(self.plan.wires)
+        if wire:
+            self.logger.debug(&quot;removing wire from {} to {}&quot;.format(fv1.name, fv2.name))
+            # wires_as_source = fv1.wires_as_source
+            # wires_as_dest = fv2.wires_as_dest
+            #
+            # wires_as_source.remove(wire)
+            # wires_as_dest.remove(wire)
+
+            # fv1.wires_as_source = wires_as_source
+            # fv2.wires_as_dest = wires_as_dest
+
+            wires.remove(wire)
+            self.plan.wires = wires
+        return wire</div>
+
+    @plan_verification_wrapper
+    def get_outgoing_wires(self, fv: FieldValue) -&gt; List[Wire]:
+        wires = []
+        for wire in self.plan.wires:
+            if self._model_are_equal(wire.source, fv):
+                wires.append(wire)
+        return wires
+
+    @plan_verification_wrapper
+    def get_incoming_wires(self, fv: FieldValue) -&gt; List[Wire]:
+        wires = []
+        for wire in self.plan.wires:
+            if self._model_are_equal(wire.destination, fv):
+                wires.append(wire)
+        return wires
+
+    def get_fv_successors(self, fv: FieldValue) -&gt; List[FieldValue]:
+        fvs = []
+        for wire in self.get_outgoing_wires(fv):
+            fvs.append(wire.destination)
+        return fvs
+
+    def get_fv_predecessors(self, fv: FieldValue) -&gt; List[FieldValue]:
+        fvs = []
+        for wire in self.get_incoming_wires(fv):
+            fvs.append(wire.source)
+        return fvs
+
+    def get_op_successors(self, op: Operation) -&gt; List[Operation]:
+        ops = []
+        for output in op.outputs:
+            ops += [fv.operation for fv in self.get_fv_successors(output)]
+        return ops
+
+    def get_op_predecessors(self, op: Operation) -&gt; List[Operation]:
+        ops = []
+        for input in op.inputs:
+            ops += [fv.operation for fv in self.get_fv_predecessors(input)]
+        return ops
+
+    def quick_create_operation_by_name(self, otname: str) -&gt; Operation:
+        try:
+            return self.create_operation_by_name(*otname)
+        except TypeError:
+            return self.create_operation_by_name(otname)
+
+    def quick_create_and_wire(self, otname1, otname2, fvnames=None):
+        self.quick_create_operation_by_name(otname1)
+        self.quick_create_operation_by_name(otname2)
+        return self.quick_wire_by_name(otname1, otname2)
+
+    def _contains_op(self, op):
+        if op in self.plan.operations:
+            return True
+        else:
+            plan_operation_ids = [x.id for x in self.plan.operations]
+            return op.id is not None and op.id in plan_operation_ids
+
+    @plan_verification_wrapper
+    def _resolve_to_wire_target(
+        self,
+        unresolved: UnresolvedWireTarget,
+        category: str = None,
+        return_type: Union[Type[Operation], None] = None,
+    ) -&gt; Union[Operation, FieldValue]:
+        if isinstance(unresolved, tuple):
+            resolved = self.create_operation_by_name(
+                unresolved[0], category=unresolved[1]
+            )
+        elif isinstance(unresolved, str):
+            resolved = self.create_operation_by_name(unresolved, category=category)
+        elif isinstance(unresolved, OperationType):
+            resolved = self.create_operation_by_type(unresolved, category=category)
+        elif isinstance(unresolved, FieldType):
+            op = self.create_operation_by_type_id(unresolved.parent_id)
+            ft = unresolved
+            if unresolved.role == &quot;input&quot;:
+                if unresolved.array:
+                    resolved = self._select_empty_input_array(op, ft.name)
+                else:
+                    resolved = op.input(ft.name)
+            elif unresolved.role == &quot;output&quot;:
+                if unresolved.array:
+                    resolved = self._select_empty_input_array(op, ft.name)
+                else:
+                    resolved = op.output(ft.name)
+        elif isinstance(unresolved, FieldValue) or isinstance(unresolved, Operation):
+            resolved = unresolved
+        else:
+            raise TypeError(unresolved)
+
+        if return_type is None:
+            return resolved
+        elif Operation:
+            if isinstance(resolved, Operation):
+                return resolved
+            else:
+                return resolved.operation
+
+    @property
+    def operations(self) -&gt; List[Operation]:
+        &quot;&quot;&quot;Return list of :class:`operations &lt;pydent.models.Operation&gt;` in the
+        plan.
+
+        .. versionadded: 0.1.5a10
+            Added operations property to planner
+
+        :return: list of :class:`operations &lt;pydent.models.Operation&gt;`
+        &quot;&quot;&quot;
+        return self.plan.operations
+
+    @operations.setter
+    def operations(self, ops: List[Operation]):
+        self.plan.operations = ops
+
+<div class="viewcode-block" id="Planner.chain"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.chain">[docs]</a>    def chain(
+        self,
+        *op_or_otnames: Tuple[UnresolvedWireTarget, ...],
+        category: str = None,
+        return_as_dict: bool = False,
+    ) -&gt; List[Operation]:
+        &quot;&quot;&quot;Creates a chain of operations by *guessing* wires between operations
+        based on the AllowableFieldTypes between the inputs and outputs of each
+        operation type. Sample inputs and outputs will be set along the wire if
+        possible.
+
+        e.g.
+
+        .. code::
+
+            # create four new operations based on their OperationType names
+            planner.chain(&quot;Make PCR Fragment&quot;, &quot;Run Gel&quot;,
+                                      &quot;Extract Gel Slice&quot;, &quot;Purify Gel Slice&quot;)
+
+            # create four new operations based on their OperationType names by
+            # finding OperationTypes only in the &quot;Cloning&quot; category
+            planner.chain(&quot;Make PCR Fragment&quot;, &quot;Run Gel&quot;,
+                                      &quot;Extract Gel Slice&quot;, &quot;Purify Gel Slice&quot;,
+                                      category=&quot;Cloning&quot;)
+
+            # create four new operations based on their OperationType names by
+            # finding OperationTypes only in the &quot;Cloning&quot; category,
+            # except find &quot;Make PCR Fragment&quot; in the &quot;Cloning Sandbox&quot; category
+            planner.chain((&quot;Make PCR Fragment&quot;, &quot;Cloning Sandbox&quot;),
+                                       &quot;Run Gel&quot;, &quot;Extract Gel Slice&quot;,
+                                       &quot;Purify Gel Slice&quot;, category=&quot;Cloning&quot;)
+
+            # create and wire new operations to an existing operations while
+            # routing samples
+            pcr_op = planner.create_operation_by_name(&quot;Make PCR Fragment&quot;)
+            planner.set_field_value(pcr_op.outputs[0], sample=my_sample)
+            new_ops = planner.chain(pcr_op, &quot;Run Gel&quot;)
+            run_gel = new_ops[1]
+            planner.chain(&quot;Pour Gel&quot;, run_gel)
+        &quot;&quot;&quot;
+        self.logger.debug(&quot;QUICK CREATE CHAIN {}&quot;.format(op_or_otnames))
+        targets = [
+            self._resolve_to_wire_target(n, category=category) for n in op_or_otnames
+        ]
+        if any([op for op in targets if op is None]):
+            raise PlannerException(&quot;Could not find some operations: {}&quot;.format(targets))
+        pairs = arr_to_pairs(targets)
+        for src, dest in pairs:
+            self.quick_wire(src, dest)
+        if return_as_dict:
+            return_dict = {}
+            for op_or_fv in targets:
+                return_dict.setdefault(op_or_fv.operation_type.name, []).append(
+                    op_or_fv
+                )
+            return return_dict
+        return targets</div>
+
+<div class="viewcode-block" id="Planner._select_empty_input_array"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner._select_empty_input_array">[docs]</a>    def _select_empty_input_array(
+        self, op: Operation, fvname: str
+    ) -&gt; Union[None, FieldValue]:
+        &quot;&quot;&quot;Selects the first &#39;empty&#39; (i.e. field_values with no Sample set)
+        field value in the :class:`FieldValue` array. Returns None if the
+        FieldType is not an array. If there are no current &#39;empty&#39; field
+        values, a new one is instantiated and returned.
+
+        :param op: Operation
+        :param fvname: FieldType/FieldValue name of the array
+        :return:
+        &quot;&quot;&quot;
+        field_type = op.operation_type.field_type(fvname, &quot;input&quot;)
+        if field_type.array:
+            existing_fvs = op.input_array(fvname)
+            for fv in existing_fvs:
+                if fv.sample is None and not self.get_incoming_wires(fv):
+                    return fv
+            fv = op.new_field_value(field_type.name, &quot;input&quot;)
+            return fv</div>
+
+    # TODO: way to select preference for afts in quick_wire?
+<div class="viewcode-block" id="Planner.quick_wire"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.quick_wire">[docs]</a>    @plan_verification_wrapper
+    def quick_wire(
+        self,
+        source: Union[Operation, FieldValue, Tuple[Operation, str]],
+        destination: Union[Operation, FieldValue, Tuple[Operation, str]],
+        strict: bool = False,
+    ) -&gt; Wire:
+        &quot;&quot;&quot;
+
+        :param source: field_value or operation source
+        :type source: FieldValue|Operation
+        :param destination: field_value or operation destination
+        :type destination: FieldValue|Operation
+        :param strict: will raise error if there is is ambiguous wiring between the
+            source and destination
+        :type strict: bool
+        :return: created wire
+        :rtype: Wire
+        &quot;&quot;&quot;
+        if isinstance(source, tuple):
+            source, src_fvname = source
+            src_target = source.operation_type.field_type(src_fvname, role=&quot;output&quot;)
+        else:
+            src_target = source
+        if isinstance(destination, tuple):
+            destination, dest_fvname = destination
+            dest_target = destination.operation_type.field_type(
+                dest_fvname, role=&quot;input&quot;
+            )
+        else:
+            dest_target = destination
+        afts, model_inputs, model_outputs = self._collect_matching_afts(
+            src_target, dest_target
+        )
+
+        # TODO: only if matching FVs are ambiguous raise Exception
+        # TODO: automatically wire to empty FV if they are equivalent
+        if (len(model_inputs) &gt; 1 or len(model_outputs) &gt; 1) and strict:
+            raise PlannerException(
+                &quot;Cannot quick wire. Ambiguous wiring between inputs [{}] for {} and &quot;
+                &quot;outputs [{}] for {}\nInstead, try to use `add_wire` method to wire &quot;
+                &quot;together two FieldValues.&quot;.format(
+                    &quot;, &quot;.join([ft.name for ft in model_inputs]),
+                    model_inputs[0].operation_type.name,
+                    &quot;, &quot;.join([ft.name for ft in model_outputs]),
+                    model_outputs[0].operation_type.name,
+                )
+            )
+        elif len(afts) &gt; 0:
+            for aft1, aft2 in afts:
+
+                input_ft = aft2.field_type
+                output_ft = aft1.field_type
+
+                # input_fv = None
+
+                if isinstance(source, FieldValue):
+                    output_fv = source
+                else:
+                    output_fv = source.output(output_ft.name)
+
+                if isinstance(destination, FieldValue):
+                    input_fv = destination
+                else:
+                    if input_ft.array:
+                        input_fv = self._select_empty_input_array(
+                            destination, input_ft.name
+                        )
+                    else:
+                        input_fv = destination.input(input_ft.name)
+
+                return self.add_wire(output_fv, input_fv)
+
+        elif len(afts) == 0:
+            raise PlannerException(
+                &quot;Cannot quick wire. No possible wiring found between inputs {} and {}&quot;.format(
+                    source, destination
+                )
+            )</div>
+
+<div class="viewcode-block" id="Planner.quick_wire_by_name"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.quick_wire_by_name">[docs]</a>    def quick_wire_by_name(self, otname1: str, otname2: str) -&gt; Wire:
+        &quot;&quot;&quot;Wires together the last added operations.&quot;&quot;&quot;
+        op1 = self.get_op_by_name(otname1)[-1]
+        op2 = self.get_op_by_name(otname2)[-1]
+        return self.quick_wire(op1, op2)</div>
+
+    def clean_wires(self):
+        wires_by_id = {}
+        for wire in self.plan.wires:
+            if wire.source is not None and wire.destination is not None:
+                _id = &quot;{}_{}&quot;.format(
+                    wire.source._primary_key, wire.destination._primary_key
+                )
+                wires_by_id[_id] = wire
+        for op in self.plan.operations:
+            for fv in op.field_values:
+                wires_as_source = fv.wires_as_source
+                wires_as_dest = fv.wires_as_dest
+
+                if wires_as_source is None:
+                    wires_as_source = []
+                if wires_as_dest is None:
+                    wires_as_dest = []
+
+                fv.wires_as_source = list(set(wires_as_source))
+                fv.wires_as_dest = list(set(wires_as_dest))
+        self.plan.wires = list(wires_by_id.values())
+
+    def remove_operations(self, ops: Iterable[Operation]):
+        self.clean_wires()
+        operations = self.plan.operations
+        wires = set(self.plan.wires)
+        wires_to_remove = set()
+
+        for op in ops:
+            operations.remove(op)
+            for fv in op.field_values:
+                wires_to_remove = wires_to_remove.union(set(fv.wires_as_source))
+                wires_to_remove = wires_to_remove.union(set(fv.wires_as_dest))
+
+        wires = list(wires.difference(wires_to_remove))
+
+        self.plan.operations = operations
+        self.plan.wires = wires
+
+    # TODO: resolve afts if already set...
+    # TODO: clean up _set_wire
+    def _set_wire(
+        self,
+        src_fv: FieldValue,
+        dest_fv: FieldValue,
+        preference: str = &quot;source&quot;,
+        setter: Union[None, Callable] = None,
+    ):
+
+        if len(self.get_incoming_wires(dest_fv)) &gt; 0:
+            raise PlannerException(
+                &#39;Cannot wire to destination FieldValue &quot;{}&quot; already has an incoming&#39;
+                &quot; wire and inputs&quot;
+                &quot; can only have one incoming wire. Please remove wire&quot;
+                &quot; using &#39;planner.remove_wire(src_fv, dest_fv)&#39; before setting.&quot;.format(
+                    dest_fv.name
+                )
+            )
+
+        # first collect any matching allowable field types between the field values
+        aft_pairs = self._collect_matching_afts(src_fv, dest_fv)[0]
+
+        if len(aft_pairs) == 0:
+            raise PlannerException(
+                &#39;Cannot wire &quot;{}&quot; to &quot;{}&quot;. No allowable field types match.&#39;.format(
+                    src_fv.name, dest_fv.name
+                )
+            )
+
+        # select the first aft
+        default_aft_ids = [
+            src_fv.allowable_field_type_id,
+            dest_fv.allowable_field_type_id,
+        ]
+        pref_index = 0
+        if preference == &quot;destination&quot;:
+            pref_index = 1
+        selected_aft_pair = aft_pairs[0]
+        for pair in aft_pairs:
+            if pair[pref_index].id == default_aft_ids[pref_index]:
+                selected_aft_pair = pair
+        assert (
+            selected_aft_pair[0].object_type_id == selected_aft_pair[1].object_type_id
+        )
+
+        # resolve sample
+        samples = [src_fv.sample, dest_fv.sample]
+        samples = [s for s in samples if s is not None]
+
+        if setter is None:
+            setter = self.set_field_value
+
+        if len(samples) &gt; 0:
+            selected_sample = samples[0]
+
+            # filter afts by sample_type_id
+            aft_pairs = [
+                aft
+                for aft in aft_pairs
+                if aft[0].sample_type_id == selected_sample.sample_type_id
+            ]
+            selected_aft_pair = aft_pairs[0]
+
+            if len(aft_pairs) == 0:
+                raise PlannerException(
+                    &quot;No allowable_field_types were found for FieldValues {} &amp; {} for&quot;
+                    &quot; Sample {}&quot;.format(src_fv.name, dest_fv.name, selected_sample.name)
+                )
+
+            setter(
+                src_fv,
+                sample=selected_sample,
+                object_type=selected_aft_pair[0].object_type,
+            )
+            setter(
+                dest_fv,
+                sample=selected_sample,
+                object_type=selected_aft_pair[0].object_type,
+            )
+
+            assert (
+                selected_aft_pair[0].sample_type_id
+                == selected_aft_pair[1].sample_type_id
+            )
+            assert selected_aft_pair[0].sample_type_id == src_fv.sample.sample_type_id
+            assert selected_aft_pair[0].sample_type_id == dest_fv.sample.sample_type_id
+        else:
+            setter(src_fv, object_type=selected_aft_pair[0].object_type)
+            setter(dest_fv, object_type=selected_aft_pair[0].object_type)
+
+            # # set the sample (and allowable_field_type)
+            # if src_fv.sample is not None and (
+            #     dest_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
+            # ):
+            #     setter(
+            #         dest_fv,
+            #         sample=src_fv.sample,
+            #         object_type=selected_aft_pair[0].object_type,
+            #     )
+            # elif dest_fv.sample is not None and (
+            #     src_fv.sample is None or dest_fv.sample.id != src_fv.sample.id
+            # ):
+            #     setter(
+            #         src_fv,
+            #         sample=dest_fv.sample,
+            #         object_type=selected_aft_pair[0].object_type,
+            #     )
+
+<div class="viewcode-block" id="Planner.add_wire"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.add_wire">[docs]</a>    @plan_verification_wrapper
+    def add_wire(self, fv1: FieldValue, fv2: FieldValue) -&gt; Wire:
+        &quot;&quot;&quot;Add wire from one FieldValue to another FieldValue.
+
+        :param fv1: source FieldValue
+        :param fv2: destination FieldValue
+        :return: the new Wire
+        &quot;&quot;&quot;
+        wire = self.get_wire(fv1, fv2)
+        if wire is None:
+            # wire does not exist, so create it
+            self._set_wire(fv1, fv2)
+            wire = self.plan.wire(fv1, fv2)
+            self.logger.debug(&quot;wired {} to {}&quot;.format(fv1.name, fv2.name))
+        return wire</div>
+
+    @classmethod
+    def _routing_id(cls, fv: FieldValue) -&gt; str:
+        routing_id = &quot;{}_{}&quot;.format(_id_getter(fv.operation), fv.field_type.routing)
+        if fv.field_type.array and fv.role == &quot;input&quot;:
+            other_fvs = fv.operation.input_array(fv.name)
+            for pos, other_fv in enumerate(other_fvs):
+                if cls._model_are_equal(other_fv, fv):
+                    routing_id += str(pos)
+                    return routing_id
+        return routing_id
+
+    @staticmethod
+    def get_sample_routing_of_operation(op: Operation) -&gt; Dict[str, List[FieldValue]]:
+        routing_dict = {}
+        for fv in op.field_values:
+            routing = fv.field_type.routing
+            routing_fvs = routing_dict.get(routing, [])
+            routing_fvs.append(fv)
+            routing_dict[fv.field_type.routing] = routing_fvs
+        return routing_dict
+
+<div class="viewcode-block" id="Planner._routing_graph"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner._routing_graph">[docs]</a>    def _routing_graph(self):
+        &quot;&quot;&quot;Get sample routing graph.
+
+        A property of a valid plan is that any two routing nodes that
+        are connected by an edge must have the same sample. Edges are
+        treated as &#39;sample wires&#39;
+        &quot;&quot;&quot;
+        G = nx.DiGraph()
+        for op in self.plan.operations:
+            for fv in op.field_values:
+                G.add_node(self._routing_id(fv), fv=fv)
+
+        for w in self.plan.wires:
+            src_id = self._routing_id(w.source)
+            dest_id = self._routing_id(w.destination)
+
+            G.add_node(src_id, fv=w.source)
+            G.add_node(dest_id, fv=w.destination)
+
+            G.add_edge(src_id, dest_id, wire=w)
+        return G</div>
+
+    # TODO: Support for row and column
+    # TODO: routing dict does not work with input arrays (it groups them ALL together)
+<div class="viewcode-block" id="Planner.set_field_value"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.set_field_value">[docs]</a>    @plan_verification_wrapper
+    def set_field_value(
+        self,
+        field_value: FieldValue,
+        sample: Union[None, Sample] = None,
+        item: Union[None, Item] = None,
+        object_type: Union[None, ObjectType] = None,
+        value: Any = None,
+        row: Union[None, int] = None,
+        column: Union[None, int] = None,
+    ):
+        &quot;&quot;&quot;.. versionchanged:: 0.1.5a15 Argument `container` changed to
+        `object_type` to keep consistency with other code.
+
+        :param field_value:
+        :param sample:
+        :param item:
+        :param object_type:
+        :param value:
+        :param row:
+        :param column:
+        :return:
+        &quot;&quot;&quot;
+        self.logger.debug(
+            &quot;setting field_value {} to {} - {} - {} - {}&quot;.format(
+                field_value.name, sample, item, object_type, value
+            )
+        )
+        field_value.set_value(
+            sample=sample,
+            item=item,
+            container=object_type,
+            value=value,
+            row=None,
+            column=None,
+        )
+        if not field_value.field_type.array:
+            routing = field_value.field_type.routing
+            fvs = self.get_sample_routing_of_operation(field_value.operation)[routing]
+            if field_value.field_type.ftype == &quot;sample&quot;:
+                for fv in fvs:
+                    fv.set_value(sample=sample, row=row, column=column)
+        return field_value</div>
+
+<div class="viewcode-block" id="Planner.set_input_field_value_array"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.set_input_field_value_array">[docs]</a>    def set_input_field_value_array(
+        self,
+        op: Operation,
+        field_value_name: str,
+        sample: Union[None, Sample] = None,
+        item: Union[None, Item] = None,
+        container: Union[None, ObjectType] = None,
+        value: Any = None,
+        row: Union[None, int] = None,
+        column: Union[None, int] = None,
+    ):
+        &quot;&quot;&quot;Finds the first &#39;empty&#39; (no incoming wires and no sample set) field
+        value and set the field value. If there are no empty field values in
+        the array, create a new field value and set that one.
+
+        :param op: operation
+        :type op: Operation
+        :param field_value_name: field value name
+        :type field_value_name: basestring
+        :param sample: the sample to set
+        :type sample: Sample
+        :param item: the item to set
+        :type item: Item
+        :param container: the container type to set
+        :type container: ObjectType
+        :return: the set field value
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        input_fv = self._select_empty_input_array(op, field_value_name)
+        return self.set_field_value(
+            input_fv,
+            sample=sample,
+            item=item,
+            object_type=container,
+            row=row,
+            column=column,
+            value=value,
+        )</div>
+
+    def set_field_value_and_propogate(
+        self,
+        field_value: FieldValue,
+        sample: Union[None, Sample] = None,
+        item: Union[None, Item] = None,
+        container: Union[None, ObjectType] = None,
+        value: Any = None,
+        row: Union[None, int] = None,
+        column: Union[None, int] = None,
+    ):
+        if item:
+            if sample:
+                sid1 = sample.id or sample._primary_key
+                sid2 = item.sample_id or item.sample.id or item.sample._primary_key
+                if not sid1 == sid2:
+                    raise PlannerException(
+                        &quot;Provided sample &#39;{}&#39; and item &#39;{}&#39; cannot&quot;
+                        &quot; be different&quot;.format(sample, item)
+                    )
+            else:
+                sample = item.sample
+            self.set_field_value(field_value, item=item, row=row, column=column)
+        routing_graph = self._routing_graph()
+        routing_id = self._routing_id(field_value)
+        subgraph = nx.bfs_tree(routing_graph.to_undirected(as_view=True), routing_id)
+        for node in subgraph:
+            n = routing_graph.nodes[node]
+            fv = n[&quot;fv&quot;]
+            self.set_field_value(fv, sample=sample, object_type=container, value=value)
+        return field_value
+
+    @staticmethod
+    @make_async
+    def _filter_by_lambdas(
+        models: List[Any], lambda_arr: Iterable[Callable]
+    ) -&gt; List[Any]:
+        &quot;&quot;&quot;Filters models by a array of lambdas.&quot;&quot;&quot;
+        arr = models[:]
+        _arr = []
+        while arr:
+            m = arr.pop()
+            for fxn in lambda_arr:
+                try:
+                    if fxn(m):
+                        _arr.append(m)
+                except TypeError or ValueError:
+                    continue
+        return _arr
+
+    def _item_preference_query(
+        self, sample: Sample, field_value: FieldValue, item_preference: str
+    ) -&gt; dict:
+        if item_preference not in self.ITEM_SELECTION_PREFERENCE._CHOICES:
+            raise PlannerException(
+                &#39;Item selection preference &quot;{}&quot; not recognized&#39;
+                &quot; Please select from one of {}&quot;.format(
+                    item_preference, &quot;,&quot;.join(self.ITEM_SELECTION_PREFERENCE._CHOICES)
+                )
+            )
+        query = {&quot;sample_id&quot;: sample.id}
+
+        # restrict allowable_field_types based on preference
+        afts = list(field_value.field_type.allowable_field_types)
+
+        if item_preference in [
+            self.ITEM_SELECTION_PREFERENCE.RESTRICT,
+            self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE,
+        ]:
+            afts = [field_value.allowable_field_type]
+        if item_preference == self.ITEM_SELECTION_PREFERENCE.PREFERRED:
+            afts = sorted(
+                afts,
+                reverse=True,
+                key=lambda aft: aft.sample_type_id == sample.sample_type_id,
+            )
+
+        query.update({&quot;object_type_id&quot;: [aft.object_type_id for aft in afts]})
+        return query
+
+<div class="viewcode-block" id="Planner.reserved_items"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.reserved_items">[docs]</a>    def reserved_items(
+        self, items: List[Item], search_server: bool = False
+    ) -&gt; Dict[int, List[FieldValue]]:
+        &quot;&quot;&quot;Returns a dictionary of item_ids and the array of field_values that
+        use them.&quot;&quot;&quot;
+        browser = self.browser
+        item_ids = [i.id for i in items]
+        if search_server:
+            server_fvs = browser.where(
+                {&quot;child_item_id&quot;: item_ids}, model_class=&quot;FieldValue&quot;
+            )
+            browser.retrieve(server_fvs, &quot;operation&quot;)
+            server_fvs = [
+                fv
+                for fv in server_fvs
+                if fv.operation and fv.operation and fv.operation.status != &quot;planning&quot;
+            ]
+        else:
+            server_fvs = []
+
+        these_fvs = []
+        for op in self.plan.operations:
+            for fv in op.inputs:
+                these_fvs.append(fv)
+
+        fvs = list(set(server_fvs + these_fvs))
+
+        item_id_to_fv = defaultdict(list)
+        for fv in fvs:
+            if fv.child_item_id:
+                item_id_to_fv[fv.child_item_id].append(fv)
+        return item_id_to_fv</div>
+
+    @plan_verification_wrapper
+    def get_available_items(
+        self, field_value: FieldValue, item_preference: str
+    ) -&gt; List[Item]:
+        sample = field_value.sample
+        if not sample:
+            return []
+
+        query = self._item_preference_query(sample, field_value, item_preference)
+        available_items = self.session.Item.where(query)
+        available_items = [i for i in available_items if i.location != &quot;deleted&quot;]
+
+        x = len(available_items)
+        if item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE_ON_SERVER:
+            reserved = self.reserved_items(available_items, search_server=True)
+            available_items = [i for i in available_items if len(reserved[i.id]) == 0]
+            self.logger.debug(&quot;{} items are reserved&quot;.format(x - len(available_items)))
+        elif item_preference == self.ITEM_SELECTION_PREFERENCE.RESTRICT_TO_ONE:
+            reserved = self.reserved_items(available_items, search_server=False)
+            available_items = [i for i in available_items if len(reserved[i.id]) == 0]
+            self.logger.debug(&quot;{} items are reserved&quot;.format(x - len(available_items)))
+        return available_items
+
+<div class="viewcode-block" id="Planner.distribute_items_of_object_type"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.distribute_items_of_object_type">[docs]</a>    def distribute_items_of_object_type(self, object_type: ObjectType):
+        &quot;&quot;&quot;Distribute items of a particular object_type across non-planning
+        operations across existing plans and these operations in this Planner
+        instance.
+
+        E.g. distributing one-shot yeast competent cell aliquots
+        &quot;&quot;&quot;
+        # collect items of that type used
+        items = []
+        browser = self.browser
+        for op in self.plan.operations:
+            for i in op.inputs:
+                item = i.item
+                if item:
+                    if item.object_type_id == object_type.id:
+                        items.append(item)
+
+        # find all field_values that use this item
+        item_id_to_fv = defaultdict(list)
+        item_ids = [i.id for i in items]
+        fvs = browser.where({&quot;child_item_id&quot;: item_ids}, model_class=&quot;FieldValue&quot;)
+        browser.retrieve(fvs, &quot;operation&quot;)
+
+        for fv in fvs:
+            item_id_to_fv[fv.child_item_id].append(fv)
+
+        distributed = []
+
+        for item in items:
+            fvs = item_id_to_fv[item.id]
+
+            # filter by operations that are submitted
+            fvs = [
+                fv for fv in fvs if fv.operation and fv.operation.status != &quot;planning&quot;
+            ]
+            if len(fvs) &gt; 1:
+                available_items = browser.where(
+                    {
+                        &quot;sample_id&quot;: item.sample_id,
+                        &quot;object_type_id&quot;: item.object_type_id,
+                    },
+                    model_class=&quot;Item&quot;,
+                )
+                available_items = [
+                    item for item in available_items if item.location != &quot;deleted&quot;
+                ]
+                print(
+                    &quot;Item {} {} is used in {} inputs. There are {} available items.&quot;.format(
+                        item.id, item.sample.name, len(fvs), len(available_items)
+                    )
+                )
+
+                for fv, item in itertools.zip_longest(
+                    fvs, available_items, fillvalue=&quot;&amp;&amp;&amp;&quot;
+                ):
+                    if fv != &quot;&amp;&amp;&amp;&quot; and item != &quot;&amp;&amp;&amp;&quot;:
+                        distributed.append(fv, item)
+
+        for fv, item in distributed:
+            fv.set_value(item=item)</div>
+
+<div class="viewcode-block" id="Planner.set_to_available_item"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.set_to_available_item">[docs]</a>    @plan_verification_wrapper
+    def set_to_available_item(
+        self,
+        fv: FieldValue,
+        order_preference: str = ITEM_ORDER_PREFERENCE._DEFAULT,
+        filter_func: Union[None, Callable] = None,
+        item_preference: str = ITEM_SELECTION_PREFERENCE._DEFAULT,
+    ) -&gt; Item:
+        &quot;&quot;&quot;Sets the item of the field value to the next available item. Setting
+        recent=False will select the oldest item.
+
+        :param fv: The field value to set.
+        :type fv: FieldValue
+        :param recent: whether to select the most recent item (recent=True is default)
+        :type recent: bool
+        :param filter_func: array of lambda to filter items by. E.g.
+            &#39;lambda_arr=[lambda x: x.get(&quot;concentration&quot;) &gt; 10]&#39;
+        :type filter_func: list
+        :param order_preference: The item order preference. Select from &quot;LAST&quot;
+            (default), &quot;FIRST&quot;, or &quot;RANDOM&quot;. Selections
+            also available in :class:`Planner.ITEM_ORDER_PREFERENCE`.
+            Random will choose a random item from the available items found after
+            all preferences and filters
+        :type order_preference: basestring
+        :param item_preference: The item selection preference. Select from items in
+            :class:`Planner.ITEM_SELECTION_PREFERENCE`
+            If &quot;PREFERRED&quot; (default), will select item that matches the
+            allowable_field_value that is already set for the field_value, else select
+            any item that matches the :class:`Sample` set :class:`FieldValue`. If
+            &quot;RESTRICT&quot;, will restrict selected item only to those that matches the
+            current allowable_field_value that is set for the :class:`FieldValue`. If
+            &quot;ANY&quot;, will select any items that matches the :class:`Sample`.set for
+            the field_value
+        :type item_preference: basestring
+        :return: The selected item (or None if no item set)
+        :rtype: Item or None
+        &quot;&quot;&quot;
+        sample = fv.sample
+        item = None
+
+        if sample is not None:
+            available_items = self.get_available_items(fv, item_preference)
+            if filter_func is not None:
+                if not isinstance(filter_func, list):
+                    filter_func = [filter_func]
+                available_items = self._filter_by_lambdas(available_items, filter_func)
+
+            if not available_items:
+                return None
+
+            available_items = sorted(available_items, key=lambda x: x.created_at)
+
+            selection_index = -1
+            if order_preference == self.ITEM_ORDER_PREFERENCE.FIRST:
+                selection_index = 0
+            elif order_preference == self.ITEM_ORDER_PREFERENCE.LAST:
+                selection_index = -1
+            elif order_preference == self.ITEM_ORDER_PREFERENCE.RANDOM:
+                selection_index = random.randint(0, len(available_items) - 1)
+            item = available_items[selection_index]
+            fv.set_value(item=item)
+        return item</div>
+
+<div class="viewcode-block" id="Planner.set_inputs_using_sample_properties"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.set_inputs_using_sample_properties">[docs]</a>    @plan_verification_wrapper
+    def set_inputs_using_sample_properties(
+        self,
+        operation: Operation,
+        sample: Sample,
+        routing: dict = None,
+        setter: Union[None, Callable] = None,
+    ):
+        &quot;&quot;&quot;Map the sample field values to the operation inputs. Optionally, a
+        routing dictionary may be passed to indicate the mapping between the
+        sample field values and operation inputs.
+
+        For example, the following would map the &quot;Integrant&quot; sample field value to the
+        &quot;Template&quot; operation input, and so on...:
+
+        .. code:: python
+
+            routing={
+                &quot;Integrant&quot;: &quot;Template&quot;,
+                &quot;QC_Primer1&quot;: &quot;Forward Primer&quot;,
+                &quot;QC_Primer2&quot;: &quot;Reverse Primer&quot;
+            }
+        &quot;&quot;&quot;
+        if routing is None:
+            routing = {ft.name: ft.name for ft in sample.sample_type.field_types}
+
+        if setter is None:
+            setter = self.set_field_value
+        for sfv, ofv in routing.items():
+            operation_input = operation.input(ofv)
+            sample_property = sample.properties.get(sfv, None)
+            # set operation input to the property sample
+            if operation_input is not None and sample_property is not None:
+                setter(operation_input, sample=sample_property)</div>
+
+<div class="viewcode-block" id="Planner.set_output_sample"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.set_output_sample">[docs]</a>    @plan_verification_wrapper
+    def set_output_sample(
+        self,
+        fv: FieldValue,
+        sample: Sample = None,
+        routing: dict = None,
+        setter: Union[None, Callable] = None,
+    ):
+        &quot;&quot;&quot;Sets the output of the field value to the sample. If the field_value
+        names between the Sample and the field_value&#39;s operation inputs, these
+        will be set as well. Optionally, a routing dictionary may be passed to
+        indicate the mapping between the sample field values and the operation
+        field values.
+
+        :param fv: the output field value
+        :type fv:
+        :param sample:
+        :type sample:
+        :param routing:
+        :type routing:
+        :return:
+        :rtype:
+        &quot;&quot;&quot;
+        if fv.role != &quot;output&quot;:
+            raise PlannerException(
+                &quot;Cannot output. FieldValue {} is a/an {}.&quot;.format(fv.name, fv.role)
+            )
+        if setter is None:
+            setter = self.set_field_value
+        setter(fv, sample=sample)
+        op = fv.operation
+        self.set_inputs_using_sample_properties(
+            op, sample, routing=routing, setter=setter
+        )</div>
+
+<div class="viewcode-block" id="Planner._json_update"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner._json_update">[docs]</a>    @staticmethod
+    def _json_update(model: ModelBase, **params: dict) -&gt; ModelBase:
+        &quot;&quot;&quot;Temporary method to update.&quot;&quot;&quot;
+        aqhttp = model.session._http
+        data = {&quot;model&quot;: {&quot;model&quot;: model.__class__.__name__}}
+        data.update(model.dump(**params))
+        model_data = aqhttp.create(&quot;json/save&quot;, json_data=data)
+        model.reload(model_data)
+        return model</div>
+
+    @classmethod
+    def move_op(cls, op: Operation, plan_id: Union[str, id]):
+        pa = op.plan_associations[0]
+        pa.plan_id = plan_id
+        op.parent_id = 0
+        cls._json_update(op)
+        cls._json_update(pa)
+
+<div class="viewcode-block" id="Planner.get_op_by_name"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.get_op_by_name">[docs]</a>    def get_op_by_name(self, operation_type_name: str) -&gt; Operation:
+        &quot;&quot;&quot;Find operations by their operation_type_name.
+
+        :param operation_type_name: The operation type name
+        :type operation_type_name: basestring
+        :return: list of operations
+        :rtype: list
+        &quot;&quot;&quot;
+        return [
+            op
+            for op in self.plan.operations
+            if op.operation_type.name == operation_type_name
+        ]</div>
+
+<div class="viewcode-block" id="Planner.replan"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.replan">[docs]</a>    def replan(self) -&gt; &quot;Planner&quot;:
+        &quot;&quot;&quot;Replan the plan, by &#39;copying&#39; the plan using the Aquarium server.&quot;&quot;&quot;
+        planner = self.__class__(self.session)
+        planner.plan = self.plan.replan()
+        return planner</div>
+
+<div class="viewcode-block" id="Planner.annotate"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.annotate">[docs]</a>    def annotate(
+        self, markdown: str, x: float, y: float, width: float, height: float
+    ) -&gt; dict:
+        &quot;&quot;&quot;Annotates the plan with Markdown text.
+
+        :param markdown: text to annotate (in markdown format)
+        :type markdown: basestring
+        :param x: x-position
+        :type x: int
+        :param y: y-position
+        :type y: int
+        :param width: width of the text box
+        :type width: int
+        :param height: height of the text box
+        :type height: int
+        :return: None
+        :rtype: None
+        &quot;&quot;&quot;
+        annotation = {
+            &quot;anchor&quot;: {&quot;x&quot;: width, &quot;y&quot;: height},
+            &quot;x&quot;: x,
+            &quot;y&quot;: y,
+            &quot;markdown&quot;: markdown,
+        }
+        markdown += &quot;\n&lt;!-- annotated by pydent.planner --&gt;&quot;
+        self.plan.layout.setdefault(&quot;text_boxes&quot;, [])
+        if self.plan.layout[&quot;text_boxes&quot;] is None:
+            self.plan.layout[&quot;text_boxes&quot;] = []
+        if annotation not in self.plan.layout[&quot;text_boxes&quot;]:
+            self.plan.layout[&quot;text_boxes&quot;].append(annotation)
+        return annotation</div>
+
+<div class="viewcode-block" id="Planner.annotate_operations"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.annotate_operations">[docs]</a>    def annotate_operations(
+        self, ops: List[Operation], markdown: str, width: float, height: float
+    ) -&gt; dict:
+        &quot;&quot;&quot;Annotates above the operations.
+
+        Estimates the x-midpoint and y and makes a text annotation at
+        that location.
+        &quot;&quot;&quot;
+        layout = self.layout.ops_to_subgraph(ops)
+        return self.annotate_above_layout(markdown, width, height, layout=layout)</div>
+
+<div class="viewcode-block" id="Planner.annotate_above_layout"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.annotate_above_layout">[docs]</a>    def annotate_above_layout(
+        self, markdown: str, width: float, height: float, layout: PlannerLayout = None
+    ):
+        &quot;&quot;&quot;Annotates text directly above a layout.&quot;&quot;&quot;
+        if layout is None:
+            layout = self.layout
+
+        x = (
+            layout.midpoint()[0] + layout.BOX_WIDTH / 2
+        )  # adjust so x is midpoint of &#39;box&#39; on screen
+        y = layout.y
+
+        # center the annotation
+        x -= width / 2
+        y -= height
+
+        # give some space between annotation and operation
+        y -= layout.BOX_DELTA_Y / 2
+
+        return self.annotate(markdown, x, y, width, height)</div>
+
+    @property
+    def layout(self) -&gt; PlannerLayout:
+        return PlannerLayout.from_plan(self.plan)
+
+    @property
+    def graph(self):
+        return PlannerGraph.from_plan(self.plan)
+
+    def ipython_link(self):
+        try:
+            from IPython.display import display, HTML
+
+            return display(HTML(&#39;&lt;a href=&quot;{url}&quot;&gt;{url}&lt;/a&gt;&#39;.format(url=self.url)))
+        except ImportError:
+            print(&quot;Could not import IPython. This is likely not installed.&quot;)
+
+<div class="viewcode-block" id="Planner.roots"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.roots">[docs]</a>    def roots(self) -&gt; List[FieldValue]:
+        &quot;&quot;&quot;Get field values that have no predecessors (i.e. are &#39;roots&#39;)&quot;&quot;&quot;
+        roots = []
+        for subgraph in get_subgraphs(self._routing_graph()):
+            for n in subgraph:
+                node = subgraph.nodes[n]
+                if len(list(subgraph.predecessors(n))) == 0:
+                    root = node[&quot;fv&quot;]
+                    roots.append(root)
+        return roots</div>
+
+<div class="viewcode-block" id="Planner.optimize"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.optimize">[docs]</a>    def optimize(self, merge_missing_samples=False) -&gt; &quot;Planner&quot;:
+        &quot;&quot;&quot;Optimize the plan, merging wires and operations that have identical
+        inputs and outputs.
+
+        .. versionchanged:: 0.1.5a11
+            Numerous bug fixes.
+
+        :param merge_missing_samples: if True, the method
+            will consider FieldValues with missing inputs
+            as identical. By default, this is False, and so
+            the method will not merge *any* operation with
+            a missing input or output.
+        :return: the planner (self)
+        &quot;&quot;&quot;
+        optimizer = PlanOptimizer(
+            self,
+            inherit_logger=self.logger,
+            merge_missing_samples=merge_missing_samples,
+        )
+        return optimizer.optimize()</div>
+
+<div class="viewcode-block" id="Planner.validate"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.validate">[docs]</a>    def validate(self) -&gt; Dict:
+        &quot;&quot;&quot;Validates sample routes in the plan.
+
+        :return: dictionary of each sample route and validation errors
+        :rtype: dict
+        &quot;&quot;&quot;
+
+        def fv_info(fv):
+            return &quot;{role} {name} for {ot} {opid}&quot;.format(
+                role=fv.role,
+                name=fv.name,
+                ot=fv.operation.operation_type.name,
+                opid=fv.operation.id,
+            )
+
+        routes = {}
+        for subgraph in get_subgraphs(self._routing_graph()):
+            values = []
+            reasons = []
+            root = None
+            for n in subgraph:
+                node = subgraph.nodes[n]
+                fv = node[&quot;fv&quot;]
+                value = fv.sample
+                if value is None and fv.field_type.ftype == &quot;sample&quot;:
+                    reasons.append(&quot;{} has no sample defined&quot;.format(fv_info(fv)))
+                else:
+                    if fv.item:
+                        item = fv.item
+                        collection = item.as_collection()
+                        if collection:
+                            item = collection.part(fv.row, fv.column)
+                        if item.sample_id != fv.sample.id:
+                            reasons.append(
+                                &quot;{} has sample_id={} but generated item has sample_&quot;
+                                &quot;id={}&quot;.format(
+                                    fv_info(fv), fv.sample.id, item.sample_id
+                                )
+                            )
+                    values.append(value)
+                if len(list(subgraph.predecessors(n))) == 0:
+                    root = fv
+            if (
+                root.item is None
+                and root.role == &quot;input&quot;
+                and root.field_type.ftype == &quot;sample&quot;
+            ):
+                reasons.append(&quot;{} has no item defined&quot;.format(fv_info(fv)))
+            values = list(set(values))
+            if len(values) &gt; 1:
+                reasons.append(&quot;different samples defined in route ({})&quot;.format(values))
+            root_id = &quot;{} for {} ({})&quot;.format(
+                root.name, root.operation.operation_type.name, self._routing_id(root)
+            )
+            routes[root_id] = {
+                &quot;root_field_value&quot;: root,
+                &quot;errors&quot;: reasons,
+                &quot;valid&quot;: len(reasons) == 0,
+            }
+        errors = {k: v for k, v in routes.items() if v[&quot;valid&quot;] is not True}
+        return errors</div>
+        # return routes
+
+    # TODO: implement planner.copy and anonymize the operations and field_values by
+    #       removing their ids
+<div class="viewcode-block" id="Planner.copy"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.copy">[docs]</a>    def copy(self) -&gt; &quot;Planner&quot;:
+        &quot;&quot;&quot;Return a copy of this planner, with a new anonymous copy of the
+        plan.
+
+        Browser cache is copied as well, but model_cache in browser are
+        not anonymous
+        &quot;&quot;&quot;
+        # copy everything execpt plan, which may be large
+        copied = empty_copy(self)
+        data = self.__dict__.copy()
+        data.pop(&quot;_plan&quot;)
+        copied.__dict__ = deepcopy(data)
+
+        # copy over anonymous copy
+        copied._plan = self.plan.copy()
+
+        for op in copied.operations:
+            for fv in op.field_values:
+                fv.operation = op
+        return copied</div>
+
+    def __copy__(self):
+        return self.copy()
+
+<div class="viewcode-block" id="Planner.combine"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.combine">[docs]</a>    @staticmethod
+    def combine(plans: List[Plan]) -&gt; &quot;Planner&quot;:
+        &quot;&quot;&quot;Merges a list of plans into a single plan by combining operations
+        and wires.
+
+        :param plans: list of Aquarium Plans instances
+        :return: new Plan
+        &quot;&quot;&quot;
+        copied_plans = [c.copy() for c in plans]
+
+        sessions = {p.session for p in plans}
+        if len(sessions) &gt; 1:
+            raise PlannerException(
+                &quot;Cannot combine plans, plans must all derive from same session instance&quot;
+            )
+        session = sessions.pop()
+
+        new_plan = Planner(session)
+        new_plan.plan.operations = []
+        for p in copied_plans:
+            new_plan.plan.operations += p.plan.operations
+            new_plan.plan.wires += p.plan.wires
+        return new_plan</div>
+
+<div class="viewcode-block" id="Planner.move_operations"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.move_operations">[docs]</a>    def move_operations(self, ops, to_plan_id, confirm: bool = True):
+        &quot;&quot;&quot;Move a list of operations from this planner to a different plan.
+
+        :param ops: list of operations
+        :param to_plan_id: destination plan_id
+        :param confirm: whether this required confirmation from the user.
+        :return: None
+        &quot;&quot;&quot;
+        for op in ops:
+            for pa in op.plan_associations:
+                pa.plan_id = to_plan_id
+                self.session.utils.json_save(&quot;PlanAssociation&quot;, pa.dump())
+        result = confirm(
+            &quot;Move {} operations to plan_id = {}? (y|n): &quot;.format(len(ops), to_plan_id)
+        )
+
+        if result == &quot;y&quot;:
+            for op in ops:
+                if not self._contains_op(op):
+                    raise PlannerException(
+                        &quot;Operation {} not contained in this planner&quot;.format(op)
+                    )
+            for op in ops:
+                for pa in op.plan_associations:
+                    pa.plan_id = to_plan_id
+                    self.session.utils.json_save(&quot;PlanAssociation&quot;, pa.dump())
+                    self.plan.operations.remove(op)
+            print(&quot;moved operations&quot;)
+        else:
+            print(&quot;{}: user canceled&quot;.format(result))</div>
+
+<div class="viewcode-block" id="Planner.add_from_template"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.add_from_template">[docs]</a>    def add_from_template(self, plan: Union[int, Plan, &quot;Planner&quot;]) -&gt; List[Operation]:
+        &quot;&quot;&quot;Add Operation and Wires from the provided template plan to this
+        planner.
+
+        :param plan: Plan id (int), Plan instance, or Planner instance
+        :return: list of operations that were added from template.
+        &quot;&quot;&quot;
+        if isinstance(plan, int):
+            plan = self.session.Plan.find(plan)
+            planner = self.__class__(plan)
+        elif isinstance(plan, Plan):
+            planner = self.__class__(plan)
+        template = planner.copy()
+        self.plan.operations += template.operations
+        self.plan.wires += template.wires
+        return template.operations</div>
+
+<div class="viewcode-block" id="Planner.split"><a class="viewcode-back" href="../../../generated/pydent.planner.Planner.html#pydent.planner.Planner.split">[docs]</a>    def split(self) -&gt; List[&quot;Planner&quot;]:
+        &quot;&quot;&quot;Split the plan into several distinct plans, if possible.
+
+        This first convert the plan  to an operation graph, find
+        subgraphs that are not connected to each other,  and create new
+        plans based on these subgraphs. This will return anonymous
+        copies of all the plans, meaning operations and field_values
+        will be anonymized. Sample and items attached to field values
+        will remain to avoid re-creating samples and items.
+        &quot;&quot;&quot;
+
+        # copy this plan
+        copied_plan = self.copy()
+
+        # get independent operation graphs
+        layouts = copied_plan.layout.get_independent_graphs()
+
+        # for each independent graph, make a new plan
+        new_plans = []
+        for layout in layouts:
+            new_plan = Planner(self.session)
+            new_plans.append(new_plan)
+
+            # copy over the operations
+            opids = list(layout.nxgraph.nodes)
+            ops = [layout.nxgraph.nodes[opid][&quot;operation&quot;] for opid in opids]
+            wires = []
+
+            # copy over relevant wires
+            for wire in copied_plan.plan.wires:
+                to_id = wire.destination.operation._primary_key
+                from_id = getattr(wire, &quot;source&quot;).operation._primary_key
+                if to_id in opids or from_id in opids:
+                    wires.append(wire)
+
+            new_plan.plan.operations = ops
+            new_plan.plan.wires = wires
+        return new_plans</div>
+
+    def __add__(self, other: Plan) -&gt; &quot;Planner&quot;:
+        return self.combine([self, other])
+
+    def __mul__(self, num: int) -&gt; &quot;Planner&quot;:
+        return self.combine([self] * num)
+
+    def prettify(self) -&gt; None:
+        if self.plan.operations:
+            self.layout.topo_sort()
+
+    # TODO: implement individual wires and things
+    def draw(self):
+        layout = self.layout
+        edge_colors = []
+        for s, e, d in layout.nxgraph.edges(data=True):
+            color = &quot;black&quot;
+            wire = d[&quot;wire&quot;]
+            if wire.source.sample is None:
+                color = &quot;orange&quot;
+            elif wire.destination.sample is None:
+                color = &quot;orange&quot;
+            elif wire.destination.sample != wire.source.sample:
+                color = &quot;red&quot;
+            edge_colors.append(color)
+        nx.draw(self.layout.nxgraph, edge_colors=edge_colors, pos=self.layout.pos())</div>
+
+    # TODO: autofill implementation
+    # def autofill(self):
+    # &quot;&quot;&quot;Fill the unfilled field_values with random items and samples.
+    #
+    # .. versionadded: 0.1.5a10
+    #     Added autofill method.
+    #
+    # :return:
+    # &quot;&quot;&quot;
+    # wired_fv_keys = set()
+    # for w in self.plan.wires:
+    #     key = w.destination.id or w.destination._primary_key
+    #     wired_fv_keys.add(key)
+    #
+    # needs_sample = []
+    # for op in self.operations:
+    #     for fv in op.inputs:
+    #         key = fv.id or fv._primary_key
+    #         if key not in wired_fv_keys:
+    #             needs_sample.append(fv)
+    #
+    # with self.session.with_cache(using_models=True) as sess:
+    #     while needs_sample:
+    #         for fv in needs_sample:
+    #             self.set_field_value(fv, sample=fv.field_type)
+    #     skip = []
+    #     for fv in needs_items:
+    #         afts = fv.field_type.allowable_field_types
+    #         aft_tuples = [(aft.sample_type_id, aft.object_type_id) for aft in afts]
+    #         samples = sess.Sample.where({&#39;sample_type_id&#39;: [aft.sample_type_id for aft in afts]})
+    #         items = sess.browser.cached_where({
+    #             &#39;sample_id&#39;: [s.id for s in samples],
+    #             &#39;object_type_id&#39;: [aft.object_type_id for aft in afts],
+    #         }, &#39;Item&#39;)
+    #         items = [item for item in items if
+    #                  (item.sample_type_id, item.object_type_id) in aft_tuples]
+    #
+    #         if not items:
+    #             item_query = QueryBuilder.sql({
+    #                 &#39;sample_id&#39;: [s.id for s in samples],
+    #                 &#39;object_type_id&#39;: [aft.object_type_id for aft in afts],
+    #                 &#39;location&#39;: QueryBuilder.Not(&#39;deleted&#39;)
+    #             })
+    #             items = self.session.Item.where(item_query)
+    #             items = [item for item in items if
+    #                      (item.sample_type_id,
+    #                       item.object_type_id) in aft_tuples]
+    #         if not items:
+    #             skip.append(fv)
+    #         else:
+    #             self.set_field_value_and_propogate(fv, item=items[0])
+    #     needs_items = [fv for fv in needs_items if fv.child_item_id is None and fv not in skip]
+    #
+    # # get unfilled leaf field_values
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

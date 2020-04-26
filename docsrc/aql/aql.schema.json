@@ -106,7 +106,12 @@
       },
       "properties": {
         "__options__": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer"
+            }
+          }
         },
         "__return__": {
           "type": "object"
@@ -128,9 +133,27 @@
       "description": "Name of the Aquarium model",
       "type": "string"
     },
-    "__as__": {
-      "description": "Return value",
-      "type": "string"
+    "__json__": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "include_uri": {
+              "type": "boolean",
+              "default": true
+            },
+            "include_model_type": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "boolean",
+          "default": false
+        }
+      ]
     }
   },
   "additionalProperties": false,

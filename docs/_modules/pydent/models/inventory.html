@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.models.inventory &#8212; pydent 0.1.5a19 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/style.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a19</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/inventory.html">Inventory Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-samples">Creating new samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#updating-sample-properties">Updating sample properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-items">Creating new items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-collections">Creating new collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#saving-inventory">Saving inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aql/schemas.html">Aquarium Query Language Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../aql/schemas.html#aquarium-query-language-aql-schema">Aquarium Query Language (AQL) Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aql/schemas.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a19">0.1.5a19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a18">0.1.5a18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a17">0.1.5a17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a16">0.1.5a16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a15">0.1.5a15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a14">0.1.5a14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a13">0.1.5a13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a12">0.1.5a12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a11">0.1.5a11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.models.inventory</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;Models related to inventory, like Items, Collections, ObjectTypes, and
+PartAssociations.&quot;&quot;&quot;
+from abc import abstractmethod
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Tuple
+from typing import Union
+
+from .data_associations import DataAssociation
+from .sample import Sample
+from pydent.base import ModelBase
+from pydent.marshaller import add_schema
+from pydent.models.controller_mixin import ControllerMixin
+from pydent.models.crud_mixin import JSONSaveMixin
+from pydent.models.crud_mixin import SaveMixin
+from pydent.models.data_associations import DataAssociationSaveContext
+from pydent.models.data_associations import DataAssociatorMixin
+from pydent.relationships import HasMany
+from pydent.relationships import HasManyGeneric
+from pydent.relationships import HasManyThrough
+from pydent.relationships import HasOne
+from pydent.relationships import Raw
+from pydent.utils.matrix_mapper import IndexType
+from pydent.utils.matrix_mapper import MatrixMapping
+from pydent.utils.matrix_mapper import MatrixMappingFactory
+
+
+<div class="viewcode-block" id="ObjectType"><a class="viewcode-back" href="../../../models.html#pydent.models.ObjectType">[docs]</a>@add_schema
+class ObjectType(SaveMixin, ModelBase):
+    &quot;&quot;&quot;A ObjectType model that represents the type of container an item is.&quot;&quot;&quot;
+
+    fields = dict(items=HasMany(&quot;Item&quot;, &quot;ObjectType&quot;), sample_type=HasOne(&quot;SampleType&quot;))
+
+    def __str__(self):
+        return self._to_str(&quot;id&quot;, &quot;name&quot;)
+
+<div class="viewcode-block" id="ObjectType.new_item"><a class="viewcode-back" href="../../../models.html#pydent.models.ObjectType.new_item">[docs]</a>    def new_item(self, sample: Union[int, Sample]):
+        &quot;&quot;&quot;Create a new item.
+
+        .. versionadded:: 0.1.5a13
+
+        :param sample: the sample id
+        :return: the new item
+        &quot;&quot;&quot;
+        if isinstance(sample, int):
+            sample_id = sample
+            sample = self.session.Sample.find(sample_id)
+        elif isinstance(sample, Sample):
+            sample_id = sample.id
+        else:
+            raise TypeError(
+                &quot;Sample must be either a sample_id (int) or a&quot; &quot; Sample instance.&quot;
+            )
+        return self.session.Item.new(
+            sample=sample, sample_id=sample_id, object_type=self, object_type_id=self.id
+        )</div></div>
+
+
+class ItemLocationMixin(SaveMixin, JSONSaveMixin):
+    def move(self, new_location):
+        self.session.utils.move_item(self, new_location)
+
+    def store(self):
+        self.session.utils.store_item(self)
+
+    def _get_save_json(self):
+        data = self.dump()
+        if &quot;location&quot; in data:
+            del data[&quot;location&quot;]
+        return data
+
+    def update(self):
+        &quot;&quot;&quot;Updates the item.
+
+        Will update the data associations and its location.
+        &quot;&quot;&quot;
+        to_location = self.location
+        JSONSaveMixin.save(self, do_reload=True)
+        if to_location and to_location != self.location:
+            self.move(self.location)
+        return self
+
+    def delete(self):
+        raise ValueError
+        self.move(&quot;deleted&quot;)
+
+    def mark_as_deleted(self):
+        self.location = &quot;deleted&quot;
+
+    def is_deleted(self):
+        return self.location == &quot;deleted&quot;
+
+    @abstractmethod
+    def create(self):
+        pass
+
+    def make(self):
+        &quot;&quot;&quot;Makes the Item on the Aquarium server.
+
+        Requires this Item to be connected to a session.
+        &quot;&quot;&quot;
+        if not self.DID_ITEM_WARNING:
+            raise DeprecationWarning(&quot;This method is depreciated. Use `save()`&quot;)
+        self.DID_ITEM_WARNING = True
+        self.create()
+
+
+<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../models.html#pydent.models.Item">[docs]</a>@add_schema
+class Item(DataAssociatorMixin, ItemLocationMixin, ModelBase):
+    &quot;&quot;&quot;A physical object in the lab, which a location and unique id.&quot;&quot;&quot;
+
+    DID_ITEM_WARNING = False
+
+    fields = dict(
+        sample=HasOne(&quot;Sample&quot;),
+        object_type=HasOne(&quot;ObjectType&quot;),
+        data_associations=HasManyGeneric(
+            &quot;DataAssociation&quot;, additional_args={&quot;parent_class&quot;: &quot;Item&quot;}
+        ),
+        data=Raw(),
+        ignore=(&quot;locator_id&quot;,),
+        part_associations=HasMany(
+            &quot;PartAssociation&quot;, ref=&quot;part_id&quot;
+        ),  # TODO: add to change log
+        collections=HasManyThrough(
+            &quot;Collection&quot;, &quot;PartAssociation&quot;
+        ),  # TODO: add to change log
+    )
+    query_hook = {&quot;methods&quot;: [&quot;is_part&quot;]}
+
+<div class="viewcode-block" id="Item.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.Item.html#pydent.models.Item.__init__">[docs]</a>    def __init__(
+        self=None,
+        sample_id=None,
+        sample=None,
+        object_type=None,
+        object_type_id=None,
+        location=None,
+    ):
+        if sample_id is None:
+            if sample and sample.id:
+                sample_id = sample.id
+
+        if object_type_id is None:
+            if object_type and object_type.id:
+                object_type_id = object_type.id
+        super().__init__(
+            object_type_id=object_type_id,
+            object_type=object_type,
+            sample_id=sample_id,
+            sample=sample,
+            location=location,
+        )</div>
+
+    def create(self):
+        with DataAssociationSaveContext(self):
+            result = self.session.utils.create_items([self])
+            self.reload(result[0][&quot;item&quot;])
+        return self
+
+    @property
+    def containing_collection(self):
+        &quot;&quot;&quot;Returns the collection of which this Item is a part.
+
+        Returns the collection object if the Item is a part, otherwise
+        returns None.
+        &quot;&quot;&quot;
+        if not self.is_part:
+            return None
+
+        assoc_list = self.session.PartAssociation.where({&quot;part_id&quot;: self.id})
+        if not assoc_list:
+            return
+
+        if len(assoc_list) != 1:
+            return None
+
+        part_assoc = next(iter(assoc_list))
+        if not part_assoc:
+            return None
+
+        return self.session.Collection.find(part_assoc.collection_id)
+
+<div class="viewcode-block" id="Item.as_collection"><a class="viewcode-back" href="../../../models.html#pydent.models.Item.as_collection">[docs]</a>    def as_collection(self):
+        &quot;&quot;&quot;Returns the Collection object with the ID of this Item, which must
+        be a collection.
+
+        Returns None if this Item is not a collection.
+        &quot;&quot;&quot;
+        if not self.is_collection:
+            return None
+
+        return self.session.Collection.find(self.id)</div>
+
+    @property
+    def is_collection(self):
+        &quot;&quot;&quot;Returns True if this Item is a collection in a PartAssociation.
+
+        Note: this is not how Aquarium does this test in the `collection?` method.
+        &quot;&quot;&quot;
+        assoc_list = self.session.PartAssociation.where({&quot;collection_id&quot;: self.id})
+        return bool(assoc_list)
+
+    # TODO: add to change log
+    @property
+    def collection(self):
+        return self.collections[0]
+
+    # TODO: add to change log
+    @property
+    def part_association(self):
+        return self.part_associations[0]</div>
+
+
+<div class="viewcode-block" id="PartAssociation"><a class="viewcode-back" href="../../../models.html#pydent.models.PartAssociation">[docs]</a>@add_schema
+class PartAssociation(JSONSaveMixin, ModelBase):
+    &quot;&quot;&quot;Represents a PartAssociation linking a part to a collection.
+
+    Collections contain many `parts`, each of which can refer to a
+    different sample.
+    &quot;&quot;&quot;
+
+    fields = dict(part=HasOne(&quot;Item&quot;, ref=&quot;part_id&quot;), collection=HasOne(&quot;Collection&quot;))
+
+<div class="viewcode-block" id="PartAssociation.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.PartAssociation.html#pydent.models.PartAssociation.__init__">[docs]</a>    def __init__(self, part_id=None, collection_id=None, row=None, column=None):
+        super().__init__(
+            part_id=part_id, collection_id=collection_id, row=row, column=column
+        )</div>
+
+    def get_sample_id(self) -&gt; Union[None, int]:
+        if self.sample_id:
+            return self.sample_id
+        return self.sample.id
+
+    def has_unsaved_sample(self) -&gt; bool:
+        if self.is_deserialized(&quot;part&quot;) and self.part.is_deserialized(&quot;sample&quot;):
+            if self.part.sample.id is None:
+                return True
+        return False
+
+    def is_empty(self) -&gt; bool:
+        if self.get_sample_id():
+            return True
+        return False</div>
+
+
+<div class="viewcode-block" id="Collection"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection">[docs]</a>@add_schema
+class Collection(
+    ItemLocationMixin, DataAssociatorMixin, SaveMixin, ControllerMixin, ModelBase
+):
+    &quot;&quot;&quot;A Collection model, such as a 96-well plate, which contains many
+    `parts`, each of which can be associated with a different sample.&quot;&quot;&quot;
+
+    fields = dict(
+        object_type=HasOne(&quot;ObjectType&quot;),
+        data_associations=HasManyGeneric(
+            &quot;DataAssociation&quot;, additional_args={&quot;parent_class&quot;: &quot;Collection&quot;}
+        ),
+        part_associations=HasMany(&quot;PartAssociation&quot;, &quot;Collection&quot;),
+        parts=HasManyThrough(&quot;Item&quot;, &quot;PartAssociation&quot;, ref=&quot;part_id&quot;),
+    )
+    query_hook = {&quot;methods&quot;: [&quot;dimensions&quot;]}
+
+    # TODO: validate dimensions is returning the same dimensions as that in the object_type
+    # TODO: init should establish dimensions
+
+<div class="viewcode-block" id="Collection.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.Collection.html#pydent.models.Collection.__init__">[docs]</a>    def __init__(
+        self,
+        object_type: ObjectType = None,
+        location: str = None,
+        data_associations: List = None,
+        parts: List = None,
+        part_associations: List = None,
+        **kwargs,
+    ):
+        &quot;&quot;&quot;Initialize a new Collection.
+
+        .. versionchanged:: 0.1.5a10
+            Advanced indexing added for setting and getting samples and data associations
+
+        **Setting samples using new advanced indexing**
+
+        .. code-block:: python
+
+            object_type = session.ObjectType.one(query=&#39;rows &gt; 2 AND columns &gt; 2&#39;)
+            collection = session.Collection.new(object_type=object_type)
+
+            # assign sample &#39;1&#39; to (0, 0) row=0, column=0
+            collection[0, 0] = 1
+
+            # assign sample &#39;2&#39; to (1, 2) row=1, column=2
+            collection[1, 2] = 2
+
+            # assign sample &#39;3234&#39; to row 3
+            collection[3] = 3234
+
+            # assign sample &#39;444&#39; to column 1
+            collection[:, 1] = 444
+
+            # assign sample &#39;6&#39; to the whole collection
+            collection[:, :] = 6
+
+            # assign sample using Sample instance
+            collection[2, 2] = session.Sample.one()
+
+        **Getting samples using new advanced indexing
+
+        .. code-block:: python
+
+            # get 2d matrix of sample ids
+            print(collection.matrix)  # or collection.sample_id_matrix
+
+            # get 2d matrix of Samples assigned at each location
+            print(collection.sample_matrix)
+
+            # get 2d matrix of Parts assigned at each location
+            print(collection.part_matrix)
+
+            # get 2d matrix of PartAssociations assigned at each location
+            collection.part_associations_matrix
+
+            # get 2d matrix of values of DataAssociations at each location
+            collection.data_matrix
+
+            # get 2d matrix of DataAssociations at each location
+            collection.data_association_matrix
+
+        **Assigning data to locations**
+
+        To assign data, you can use the advanced indexing on the `data_matrix`
+
+        .. code-block:: python
+
+            collection.data_matrix[0, 0] = {&#39;key&#39;: &#39;value&#39;}
+
+            collection.data_matrix[1] = {&#39;key&#39;: &#39;value2&#39;}
+
+            collection.associate_to(&#39;key&#39;, &#39;value3&#39;, 3, 3)
+
+        You can delete associations using the following:
+
+        .. code-block:: pythong
+
+            # delete 3, 3
+            collection.delete_association_at(&#39;key&#39;, 3, 3)
+
+            # delete first three rows at column 3
+            collection.delete_association_at(&#39;key&#39;, slice(None, 3, None), 3)
+
+            # delete all of the &#39;key&#39; associations
+            collection.delete_association_at(&#39;key&#39;, slice(None, None, None), slice(None, None, None))
+
+
+        :param object_type:
+        :param location:
+        :param data_associations:
+        :param parts:
+        :param part_associations:
+        :param kwargs:
+        &quot;&quot;&quot;
+        if isinstance(object_type, ObjectType):
+            object_type = object_type
+            object_type_id = object_type.id
+            dims = object_type.rows, object_type.columns
+        else:
+            object_type_id = None
+            dims = None
+
+        super().__init__(
+            object_type=object_type,
+            object_type_id=object_type_id,
+            location=location,
+            dimensions=dims,
+            data_associations=data_associations,
+            part_associations=part_associations,
+            parts=parts,
+            **kwargs,
+        )</div>
+
+    def _empty(self):
+        nrows, ncols = self.dimensions
+        data = []
+        for r in range(nrows):
+            data.append([None] * ncols)
+        return data
+
+    def __part_association_matrix(self):
+        data = self._empty()
+        if self.part_associations:
+            for assoc in self.part_associations:
+                data[assoc.row][assoc.column] = assoc
+        return data
+
+    @staticmethod
+    def _get_part(assoc):
+        if assoc is not None:
+            return assoc.part
+
+    @staticmethod
+    def _get_sample_id(assoc):
+        if assoc is not None:
+            if assoc.part:
+                if assoc.part.sample_id:
+                    return assoc.part.sample_id
+                elif assoc.part.sample:
+                    return assoc.part.sample.id
+                return None
+
+    @staticmethod
+    def _get_sample(assoc):
+        if assoc is not None:
+            if assoc.part:
+                return assoc.part.sample
+
+    @staticmethod
+    def _get_data_association(assoc):
+        if assoc is not None:
+            if assoc.part:
+                if assoc.data_associations:
+                    return {a.key: a for a in assoc.part.data_associations}
+                else:
+                    return {}
+
+    @staticmethod
+    def _get_data_value(assoc):
+        if assoc is not None:
+            if assoc.part:
+                if assoc.part.data_associations:
+                    return {a.key: a.value for a in assoc.part.data_associations}
+                else:
+                    return {}
+
+    @staticmethod
+    def _no_setter(x):
+        raise ValueError(&quot;Setter is not implemented.&quot;)
+
+    def _set_sample(
+        self,
+        data: List[List[PartAssociation]],
+        r: int,
+        c: int,
+        sample: Union[int, Sample],
+    ):
+        if data[r][c]:
+            part = data[r][c].part
+        else:
+            part = self.session.Item.new(
+                object_type_id=self.session.ObjectType.find_by_name(&quot;__Part&quot;).id
+            )
+            association = self.session.PartAssociation.new(
+                part_id=part.id, collection_id=self.id, row=r, column=c
+            )
+            association.part = part
+            self.append_to_many(&quot;part_associations&quot;, association)
+        if isinstance(sample, int):
+            part.sample_id = sample
+            part.reset_field(&quot;sample&quot;)
+        elif isinstance(sample, Sample):
+            part.sample = sample
+            part.sample_id = sample.id
+        elif sample is None:
+            part.sample = None
+            part.sample_id = None
+        else:
+            raise ValueError(&quot;{} must be a Sample instance or an int&quot;.format(sample))
+
+    def _set_key_values(
+        self,
+        data: List[List[PartAssociation]],
+        r: int,
+        c: int,
+        data_dict: Dict[str, Any],
+    ):
+        part = None
+        if data[r][c]:
+            part = data[r][c].part
+
+        if not part:
+            raise ValueError(
+                &quot;Cannot set data to ({r},{c}) because &quot;
+                &quot;there is no Sample assigned to that location&quot;.format(r=r, c=c)
+            )
+        for k, v in data_dict.items():
+            part.associate(k, v)
+
+    @property
+    def _mapping(self):
+        factory = MatrixMappingFactory(self.__part_association_matrix())
+        default_setter = self._no_setter
+        factory.new(&quot;part_association&quot;, setter=default_setter, getter=None)
+        factory.new(&quot;part&quot;, setter=default_setter, getter=self._get_part)
+        factory.new(&quot;sample_id&quot;, setter=self._set_sample, getter=self._get_sample_id)
+        factory.new(&quot;sample&quot;, setter=default_setter, getter=self._get_sample)
+        factory.new(&quot;data&quot;, setter=self._set_key_values, getter=self._get_data_value)
+        factory.new(
+            &quot;data_association&quot;, setter=default_setter, getter=self._get_data_association
+        )
+        return factory
+
+    @property
+    def matrix(self):
+        &quot;&quot;&quot;Returns the matrix of Samples for this Collection.
+
+        (Consider using samples of parts directly.)
+
+        .. versionchanged:: 0.1.5a9
+            Refactored using MatrixMapping
+        &quot;&quot;&quot;
+        return self.sample_id_matrix
+
+    @property
+    def part_matrix(self) -&gt; MatrixMapping[Item]:
+        &quot;&quot;&quot;Return a view of :class:`ITem &lt;pydent.models.Item&gt;`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of Items (Parts)
+        &quot;&quot;&quot;
+        return self._mapping[&quot;part&quot;]
+
+    @property
+    def part_association_matrix(self) -&gt; MatrixMapping[PartAssociation]:
+        &quot;&quot;&quot;Return a view of :class:`PartAssociation.
+
+        &lt;pydent.models.PartAssociation&gt;`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of PartAssociations
+        &quot;&quot;&quot;
+        return self._mapping[&quot;part_association&quot;]
+
+    @property
+    def sample_id_matrix(self) -&gt; MatrixMapping[int]:
+        &quot;&quot;&quot;Return a view of sample_ids :class:`Sample &lt;pydent.models.Sample&gt;`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of Sample.ids
+        &quot;&quot;&quot;
+        return self._mapping[&quot;sample_id&quot;]
+
+    @property
+    def sample_matrix(self) -&gt; MatrixMapping[Sample]:
+        &quot;&quot;&quot;Return a view of :class:`Sample &lt;pydent.models.Sample&gt;`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of Samples
+        &quot;&quot;&quot;
+        return self._mapping[&quot;sample&quot;]
+
+    @property
+    def data_matrix(self) -&gt; MatrixMapping[Any]:
+        &quot;&quot;&quot;Return a view of values from the :class:`DataAssociation.
+
+        &lt;pydent.models.DataAssociation&gt;`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of DataAssociation values
+        &quot;&quot;&quot;
+        return self._mapping[&quot;data&quot;]
+
+    @property
+    def data_association_matrix(self) -&gt; MatrixMapping[DataAssociation]:
+        &quot;&quot;&quot;Return a view of :class:`DataAssociation.
+
+        &lt;pydent.models.DataAssociation&gt;`
+
+        .. versionadded:: 0.1.5a9
+
+        :return: collection as a view of DataAssociations
+        &quot;&quot;&quot;
+        return self._mapping[&quot;data_association&quot;]
+
+<div class="viewcode-block" id="Collection.part"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection.part">[docs]</a>    def part(self, row, col) -&gt; Item:
+        &quot;&quot;&quot;Returns the part Item at (row, col) of this Collection (zero-
+        based).&quot;&quot;&quot;
+        return self.part_matrix[row, col]</div>
+
+<div class="viewcode-block" id="Collection.as_item"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection.as_item">[docs]</a>    def as_item(self):
+        &quot;&quot;&quot;Returns the Item object with the ID of this Collection.&quot;&quot;&quot;
+        return self.session.Item.find(self.id)</div>
+
+    # TODO: implement save and create
+<div class="viewcode-block" id="Collection.create"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection.create">[docs]</a>    def create(self):
+        &quot;&quot;&quot;Create a new empty collection on the server.&quot;&quot;&quot;
+        result = self.session.utils.model_update(
+            &quot;collections&quot;, self.object_type_id, self.dump()
+        )
+        self.id = result[&quot;id&quot;]
+        self.created_at = result[&quot;created_at&quot;]
+        self.updated_at = result[&quot;updated_at&quot;]
+        self.update()
+        return self</div>
+
+    def _validate_for_update(self):
+        if not self.id:
+            raise ValueError(
+                &quot;Cannot update part associations since the Collection &quot; &quot;is not saved.&quot;
+            )
+        for association in self.part_associations:
+            if association.has_unsaved_sample():
+                raise ValueError(
+                    &quot;Cannot update. Collection contains Samples ({r},{c})&quot;
+                    &quot; that have not yet been saved.&quot;.format(
+                        r=association.row, c=association.column
+                    )
+                )
+
+<div class="viewcode-block" id="Collection.update"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection.update">[docs]</a>    def update(self):
+        self._validate_for_update()
+        self.move(self.location)
+        for association in self.part_associations:
+            if not association.collection_id:
+                association.collection_id = self.id
+            association.part.save()
+            association.part_id = association.part.id
+            association.save()
+        self.refresh()</div>
+
+<div class="viewcode-block" id="Collection.assign_sample"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection.assign_sample">[docs]</a>    def assign_sample(self, sample_id: int, pairs: List[Tuple[int, int]]):
+        &quot;&quot;&quot;Assign sample id to the (row, column) pairs for the collection.
+
+        :param sample_id: the sample id to assign
+        :param pairs: list of (row, column) tuples
+        :return: self
+        &quot;&quot;&quot;
+        self.controller_method(
+            &quot;assign_sample&quot;,
+            self.get_tableized_name(),
+            self.id,
+            data={&quot;sample_id&quot;: sample_id, &quot;pairs&quot;: pairs},
+        )
+        self.refresh()
+        return self</div>
+
+<div class="viewcode-block" id="Collection.remove_sample"><a class="viewcode-back" href="../../../models.html#pydent.models.Collection.remove_sample">[docs]</a>    def remove_sample(self, pairs: List[Tuple[int, int]]):
+        &quot;&quot;&quot;Clear the sample_id assigment in the (row, column) pairs for the
+        collection.
+
+        :param pairs: list of (row, column) tuples
+        :return: self
+        &quot;&quot;&quot;
+        self.controller_method(
+            &quot;delete_selection&quot;,
+            self.get_tableized_name(),
+            self.id,
+            data={&quot;pairs&quot;: pairs},
+        )
+        self.refresh()
+        return self</div>
+
+    def associate_to(self, key, value, r: int, c: int):
+        self.data_matrix[r, c] = {key: value}
+
+    def delete_association_at(self, key, r: int, c: int):
+        part_matrix = self.part_matrix
+        for r, c in part_matrix._iter_indices((r, c)):
+            part = part_matrix[r, c]
+            part.delete_data_associations(key)
+
+    def __getitem__(self, index: IndexType) -&gt; Union[int, List[int], List[List[int]]]:
+        &quot;&quot;&quot;Returns the sample_id of the part at the provided index.
+
+        :param index: either an int (for rows), tuple of ints/slice objs, (row, column),
+            or a slice object.
+        :return: sample_ids
+        &quot;&quot;&quot;
+        return self.matrix[index]
+
+    def __setitem__(self, index: IndexType, sample: Union[int, Sample]):
+        &quot;&quot;&quot;Sets the sample_ids of the collection, creating the PartAssociations
+        and parts if needed.
+
+        :param index: either an int (for rows), tuple of ints/slice objs, (row, column),
+            or a slice object.
+        :param sample: either a Sample with a valid id or sample_id
+        :return:
+        &quot;&quot;&quot;
+        self.sample_id_matrix[index] = sample</div>
+
+    # TODO: add data associations to matrix
+    # TODO: collections test
+    # def update(self):
+    #     self.as_item().update()
+    #
+    # def save(self):
+    #     self.as_item().save()
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

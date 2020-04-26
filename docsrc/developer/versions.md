@@ -1,4 +1,14 @@
 # pydent change log
+## 0.1.5a19
+**2020-04-25T12:59:26.221889**
+new features
+
+ - Serialization: `model.dump(include_uri=True)` will return a unique URI for the model upon dump
+ - Serialization: `model.dump(include_model_type=True)` will return the model class name upon dump
+ - AQL: `__as__` key was removed from AQL query scheme. To dump JSON, add the `__json__` key to the top level.
+ - AQL: `__json__` will, by default, dump __uri__ and __model__ attributes. These option can be changed by setting `__json__` = `{"include_uri": false, "include_model_type": false}`
+
+
 ## 0.1.5a18
 **2020-03-15T14:19:15.948876**
 MIT License
