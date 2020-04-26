@@ -106,7 +106,6 @@ import webbrowser
 from copy import copy
 from decimal import Decimal
 from typing import Dict
-from typing import Iterable
 from typing import List
 from typing import Type
 from typing import Union
@@ -180,8 +179,8 @@ class AqSession(SessionABC):
         self._using_cache = False
         self.init_cache()
         self.parent_session = (
-            None
-        )  #: the parent session, if derived from another session
+            None  #: the parent session, if derived from another session
+        )
 
     @property
     def interface_class(self) -> Type:

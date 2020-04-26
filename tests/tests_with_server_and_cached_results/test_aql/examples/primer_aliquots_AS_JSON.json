@@ -1,0 +1,23 @@
+{
+  "__model__": "Sample",
+  "__description__": "Return samples that have available Primer Aliquots",
+  "__json__": true,
+  "query": {
+    "items": {
+      "query": {
+        "object_type": {
+          "query": { "name": "Primer Aliquot" }
+        },
+        "location": {
+          "__not__": "deleted"
+        },
+        "__options__": {
+          "limit": 1
+        }
+      }
+    },
+    "__options__": {
+      "limit": 1
+    }
+  }
+}
