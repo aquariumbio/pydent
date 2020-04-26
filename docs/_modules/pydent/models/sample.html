@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.models.sample &#8212; pydent 0.1.5a19 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/style.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a19</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/inventory.html">Inventory Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-samples">Creating new samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#updating-sample-properties">Updating sample properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-items">Creating new items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#creating-new-collections">Creating new collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/inventory.html#saving-inventory">Saving inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../aql/schemas.html">Aquarium Query Language Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../aql/schemas.html#aquarium-query-language-aql-schema">Aquarium Query Language (AQL) Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aql/schemas.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a19">0.1.5a19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a18">0.1.5a18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a17">0.1.5a17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a16">0.1.5a16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a15">0.1.5a15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a14">0.1.5a14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id1">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a13">0.1.5a13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a12">0.1.5a12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a11">0.1.5a11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a9">0.1.5a9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a8">0.1.5a8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id4">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.models.sample</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;Models related to samples, like Samples and SampleTypes.&quot;&quot;&quot;
+import json
+from collections.abc import Sequence
+from typing import List
+from typing import Tuple
+from warnings import warn
+
+from pydent.base import ModelBase
+from pydent.exceptions import AquariumModelError
+from pydent.marshaller import add_schema
+from pydent.models.crud_mixin import JSONSaveMixin
+from pydent.models.field_value_mixins import FieldTypeInterface
+from pydent.models.field_value_mixins import FieldValueInterface
+from pydent.relationships import HasMany
+from pydent.relationships import HasOne
+
+
+<div class="viewcode-block" id="Sample"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample">[docs]</a>@add_schema
+class Sample(FieldValueInterface, ModelBase):
+    &quot;&quot;&quot;A Sample model.&quot;&quot;&quot;
+
+    fields = dict(
+        # sample relationships
+        sample_type=HasOne(&quot;SampleType&quot;),
+        items=HasMany(&quot;Item&quot;, ref=&quot;sample_id&quot;),
+        field_values=HasMany(
+            &quot;FieldValue&quot;, ref=&quot;parent_id&quot;, additional_args={&quot;parent_class&quot;: &quot;Sample&quot;}
+        ),
+        user=HasOne(&quot;User&quot;),
+    )
+
+    METATYPE = &quot;sample_type&quot;
+
+<div class="viewcode-block" id="Sample.__init__"><a class="viewcode-back" href="../../../generated/pydent.models.Sample.html#pydent.models.Sample.__init__">[docs]</a>    def __init__(
+        self,
+        name=None,
+        project=None,
+        description=None,
+        sample_type=None,
+        sample_type_id=None,
+        properties=None,
+        field_values=None,
+    ):
+        &quot;&quot;&quot;
+
+        :param name:
+        :type name:
+        :param project:
+        :type project:
+        :param description:
+        :type description:
+        :param sample_type_id:
+        :type sample_type_id:
+        :param properties:
+        :type properties:
+        &quot;&quot;&quot;
+        super().__init__(
+            name=name,
+            project=project,
+            description=description,
+            sample_type_id=sample_type_id,
+            sample_type=sample_type,
+            field_values=field_values,
+            items=None,
+        )
+
+        if properties is not None:
+            self.update_properties(properties)</div>
+
+    @property
+    def identifier(self):
+        &quot;&quot;&quot;Return the identifier used by Aquarium in autocompletes.&quot;&quot;&quot;
+        return &quot;{}: {}&quot;.format(self.id, self.name)
+
+<div class="viewcode-block" id="Sample.field_value"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.field_value">[docs]</a>    def field_value(self, name):
+        &quot;&quot;&quot;Returns the :class:`FieldValue` associated with the sample by its
+        name. If the there is more than one FieldValue with the same name (as
+        in field_value arrays), it will return the first FieldValue. See the.
+
+        :meth:`Sample.field_value_array` method.
+
+        :param name: name of the field value
+        :type name: str
+        :return: the field value
+        :rtype: FieldValue
+        &quot;&quot;&quot;
+        return self.get_field_value(name, None)</div>
+
+    def field_value_array(self, name):
+        return self.get_field_value_array(name, None)
+
+    def _property_accessor(self, fv):
+        ft = self.safe_get_field_type(fv)
+        if ft:
+            if ft.ftype == &quot;sample&quot;:
+                return fv.sample
+            else:
+                if ft.ftype == &quot;number&quot;:
+                    if isinstance(fv.value, str):
+                        return json.loads(fv.value)
+                return fv.value
+
+    @property
+    def properties(self):
+        return self._field_value_dictionary(lambda ft: ft.name, self._property_accessor)
+
+    def field_value_dictionary(self):
+        return self._field_value_dictionary(lambda ft: ft.name, lambda x: x)
+
+<div class="viewcode-block" id="Sample.update_properties"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.update_properties">[docs]</a>    def update_properties(self, prop_dict):
+        &quot;&quot;&quot;Update the FieldValues properties for this sample.
+
+        :param prop_dict: values to update
+        :type pro fp_dict: dict
+        :return: self
+        :rtype: Sample
+        &quot;&quot;&quot;
+        ft_dict = {ft.name: ft for ft in self.get_field_types()}
+        for name, val in prop_dict.items():
+            ft = ft_dict[name]
+            if ft.is_parameter():
+                key = &quot;value&quot;
+            else:
+                key = &quot;sample&quot;
+            if issubclass(type(val), Sequence) and ft.array:
+                self.set_field_value_array(name, None, [{key: v} for v in val])
+            else:
+                self.set_field_value(name, None, {key: val})</div>
+
+<div class="viewcode-block" id="Sample.create"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.create">[docs]</a>    def create(self) -&gt; List[&quot;Sample&quot;]:
+        &quot;&quot;&quot;Create the sample.
+
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+
+        :return:
+        :raises AquariumModelError: if required FieldValues are missing.
+        &quot;&quot;&quot;
+        self.is_savable(do_raise=True)
+        return self.session.utils.create_samples([self])</div>
+
+<div class="viewcode-block" id="Sample.is_savable"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.is_savable">[docs]</a>    def is_savable(self, do_raise: bool = True) -&gt; Tuple[bool, List[str]]:
+        &quot;&quot;&quot;Checks if the sample can be saved or updated.
+
+        .. versionadded:: 0.1.5a17
+
+        :param do_raise:
+        :return:
+        &quot;&quot;&quot;
+        errors = []
+        for k, v in self.properties.items():
+            if v is None and self.sample_type.field_type(k).required:
+                errors.append(&quot;FieldValue &#39;{}&#39; is required.&quot;.format(k))
+        if do_raise and errors:
+            raise AquariumModelError(
+                &quot;Cannot update/save due to the following:\n&quot;
+                &quot;Sample: id={} name={} ({})\n\t{}&quot;.format(
+                    self.id, self.name, self.sample_type.name, &quot;\n\t&quot;.join(errors)
+                )
+            )
+        return len(errors) == 0, errors</div>
+
+<div class="viewcode-block" id="Sample.save"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.save">[docs]</a>    def save(self):
+        &quot;&quot;&quot;Saves the sample, either by creating a new sample (if id=None) or
+        updating the existing sample on the server.
+
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+        :return:
+        &quot;&quot;&quot;
+        if self.id:
+            self.update()
+        else:
+            self.create()</div>
+
+<div class="viewcode-block" id="Sample.update"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.update">[docs]</a>    def update(self) -&gt; &quot;Sample&quot;:
+        &quot;&quot;&quot;Updates the sample on the server.
+
+        .. versionchanged:: 0.1.5a17
+            Raises `AquariumModelError` if sample is missing required properties
+        :return:
+        &quot;&quot;&quot;
+        self.is_savable(do_raise=True)
+        for fv in self.field_values:
+            fv.reload(fv.save())
+
+        new_fvs = self.field_values
+        server_fvs = self.session.FieldValue.where(
+            dict(parent_id=self.id, parent_class=&quot;Sample&quot;)
+        )
+
+        to_remove = [
+            fv for fv in server_fvs if fv.id not in [_fv.id for _fv in new_fvs]
+        ]
+        if to_remove:
+            warn(
+                &quot;Trident tried to save a Sample, but it required FieldValues to be deleted.&quot;
+            )
+            for fv in to_remove:
+                fv.parent_id = None
+                fv.save()
+        self.reload(self.session.utils.json_save(&quot;Sample&quot;, self.dump()))
+        return self</div>
+
+<div class="viewcode-block" id="Sample.merge"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.merge">[docs]</a>    def merge(self):
+        &quot;&quot;&quot;Merge sample by name. If a sample with the same name and
+        sample_type_id is found on the server, update that model and save the
+        updated data to the server. Else, create a new sample on the server.
+
+        :param sample: sample to merge.
+        :return: True if merged, False otherwise
+        &quot;&quot;&quot;
+        try:
+            self.save()
+        except Exception as e:
+            existing = self.session.Sample.find_by_name(self.name)
+            if existing:
+                if self.sample_type_id == existing.sample_type_id:
+                    existing.update_properties(self.properties)
+                    existing.description = self.description
+                    existing.project = self.project
+                    existing.save()
+                    self.reload(existing.dump())
+                    return True
+                else:
+                    raise e
+            else:
+                raise e
+        return False</div>
+
+    def available_items(self, object_type_name=None, object_type_id=None):
+        query = {&quot;name&quot;: object_type_name, &quot;id&quot;: object_type_id}
+        query = {k: v for k, v in query.items() if v is not None}
+        if query == {}:
+            return [i for i in self.items if i.location != &quot;deleted&quot;]
+        else:
+            object_types = self.session.ObjectType.where(query)
+            object_type = object_types[0]
+            return [
+                i
+                for i in self.items
+                if i.location != &quot;deleted&quot; and i.object_type_id == object_type.id
+            ]
+
+<div class="viewcode-block" id="Sample.copy"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.copy">[docs]</a>    def copy(self):
+        &quot;&quot;&quot;Return a copy of this sample.&quot;&quot;&quot;
+        copied = super().copy()
+        copied.anonymize()
+        return copied</div>
+
+    def __str__(self):
+        return self._to_str(&quot;id&quot;, &quot;name&quot;, &quot;sample_type&quot;)</div>
+
+
+<div class="viewcode-block" id="SampleType"><a class="viewcode-back" href="../../../models.html#pydent.models.SampleType">[docs]</a>@add_schema
+class SampleType(FieldTypeInterface, JSONSaveMixin, ModelBase):
+    &quot;&quot;&quot;A SampleType model.&quot;&quot;&quot;
+
+    fields = dict(
+        samples=HasMany(&quot;Sample&quot;, &quot;SampleType&quot;),
+        field_types=HasMany(
+            &quot;FieldType&quot;, ref=&quot;parent_id&quot;, additional_args={&quot;parent_class&quot;: &quot;SampleType&quot;}
+        ),
+        # TODO: operation_type_afts
+        # TODO: property_afts
+        # TODO: add relationships description
+    )
+
+<div class="viewcode-block" id="SampleType.field_type"><a class="viewcode-back" href="../../../models.html#pydent.models.SampleType.field_type">[docs]</a>    def field_type(self, name, role=None):
+        return super().field_type(name, role)</div>
+
+    @property
+    def properties(self):
+        props = {}
+        for ft in self.field_types:
+            if ft.ftype == &quot;sample&quot;:
+                props[ft.name] = [str(aft) for aft in ft.allowable_field_types]
+            else:
+                props[ft.name] = ft.ftype
+        return props
+
+    def new_sample(self, name, description, project, properties=None):
+        if properties is None:
+            properties = dict()
+        sample = self.session.Sample.new(
+            name=name,
+            sample_type=self,
+            description=description,
+            project=project,
+            properties=properties,
+        )
+        return sample
+
+    def _get_update_json(self):
+        return self.dump(include=(&quot;field_types&quot;,))
+
+    def _get_create_json(self):
+        return self.dump(include=(&quot;field_types&quot;,))
+
+    def __str__(self):
+        return self._to_str(&quot;id&quot;, &quot;name&quot;)</div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2019, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
