@@ -1,7 +1,10 @@
+from typing import Any
+from typing import List
+from typing import Tuple
 from uuid import uuid4
 
 import pytest
-from typing import List, Tuple, Any
+
 
 @pytest.fixture
 def example_part_association(session):
@@ -102,7 +105,7 @@ def where(arr: List[List[Any]], x) -> Tuple[List[int], ...]:
     for i, row in enumerate(arr):
         for j, col in enumerate(row):
             if col == x:
-              found.append((i, j))
+                found.append((i, j))
     indices = tuple(zip(*found))
     return indices
 
