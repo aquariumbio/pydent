@@ -151,16 +151,18 @@ def _aql(session, data, model=None):
 
     # make options
     opts = {"reverse": True}
+    page_size = None
     if "__options__" in data["query"]:
+        if "pageSize" in data["query"]["__options__"]:
+            page_size = data["query"]["__options__"].get("pageSize", None)
         opts.update(deepcopy(data["query"]["__options__"]))
 
-    # do query
     for k, v in new_query.items():
         if issubclass(type(v), QueryBuilder.Op):
             new_query = QueryBuilder.sql(new_query)
             break
 
-    returned_models = interface.where(new_query, opts=opts)
+    returned_models = interface.where(new_query, opts=opts, page_size=page_size)
 
     # return models
     if "__return__" in data["query"]:
