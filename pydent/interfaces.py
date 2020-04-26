@@ -33,6 +33,7 @@ Example:
 import json
 from abc import ABC
 from abc import abstractmethod
+from typing import Generator
 from typing import List
 from typing import Union
 
@@ -41,6 +42,7 @@ from inflection import underscore
 
 from .exceptions import TridentRequestError
 from .utils import url_build
+from pydent.marshaller.base import SchemaModel
 from pydent.marshaller.registry import ModelRegistry
 
 
@@ -594,6 +596,7 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         criteria: dict,
         methods: List[str] = None,
         include: List[str] = None,
+        page_size: int = None,
         opts: dict = None,
     ):
         """Performs a query for models.
@@ -608,6 +611,17 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
         :return: list of models
         :rtype: list
         """
+        if page_size is not None:
+            results = []
+            for page in self.pagination(
+                criteria,
+                page_size=page_size,
+                methods=methods,
+                include=include,
+                opts=opts,
+            ):
+                results += page
+            return results
         if opts is None:
             opts = dict()
         rest = {}
@@ -697,6 +711,42 @@ class QueryInterface(SessionInterface, QueryInterfaceABC):
     #         model_id=model_id, models=models_name), json_data=json_data)
     #     return result
 
+    def pagination(
+        self,
+        query: dict,
+        page_size: int,
+        methods: List[str] = None,
+        include: List[str] = None,
+        opts: dict = None,
+    ) -> Generator[list, None, None]:
+        """Return pagination query (as a generator).
+
+        :param interface: SessionInterface
+        :param query: query
+        :param page_size: number of models to return per page
+        :param limit: total number of models to return
+        :param opts: additional options
+        :return: generator of list of models
+        """
+        if opts is None:
+            opts = {}
+        limit = opts.get("limit", -1)
+        if limit < page_size and limit >= 0:
+            page_size = limit
+        n = 0
+        if opts:
+            _opts = dict(opts)
+        else:
+            _opts = {}
+        while n < limit or limit == -1:
+            _opts["limit"] = page_size
+            _opts["offset"] = n
+            models = self.where(query, methods=methods, include=include, opts=_opts)
+            if not models:
+                return
+            n += len(models)
+            yield models
+
     def new(self, *args, **kwargs):
         """Creates a new model instance.
 
@@ -741,18 +791,28 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
             name, model_class=self.model_name, primary_key="name"
         )
 
-    def where(self, criteria, methods: List[str] = None, opts: bool = None):
+    def where(
+        self,
+        criteria,
+        methods: List[str] = None,
+        page_size: int = None,
+        opts: dict = None,
+    ):
         return self.browser.where(
-            criteria, model_class=self.model_name, methods=methods, opts=opts
+            criteria,
+            model_class=self.model_name,
+            methods=methods,
+            opts=opts,
+            page_size=page_size,
         )
 
-    def one(self, query: dict = None, first: bool = False, opts: bool = None):
+    def one(self, query: dict = None, first: bool = False, opts: dict = None):
         return self.browser.one(model_class=self.model_name, query=query, opts=opts)
 
-    def first(self, num: int = 1, query: dict = None, opts: bool = None):
+    def first(self, num: int = 1, query: dict = None, opts: dict = None):
         return self.browser.first(num, model_class=self.model_name, query=query)
 
-    def last(self, num: int = 1, query: dict = None, opts: bool = None):
+    def last(self, num: int = 1, query: dict = None, opts: dict = None):
         return self.browser.last(num, model_class=self.model_name, query=query)
 
     def new(self, *args, **kwargs):
@@ -761,11 +821,11 @@ class BrowserInterface(SessionInterface, QueryInterfaceABC):
         self.browser.update_cache([instance])
         return instance
 
-    def all(self, opts: bool = None):
+    def all(self, opts: dict = None):
         return self.browser.all(model_class=self.model_name, opts=opts)
 
     # TODO: load_from using new session
-    def load(self, post_response: dict) -> List["ModelBase"]:
+    def load(self, post_response: dict) -> List[SchemaModel]:
         """Loads model instance(s) from data.
 
         Model instances will be of class defined by self.model. If data

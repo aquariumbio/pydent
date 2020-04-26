@@ -327,7 +327,7 @@ class Callback(Field):
         except AttributeError as e:
             raise RunTimeCallbackAttributeError(
                 "There was an error retrieving callback keyword arguments for "
-                "'{func}(args)' due to:\n{e}".format(
+                "'{func}({args})' due to:\n{e}".format(
                     func=self.callback,
                     args=self._callback_signature(),
                     e="{}: {}".format(e.__class__.__name__, e),

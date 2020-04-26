@@ -18,7 +18,8 @@ def load(filepath):
 
 
 examples = []
-for filepath in glob(join(here, "examples", "*.json")):
+examples_folder = join(here, "examples")
+for filepath in glob(join(examples_folder, "*.json")):
     examples.append(load(filepath))
 example_ids = [e["__description__"] for e in examples]
 
@@ -39,3 +40,31 @@ def test_aquarium_query_language_method(session, data):
 @example_fixture
 def test_query_from_session(session, data):
     session().query(data)
+
+
+@example_fixture
+@pytest.mark.parametrize(
+    "json_param",
+    [
+        False,
+        True,
+        {"include_uri": False},
+        {"include_model_type": False},
+        {"include_uri": False, "include_model_type": False},
+        {"include_uri": False, "include_model_type": True},
+        {"include_uri": True, "include_model_type": False},
+        {"include_uri": True, "include_model_type": True},
+    ],
+)
+def test_query_from_session_as_json(session, data, json_param):
+    data["__json__"] = json_param
+    results = session().query(data)
+    assert isinstance(results, list)
+    print(results)
+    if results:
+        assert isinstance(results[0], dict)
+        if isinstance(json_param, dict):
+            if "include_uri" in json_param:
+                assert json_param["include_uri"] == ("__uri__" in results[0])
+            if "include_model_type" in json_param:
+                assert json_param["include_model_type"] == ("__model__" in results[0])

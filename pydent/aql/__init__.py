@@ -165,8 +165,11 @@ def _aql(session, data, model=None):
     # return models
     if "__return__" in data["query"]:
         session.browser.get(returned_models, data["query"]["__return__"])
-    if data.get("__as__", None) == "json":
-        return [m._get_data() for m in returned_models]
+    if data.get("__json__", None) is not None:
+        dump_params = dict(include_uri=True, include_model_type=True)
+        if isinstance(data["__json__"], dict):
+            dump_params.update(data["__json__"])
+        return [m.dump(**dump_params) for m in returned_models]
     else:
         return returned_models
 
