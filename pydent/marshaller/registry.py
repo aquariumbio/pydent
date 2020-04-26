@@ -81,8 +81,8 @@ class ModelRegistry(type):
     _fields_key = "fields"  # the class level attribute key to instantiate model fields
     _data_key = "__serialized_data"  # the attribute key used to store serialized data
     _deserialized_key = (
-        "__deserialized_data"
-    )  # the attribute key used to store serialized data
+        "__deserialized_data"  # the attribute key used to store serialized data
+    )
     BASE = "SchemaModel"
 
     def __init__(cls, name, bases, selfdict):

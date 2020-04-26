@@ -2,6 +2,11 @@
 import functools
 import inspect
 from copy import deepcopy
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Tuple
+from typing import Union
 
 from pydent.marshaller.descriptors import DataAccessor
 from pydent.marshaller.exceptions import SchemaException
@@ -141,7 +146,14 @@ class SchemaModel(metaclass=ModelRegistry):
             return {k: None for k in keys}
 
     @classmethod
-    def _dump(cls, obj, only=None, include=None, ignore=None):
+    def _dump(
+        cls,
+        obj,
+        only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        include: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        ignore: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        **kwargs,
+    ) -> dict:
         if not issubclass(type(obj), SchemaModel):
             return obj
 
@@ -184,12 +196,13 @@ class SchemaModel(metaclass=ModelRegistry):
         for key in callback_keys:
             field = model_fields[key]
             val = getattr(obj, key)
-            dump = functools.partial(
-                cls._dump,
+            dump_kwargs = dict(
                 include=include.pop(key, None),
                 only=only.pop(key, None),
                 ignore=ignore.pop(key, None),
             )
+            dump_kwargs.update(kwargs)
+            dump = functools.partial(cls._dump, **dump_kwargs)
             if getattr(model_fields[key], "nested", None) and model_fields[key].many:
                 if isinstance(val, list):
                     data[field.data_key] = [dump(v) for v in val]
@@ -197,7 +210,12 @@ class SchemaModel(metaclass=ModelRegistry):
                 data[field.data_key] = dump(val)
         return data
 
-    def dump(self, only=None, include=None, ignore=None):
+    def dump(
+        self,
+        only: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        include: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+        ignore: Union[str, List[str], Tuple[str], Dict[str, Any]] = None,
+    ) -> dict:
         """Dump/serializes the model to a json-like dictionary.
 
         :param only: restricts dump/serialization to the provided keys
