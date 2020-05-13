@@ -109,7 +109,6 @@ def models_to_graph(session: SessionABC, models: Iterable[InventoryType]) -> nx.
         to_visit = models[:]
         visited = []
         while to_visit:
-            print(to_visit)
             m = to_visit.pop()
             if to_node(m) in visited:
                 continue
