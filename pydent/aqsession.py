@@ -454,6 +454,7 @@ class AqSession(SessionABC):
 
         ..versionadded:: 0.1.5a16
             Added query method for complex queries
+        .. versionchanged:: 0.1.5a23 `query` key now changed to `__query__`
 
         :param data: data query
         :param use_cache: whether to inherit the cache from the provided session

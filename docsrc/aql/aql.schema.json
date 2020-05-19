@@ -109,7 +109,13 @@
           "type": "object",
           "properties": {
             "limit": {
-              "type": "integer"
+              "type": "integer",
+              "description": "limit the number of the models to return"
+            },
+            "pageSize": {
+              "type": "integer",
+              "description": "limit the number of models to return per query",
+              "default": null
             }
           }
         },
@@ -121,7 +127,7 @@
     }
   },
   "properties": {
-    "query": {
+    "__query__": {
       "description": "Query to find models.",
       "$ref": "#/definitions/queryObj"
     },
@@ -160,11 +166,11 @@
   "examples": [
     {
       "__model__": "Sample",
-      "query": {
+      "__query__": {
         "items": {
-          "query": {
+          "__query__": {
             "object_type": {
-              "query": {
+              "__query__": {
                 "name": "Yeast Glycerol Stock"
               }
             },
@@ -181,7 +187,7 @@
     }
   ],
   "required": [
-    "query",
+    "__query__",
     "__model__"
   ]
 }
