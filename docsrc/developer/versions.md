@@ -1,6 +1,27 @@
 # pydent change log
+## 0.1.5a22
+**2020-05-19T10:03:04.022705**
+updates to AQL
+
+ - `query` key changed to `__query__` key
+
+
+## 0.1.5a21
+**2020-05-13T08:32:18.023349**
+Correction
+
+ - removed print statement from `pydent.save_inventory`
+
+
+## 0.1.5a20
+**2020-04-26T10:52:22.897648**
+new features (AQL)
+
+ - AQL: add `__options__.pageSize` to AQL schema
+
+
 ## 0.1.5a19
-**2020-04-25T12:59:26.221889**
+**2020-04-25T19:58:33.514625**
 new features
 
  - Serialization: `model.dump(include_uri=True)` will return a unique URI for the model upon dump

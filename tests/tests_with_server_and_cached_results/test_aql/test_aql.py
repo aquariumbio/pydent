@@ -72,5 +72,5 @@ def test_query_from_session_as_json(session, query, json_param):
 
 @example_fixture
 def test_query_page_size(session, query):
-    query["query"]["__options__"]["page_size"] = 2
+    query["__query__"]["__options__"]["page_size"] = 2
     results = session().query(query)

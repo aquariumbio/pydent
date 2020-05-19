@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Aquarium Query Language Schema &#8212; pydent 0.1.5a19 documentation</title>
+    <title>Aquarium Query Language Schema &#8212; pydent 0.1.5a22 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -42,7 +42,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a19</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a22</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -214,6 +214,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a22">0.1.5a22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a21">0.1.5a21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a20">0.1.5a20</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a19">0.1.5a19</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a18">0.1.5a18</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a17">0.1.5a17</a></li>
@@ -479,7 +482,13 @@
 184
 185
 186
-187</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+187
+188
+189
+190
+191
+192
+193</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema#&quot;</span><span class="p">,</span>
   <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Aquarium Query Language (AQL) Schema&quot;</span><span class="p">,</span>
   <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;This schema validates query schema for AQL&quot;</span><span class="p">,</span>
@@ -590,7 +599,13 @@
           <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
           <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="p">{</span>
-              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+              <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;limit the number of the models to return&quot;</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;pageSize&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+              <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;limit the number of models to return per query&quot;</span><span class="p">,</span>
+              <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">null</span>
             <span class="p">}</span>
           <span class="p">}</span>
         <span class="p">},</span>
@@ -602,7 +617,7 @@
     <span class="p">}</span>
   <span class="p">},</span>
   <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Query to find models.&quot;</span><span class="p">,</span>
       <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/queryObj&quot;</span>
     <span class="p">},</span>
@@ -641,11 +656,11 @@
   <span class="nt">&quot;examples&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
       <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span>
-          <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="nt">&quot;object_type&quot;</span><span class="p">:</span> <span class="p">{</span>
-              <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Yeast Glycerol Stock&quot;</span>
               <span class="p">}</span>
             <span class="p">},</span>
@@ -662,7 +677,7 @@
     <span class="p">}</span>
   <span class="p">],</span>
   <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;query&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__query__&quot;</span><span class="p">,</span>
     <span class="s2">&quot;__model__&quot;</span>
   <span class="p">]</span>
 <span class="p">}</span>
@@ -686,12 +701,12 @@
 <td colspan="5"><p><em>object</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>examples</p></td>
-<td colspan="5"><p>OrderedDict([(‘__model__’, ‘Sample’), (‘query’, OrderedDict([(‘items’, OrderedDict([(‘query’, OrderedDict([(‘object_type’, OrderedDict([(‘query’, OrderedDict([(‘name’, ‘Yeast Glycerol Stock’)]))])), (‘__options__’, OrderedDict([(‘limit’, 1)]))]))])), (‘user_id’, 1), (‘__return__’, OrderedDict([(‘sample_type’, ‘field_types’)]))]))])</p></td>
+<td colspan="5"><p>OrderedDict([(‘__model__’, ‘Sample’), (‘__query__’, OrderedDict([(‘items’, OrderedDict([(‘__query__’, OrderedDict([(‘object_type’, OrderedDict([(‘__query__’, OrderedDict([(‘name’, ‘Yeast Glycerol Stock’)]))])), (‘__options__’, OrderedDict([(‘limit’, 1)]))]))])), (‘user_id’, 1), (‘__return__’, OrderedDict([(‘sample_type’, ‘field_types’)]))]))])</p></td>
 </tr>
 <tr class="row-even"><td colspan="6"><p>properties</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p><strong>query</strong></p></li>
+<li><p><strong>__query__</strong></p></li>
 </ul>
 </td>
 <td colspan="5"><p>Query to find models.</p></td>
@@ -932,7 +947,7 @@
 <tr class="row-even"><td><p>minProperties</p></td>
 <td colspan="4"><p>1</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="12"><ul class="simple">
+<tr class="row-odd"><td rowspan="16"><ul class="simple">
 <li><p>queryObj</p></li>
 </ul>
 </td>
@@ -941,7 +956,7 @@
 </tr>
 <tr class="row-even"><td colspan="5"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>__options__</p></li>
 </ul>
 </td>
@@ -950,12 +965,26 @@
 </tr>
 <tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>limit</p></li>
 </ul>
 </td>
-<td><p>type</p></td>
+<td colspan="3"><p>limit the number of the models to return</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>pageSize</p></li>
+</ul>
+</td>
+<td colspan="3"><p>limit the number of models to return per query</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>None</p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>__return__</p></li>

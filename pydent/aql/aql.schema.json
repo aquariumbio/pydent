@@ -127,7 +127,7 @@
     }
   },
   "properties": {
-    "query": {
+    "__query__": {
       "description": "Query to find models.",
       "$ref": "#/definitions/queryObj"
     },
@@ -166,11 +166,11 @@
   "examples": [
     {
       "__model__": "Sample",
-      "query": {
+      "__query__": {
         "items": {
-          "query": {
+          "__query__": {
             "object_type": {
-              "query": {
+              "__query__": {
                 "name": "Yeast Glycerol Stock"
               }
             },
@@ -187,7 +187,7 @@
     }
   ],
   "required": [
-    "query",
+    "__query__",
     "__model__"
   ]
 }
