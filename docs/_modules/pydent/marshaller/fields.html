@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.marshaller.fields &#8212; pydent 0.1.5a22 documentation</title>
+    <title>pydent.marshaller.fields &#8212; pydent 0.1.5a23 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a22</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a23</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -180,6 +180,37 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#user-objects">User Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#non-user-objects">Non-User Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#model-classes">Model Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#model-mixins">Model Mixins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#field-relationships">Field Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../planner.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../planner.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../marshaller.html#fields">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
@@ -212,7 +243,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a22">0.1.5a22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a23">0.1.5a23</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a21">0.1.5a21</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a20">0.1.5a20</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a19">0.1.5a19</a></li>
@@ -235,10 +266,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id4">0.1.2a</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a-1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a-2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a-3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
 </li>
@@ -337,22 +367,23 @@ from pydent.marshaller.utils import make_signature_str
         allow_none: bool = None,
         default: Any = Placeholders.DEFAULT,
     ):
-        &quot;&quot;&quot;A standard field. Performs no functions on serialized and
-        deserialized data.
+        &quot;&quot;&quot;A standard field.
+        Performs no functions on serialized and deserialized data.
 
-        :param many: whether to treat serializations and deserializations as a per-item
-        basis in a list
+        :param many: whether to treat serializations and deserializations as\
+            a per-item basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as
-        an attribute to the registered
-        nested should return this field&#39;s descriptor.
+        :param data_key: the data_key, or attribute name, of this field. \
+            Calling this as an attribute to the registered \
+            nested should return this field&#39;s descriptor.
         :type data_key: basestring
-        :param allow_none: whether to return None if None is received in deserialization
-         or serializaiton methods
+        :param allow_none: whether to return None if None is received in \
+            deserialization or serializaiton methods
         :type allow_none: bool
-        :raises AllowNoneFieldValidationError if None is received in serialize and
-        deserialized methods
-        and self.allow_none == False
+        :raises: AllowNoneFieldValidationError if None is received in \
+            serialize and deserialized methods \
+            and self.allow_none == False
+
         &quot;&quot;&quot;
 
         if allow_none is None:
@@ -448,23 +479,23 @@ from pydent.marshaller.utils import make_signature_str
     ):
         &quot;&quot;&quot;Nested relationship initializer.
 
-        :param nested: the nested name of nested field. Should exist in the
-        ModelRegistery.
+        :param nested: the nested name of nested field. \
+            Should exist in the ModelRegistery.
         :type nested: SchemaModel
-        :param many: whether to treat serializations and deserializations as a per-item
-        basis in a list
+        :param many: whether to treat serializations and deserializations as \
+            a per-item basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as
-         an attribute to the registered
-        nested should return this field&#39;s descriptor.
+        :param data_key: the data_key, or attribute name, of this field. \
+            Calling this as an attribute to the registered \
+            nested should return this field&#39;s descriptor.
         :type data_key: basestring
-        :param allow_none: whether to return None if None is received in deserialization
-         or serializaiton methods
+        :param allow_none: whether to return None if None is received in\
+            deserialization or serializaiton methods
         :type allow_none: bool
-        :param lazy: if set to True (default), perform lazy serialization and
-        deserialization. If the data received
-        by `deserialize` is the expected nested, return that data. If the object
-        recieved by `serialize` is not the expected nested, return that data.
+        :param lazy: if set to True (default), perform lazy serialization and\
+            deserialization. If the data received \
+            by `deserialize` is the expected nested, return that data. \
+            If the object recieved by `serialize` is not the expected nested, return that data.
         :type lazy:
         &quot;&quot;&quot;
 
@@ -515,33 +546,33 @@ from pydent.marshaller.utils import make_signature_str
     ):
         &quot;&quot;&quot;A Callback field initializer.
 
-        :param callback: name of the callback function or a callable. If a name, the
-        name should exist
-        as a function in the owner instance. Invalid callback signatures are captures
-        on class creation.
+        :param callback: name of the callback function or a callable.\
+             If a name, the name should exist\
+            as a function in the owner instance. Invalid callback signatures are captures\
+            on class creation.
         :type callback: callable|basestring
-        :param callback_args: a tuple of arguments to use in the callback. If any of
-        the callback arguments  or
-        values of the callback kwargs are callable, the owner will be passed to the
-        callable. The owner instance will
-        replace any arguments that are `Callback.SElF`
+        :param callback_args: a tuple of arguments to use in the callback. If any of\
+            the callback arguments  or\
+            values of the callback kwargs are callable, the owner will be passed to the\
+            callable. The owner instance will\
+            replace any arguments that are `Callback.SElF`
         :type callback_args: tuple
         :param callback_kwargs: a dictionary of kwargs to use in the callback
         :type callback_kwargs: dict
-        :param cache: whether to cache the result using `setattr` on the owner instance.
-         This will initialize the
-        serialization and deserialization procedures detailed in the corresponding
-        field/descriptor.
+        :param cache: whether to cache the result using `setattr` on the owner instance.\
+            This will initialize the\
+            serialization and deserialization procedures detailed in the corresponding\
+            field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializations and deserializations as a per-item
-         basis in a list
+        :param many: whether to treat serializations and deserializations as a per-item\
+            basis in a list
         :type many: bool
-        :param allow_none: whether to return None if None is received in deserialization
-         or serializaiton methods
+        :param allow_none: whether to return None if None is received in deserialization\
+            or serializaiton methods
         :type allow_none: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this
-        as an attribute to the registered
-        nested should return this field&#39;s descriptor.
+        :param data_key: the data_key, or attribute name, of this field. Calling this\
+            as an attribute to the registered\
+            nested should return this field&#39;s descriptor.
         :param always_dump: if True, this field will be serialized by default
         :type always_dump: bool
         &quot;&quot;&quot;
@@ -624,13 +655,12 @@ from pydent.marshaller.utils import make_signature_str
         extra_args: tuple = None,
         extra_kwargs: dict = None,
     ) -&gt; Any:
-        &quot;&quot;&quot;Calls the callback function using the owner object. A Callback.SELF
-        arg value will be replaced to be equivalent to the owner instance
-        model.
+        &quot;&quot;&quot;Calls the callback function using the owner object. 
+        A Callback.SELF arg value will be replaced to be equivalent to the owner instance model.
 
         :param owner: the owning object
-        :param cache: if True, will cache the return in the deserialized data.
-        On next call, the cached result will be returned.
+        :param cache: if True, will cache the return in the deserialized data.\
+            On next call, the cached result will be returned.
         :param extra_args: extra args to pass to the callback function
         :param extra_kwargs: extra kwargs to pass to the callback function
         :return: function result
@@ -694,32 +724,29 @@ from pydent.marshaller.utils import make_signature_str
     ):
         &quot;&quot;&quot;Relationship initializer.
 
-        :param nested: the nested name of nested field. Should exist in the
-        ModelRegistery.
+        :param nested: the nested name of nested field. Should exist in the ModelRegistery.
         :type nested: SchemaModel
-        :param callback: name of the callback function or a callable. If a name, the
-        name should exist as a function in the owner instance. Invalid callback
-        signatures are captures on class creation.
+        :param callback: name of the callback function or a callable. \
+            If a name, the name should exist as a function in the owner instance. \
+            Invalid callback signatures are captures on class creation.
         :type callback: callable|basestring
-        :param callback_args: a tuple of arguments to use in the callback. If any of
-            the callback arguments  or
-            values of the callback kwargs are callable, the owner
-            will be passed to the callable. The owner instance will
-            replace any arguments that are `Callback.SElF`
+        :param callback_args: a tuple of arguments to use in the callback. \
+            If any of the callback arguments  or values of the callback kwargs \
+            are callable, the owner will be passed to the callable. \
+            The owner instance will replace any arguments that are `Callback.self`
         :type callback_args: tuple
         :param callback_kwargs: a dictionary of kwargs to use in the callback
         :type callback_kwargs: dict
-        :param cache: whether to cache the result using `setattr` on the owner instance.
-        This will initialize the
-        serialization and deserialization procedures detailed in the corresponding
-        field/descriptor.
+        :param cache: whether to cache the result using `setattr` on the owner instance. \
+            This will initialize the serialization and deserialization \
+            procedures detailed in the corresponding field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializaations and deserializations as a
-        per-item basis in a list
+        :param many: whether to treat serializaations and deserializations as a\
+            per-item basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this
-        as an attribute to the registered
-        nested should return this field&#39;s descriptor.
+        :param data_key: the data_key, or attribute name, of this field. \
+            Calling this as an attribute to the registered nested should \
+            return this field&#39;s descriptor.
         &quot;&quot;&quot;
 
         super().__init__(

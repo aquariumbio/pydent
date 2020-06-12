@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.sample &#8212; pydent 0.1.5a22 documentation</title>
+    <title>pydent.models.sample &#8212; pydent 0.1.5a23 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a22</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a23</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -180,6 +180,37 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#user-objects">User Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../aqsession.html#non-user-objects">Non-User Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#model-classes">Model Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#model-mixins">Model Mixins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#field-relationships">Field Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../planner.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../planner.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../marshaller.html#fields">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced/topics.html">Advanced topics</a><ul>
@@ -212,7 +243,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developer/versions.html">pydent change log</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a22">0.1.5a22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a23">0.1.5a23</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a21">0.1.5a21</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a20">0.1.5a20</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a19">0.1.5a19</a></li>
@@ -235,10 +266,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#id4">0.1.2a</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a-1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a-2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../developer/versions.html#a-3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
 </li>
@@ -443,11 +473,13 @@ class Sample(FieldValueInterface, ModelBase):
         return len(errors) == 0, errors</div>
 
 <div class="viewcode-block" id="Sample.save"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.save">[docs]</a>    def save(self):
-        &quot;&quot;&quot;Saves the sample, either by creating a new sample (if id=None) or
+        &quot;&quot;&quot;
+        Saves the sample, either by creating a new sample (if id=None) or
         updating the existing sample on the server.
 
         .. versionchanged:: 0.1.5a17
             Raises `AquariumModelError` if sample is missing required properties
+
         :return:
         &quot;&quot;&quot;
         if self.id:
@@ -456,10 +488,12 @@ class Sample(FieldValueInterface, ModelBase):
             self.create()</div>
 
 <div class="viewcode-block" id="Sample.update"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.update">[docs]</a>    def update(self) -&gt; &quot;Sample&quot;:
-        &quot;&quot;&quot;Updates the sample on the server.
+        &quot;&quot;&quot;
+        Updates the sample on the server.
 
         .. versionchanged:: 0.1.5a17
             Raises `AquariumModelError` if sample is missing required properties
+
         :return:
         &quot;&quot;&quot;
         self.is_savable(do_raise=True)

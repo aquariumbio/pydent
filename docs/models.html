@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Models (pydent.models) &#8212; pydent 0.1.5a22 documentation</title>
+    <title>Models (pydent.models) &#8212; pydent 0.1.5a23 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -42,7 +42,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1.5a22</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1.5a23</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -148,7 +148,7 @@
 </ul>
 </li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basics/getting_started.html">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics/getting_started.html#models">Models</a></li>
@@ -180,6 +180,37 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="basics/querying.html#logging-requests">Logging Requests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aqsession.html#user-objects">User Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aqsession.html#non-user-objects">Non-User Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#model-classes">Model Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-mixins">Model Mixins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#field-relationships">Field Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="planner.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="planner.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="marshaller.html#fields">Fields</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -214,7 +245,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="developer/versions.html">pydent change log</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a22">0.1.5a22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a23">0.1.5a23</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a21">0.1.5a21</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a20">0.1.5a20</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a19">0.1.5a19</a></li>
@@ -237,10 +268,9 @@
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a2">0.1.5a2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a1">0.1.5a1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a">0.1.5a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id2">0.1.4a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id3">0.1.3a</a></li>
-<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#id4">0.1.2a</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="developer/versions.html#major-changes">Major changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a-1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a-2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/versions.html#a-3">0.1.2a</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="developer/versions.html#minor-changes">Minor changes</a></li>
 </ul>
 </li>
@@ -2200,7 +2230,7 @@ the url.</p>
 <span class="n">collection</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><a href="#id1"><span class="problematic" id="id2">**</span></a>Getting samples using new advanced indexing</p>
+<p><strong>Getting samples using new advanced indexing</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get 2d matrix of sample ids</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>  <span class="c1"># or collection.sample_id_matrix</span>
 
@@ -2230,14 +2260,14 @@ the url.</p>
 </pre></div>
 </div>
 <p>You can delete associations using the following:</p>
-<div class="highlight-pythong notranslate"><div class="highlight"><pre><span></span># delete 3, 3
-collection.delete_association_at(&#39;key&#39;, 3, 3)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># delete 3, 3</span>
+<span class="n">collection</span><span class="o">.</span><span class="n">delete_association_at</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
-# delete first three rows at column 3
-collection.delete_association_at(&#39;key&#39;, slice(None, 3, None), 3)
+<span class="c1"># delete first three rows at column 3</span>
+<span class="n">collection</span><span class="o">.</span><span class="n">delete_association_at</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
 
-# delete all of the &#39;key&#39; associations
-collection.delete_association_at(&#39;key&#39;, slice(None, None, None), slice(None, None, None))
+<span class="c1"># delete all of the &#39;key&#39; associations</span>
+<span class="n">collection</span><span class="o">.</span><span class="n">delete_association_at</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -2465,12 +2495,16 @@ of updating the existing association.</p></li>
 <li><p><strong>table</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Table name of model (e.g. ‘samples’ or ‘data_associations’)</p></li>
 <li><p><strong>model_id</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>]) – Optional model_id (not required for ‘post’)</p></li>
 <li><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – data</p></li>
+<li><p><strong>params</strong> – controller parameters</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json formatted server response</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
 </dl>
-<p>:param params
-:return: json formatted server response
-:rtype: dict</p>
 </dd></dl>
 
 <dl class="method">
@@ -2512,8 +2546,7 @@ its rid.</p>
 <dl class="method">
 <dt>
 <em class="property">property </em><code class="sig-name descname">data_association_matrix</code></dt>
-<dd><p>Return a view of :class:<a href="#id3"><span class="problematic" id="id4">`</span></a>DataAssociation.</p>
-<p>&lt;pydent.models.DataAssociation&gt;`</p>
+<dd><p>Return a view of <a class="reference internal" href="generated/pydent.models.DataAssociation.html#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
 </div>
@@ -2530,8 +2563,7 @@ its rid.</p>
 <dl class="method">
 <dt>
 <em class="property">property </em><code class="sig-name descname">data_matrix</code></dt>
-<dd><p>Return a view of values from the :class:<a href="#id5"><span class="problematic" id="id6">`</span></a>DataAssociation.</p>
-<p>&lt;pydent.models.DataAssociation&gt;`</p>
+<dd><p>Return a view of values from the <a class="reference internal" href="generated/pydent.models.DataAssociation.html#pydent.models.DataAssociation" title="pydent.models.DataAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataAssociation</span></code></a></p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
 </div>
@@ -2717,8 +2749,7 @@ based).</p>
 <dl class="method">
 <dt>
 <em class="property">property </em><code class="sig-name descname">part_association_matrix</code></dt>
-<dd><p>Return a view of :class:<a href="#id7"><span class="problematic" id="id8">`</span></a>PartAssociation.</p>
-<p>&lt;pydent.models.PartAssociation&gt;`</p>
+<dd><p>Return a view of <a class="reference internal" href="generated/pydent.models.PartAssociation.html#pydent.models.PartAssociation" title="pydent.models.PartAssociation"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartAssociation</span></code></a></p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
 </div>
@@ -2735,7 +2766,7 @@ based).</p>
 <dl class="method">
 <dt>
 <em class="property">property </em><code class="sig-name descname">part_matrix</code></dt>
-<dd><p>Return a view of <a class="reference internal" href="generated/pydent.models.Item.html#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-class docutils literal notranslate"><span class="pre">ITem</span></code></a></p>
+<dd><p>Return a view of <a class="reference internal" href="generated/pydent.models.Item.html#pydent.models.Item" title="pydent.models.Item"><code class="xref py py-class docutils literal notranslate"><span class="pre">Item</span></code></a></p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.1.5a9.</span></p>
 </div>
@@ -3702,12 +3733,10 @@ the url.</p>
 <dd><p>Bases: <a class="reference internal" href="generated/pydent.models.field_value_mixins.FieldMixin.html#pydent.models.field_value_mixins.FieldMixin" title="pydent.models.field_value_mixins.FieldMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.field_value_mixins.FieldMixin</span></code></a>, <a class="reference internal" href="generated/pydent.models.crud_mixin.JSONSaveMixin.html#pydent.models.crud_mixin.JSONSaveMixin" title="pydent.models.crud_mixin.JSONSaveMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONSaveMixin</span></code></a>, <a class="reference internal" href="generated/pydent.models.crud_mixin.JSONDeleteMixin.html#pydent.models.crud_mixin.JSONDeleteMixin" title="pydent.models.crud_mixin.JSONDeleteMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.crud_mixin.JSONDeleteMixin</span></code></a>, <a class="reference internal" href="base.html#pydent.base.ModelBase" title="pydent.base.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.base.ModelBase</span></code></a></p>
 <p>A FieldValue model. One of the more complex models.</p>
 <div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 0.1.2: </span>FieldValues no longer have</p>
+<p><span class="versionmodified changed">Changed in version 0.1.2: </span>FieldValues no longer have ‘wires_as_source’ or ‘wires_as_dest’ fields. 
+Wires may only be accessed via plans only or via the FieldValue instance method
+‘get_wires,’ which accesses the FieldValues operation and its Plan to obtain wires.</p>
 </div>
-<p>‘wires_as_source’ or ‘wires_as_dest’ fields. Wires may only be
-accessed     via plans only or via the FieldValue instance method
-‘get_wires,’ which accesses the FieldValues operation     and its
-Plan to obtain wires.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -7780,17 +7809,17 @@ and role.</p>
 <dl class="method">
 <dt>
 <code class="sig-name descname">get_metatype</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Returns the instance’s metatype (e.g.</p>
-<p><a class="reference internal" href="generated/pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or
-<a class="reference internal" href="generated/pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>). The metatype class name is
-stored as <cite>METATYPE</cite> in the class definition.</p>
+<dd><p>Returns the instance’s metatype 
+(e.g. <a class="reference internal" href="generated/pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or <a class="reference internal" href="generated/pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>). 
+The metatype class name is stored as <cite>METATYPE</cite> in the class definition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the instances metatype (e.g. <a class="reference internal" href="generated/pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a></p>
+<dd class="field-odd"><p>the metatype</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
 </dd>
 </dl>
-<p>or <a class="reference internal" href="generated/pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>)
-:rtype: ModelBase</p>
 </dd></dl>
 
 <dl class="method">
@@ -10358,17 +10387,17 @@ and role.</p>
 <dl class="method">
 <dt>
 <code class="sig-name descname">get_metatype</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
-<dd><p>Returns the instance’s metatype (e.g.</p>
-<p><a class="reference internal" href="generated/pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or
-<a class="reference internal" href="generated/pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>). The metatype class name is
-stored as <cite>METATYPE</cite> in the class definition.</p>
+<dd><p>Returns the instance’s metatype 
+(e.g. <a class="reference internal" href="generated/pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or <a class="reference internal" href="generated/pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>). 
+The metatype class name is stored as <cite>METATYPE</cite> in the class definition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the instances metatype (e.g. <a class="reference internal" href="generated/pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a></p>
+<dd class="field-odd"><p>the metatype</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="base.html#pydent.base.ModelBase" title="pydent.base.ModelBase">ModelBase</a></p>
 </dd>
 </dl>
-<p>or <a class="reference internal" href="generated/pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>)
-:rtype: ModelBase</p>
 </dd></dl>
 
 <dl class="method">

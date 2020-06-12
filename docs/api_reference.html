@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Serialization (pydent.marshaller) &#8212; pydent 0.1.5a23 documentation</title>
+    <title>API Reference &#8212; pydent 0.1.5a23 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -16,8 +16,8 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pydent.marshaller.SchemaModel" href="generated/pydent.marshaller.SchemaModel.html" />
-    <link rel="prev" title="Exceptions (pydent.exceptions)" href="exceptions.html" />
+    <link rel="next" title="Advanced topics" href="advanced/topics.html" />
+    <link rel="prev" title="Making Queries" href="basics/querying.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -57,7 +57,7 @@
      href="index.html">Trident <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
+      aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="aqsession.html#user-objects">User Objects</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
@@ -129,14 +129,14 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fields">Fields</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="marshaller.html#fields">Fields</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
@@ -182,7 +182,7 @@
 <li class="toctree-l2"><a class="reference internal" href="basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="aqsession.html#user-objects">User Objects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aqsession.html#non-user-objects">Non-User Objects</a></li>
@@ -201,14 +201,14 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#fields">Fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="marshaller.html#fields">Fields</a></li>
 </ul>
 </li>
 </ul>
@@ -285,11 +285,11 @@
               
                 
   <li>
-    <a href="exceptions.html" title="Previous Chapter: Exceptions (pydent.exceptions)"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Exceptions (p...</span>
+    <a href="basics/querying.html" title="Previous Chapter: Making Queries"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Making Queries</span>
     </a>
   </li>
   <li>
-    <a href="generated/pydent.marshaller.SchemaModel.html" title="Next Chapter: pydent.marshaller.SchemaModel"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pydent.marsha... &raquo;</span>
+    <a href="advanced/topics.html" title="Next Chapter: Advanced topics"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Advanced topics &raquo;</span>
     </a>
   </li>
               
@@ -299,7 +299,7 @@
             
               <li class="hidden-sm">
 <div id="sourcelink">
-  <a href="_sources/marshaller.rst"
+  <a href="_sources/api_reference.rst"
      rel="nofollow">Source</a>
 </div></li>
             
@@ -321,79 +321,25 @@
 
 <div class="container">
   <div class="row">
-    <div class="body col-md-12 content" role="main">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
       
-  <span class="target" id="module-pydent.marshaller"></span><div class="section" id="serialization-pydent-marshaller">
-<h1>Serialization (<a class="reference internal" href="#module-pydent.marshaller" title="pydent.marshaller"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code></a>)<a class="headerlink" href="#serialization-pydent-marshaller" title="Permalink to this headline">¶</a></h1>
-<p>This module provides speedy serialization and deserialization
-functionality for Trident models. Models that inherit the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaModel</span></code> will
-become registered with their own serialization/deserialization
-schema. To register the schema,
-use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">add_schema</span></code>
-decorator on the class. The
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">dump</span></code> method will serialize
-and object while the <code class="xref py py-meth docutils literal notranslate"><span class="pre">dump</span></code> method
-will deserialize JSON data to an object.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is only relevant to Trident <strong>developers</strong>, rather than regular users.</p>
-</div>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pydent.marshaller.SchemaModel.html#pydent.marshaller.SchemaModel" title="pydent.marshaller.SchemaModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemaModel</span></code></a>([data])</p></td>
-<td><p>A Schema class that holds information on serialization/deserialization.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pydent.marshaller.ModelRegistry.html#pydent.marshaller.ModelRegistry" title="pydent.marshaller.ModelRegistry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelRegistry</span></code></a>(name, bases, selfdict)</p></td>
-<td><p>Stores list of all models instantiated from the SchemaModel base.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pydent.marshaller.SchemaRegistry.html#pydent.marshaller.SchemaRegistry" title="pydent.marshaller.SchemaRegistry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemaRegistry</span></code></a>(name, bases, selfdict)</p></td>
-<td><p>Stores a list of models that can be accessed by name.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pydent.marshaller.descriptors.html#module-pydent.marshaller.descriptors" title="pydent.marshaller.descriptors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">descriptors</span></code></a></p></td>
-<td><p>Data descriptors that provide special behaviors when attributes are accessed.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pydent.marshaller.exceptions.html#module-pydent.marshaller.exceptions" title="pydent.marshaller.exceptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exceptions</span></code></a></p></td>
-<td><p>Marshalling exceptions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pydent.marshaller.utils.html#module-pydent.marshaller.utils" title="pydent.marshaller.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="fields">
-<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
-<p>Fields are descriptors that control how attributes and data is serialized/deserialized.</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pydent.marshaller.fields.Alias.html#pydent.marshaller.fields.Alias" title="pydent.marshaller.fields.Alias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Alias</span></code></a>(field_name)</p></td>
-<td><p>A shallow alias to another field.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pydent.marshaller.fields.Callback.html#pydent.marshaller.fields.Callback" title="pydent.marshaller.fields.Callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callback</span></code></a>(callback[, callback_args, …])</p></td>
-<td><p>Make a callback when called.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pydent.marshaller.fields.Field.html#pydent.marshaller.fields.Field" title="pydent.marshaller.fields.Field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Field</span></code></a>([many, data_key, allow_none, default])</p></td>
-<td><p>A serialization/deserialization field.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pydent.marshaller.fields.FieldABC.html#pydent.marshaller.fields.FieldABC" title="pydent.marshaller.fields.FieldABC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldABC</span></code></a></p></td>
-<td><p>Field abstract base class.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pydent.marshaller.fields.Nested.html#pydent.marshaller.fields.Nested" title="pydent.marshaller.fields.Nested"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Nested</span></code></a>(nested[, many, data_key, allow_none, …])</p></td>
-<td><p>Represents a field that returns another nested instance.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pydent.marshaller.fields.Relationship.html#pydent.marshaller.fields.Relationship" title="pydent.marshaller.fields.Relationship"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Relationship</span></code></a>(nested, callback[, …])</p></td>
-<td><p>A composition (Callback/Nested) field that uses a callback to retrieve a model.</p></td>
-</tr>
-</tbody>
-</table>
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a></li>
+</ul>
 </div>
 </div>
 
