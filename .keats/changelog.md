@@ -1,6 +1,6 @@
 # pydent change log
-## 0.1.5a22
-**2020-05-19T10:03:04.022705**
+## 0.1.5a23
+**2020-05-19T10:09:04.242576**
 updates to AQL
 
  - `query` key changed to `__query__` key
