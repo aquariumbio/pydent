@@ -5,13 +5,13 @@ Installing Trident is easy. You'll need ``Python3.7`` and ``pip3``.
 
 You can install or upgrade Trident from the PyPI repository using:
 
-.. code-block::
+.. code-block:: shell
 
     pip3 install pydent -U
 
 If you need to install a specific version, you can run:
 
-.. code-block:: cmd
+.. code-block:: shell
 
     pip3 install pydent==0.1.0-apha -U
 

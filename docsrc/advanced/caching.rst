@@ -183,7 +183,7 @@ Optimized queries can increase data mining speed by up to 5-fold.
 Here the optimized method (#4) is compared with nested requests (#1 and #2) and
 server side deserialization (#3).
 
-.. image:: _static/benchmark/histogram-test_query_benchmark.svg
+.. image:: /_static/benchmark/histogram-test_query_benchmark.svg
     :width: 100 %
 
 Below is an example of retrieve nested model information for many plans:
