@@ -16,6 +16,9 @@ clean:
 	rm -rf .pytest_cache
 
 test:
+	poetry run pytest tests --ignore tests/tests_with_server_and_cached_results
+
+all-test:
 	poetry run python -m pytest
 
 
