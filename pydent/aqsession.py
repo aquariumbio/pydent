@@ -52,21 +52,6 @@ up and caching results from the server, which is covered in
 
 .. currentmodule: pydent.planner.planner
 
-The Planner allows users to create new experimental plans and upload them to
-the Aquarium server for experiment execution.
-
-.. seealso::
-    Planning :ref:`Planning <planning>`
-
-
-    Advanced Topics :ref:`Advanced Topics <advancedtopics>`
-
-
-.. autosummary::
-    :toctree: generated/
-
-    Planner
-
 Non-User Objects
 ----------------
 
@@ -370,10 +355,10 @@ class AqSession(SessionABC):
     ) -> "AqSession":
         """
 
-        :param using_requests: if False, ForbiddenRequest will be raised if requests are
-        made using the session.
-        :param using_models: if True (default: False), derived session will inherit
-        the current sessions model_cache
+        :param using_requests: if False, ForbiddenRequest will be raised if \
+            requests are made using the session.
+        :param using_models: if True (default: False), derived session will \
+            inherit the current sessions model_cache
         :param timeout: the requests timeout in seconds
         :param verbose: if True, verbose mode will be activated for the derived session
         :return:
@@ -454,6 +439,7 @@ class AqSession(SessionABC):
 
         ..versionadded:: 0.1.5a16
             Added query method for complex queries
+
         .. versionchanged:: 0.1.5a23 `query` key now changed to `__query__`
 
         :param data: data query

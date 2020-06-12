@@ -166,6 +166,7 @@ class Sample(FieldValueInterface, ModelBase):
 
         .. versionchanged:: 0.1.5a17
             Raises `AquariumModelError` if sample is missing required properties
+
         :return:
         """
         if self.id:
@@ -178,6 +179,7 @@ class Sample(FieldValueInterface, ModelBase):
 
         .. versionchanged:: 0.1.5a17
             Raises `AquariumModelError` if sample is missing required properties
+
         :return:
         """
         self.is_savable(do_raise=True)

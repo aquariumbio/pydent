@@ -16,7 +16,7 @@ class ControllerMixin:
         :param table: Table name of model (e.g. 'samples' or 'data_associations')
         :param model_id: Optional model_id (not required for 'post')
         :param data: data
-        :param params
+        :param params: controller parameters
         :return: json formatted server response
         :rtype: dict
         """

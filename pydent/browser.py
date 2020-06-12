@@ -644,7 +644,7 @@ class Browser(QueryInterfaceABC):
     def list_field_values(self, model_ids, **query):
         """Lists sample field values.
 
-        May supply an additional query to filter :class:`FieldValue`s.
+        May supply an additional query to filter :class:`FieldValue`.
         """
         query.update({"parent_class": self.model_name, "parent_id": model_ids})
         return self.where(query, "FieldValue")
@@ -862,7 +862,7 @@ class Browser(QueryInterfaceABC):
         :param relation: the relation to retrieve (operational)
         :type relation: pydent.relationships.Relation
         :param strict: wither to ignore database inconsistencies
-        :type bool
+        :type strict: bool
         :return: list of models retrieved
         :rtype: list
         """
@@ -962,14 +962,14 @@ class Browser(QueryInterfaceABC):
 
         :param models: models to retrieve from
         :type models: list
-        :param relations: the relation to retrieve. This may either be a string (by
+        :param relations: the relation to retrieve. May be a string (by \
             attribute name), a list, or a dict.
         :type relations: list|dict|basestring
         :param strict: wither to ignore database inconsistencies
         :param force_refresh:
-        :type bool
-        :return: dictionary of all models retrieved grouped by the attribute name that
-            retrieved them.
+        :type force_refresh: bool
+        :return: dictionary of all models retrieved grouped by the attribute \
+            name that retrieved them.
         :rtype: dictionary
         """
         self.log.info("RETRIEVE recursively retrieving {}".format(relations))
@@ -1249,9 +1249,9 @@ class Browser(QueryInterfaceABC):
 
         :param samples: samples, all of same sample type
         :type samples: list
-        :param sample_resolver: callable to resolve a sample object if the field value
-            property contains a sample.
-        Defaults to return the sample anme
+        :param sample_resolver: callable to resolve a sample object if the \
+            field value property contains a sample. \
+            Defaults to return the sample name.
         :type sample_resolver: callable
         :return: list of dictionaries containing sample info and properties
         :rtype: list

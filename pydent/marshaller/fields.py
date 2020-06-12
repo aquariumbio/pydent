@@ -58,19 +58,19 @@ class Field(FieldABC):
         """A standard field. Performs no functions on serialized and
         deserialized data.
 
-        :param many: whether to treat serializations and deserializations as a per-item
-        basis in a list
+        :param many: whether to treat serializations and deserializations as\
+            a per-item basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as
-        an attribute to the registered
-        nested should return this field's descriptor.
+        :param data_key: the data_key, or attribute name, of this field. \
+            Calling this as an attribute to the registered \
+            nested should return this field's descriptor.
         :type data_key: basestring
-        :param allow_none: whether to return None if None is received in deserialization
-         or serializaiton methods
+        :param allow_none: whether to return None if None is received in \
+            deserialization or serializaiton methods
         :type allow_none: bool
-        :raises AllowNoneFieldValidationError if None is received in serialize and
-        deserialized methods
-        and self.allow_none == False
+        :raises: AllowNoneFieldValidationError if None is received in \
+            serialize and deserialized methods \
+            and self.allow_none == False
         """
 
         if allow_none is None:
@@ -166,23 +166,23 @@ class Nested(Field):
     ):
         """Nested relationship initializer.
 
-        :param nested: the nested name of nested field. Should exist in the
-        ModelRegistery.
+        :param nested: the nested name of nested field. \
+            Should exist in the ModelRegistery.
         :type nested: SchemaModel
-        :param many: whether to treat serializations and deserializations as a per-item
-        basis in a list
+        :param many: whether to treat serializations and deserializations as \
+            a per-item basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this as
-         an attribute to the registered
-        nested should return this field's descriptor.
+        :param data_key: the data_key, or attribute name, of this field. \
+            Calling this as an attribute to the registered \
+            nested should return this field's descriptor.
         :type data_key: basestring
-        :param allow_none: whether to return None if None is received in deserialization
-         or serializaiton methods
+        :param allow_none: whether to return None if None is received in\
+            deserialization or serializaiton methods
         :type allow_none: bool
-        :param lazy: if set to True (default), perform lazy serialization and
-        deserialization. If the data received
-        by `deserialize` is the expected nested, return that data. If the object
-        recieved by `serialize` is not the expected nested, return that data.
+        :param lazy: if set to True (default), perform lazy serialization and\
+            deserialization. If the data received \
+            by `deserialize` is the expected nested, return that data. \
+            If the object recieved by `serialize` is not the expected nested, return that data.
         :type lazy:
         """
 
@@ -233,33 +233,33 @@ class Callback(Field):
     ):
         """A Callback field initializer.
 
-        :param callback: name of the callback function or a callable. If a name, the
-        name should exist
-        as a function in the owner instance. Invalid callback signatures are captures
-        on class creation.
+        :param callback: name of the callback function or a callable.\
+             If a name, the name should exist\
+            as a function in the owner instance. Invalid callback signatures are captures\
+            on class creation.
         :type callback: callable|basestring
-        :param callback_args: a tuple of arguments to use in the callback. If any of
-        the callback arguments  or
-        values of the callback kwargs are callable, the owner will be passed to the
-        callable. The owner instance will
-        replace any arguments that are `Callback.SElF`
+        :param callback_args: a tuple of arguments to use in the callback. If any of\
+            the callback arguments  or\
+            values of the callback kwargs are callable, the owner will be passed to the\
+            callable. The owner instance will\
+            replace any arguments that are `Callback.SElF`
         :type callback_args: tuple
         :param callback_kwargs: a dictionary of kwargs to use in the callback
         :type callback_kwargs: dict
-        :param cache: whether to cache the result using `setattr` on the owner instance.
-         This will initialize the
-        serialization and deserialization procedures detailed in the corresponding
-        field/descriptor.
+        :param cache: whether to cache the result using `setattr` on the owner instance.\
+            This will initialize the\
+            serialization and deserialization procedures detailed in the corresponding\
+            field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializations and deserializations as a per-item
-         basis in a list
+        :param many: whether to treat serializations and deserializations as a per-item\
+            basis in a list
         :type many: bool
-        :param allow_none: whether to return None if None is received in deserialization
-         or serializaiton methods
+        :param allow_none: whether to return None if None is received in deserialization\
+            or serializaiton methods
         :type allow_none: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this
-        as an attribute to the registered
-        nested should return this field's descriptor.
+        :param data_key: the data_key, or attribute name, of this field. Calling this\
+            as an attribute to the registered\
+            nested should return this field's descriptor.
         :param always_dump: if True, this field will be serialized by default
         :type always_dump: bool
         """
@@ -347,8 +347,8 @@ class Callback(Field):
         model.
 
         :param owner: the owning object
-        :param cache: if True, will cache the return in the deserialized data.
-        On next call, the cached result will be returned.
+        :param cache: if True, will cache the return in the deserialized data.\
+            On next call, the cached result will be returned.
         :param extra_args: extra args to pass to the callback function
         :param extra_kwargs: extra kwargs to pass to the callback function
         :return: function result
@@ -412,32 +412,29 @@ class Relationship(Callback):
     ):
         """Relationship initializer.
 
-        :param nested: the nested name of nested field. Should exist in the
-        ModelRegistery.
+        :param nested: the nested name of nested field. Should exist in the ModelRegistery.
         :type nested: SchemaModel
-        :param callback: name of the callback function or a callable. If a name, the
-        name should exist as a function in the owner instance. Invalid callback
-        signatures are captures on class creation.
+        :param callback: name of the callback function or a callable. \
+            If a name, the name should exist as a function in the owner instance. \
+            Invalid callback signatures are captures on class creation.
         :type callback: callable|basestring
-        :param callback_args: a tuple of arguments to use in the callback. If any of
-            the callback arguments  or
-            values of the callback kwargs are callable, the owner
-            will be passed to the callable. The owner instance will
-            replace any arguments that are `Callback.SElF`
+        :param callback_args: a tuple of arguments to use in the callback. \
+            If any of the callback arguments  or values of the callback kwargs \
+            are callable, the owner will be passed to the callable. \
+            The owner instance will replace any arguments that are `Callback.self`
         :type callback_args: tuple
         :param callback_kwargs: a dictionary of kwargs to use in the callback
         :type callback_kwargs: dict
-        :param cache: whether to cache the result using `setattr` on the owner instance.
-        This will initialize the
-        serialization and deserialization procedures detailed in the corresponding
-        field/descriptor.
+        :param cache: whether to cache the result using `setattr` on the owner instance. \
+            This will initialize the serialization and deserialization \
+            procedures detailed in the corresponding field/descriptor.
         :type cache: bool
-        :param many: whether to treat serializaations and deserializations as a
-        per-item basis in a list
+        :param many: whether to treat serializaations and deserializations as a\
+            per-item basis in a list
         :type many: bool
-        :param data_key: the data_key, or attribute name, of this field. Calling this
-        as an attribute to the registered
-        nested should return this field's descriptor.
+        :param data_key: the data_key, or attribute name, of this field. \
+            Calling this as an attribute to the registered nested should \
+            return this field's descriptor.
         """
 
         super().__init__(

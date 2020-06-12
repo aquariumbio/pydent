@@ -182,16 +182,10 @@ class Planner(AFTMatcher):
 
         ANY = "ANY"  #: pick the first item that matches the set field_value
         RESTRICT = "RESTRICT"  #: restrict to the currently set allowable_field_type
-        PREFERRED = (
-            "PREFERRED"
-        )  #: (default) pick the item that matches the currently set aft, else
+        PREFERRED = "PREFERRED"  #: (default) pick the item that matches the currently set aft, else
         #: pick ANY item that matches the set field_value
-        RESTRICT_TO_ONE = (
-            "RESTRICT TO ONE"
-        )  #: will not select item if its being used in another active operation
-        RESTRICT_TO_ONE_ON_SERVER = (
-            "RESTRICT TO ONE ON SERVER"
-        )  #: will restrict to a single item across the plans on the server.
+        RESTRICT_TO_ONE = "RESTRICT TO ONE"  #: will not select item if its being used in another active operation
+        RESTRICT_TO_ONE_ON_SERVER = "RESTRICT TO ONE ON SERVER"  #: will restrict to a single item across the plans on the server.
         _DEFAULT = PREFERRED  #: default item selection preference
         _CHOICES = [ANY, RESTRICT, PREFERRED, RESTRICT_TO_ONE]  #: all choices
 
@@ -947,7 +941,7 @@ class Planner(AFTMatcher):
         row: Union[None, int] = None,
         column: Union[None, int] = None,
     ):
-        """.. versionchanged:: 0.1.5a15 Argument `container` changed to
+        """.. versionchanged:: 0.1.5a15 Argument `container` changed to \
         `object_type` to keep consistency with other code.
 
         :param field_value:
