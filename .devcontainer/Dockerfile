@@ -18,7 +18,9 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 #
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
- && apt-get -y install --no-install-recommends pandoc \
+ && apt-get -y install --no-install-recommends \
+            pandoc \
+            python3-sphinx \
  && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python \
 #
 # Clean up
