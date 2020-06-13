@@ -34,7 +34,7 @@ coverage:
 pullversion:
 	poetry run keats version up
 	poetry run keats changelog up
-	cp .keats/changelog.md docsrc/developer/versions.md
+	pandoc .keats/changelog.md -w RST -o docsrc/developer/versions.rst
 
 
 docs: | pullversion

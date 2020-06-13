@@ -70,7 +70,7 @@ Models
 In Trident, scientific models are treated as first class objects. These objects
 represent various aspects of most laboratories. These models include laboratory inventory such as
 
-**Samples** -- laboratory entities (such as a `Plasmid` or *`E. coli`) that have chemical or biological properties
+**Samples** -- laboratory entities (such as a `Plasmid` or `E. coli`) that have chemical or biological properties
 
 **Items** -- physical instantiations of a `Sample`, such as a specific tube of Plasmid or a particular
 glycerol stock of an *E. coli* strain.
@@ -103,7 +103,7 @@ and produces some other inventory
 
 **etc.**
 
-.. image:: _static/Fig3_Planning.png
+.. image:: /_static/Fig3_Planning.png
     :width: 100 %
 
 To view all of the models available through Trident, run
@@ -118,7 +118,7 @@ To view all of the models available through Trident, run
     ['Account', 'AllowableFieldType', 'Budget', 'Code', 'Collection', 'DataAssociation', 'FieldType', 'FieldValue', 'Group', 'Invoice', 'Item', 'Job', 'JobAssociation', 'Library', 'Membership', 'ObjectType', 'Operation', 'OperationType', 'PartAssociation', 'Plan', 'PlanAssociation', 'Sample', 'SampleType', 'Upload', 'User', 'UserBudgetAssociation', 'Wire']
 
 
-For more information about these models, visit the :doc:`/developer/api_reference`
+For more information about these models, visit the :doc:`/api_reference`
 
 Models contain specific relationships to each other roughly outlined here:
 

@@ -39,8 +39,8 @@ The user documentation contains high-level information for users.
    basics/inventory
    basics/planning
    basics/querying
-   developer/api_reference
-
+   api_reference
+   
 Advanced Topics
 ---------------
 
@@ -66,14 +66,12 @@ References
 * |tridentgithub|
 * |tridentpypi|
 * |aquarium|
-* aquarium docker hub
+* |aquarium_dockerhub|
 * |klavinslab|
-* |uwbiofab|
-* parrotfish
 
 .. |tridentgithub| raw:: html
 
-   <a href="https://www.klavinslab.org" target="_blank">Trident's Github page</a>
+   <a href="https://github.com/aquariumbio/trident" target="_blank">Trident's Github page</a>
 
 .. |tridentpypi| raw:: html
 
@@ -81,13 +79,14 @@ References
 
 .. |aquarium| raw:: html
 
-   <a href="https://github.com/klavinslab/aquarium" target="_blank">Aquarium's Github page</a>
+   <a href="https://github.com/aquariumbio/aquarium" target="_blank">Aquarium's Github page</a>
+
+.. |aquarium_dockerhub| raw:: html
+
+   <a href="https://hub.docker.com/repository/docker/aquariumbio/aquarium" target="_blank">Aquarium DockerHub</a>
 
 .. |klavinslab| raw:: html
 
    <a href="http://www.klavinslab.org" target="_blank">Klavin's Lab</a>
 
-.. |uwbiofab| raw:: html
-
-   <a href="http://www.uwbiofab.org" target="_blank">UW BIOFAB</a>
 

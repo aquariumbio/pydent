@@ -1,4 +1,4 @@
-.. _planning:
+.. _inventory:
 
 Inventory Management
 ====================

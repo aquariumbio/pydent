@@ -303,7 +303,7 @@ class Collection(
             # assign sample using Sample instance
             collection[2, 2] = session.Sample.one()
 
-        **Getting samples using new advanced indexing
+        **Getting samples using new advanced indexing**
 
         .. code-block:: python
 
@@ -339,7 +339,7 @@ class Collection(
 
         You can delete associations using the following:
 
-        .. code-block:: pythong
+        .. code-block:: python
 
             # delete 3, 3
             collection.delete_association_at('key', 3, 3)
@@ -510,7 +510,7 @@ class Collection(
 
     @property
     def part_matrix(self) -> MatrixMapping[Item]:
-        """Return a view of :class:`ITem <pydent.models.Item>`
+        """Return a view of :class:`Item <pydent.models.Item>`
 
         .. versionadded:: 0.1.5a9
 
@@ -520,9 +520,7 @@ class Collection(
 
     @property
     def part_association_matrix(self) -> MatrixMapping[PartAssociation]:
-        """Return a view of :class:`PartAssociation.
-
-        <pydent.models.PartAssociation>`
+        """Return a view of part associations.
 
         .. versionadded:: 0.1.5a9
 
@@ -532,7 +530,7 @@ class Collection(
 
     @property
     def sample_id_matrix(self) -> MatrixMapping[int]:
-        """Return a view of sample_ids :class:`Sample <pydent.models.Sample>`
+        """Return a view of sample_ids :class:`Sample<pydent.models.Sample>`
 
         .. versionadded:: 0.1.5a9
 
@@ -542,7 +540,7 @@ class Collection(
 
     @property
     def sample_matrix(self) -> MatrixMapping[Sample]:
-        """Return a view of :class:`Sample <pydent.models.Sample>`
+        """Return a view of :class:`Sample<pydent.models.Sample>`
 
         .. versionadded:: 0.1.5a9
 
@@ -552,9 +550,9 @@ class Collection(
 
     @property
     def data_matrix(self) -> MatrixMapping[Any]:
-        """Return a view of values from the :class:`DataAssociation.
+        """Return a view of values from the.
 
-        <pydent.models.DataAssociation>`
+        :class:`DataAssociation<pydent.models.DataAssociation>`
 
         .. versionadded:: 0.1.5a9
 
@@ -564,9 +562,9 @@ class Collection(
 
     @property
     def data_association_matrix(self) -> MatrixMapping[DataAssociation]:
-        """Return a view of :class:`DataAssociation.
+        """Return a view of.
 
-        <pydent.models.DataAssociation>`
+        :class:`DataAssociation<pydent.models.DataAssociation>`
 
         .. versionadded:: 0.1.5a9
 

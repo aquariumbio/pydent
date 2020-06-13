@@ -26,13 +26,14 @@ import glob
 
 # AUTODOC
 autoclass_content = "both"  # include both class docstring and __init__
-autodoc_default_flags = [
-    # Make sure that any autodoc declarations show the right members
-    "members",
-    "inherited-members",
-    "private-members",
-    "show-inheritance",
-]
+
+autodoc_default_options = {
+    "members": True,
+    "inherited-members": True,
+    "private-members": True,
+    "show-inheritance": True,
+    "autosummary": True,
+}
 autosummary_generate = glob.glob("*.rst")  # Make _autosummary files and include them
 napoleon_numpy_docstring = False  # Force consistency, leave only Google
 napoleon_use_rtype = False  # More legible
@@ -64,8 +65,6 @@ extensions = [
     "sphinx.ext.inheritance_diagram",
     "recommonmark",
 ]
-
-autodoc_default_options = {"autosummary": True}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -120,7 +119,7 @@ html_context = {
     "repo": pydent.__repo__,
     "aquarium_page": "https://www.aquarium.bio/",
     "display_github": True,  # Integrate GitHub
-    "github_user": "klavinslab",  # Username
+    "github_user": "aquariumbio",  # Username
     "github_repo": "trident",  # Repo name
     "github_version": "master",  # Version
     "conf_py_path": "./",  # Path in the checkout to the docs root
@@ -180,7 +179,7 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 
-html_sidebars = {"developer/api_reference": ["localtoc.html"]}
+html_sidebars = {"api_reference": ["localtoc.html"]}
 # html_sidebars = {
 #     'index':    ['sidebar.html', 'globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'],
 #     '**':       ['sidebar.html', 'localtoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html']
