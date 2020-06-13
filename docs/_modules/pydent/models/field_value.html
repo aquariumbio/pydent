@@ -492,10 +492,11 @@ class FieldType(FieldMixin, ModelBase):
 class FieldValue(FieldMixin, JSONSaveMixin, JSONDeleteMixin, ModelBase):
     &quot;&quot;&quot;A FieldValue model. One of the more complex models.
 
-    .. versionchanged:: 0.1.2     
-        FieldValues no longer have &#39;wires_as_source&#39; or &#39;wires_as_dest&#39; fields. 
-        Wires may only be accessed via plans only or via the FieldValue instance method
-        &#39;get_wires,&#39; which accesses the FieldValues operation and its Plan to obtain wires.
+    .. versionchanged:: 0.1.2     FieldValues no longer have
+    &#39;wires_as_source&#39; or &#39;wires_as_dest&#39; fields.     Wires may only be
+    accessed via plans only or via the FieldValue instance method
+    &#39;get_wires,&#39; which accesses the FieldValues operation and its Plan
+    to obtain wires.
     &quot;&quot;&quot;
 
     fields = dict(

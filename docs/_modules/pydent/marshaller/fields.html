@@ -367,8 +367,8 @@ from pydent.marshaller.utils import make_signature_str
         allow_none: bool = None,
         default: Any = Placeholders.DEFAULT,
     ):
-        &quot;&quot;&quot;A standard field.
-        Performs no functions on serialized and deserialized data.
+        &quot;&quot;&quot;A standard field. Performs no functions on serialized and
+        deserialized data.
 
         :param many: whether to treat serializations and deserializations as\
             a per-item basis in a list
@@ -383,7 +383,6 @@ from pydent.marshaller.utils import make_signature_str
         :raises: AllowNoneFieldValidationError if None is received in \
             serialize and deserialized methods \
             and self.allow_none == False
-
         &quot;&quot;&quot;
 
         if allow_none is None:
@@ -655,8 +654,9 @@ from pydent.marshaller.utils import make_signature_str
         extra_args: tuple = None,
         extra_kwargs: dict = None,
     ) -&gt; Any:
-        &quot;&quot;&quot;Calls the callback function using the owner object. 
-        A Callback.SELF arg value will be replaced to be equivalent to the owner instance model.
+        &quot;&quot;&quot;Calls the callback function using the owner object. A Callback.SELF
+        arg value will be replaced to be equivalent to the owner instance
+        model.
 
         :param owner: the owning object
         :param cache: if True, will cache the return in the deserialized data.\

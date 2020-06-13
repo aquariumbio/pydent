@@ -451,10 +451,12 @@ from pydent.utils import filter_list
         return fv.field_type</div>
 
 <div class="viewcode-block" id="FieldValueInterface.get_metatype"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_metatype">[docs]</a>    def get_metatype(self):
-        &quot;&quot;&quot;
-        Returns the instance&#39;s metatype 
-        (e.g. :class:`pydent.models.SampleType` or :class:`pydent.models.OperationType`). 
-        The metatype class name is stored as `METATYPE` in the class definition.
+        &quot;&quot;&quot;Returns the instance&#39;s metatype.
+
+        The metatype is either
+        :class:`pydent.models.SampleType` or
+        :class:`pydent.models.OperationType`). The metatype class name is
+        stored as `METATYPE` in the class definition.
 
         :return: the metatype
         :rtype: ModelBase

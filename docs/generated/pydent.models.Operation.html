@@ -421,7 +421,7 @@
 <td><p>Returns a list of <a class="reference internal" href="pydent.models.FieldValue.html#pydent.models.FieldValue" title="pydent.models.FieldValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.FieldValue</span></code></a> by their name and role.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydent.models.Operation.get_metatype" title="pydent.models.Operation.get_metatype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metatype</span></code></a>()</p></td>
-<td><p>Returns the instance’s metatype  (e.g.</p></td>
+<td><p>Returns the instance’s metatype.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_relationships</span></code>()</p></td>
 <td><p></p></td>
@@ -1044,9 +1044,11 @@ and role.</p>
 <dl class="method">
 <dt id="pydent.models.Operation.get_metatype">
 <code class="sig-name descname">get_metatype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydent.models.Operation.get_metatype" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the instance’s metatype 
-(e.g. <a class="reference internal" href="pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or <a class="reference internal" href="pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>). 
-The metatype class name is stored as <cite>METATYPE</cite> in the class definition.</p>
+<dd><p>Returns the instance’s metatype.</p>
+<p>The metatype is either
+<a class="reference internal" href="pydent.models.SampleType.html#pydent.models.SampleType" title="pydent.models.SampleType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.SampleType</span></code></a> or
+<a class="reference internal" href="pydent.models.OperationType.html#pydent.models.OperationType" title="pydent.models.OperationType"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydent.models.OperationType</span></code></a>). The metatype class name is
+stored as <cite>METATYPE</cite> in the class definition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the metatype</p>
