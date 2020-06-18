@@ -80,7 +80,7 @@ master_doc = "index"
 
 # General information about the project.
 project = pydent.__title__
-copyright = "2017-2019, University of Washington"
+copyright = "2017-2020, University of Washington"
 author = ", ".join(pydent.__authors__)
 
 # The version info for the project you're documenting, acts as replacement for
