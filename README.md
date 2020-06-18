@@ -7,7 +7,7 @@ Trident is the python API scripting for Aquarium.
 
 ## Documentation
 
-[API documentation can be found here at klavinslab.org/trident](http://www.klavinslab.org/trident)
+[API documentation can be found here at http://aquariumbio.github.io/trident](http://aquariumbio.github.io/trident)
 
 ## Requirements
 
