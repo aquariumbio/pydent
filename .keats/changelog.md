@@ -1,4 +1,11 @@
 # pydent change log
+## 1.0.0
+**2020-06-18T19:42:47.055781**
+Make release 1.0.0 from 0.1.0alpha
+
+
+
+
 ## 0.1.5a23
 **2020-05-19T10:09:04.242576**
 updates to AQL
