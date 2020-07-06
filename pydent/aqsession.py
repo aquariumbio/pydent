@@ -119,7 +119,7 @@ class AqSession(SessionABC):
 
     .. code-block:: python
 
-        session1 = AqSession(username, password, aquairum_url)
+        session1 = AqSession(username, password, aquarium_url)
         session1.User.find(1)
         # <User(id=1,...)>
     """
