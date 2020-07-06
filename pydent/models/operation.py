@@ -330,10 +330,21 @@ class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
             ref="parent_id",
             additional_args={"parent_class": "OperationType", "name": "protocol"},
         ),
+        test=HasOneFromMany(
+            "Code",
+            ref="parent_id",
+            additional_args={"parent_class": "OperationType", "name": "test"},
+        ),
     )
 
     def code(self, accessor):
-        if accessor in ["protocol", "precondition", "documentation", "cost_model"]:
+        if accessor in [
+            "protocol",
+            "precondition",
+            "documentation",
+            "cost_model",
+            "test",
+        ]:
             return getattr(self, accessor)
         return None
 
@@ -372,6 +383,7 @@ class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
                 "cost_model": {},
                 "documentation": {},
                 "precondition": {},
+                "test": {},
             }
         )
 
