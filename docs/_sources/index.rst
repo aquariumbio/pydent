@@ -75,7 +75,7 @@ References
 
 .. |tridentpypi| raw:: html
 
-   <a href="https://pypi.org/project/pydent/" target="_blank">Trident's PyPi repo</a>
+   <a href="https://pypi.org/project/pydent/" target="_blank">Trident's PyPI repo</a>
 
 .. |aquarium| raw:: html
 

@@ -243,7 +243,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">pydent change log</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#section-1">1.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a23">0.1.5a23</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a21">0.1.5a21</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a20">0.1.5a20</a></li>
@@ -253,7 +254,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a16">0.1.5a16</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a15">0.1.5a15</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a14">0.1.5a14</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#section-1">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#section-2">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a13">0.1.5a13</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a12">0.1.5a12</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a11">0.1.5a11</a></li>
@@ -556,6 +557,31 @@ from pydent.marshaller.registry import ModelRegistry
         return [
             self.aqhttp.get(&quot;items/make/{}/{}&quot;.format(sid(i), otid(i))) for i in items
         ]
+
+<div class="viewcode-block" id="UtilityInterface.create_operation_type"><a class="viewcode-back" href="../../generated/pydent.interfaces.UtilityInterface.html#pydent.browser.UtilityInterface.create_operation_type">[docs]</a>    def create_operation_type(self, operation_type):
+        &quot;&quot;&quot;Creates a new operation type.&quot;&quot;&quot;
+        op_data = operation_type.dump(
+            include={
+                &quot;field_types&quot;: {&quot;allowable_field_types&quot;: {}},
+                &quot;protocol&quot;: {},
+                &quot;cost_model&quot;: {},
+                &quot;documentation&quot;: {},
+                &quot;precondition&quot;: {},
+                &quot;test&quot;: {},
+            }
+        )
+
+        # Format &#39;sample_type&#39; and &#39;object_type&#39; keys for afts
+        for ft_d, ft in zip(op_data[&quot;field_types&quot;], operation_type.field_types):
+            for aft_d, aft in zip(
+                ft_d[&quot;allowable_field_types&quot;], ft.allowable_field_types
+            ):
+                aft_d[&quot;sample_type&quot;] = {&quot;name&quot;: aft.sample_type.name}
+                aft_d[&quot;object_type&quot;] = {&quot;name&quot;: aft.object_type.name}
+
+        result = self.aqhttp.post(&quot;operation_types.json&quot;, json_data=op_data)
+        operation_type.reload(result)
+        return operation_type</div>
 
     def create_upload(self, upload):
         files = {&quot;file&quot;: upload.file}

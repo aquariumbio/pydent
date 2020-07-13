@@ -1,6 +1,13 @@
 pydent change log
 =================
 
+1.0.1
+-----
+
+**2020-07-06T22:01:23.085813** Add tests to operation type.
+
+.. _section-1:
+
 1.0.0
 -----
 
@@ -78,7 +85,7 @@ pydent change log
 
 **2020-02-14T13:15:38.789723** Ω
 
-.. _section-1:
+.. _section-2:
 
 0.1.5
 -----

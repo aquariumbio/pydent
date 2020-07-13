@@ -1,4 +1,11 @@
 # pydent change log
+## 1.0.1
+**2020-07-06T22:01:23.085813**
+Add tests to operation type.
+
+
+
+
 ## 1.0.0
 **2020-06-18T19:42:47.055781**
 Make release 1.0.0 from 0.1.0alpha
