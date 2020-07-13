@@ -1,6 +1,13 @@
 # pydent change log
+## 1.0.2
+**2020-07-13T11:24:36.717298**
+Add tests to operation type.
+
+
+
+
 ## 1.0.1
-**2020-07-06T22:01:23.085813**
+**2020-07-13T11:18:08.599254**
 Add tests to operation type.
 
 
