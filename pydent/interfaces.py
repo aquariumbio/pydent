@@ -269,6 +269,17 @@ class UtilityInterface(CRUDInterface):
         operation_type.reload(result)
         return operation_type
 
+    def create_library(self, library):
+        """Creates a new library type."""
+        op_data = library.dump(
+            include={
+                "source": {},
+            }
+        )
+        result = self.aqhttp.post("libraries.json", json_data=op_data)
+        library.reload(result)
+        return library
+
     def create_upload(self, upload):
         files = {"file": upload.file}
         result = self.aqhttp.post(
