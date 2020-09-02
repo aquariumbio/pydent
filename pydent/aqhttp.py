@@ -89,7 +89,7 @@ class AqHTTP:
     def _format_response_info(
         response: requests.Response,
         include_text: bool = False,
-        include_body: bool = True,
+        include_body: bool = False,
     ) -> str:
         if response is not None:
             if response.status_code >= 400:
