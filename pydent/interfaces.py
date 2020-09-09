@@ -271,11 +271,7 @@ class UtilityInterface(CRUDInterface):
 
     def create_library(self, library):
         """Creates a new library type."""
-        op_data = library.dump(
-            include={
-                "source": {},
-            }
-        )
+        op_data = library.dump(include={"source": {}})
         result = self.aqhttp.post("libraries.json", json_data=op_data)
         library.reload(result)
         return library
