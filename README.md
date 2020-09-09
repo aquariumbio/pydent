@@ -79,3 +79,12 @@ print(p.sample_type)
 primer_type = mysession.SampleType.find(1)
 print(primer_type.relationships)
 ```
+
+## making a release
+
+```bash
+poetry build
+poetry publish
+```
+
+To use a pypi token, the user name should be `__token__` and the password should be the token including the `pypi-` prefix.
