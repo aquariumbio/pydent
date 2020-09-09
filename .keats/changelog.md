@@ -1,6 +1,13 @@
 # pydent change log
+## 1.0.3
+**2020-09-09T22:17:51.082004**
+Add handling of Krill libraries
+
+
+
+
 ## 1.0.2
-**2020-07-13T11:24:36.717298**
+**2020-07-13T11:26:44.038874**
 Add tests to operation type.
 
 
