@@ -362,6 +362,20 @@ class OperationType(FieldTypeInterface, SaveMixin, ModelBase):
             if len(fts) > 0:
                 return fts[0]
 
+    def sample_type(self):
+        sample_types = []
+        for field_type in self.field_types:
+            for allowable_field_type in field_type.allowable_field_types:
+                sample_types.append(allowable_field_type.sample_type)
+        return sample_types
+
+    def object_type(self):
+        object_types = []
+        for field_type in self.field_types:
+            for allowable_field_type in field_type.allowable_field_types:
+                object_types.append(allowable_field_type.object_type)
+        return object_types
+
     def output(self, name):
         return self.field_type(name, "output")
 

@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import networkx as nx
 
-
+# where is this method called?
 def arr_to_pairs(arr):
     arr1 = arr[:-1]
     arr2 = arr[1:]
@@ -15,8 +15,8 @@ def _id_getter(model):
 
 def to_undirected(graph):
     """.to_undirected is implemented in networkx out of the box, however, it
-    suffers from occational infinite recursion errors during the deepcopy phase
-    of the method (unknown as to why)."""
+    suffers from occasional infinite recursion errors during the deepcopy phase
+    (unknown as to why)."""
     undirected = nx.Graph()
     copied = deepcopy(graph)
     for n in copied.nodes:

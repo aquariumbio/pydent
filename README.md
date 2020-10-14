@@ -73,11 +73,11 @@ p = primers[0]
 print(p.sample_type)
 ```
 
-#### Available nested relationships
+#### Listing Available nested relationships
 
 ```python
 primer_type = mysession.SampleType.find(1)
-print(primer_type.relationships)
+print(primer_type.get_relationships())
 ```
 
 ## making a release
@@ -88,3 +88,4 @@ poetry publish
 ```
 
 To use a pypi token, the user name should be `__token__` and the password should be the token including the `pypi-` prefix.
+

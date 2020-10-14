@@ -5,7 +5,7 @@ Session (:mod:`pydent.aqsession`)
 .. currentmodule:: pydent.aqsession
 
 Session class for interacting with Trident and Aquarium. To initialize
-a new session, you'll need your Aquarium login credentials and a url:
+a new session, you'll need your Aquarium login credentials and an Aquarium url:
 
 .. code-block:: python
 
@@ -25,10 +25,9 @@ After initializing a session, models are accessible from the Session:
     first10 = session.SampleType.first(10)
     mysamples = session.Sample.last(10, query={'user_id': 66})
 
-.. seealso::
+.. see also::
     Models :ref:`Models <models>`
-        documentation for more information on how to
-        manipulate and query models.
+        documentation on manipulating and querying models.
     Temporary Sessions :ref:`Cache <cache>`
         documentation on how to use the session cache to
         speed up queries.
