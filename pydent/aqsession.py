@@ -5,7 +5,7 @@ Session (:mod:`pydent.aqsession`)
 .. currentmodule:: pydent.aqsession
 
 Session class for interacting with Trident and Aquarium. To initialize
-a new session, you'll need your Aquarium login credentials and a url:
+a new session, you'll need your Aquarium login credentials and an Aquarium url:
 
 .. code-block:: python
 
@@ -25,10 +25,9 @@ After initializing a session, models are accessible from the Session:
     first10 = session.SampleType.first(10)
     mysamples = session.Sample.last(10, query={'user_id': 66})
 
-.. seealso::
+.. see also::
     Models :ref:`Models <models>`
-        documentation for more information on how to
-        manipulate and query models.
+        documentation on manipulating and querying models.
     Temporary Sessions :ref:`Cache <cache>`
         documentation on how to use the session cache to
         speed up queries.
@@ -37,7 +36,7 @@ After initializing a session, models are accessible from the Session:
 User Objects
 ------------
 
-The AqSession and Browser are the main interaction object for querying the
+The AqSession and Browser are the main interaction objects for querying the
 Aquarium server. The Browser class provides special methods for speeding
 up and caching results from the server, which is covered in
 :ref:`Advanced Topics <cache>`.
@@ -132,7 +131,7 @@ class AqSession(SessionABC):
         name: str = None,
         aqhttp: str = None,
     ):
-        """Initializes a new tridennt Session.
+        """Initializes a new trident Session.
 
         :param login: the Aquarium login for the user
         :type login: str
@@ -146,7 +145,7 @@ class AqSession(SessionABC):
         :param name: (optional) name for this session
         :type name: str or None
         """
-        self.name = name  #: optional name of the session
+        self.name = name
         self._aqhttp = None  #: requests interface
         if login is None and password is None and aquarium_url is None:
             if aqhttp is not None:

@@ -3,15 +3,14 @@
 Session interfaces are created by an AqSession instance and use an AqHTTP
 instance to make http requests to Aquarium.
 
-Generally, Trident users should be unable to directly access AqHTTP method to
+Generally, Trident users should be unable to directly access AqHTTP methods to
 prevent potentially damaging requests or revealing sensitive information.
 Session interfaces define a particular way an AqHTTP is used.
 
 Interfaces are roughly grouped into:
 
 (1) ModelInterface - for finding and retrieving Aquarium models and information
-(2) CreateInterface - for creating new objects (e.g. new Samples) in Aquarium
-(3) UpdateInterface - for updating objects in Aquarium
+(2) UtilityInterface -- contains methods for creating and updating objects in Aquarium
 
 Example:
     session1 = AqSession(login, password, aquarium_url)
@@ -25,11 +24,10 @@ Example:
     # not allowed
 
     session1.create
-    # => a CreateInterface
+    # => a UtilityInterface
 
-    session1.create.samples(list_of_samples)
-    # creates samples from a list by calling method CreateInterface.samples
-"""
+    session1.utils.create_samples(list_of_samples)
+    # creates samples from a list by calling method UtilityInterface.samples """
 import json
 from abc import ABC
 from abc import abstractmethod
@@ -88,7 +86,7 @@ class CRUDInterface(SessionInterface):
         data: Union[None, dict],
         params=None,
     ) -> dict:
-        """Method for create, updating, and deleting models.
+        """Method for creating, updating, and deleting models.
 
         :param method: Request method name (one of 'put', 'post', 'delete'
         :param table: Table name of model (e.g. 'samples' or 'data_associations')
@@ -125,7 +123,7 @@ class CRUDInterface(SessionInterface):
         record_methods: List[str] = None,
         record_getters: List[str] = None,
     ):
-        """Method for create, updating, and deleting models using Aquariums
+        """Method for creating, updating, and deleting models using Aquarium's
         JSON controller.
 
         :param method: Method name (e.g. "save", "delete")

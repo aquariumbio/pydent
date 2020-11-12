@@ -1,17 +1,14 @@
 Getting Started
 ===============
 
-Trident (also known as `pydent`) is the Python API to Aquarium, aa open-source
+Trident (also known as `pydent`) is the Python API to Aquarium, an open-source
 human-in-the-loop laboratory automation system that enables rapid,
 flexible, and reproducible workflow development and execution. Unlike most other
 automation systems, Aquarium embraces the practicality of humans in the laboratory, using codified human-readable instructions to automate lab operations.
 You can learn more about it here: https://www.aquarium.bio/
 
-Trident provide algorithmic access to a scientific laboratory running Aquarium.
-It provides an interface for algorithms and computerized-agents
-to interact the scientific laboratory, enticing the possibility engineering systems
-that can not only learn from experimental data, but can actually schedule and run
-its own experiments with little human intervention.
+Trident provides an interface for algorithms and computerized-agents
+to interact with a scientific laboratory running Aquarium. 
 
 To install, checkout the installation guide: :doc:`installation`
 
@@ -44,8 +41,8 @@ To install, checkout the installation guide: :doc:`installation`
 Logging into a session
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Session instances provide the main interface between your Python script
-and various requests made to an Aquarium server.
+Session instances provide an interface between your Python script
+and requests made to an Aquarium server.
 
 To use trident, you'll need an Aquarium login, password, and url
 
@@ -61,7 +58,7 @@ If we want to take a look at exactly what the session is doing, we can set verbo
 
     session.set_verbose(True)
 
-This produces many log files, so lets leave it off initially.
+This produces many log files, so let's leave it off initially.
 
 
 Models
@@ -79,18 +76,22 @@ glycerol stock of an *E. coli* strain.
 
 **ObjectType** -- The type of container a collection/item possess (e.g. a small tube vs a large tube)
 
-Samples, Items, and Collections comprise the inventory system of Trident/Aquarium. Items have a unique
-id and a physical local associated with the lab. The biological/chemical properties are detailed by its
-Sample. Further, Samples have specific types called SampleTypes which further constrain the types of
-Samples there can be. For example, a yeast strain is one `SampleType` while a bacterial strain is another
-`SampleType`. There may be many types of yeast strains in the inventory, each with their own specific properties
-(e.g. genome sequence, antibiotic resistance). Each of these samples may have a myriad of different `Items`
-in the lab of different `ObjectTypes`. The inventory relationships are depicted here:
+The Trident/Aqarium inventory system is comproised of Samples, Items, and Collections.
+
+Items have a unique id and a physical location with the lab. An Item's biological and chemical properties are detailed by an item's associated 
+Sample. (Samples are inputs and outputs to the operation).  
+Samples have specific types (SampleTypes) 
+For example, a yeast strain is one `SampleType` while a bacterial strain is another
+`SampleType`. 
+There may be many types of yeast strains in the inventory, each with their own specific properties
+(e.g. genome sequence, antibiotic resistance). 
+Each of these samples may have many different `Items` associated with it. Items are contained by  
+`ObjectTypes`, which can be either physical containers, or []. The inventory relationships are depicted here:
 
 .. image:: /_static/Fig2_LIMS.png
     :width: 100 %
 
-In addition to the inventory models, Trident/Aquarium has a protocol execution model as well:
+In addition to the inventory models, Trident/Aquarium has a protocol execution model:
 
 **Operation** -- a scientific protocol that takes in some specified number inventory or parameters
 and produces some other inventory
@@ -128,7 +129,7 @@ Models contain specific relationships to each other roughly outlined here:
 Making queries
 ~~~~~~~~~~~~~~
 
-Model queries can be made directly from the session. For example, like grab one `Sample` from
+Model queries can be made directly from the session. For example, to get one `Sample` from
 the Aquarium server:
 
 ::
@@ -141,11 +142,11 @@ Once loaded, model attributes can be accessed directly as class attributes:
 
 ::
 
-    print("We just grabbed sample {} with name {}".format(mysample.id, mysample.name)
+    print("Retrieved sample {} with name {}".format(mysample.id, mysample.name)
 
 
 
-We can also grab many samples at the same time:
+We can also get many samples at the same time:
 
 ::
 
@@ -177,7 +178,7 @@ You can use where with SQL-like queries as well
 
     Sample
 
-We can also query models by querying their creation (**created_at**) or
+We can also query models by their creation (**created_at**) or
 update (**updated_at**) times:
 
 .. testcode::
@@ -197,10 +198,10 @@ Relationship Queries
 ~~~~~~~~~~~~~~~~~~~~
 
 Trident automatically makes
-requests as needed for certain attributes are access from
-models. For example, we know from above that `Samples` have
-many `Items` associated with it and, conversely, an `Item` has
-a single `Sample`. Trident allows us to access these requests
+requests as needed for attributes defined in associated models.
+For example, we know from the above that `Samples` have
+many `Items` associated with them and, conversely, an `Item` belongs to 
+a single `Sample`. Trident allows us to access these relationships 
 on demand. For example, the following code automatically
 makes a new request for an `Item's` `Sample` using its
 `.sample_id` attribute.
@@ -231,8 +232,8 @@ the query, you can set the attribute to None, which will re-initiate the appropr
     sample.items # new query here
 
 
-An important thing to note is that, while this make querying very convenient on the Python side of
-things, it is very easy to make many unncessary requets. For information on making efficient queries
+An important thing to note is that, while this makes querying very convenient on the Python side of
+things, it is very easy to make many unncessary requests. For information on making efficient queries
 and generally how querying works, visit :doc:`querying`.
 
 Creating inventory

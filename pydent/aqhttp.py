@@ -39,11 +39,11 @@ class AqHTTP:
     """Defines a Python to Aquarium server connection. Makes HTTP requests to
     Aquarium and returns JSON.
 
-    This class should be obscured from Trident user so that users cannot
+    This class should be obscured from Trident users so that they cannot
     make arbitrary requests to an Aquarium server and get sensitive
     information (e.g. User json that is returned contains api_key,
-    password_digest, etc.) or make damaging posts. Instead, a
-    SessionInterface should be the object that makes these requests.
+    password_digest, etc.) or make damaging posts. These requests should be made
+    by a SessionInterface object instead.
     """
 
     TIMEOUT = 10
