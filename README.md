@@ -7,7 +7,7 @@ Pydent is the python API for Aquarium.
 
 ## Documentation
 
-[API documentation can be found here at http://aquariumbio.github.io/pydent](http://aquariumbio.github.io/pydent)
+[API documentation can be found here at http://aquariumbio.github.io/pydent](http://aquariumbio.github.io/pydent/)
 
 ## Requirements
 
