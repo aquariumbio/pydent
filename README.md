@@ -1,13 +1,13 @@
-# Trident: Aquarium API Scripting
+# Pydent: Aquarium API Scripting
 
 [![CircleCI](https://circleci.com/gh/klavinslab/trident/tree/master.svg?style=svg&circle-token=88677c59698d55a127a080cba9ca025cf8072f6c)](https://circleci.com/gh/klavinslab/trident/tree/master)
 [![PyPI version](https://badge.fury.io/py/pydent.svg)](https://badge.fury.io/py/pydent)
 
-Trident is the python API scripting for Aquarium.
+Pydent is the python API for Aquarium.
 
 ## Documentation
 
-[API documentation can be found here at http://aquariumbio.github.io/trident](http://aquariumbio.github.io/trident)
+[API documentation can be found here at http://aquariumbio.github.io/pydent](http://aquariumbio.github.io/pydent)
 
 ## Requirements
 
