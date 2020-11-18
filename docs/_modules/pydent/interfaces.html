@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.interfaces &#8212; pydent 1.0.3 documentation</title>
+    <title>pydent.interfaces &#8212; pydent 1.0.4 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -319,15 +319,14 @@
 Session interfaces are created by an AqSession instance and use an AqHTTP
 instance to make http requests to Aquarium.
 
-Generally, Trident users should be unable to directly access AqHTTP method to
+Generally, Trident users should be unable to directly access AqHTTP methods to
 prevent potentially damaging requests or revealing sensitive information.
 Session interfaces define a particular way an AqHTTP is used.
 
 Interfaces are roughly grouped into:
 
 (1) ModelInterface - for finding and retrieving Aquarium models and information
-(2) CreateInterface - for creating new objects (e.g. new Samples) in Aquarium
-(3) UpdateInterface - for updating objects in Aquarium
+(2) UtilityInterface -- contains methods for creating and updating objects in Aquarium
 
 Example:
     session1 = AqSession(login, password, aquarium_url)
@@ -341,11 +340,10 @@ Example:
     # not allowed
 
     session1.create
-    # =&gt; a CreateInterface
+    # =&gt; a UtilityInterface
 
-    session1.create.samples(list_of_samples)
-    # creates samples from a list by calling method CreateInterface.samples
-&quot;&quot;&quot;
+    session1.utils.create_samples(list_of_samples)
+    # creates samples from a list by calling method UtilityInterface.samples &quot;&quot;&quot;
 import json
 from abc import ABC
 from abc import abstractmethod
@@ -404,7 +402,7 @@ from pydent.marshaller.registry import ModelRegistry
         data: Union[None, dict],
         params=None,
     ) -&gt; dict:
-        &quot;&quot;&quot;Method for create, updating, and deleting models.
+        &quot;&quot;&quot;Method for creating, updating, and deleting models.
 
         :param method: Request method name (one of &#39;put&#39;, &#39;post&#39;, &#39;delete&#39;
         :param table: Table name of model (e.g. &#39;samples&#39; or &#39;data_associations&#39;)
@@ -441,7 +439,7 @@ from pydent.marshaller.registry import ModelRegistry
         record_methods: List[str] = None,
         record_getters: List[str] = None,
     ):
-        &quot;&quot;&quot;Method for create, updating, and deleting models using Aquariums
+        &quot;&quot;&quot;Method for creating, updating, and deleting models using Aquarium&#39;s
         JSON controller.
 
         :param method: Method name (e.g. &quot;save&quot;, &quot;delete&quot;)

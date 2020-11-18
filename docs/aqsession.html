@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Session (pydent.aqsession) &#8212; pydent 1.0.3 documentation</title>
+    <title>Session (pydent.aqsession) &#8212; pydent 1.0.4 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -42,7 +42,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -330,7 +330,7 @@
   <div class="section" id="session-pydent-aqsession">
 <h1>Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)<a class="headerlink" href="#session-pydent-aqsession" title="Permalink to this headline">¶</a></h1>
 <p>Session class for interacting with Trident and Aquarium. To initialize
-a new session, you’ll need your Aquarium login credentials and a url:</p>
+a new session, you’ll need your Aquarium login credentials and an Aquarium url:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent</span> <span class="kn">import</span> <span class="n">AqSession</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">AqSession</span><span class="p">(</span><span class="s1">&#39;joeshmoe&#39;</span><span class="p">,</span> <span class="s1">&#39;pass123&#39;</span><span class="p">,</span> <span class="s1">&#39;http://myaquariumurl.org`)</span>
 </pre></div>
@@ -347,20 +347,9 @@ the <code class="xref py py-meth docutils literal notranslate"><span class="pre"
 <span class="n">mysamples</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">})</span>
 </pre></div>
 </div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt>Models <a class="reference internal" href="models.html#models"><span class="std std-ref">Models</span></a></dt><dd><p>documentation for more information on how to
-manipulate and query models.</p>
-</dd>
-<dt>Temporary Sessions <a class="reference internal" href="advanced/caching.html#cache"><span class="std std-ref">Cache</span></a></dt><dd><p>documentation on how to use the session cache to
-speed up queries.</p>
-</dd>
-</dl>
-</div>
 <div class="section" id="user-objects">
 <h2>User Objects<a class="headerlink" href="#user-objects" title="Permalink to this headline">¶</a></h2>
-<p>The AqSession and Browser are the main interaction object for querying the
+<p>The AqSession and Browser are the main interaction objects for querying the
 Aquarium server. The Browser class provides special methods for speeding
 up and caching results from the server, which is covered in
 <a class="reference internal" href="advanced/caching.html#cache"><span class="std std-ref">Advanced Topics</span></a>.</p>
@@ -438,7 +427,7 @@ models.</p>
 <span class="c1"># &lt;User(id=1,...)&gt;</span>
 </pre></div>
 </div>
-<p>Initializes a new tridennt Session.</p>
+<p>Initializes a new trident Session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -554,12 +543,6 @@ requests to Aquarium.</p>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="sig-name descname">name</code><em class="property"> = None</em></dt>
-<dd><p>optional name of the session</p>
 </dd></dl>
 
 <dl class="method">
