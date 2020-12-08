@@ -252,14 +252,16 @@ class FieldValueInterface:
         # values; unsure if this used to be a bug in Aquarium that has been since
         # resolved
 
-        for fv in self.field_values:
-            val = fv_func(fv)
-            ft = self.safe_get_field_type(fv)
-            if ft:
-                if ft.array:
-                    data[ft_func(ft)].append(val)
-                else:
-                    data[ft_func(ft)] = val
+        fvs = self.field_values
+        if fvs:
+            for fv in self.field_values:
+                val = fv_func(fv)
+                ft = self.safe_get_field_type(fv)
+                if ft:
+                    if ft.array:
+                        data[ft_func(ft)].append(val)
+                    else:
+                        data[ft_func(ft)] = val
 
         return data
 
