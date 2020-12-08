@@ -254,7 +254,7 @@ class FieldValueInterface:
 
         fvs = self.field_values
         if fvs:
-            for fv in self.field_values:
+            for fv in fvs:
                 val = fv_func(fv)
                 ft = self.safe_get_field_type(fv)
                 if ft:
