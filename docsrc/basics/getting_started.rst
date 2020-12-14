@@ -177,22 +177,6 @@ You can use where with SQL-like queries as well
 
     Sample
 
-We can also query models by querying their creation (**created_at**) or
-update (**updated_at**) times:
-
-.. testcode::
-
-    import udatetime
-    from datetime import timedelta
-
-    last24 = udatetime.to_string(udatetime.utcnow() - timedelta(hours=24))
-    jobs = session.Job.where("created_at > '{}'".format(last24))
-    print("jobs found")
-
-.. testoutput::
-
-    jobs found
-
 Relationship Queries
 ~~~~~~~~~~~~~~~~~~~~
 
