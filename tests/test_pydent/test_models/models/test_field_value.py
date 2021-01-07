@@ -154,7 +154,7 @@ def test_set_container(fake_session):
     )
     fake_container = fake_session.ObjectType.load({"id": 300})
 
-    fake_fv.set_value(container=fake_container)
+    fake_fv.set_value(object_type=fake_container)
     assert fake_fv.allowable_field_type_id == 2
     assert fake_fv.allowable_field_type.id == 2
 
