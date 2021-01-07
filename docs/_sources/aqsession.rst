@@ -1,2 +1,0 @@
-.. automodule:: pydent.aqsession
-    :noindex:
