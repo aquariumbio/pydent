@@ -116,7 +116,7 @@ html_static_path = ["_static"]
 html_context = {
     "version": version,
     "github": pydent.__homepage__,
-    "repo": pydent.__repo__,
+    "repo": pydent.__repository__,
     "aquarium_page": "https://www.aquarium.bio/",
     "display_github": True,  # Integrate GitHub
     "github_user": "aquariumbio",  # Username
@@ -126,7 +126,7 @@ html_context = {
 }
 
 # subs for the docsrc
-substitutions = {"homepage": pydent.__homepage__, "repo": pydent.__repo__}
+substitutions = {"homepage": pydent.__homepage__, "repo": pydent.__repository__}
 
 rst_epilog = "\n".join(
     ".. |{k}| replace:: {v}".format(k=k, v=v) for k, v in substitutions.items()

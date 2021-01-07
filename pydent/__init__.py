@@ -6,7 +6,7 @@ import nest_asyncio
 
 from .__version__ import __authors__
 from .__version__ import __homepage__
-from .__version__ import __repo__
+from .__version__ import __repository__
 from .__version__ import __title__
 from .__version__ import __version__
 from .aqsession import AqSession
