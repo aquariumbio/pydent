@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Aquarium Query Language Schema &#8212; pydent 1.0.6 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/style.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing" href="../developer/contributing.html" />
+    <link rel="prev" title="Planner tutorial" href="../advanced/planner_tutorial.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.6</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/inventory.html">Inventory Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#creating-new-samples">Creating new samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#updating-sample-properties">Updating sample properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#creating-new-items">Creating new items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#creating-new-collections">Creating new collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/inventory.html#saving-inventory">Saving inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../aqsession.html#user-objects">User Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aqsession.html#non-user-objects">Non-User Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#model-classes">Model Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#model-mixins">Model Mixins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#field-relationships">Field Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../planner.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../planner.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../marshaller.html#fields">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../advanced/topics.html">Advanced topics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced/planner_tutorial.html">Planner tutorial</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Aquarium Query Language Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#aquarium-query-language-aql-schema">Aquarium Query Language (AQL) Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#id1">1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#section-1">1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#section-2">1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#section-3">1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a23">0.1.5a23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a21">0.1.5a21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a20">0.1.5a20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a19">0.1.5a19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a18">0.1.5a18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a17">0.1.5a17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a16">0.1.5a16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a15">0.1.5a15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a14">0.1.5a14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#section-4">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a13">0.1.5a13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a12">0.1.5a12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a11">0.1.5a11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a9">0.1.5a9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a8">0.1.5a8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a-1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a-2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/versions.html#a-3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../advanced/planner_tutorial.html" title="Previous Chapter: Planner tutorial"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Planner tutorial</span>
+    </a>
+  </li>
+  <li>
+    <a href="../developer/contributing.html" title="Next Chapter: Contributing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Contributing &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/aql/schemas.rst"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="aquarium-query-language-schema">
+<span id="json-schema"></span><h1>Aquarium Query Language Schema<a class="headerlink" href="#aquarium-query-language-schema" title="Permalink to this headline">¶</a></h1>
+<p>Validated JSON Schemas (<a class="reference external" href="https://json-schema.org/">https://json-schema.org/</a>)</p>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema#&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Aquarium Query Language (AQL) Schema&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;This schema validates query schema for AQL&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;definitions&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Delta time definition (from now)&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;__time__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;__seconds__&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;__hours__&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;__days__&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;__weeks__&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span>
+            <span class="p">}</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;minProperties&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;minProperties&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nt">&quot;maxProperties&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;__time__&quot;</span>
+      <span class="p">],</span>
+      <span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Valid query value&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;anyOf&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/time&quot;</span>
+        <span class="p">}</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;valueArray&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Valid query value array. Cannot be empty.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/value&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;minItems&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;sql&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Query for NOT, LESS THAN, GREATER THAN, e.g.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;__not__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/value&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Negation of the value&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;__lt__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/value&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Less than the value&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;__le__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/value&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Less than or equal to the value&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;__gt__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/value&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Greater than the value&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;__ge__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/value&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Greater than or equal to the value&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;minProperties&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nt">&quot;maxProperties&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;queryObj&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;patternProperties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;^(?!__)\\w+(?&lt;!__)$&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;anyOf&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/queryObj&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/value&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/valueArray&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;#ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/sql&quot;</span>
+            <span class="p">}</span>
+          <span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+              <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;limit the number of the models to return&quot;</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;pageSize&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+              <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;limit the number of models to return per query&quot;</span><span class="p">,</span>
+              <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">null</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;__return__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Query to find models.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;$ref&quot;</span><span class="p">:</span> <span class="s2">&quot;#/definitions/queryObj&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;__description__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Query description. Effectively ignored&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Name of the Aquarium model&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;__json__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;anyOf&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;include_uri&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+              <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;include_model_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+              <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">}</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span> <span class="kc">false</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">false</span>
+        <span class="p">}</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;examples&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;object_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Yeast Glycerol Stock&quot;</span>
+              <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;user_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;__return__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;sample_type&quot;</span><span class="p">:</span> <span class="s2">&quot;field_types&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;__query__&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;__model__&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<div class="section" id="aquarium-query-language-aql-schema">
+<h2>Aquarium Query Language (AQL) Schema<a class="headerlink" href="#aquarium-query-language-aql-schema" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td colspan="8"><p>This schema validates query schema for AQL</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="7"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><p>examples</p></td>
+<td><p>__model__</p></td>
+<td colspan="6"><p>Sample</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><p>__query__</p></td>
+<td rowspan="2"><p>items</p></td>
+<td rowspan="2"><p>__query__</p></td>
+<td><p>object_type</p></td>
+<td><p>__query__</p></td>
+<td><p>name</p></td>
+<td><p>Yeast Glycerol Stock</p></td>
+</tr>
+<tr class="row-odd"><td><p>__options__</p></td>
+<td><p>limit</p></td>
+<td colspan="2"><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>user_id</p></td>
+<td colspan="5"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>__return__</p></td>
+<td><p>sample_type</p></td>
+<td colspan="4"><p>field_types</p></td>
+</tr>
+<tr class="row-even"><td colspan="8"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>__query__</strong></p></li>
+</ul>
+</td>
+<td colspan="7"><p>Query to find models.</p></td>
+</tr>
+<tr class="row-even"><td colspan="7"><p><span class="xref std std-ref">#/definitions/queryObj</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>__description__</p></li>
+</ul>
+</td>
+<td colspan="7"><p>Query description. Effectively ignored</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="6"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>__model__</strong></p></li>
+</ul>
+</td>
+<td colspan="7"><p>Name of the Aquarium model</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="6"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="9"><ul class="simple">
+<li><p>__json__</p></li>
+</ul>
+</td>
+<td rowspan="9"><p>anyOf</p></td>
+<td><p>type</p></td>
+<td colspan="5"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="6"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>include_uri</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="4"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="4"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>include_model_type</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="4"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="4"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="5"><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="5"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="5"><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="7"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td colspan="8"><p>definitions</p></td>
+</tr>
+<tr class="row-even"><td rowspan="13"><ul class="simple">
+<li><p>time</p></li>
+</ul>
+</td>
+<td colspan="7"><p>Delta time definition (from now)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="6"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="7"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
+<li><p><strong>__time__</strong></p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="5"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="6"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>__seconds__</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>__hours__</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>__days__</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>__weeks__</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minProperties</p></td>
+<td colspan="5"><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="6"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>maxProperties</p></td>
+<td colspan="6"><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>minProperties</p></td>
+<td colspan="6"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>value</p></li>
+</ul>
+</td>
+<td colspan="7"><p>Valid query value</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><p>anyOf</p></td>
+<td><p>type</p></td>
+<td colspan="5"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="5"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="6"><p><span class="xref std std-ref">#/definitions/time</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>valueArray</p></li>
+</ul>
+</td>
+<td colspan="7"><p>Valid query value array. Cannot be empty.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="6"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="6"><p><span class="xref std std-ref">#/definitions/value</span></p></td>
+</tr>
+<tr class="row-even"><td><p>minItems</p></td>
+<td colspan="6"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="15"><ul class="simple">
+<li><p>sql</p></li>
+</ul>
+</td>
+<td colspan="7"><p>Query for NOT, LESS THAN, GREATER THAN, e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="6"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="7"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>__not__</p></li>
+</ul>
+</td>
+<td colspan="6"><p>Negation of the value</p></td>
+</tr>
+<tr class="row-odd"><td colspan="6"><p><span class="xref std std-ref">#/definitions/value</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>__lt__</p></li>
+</ul>
+</td>
+<td colspan="6"><p>Less than the value</p></td>
+</tr>
+<tr class="row-odd"><td colspan="6"><p><span class="xref std std-ref">#/definitions/value</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>__le__</p></li>
+</ul>
+</td>
+<td colspan="6"><p>Less than or equal to the value</p></td>
+</tr>
+<tr class="row-odd"><td colspan="6"><p><span class="xref std std-ref">#/definitions/value</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>__gt__</p></li>
+</ul>
+</td>
+<td colspan="6"><p>Greater than the value</p></td>
+</tr>
+<tr class="row-odd"><td colspan="6"><p><span class="xref std std-ref">#/definitions/value</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>__ge__</p></li>
+</ul>
+</td>
+<td colspan="6"><p>Greater than or equal to the value</p></td>
+</tr>
+<tr class="row-odd"><td colspan="6"><p><span class="xref std std-ref">#/definitions/value</span></p></td>
+</tr>
+<tr class="row-even"><td><p>maxProperties</p></td>
+<td colspan="6"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>minProperties</p></td>
+<td colspan="6"><p>1</p></td>
+</tr>
+<tr class="row-even"><td rowspan="15"><ul class="simple">
+<li><p>queryObj</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="6"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="7"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="7"><ul class="simple">
+<li><p>__options__</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="5"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="6"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>limit</p></li>
+</ul>
+</td>
+<td colspan="5"><p>limit the number of the models to return</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>pageSize</p></li>
+</ul>
+</td>
+<td colspan="5"><p>limit the number of models to return per query</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="4"><p>null</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>__return__</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="5"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="7"><p>patternProperties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>^(?!__)\w+(?&lt;!__)$</p></li>
+</ul>
+</td>
+<td rowspan="3"><p>anyOf</p></td>
+<td colspan="5"><p><span class="xref std std-ref">#/definitions/queryObj</span></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p><span class="xref std std-ref">#/definitions/value</span></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p><span class="xref std std-ref">#/definitions/valueArray</span></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="6"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-most-recent-primers">
+<h3>Get most recent primers<a class="headerlink" href="#get-most-recent-primers" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Item&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__description__&quot;</span><span class="p">:</span> <span class="s2">&quot;Get available primers created in last 7 days&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;object_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;sample_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Primer&quot;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;created_at&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;__time__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;__days__&quot;</span><span class="p">:</span> <span class="mi">-7</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__description__&quot;</span><span class="p">:</span> <span class="s2">&quot;Get one primer sample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;sample_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Primer&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Item&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__description__&quot;</span><span class="p">:</span> <span class="s2">&quot;Get available primers created in last 7 days&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;object_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;sample_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Primer&quot;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;created_at&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;__time__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;__days__&quot;</span><span class="p">:</span> <span class="mi">-7</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Item&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__description__&quot;</span><span class="p">:</span> <span class="s2">&quot;Get three items by ids&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Item&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__description__&quot;</span><span class="p">:</span> <span class="s2">&quot;Get one item&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__description__&quot;</span><span class="p">:</span> <span class="s2">&quot;Return samples that have available Primer Aliquots&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;object_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Primer Aliquot&quot;</span> <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;location&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;__not__&quot;</span><span class="p">:</span> <span class="s2">&quot;deleted&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;__model__&quot;</span><span class="p">:</span> <span class="s2">&quot;Sample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__description__&quot;</span><span class="p">:</span> <span class="s2">&quot;Return samples that have available Primer Aliquots&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;__json__&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;object_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;__query__&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Primer Aliquot&quot;</span> <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;location&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;__not__&quot;</span><span class="p">:</span> <span class="s2">&quot;deleted&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;__options__&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2020, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

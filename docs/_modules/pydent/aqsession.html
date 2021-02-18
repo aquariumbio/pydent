@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pydent.aqsession &#8212; pydent 1.0.6 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/style.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+    
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          Trident</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.6</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Trident <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../aqsession.html#user-objects">User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.aqsession.AqSession.html">pydent.aqsession.AqSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.aqsession.Browser.html">pydent.aqsession.Browser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../aqsession.html#non-user-objects">Non-User Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.aqsession.SessionABC.html">pydent.aqsession.SessionABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.aqsession.AqHTTP.html">pydent.aqsession.AqHTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../aqsession.html#interfaces">Interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../models.html#model-classes">Model Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#plans">Plans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#inventory">Inventory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#data-and-io">Data and IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#user">User</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../models.html#model-mixins">Model Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.crud_mixin.CreateMixin.html">pydent.models.crud_mixin.CreateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.crud_mixin.DeleteMixin.html">pydent.models.crud_mixin.DeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.crud_mixin.JSONDeleteMixin.html">pydent.models.crud_mixin.JSONDeleteMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.crud_mixin.JSONSaveMixin.html">pydent.models.crud_mixin.JSONSaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.crud_mixin.SaveMixin.html">pydent.models.crud_mixin.SaveMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.crud_mixin.UpdateMixin.html">pydent.models.crud_mixin.UpdateMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.data_associations.DataAssociatorMixin.html">pydent.models.data_associations.DataAssociatorMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.field_value_mixins.FieldMixin.html">pydent.models.field_value_mixins.FieldMixin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.field_value_mixins.FieldTypeInterface.html">pydent.models.field_value_mixins.FieldTypeInterface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.models.field_value_mixins.FieldValueInterface.html">pydent.models.field_value_mixins.FieldValueInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../models.html#field-relationships">Field Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.BaseRelationship.html">pydent.relationships.BaseRelationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.BaseRelationshipAccessor.html">pydent.relationships.BaseRelationshipAccessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.Function.html">pydent.relationships.Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasMany.html">pydent.relationships.HasMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasManyGeneric.html">pydent.relationships.HasManyGeneric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasManyThrough.html">pydent.relationships.HasManyThrough</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasOne.html">pydent.relationships.HasOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.HasOneFromMany.html">pydent.relationships.HasOneFromMany</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.JSON.html">pydent.relationships.JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.Many.html">pydent.relationships.Many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.One.html">pydent.relationships.One</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.relationships.Raw.html">pydent.relationships.Raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../models.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.add_schema.html">pydent.marshaller.add_schema</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../planner.html#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.planner.Planner.html">pydent.planner.Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.planner.PlannerLayout.html">pydent.planner.PlannerLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../planner.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.planner.PlannerException.html">pydent.planner.PlannerException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../marshaller.html#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.fields.Alias.html">pydent.marshaller.fields.Alias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.fields.Callback.html">pydent.marshaller.fields.Callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.fields.Field.html">pydent.marshaller.fields.Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.fields.FieldABC.html">pydent.marshaller.fields.FieldABC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.fields.Nested.html">pydent.marshaller.fields.Nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.fields.Relationship.html">pydent.marshaller.fields.Relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#logging-into-a-session">Logging into a session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#making-queries">Making queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#relationship-queries">Relationship Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/getting_started.html#creating-inventory">Creating inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/installation.html">Installing Trident</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/installation.html#installation-for-developers">Installation for developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/inventory.html">Inventory Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/inventory.html#creating-new-samples">Creating new samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/inventory.html#updating-sample-properties">Updating sample properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/inventory.html#creating-new-items">Creating new items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/inventory.html#creating-new-collections">Creating new collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/inventory.html#saving-inventory">Saving inventory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/planning.html">Experiment Planning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basics/querying.html">Making Queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#basic-browsing">Basic Browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#browser-scope">Browser Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#relationship-browsing">Relationship Browsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../basics/querying.html#avoid-using-too-many-queries-n-1-problem">Avoid using too many queries (N+1 problem)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../basics/querying.html#the-browser-cache">The Browser Cache</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#logging-requests">Logging Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/querying.html#asynchrounous-requests">Asynchrounous Requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../aqsession.html">Session (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.aqsession</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../aqsession.html#user-objects">User Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../aqsession.html#non-user-objects">Non-User Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../models.html">Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#model-classes">Model Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#model-mixins">Model Mixins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#field-relationships">Field Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../planner.html">Planner (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.planner</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../planner.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../planner.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../exceptions.html">Exceptions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.exceptions</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../marshaller.html">Serialization (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.marshaller</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.SchemaModel.html">pydent.marshaller.SchemaModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.ModelRegistry.html">pydent.marshaller.ModelRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.SchemaRegistry.html">pydent.marshaller.SchemaRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.descriptors.html">pydent.marshaller.descriptors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.exceptions.html">pydent.marshaller.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/pydent.marshaller.utils.html">pydent.marshaller.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../marshaller.html#fields">Fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/topics.html">Advanced topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html">Structured queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/caching.html#speeding-up-queries">Speeding up queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#temporary-sessions">Temporary Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../advanced/caching.html#optimized-queries">Optimized queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced/planner_tutorial.html">Planner tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../aql/schemas.html">Aquarium Query Language Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../aql/schemas.html#aquarium-query-language-aql-schema">Aquarium Query Language (AQL) Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../aql/schemas.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#running-tests">Running Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../developer/contributing.html#server-vs-local-tests">Server vs local tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/contributing.html#installing-dependencies">Installing dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../developer/contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../developer/contributing.html#manual-release">Manual release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/versions.html">pydent change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#id1">1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#section-1">1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#section-2">1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#section-3">1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a23">0.1.5a23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a21">0.1.5a21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a20">0.1.5a20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a19">0.1.5a19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a18">0.1.5a18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a17">0.1.5a17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a16">0.1.5a16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a15">0.1.5a15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a14">0.1.5a14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#section-4">0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a13">0.1.5a13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a12">0.1.5a12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a11">0.1.5a11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a10">0.1.5a10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a9">0.1.5a9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a8">0.1.5a8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a6">0.1.5a6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a5">0.1.5a5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a4">0.1.5a4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a3">0.1.5a3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a2">0.1.5a2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a1">0.1.5a1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a">0.1.5a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a-1">0.1.4a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a-2">0.1.3a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer/versions.html#a-3">0.1.2a</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../developer/versions.html#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for pydent.aqsession</h1><div class="highlight"><pre>
+<span></span>&quot;&quot;&quot;
+Session (:mod:`pydent.aqsession`)
+=================================
+
+.. currentmodule:: pydent.aqsession
+
+Session class for interacting with Trident and Aquarium. To initialize
+a new session, you&#39;ll need your Aquarium login credentials and an Aquarium url:
+
+.. code-block:: python
+
+    from pydent import AqSession
+    session = AqSession(&#39;joeshmoe&#39;, &#39;pass123&#39;, &#39;http://myaquariumurl.org`)
+
+.. note::
+    To login discretely with a hidden password, you may use
+    the :meth:`pydent.login &lt;pydent.login&gt;` method.
+
+After initializing a session, models are accessible from the Session:
+
+.. code-block:: python
+
+    sample = session.Sample.one()
+    last50 = session.Item.last(50)
+    first10 = session.SampleType.first(10)
+    mysamples = session.Sample.last(10, query={&#39;user_id&#39;: 66})
+
+.. see also::
+    Models :ref:`Models &lt;models&gt;`
+        documentation on manipulating and querying models.
+    Temporary Sessions :ref:`Cache &lt;cache&gt;`
+        documentation on how to use the session cache to
+        speed up queries.
+
+
+User Objects
+------------
+
+The AqSession and Browser are the main interaction objects for querying the
+Aquarium server. The Browser class provides special methods for speeding
+up and caching results from the server, which is covered in
+:ref:`Advanced Topics &lt;cache&gt;`.
+
+.. currentmodule: pydent.aqsession
+
+.. autosummary::
+    :toctree: generated/
+
+    AqSession
+    Browser
+
+.. currentmodule: pydent.planner.planner
+
+Non-User Objects
+----------------
+
+These modules provide utility support for Trident. These are not relevant for most
+users.
+
+.. currentmodule: pydent.aqsession
+
+.. autosummary::
+    :toctree: generated/
+
+    SessionABC
+    AqHTTP
+
+Interfaces
+^^^^^^^^^^
+
+.. currentmodule:: pydent.interfaces
+
+Interfaces govern how the session searches, loads, and dumps
+Aquarium models from the server.
+
+.. autosummary::
+    :toctree: generated/
+
+    BrowserInterface
+    CRUDInterface
+    QueryInterface
+    QueryInterfaceABC
+    SessionInterface
+    UtilityInterface
+
+&quot;&quot;&quot;
+import inspect
+import timeit
+import webbrowser
+from copy import copy
+from decimal import Decimal
+from typing import Dict
+from typing import List
+from typing import Type
+from typing import Union
+
+from requests.exceptions import ReadTimeout
+
+from pydent.aqhttp import AqHTTP
+from pydent.aql import aql
+from pydent.aql import aql_schema
+from pydent.base import ModelBase
+from pydent.base import ModelRegistry
+from pydent.browser import Browser
+from pydent.interfaces import BrowserInterface
+from pydent.interfaces import QueryInterface
+from pydent.interfaces import QueryInterfaceABC
+from pydent.interfaces import SessionInterface
+from pydent.interfaces import UtilityInterface
+from pydent.inventory_updater import save_inventory
+from pydent.models import __all__ as allmodels
+from pydent.sessionabc import SessionABC
+
+
+<div class="viewcode-block" id="AqSession"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession">[docs]</a>class AqSession(SessionABC):
+    &quot;&quot;&quot;Holds an AqHTTP with login information. Creates SessionInterfaces for
+    models.
+
+    .. code-block:: python
+
+        session1 = AqSession(username, password, aquarium_url)
+        session1.User.find(1)
+        # &lt;User(id=1,...)&gt;
+    &quot;&quot;&quot;
+
+<div class="viewcode-block" id="AqSession.__init__"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.__init__">[docs]</a>    def __init__(
+        self,
+        login: str,
+        password: str,
+        aquarium_url: str,
+        name: str = None,
+        aqhttp: str = None,
+    ):
+        &quot;&quot;&quot;Initializes a new trident Session.
+
+        :param login: the Aquarium login for the user
+        :type login: str
+        :param password: the password for the Aquarium login. This will not be
+            stored anywhere. However, login headers for Aquarium will be stored
+            in .__aqhttp. This may change in the future with changes
+            authentication for the Aquarium API
+        :type password: str
+        :param aquarium_url: the http formatted Aquarium url
+        :type aquarium_url: str
+        :param name: (optional) name for this session
+        :type name: str or None
+        &quot;&quot;&quot;
+        self.name = name
+        self._aqhttp = None  #: requests interface
+        if login is None and password is None and aquarium_url is None:
+            if aqhttp is not None:
+                self._aqhttp = aqhttp
+            else:
+                raise ValueError(
+                    &quot;Need either a name, password, and url OR an aqhttp instance.&quot;
+                )
+        else:
+            self._aqhttp = AqHTTP(login, password, aquarium_url)
+        self._current_user = None
+        self._interface_class = QueryInterface
+        self._initialize_interfaces()
+        self._browser = None  #: the sessions browser
+        self._using_cache = False
+        self.init_cache()
+        self.parent_session = (
+            None  #: the parent session, if derived from another session
+        )</div>
+
+    @property
+    def interface_class(self) -&gt; Type:
+        &quot;&quot;&quot;Returns the session&#39;s interface class.&quot;&quot;&quot;
+        return self._interface_class
+
+    @interface_class.setter
+    def interface_class(self, c: Type):
+        &quot;&quot;&quot;Sets the session&#39;s interface class.&quot;&quot;&quot;
+        if not issubclass(c, QueryInterfaceABC):
+            raise ValueError(
+                &quot;Interface {} is not a subclass of {}&quot;.format(
+                    type(c), QueryInterfaceABC
+                )
+            )
+        self._interface_class = c
+
+<div class="viewcode-block" id="AqSession._initialize_interfaces"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession._initialize_interfaces">[docs]</a>    def _initialize_interfaces(self):
+        &quot;&quot;&quot;Initializes the session&#39;s interfaces.&quot;&quot;&quot;
+        # initialize model interfaces
+        for model_name in allmodels:
+            self._register_interface(model_name)</div>
+
+<div class="viewcode-block" id="AqSession.open"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.open">[docs]</a>    def open(self):
+        &quot;&quot;&quot;Open Aquarium in a web browser window.&quot;&quot;&quot;
+        webbrowser.open(self._aqhttp.url)</div>
+
+    @property
+    def session(self) -&gt; &quot;AqSession&quot;:
+        &quot;&quot;&quot;Return self.&quot;&quot;&quot;
+        return self
+
+    def set_verbose(self, verbose: bool, tb_limit: int = None):
+        self._aqhttp.log.set_verbose(verbose, tb_limit=tb_limit)
+
+<div class="viewcode-block" id="AqSession._log_to_aqhttp"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession._log_to_aqhttp">[docs]</a>    def _log_to_aqhttp(self, msg: str):
+        &quot;&quot;&quot;Sends a log message to the aqhttp&#39;s logger.&quot;&quot;&quot;
+        self._aqhttp.log.info(msg)</div>
+
+    def _register_interface(self, model_name: str):
+        # get model interface from model class
+        model_interface = self.interface_class(model_name, self._aqhttp, self)
+
+        # set interface to session attribute (e.g. session.Sample calls Sample model interface)
+        setattr(self, model_name, model_interface)
+
+<div class="viewcode-block" id="AqSession.set_timeout"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.set_timeout">[docs]</a>    def set_timeout(self, timeout_in_seconds: int):
+        &quot;&quot;&quot;Sets the request timeout.&quot;&quot;&quot;
+        self._aqhttp.timeout = timeout_in_seconds</div>
+
+    @property
+    def url(self):
+        &quot;&quot;&quot;Returns the aquarium_url for this session.&quot;&quot;&quot;
+        return self._aqhttp.aquarium_url
+
+    @property
+    def login(self) -&gt; str:
+        &quot;&quot;&quot;Logs into aquarium, generating the necessary headers to perform
+        requests to Aquarium.&quot;&quot;&quot;
+        return self._aqhttp.login
+
+    @property
+    def current_user(self) -&gt; &quot;ModelBase&quot;:
+        &quot;&quot;&quot;Returns the current User associated with this session.
+
+        Returns None if no user is found (as in cases where the Aquarium
+        connection is down).
+        &quot;&quot;&quot;
+        if self._current_user is None:
+            user = self.User.where({&quot;login&quot;: self._aqhttp.login})
+            if not user:
+                return None
+            self._current_user = self.User.where({&quot;login&quot;: self._aqhttp.login})[0]
+        return self._current_user
+
+<div class="viewcode-block" id="AqSession.logged_in"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.logged_in">[docs]</a>    def logged_in(self) -&gt; bool:
+        &quot;&quot;&quot;Returns whether the user is logged in. If the session is able to
+        return the User model instance using the session&#39;s login credentials,
+        the user is considered to be logged in.
+
+        :return: whether user is currently logged in
+        :rtype: boolean
+        &quot;&quot;&quot;
+        if self.current_user is None:
+            return False
+        return True</div>
+
+    @property
+    def models(self) -&gt; List[str]:
+        &quot;&quot;&quot;Returns list of all models available.&quot;&quot;&quot;
+        return list(ModelRegistry.models.keys())
+
+<div class="viewcode-block" id="AqSession.model_interface"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.model_interface">[docs]</a>    def model_interface(
+        self, model_name: str, interface_class: SessionInterface = None
+    ) -&gt; SessionInterface:
+        &quot;&quot;&quot;Returns model interface by name.&quot;&quot;&quot;
+        if interface_class is None:
+            interface_class = self.interface_class
+        return interface_class(model_name, self._aqhttp, self)</div>
+
+    @property
+    def utils(self):
+        &quot;&quot;&quot;Instantiates a utility interface.&quot;&quot;&quot;
+        return UtilityInterface(self._aqhttp, self)
+
+    def _ping_function(self):
+        return self.User.one()
+
+    # TODO: put &#39;ping&#39; in documentation
+<div class="viewcode-block" id="AqSession.ping"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.ping">[docs]</a>    def ping(self, num: int = 5) -&gt; Union[None, int]:
+        &quot;&quot;&quot;Performs a number of simple requests (pings) to estimate the speed
+        of the server.
+
+        Displays a message about the average time each ping took.
+        &quot;&quot;&quot;
+        ping_function = self._ping_function()
+        ping_function_source = inspect.getsource(ping_function).strip()
+        try:
+            secs = timeit.timeit(ping_function, number=num)
+            print(
+                &quot;{} pings (using the function &#39;{}&#39;)&quot;.format(num, ping_function_source)
+            )
+            print(&quot;{} seconds per ping&quot;.format(&quot;%.2E&quot; % Decimal(secs / num)))
+            return secs
+        except ReadTimeout as e:
+            print(&quot;Error: {}&quot;.format(e))
+            print(
+                &quot;The Aquarium server ({}) looks like its down. The function &#39;{}&#39; &quot;
+                &quot;raised a {} exception, but should not have.&quot;.format(
+                    self.url, ping_function_source, ReadTimeout
+                )
+            )
+            return None</div>
+
+    @property
+    def browser(self):
+        return self._browser
+
+    def init_cache(self):
+        self._browser = Browser(self)
+
+    def clear_cache(self):
+        self.browser.clear()
+
+    @property
+    def using_requests(self) -&gt; bool:
+        return self._aqhttp._using_requests
+
+    @using_requests.setter
+    def using_requests(self, b: bool):
+        if b:
+            self._aqhttp.on()
+        else:
+            self._aqhttp.off()
+
+    @property
+    def using_cache(self) -&gt; bool:
+        return self._using_cache
+
+    @using_cache.setter
+    def using_cache(self, b: bool):
+        if b:
+            self.interface_class = BrowserInterface
+            if self.browser is None:
+                self.init_cache()
+            self._initialize_interfaces()
+            self._using_cache = True
+        else:
+            self._using_cache = False
+            self.interface_class = QueryInterface
+            self._initialize_interfaces()
+
+    def copy(self):
+        instance = self.__class__(
+            None, None, None, self.name, aqhttp=copy(self._aqhttp)
+        )
+        instance.using_requests = self.using_requests
+        instance.using_cache = self.using_cache
+        return instance
+
+<div class="viewcode-block" id="AqSession.with_cache"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.with_cache">[docs]</a>    def with_cache(
+        self,
+        using_requests: bool = None,
+        using_models: bool = False,
+        timeout: int = None,
+        verbose=None,
+    ) -&gt; &quot;AqSession&quot;:
+        &quot;&quot;&quot;
+
+        :param using_requests: if False, ForbiddenRequest will be raised if \
+            requests are made using the session.
+        :param using_models: if True (default: False), derived session will \
+            inherit the current sessions model_cache
+        :param timeout: the requests timeout in seconds
+        :param verbose: if True, verbose mode will be activated for the derived session
+        :return:
+        &quot;&quot;&quot;
+        return self(
+            using_cache=True,
+            using_models=using_models,
+            using_requests=using_requests,
+            timeout=timeout,
+            using_verbose=verbose,
+        )</div>
+
+    def with_requests_off(
+        self,
+        using_cache: bool = None,
+        using_models: bool = True,
+        timeout: int = None,
+        verbose=None,
+    ) -&gt; &quot;AqSession&quot;:
+        return self(
+            using_cache=using_cache,
+            using_models=using_models,
+            using_requests=False,
+            timeout=timeout,
+            using_verbose=verbose,
+        )
+
+<div class="viewcode-block" id="AqSession._swap_sessions"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession._swap_sessions">[docs]</a>    @staticmethod
+    def _swap_sessions(from_session, to_session):
+        &quot;&quot;&quot;Moves models from one session to another.&quot;&quot;&quot;
+        if to_session:
+            models = from_session.browser.models
+            if to_session.browser:
+                to_session.browser.update_cache(models)
+            for m in models:
+                m._session = to_session</div>
+
+    @classmethod
+    def query_schema(cls) -&gt; Dict:
+        return aql_schema
+
+<div class="viewcode-block" id="AqSession.query"><a class="viewcode-back" href="../../generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession.query">[docs]</a>    def query(self, data: Dict, use_cache: bool = False) -&gt; List[ModelBase]:
+        &quot;&quot;&quot;Perform a complex query a complex JSON query object.
+
+        Check out the :ref:`JSON Schema page &lt;json_schema&gt;` for more information.
+
+        You may also checkout `AqSession.query_schema` to view the JSON schema
+        that validates the input.
+
+        .. code-block:: python
+
+            {
+              &quot;__model__&quot;: &quot;Item&quot;,
+              &quot;__description__&quot;: &quot;Get available primers in last 7 days&quot;,
+              &quot;query&quot;: {
+                &quot;object_type&quot;: {
+                  &quot;query&quot;: {
+                    &quot;sample_type&quot;: {
+                      &quot;query&quot;: {
+                        &quot;name&quot;: &quot;Primer&quot;
+                      }
+                    }
+                  }
+                },
+                &quot;created_at&quot;: {
+                  &quot;__time__&quot;: {
+                    &quot;__days__&quot;: -7
+                  }
+                },
+                &quot;location&quot;: {
+                    &quot;__not__&quot;: &quot;deleted&quot;
+                }
+                &quot;__options__&quot;: {
+                  &quot;limit&quot;: 1
+                }
+              }
+            }
+
+        ..versionadded:: 0.1.5a16
+            Added query method for complex queries
+
+        .. versionchanged:: 0.1.5a23 `query` key now changed to `__query__`
+
+        :param data: data query
+        :param use_cache: whether to inherit the cache from the provided session
+            (default: False)
+        :return: list of models fitting the query
+        :raises: AquariumQueryLanguageValidationError if input data is invalid.
+        &quot;&quot;&quot;
+        return aql(self, data, use_cache=use_cache)</div>
+
+    def __getattr__(self, item):
+        if item not in self.__dict__:
+            non_private = [k for k in QueryInterface.__dict__ if not k.startswith(&quot;_&quot;)]
+            if item in non_private:
+                raise AttributeError(
+                    &quot;{s} has no attribute &#39;{item}&#39;.\nDid you mean &quot;
+                    &quot;&#39;session.[ModelName].{item}&#39;?&quot;.format(s=self.__class__, item=item)
+                )
+            else:
+                msg = ModelRegistry.did_you_mean_model(item, fallback=False)
+                if msg:
+                    raise AttributeError(
+                        &quot;{s} has no attribute &#39;{item}&#39;.\n{msg}&quot;.format(
+                            s=self.__class__, item=item, msg=msg
+                        )
+                    )
+
+        return self.__getattribute__(item)
+
+    def __call__(
+        self,
+        using_cache: bool = None,
+        using_requests: bool = None,
+        timeout: int = None,
+        using_models: bool = None,
+        using_verbose: bool = None,
+        session_swap: bool = False,
+    ) -&gt; &quot;AqSession&quot;:
+        &quot;&quot;&quot;Factory call for producing a new Session instance.
+
+        .. versionchanges:: 0.1.5a7
+            &#39;session_swap` parameter added.
+
+        :param using_cache:
+        :param using_requests:
+        :param timeout:
+        :param using_models:
+        :param using_verbose:
+        :param session_swap:
+        :return:
+        &quot;&quot;&quot;
+        new_session = self.copy()
+        new_session.parent_session = self
+        if using_cache is not None:
+            new_session.using_cache = using_cache
+        if using_requests is not None:
+            new_session.using_requests = using_requests
+        if timeout is not None:
+            new_session.set_timeout(timeout)
+        if session_swap:
+            self._swap_sessions(self, new_session)
+        elif using_models and self.browser:
+            new_session.browser.update_cache(self.browser.models)
+        if using_verbose is not None:
+            new_session.set_verbose(using_verbose)
+        return new_session
+
+    def __enter__(self) -&gt; &quot;AqSession&quot;:
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if hasattr(self, &quot;parent_session&quot;):
+            self._swap_sessions(self, self.parent_session)
+
+    def __repr__(self) -&gt; str:
+        return &quot;&lt;{}(name={}, AqHTTP={}), parent={})&gt;&quot;.format(
+            self.__class__.__name__, self.name, self._aqhttp, id(self.parent_session)
+        )</div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017-2020, University of Washington.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
