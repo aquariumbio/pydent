@@ -259,12 +259,16 @@ pydent change log
 
 -  Planner class - a convenience class creating and editing plans in
    Aquarium.
+
 -  ``Browser`` - a convenience class for browsing Samples and other
    models. Includes caching and query bundling to reduce number of
    queries and increase script speed.
+
 -  new queries (one, last, first)
+
 -  removed requirement of Marshmallow serialization/deserialization
    dependency, replaced by faster code
+
 -  Removed ``marshmallow`` as a serialization/deserialization library. A
    custom library is now used that avoids unnecessary field validation.
    As a result, model ``load`` and ``dump`` is many fold faster.
@@ -299,7 +303,7 @@ Minor changes
       value for the FieldValue instead of being ignored.
 
 -  ``primary_key`` will return an ``id``. If ``id==None``, then the
-   ``rid`` is returned (e.g. ``rid1023``)
+   ``rid`` is returned (e.g. ``rid1023``)
 -  ``HasOne`` relationship will automatically set the corresponding
    model reference when setting attributes. E.g.
    ``sample.sample_type = myst`` will also automatically set
