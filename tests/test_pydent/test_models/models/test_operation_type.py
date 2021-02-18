@@ -65,3 +65,21 @@ def test_operation_type_field_type(fake_session):
     assert fake_ot.field_type("96 well plate", "output").id == 8840
     assert fake_ot.field_type("Labeled Yeast Library", "input").id == 8841
     assert not fake_ot.field_type("Labeled Yeast Library", "output")
+
+
+def test_new_operation_type(fake_session):
+    sample_type = fake_session.SampleType.new(name='Fluff')
+    object_type = fake_session.ObjectType.new(name='Big Tub')
+    type = fake_session.AllowableFieldType(sample_type=sample_type, object_type=object_type)
+    field_type = fake_session.FieldType(
+        name='input_one',
+        role='input',
+        allowable_field_types=[type]
+    )
+    operation_type = fake_session.OperationType.new(
+        name='dummy',
+        category='testing',
+        field_types=[field_type]
+    )
+
+    assert operation_type is not None
