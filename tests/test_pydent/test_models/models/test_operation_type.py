@@ -68,15 +68,15 @@ def test_operation_type_field_type(fake_session):
 
 
 def test_new_operation_type(fake_session):
-    sample_type = fake_session.SampleType.new(name='Fluff')
-    object_type = fake_session.ObjectType.new(name='Big Tub')
+    sample_type = fake_session.SampleType(name='Fluff')
+    object_type = fake_session.ObjectType(name='Big Tub')
     type = fake_session.AllowableFieldType(sample_type=sample_type, object_type=object_type)
     field_type = fake_session.FieldType(
         name='input_one',
         role='input',
         allowable_field_types=[type]
     )
-    operation_type = fake_session.OperationType.new(
+    operation_type = fake_session.OperationType(
         name='dummy',
         category='testing',
         field_types=[field_type]
