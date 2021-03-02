@@ -16,6 +16,7 @@ class Job(ModelBase):
         operations=HasManyThrough("Operation", "JobAssociation"),
         state=JSON(),
     )
+    methods=["status"]
 
     @property
     def is_complete(self):
