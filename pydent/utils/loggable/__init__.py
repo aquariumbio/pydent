@@ -133,7 +133,7 @@ class Loggable:
         If channel handler exists, do not create a new one.
         """
         logger = logging.getLogger(name)
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(level)
         handlers = self._log_handlers(logger)
         # make stream handler
         if not handlers:
@@ -190,7 +190,7 @@ class Loggable:
                     "CRITICAL": CRITICAL,
                     "WARNING": WARNING,
                     "WARN": WARN,
-                }[level.upper()]
+                }[level.upper()] 
             except KeyError as e:
                 raise KeyError("Level {} not recognized.".format(level)) from e
         return level
