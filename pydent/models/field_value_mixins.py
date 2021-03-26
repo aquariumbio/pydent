@@ -191,7 +191,7 @@ class FieldValueInterface:
                 fvs.append(fv)
         return fvs
 
-    def get_field_types(self, name=None, role=None):
+    def get_field_types(self, name: str = None, role: str = None):
         """Returns a list of :class:`pydent.models.FieldType` by their name and
         role from the instance's metaclass.
 
@@ -207,7 +207,7 @@ class FieldValueInterface:
         if name is not None:
             fts = [ft for ft in fts if ft.name == name]
         if role is not None:
-            fts = [ft for ft in fts if ft.name == name]
+            fts = [ft for ft in fts if ft.role == role]
         return fts
 
     def get_field_type(self, name, role):
