@@ -82,6 +82,13 @@ print(primer_type.get_relationships())
 
 ## making a release
 
+Update dependencies
+
+```bash
+poetry update
+```
+
+
 ```bash
 poetry build
 poetry publish
@@ -89,3 +96,4 @@ poetry publish
 
 To use a pypi token, the user name should be `__token__` and the password should be the token including the `pypi-` prefix.
 
+Update documents with `make docs`
