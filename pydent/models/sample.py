@@ -128,24 +128,28 @@ class Sample(FieldValueInterface, ModelBase):
                 self.set_field_value(name, None, {key: val})
 
     def create(self) -> List["Sample"]:
-        """Create the sample.
+        """Creates this sample in the Aquarium instance if the sample has all
+        fields required by the sample type.
+        Uses is_savable to check for missing fields.
 
         .. versionchanged:: 0.1.5a17
             Raises `AquariumModelError` if sample is missing required properties
 
-        :return:
+        :return: the list of saved samples
         :raises AquariumModelError: if required FieldValues are missing.
         """
         self.is_savable(do_raise=True)
         return self.session.utils.create_samples([self])
 
     def is_savable(self, do_raise: bool = True) -> Tuple[bool, List[str]]:
-        """Checks if the sample can be saved or updated.
+        """Checks whether this sample has fields required by the sample type.
+           If so, the sample can be saved or updated.
 
         .. versionadded:: 0.1.5a17
 
-        :param do_raise:
-        :return:
+        :param do_raise: raise an exception when required field values are missing
+        :return: a boolean whether there are errors, and list of error messages
+        :raises AquariumModelError: if do_raise is True and required fields are missing
         """
         errors = []
         for k, v in self.properties.items():
