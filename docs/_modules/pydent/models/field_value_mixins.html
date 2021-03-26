@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.field_value_mixins &#8212; pydent 1.0.6 documentation</title>
+    <title>pydent.models.field_value_mixins &#8212; pydent 1.0.7 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -507,7 +507,7 @@ from pydent.utils import filter_list
                 fvs.append(fv)
         return fvs</div>
 
-<div class="viewcode-block" id="FieldValueInterface.get_field_types"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_field_types">[docs]</a>    def get_field_types(self, name=None, role=None):
+<div class="viewcode-block" id="FieldValueInterface.get_field_types"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_field_types">[docs]</a>    def get_field_types(self, name: str = None, role: str = None):
         &quot;&quot;&quot;Returns a list of :class:`pydent.models.FieldType` by their name and
         role from the instance&#39;s metaclass.
 
@@ -523,7 +523,7 @@ from pydent.utils import filter_list
         if name is not None:
             fts = [ft for ft in fts if ft.name == name]
         if role is not None:
-            fts = [ft for ft in fts if ft.name == name]
+            fts = [ft for ft in fts if ft.role == role]
         return fts</div>
 
 <div class="viewcode-block" id="FieldValueInterface.get_field_type"><a class="viewcode-back" href="../../../generated/pydent.models.field_value_mixins.FieldValueInterface.html#pydent.models.FieldValueInterface.get_field_type">[docs]</a>    def get_field_type(self, name, role):

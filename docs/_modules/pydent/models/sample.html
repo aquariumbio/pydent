@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>pydent.models.sample &#8212; pydent 1.0.6 documentation</title>
+    <title>pydent.models.sample &#8212; pydent 1.0.7 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -444,24 +444,28 @@ class Sample(FieldValueInterface, ModelBase):
                 self.set_field_value(name, None, {key: val})</div>
 
 <div class="viewcode-block" id="Sample.create"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.create">[docs]</a>    def create(self) -&gt; List[&quot;Sample&quot;]:
-        &quot;&quot;&quot;Create the sample.
+        &quot;&quot;&quot;Creates this sample in the Aquarium instance if the sample has all
+        fields required by the sample type.
+        Uses is_savable to check for missing fields.
 
         .. versionchanged:: 0.1.5a17
             Raises `AquariumModelError` if sample is missing required properties
 
-        :return:
+        :return: the list of saved samples
         :raises AquariumModelError: if required FieldValues are missing.
         &quot;&quot;&quot;
         self.is_savable(do_raise=True)
         return self.session.utils.create_samples([self])</div>
 
 <div class="viewcode-block" id="Sample.is_savable"><a class="viewcode-back" href="../../../models.html#pydent.models.Sample.is_savable">[docs]</a>    def is_savable(self, do_raise: bool = True) -&gt; Tuple[bool, List[str]]:
-        &quot;&quot;&quot;Checks if the sample can be saved or updated.
+        &quot;&quot;&quot;Checks whether this sample has fields required by the sample type.
+           If so, the sample can be saved or updated.
 
         .. versionadded:: 0.1.5a17
 
-        :param do_raise:
-        :return:
+        :param do_raise: raise an exception when required field values are missing
+        :return: a boolean whether there are errors, and list of error messages
+        :raises AquariumModelError: if do_raise is True and required fields are missing
         &quot;&quot;&quot;
         errors = []
         for k, v in self.properties.items():

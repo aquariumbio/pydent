@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Models (pydent.models) &#8212; pydent 1.0.6 documentation</title>
+    <title>Models (pydent.models) &#8212; pydent 1.0.7 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -42,7 +42,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -10208,7 +10208,9 @@ rid.</p>
 <dl class="method">
 <dt>
 <code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/sample.html#Sample.create"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Create the sample.</p>
+<dd><p>Creates this sample in the Aquarium instance if the sample has all
+fields required by the sample type.
+Uses is_savable to check for missing fields.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 0.1.5a17: </span>Raises <cite>AquariumModelError</cite> if sample is missing required properties</p>
 </div>
@@ -10217,7 +10219,7 @@ rid.</p>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code>]</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>the list of saved samples</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference internal" href="exceptions.html#pydent.exceptions.AquariumModelError" title="pydent.exceptions.AquariumModelError"><strong>AquariumModelError</strong></a> – if required FieldValues are missing.</p>
@@ -10468,19 +10470,25 @@ cases.</p>
 <dl class="method">
 <dt>
 <code class="sig-name descname">is_savable</code><span class="sig-paren">(</span><em class="sig-param">do_raise=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydent/models/sample.html#Sample.is_savable"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Checks if the sample can be saved or updated.</p>
+<dd><dl class="simple">
+<dt>Checks whether this sample has fields required by the sample type.</dt><dd><p>If so, the sample can be saved or updated.</p>
+</dd>
+</dl>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.1.5a17.</span></p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>do_raise</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – </p>
+<dd class="field-odd"><p><strong>do_raise</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – raise an exception when required field values are missing</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
+<dd class="field-odd"><p>a boolean whether there are errors, and list of error messages</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="exceptions.html#pydent.exceptions.AquariumModelError" title="pydent.exceptions.AquariumModelError"><strong>AquariumModelError</strong></a> – if do_raise is True and required fields are missing</p>
 </dd>
 </dl>
 </dd></dl>
