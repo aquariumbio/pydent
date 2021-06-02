@@ -2,8 +2,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <title>Contributing &#8212; pydent 1.0.8 documentation</title>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Contributing &#8212; pydent 1.0.9 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -14,6 +15,8 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pydent change log" href="versions.html" />
@@ -42,7 +45,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.9</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -327,9 +330,9 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="contributing">
+  <section id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="running-tests">
+<section id="running-tests">
 <h2>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
 <p>Tests are written to run with pytest.</p>
 <p>To run tests, first install trident’s dependencies:</p>
@@ -344,7 +347,7 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>make doctest
 </pre></div>
 </div>
-<div class="section" id="server-vs-local-tests">
+<section id="server-vs-local-tests">
 <h3>Server vs local tests<a class="headerlink" href="#server-vs-local-tests" title="Permalink to this headline">¶</a></h3>
 <p>Tests that <strong>do not</strong> access the server are located in <cite>tests/test_pydent</cite>.
 Requests are turned off by default for any test within this directory. These tests will
@@ -377,7 +380,7 @@ directory.</p>
 <p>It is recommended you
 use a dockerized server for your tests. Please see the <a class="reference external" href="https://www.aquarium.bio/">Aquarium installation
 details</a> for further information.</p>
-<div class="section" id="request-recording">
+<section id="request-recording">
 <h4>Request recording<a class="headerlink" href="#request-recording" title="Permalink to this headline">¶</a></h4>
 <p>By default, live requests are recorded automatically via
 <a class="reference external" href="https://vcrpy.readthedocs.io/en/latest/installation.html">VCRpy</a></p>
@@ -391,10 +394,10 @@ def my_sever_test(session):
     # do stuff with real sample &#39;s&#39;
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="installing-dependencies">
+</section>
+</section>
+</section>
+<section id="installing-dependencies">
 <h2>Installing dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
 <p>Trident uses <a class="reference external" href="https://poetry.eustace.io/">poetry</a> for installation and distribution.
 Installation information is managed by <cite>poetry</cite> in the <cite>pyproject.toml</cite> file.
@@ -418,7 +421,7 @@ docs directory, which contains generated documentation files:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>make hooks
 </pre></div>
 </div>
-<div class="section" id="building-documentation">
+<section id="building-documentation">
 <h3>Building documentation<a class="headerlink" href="#building-documentation" title="Permalink to this headline">¶</a></h3>
 <p>Install the extras:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>poetry install -E docs
@@ -428,8 +431,8 @@ docs directory, which contains generated documentation files:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>make docs
 </pre></div>
 </div>
-</div>
-<div class="section" id="manual-release">
+</section>
+<section id="manual-release">
 <h3>Manual release<a class="headerlink" href="#manual-release" title="Permalink to this headline">¶</a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version *keats*: </span>package now governs the release script</p>
@@ -448,9 +451,9 @@ push changes to remote, and finally publish to PyPI.</p>
 To fix this, simply run <cite>poetry version &lt;optional version&gt;</cite> to bump the version.
 Alternatively, just edit the <cite>pyproject.toml</cite> file.</p>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
     </div>

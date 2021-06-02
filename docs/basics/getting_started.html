@@ -2,8 +2,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <title>Getting Started &#8212; pydent 1.0.8 documentation</title>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Getting Started &#8212; pydent 1.0.9 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -14,6 +15,8 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Installing Trident" href="installation.html" />
@@ -42,7 +45,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.9</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -327,7 +330,7 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="getting-started">
+  <section id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <p>Trident (also known as <cite>pydent</cite>) is the Python API to Aquarium, aa open-source
 human-in-the-loop laboratory automation system that enables rapid,
@@ -340,7 +343,7 @@ to interact the scientific laboratory, enticing the possibility engineering syst
 that can not only learn from experimental data, but can actually schedule and run
 its own experiments with little human intervention.</p>
 <p>To install, checkout the installation guide: <a class="reference internal" href="installation.html"><span class="doc">Installing Trident</span></a></p>
-<div class="section" id="logging-into-a-session">
+<section id="logging-into-a-session">
 <h2>Logging into a session<a class="headerlink" href="#logging-into-a-session" title="Permalink to this headline">¶</a></h2>
 <p>Session instances provide the main interface between your Python script
 and various requests made to an Aquarium server.</p>
@@ -355,8 +358,8 @@ session = AqSession(&quot;user&quot;, &quot;password&quot;, &quot;http://you.aqu
 </pre></div>
 </div>
 <p>This produces many log files, so lets leave it off initially.</p>
-</div>
-<div class="section" id="models">
+</section>
+<section id="models">
 <h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
 <p>In Trident, scientific models are treated as first class objects. These objects
 represent various aspects of most laboratories. These models include laboratory inventory such as</p>
@@ -392,8 +395,8 @@ and produces some other inventory</p>
 <p>For more information about these models, visit the <a class="reference internal" href="../api_reference.html"><span class="doc">API Reference</span></a></p>
 <p>Models contain specific relationships to each other roughly outlined here:</p>
 <img alt="../_images/Fig1_Subsystems.png" src="../_images/Fig1_Subsystems.png" style="width: 100%;" />
-</div>
-<div class="section" id="making-queries">
+</section>
+<section id="making-queries">
 <h2>Making queries<a class="headerlink" href="#making-queries" title="Permalink to this headline">¶</a></h2>
 <p>Model queries can be made directly from the session. For example, like grab one <cite>Sample</cite> from
 the Aquarium server:</p>
@@ -428,8 +431,8 @@ samples = session.Sample.where({&#39;sample_type_id
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Sample
 </pre></div>
 </div>
-</div>
-<div class="section" id="relationship-queries">
+</section>
+<section id="relationship-queries">
 <h2>Relationship Queries<a class="headerlink" href="#relationship-queries" title="Permalink to this headline">¶</a></h2>
 <p>Trident automatically makes
 requests as needed for certain attributes are access from
@@ -462,8 +465,8 @@ sample.items # new query here
 <p>An important thing to note is that, while this make querying very convenient on the Python side of
 things, it is very easy to make many unncessary requets. For information on making efficient queries
 and generally how querying works, visit <a class="reference internal" href="querying.html"><span class="doc">Making Queries</span></a>.</p>
-</div>
-<div class="section" id="creating-inventory">
+</section>
+<section id="creating-inventory">
 <h2>Creating inventory<a class="headerlink" href="#creating-inventory" title="Permalink to this headline">¶</a></h2>
 <p>The syntax for creating new Samples, Items, etc. is:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mysession</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -474,8 +477,8 @@ and generally how querying works, visit <a class="reference internal" href="quer
 </div>
 <p>The <em>session.Sample.new()</em> syntax will instantiate the model and connect the
 model to the session.</p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>

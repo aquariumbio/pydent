@@ -2,8 +2,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <title>Setting query timeout &#8212; pydent 1.0.8 documentation</title>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Setting query timeout &#8212; pydent 1.0.9 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -14,6 +15,8 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
@@ -40,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.9</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -317,7 +320,7 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="setting-query-timeout">
+  <section id="setting-query-timeout">
 <h1>Setting query timeout<a class="headerlink" href="#setting-query-timeout" title="Permalink to this headline">¶</a></h1>
 <p>The following should raise an exception if the request takes too long.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># we set timeout to 0s</span>
@@ -339,10 +342,10 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
-</div>
-<div class="section" id="deserializing">
+</section>
+<section id="deserializing">
 <h1>Deserializing<a class="headerlink" href="#deserializing" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="nested-data">
+<section id="nested-data">
 <h2>Nested data<a class="headerlink" href="#nested-data" title="Permalink to this headline">¶</a></h2>
 <p>Pydent automatically deserializes model relationships.
 Below is an example of how pydent deserializes <code class="docutils literal notranslate"><span class="pre">sample_type</span></code> to a
@@ -358,8 +361,8 @@ Below is an example of how pydent deserializes <code class="docutils literal not
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pydent.models.SampleType&#39;&gt;
 </pre></div>
 </div>
-</div>
-<div class="section" id="nested-models">
+</section>
+<section id="nested-models">
 <h2>Nested models<a class="headerlink" href="#nested-models" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">mysample</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">load</span><span class="p">({</span>
     <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
@@ -371,8 +374,8 @@ Below is an example of how pydent deserializes <code class="docutils literal not
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>primer
 </pre></div>
 </div>
-</div>
-<div class="section" id="relationships">
+</section>
+<section id="relationships">
 <h2>Relationships<a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydent.models</span> <span class="kn">import</span> <span class="n">Sample</span><span class="p">,</span> <span class="n">SampleType</span>
 
@@ -416,9 +419,9 @@ SampleType:
 }
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="serializing">
+</section>
+</section>
+<section id="serializing">
 <h1>Serializing<a class="headerlink" href="#serializing" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -436,7 +439,7 @@ SampleType:
 }
 </pre></div>
 </div>
-<div class="section" id="only-fields">
+<section id="only-fields">
 <h2><em>only</em> fields<a class="headerlink" href="#only-fields" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">prettyprint</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -452,8 +455,8 @@ SampleType:
 }
 </pre></div>
 </div>
-</div>
-<div class="section" id="only-some-relationships">
+</section>
+<section id="only-some-relationships">
 <h2>only some relationships<a class="headerlink" href="#only-some-relationships" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">relations</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,))</span>
@@ -471,8 +474,8 @@ SampleType:
 }
 </pre></div>
 </div>
-</div>
-<div class="section" id="all-relationships">
+</section>
+<section id="all-relationships">
 <h2>all relationships<a class="headerlink" href="#all-relationships" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>s = session.SampleType.find(1)
 print(prettyprint(s.dump(all_relations=True)))
@@ -493,8 +496,8 @@ print(prettyprint(s.dump(all_relations=True)))
 &quot;&quot;&quot;
 </pre></div>
 </div>
-</div>
-<div class="section" id="complex-serialization">
+</section>
+<section id="complex-serialization">
 <h2>complex serialization<a class="headerlink" href="#complex-serialization" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">Sample</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sdata</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
@@ -546,11 +549,11 @@ print(prettyprint(s.dump(all_relations=True)))
 }
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="planning">
+</section>
+</section>
+<section id="planning">
 <h1>Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submitting-a-plan">
+<section id="submitting-a-plan">
 <h2>Submitting a Plan<a class="headerlink" href="#submitting-a-plan" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">primer</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">SampleType</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
@@ -596,8 +599,8 @@ print(prettyprint(s.dump(all_relations=True)))
 True
 </pre></div>
 </div>
-</div>
-<div class="section" id="submitting-a-gibson-assembly">
+</section>
+<section id="submitting-a-gibson-assembly">
 <h2>Submitting a Gibson Assembly<a class="headerlink" href="#submitting-a-gibson-assembly" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find &quot;Assembly Plasmid&quot; protocol</span>
 <span class="n">gibson_type</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">where</span><span class="p">({</span><span class="s2">&quot;deployed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Assemble Plasmid&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
@@ -691,8 +694,8 @@ True
 True
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>

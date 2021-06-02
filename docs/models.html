@@ -2,8 +2,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <title>Models (pydent.models) &#8212; pydent 1.0.8 documentation</title>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Models (pydent.models) &#8212; pydent 1.0.9 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -14,6 +15,8 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pydent.models.Operation" href="generated/pydent.models.Operation.html" />
@@ -42,7 +45,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           Trident</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.9</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -327,7 +330,7 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="models-pydent-models">
+  <section id="models-pydent-models">
 <h1>Models (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pydent.models</span></code>)<a class="headerlink" href="#models-pydent-models" title="Permalink to this headline">¶</a></h1>
 <p id="models">This module contains classes for various Aquarium objects.</p>
 <p>Models are loaded and initialized from a <a class="reference internal" href="generated/pydent.aqsession.AqSession.html#pydent.aqsession.AqSession" title="pydent.aqsession.AqSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">AqSession</span></code></a>
@@ -398,9 +401,9 @@ Preferrably, if you need to initialize or load new models, use
 of the model class. Alternatively, you can attach a Session instance using
 <a class="reference internal" href="base.html#pydent.base.ModelBase.connect_to_session" title="pydent.base.ModelBase.connect_to_session"><code class="xref py py-meth docutils literal notranslate"><span class="pre">model.connect_to_session(session)</span></code></a></p>
 </div>
-<div class="section" id="model-classes">
+<section id="model-classes">
 <h2>Model Classes<a class="headerlink" href="#model-classes" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="operations">
+<section id="operations">
 <h3>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -428,8 +431,8 @@ of the model class. Alternatively, you can attach a Session instance using
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="plans">
+</section>
+<section id="plans">
 <h3>Plans<a class="headerlink" href="#plans" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -448,8 +451,8 @@ of the model class. Alternatively, you can attach a Session instance using
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="inventory">
+</section>
+<section id="inventory">
 <h3>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -477,8 +480,8 @@ of the model class. Alternatively, you can attach a Session instance using
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="data-and-io">
+</section>
+<section id="data-and-io">
 <h3>Data and IO<a class="headerlink" href="#data-and-io" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -500,8 +503,8 @@ of the model class. Alternatively, you can attach a Session instance using
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="user">
+</section>
+<section id="user">
 <h3>User<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -532,9 +535,9 @@ of the model class. Alternatively, you can attach a Session instance using
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="model-mixins">
+</section>
+</section>
+<section id="model-mixins">
 <h2>Model Mixins<a class="headerlink" href="#model-mixins" title="Permalink to this headline">¶</a></h2>
 <p>These classes provide some models with common methods such as saving or deleting
 models from the server or associating data.</p>
@@ -576,8 +579,8 @@ models from the server or associating data.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="field-relationships">
+</section>
+<section id="field-relationships">
 <h2>Field Relationships<a class="headerlink" href="#field-relationships" title="Permalink to this headline">¶</a></h2>
 <p>Field relationships are attribute descriptors that may call
 information from the Aquarium server if necesssary.</p>
@@ -625,7 +628,7 @@ information from the Aquarium server if necesssary.</p>
 </tr>
 </tbody>
 </table>
-<div class="section" id="exceptions">
+<section id="exceptions">
 <h3>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -638,9 +641,9 @@ information from the Aquarium server if necesssary.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="utilities">
+</section>
+</section>
+<section id="utilities">
 <h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -12893,8 +12896,8 @@ the url.</p>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
