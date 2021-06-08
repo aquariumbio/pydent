@@ -265,11 +265,16 @@ class UtilityInterface(CRUDInterface):
         return library
 
     def create_sample_type(self, sample_type):
-        """Create a Sample Type independent of an Operation Type"""
-        st_data = sample_type.dump(include=("field_types"))
+        """Creates a Sample Type independent of an Operation Type"""
+        st_data = sample_type.dump(include=("field_types"), ignore=("rid"))
+        for ft in st_data['field_types']:
+            del ft['rid']
+            del ft['parent_class']
+            del ft['parent_id']
+        st_data = {"sample_type": st_data}
+       
         result = self.aqhttp.post('sample_types.json', json_data=st_data)
         sample_type.reload(result)
-        return sample_type
 
     def create_upload(self, upload):
         files = {"file": upload.file}
